@@ -37,9 +37,12 @@ QUERY_MAX_CHARS = 230
 # Days a chunk must be fully in the past before it is cached: GDELT
 # revises recent days, so only settled chunks are reused.
 CACHE_SETTLE_DAYS = 3
-# GDELT DOC API rate-limits at 1 request / 5s (observed HTTP 429, July 2026).
-# 6s gives headroom. Backfill is slow as a result (~30-50 min) but reliable.
-SLEEP_S = 6.0
+# GDELT DOC API rate-limits at a stated 1 request / 5s, but in practice
+# (observed 2026-07-24) even 10s spacing trips sustained multi-minute 429
+# storms. Steady 15s spacing plus the supervisor script's relaunch-with-
+# cooldown (scripts/backfill_supervisor.sh) rides them out; the chunk
+# cache makes every crash resumable, so persistence is cheap.
+SLEEP_S = 15.0
 RETRIES = 6
 TIMEOUT_S = 60
 # Extra pause specifically after a 429 before retrying, in seconds.

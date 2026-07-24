@@ -62,36 +62,53 @@ SHARE_WINDOW = "365D"
 SHARE_MIN_OBS = 90
 
 
-def _fetch_article(title: str, end: date) -> pd.Series:
-    """Daily views for one article, cached by (title, end date)."""
-    slug = urllib.parse.quote(title.replace(" ", "_"), safe="")
-    cache = CACHE_DIR / f"{slug}_{end.isoformat()}.json"
+# The API intermittently 404s very long ranges (observed: 'OPEC'
+# 2017-2026 404s while each half 200s), so fetch in <=2-year windows,
+# cached per (article, window), and concatenate.
+WINDOW_DAYS = 730
+
+
+def _fetch_window(slug: str, w_start: date, w_end: date) -> list[dict]:
+    cache = CACHE_DIR / f"{slug}_{w_start.isoformat()}_{w_end.isoformat()}.json"
     if cache.exists():
-        payload = json.loads(cache.read_text(encoding="utf-8"))
+        return json.loads(cache.read_text(encoding="utf-8"))["items"]
+    url = API.format(article=slug,
+                     start=w_start.strftime("%Y%m%d"),
+                     end=w_end.strftime("%Y%m%d"))
+    r = None
+    for attempt in range(1, RETRIES + 1):
+        r = requests.get(url, headers=HEADERS, timeout=60)
+        time.sleep(SLEEP_S)
+        if r.status_code != 429:
+            break
+        time.sleep(8 * attempt)
+    assert r is not None
+    if r.status_code == 404:
+        payload = {"items": []}
     else:
-        url = API.format(article=slug,
-                         start=START.strftime("%Y%m%d"),
-                         end=end.strftime("%Y%m%d"))
-        for attempt in range(1, RETRIES + 1):
-            r = requests.get(url, headers=HEADERS, timeout=60)
-            time.sleep(SLEEP_S)
-            if r.status_code != 429:
-                break
-            time.sleep(8 * attempt)
-        if r.status_code == 404:
-            print(f"[wiki] WARNING: no pageview data for {title!r} "
-                  "(renamed or missing) -- skipping")
-            payload = {"items": []}
-        else:
-            r.raise_for_status()
-            payload = r.json()
-        CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        cache.write_text(json.dumps(payload), encoding="utf-8")
-    items = payload.get("items", [])
+        r.raise_for_status()
+        payload = r.json()
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    cache.write_text(json.dumps(payload), encoding="utf-8")
+    return payload["items"]
+
+
+def _fetch_article(title: str, end: date) -> pd.Series:
+    """Daily views for one article, windowed and cached per window."""
+    slug = urllib.parse.quote(title.replace(" ", "_"), safe="")
+    items: list[dict] = []
+    cur = START
+    while cur <= end:
+        w_end = min(cur + timedelta(days=WINDOW_DAYS - 1), end)
+        items.extend(_fetch_window(slug, cur, w_end))
+        cur = w_end + timedelta(days=1)
     if not items:
+        print(f"[wiki] WARNING: no pageview data for {title!r} "
+              "(renamed or missing) -- skipping")
         return pd.Series(dtype=float)
     idx = pd.to_datetime([it["timestamp"][:8] for it in items], format="%Y%m%d")
-    return pd.Series([it["views"] for it in items], index=idx, dtype=float)
+    return (pd.Series([it["views"] for it in items], index=idx, dtype=float)
+            .groupby(level=0).sum())
 
 
 def fetch_channel(titles: list[str], end: date) -> pd.Series:
