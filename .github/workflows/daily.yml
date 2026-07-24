@@ -36,6 +36,12 @@ jobs:
         run: |
           if [ "$(date -u +%u)" = "5" ]; then python -m src.make_datapack; fi
       - name: Commit data
+        # always(): a pipeline crash mid-backfill must still commit the
+        # chunk cache, so the next run resumes instead of refetching --
+        # GDELT's rate limiter makes uncached retries expensive. The
+        # fail-loud gate keeps docs/data untouched on crashes, so a
+        # partial run can never publish partial site data.
+        if: always()
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"

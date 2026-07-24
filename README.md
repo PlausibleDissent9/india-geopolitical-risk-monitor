@@ -1,7 +1,7 @@
 # India Geopolitical Risk Monitor (IGRM)
 
-[![ci](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/ci.yml)
-[![daily-update](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/daily.yml/badge.svg)](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/daily.yml)
+[![ci](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/ci.yml)
+[![daily-update](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/daily.yml/badge.svg)](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/daily.yml)
 
 A daily, category-decomposed index of geopolitical risk salience for India,
 in the Caldara–Iacoviello article-share tradition — with open data, a
@@ -26,7 +26,7 @@ notes/*.md (author-written) ──> published to the site weekly
 
 1. **Create the repo.** Public GitHub repo named
    `india-geopolitical-risk-monitor`. Push these contents. Replace the two
-   `CHANGEME` links in `docs/index.html` with your GitHub username.
+   `PlausibleDissent9` links in `docs/index.html` with your GitHub username.
 2. **Enable Pages.** Settings → Pages → Deploy from branch → `main`,
    folder `/docs`.
 3. **Review the dictionaries.** `dictionaries.json` is frozen (v1.0.0,
