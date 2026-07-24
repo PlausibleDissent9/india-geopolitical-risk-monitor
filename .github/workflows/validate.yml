@@ -1,0 +1,58 @@
+name: validate-and-analyze
+
+# Manual trigger: run AFTER the first backfill has committed
+# data/raw/gdelt_volume.csv. Produces docs/data/validation.json (hit-rate,
+# placebo, robustness, drift), the precision samples, and the analysis
+# outputs (seasonality, alt specs, priced-risk gap, cross-source).
+# GDELT-dependent steps are continue-on-error so one rate-limit storm
+# doesn't discard the rest; results merge into validation.json per step.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Guard - need backfilled data
+        run: test -f data/raw/gdelt_volume.csv
+      - name: Hit rate (offline, the key figure)
+        run: python -m src.validate hit-rate
+      - name: Placebo channels (GDELT)
+        continue-on-error: true
+        run: python -m src.validate placebo
+      - name: Dictionary robustness (GDELT)
+        continue-on-error: true
+        run: python -m src.validate robustness
+      - name: Coverage drift (GDELT)
+        continue-on-error: true
+        run: python -m src.validate drift
+      - name: Precision samples (GDELT artlist; author marks Y/N)
+        continue-on-error: true
+        run: python -m src.validate precision
+      - name: Wikipedia cross-source
+        continue-on-error: true
+        run: python -m src.fetch_wikipedia
+      - name: Seasonality (offline)
+        run: python -m src.seasonality
+      - name: Alternative specifications (offline)
+        run: python -m src.alt_specs
+      - name: Priced-risk gap (Yahoo Finance)
+        continue-on-error: true
+        run: python -m src.priced_risk
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add data/raw docs validation || true
+          git commit -m "validation + analysis: $(date -u +%F)" || echo "no changes"
+          git push
