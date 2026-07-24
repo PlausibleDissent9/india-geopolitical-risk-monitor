@@ -42,7 +42,7 @@ PURE_PHRASE = re.compile(r'^"[^"]+"$')
 
 
 def load(name: str) -> dict:
-    with open(ROOT / name, "r", encoding="utf-8") as f:
+    with open(ROOT / name, encoding="utf-8") as f:
         return json.load(f)
 
 

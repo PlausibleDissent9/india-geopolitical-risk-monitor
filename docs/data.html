@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data — India Geopolitical Risk Monitor</title>
+<meta name="description" content="Every published IGRM data file, the codebook, licensing, and the citation string.">
+<link rel="canonical" href="https://igrm.indiconomics.com/data.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="data.html" class="current">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">All series are open data under CC BY 4.0. Attribution required; no other restrictions. Not investment advice.</p>
+</header>
+
+<h2>Published files</h2>
+<table>
+  <thead><tr><th>File</th><th>What it is</th></tr></thead>
+  <tbody>
+    <tr><td><a href="data/latest.json">latest.json</a></td><td>Today's composite and per-channel percentile scores, with the definition line.</td></tr>
+    <tr><td><a href="data/history.json">history.json</a></td><td>Full daily score history per channel and composite (plus a <code>wikipedia</code> block once the second source is active).</td></tr>
+    <tr><td><a href="data/episodes.json">episodes.json</a></td><td>Detected coverage episodes: channel, start, end, peak date, peak volume share, spike-day count.</td></tr>
+    <tr><td><a href="data/event_study.json">event_study.json</a></td><td>Mean cumulative relative returns after episode starts with bootstrapped 95% CIs, plus per-episode raw window returns.</td></tr>
+    <tr><td><a href="data/validation.json">validation.json</a></td><td>Hit-rate against the pre-registered episode list, placebo-channel overlap, dictionary-robustness correlations, cross-source agreement, coverage-drift diagnostics.</td></tr>
+    <tr><td><a href="data/alt_specs.json">alt_specs.json</a></td><td>Secondary specifications: alternative composite weightings, episode thresholds (1.5&sigma;/2.5&sigma;), percentile windows (365/1095 days), each with its correlation to the primary.</td></tr>
+    <tr><td><a href="data/seasonality.json">seasonality.json</a></td><td>Anniversary-effect quantification: day-of-year partial R&sup2; per channel, top recurring dates, deseasonalized-variant correlation.</td></tr>
+    <tr><td><a href="data/priced_risk.json">priced_risk.json</a></td><td>The attention&ndash;pricing gap vs India VIX, largest divergence episodes in both directions, and the attention/VIX lead&ndash;lag cross-correlation with bootstrap bands.</td></tr>
+  </tbody>
+</table>
+<p class="kv">Raw inputs (GDELT volume shares, chunk cache, market closes) are versioned in the repository under <code>data/raw/</code>.</p>
+
+<h2>Codebook</h2>
+<p>Column-by-column definitions, units, and construction for every file live in the
+<a href="https://github.com/CHANGEME/india-geopolitical-risk-monitor/blob/main/docs/codebook.md">codebook</a>.</p>
+
+<h2>Citation</h2>
+<p class="prose">If you use the data, cite it:</p>
+<p class="prose"><code id="cite">Krishna, Ishan (2026). India Geopolitical Risk Monitor: a category-decomposed
+press-salience index for India. Version 1.0.0. https://igrm.indiconomics.com/ (data: CC BY 4.0)</code></p>
+<p class="kv">A DOI-minted release via Zenodo is planned; the citation string will gain the DOI when it exists.</p>
+
+<footer>
+  <p><a href="methodology.html">Methodology</a> &middot; <a href="validation.html">Validation</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+</body>
+</html>

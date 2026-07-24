@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -151,8 +151,123 @@ def robustness() -> None:
     _merge_results("robustness", report)
 
 
+def precision() -> None:
+    """Layer 4 precision audit (recall's missing half): sample 20 articles
+    per channel from random windows across the sample period and write them
+    with BLANK relevance fields. The Y/N judgments are the author's; below
+    ~70% relevant means the terms are too loose (methodology s8)."""
+    import random
+
+    random.seed()  # deliberately unseeded: a fresh sample each audit
+    d = _load_json(ROOT / "dictionaries.json")
+    out_dir = ROOT / "validation"
+    today = date.today()
+    span_days = (today - BACKFILL_START).days - 60
+
+    for ch, spec in d.items():
+        if ch.startswith("_"):
+            continue
+        queries = fetch_gdelt.build_queries(spec["terms"], spec.get("anchor"))
+        pool: dict[str, dict] = {}
+        for _ in range(6):
+            off = random.randrange(max(span_days, 1))
+            w_start = BACKFILL_START + timedelta(days=off)
+            w_end = min(w_start + timedelta(days=60), today)
+            for q in queries:
+                for a in fetch_gdelt.fetch_articles(q, w_start, w_end, maxrecords=8):
+                    if a["url"]:
+                        pool.setdefault(a["url"], a)
+            if len(pool) >= 40:
+                break
+        sample = random.sample(list(pool.values()), min(20, len(pool)))
+        lines = [
+            f"# Precision sample: {ch}",
+            "",
+            f"Sampled {today.isoformat()} from random windows, "
+            f"{BACKFILL_START}..{today}. Mark each [RELEVANT? ] Y or N by",
+            "hand, then report the per-channel rate in methodology s8.",
+            "",
+        ]
+        for i, a in enumerate(sample, 1):
+            lines += [
+                f"{i}. **{a['title']}**  ",
+                f"   {a['domain']} · {a['date']} · {a['url']}  ",
+                "   [RELEVANT? ]",
+                "",
+            ]
+        path = out_dir / f"precision_sample_{ch}.md"
+        path.write_text("\n".join(lines), encoding="utf-8")
+        print(f"[validate] wrote {path} ({len(sample)} articles)")
+
+
+def drift() -> None:
+    """Coverage-drift diagnostics (methodology s7.7): GDELT's monitored
+    corpus and per-channel source composition over time.
+
+    Per year: mean daily corpus size (the share denominator, from
+    timelinevolraw), distinct source domains in a relevance sample of
+    channel articles, and top-10 domain concentration (Herfindahl over
+    sampled domain counts -- an approximation from the relevance sample,
+    stated as such). Plus, per channel: correlation of the volume share
+    with corpus size (a systematic trend would mean shares are absorbing
+    composition change, not just world events)."""
+    d = _load_json(ROOT / "dictionaries.json")
+    channels = {ch: spec for ch, spec in d.items() if not ch.startswith("_")}
+    today = date.today()
+
+    first_ch, first_spec = next(iter(channels.items()))
+    norm_q = fetch_gdelt.build_queries(first_spec["terms"], first_spec.get("anchor"))[0]
+    print(f"[validate] corpus norm via {first_ch} query, {BACKFILL_START}..{today}")
+    raw = fetch_gdelt.fetch_corpus_norm(norm_q, BACKFILL_START, today)
+    norm = raw["norm"]
+    norm.index = pd.to_datetime(norm.index)
+    by_year = {
+        str(y): int(v) for y, v in
+        norm.groupby(norm.index.year).mean().round().items()
+    }
+
+    domain_stats: dict = {}
+    for ch, spec in channels.items():
+        q = fetch_gdelt.build_queries(spec["terms"], spec.get("anchor"))[0]
+        per_year: dict = {}
+        for y in sorted({ts.year for ts in norm.index}):
+            arts = fetch_gdelt.fetch_articles(
+                q, date(y, 1, 1), min(date(y, 12, 31), today), maxrecords=100
+            )
+            domains = pd.Series([a["domain"] for a in arts if a["domain"]])
+            if domains.empty:
+                continue
+            shares = domains.value_counts(normalize=True)
+            per_year[str(y)] = {
+                "n_articles_sampled": int(len(domains)),
+                "n_distinct_domains": int(domains.nunique()),
+                "herfindahl_top10": round(float((shares.head(10) ** 2).sum()), 4),
+            }
+        domain_stats[ch] = per_year
+        print(f"[validate] drift domains: {ch} ({len(per_year)} years)")
+
+    vol_corr = {}
+    store = RAW_DIR / "gdelt_volume.csv"
+    if store.exists():
+        vol = pd.read_csv(store, parse_dates=["date"]).set_index("date")
+        for ch in vol.columns:
+            joined = pd.concat([vol[ch], norm], axis=1, join="inner").dropna()
+            if len(joined) >= 60:
+                vol_corr[ch] = round(float(joined.corr().iloc[0, 1]), 3)
+
+    _merge_results("drift", {
+        "note": ("Domain stats are approximations from relevance-sorted "
+                 "samples (first sub-query per channel), not a census."),
+        "mean_daily_corpus_by_year": by_year,
+        "per_channel_domains": domain_stats,
+        "share_vs_corpus_corr": vol_corr,
+    })
+
+
 def main() -> None:
-    modes = {"hit-rate": hit_rate, "placebo": placebo, "robustness": robustness}
+    modes = {"hit-rate": hit_rate, "placebo": placebo,
+             "robustness": robustness, "precision": precision,
+             "drift": drift}
     if len(sys.argv) != 2 or sys.argv[1] not in modes:
         sys.exit(f"usage: python -m src.validate [{'|'.join(modes)}]")
     modes[sys.argv[1]]()

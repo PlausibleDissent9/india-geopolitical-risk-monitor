@@ -41,6 +41,8 @@ jobs:
           git config user.email "actions@github.com"
           # .gitignore excludes Yahoo-derived prices.csv / derived_returns.csv;
           # only the GDELT store persists (backfill is expensive to redo).
-          git add data/raw docs/data notes-inbox || true
+          # docs/ also carries rendered pages (methodology.html, feed.xml,
+          # notes.json) produced by the publish step.
+          git add data/raw docs notes-inbox || true
           git commit -m "data: update $(date -u +%F)" || echo "no changes"
           git push

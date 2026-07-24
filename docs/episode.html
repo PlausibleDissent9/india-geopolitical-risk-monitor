@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Episode — India Geopolitical Risk Monitor</title>
+<meta name="description" content="Detail view for one detected coverage episode: dates, peak, and India-specific relative returns around the episode start.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+</header>
+
+<div id="body"><p class="empty">Loading episode&hellip;</p></div>
+
+<footer>
+  <p><a href="./">&larr; back to the index</a></p>
+  <p>Channel-level means are across ALL of the channel's episodes (bootstrapped 95% CIs); this episode's own returns carry no interval &mdash; n&nbsp;=&nbsp;1. Association, not causation.</p>
+</footer>
+
+<script>
+"use strict";
+async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function fmtCell(w) {
+  if (!w) return "–";
+  return w.mean.toFixed(2) + " [" + w.ci95[0].toFixed(2) + ", " + w.ci95[1].toFixed(2) + "]";
+}
+
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const channel = q.get("channel"), start = q.get("start");
+  const el = document.getElementById("body");
+  const [episodes, ev, hist] = await Promise.all([
+    j("data/episodes.json"), j("data/event_study.json"), j("data/history.json"),
+  ]);
+  const e = (episodes || []).find(x => x.channel === channel && x.start === start);
+  if (!e) { el.innerHTML = '<p class="empty">Episode not found.</p>'; return; }
+  const label = e.label || (hist && hist.labels[channel]) || channel;
+  document.title = label + " " + e.start + " — India Geopolitical Risk Monitor";
+
+  let html = "<h2>" + esc(label) + ": " + esc(e.start) + " &rarr; " + esc(e.end) + "</h2>" +
+    '<p class="kv">Peak ' + esc(e.peak_date) + " at " + esc(e.peak_value) +
+    "% of monitored coverage &middot; " + esc(e.n_spike_days) + " spike day(s)</p>";
+
+  const perEp = ev && ev.per_episode &&
+    (ev.per_episode[channel] || []).find(x => x.start === e.start);
+  html += "<h2>This episode: relative returns after the start</h2>";
+  if (perEp) {
+    html += '<table><thead><tr><th>Outcome</th><th class="num">+1d</th><th class="num">+5d</th><th class="num">+20d</th></tr></thead><tbody>';
+    for (const [outcome, wins] of Object.entries(perEp.outcomes)) {
+      html += "<tr><td>" + esc(outcome) + "</td>" +
+        ["1", "5", "20"].map(w => '<td class="num">' +
+          (wins[w] == null ? "–" : esc(wins[w].toFixed(2)) + "%") + "</td>").join("") + "</tr>";
+    }
+    html += "</tbody></table>";
+  } else {
+    html += '<p class="empty">Per-episode returns not computed yet (re-run the pipeline).</p>';
+  }
+
+  const chData = ev && ev.channels && ev.channels[channel];
+  html += "<h2>Channel context: mean across all " +
+    (chData ? esc(chData.n_episodes) : "?") + " episodes</h2>";
+  if (chData) {
+    html += '<table><thead><tr><th>Outcome</th><th class="num">+1d</th><th class="num">+5d</th><th class="num">+20d</th></tr></thead><tbody>';
+    for (const [outcome, wins] of Object.entries(chData.outcomes)) {
+      const tag = (ev.descriptive_only || []).includes(outcome) ? " (descriptive)" : "";
+      html += "<tr><td>" + esc(outcome + tag) + "</td>" +
+        ["1", "5", "20"].map(w => '<td class="num">' + esc(fmtCell(wins[w])) + "</td>").join("") + "</tr>";
+    }
+    html += "</tbody></table>";
+  }
+
+  el.innerHTML = html;
+})();
+</script>
+</body>
+</html>

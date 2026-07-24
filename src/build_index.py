@@ -41,33 +41,43 @@ DEFINITION = (
 )
 
 
-def _trailing_percentile(s: pd.Series) -> pd.Series:
+def _trailing_percentile(
+    s: pd.Series,
+    window_days: int = PERCENTILE_WINDOW_DAYS,
+    min_obs: int = MIN_OBS,
+) -> pd.Series:
     def pct(a: np.ndarray) -> float:
         return 100.0 * float(np.mean(a <= a[-1]))
 
-    return s.rolling(f"{PERCENTILE_WINDOW_DAYS}D", min_periods=MIN_OBS).apply(
-        pct, raw=True
-    )
+    return s.rolling(f"{window_days}D", min_periods=min_obs).apply(pct, raw=True)
 
 
-def build_scores(volume: pd.DataFrame) -> pd.DataFrame:
-    """Percentile scores per channel plus 'composite'. Index: DatetimeIndex."""
+def build_scores(
+    volume: pd.DataFrame, window_days: int = PERCENTILE_WINDOW_DAYS
+) -> pd.DataFrame:
+    """Percentile scores per channel plus 'composite'. Index: DatetimeIndex.
+    Non-default window_days is for secondary specifications only
+    (alt_specs.py); the published index always uses the default."""
     v = volume.copy()
     v.index = pd.to_datetime(v.index)
     v = v.sort_index()
-    scores = pd.DataFrame({ch: _trailing_percentile(v[ch]) for ch in v.columns})
+    scores = pd.DataFrame(
+        {ch: _trailing_percentile(v[ch], window_days) for ch in v.columns}
+    )
     scores["composite"] = scores[v.columns].mean(axis=1, skipna=False)
     return scores
 
 
-def detect_episodes(s: pd.Series, channel: str) -> list[dict]:
+def detect_episodes(
+    s: pd.Series, channel: str, sigma: float = EPISODE_SIGMA
+) -> list[dict]:
     s = s.dropna()
     if s.empty:
         return []
     base = s.rolling(f"{EPISODE_BASELINE_DAYS}D", min_periods=EPISODE_MIN_OBS)
     mu = base.mean().shift(1)
     sd = base.std().shift(1)
-    threshold = mu + EPISODE_SIGMA * sd
+    threshold = mu + sigma * sd
     spikes = s[s > threshold].index
 
     episodes: list[dict] = []
@@ -95,13 +105,15 @@ def _close_cluster(cluster: list[pd.Timestamp], s: pd.Series, channel: str) -> d
     }
 
 
-def detect_all_episodes(volume: pd.DataFrame) -> list[dict]:
+def detect_all_episodes(
+    volume: pd.DataFrame, sigma: float = EPISODE_SIGMA
+) -> list[dict]:
     v = volume.copy()
     v.index = pd.to_datetime(v.index)
     v = v.sort_index()
     out: list[dict] = []
     for ch in v.columns:
-        out.extend(detect_episodes(v[ch], ch))
+        out.extend(detect_episodes(v[ch], ch, sigma))
     out.sort(key=lambda e: e["start"])
     return out
 

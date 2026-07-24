@@ -1,5 +1,9 @@
-pandas>=2.0
-numpy>=1.24
-requests>=2.31
-yfinance>=0.2.40
-pytest>=7.0
+# Pinned exactly for reproducibility (B4): scripts/reproduce.sh verifies a
+# clean clone rebuilds the committed outputs with these versions.
+# Python 3.9.
+pandas==2.3.3
+numpy==2.0.2
+requests==2.32.5
+yfinance==1.2.0
+Markdown==3.9
+pytest==8.4.2

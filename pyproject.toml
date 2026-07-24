@@ -1,0 +1,23 @@
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+# UP007/UP045 (X | None syntax) need py310 at runtime; we run 3.9 with
+# postponed evaluation, so annotations may use it but code must not.
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.9"
+files = ["src"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]

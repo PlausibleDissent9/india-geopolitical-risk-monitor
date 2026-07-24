@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekly notes — India Geopolitical Risk Monitor</title>
+<meta name="description" content="The archive of weekly analytical notes on the IGRM index — author-written, never generated.">
+<link rel="canonical" href="https://igrm.indiconomics.com/notes.html">
+<link rel="alternate" type="application/rss+xml" title="IGRM weekly notes" href="feed.xml">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html" class="current">Notes</a>
+  </nav>
+  <p class="definition">~250 words a week on what the index did and why &mdash; author-written, rendered here, never generated. <a href="feed.xml">RSS</a>.</p>
+</header>
+
+<div id="archive"><p class="empty">No notes published yet.</p></div>
+
+<footer>
+  <p><a href="./">&larr; back to the index</a></p>
+</footer>
+
+<script>
+"use strict";
+async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function md(text) {
+  return text.split(/\n\n+/).map(block => {
+    const b = block.trim();
+    if (!b) return "";
+    if (b.startsWith("## ")) return "<h3>" + esc(b.slice(3)) + "</h3>";
+    if (b.startsWith("# ")) return "<h2>" + esc(b.slice(2)) + "</h2>";
+    return "<p>" + esc(b).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>") + "</p>";
+  }).join("");
+}
+
+(async () => {
+  const notes = await j("data/notes.json");
+  if (!notes || !notes.length) return;
+  const el = document.getElementById("archive");
+  el.innerHTML = "";
+  for (const n of notes) {
+    const sec = document.createElement("section");
+    sec.className = "prose";
+    sec.id = n.week;
+    sec.innerHTML = "<h2><a href='#" + esc(n.week) + "'>" + esc(n.week) + "</a></h2>" + md(n.markdown);
+    el.appendChild(sec);
+  }
+})();
+</script>
+</body>
+</html>

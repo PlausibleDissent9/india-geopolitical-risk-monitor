@@ -1,5 +1,8 @@
 # India Geopolitical Risk Monitor (IGRM)
 
+[![ci](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/ci.yml)
+[![daily-update](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/daily.yml/badge.svg)](https://github.com/CHANGEME/india-geopolitical-risk-monitor/actions/workflows/daily.yml)
+
 A daily, category-decomposed index of geopolitical risk salience for India,
 in the Caldara–Iacoviello article-share tradition — with open data, a
 public methodology, and an event-study layer on India-specific relative

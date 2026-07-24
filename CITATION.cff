@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this index or its data, please cite it as below."
+title: "India Geopolitical Risk Monitor (IGRM)"
+type: dataset
+authors:
+  - family-names: Krishna
+    given-names: Ishan
+    email: ishankrishna9@gmail.com
+version: 1.0.0
+date-released: "2026-07-24"
+url: "https://igrm.indiconomics.com"
+repository-code: "https://github.com/CHANGEME/india-geopolitical-risk-monitor"
+license: CC-BY-4.0
+abstract: >-
+  A daily, category-decomposed index of press salience for India-relevant
+  geopolitical topics, in the Caldara-Iacoviello article-share tradition:
+  five channels built from frozen, ex-ante term dictionaries over GDELT
+  coverage shares, normalized to trailing 730-day percentiles, with
+  episode detection, pre-registered validation, placebo channels,
+  dictionary-robustness checks, and an event-study layer on
+  India-specific relative returns. Measures attention, not risk; reports
+  associations, not causes.
+keywords:
+  - geopolitical risk
+  - India
+  - news salience
+  - GDELT
+  - event study

@@ -1,0 +1,8 @@
+{
+  "_meta": {
+    "note": "Weight vectors are the AUTHOR'S to fill: one weight per channel, any positive scale (normalized to sum 1 at compute time). Sources worth citing in methodology s4 when filled: trade_exposure from bilateral goods+services trade shares; import_exposure from import-dependency shares (crude via Gulf, sea-borne trade via chokepoints). Empty objects mean alt_specs.py skips that weighting and says so.",
+    "filled_on": null
+  },
+  "trade_exposure": {},
+  "import_exposure": {}
+}

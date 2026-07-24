@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Validation — India Geopolitical Risk Monitor</title>
+<meta name="description" content="Pre-registered episode detection, placebo channels, dictionary robustness, and cross-source agreement for the IGRM salience index.">
+<link rel="canonical" href="https://igrm.indiconomics.com/validation.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html" class="current">Validation</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">How we know the index measures anything real: detection of a pre-registered
+  episode list the query terms never name, placebo channels that must stay quiet, robustness across
+  alternative dictionaries, and agreement across independent sources. What validation cannot do:
+  convert salience into risk.</p>
+</header>
+
+<h2>Pre-registered episode detection</h2>
+<p class="chart-note" id="hitSummary">Not yet computed &mdash; run <code>python -m src.validate hit-rate</code> after the backfill.</p>
+<table id="hits">
+  <thead><tr><th>Result</th><th>Channel</th><th>Date</th><th>Episode</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<h2>Placebo channels</h2>
+<p class="chart-note">Channels with no India-geopolitics content (IPL cricket, Bollywood) run through the identical pipeline. If they spike alongside real episodes, the pipeline measures general news volume, not channel salience.</p>
+<p id="placebo" class="kv">Not yet computed.</p>
+
+<h2>Dictionary robustness</h2>
+<p class="chart-note">The full index recomputed under broader and narrower term sets. Correlations above 0.9 mean the result is not an artifact of one term list.</p>
+<table id="robust">
+  <thead><tr><th>Channel</th><th class="num">vs narrow</th><th class="num">vs broad</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<h2>Cross-source agreement</h2>
+<p class="chart-note">GDELT (supply-side: what editors publish) vs Wikipedia pageviews (demand-side: what readers look up). High agreement means the signal is not a GDELT artifact; persistent divergence is a documented finding, not noise.</p>
+<table id="cross">
+  <thead><tr><th>Channel</th><th class="num">correlation</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<h2>Coverage drift</h2>
+<p class="chart-note">GDELT's monitored corpus is not constant. Mean daily corpus size by year, and whether channel shares trend with it.</p>
+<p id="drift" class="kv">Not yet computed.</p>
+
+<footer>
+  <p><a href="methodology.html">Methodology</a> &middot; <a href="data.html">Data &amp; citation</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+
+<script>
+"use strict";
+async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+(async () => {
+  const v = await j("data/validation.json");
+  if (!v) return;
+
+  if (v.hit_rate) {
+    const h = v.hit_rate;
+    document.getElementById("hitSummary").innerHTML =
+      "Detection window &plusmn;" + esc(h.window_days) + " days. Overall: <b>" +
+      esc(h.overall.hits) + "/" + esc(h.overall.n) + " (" +
+      Math.round(100 * h.overall.hits / h.overall.n) + "%)</b>. " +
+      "List frozen before the first validation run; none of these event names appears in any query term.";
+    const tb = document.querySelector("#hits tbody");
+    for (const e of h.episodes) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = '<td class="' + (e.hit ? 'hit">HIT' : 'miss">MISS') + "</td><td>" +
+        esc(e.channel) + "</td><td>" + esc(e.date) + "</td><td>" + esc(e.name) + "</td>";
+      tb.appendChild(tr);
+    }
+  }
+
+  if (v.placebo) {
+    document.getElementById("placebo").innerHTML =
+      "Placebo episodes detected: <b>" + esc(v.placebo.n_placebo_episodes) +
+      "</b> &middot; overlapping geopolitical episode days: <b>" + esc(v.placebo.n_overlapping) +
+      "</b> (" + Math.round(100 * v.placebo.overlap_fraction) + "%)";
+  }
+
+  if (v.robustness) {
+    const tb = document.querySelector("#robust tbody");
+    const chans = new Set([
+      ...Object.keys(v.robustness.narrow || {}), ...Object.keys(v.robustness.broad || {}),
+    ]);
+    for (const ch of chans) {
+      const tr = document.createElement("tr");
+      const n = (v.robustness.narrow || {})[ch], b = (v.robustness.broad || {})[ch];
+      tr.innerHTML = "<td>" + esc(ch) + '</td><td class="num">' +
+        (n == null ? "–" : esc(n.toFixed(3))) + '</td><td class="num">' +
+        (b == null ? "–" : esc(b.toFixed(3))) + "</td>";
+      tb.appendChild(tr);
+    }
+  }
+
+  if (v.cross_source && v.cross_source.per_channel) {
+    const tb = document.querySelector("#cross tbody");
+    for (const [ch, c] of Object.entries(v.cross_source.per_channel)) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + esc(ch) + '</td><td class="num">' + esc(c.toFixed(3)) + "</td>";
+      tb.appendChild(tr);
+    }
+  } else {
+    document.querySelector("#cross tbody").innerHTML =
+      '<tr><td colspan="2" class="empty">Wikipedia source not yet active (article lists unfilled).</td></tr>';
+  }
+
+  if (v.drift) {
+    const years = Object.entries(v.drift.mean_daily_corpus_by_year || {})
+      .map(([y, n]) => y + ": " + Number(n).toLocaleString()).join(" · ");
+    const corrs = Object.entries(v.drift.share_vs_corpus_corr || {})
+      .map(([ch, c]) => ch + " " + c.toFixed(2)).join(" · ");
+    document.getElementById("drift").innerHTML =
+      "Mean daily monitored articles &mdash; " + esc(years) +
+      (corrs ? "<br>Share-vs-corpus correlation &mdash; " + esc(corrs) : "");
+  }
+})();
+</script>
+</body>
+</html>

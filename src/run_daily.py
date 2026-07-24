@@ -12,13 +12,12 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 from datetime import date
 from pathlib import Path
 
 import pandas as pd
 
-from . import build_index, event_study, fetch_gdelt, fetch_markets
+from . import build_index, event_study, fetch_gdelt, fetch_markets, render_site
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -39,17 +38,38 @@ def publish_latest_note() -> None:
         json.dumps(payload), encoding="utf-8")
 
 
+def _fail_loudly_on_partial_data(volume: pd.DataFrame) -> None:
+    """A silently thin dataset must fail the workflow, not publish
+    (spec B7): partial data on the site is worse than a red run."""
+    problems = []
+    if volume.empty:
+        problems.append("volume store is empty")
+    else:
+        last = pd.to_datetime(volume.index).max()
+        if (pd.Timestamp(date.today()) - last).days > 5:
+            problems.append(f"data ends {last.date()}, more than 5 days ago")
+        tail = volume.loc[pd.to_datetime(volume.index)
+                          >= last - pd.Timedelta(days=30)]
+        for ch in volume.columns:
+            if tail[ch].dropna().empty:
+                problems.append(f"channel {ch!r} has no data in the last 30 days")
+    if problems:
+        raise SystemExit("[fail-loud] refusing to publish partial data: "
+                         + "; ".join(problems))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--backfill", action="store_true")
-    # 2022 start keeps total GDELT requests within the free-tier rate budget
-    # so a full backfill completes in one run. Covers Ukraine, Oct 7, Red Sea,
-    # and Operation Sindoor -- every validation event needed for launch.
-    # Extend earlier later via Option B (chunked resume) if 2017-21 is wanted.
-    ap.add_argument("--from", dest="from_date", default="2022-01-01")
+    # Full GDELT DOC API range. The per-chunk cache in fetch_gdelt plus its
+    # resume logic (only missing dates are fetched) make the 2017 range
+    # feasible where a single uncached run previously was not: an interrupted
+    # backfill restarts where it stopped instead of re-spending the rate
+    # budget from scratch.
+    ap.add_argument("--from", dest="from_date", default="2017-01-01")
     args = ap.parse_args()
 
-    with open(ROOT / "dictionaries.json", "r", encoding="utf-8") as f:
+    with open(ROOT / "dictionaries.json", encoding="utf-8") as f:
         dictionaries = json.load(f)
 
     backfill_from = None
@@ -64,6 +84,7 @@ def main() -> None:
     _, derived = fetch_markets.load_or_update(start=args.from_date)
 
     print("[3/5] Index + episodes")
+    _fail_loudly_on_partial_data(volume)
     scores = build_index.build_scores(volume)
     episodes = build_index.detect_all_episodes(volume)
 
@@ -76,6 +97,7 @@ def main() -> None:
               if not ch.startswith("_")}
     build_index.write_site_outputs(scores, episodes, labels)
     publish_latest_note()
+    render_site.main()
     print("[done] site data written to docs/data/")
 
 

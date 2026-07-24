@@ -80,6 +80,27 @@ def run_event_study(episodes: list[dict], derived: pd.DataFrame) -> dict:
                 }
             ch_out["outcomes"][outcome] = per_window
         results["channels"][ch] = ch_out
+
+    # Per-episode raw window returns (no CI -- n=1 by construction), for
+    # the site's episode detail pages. Same windows, same outcomes.
+    per_episode: dict[str, list[dict]] = {}
+    for ch, eps in sorted(by_channel.items()):
+        rows = []
+        for e in eps:
+            t = pd.Timestamp(e["start"])
+            rows.append({
+                "start": e["start"],
+                "outcomes": {
+                    outcome: {
+                        str(w): (None if (v := _cum_return(derived[outcome], t, w)) is None
+                                 else round(v, 3))
+                        for w in WINDOWS
+                    }
+                    for outcome in outcomes
+                },
+            })
+        per_episode[ch] = rows
+    results["per_episode"] = per_episode
     return results
 
 
