@@ -9,12 +9,42 @@ name: validate-and-analyze
 
 on:
   workflow_dispatch:
+  # Self-chaining: fires after every daily-update; the gate job below
+  # lets the heavy battery run only when validation has never produced
+  # its key figure (first successful backfill), so this runs exactly
+  # once autonomously and stays manual thereafter.
+  workflow_run:
+    workflows: ["daily-update"]
+    types: [completed]
 
 permissions:
   contents: write
 
+concurrency:
+  group: igrm-pipeline
+  cancel-in-progress: false
+
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+          elif [ -f docs/data/validation.json ] && grep -q '"hit_rate"' docs/data/validation.json; then
+            echo "run=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+          fi
+
   validate:
+    needs: gate
+    if: needs.gate.outputs.run == 'yes'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

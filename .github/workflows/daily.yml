@@ -9,6 +9,8 @@ on:
         description: "Run full backfill from 2017-01-01 (first run: yes)"
         type: boolean
         default: false
+  push:
+    paths: [".trigger/backfill"]  # committing this file requests a backfill run
 
 permissions:
   contents: write
@@ -36,7 +38,7 @@ jobs:
         # committing the chunk cache between passes -- progress survives
         # even a job-level timeout, and each pass resumes from cache.
         run: |
-          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+          if [ "${{ github.event.inputs.backfill }}" = "true" ] || [ "${{ github.event_name }}" = "push" ]; then
             git config user.name "igrm-bot"
             git config user.email "actions@github.com"
             ok=0

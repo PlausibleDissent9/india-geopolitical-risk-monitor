@@ -27,7 +27,11 @@ import pandas as pd
 import requests
 
 API = "https://api.gdeltproject.org/api/v2/doc/doc"
-CHUNK_DAYS = 180
+# Verified 2026-07-25: a single timelinevol request returns the full
+# 2017->today range at daily granularity (3,467 points). The original
+# 180-day chunking spent 140 rate-limited requests where 7 suffice; the
+# chunk machinery remains for cache reuse and future range growth.
+CHUNK_DAYS = 3700
 # GDELT rejects long queries with an HTTP-200 "Your query was too short or
 # too long" body. Measured 2026-07-24: 222 chars accepted, 271 rejected.
 # Channels whose full term set composes past this budget are partitioned
@@ -161,11 +165,19 @@ def _fetch_chunk_network(
 
 
 def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
-    """Daily volume series for one composed query over [start, end]."""
+    """Daily volume series for one composed query over [start, end].
+
+    Chunks split at the cache-settle boundary so the large historical
+    chunk is cache-eligible (its end is fully in the past) and only the
+    few-day tail refetches -- a mid-storm crash then costs one request
+    on resume, not the whole range."""
+    split = date.today() - timedelta(days=CACHE_SETTLE_DAYS + 1)
     frames: list[pd.DataFrame] = []
     cur = start
     while cur <= end:
         chunk_end = min(cur + timedelta(days=CHUNK_DAYS - 1), end)
+        if cur <= split < chunk_end:
+            chunk_end = split
         rows = _fetch_chunk(query, cur, chunk_end)
         if rows:
             df = pd.DataFrame(rows)
