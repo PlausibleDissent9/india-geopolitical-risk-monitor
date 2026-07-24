@@ -25,9 +25,28 @@ jobs:
       - name: Enforce dictionary rules (ex-ante rule)
         run: python -m pytest -q
       - name: Run pipeline
+        # Backfill mode supervises itself: GDELT's rate limiter kills
+        # naive runs mid-fetch, so retry with cooldowns inside one job,
+        # committing the chunk cache between passes -- progress survives
+        # even a job-level timeout, and each pass resumes from cache.
         run: |
           if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
-            python -m src.run_daily --backfill
+            git config user.name "igrm-bot"
+            git config user.email "actions@github.com"
+            ok=0
+            for i in $(seq 1 12); do
+              echo "::group::backfill pass $i"
+              if python -m src.run_daily --backfill; then
+                ok=1; echo "::endgroup::"; break
+              fi
+              echo "::endgroup::"
+              git add data/raw || true
+              git commit -m "backfill chunk cache: pass $i" || true
+              git push || true
+              echo "pass $i died; cooling down 240s"
+              sleep 240
+            done
+            [ "$ok" = "1" ]
           else
             python -m src.run_daily
           fi
