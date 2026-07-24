@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>India Geopolitical Risk Monitor</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1b1b1f; --muted: #6b6a66; --line: #e3e1da;
+    --card: #ffffff; --accent: #8a3324; --shade: rgba(138, 51, 36, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16161a; --fg: #e8e6e1; --muted: #93918c; --line: #2c2c32;
+      --card: #1e1e24; --accent: #d4694f; --shade: rgba(212, 105, 79, 0.14);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font: 16px/1.55 Georgia, "Times New Roman", serif;
+    max-width: 880px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+  }
+  header h1 { font-size: 1.7rem; font-weight: 600; letter-spacing: 0.01em; }
+  .definition { color: var(--muted); font-size: 0.95rem; margin-top: 0.4rem; max-width: 60ch; }
+  .asof { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+  .headline { display: flex; align-items: baseline; gap: 1rem; margin: 2rem 0 0.5rem; }
+  .headline .num { font-size: 4rem; line-height: 1; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .headline .cap { color: var(--muted); font-size: 0.95rem; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; margin: 1.5rem 0 2.5rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.8rem 0.9rem; cursor: pointer;
+  }
+  .card.active { border-color: var(--accent); }
+  .card .score { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card .label { color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
+  h2 { font-size: 1.05rem; font-weight: 600; margin: 2.2rem 0 0.8rem; border-top: 1px solid var(--line); padding-top: 1.4rem; }
+  .chart-wrap { overflow-x: auto; }
+  canvas { width: 100%; height: 300px; display: block; }
+  .chart-note { color: var(--muted); font-size: 0.8rem; margin-top: 0.4rem; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.45rem 0.7rem 0.45rem 0; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: 0.8rem; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  #note { max-width: 65ch; }
+  #note h1, #note h2 { border: none; padding: 0; margin: 1rem 0 0.5rem; font-size: 1rem; }
+  #note p { margin: 0.6rem 0; }
+  .empty { color: var(--muted); font-style: italic; }
+  footer { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1rem; color: var(--muted); font-size: 0.85rem; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>India Geopolitical Risk Monitor</h1>
+  <p class="definition" id="definition">Measures press salience of India-relevant geopolitical topics &mdash; not risk itself, and not investment advice.</p>
+  <p class="asof" id="asof"></p>
+</header>
+
+<div class="headline">
+  <div class="num" id="composite">&ndash;</div>
+  <div class="cap">composite &middot; percentile vs the trailing two years &middot; unweighted mean of the five channels (a convention, not a weighting claim)</div>
+</div>
+
+<div class="cards" id="cards"></div>
+
+<h2>History</h2>
+<div class="chart-wrap"><canvas id="chart" width="1720" height="600"></canvas></div>
+<p class="chart-note" id="chartNote">Shaded bands are detected episodes (raw volume &gt; trailing 90-day mean + 2&sigma;, clustered). Click a channel card to switch series.</p>
+
+<h2>Episode archive</h2>
+<table id="episodes">
+  <thead><tr><th>Channel</th><th>Start</th><th>End</th><th>Peak</th><th class="num">Spike days</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<h2>Event study</h2>
+<p class="chart-note">Mean cumulative relative return after episode starts, with bootstrapped 95% CIs. Association, not causation. Windows in trading days.</p>
+<table id="evstudy">
+  <thead><tr><th>Channel</th><th>Outcome</th><th class="num">+1d</th><th class="num">+5d</th><th class="num">+20d</th><th class="num">n</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<h2>Latest note</h2>
+<div id="note"><p class="empty">No note published yet.</p></div>
+
+<footer>
+  <p>Open data &amp; methodology: <a href="https://github.com/CHANGEME/india-geopolitical-risk-monitor">github.com/CHANGEME/india-geopolitical-risk-monitor</a>
+  &middot; <a href="https://github.com/CHANGEME/india-geopolitical-risk-monitor/blob/main/methodology.md">methodology</a></p>
+  <p>Salience index in the Caldara&ndash;Iacoviello article-share tradition. Association, not causation. Not investment advice.</p>
+</footer>
+
+<script>
+"use strict";
+let HIST = null, EPISODES = [], ACTIVE = "composite";
+
+async function j(path) {
+  try { const r = await fetch(path); return r.ok ? await r.json() : null; }
+  catch { return null; }
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function renderLatest(latest) {
+  if (!latest) return;
+  if (latest.definition) document.getElementById("definition").textContent = latest.definition;
+  if (latest.date) document.getElementById("asof").textContent = "Data through " + latest.date + " · updated daily 18:00 IST";
+  document.getElementById("composite").textContent = latest.composite == null ? "–" : latest.composite.toFixed(0);
+  const cards = document.getElementById("cards");
+  cards.innerHTML = "";
+  for (const [ch, info] of Object.entries(latest.channels || {})) {
+    const div = document.createElement("div");
+    div.className = "card" + (ch === ACTIVE ? " active" : "");
+    div.dataset.channel = ch;
+    div.innerHTML = '<div class="score">' + (info.score == null ? "–" : esc(info.score.toFixed(0))) +
+                    '</div><div class="label">' + esc(info.label) + "</div>";
+    div.onclick = () => { ACTIVE = (ACTIVE === ch) ? "composite" : ch; syncCards(); drawChart(); };
+    cards.appendChild(div);
+  }
+}
+
+function syncCards() {
+  for (const el of document.querySelectorAll(".card"))
+    el.classList.toggle("active", el.dataset.channel === ACTIVE);
+}
+
+function drawChart() {
+  if (!HIST) return;
+  const cv = document.getElementById("chart"), ctx = cv.getContext("2d");
+  const css = getComputedStyle(document.documentElement);
+  const accent = css.getPropertyValue("--accent").trim();
+  const muted = css.getPropertyValue("--muted").trim();
+  const line = css.getPropertyValue("--line").trim();
+  const shade = css.getPropertyValue("--shade").trim();
+  const W = cv.width, H = cv.height, L = 70, R = 20, T = 20, B = 50;
+  ctx.clearRect(0, 0, W, H);
+
+  const dates = HIST.dates;
+  const series = ACTIVE === "composite" ? HIST.composite : HIST.channels[ACTIVE];
+  if (!dates || !dates.length || !series) return;
+  const x = i => L + (W - L - R) * i / Math.max(1, dates.length - 1);
+  const y = v => T + (H - T - B) * (1 - v / 100);
+
+  ctx.fillStyle = shade;
+  const label = ACTIVE === "composite" ? null : ACTIVE;
+  for (const e of EPISODES) {
+    if (label && e.channel !== label) continue;
+    const i0 = dates.findIndex(d => d >= e.start);
+    let i1 = dates.findIndex(d => d > e.end);
+    if (i0 < 0) continue;
+    if (i1 < 0) i1 = dates.length - 1;
+    ctx.fillRect(x(i0), T, Math.max(2, x(i1) - x(i0)), H - T - B);
+  }
+
+  ctx.strokeStyle = line; ctx.fillStyle = muted;
+  ctx.font = "22px Georgia"; ctx.lineWidth = 1;
+  for (const v of [0, 25, 50, 75, 100]) {
+    ctx.beginPath(); ctx.moveTo(L, y(v)); ctx.lineTo(W - R, y(v)); ctx.stroke();
+    ctx.fillText(String(v), 18, y(v) + 8);
+  }
+  const step = Math.max(1, Math.floor(dates.length / 6));
+  for (let i = 0; i < dates.length; i += step) ctx.fillText(dates[i], x(i), H - 14);
+
+  ctx.strokeStyle = accent; ctx.lineWidth = 2.5; ctx.beginPath();
+  let started = false;
+  for (let i = 0; i < series.length; i++) {
+    const v = series[i];
+    if (v == null) { continue; }
+    if (!started) { ctx.moveTo(x(i), y(v)); started = true; }
+    else ctx.lineTo(x(i), y(v));
+  }
+  ctx.stroke();
+
+  ctx.fillStyle = accent; ctx.font = "24px Georgia";
+  const name = ACTIVE === "composite" ? "Composite" : (HIST.labels[ACTIVE] || ACTIVE);
+  ctx.fillText(name, L + 8, T + 26);
+}
+
+function renderEpisodes() {
+  const tb = document.querySelector("#episodes tbody");
+  tb.innerHTML = "";
+  const rows = EPISODES.slice().reverse();
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="5" class="empty">None detected yet.</td></tr>';
+    return;
+  }
+  for (const e of rows) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td>" + esc(e.label || e.channel) + "</td><td>" + esc(e.start) +
+      "</td><td>" + esc(e.end) + "</td><td>" + esc(e.peak_date) +
+      '</td><td class="num">' + esc(e.n_spike_days) + "</td>";
+    tb.appendChild(tr);
+  }
+}
+
+function fmtCell(w) {
+  if (!w) return "–";
+  return w.mean.toFixed(2) + " [" + w.ci95[0].toFixed(2) + ", " + w.ci95[1].toFixed(2) + "]";
+}
+
+function renderEventStudy(ev) {
+  const tb = document.querySelector("#evstudy tbody");
+  tb.innerHTML = "";
+  if (!ev || !ev.channels || !Object.keys(ev.channels).length) {
+    tb.innerHTML = '<tr><td colspan="6" class="empty">Not computed yet.</td></tr>';
+    return;
+  }
+  const labels = (HIST && HIST.labels) || {};
+  for (const [ch, data] of Object.entries(ev.channels)) {
+    for (const [outcome, wins] of Object.entries(data.outcomes)) {
+      const tag = (ev.descriptive_only || []).includes(outcome) ? " (descriptive)" : "";
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + esc(labels[ch] || ch) + "</td><td>" + esc(outcome + tag) +
+        '</td><td class="num">' + esc(fmtCell(wins["1"])) +
+        '</td><td class="num">' + esc(fmtCell(wins["5"])) +
+        '</td><td class="num">' + esc(fmtCell(wins["20"])) +
+        '</td><td class="num">' + esc(data.n_episodes) + "</td>";
+      tb.appendChild(tr);
+    }
+  }
+}
+
+function renderNote(note) {
+  if (!note || !note.markdown) return;
+  const el = document.getElementById("note");
+  const html = note.markdown.split(/\n\n+/).map(block => {
+    const b = block.trim();
+    if (!b) return "";
+    if (b.startsWith("## ")) return "<h2>" + esc(b.slice(3)) + "</h2>";
+    if (b.startsWith("# ")) return "<h1>" + esc(b.slice(2)) + "</h1>";
+    return "<p>" + esc(b).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>") + "</p>";
+  }).join("");
+  el.innerHTML = html + '<p class="chart-note">' + esc(note.filename || "") + "</p>";
+}
+
+(async () => {
+  const [latest, hist, episodes, ev, note] = await Promise.all([
+    j("data/latest.json"), j("data/history.json"), j("data/episodes.json"),
+    j("data/event_study.json"), j("data/note_latest.json"),
+  ]);
+  HIST = hist; EPISODES = episodes || [];
+  renderLatest(latest);
+  drawChart();
+  renderEpisodes();
+  renderEventStudy(ev);
+  renderNote(note);
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawChart);
+})();
+</script>
+</body>
+</html>

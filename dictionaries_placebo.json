@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "frozen_on": "2026-07-24",
+    "purpose": "Placebo channels (spec layer 4d): topics with no plausible India-geopolitics link. They should NOT spike around geopolitical episodes. If they do, the pipeline is measuring general news volume, not channel salience. Run: python -m src.validate placebo. Caveat, disclosed in methodology s8: sport is not perfectly insulated (India-Pakistan cricket is itself geopolitics-adjacent), so cricket terms avoid Pakistan-linked fixtures.",
+    "note": "Excluded from the index and composite entirely; fetched only by the validation harness."
+  },
+  "placebo_cricket": {
+    "label": "Placebo: Indian cricket",
+    "anchor": "India",
+    "terms": [
+      "\"Indian Premier League\"",
+      "\"Test match\"",
+      "\"T20 World Cup\"",
+      "\"cricket team\"",
+      "\"batting order\""
+    ]
+  },
+  "placebo_entertainment": {
+    "label": "Placebo: Indian entertainment",
+    "anchor": "India",
+    "terms": [
+      "\"Bollywood\"",
+      "\"box office\"",
+      "\"film industry\"",
+      "\"movie release\"",
+      "\"streaming platform\""
+    ]
+  }
+}

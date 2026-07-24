@@ -1,0 +1,10 @@
+# Yahoo-derived data is re-fetched each run; only the GDELT store persists
+# (backfill is expensive to redo -- see .github/workflows/daily.yml).
+data/raw/prices.csv
+data/raw/derived_returns.csv
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.DS_Store

@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "frozen_on": "2026-07-24",
+    "rule": "Compiled BEFORE the first validation run. A hit = a detected episode for the same channel overlapping [date-3, date+3]. Event names appear here as validation targets only; the ex-ante rule bans them from query terms, which is exactly what makes this test meaningful. Events must fall inside the backfill range (2022-01-01 onward). Entries may be appended pre-registration-style (dated) but never removed.",
+    "window_days": 3
+  },
+  "episodes": [
+    {"channel": "gulf_energy", "date": "2022-02-24", "name": "Russia invades Ukraine (oil-supply shock; tests the energy-security half of the channel)"},
+    {"channel": "china_east", "date": "2022-12-09", "name": "Tawang sector clash, Arunachal Pradesh"},
+    {"channel": "gulf_energy", "date": "2023-10-07", "name": "Hamas attack on Israel"},
+    {"channel": "shipping", "date": "2023-11-19", "name": "Galaxy Leader seizure; start of Houthi Red Sea shipping attacks"},
+    {"channel": "shipping", "date": "2024-01-12", "name": "First US-UK strikes on Houthi targets; peak Red Sea coverage"},
+    {"channel": "gulf_energy", "date": "2024-04-13", "name": "Iran direct drone/missile strike on Israel"},
+    {"channel": "gulf_energy", "date": "2024-10-01", "name": "Iran ballistic-missile strike on Israel"},
+    {"channel": "china_east", "date": "2024-10-21", "name": "India-China patrolling agreement (Depsang/Demchok disengagement)"},
+    {"channel": "us_trade", "date": "2025-04-02", "name": "US reciprocal-tariff announcement"},
+    {"channel": "pakistan_west", "date": "2025-04-22", "name": "Pahalgam terror attack"},
+    {"channel": "pakistan_west", "date": "2025-05-07", "name": "India-Pakistan military exchange (to ceasefire of May 10)"},
+    {"channel": "gulf_energy", "date": "2025-06-13", "name": "Israel strikes Iran; 12-day war, Hormuz closure fears"},
+    {"channel": "us_trade", "date": "2025-08-06", "name": "US doubles tariffs on India to 50% over Russian-oil purchases"}
+  ]
+}

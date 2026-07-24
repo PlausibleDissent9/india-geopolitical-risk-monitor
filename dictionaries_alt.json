@@ -1,0 +1,159 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "frozen_on": "2026-07-24",
+    "purpose": "Robustness harness (spec layer 4b). Two alternative constructions per channel: 'narrow' keeps only the core terms; 'broad' adds looser, higher-recall phrases. Run: python -m src.validate robustness. If the primary index correlates >0.9 with both variants per channel, results are not term-dependent. Same ex-ante rule and query grammar as dictionaries.json."
+  },
+  "narrow": {
+    "pakistan_west": {
+      "label": "Pakistan / Western Border (narrow)",
+      "anchor": "India",
+      "terms": [
+        "\"Line of Control\"",
+        "\"India Pakistan border\"",
+        "\"cross-border terrorism\"",
+        "\"ceasefire violations\""
+      ]
+    },
+    "china_east": {
+      "label": "China / Eastern Border (narrow)",
+      "anchor": "India",
+      "terms": [
+        "\"Line of Actual Control\"",
+        "\"India China border\"",
+        "\"eastern Ladakh\"",
+        "\"Arunachal Pradesh\""
+      ]
+    },
+    "gulf_energy": {
+      "label": "Gulf & Energy Security (narrow)",
+      "terms": [
+        "\"Strait of Hormuz\"",
+        "\"Gulf tensions\"",
+        "\"oil supply disruption\"",
+        "\"Israel Iran\""
+      ]
+    },
+    "us_trade": {
+      "label": "US & Trade Policy (narrow)",
+      "anchor": "India",
+      "terms": [
+        "\"US tariffs\"",
+        "\"trade deal\"",
+        "\"export controls\"",
+        "\"trade war\""
+      ]
+    },
+    "shipping": {
+      "label": "Shipping & Chokepoints (narrow)",
+      "terms": [
+        "\"Red Sea shipping\"",
+        "\"Suez Canal\"",
+        "\"Houthi attacks\"",
+        "\"shipping lanes\""
+      ]
+    }
+  },
+  "broad": {
+    "pakistan_west": {
+      "label": "Pakistan / Western Border (broad)",
+      "anchor": "India",
+      "terms": [
+        "\"Line of Control\"",
+        "\"India Pakistan border\"",
+        "\"Pakistan occupied Kashmir\"",
+        "\"Pakistan administered Kashmir\"",
+        "\"ceasefire violations\"",
+        "\"ceasefire violation\"",
+        "\"cross-border terrorism\"",
+        "\"cross-border firing\"",
+        "\"cross-border shelling\"",
+        "\"infiltration bid\"",
+        "\"surgical strikes\"",
+        "\"Inter-Services Intelligence\"",
+        "\"Indus Waters Treaty\"",
+        "\"Siachen\"",
+        "\"India Pakistan tensions\"",
+        "\"Kashmir dispute\"",
+        "\"Pakistan military\""
+      ]
+    },
+    "china_east": {
+      "label": "China / Eastern Border (broad)",
+      "anchor": "India",
+      "terms": [
+        "\"Line of Actual Control\"",
+        "\"India China border\"",
+        "\"eastern Ladakh\"",
+        "\"Arunachal Pradesh\"",
+        "\"Aksai Chin\"",
+        "\"Tawang\"",
+        "\"People's Liberation Army\"",
+        "\"border standoff\"",
+        "\"India China relations\"",
+        "\"disengagement\"",
+        "\"India China tensions\"",
+        "\"Himalayan border\"",
+        "\"border dispute\""
+      ]
+    },
+    "gulf_energy": {
+      "label": "Gulf & Energy Security (broad)",
+      "terms": [
+        "\"Strait of Hormuz\"",
+        "\"Gulf of Oman\"",
+        "\"Gulf tensions\"",
+        "\"Middle East conflict\"",
+        "\"Israel Iran\"",
+        "\"Iran Israel\"",
+        "\"Iran sanctions\"",
+        "\"energy security\"",
+        "\"oil supply disruption\"",
+        "\"oil supply disruptions\"",
+        "\"crude oil supply\"",
+        "\"oil prices\"",
+        "\"Middle East tensions\"",
+        "\"Persian Gulf\""
+      ]
+    },
+    "us_trade": {
+      "label": "US & Trade Policy (broad)",
+      "anchor": "India",
+      "terms": [
+        "\"US tariffs\"",
+        "\"reciprocal tariffs\"",
+        "\"trade deal\"",
+        "\"trade war\"",
+        "\"trade restrictions\"",
+        "\"export controls\"",
+        "\"Section 301\"",
+        "\"CAATSA\"",
+        "\"H-1B visa\"",
+        "\"WTO dispute\"",
+        "\"secondary sanctions\"",
+        "\"Russian oil\"",
+        "\"trade talks\"",
+        "\"trade tensions\"",
+        "\"import duties\""
+      ]
+    },
+    "shipping": {
+      "label": "Shipping & Chokepoints (broad)",
+      "terms": [
+        "\"Red Sea shipping\"",
+        "\"Red Sea attacks\"",
+        "\"Suez Canal\"",
+        "\"Bab el-Mandeb\"",
+        "\"Strait of Malacca\"",
+        "\"Cape of Good Hope\"",
+        "\"Houthi attacks\"",
+        "\"shipping lanes\"",
+        "\"Somali pirates\"",
+        "\"maritime security\"",
+        "\"container shipping\"",
+        "\"freight rates\"",
+        "\"Indian Ocean\""
+      ]
+    }
+  }
+}

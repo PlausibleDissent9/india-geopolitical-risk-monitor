@@ -1,0 +1,46 @@
+name: daily-update
+
+on:
+  schedule:
+    - cron: "30 12 * * *"   # 12:30 UTC = 18:00 IST, after NSE close
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: "Run full backfill from 2022-01-01 (first run: yes)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Enforce dictionary rules (ex-ante rule)
+        run: pytest -q
+      - name: Run pipeline
+        run: |
+          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            python -m src.run_daily --backfill
+          else
+            python -m src.run_daily
+          fi
+      - name: Weekly datapack (Fridays)
+        if: github.event.schedule != ''
+        run: |
+          if [ "$(date -u +%u)" = "5" ]; then python -m src.make_datapack; fi
+      - name: Commit data
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          # .gitignore excludes Yahoo-derived prices.csv / derived_returns.csv;
+          # only the GDELT store persists (backfill is expensive to redo).
+          git add data/raw docs/data notes-inbox || true
+          git commit -m "data: update $(date -u +%F)" || echo "no changes"
+          git push
