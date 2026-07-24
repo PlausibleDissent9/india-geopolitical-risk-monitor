@@ -45,7 +45,15 @@ def _fail_loudly_on_partial_data(volume: pd.DataFrame) -> None:
     if volume.empty:
         problems.append("volume store is empty")
     else:
-        last = pd.to_datetime(volume.index).max()
+        idx = pd.to_datetime(volume.index)
+        last = idx.max()
+        # An incremental run on a store that was never backfilled would
+        # otherwise publish an all-null site (percentiles need 180+ days).
+        if (last - idx.min()).days < 400:
+            problems.append(
+                f"store spans only {(last - idx.min()).days} days -- "
+                "run the backfill first"
+            )
         if (pd.Timestamp(date.today()) - last).days > 5:
             problems.append(f"data ends {last.date()}, more than 5 days ago")
         tail = volume.loc[pd.to_datetime(volume.index)

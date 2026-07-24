@@ -55,4 +55,5 @@ jobs:
           git config user.email "actions@github.com"
           git add data/raw docs validation || true
           git commit -m "validation + analysis: $(date -u +%F)" || echo "no changes"
+          git pull --rebase origin main || true
           git push

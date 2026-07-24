@@ -13,6 +13,12 @@ on:
 permissions:
   contents: write
 
+# One pipeline run at a time: a late-firing cron must queue behind a
+# dispatched backfill, not race it for git pushes.
+concurrency:
+  group: igrm-pipeline
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -42,6 +48,7 @@ jobs:
               echo "::endgroup::"
               git add data/raw || true
               git commit -m "backfill chunk cache: pass $i" || true
+              git pull --rebase origin main || true
               git push || true
               echo "pass $i died; cooling down 240s"
               sleep 240
@@ -70,4 +77,5 @@ jobs:
           # notes.json) produced by the publish step.
           git add data/raw docs notes-inbox || true
           git commit -m "data: update $(date -u +%F)" || echo "no changes"
+          git pull --rebase origin main || true
           git push
