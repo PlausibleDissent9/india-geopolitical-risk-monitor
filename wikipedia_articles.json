@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "note": "3-8 English Wikipedia article titles per channel, four-category logic (geography, institutions, doctrine, chokepoints): articles a reader would actually visit during a crisis. Structural pages only -- places and institutions, never event pages (same ex-ante spirit as the dictionaries). Every title verified against the pageviews API on the filled_on date; canonical titles matter (data lives under 'CAATSA' and 'Houthi movement', not their redirects).",
+    "note": "3-8 English Wikipedia article titles per channel, four-category logic (geography, institutions, doctrine, chokepoints): articles a reader would actually visit during a crisis. Structural pages only -- places and institutions, never event pages, and TWO hard requirements enforced by tests/CI and audit: (1) no title may contain a banned event name; (2) every title must have meaningful pre-event attention independent of any validation episode ('Galwan River' failed both -- near-zero pageviews before the June 2020 clash that is itself a validation target -- and was removed 2026-07-24; 'Siachen Glacier' or 'Aksai Chin' are the passing pattern). Every title verified against the pageviews API on the filled_on date; canonical titles matter (data lives under 'CAATSA' and 'Houthi movement', not their redirects).",
     "filled_on": "2026-07-24"
   },
   "pakistan_west": [
@@ -16,8 +16,7 @@
     "China–India relations",
     "Arunachal Pradesh",
     "Aksai Chin",
-    "People's Liberation Army",
-    "Galwan River"
+    "People's Liberation Army"
   ],
   "gulf_energy": [
     "Strait of Hormuz",

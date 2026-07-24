@@ -81,6 +81,31 @@ def test_ex_ante_rule_no_event_names():
     assert not violations, "Ex-ante rule violated:\n" + "\n".join(violations)
 
 
+# The rule extends to EVERY source's query list, not just GDELT terms: a
+# banned event name in a Wikipedia article title or a Trends search
+# phrase bakes detection of that event into the series exactly the same
+# way ('Galwan River' was caught here in review, 2026-07-24 -- the page's
+# attention exists almost entirely because of a validation episode).
+SOURCE_LIST_FILES = ["wikipedia_articles.json", "trends_terms.json"]
+
+
+def test_ex_ante_rule_covers_all_source_lists():
+    violations = []
+    for name in SOURCE_LIST_FILES:
+        data = load(name)
+        for ch, items in data.items():
+            if ch.startswith("_"):
+                continue
+            for item in items:
+                low = item.lower()
+                for pattern in BANNED_EVENT_NAMES:
+                    if re.search(pattern, low):
+                        violations.append(
+                            f"{name}:{ch}: {item!r} matches banned {pattern!r}"
+                        )
+    assert not violations, "Ex-ante rule violated:\n" + "\n".join(violations)
+
+
 def test_terms_are_pure_quoted_phrases():
     violations = [
         f"{where}: {term!r}"
