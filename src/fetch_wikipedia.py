@@ -83,6 +83,7 @@ def _fetch_window(slug: str, w_start: date, w_end: date) -> list[dict]:
             break
         time.sleep(8 * attempt)
     assert r is not None
+    payload: dict
     if r.status_code == 404:
         payload = {"items": []}
     else:
