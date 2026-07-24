@@ -1,11 +1,46 @@
 {
   "_meta": {
-    "note": "Article lists are the AUTHOR'S to fill -- 3-8 English Wikipedia article titles per channel, chosen with the same four-category logic as the dictionaries (geography, institutions, doctrine, chokepoints): pick articles a reader would actually visit during a crisis, and verify each title resolves on en.wikipedia.org before adding it. Use canonical titles with spaces (e.g. 'Line of Actual Control'); the fetcher handles URL encoding. Empty lists mean the Wikipedia source stays dormant.",
-    "filled_on": null
+    "note": "3-8 English Wikipedia article titles per channel, four-category logic (geography, institutions, doctrine, chokepoints): articles a reader would actually visit during a crisis. Structural pages only -- places and institutions, never event pages (same ex-ante spirit as the dictionaries). Every title verified against the pageviews API on the filled_on date; canonical titles matter (data lives under 'CAATSA' and 'Houthi movement', not their redirects).",
+    "filled_on": "2026-07-24"
   },
-  "pakistan_west": [],
-  "china_east": [],
-  "gulf_energy": [],
-  "us_trade": [],
-  "shipping": []
+  "pakistan_west": [
+    "Line of Control",
+    "Kashmir conflict",
+    "India–Pakistan relations",
+    "Inter-Services Intelligence",
+    "Indus Waters Treaty",
+    "Siachen Glacier"
+  ],
+  "china_east": [
+    "Line of Actual Control",
+    "China–India relations",
+    "Arunachal Pradesh",
+    "Aksai Chin",
+    "People's Liberation Army",
+    "Galwan River"
+  ],
+  "gulf_energy": [
+    "Strait of Hormuz",
+    "Persian Gulf",
+    "Iran–Israel relations",
+    "Sanctions against Iran",
+    "OPEC",
+    "Energy policy of India"
+  ],
+  "us_trade": [
+    "India–United States relations",
+    "H-1B visa",
+    "CAATSA",
+    "World Trade Organization",
+    "Foreign trade of India",
+    "Trade policy of the United States"
+  ],
+  "shipping": [
+    "Suez Canal",
+    "Strait of Malacca",
+    "Bab-el-Mandeb",
+    "Houthi movement",
+    "Piracy off the coast of Somalia",
+    "Cape of Good Hope"
+  ]
 }

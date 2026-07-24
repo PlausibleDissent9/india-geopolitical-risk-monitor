@@ -53,7 +53,11 @@ HEADERS = {
     "User-Agent": "IGRM/1.0 (india-geopolitical-risk-monitor; research index)"
 }
 START = date(2017, 1, 1)
-SLEEP_S = 0.3
+# Wikimedia throttles unauthenticated pageview clients well below its
+# documented limits (observed 429 bursts after ~8 quick requests,
+# 2026-07-24); pace politely and retry through the bursts.
+SLEEP_S = 1.2
+RETRIES = 4
 SHARE_WINDOW = "365D"
 SHARE_MIN_OBS = 90
 
@@ -68,8 +72,12 @@ def _fetch_article(title: str, end: date) -> pd.Series:
         url = API.format(article=slug,
                          start=START.strftime("%Y%m%d"),
                          end=end.strftime("%Y%m%d"))
-        r = requests.get(url, headers=HEADERS, timeout=60)
-        time.sleep(SLEEP_S)
+        for attempt in range(1, RETRIES + 1):
+            r = requests.get(url, headers=HEADERS, timeout=60)
+            time.sleep(SLEEP_S)
+            if r.status_code != 429:
+                break
+            time.sleep(8 * attempt)
         if r.status_code == 404:
             print(f"[wiki] WARNING: no pageview data for {title!r} "
                   "(renamed or missing) -- skipping")

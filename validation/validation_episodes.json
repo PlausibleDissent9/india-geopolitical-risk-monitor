@@ -1,10 +1,18 @@
 {
   "_meta": {
     "frozen_on": "2026-07-24",
-    "rule": "Compiled BEFORE the first validation run. A hit = a detected episode for the same channel overlapping [date-3, date+3]. Event names appear here as validation targets only; the ex-ante rule bans them from query terms, which is exactly what makes this test meaningful. Events must fall inside the backfill range (2022-01-01 onward). Entries may be appended pre-registration-style (dated) but never removed.",
+    "rule": "Compiled BEFORE the first validation run. A hit = a detected episode for the same channel overlapping [date-3, date+3]. Event names appear here as validation targets only; the ex-ante rule bans them from query terms, which is exactly what makes this test meaningful. Events must fall inside the backfill range (2017-01-01 onward). Entries may be appended pre-registration-style (dated, 'added' field) but never removed.",
     "window_days": 3
   },
   "episodes": [
+    {"channel": "china_east", "date": "2017-06-16", "name": "Doklam standoff begins (slow-building coverage; an honest hard case for a +/-3-day window)", "added": "2026-07-24"},
+    {"channel": "pakistan_west", "date": "2019-02-14", "name": "Pulwama attack", "added": "2026-07-24"},
+    {"channel": "pakistan_west", "date": "2019-02-26", "name": "Balakot airstrike and aerial engagement", "added": "2026-07-24"},
+    {"channel": "gulf_energy", "date": "2019-09-14", "name": "Abqaiq-Khurais drone attack on Saudi oil facilities", "added": "2026-07-24"},
+    {"channel": "gulf_energy", "date": "2020-03-08", "name": "OPEC+ collapse; oil price war begins", "added": "2026-07-24"},
+    {"channel": "china_east", "date": "2020-06-15", "name": "Galwan Valley clash", "added": "2026-07-24"},
+    {"channel": "pakistan_west", "date": "2021-02-25", "name": "India-Pakistan LoC ceasefire reaffirmation", "added": "2026-07-24"},
+    {"channel": "shipping", "date": "2021-03-23", "name": "Ever Given grounds in the Suez Canal", "added": "2026-07-24"},
     {"channel": "gulf_energy", "date": "2022-02-24", "name": "Russia invades Ukraine (oil-supply shock; tests the energy-security half of the channel)"},
     {"channel": "china_east", "date": "2022-12-09", "name": "Tawang sector clash, Arunachal Pradesh"},
     {"channel": "gulf_energy", "date": "2023-10-07", "name": "Hamas attack on Israel"},

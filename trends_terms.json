@@ -1,11 +1,36 @@
 {
   "_meta": {
-    "note": "Search-term lists are the AUTHOR'S to fill -- 2-5 Google Trends queries per channel (plain search phrases, not GDELT syntax). Only worth filling after the Wikipedia source (A3) proves the multi-source architecture. Empty lists keep the Trends source dormant.",
-    "filled_on": null
+    "note": "2-5 plain Google search phrases per channel (search language, not GDELT syntax; structural phrases, no event names -- same ex-ante spirit as the dictionaries). The Trends source stays dormant until fetch_trends.fetch_channel is implemented; it activates only for correlation checks, never level comparisons.",
+    "filled_on": "2026-07-24"
   },
-  "pakistan_west": [],
-  "china_east": [],
-  "gulf_energy": [],
-  "us_trade": [],
-  "shipping": []
+  "pakistan_west": [
+    "india pakistan war",
+    "india pakistan border",
+    "line of control",
+    "kashmir attack"
+  ],
+  "china_east": [
+    "india china border",
+    "line of actual control",
+    "india china war",
+    "ladakh standoff"
+  ],
+  "gulf_energy": [
+    "strait of hormuz",
+    "israel iran war",
+    "oil supply",
+    "crude oil price india"
+  ],
+  "us_trade": [
+    "us india tariffs",
+    "india trade deal",
+    "h1b visa news",
+    "us sanctions india"
+  ],
+  "shipping": [
+    "red sea attacks",
+    "suez canal blocked",
+    "shipping crisis",
+    "freight rates india"
+  ]
 }

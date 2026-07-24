@@ -1,8 +1,20 @@
 {
   "_meta": {
-    "note": "Weight vectors are the AUTHOR'S to fill: one weight per channel, any positive scale (normalized to sum 1 at compute time). Sources worth citing in methodology s4 when filled: trade_exposure from bilateral goods+services trade shares; import_exposure from import-dependency shares (crude via Gulf, sea-borne trade via chokepoints). Empty objects mean alt_specs.py skips that weighting and says so.",
-    "filled_on": null
+    "note": "Weight vectors for the alternative-composite specifications (methodology s4): any positive scale, normalized to sum 1 at compute time. These exist to show conclusions are not weighting-dependent, so defensibility matters more than decimal precision. trade_exposure: rough shares of India's goods+services trade associated with each channel's counterpart region (Ministry of Commerce FY2024-25 orders of magnitude: China ~11% goods, US ~11% goods plus the largest services share, GCC ~15%, Pakistan <0.5%); shipping is a conduit, not a counterpart, and gets a residual. import_exposure: import-dependency emphasis (Gulf crude+LNG dominate the import bill; China is the largest goods-import source; shipping weighted as the sea-borne conduit for ~95% of trade volume). Round numbers by design.",
+    "filled_on": "2026-07-24"
   },
-  "trade_exposure": {},
-  "import_exposure": {}
+  "trade_exposure": {
+    "pakistan_west": 0.03,
+    "china_east": 0.30,
+    "gulf_energy": 0.30,
+    "us_trade": 0.32,
+    "shipping": 0.05
+  },
+  "import_exposure": {
+    "pakistan_west": 0.05,
+    "china_east": 0.30,
+    "gulf_energy": 0.40,
+    "us_trade": 0.10,
+    "shipping": 0.15
+  }
 }

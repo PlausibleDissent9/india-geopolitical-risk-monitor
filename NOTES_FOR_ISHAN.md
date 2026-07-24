@@ -1,5 +1,14 @@
 # Notes for the author — changes needing your words
 
+## 0. Delegated fills to review
+
+At your instruction, the Wikipedia article lists, alternative composite
+weights, Trends search terms, and the pre-2022 validation episodes were
+filled for you (2026-07-24). All Wikipedia titles were verified against
+the pageviews API; the weights are round-number judgment calls with their
+logic in `alt_weights.json`'s `_meta`. Skim them once — they are the kind
+of thing an interviewer asks about.
+
 Per the build manual I don't write methodology prose. Two things surfaced
 during the build that section 3 should state; suggested language below,
 edit as you see fit, then delete this file.
