@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       backfill:
-        description: "Run full backfill from 2022-01-01 (first run: yes)"
+        description: "Run full backfill from 2017-01-01 (first run: yes)"
         type: boolean
         default: false
 
