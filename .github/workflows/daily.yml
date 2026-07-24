@@ -23,7 +23,7 @@ jobs:
           python-version: "3.11"
       - run: pip install -r requirements.txt
       - name: Enforce dictionary rules (ex-ante rule)
-        run: pytest -q
+        run: python -m pytest -q
       - name: Run pipeline
         run: |
           if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
