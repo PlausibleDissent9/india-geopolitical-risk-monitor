@@ -38,7 +38,10 @@ jobs:
         # committing the chunk cache between passes -- progress survives
         # even a job-level timeout, and each pass resumes from cache.
         run: |
-          if [ "${{ github.event.inputs.backfill }}" = "true" ] || [ "${{ github.event_name }}" = "push" ]; then
+          if [ "${{ github.event.inputs.backfill }}" = "true" ] || [ "${{ github.event_name }}" = "push" ] || [ ! -f data/raw/gdelt_volume.csv ]; then
+            # No store yet means the first backfill hasn't landed: every
+            # run (cron included) keeps attempting it on a fresh runner
+            # IP until the monotone chunk cache carries it over the line.
             git config user.name "igrm-bot"
             git config user.email "actions@github.com"
             ok=0
