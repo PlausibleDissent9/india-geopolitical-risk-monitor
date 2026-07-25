@@ -167,11 +167,16 @@ def _fetch_chunk_network(
 def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
     """Daily volume series for one composed query over [start, end].
 
-    Chunks split at the cache-settle boundary so the large historical
-    chunk is cache-eligible (its end is fully in the past) and only the
-    few-day tail refetches -- a mid-storm crash then costs one request
-    on resume, not the whole range."""
-    split = date.today() - timedelta(days=CACHE_SETTLE_DAYS + 1)
+    Chunks split at a STABLE settle boundary: the most recent month-end
+    at least CACHE_SETTLE_DAYS in the past. Stability is the point -- a
+    boundary that moves with today's date changes the historical chunk's
+    cache key at every UTC midnight and orphans everything banked (which
+    is exactly what happened across the first backfill night). Month-end
+    anchoring bounds refetches to twelve per year instead."""
+    today = date.today()
+    split = date(today.year, today.month, 1) - timedelta(days=1)
+    if (today - split).days <= CACHE_SETTLE_DAYS:
+        split = date(split.year, split.month, 1) - timedelta(days=1)
     frames: list[pd.DataFrame] = []
     cur = start
     while cur <= end:
