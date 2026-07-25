@@ -47,10 +47,14 @@ jobs:
             ok=0
             for i in $(seq 1 12); do
               echo "::group::backfill pass $i"
-              if python -m src.run_daily --backfill; then
+              if python -m src.run_daily --backfill 2>&1 | tee pass.log; then
                 ok=1; echo "::endgroup::"; break
               fi
               echo "::endgroup::"
+              # Surface the failure diagnosably: commit the tail of the
+              # dying pass so the cause is readable straight from the repo.
+              { echo "== run ${{ github.run_number }} pass $i $(date -u) =="; tail -25 pass.log; } \
+                > data/raw/last_backfill_failure.log || true
               git add data/raw || true
               git commit -m "backfill chunk cache: pass $i" || true
               git pull --rebase origin main || true
