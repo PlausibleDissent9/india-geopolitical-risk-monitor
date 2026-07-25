@@ -76,7 +76,10 @@ def try_fetch(query: str, start: date, end: date) -> list[dict] | None:
         "enddatetime": end.strftime("%Y%m%d") + "235959",
     }
     try:
-        r = requests.get(API, params=params, timeout=120, headers=HEADERS)
+        # Generous: a read timeout means GDELT ACCEPTED the request and is
+        # computing a ten-year daily series -- worth waiting out, unlike a
+        # 429, which is refused instantly.
+        r = requests.get(API, params=params, timeout=420, headers=HEADERS)
     except requests.RequestException as e:
         print(f"    network error: {e}")
         return None
