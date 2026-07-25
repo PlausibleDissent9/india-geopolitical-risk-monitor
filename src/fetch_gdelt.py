@@ -48,7 +48,12 @@ CACHE_SETTLE_DAYS = 3
 # cache makes every crash resumable, so persistence is cheap.
 SLEEP_S = 15.0
 RETRIES = 6
-TIMEOUT_S = 60
+# A multi-year timelinevol query takes GDELT minutes to compute; the old
+# 60s ceiling hung up mid-computation and looked like a failure. A read
+# timeout means ACCEPTED-and-working (unlike a 429, refused instantly),
+# so wait it out. Verified 2026-07-26: a 3,447-day series returned on the
+# first attempt once the deadline was generous.
+TIMEOUT_S = 420
 # Extra pause specifically after a 429 before retrying, in seconds.
 # GDELT's limiter has been observed to persist for a minute-plus, so the
 # escalation must reach past it rather than burning retries inside it.
