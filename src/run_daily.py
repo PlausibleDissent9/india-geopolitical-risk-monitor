@@ -20,6 +20,7 @@ import pandas as pd
 from . import build_index, event_study, fetch_gdelt, fetch_markets, render_site
 
 ROOT = Path(__file__).resolve().parents[1]
+SITE_DATA = ROOT / "docs" / "data"
 
 
 def publish_latest_note() -> None:
@@ -54,13 +55,23 @@ def _fail_loudly_on_partial_data(volume: pd.DataFrame) -> None:
                 f"store spans only {(last - idx.min()).days} days -- "
                 "run the backfill first"
             )
-        if (pd.Timestamp(date.today()) - last).days > 5:
-            problems.append(f"data ends {last.date()}, more than 5 days ago")
+        # Staleness is only a failure once the site has published before:
+        # a first backfill whose recent tail was throttled still carries a
+        # decade of history and should go live, stale-dated and honest,
+        # rather than not at all. Subsequent runs must stay fresh.
+        stale_days = (pd.Timestamp(date.today()) - last).days
+        first_publish = not (SITE_DATA / "latest.json").exists()
+        if stale_days > 5:
+            if first_publish:
+                print(f"[warn] first publish: data ends {last.date()} "
+                      f"({stale_days} days ago); the next run fills the tail")
+            else:
+                problems.append(f"data ends {last.date()}, more than 5 days ago")
         tail = volume.loc[pd.to_datetime(volume.index)
                           >= last - pd.Timedelta(days=30)]
         for ch in volume.columns:
             if tail[ch].dropna().empty:
-                problems.append(f"channel {ch!r} has no data in the last 30 days")
+                problems.append(f"channel {ch!r} has no data in its last 30 days")
     if problems:
         raise SystemExit("[fail-loud] refusing to publish partial data: "
                          + "; ".join(problems))

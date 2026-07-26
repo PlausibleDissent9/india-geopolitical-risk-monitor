@@ -191,6 +191,14 @@ def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
         try:
             rows = _fetch_chunk(query, cur, chunk_end)
         except RuntimeError:
+            if frames:
+                # The historical range is already in hand; only the recent
+                # (never-cached) tail is refused. Publishing a decade of
+                # data that ends a few weeks early beats publishing none,
+                # and the next successful run fills the gap in.
+                print(f"[gdelt] tail {cur}..{chunk_end} unavailable; "
+                      "keeping the data already fetched")
+                break
             # A decade-wide request is expensive for GDELT to compute and
             # is the first thing its limiter refuses. Fall back to yearly
             # slices: each is cheap, individually cached, and partial
