@@ -1,26 +1,26 @@
-== run 38 pass 8 Sun Jul 26 07:41:17 UTC 2026 ==
-    volume = fetch_gdelt.load_or_update(dictionaries, backfill_from=backfill_from)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 327, in load_or_update
-    fetched = fetch_all(dictionaries, backfill_from, today)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 310, in fetch_all
+== run 38 pass 9 Sun Jul 26 08:24:31 UTC 2026 ==
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 318, in fetch_all
     cols[ch] = fetch_channel(spec["terms"], start, end, spec.get("anchor"))
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 228, in fetch_channel
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 236, in fetch_channel
     parts = [
             ^
-  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 230, in <listcomp>
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 238, in <listcomp>
     if not (s := _fetch_query_series(q, start, end)).empty
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 192, in _fetch_query_series
-    rows = _fetch_chunk(query, cur, chunk_end)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 214, in _fetch_query_series
+    rows.extend(_fetch_chunk(query, sub, sub_end))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 122, in _fetch_chunk
     rows = _fetch_chunk_network(query, start, end, mode)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 166, in _fetch_chunk_network
     raise RuntimeError(
-RuntimeError: GDELT fetch failed after 6 attempts for 2026-07-01..2026-07-26. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
 [1/5] GDELT volumes
 [gdelt] pakistan_west: 2017-01-01 -> 2026-07-26
+[gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
+[gdelt] china_east: 2017-01-01 -> 2026-07-26
+[gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
+[gdelt] gulf_energy: 2017-01-01 -> 2026-07-26
+[gdelt] wide chunk refused; retrying 2017-01-01..2026-06-30 in yearly slices
