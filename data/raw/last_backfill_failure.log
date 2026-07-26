@@ -1,0 +1,26 @@
+== run 38 pass 1 Sun Jul 26 05:05:12 UTC 2026 ==
+    volume = fetch_gdelt.load_or_update(dictionaries, backfill_from=backfill_from)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 311, in load_or_update
+    fetched = fetch_all(dictionaries, backfill_from, today)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 294, in fetch_all
+    cols[ch] = fetch_channel(spec["terms"], start, end, spec.get("anchor"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 212, in fetch_channel
+    parts = [
+            ^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 214, in <listcomp>
+    if not (s := _fetch_query_series(q, start, end)).empty
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 191, in _fetch_query_series
+    rows = _fetch_chunk(query, cur, chunk_end)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 122, in _fetch_chunk
+    rows = _fetch_chunk_network(query, start, end, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 166, in _fetch_chunk_network
+    raise RuntimeError(
+RuntimeError: GDELT fetch failed after 6 attempts for 2026-07-01..2026-07-26. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+[1/5] GDELT volumes
+[gdelt] pakistan_west: 2017-01-01 -> 2026-07-26
