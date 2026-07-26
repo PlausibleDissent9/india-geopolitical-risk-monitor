@@ -1,4 +1,4 @@
-== run 44 pass 3 Sun Jul 26 17:36:44 UTC 2026 ==
+== run 44 pass 4 Sun Jul 26 18:06:41 UTC 2026 ==
     cols[ch] = fetch_channel(spec["terms"], start, end, spec.get("anchor"))
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 243, in fetch_channel
@@ -15,12 +15,12 @@
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
     raise RuntimeError(
-RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. Last error: Expecting value: line 1 column 1 (char 0)
+RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
 [1/5] GDELT volumes
 [gdelt] pakistan_west: 2017-01-01 -> 2026-07-26
 [gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
-[gdelt] china_east: 2017-01-01 -> 2026-07-26
 [gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
+[gdelt] china_east: 2017-01-01 -> 2026-07-26
 [gdelt] gulf_energy: 2017-01-01 -> 2026-07-26
 [gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
 [gdelt] wide chunk refused; retrying 2017-01-01..2026-06-30 in yearly slices
