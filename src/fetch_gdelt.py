@@ -102,7 +102,8 @@ def build_queries(terms: list[str], anchor: str | None = None) -> list[str]:
 
 
 def _fetch_chunk(
-    query: str, start: date, end: date, mode: str = "timelinevol"
+    query: str, start: date, end: date, mode: str = "timelinevol",
+    retries: int = RETRIES,
 ) -> list[dict]:
     """Fetch one chunk, consulting the on-disk chunk cache first.
 
@@ -119,7 +120,7 @@ def _fetch_chunk(
     cache_path = CHUNK_CACHE_DIR / f"{key}.json"
     if settled and cache_path.exists():
         return json.loads(cache_path.read_text(encoding="utf-8"))
-    rows = _fetch_chunk_network(query, start, end, mode)
+    rows = _fetch_chunk_network(query, start, end, mode, retries)
     if settled:
         CHUNK_CACHE_DIR.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(json.dumps(rows), encoding="utf-8")
@@ -128,7 +129,8 @@ def _fetch_chunk(
 
 
 def _fetch_chunk_network(
-    query: str, start: date, end: date, mode: str = "timelinevol"
+    query: str, start: date, end: date, mode: str = "timelinevol",
+    retries: int = RETRIES,
 ) -> list[dict]:
     params = {
         "query": query,
@@ -138,7 +140,7 @@ def _fetch_chunk_network(
         "enddatetime": end.strftime("%Y%m%d") + "235959",
     }
     last_err = None
-    for attempt in range(1, RETRIES + 1):
+    for attempt in range(1, retries + 1):
         try:
             r = requests.get(API, params=params, timeout=TIMEOUT_S, headers=HEADERS)
             if r.status_code == 429:
@@ -164,7 +166,7 @@ def _fetch_chunk_network(
             else:
                 time.sleep(2 * attempt)
     raise RuntimeError(
-        f"GDELT fetch failed after {RETRIES} attempts for "
+        f"GDELT fetch failed after {retries} attempts for "
         f"{start}..{end}. Last error: {last_err}"
     )
 
@@ -188,8 +190,13 @@ def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
         chunk_end = min(cur + timedelta(days=CHUNK_DAYS - 1), end)
         if cur <= split < chunk_end:
             chunk_end = split
+        # The tail (post-split, never cached) is now survivable, so it
+        # fails fast: six escalating retries per query wasted ~50 minutes
+        # a pass on a range we are willing to go without.
+        is_tail = bool(frames)
         try:
-            rows = _fetch_chunk(query, cur, chunk_end)
+            rows = _fetch_chunk(query, cur, chunk_end,
+                                retries=2 if is_tail else RETRIES)
         except RuntimeError:
             if frames:
                 # The historical range is already in hand; only the recent
