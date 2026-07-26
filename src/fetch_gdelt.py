@@ -188,7 +188,23 @@ def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
         chunk_end = min(cur + timedelta(days=CHUNK_DAYS - 1), end)
         if cur <= split < chunk_end:
             chunk_end = split
-        rows = _fetch_chunk(query, cur, chunk_end)
+        try:
+            rows = _fetch_chunk(query, cur, chunk_end)
+        except RuntimeError:
+            # A decade-wide request is expensive for GDELT to compute and
+            # is the first thing its limiter refuses. Fall back to yearly
+            # slices: each is cheap, individually cached, and partial
+            # success carries over to the next attempt.
+            if (chunk_end - cur).days <= 400:
+                raise
+            print(f"[gdelt] wide chunk refused; retrying {cur}..{chunk_end} "
+                  "in yearly slices")
+            rows = []
+            sub = cur
+            while sub <= chunk_end:
+                sub_end = min(date(sub.year, 12, 31), chunk_end)
+                rows.extend(_fetch_chunk(query, sub, sub_end))
+                sub = sub_end + timedelta(days=1)
         if rows:
             df = pd.DataFrame(rows)
             df["date"] = pd.to_datetime(df["date"]).dt.date

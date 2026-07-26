@@ -39,7 +39,7 @@ from src.fetch_gdelt import (  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 START = date(2017, 1, 1)
 DEFAULT_SPACING_S = 20.0
-PASS_COOLDOWN_S = 120.0
+PASS_COOLDOWN_S = 300.0
 
 
 def settle_split(today: date) -> date:
@@ -102,6 +102,31 @@ def bank(query: str, start: date, end: date, rows: list[dict]) -> Path:
     return path
 
 
+def harvest_yearly(label: str, query: str, start: date, end: date,
+                   spacing: float) -> None:
+    """Fetch a stubborn range as yearly slices, banking each one.
+
+    Mirrors the fallback in fetch_gdelt._fetch_query_series, so anything
+    banked here is read straight from cache by the pipeline. Cheap
+    requests get served when expensive ones are refused, and each slice
+    that lands is permanent."""
+    sub = start
+    while sub <= end:
+        sub_end = min(date(sub.year, 12, 31), end)
+        key = hashlib.sha1(f"{query}|{sub}|{sub_end}".encode()).hexdigest()[:16]
+        if not (CHUNK_CACHE_DIR / f"{key}.json").exists():
+            rows = try_fetch(query, sub, sub_end)
+            if rows:
+                bank(query, sub, sub_end, rows)
+                print(f"[harvest] BANKED {label} slice {sub.year} "
+                      f"({len(rows)} days)", flush=True)
+            else:
+                print(f"[harvest]   throttled: {label} slice {sub.year}",
+                      flush=True)
+            time.sleep(spacing)
+        sub = sub_end + timedelta(days=1)
+
+
 def main() -> None:
     spacing = float(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_SPACING_S
     attempts = 0
@@ -120,7 +145,10 @@ def main() -> None:
                 print(f"[harvest] BANKED {label} ({len(rows)} days) "
                       f"after {attempts} attempts", flush=True)
             else:
-                print(f"[harvest]   throttled: {label}", flush=True)
+                print(f"[harvest]   throttled: {label}; trying yearly slices",
+                      flush=True)
+                time.sleep(spacing)
+                harvest_yearly(label, query, start, end, spacing)
             time.sleep(spacing)
         print(f"[harvest] pass done; cooling {PASS_COOLDOWN_S:.0f}s", flush=True)
         time.sleep(PASS_COOLDOWN_S)

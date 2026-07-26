@@ -29,7 +29,7 @@ step() {  # step(label, module) -- run a module, never fatal
 
 # 1. Harvest every historical chunk (blocks until all are cached).
 say "phase 1: harvesting GDELT chunks"
-$PY -u scripts/harvest.py 20 >> overnight.log 2>&1
+$PY -u scripts/harvest.py 300 >> overnight.log 2>&1
 push "data: banked GDELT historical chunk cache"
 
 # 2. Build the index, episodes, event study, and site outputs.
