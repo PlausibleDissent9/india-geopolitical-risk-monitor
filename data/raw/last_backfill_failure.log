@@ -1,4 +1,5 @@
-== run 38 pass 10 Sun Jul 26 08:53:29 UTC 2026 ==
+== run 38 pass 11 Sun Jul 26 09:24:35 UTC 2026 ==
+    cols[ch] = fetch_channel(spec["terms"], start, end, spec.get("anchor"))
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 243, in fetch_channel
     parts = [
@@ -17,7 +18,6 @@
 RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
 [1/5] GDELT volumes
 [gdelt] pakistan_west: 2017-01-01 -> 2026-07-26
-[gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
 [gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
 [gdelt] china_east: 2017-01-01 -> 2026-07-26
 [gdelt] tail 2026-07-01..2026-07-26 unavailable; keeping the data already fetched
