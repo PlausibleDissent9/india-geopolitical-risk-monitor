@@ -1,4 +1,6 @@
-== run 38 pass 3 Sun Jul 26 05:44:58 UTC 2026 ==
+== run 38 pass 4 Sun Jul 26 06:00:32 UTC 2026 ==
+    volume = fetch_gdelt.load_or_update(dictionaries, backfill_from=backfill_from)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 327, in load_or_update
     fetched = fetch_all(dictionaries, backfill_from, today)
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -22,5 +24,3 @@
 RuntimeError: GDELT fetch failed after 6 attempts for 2026-07-01..2026-07-26. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
 [1/5] GDELT volumes
 [gdelt] pakistan_west: 2017-01-01 -> 2026-07-26
-[gdelt] china_east: 2017-01-01 -> 2026-07-26
-[gdelt] gulf_energy: 2017-01-01 -> 2026-07-26
