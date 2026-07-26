@@ -20,7 +20,7 @@ permissions:
 concurrency:
   # Lane name is bumped when a long-running obsolete run would otherwise
   # hold the queue and starve runs carrying a fix.
-  group: igrm-pipeline-v2
+  group: igrm-pipeline-v3
   cancel-in-progress: false
 
 jobs:
