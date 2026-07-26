@@ -18,7 +18,9 @@ permissions:
 # One pipeline run at a time: a late-firing cron must queue behind a
 # dispatched backfill, not race it for git pushes.
 concurrency:
-  group: igrm-pipeline
+  # Lane name is bumped when a long-running obsolete run would otherwise
+  # hold the queue and starve runs carrying a fix.
+  group: igrm-pipeline-v2
   cancel-in-progress: false
 
 jobs:
