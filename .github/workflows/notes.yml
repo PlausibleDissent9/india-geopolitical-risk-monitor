@@ -1,0 +1,55 @@
+name: publish-notes
+
+# Publishing a weekly note should be immediate: commit a file in notes/
+# (the GitHub web editor is enough) and the site's notes archive, RSS
+# feed, and "latest note" block regenerate within a minute. No login, no
+# server -- authorship is repo write access.
+
+on:
+  push:
+    paths: ["notes/**.md"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: igrm-notes
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Render notes archive, feed, and latest-note block
+        run: |
+          python -m src.render_site
+          python - <<'PY'
+          # Mirror run_daily's publish_latest_note so the homepage's
+          # "Latest note" updates without waiting for a pipeline run.
+          import json, pathlib
+          notes = sorted(p for p in pathlib.Path("notes").glob("*.md")
+                         if not p.name.endswith(".example"))
+          payload = {"filename": None, "markdown": ""}
+          if notes:
+              latest = notes[-1]
+              payload = {"filename": latest.name,
+                         "markdown": latest.read_text(encoding="utf-8")}
+          out = pathlib.Path("docs/data/note_latest.json")
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(payload), encoding="utf-8")
+          print(f"published: {payload['filename']}")
+          PY
+      - name: Commit
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add docs || true
+          git commit -m "notes: publish $(date -u +%F)" || echo "no changes"
+          git pull --rebase origin main || true
+          git push
