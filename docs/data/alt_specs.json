@@ -1,0 +1,69 @@
+{
+ "note": "Secondary specifications beside the primary; the primary never changes here. Correlations answer 'does the choice drive the result?'",
+ "composite_weightings": {
+  "equal": {
+   "note": "primary specification",
+   "corr_with_primary": 1.0
+  },
+  "trade_exposure": {
+   "weights": {
+    "pakistan_west": 0.03,
+    "china_east": 0.3,
+    "gulf_energy": 0.3,
+    "us_trade": 0.32,
+    "shipping": 0.05
+   },
+   "corr_with_primary": 0.8756
+  },
+  "import_exposure": {
+   "weights": {
+    "pakistan_west": 0.05,
+    "china_east": 0.3,
+    "gulf_energy": 0.4,
+    "us_trade": 0.1,
+    "shipping": 0.15
+   },
+   "corr_with_primary": 0.8867
+  }
+ },
+ "episode_thresholds_sigma": {
+  "2.0": {
+   "note": "primary specification",
+   "n_episodes": 517
+  },
+  "1.5": {
+   "n_episodes": 674,
+   "episode_day_jaccard_vs_primary": 0.672
+  },
+  "2.5": {
+   "n_episodes": 374,
+   "episode_day_jaccard_vs_primary": 0.66
+  }
+ },
+ "percentile_windows_days": {
+  "730": {
+   "note": "primary specification",
+   "corr_with_primary": 1.0
+  },
+  "365": {
+   "corr_with_primary": 0.962,
+   "per_channel": {
+    "pakistan_west": 0.9659,
+    "china_east": 0.9497,
+    "gulf_energy": 0.9451,
+    "us_trade": 0.9077,
+    "shipping": 0.9567
+   }
+  },
+  "1095": {
+   "corr_with_primary": 0.9887,
+   "per_channel": {
+    "pakistan_west": 0.991,
+    "china_east": 0.9768,
+    "gulf_energy": 0.9695,
+    "us_trade": 0.9713,
+    "shipping": 0.9838
+   }
+  }
+ }
+}

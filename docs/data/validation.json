@@ -1,0 +1,177 @@
+{
+ "hit_rate": {
+  "window_days": 3,
+  "overall": {
+   "n": 21,
+   "hits": 18
+  },
+  "per_channel": {
+   "china_east": {
+    "n": 4,
+    "hits": 3
+   },
+   "pakistan_west": {
+    "n": 5,
+    "hits": 5
+   },
+   "gulf_energy": {
+    "n": 7,
+    "hits": 5
+   },
+   "shipping": {
+    "n": 3,
+    "hits": 3
+   },
+   "us_trade": {
+    "n": 2,
+    "hits": 2
+   }
+  },
+  "episodes": [
+   {
+    "channel": "china_east",
+    "date": "2017-06-16",
+    "name": "Doklam standoff begins (slow-building coverage; an honest hard case for a +/-3-day window)",
+    "added": "2026-07-24",
+    "hit": false
+   },
+   {
+    "channel": "pakistan_west",
+    "date": "2019-02-14",
+    "name": "Pulwama attack",
+    "added": "2026-07-24",
+    "hit": true
+   },
+   {
+    "channel": "pakistan_west",
+    "date": "2019-02-26",
+    "name": "Balakot airstrike and aerial engagement",
+    "added": "2026-07-24",
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2019-09-14",
+    "name": "Abqaiq-Khurais drone attack on Saudi oil facilities",
+    "added": "2026-07-24",
+    "hit": false
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2020-03-08",
+    "name": "OPEC+ collapse; oil price war begins",
+    "added": "2026-07-24",
+    "hit": false
+   },
+   {
+    "channel": "china_east",
+    "date": "2020-06-15",
+    "name": "Galwan Valley clash",
+    "added": "2026-07-24",
+    "hit": true
+   },
+   {
+    "channel": "pakistan_west",
+    "date": "2021-02-25",
+    "name": "India-Pakistan LoC ceasefire reaffirmation",
+    "added": "2026-07-24",
+    "hit": true
+   },
+   {
+    "channel": "shipping",
+    "date": "2021-03-23",
+    "name": "Ever Given grounds in the Suez Canal",
+    "added": "2026-07-24",
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2022-02-24",
+    "name": "Russia invades Ukraine (oil-supply shock; tests the energy-security half of the channel)",
+    "hit": true
+   },
+   {
+    "channel": "china_east",
+    "date": "2022-12-09",
+    "name": "Tawang sector clash, Arunachal Pradesh",
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2023-10-07",
+    "name": "Hamas attack on Israel",
+    "hit": true
+   },
+   {
+    "channel": "shipping",
+    "date": "2023-11-19",
+    "name": "Galaxy Leader seizure; start of Houthi Red Sea shipping attacks",
+    "hit": true
+   },
+   {
+    "channel": "shipping",
+    "date": "2024-01-12",
+    "name": "First US-UK strikes on Houthi targets; peak Red Sea coverage",
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2024-04-13",
+    "name": "Iran direct drone/missile strike on Israel",
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2024-10-01",
+    "name": "Iran ballistic-missile strike on Israel",
+    "hit": true
+   },
+   {
+    "channel": "china_east",
+    "date": "2024-10-21",
+    "name": "India-China patrolling agreement (Depsang/Demchok disengagement)",
+    "hit": true
+   },
+   {
+    "channel": "us_trade",
+    "date": "2025-04-02",
+    "name": "US reciprocal-tariff announcement",
+    "hit": true
+   },
+   {
+    "channel": "pakistan_west",
+    "date": "2025-04-22",
+    "name": "Pahalgam terror attack",
+    "hit": true
+   },
+   {
+    "channel": "pakistan_west",
+    "date": "2025-05-07",
+    "name": "India-Pakistan military exchange (to ceasefire of May 10)",
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2025-06-13",
+    "name": "Israel strikes Iran; 12-day war, Hormuz closure fears",
+    "hit": true
+   },
+   {
+    "channel": "us_trade",
+    "date": "2025-08-06",
+    "name": "US doubles tariffs on India to 50% over Russian-oil purchases",
+    "hit": true
+   }
+  ]
+ },
+ "cross_source": {
+  "note": "Correlation of GDELT and Wikipedia percentile scores, overlapping dates. High agreement = the signal is not a GDELT artifact; persistent divergence = a documented supply- vs demand-side attention finding.",
+  "per_channel": {
+   "pakistan_west": -0.023,
+   "china_east": 0.173,
+   "gulf_energy": 0.191,
+   "us_trade": 0.02,
+   "shipping": 0.165
+  }
+ }
+}

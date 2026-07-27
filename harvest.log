@@ -1,0 +1,10 @@
+/Users/ishankrishna9/india-geopolitical-risk-monitor/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+[harvest] 6 chunk(s) missing: pakistan_west q2, china_east q1, gulf_energy q1, gulf_energy q2, us_trade q1, shipping q1
+[harvest] BANKED pakistan_west q2 (3447 days) after 1 attempts
+[harvest]   throttled: china_east q1
+[harvest]   throttled: gulf_energy q1
+[harvest]   throttled: gulf_energy q2
+[harvest]   throttled: us_trade q1
+[harvest]   throttled: shipping q1
+[harvest] pass done; cooling 120s

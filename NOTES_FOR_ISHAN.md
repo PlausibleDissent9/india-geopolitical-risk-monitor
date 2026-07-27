@@ -1,5 +1,28 @@
 # Notes for the author — changes needing your words
 
+## LAUNCH STATE (2026-07-27) — read this first
+
+The site is live with 2017→2026-07-21 data, reconstructed offline from
+the banked chunk cache after GDELT refused requests for two days.
+Validation so far: **hit rate 18/21 (86%)**; window-stability 0.96/0.99;
+seasonality partial R² 4–7% (anniversaries explain little — a good
+number to cite in §7); attention–VIX lead–lag: VIX changes tend to
+precede attention by ~2 days (markets first, press second — your best
+§-interpretation material); GDELT-vs-Wikipedia cross-source correlations
+are LOW (−0.02…0.19) — treat as a documented supply-vs-demand divergence
+finding, not a pillar of validation.
+
+Open items, none blocking: (1) gulf_energy currently carries only its
+main sub-query — "crude oil supply" never fetched (possibly under
+GDELT's minimum query length; consider re-wording or dropping it via a
+changelog entry). Two of the three hit-rate misses (Abqaiq, OPEC+
+collapse) sit in this channel; re-run hit-rate after it lands or after
+you amend the term. (2) The GDELT-dependent checks (placebo, robustness,
+drift, precision samples) are deferred until the API relents — dispatch
+the validate-and-analyze workflow then, or ask Claude. (3) The recent
+tail (Jul 22 → today) fills in automatically on the next successful
+daily run.
+
 ## 0. Delegated fills to review
 
 At your instruction, the Wikipedia article lists, alternative composite
