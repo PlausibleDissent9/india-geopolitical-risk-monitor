@@ -153,6 +153,10 @@ def write_site_outputs(
         e["label"] = labels.get(e["channel"], e["channel"])
     _write_json(SITE_DATA / "episodes.json", episodes)
 
+    # The open-data CSV behind the site's Download button: full daily
+    # percentile scores, one row per day.
+    hist.round(1).to_csv(SITE_DATA / "history.csv", index_label="date")
+
 
 def _r1(x: float) -> float | None:
     return None if pd.isna(x) else round(float(x), 1)
