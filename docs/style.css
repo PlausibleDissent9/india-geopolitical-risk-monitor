@@ -4,7 +4,21 @@
      calm #1E6E67 · elevated #B07C1F · severe #A2361F
    Dark scheme keeps the same identity on night paper. */
 
+/* Night paper is the committed default; light is a persisted choice. */
 :root {
+  --paper: #0E141E;
+  --surface: #141C29;
+  --ink: #EAE8E0;
+  --muted: #97A0B0;
+  --rule: #26303F;
+  --rule-soft: #1C2532;
+  --calm: #3AA396;
+  --elevated: #D9A43B;
+  --severe: #D96548;
+  --state: var(--calm);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 32px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme="light"] {
   --paper: #FAFAF7;
   --surface: #FFFFFF;
   --ink: #12233D;
@@ -14,22 +28,7 @@
   --calm: #1E6E67;
   --elevated: #B07C1F;
   --severe: #A2361F;
-  --state: var(--calm);
   --shadow: 0 1px 2px rgba(18, 35, 61, 0.04), 0 8px 28px rgba(18, 35, 61, 0.06);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0E141E;
-    --surface: #141C29;
-    --ink: #EAE8E0;
-    --muted: #97A0B0;
-    --rule: #26303F;
-    --rule-soft: #1C2532;
-    --calm: #3AA396;
-    --elevated: #D9A43B;
-    --severe: #D96548;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 32px rgba(0, 0, 0, 0.35);
-  }
 }
 
 * { box-sizing: border-box; }
@@ -77,6 +76,13 @@ h2 { font-size: 1.2rem; letter-spacing: -0.01em; }
   transition: color 160ms ease, background 160ms ease;
 }
 .mast-links a:hover { color: var(--ink); background: var(--rule-soft); }
+.theme-btn {
+  font: inherit; font-size: 0.82rem; color: var(--muted);
+  background: transparent; border: 1px solid var(--rule);
+  border-radius: 999px; padding: 5px 13px; cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.theme-btn:hover { color: var(--ink); border-color: var(--muted); }
 
 /* Instrument — the hero card */
 .instrument {

@@ -47,7 +47,13 @@ def _trailing_percentile(
     min_obs: int = MIN_OBS,
 ) -> pd.Series:
     def pct(a: np.ndarray) -> float:
-        return 100.0 * float(np.mean(a <= a[-1]))
+        # A missing day must stay missing: comparing against NaN counts
+        # as False and would silently score a data gap as 0th percentile,
+        # deflating the composite (observed with a ragged channel tail).
+        if np.isnan(a[-1]):
+            return float("nan")
+        v = a[~np.isnan(a)]
+        return 100.0 * float(np.mean(v <= a[-1]))
 
     return s.rolling(f"{window_days}D", min_periods=min_obs).apply(pct, raw=True)
 

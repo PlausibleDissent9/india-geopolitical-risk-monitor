@@ -54,7 +54,7 @@ function renderLatest(latest, history) {
   if (score == null) return;
   document.documentElement.style.setProperty("--state", stateColor(score));
   document.getElementById("latest-date").textContent = latest.date;
-  document.getElementById("composite-score").textContent = score.toFixed(1);
+  countUp(document.getElementById("composite-score"), score);
   document.getElementById("composite-delta").innerHTML =
     `${fmtDelta(history ? delta1d(history.composite) : null)} <span class="flat">vs yesterday</span>`;
   document.getElementById("band-tick").style.left =
@@ -136,14 +136,42 @@ function renderChart() {
   });
 }
 
-/* Keep chart and state colors in sync with the OS theme. */
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+/* Committed dark default with a persisted light toggle (macroglide-style
+   product feel; no dependence on the visitor's OS setting). */
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  localStorage.igrmTheme = theme;
+  const btn = document.getElementById("theme-toggle");
+  if (btn) btn.textContent = theme === "dark" ? "Light" : "Dark";
   const score = parseFloat(document.getElementById("composite-score").textContent);
   if (!Number.isNaN(score)) {
     document.documentElement.style.setProperty("--state", stateColor(score));
   }
   renderChart();
+}
+document.getElementById("theme-toggle")?.addEventListener("click", () => {
+  applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
 });
+if (document.getElementById("theme-toggle")) {
+  document.getElementById("theme-toggle").textContent =
+    (localStorage.igrmTheme || "dark") === "dark" ? "Light" : "Dark";
+}
+
+/* Count-up on the headline number; skipped for reduced-motion users. */
+function countUp(el, target) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    el.textContent = target.toFixed(1);
+    return;
+  }
+  const t0 = performance.now(), dur = 700;
+  const tick = (t) => {
+    const p = Math.min(1, (t - t0) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = (target * eased).toFixed(1);
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
 
 function buildToggles(h) {
   const wrap = document.getElementById("series-toggles");
