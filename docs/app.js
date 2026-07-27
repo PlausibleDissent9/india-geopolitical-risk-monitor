@@ -83,14 +83,23 @@ function renderChart() {
   if (!h) return;
   const labels = sliceRange(h.dates, state.range);
   const datasets = [];
+  const ink = getCSS("--ink");
+  const stateCol = getCSS("--state");
+  const canvas = document.getElementById("history-chart");
+  const g = canvas.getContext("2d").createLinearGradient(0, 0, 0, canvas.clientHeight || 320);
+  g.addColorStop(0, stateCol + "26");
+  g.addColorStop(1, stateCol + "00");
   const addSeries = (key, data, label, dashed) => {
     if (!state.on[key] || !data) return;
+    const isComposite = key === "composite";
     datasets.push({
       label,
       data: sliceRange(data, state.range),
-      borderColor: COLORS[key] || "#888",
-      borderWidth: key === "composite" ? 2.2 : 1.2,
+      borderColor: isComposite ? ink : (COLORS[key] || "#888"),
+      borderWidth: isComposite ? 2.2 : 1.2,
       borderDash: dashed ? [5, 4] : [],
+      fill: isComposite,
+      backgroundColor: isComposite ? g : "transparent",
       pointRadius: 0,
       tension: 0.2,
     });
@@ -117,12 +126,24 @@ function renderChart() {
       interaction: { mode: "index", intersect: false },
       plugins: { legend: { display: false } },
       scales: {
-        y: { min: 0, max: 100, grid: { color: "#EAE8E0" } },
-        x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } },
+        y: { min: 0, max: 100,
+             grid: { color: getCSS("--rule-soft") },
+             ticks: { color: getCSS("--muted") } },
+        x: { ticks: { maxTicksLimit: 8, color: getCSS("--muted") },
+             grid: { display: false } },
       },
     },
   });
 }
+
+/* Keep chart and state colors in sync with the OS theme. */
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  const score = parseFloat(document.getElementById("composite-score").textContent);
+  if (!Number.isNaN(score)) {
+    document.documentElement.style.setProperty("--state", stateColor(score));
+  }
+  renderChart();
+});
 
 function buildToggles(h) {
   const wrap = document.getElementById("series-toggles");

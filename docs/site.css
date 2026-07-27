@@ -6,6 +6,13 @@
   --card: #ffffff; --accent: #A2361F; --shade: rgba(162, 54, 31, 0.10);
   --ok: #1E6E67; --bad: #A2361F;
 }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0E141E; --fg: #EAE8E0; --muted: #97A0B0; --line: #26303F;
+    --card: #141C29; --accent: #D96548; --shade: rgba(217, 101, 72, 0.14);
+    --ok: #3AA396; --bad: #D96548;
+  }
+}
 * { box-sizing: border-box; margin: 0; }
 body {
   background: var(--bg); color: var(--fg);
