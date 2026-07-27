@@ -1,4 +1,4 @@
-== run 46 pass 8 Mon Jul 27 20:41:41 UTC 2026 ==
+== run 46 pass 9 Mon Jul 27 21:13:02 UTC 2026 ==
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 243, in fetch_channel
     parts = [
@@ -14,7 +14,7 @@
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
     raise RuntimeError(
-RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. Last error: Expecting value: line 1 column 1 (char 0)
+RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
 [1/5] GDELT volumes
 [gdelt] pakistan_west: 2017-01-01 -> 2026-07-27
 [gdelt] tail 2026-07-01..2026-07-27 unavailable; keeping the data already fetched
