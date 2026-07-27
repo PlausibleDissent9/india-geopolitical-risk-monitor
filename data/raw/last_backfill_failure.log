@@ -1,4 +1,5 @@
-== run 46 pass 2 Mon Jul 27 17:55:08 UTC 2026 ==
+== run 46 pass 3 Mon Jul 27 18:25:10 UTC 2026 ==
+    cols[ch] = fetch_channel(spec["terms"], start, end, spec.get("anchor"))
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/india-geopolitical-risk-monitor/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 243, in fetch_channel
     parts = [
@@ -22,5 +23,4 @@ RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. La
 [gdelt] china_east: 2017-01-01 -> 2026-07-27
 [gdelt] tail 2026-07-01..2026-07-27 unavailable; keeping the data already fetched
 [gdelt] gulf_energy: 2017-01-01 -> 2026-07-27
-[gdelt] tail 2026-07-01..2026-07-27 unavailable; keeping the data already fetched
 [gdelt] wide chunk refused; retrying 2017-01-01..2026-06-30 in yearly slices
