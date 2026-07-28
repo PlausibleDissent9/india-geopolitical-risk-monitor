@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Validation — India Geopolitical Risk Monitor</title>
+<title>Validation, India Geopolitical Risk Monitor</title>
 <meta name="description" content="Pre-registered episode detection, placebo channels, dictionary robustness, and cross-source agreement for the IGRM salience index.">
 <link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/validation.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
@@ -29,7 +29,7 @@
 </header>
 
 <h2>Pre-registered episode detection</h2>
-<p class="chart-note" id="hitSummary">Not yet computed &mdash; run <code>python -m src.validate hit-rate</code> after the backfill.</p>
+<p class="chart-note" id="hitSummary">Not yet computed, run <code>python -m src.validate hit-rate</code> after the backfill.</p>
 <table id="hits">
   <thead><tr><th>Result</th><th>Channel</th><th>Date</th><th>Episode</th></tr></thead>
   <tbody></tbody>
@@ -103,8 +103,8 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
       const tr = document.createElement("tr");
       const n = (v.robustness.narrow || {})[ch], b = (v.robustness.broad || {})[ch];
       tr.innerHTML = "<td>" + esc(igrmLabel(ch)) + '</td><td class="num">' +
-        (n == null ? "–" : esc(n.toFixed(3))) + '</td><td class="num">' +
-        (b == null ? "–" : esc(b.toFixed(3))) + "</td>";
+        (n == null ? "-" : esc(n.toFixed(3))) + '</td><td class="num">' +
+        (b == null ? "-" : esc(b.toFixed(3))) + "</td>";
       tb.appendChild(tr);
     }
   }
@@ -127,8 +127,8 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     const corrs = Object.entries(v.drift.share_vs_corpus_corr || {})
       .map(([ch, c]) => igrmLabel(ch) + " " + c.toFixed(2)).join(" · ");
     document.getElementById("drift").innerHTML =
-      "Mean daily monitored articles &mdash; " + esc(years) +
-      (corrs ? "<br>Share-vs-corpus correlation &mdash; " + esc(corrs) : "");
+      "Mean daily monitored articles, " + esc(years) +
+      (corrs ? "<br>Share-vs-corpus correlation, " + esc(corrs) : "");
   }
 })();
 </script>

@@ -179,14 +179,17 @@ function initSubscribe() {
   document.addEventListener("keydown", onKey);
   overlay.hidden = true; overlay.style.display = "none";
 
-  if (!BUTTONDOWN_USER) return;
-  if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
+  const preview = new URLSearchParams(location.search).get("preview") === "subscribe";
+  if (!preview) {
+    if (!BUTTONDOWN_USER) return;
+    if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
+  }
 
   setTimeout(() => {
     overlay.hidden = false; overlay.style.display = "flex";
     document.getElementById("subscribe-email").focus({ preventScroll: true });
     document.addEventListener("keydown", onKey);
-  }, 15000);
+  }, preview ? 2000 : 15000);
 
   document.getElementById("subscribe-form").addEventListener("submit", async (ev) => {
     ev.preventDefault();

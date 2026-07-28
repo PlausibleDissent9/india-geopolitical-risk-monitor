@@ -87,3 +87,18 @@ footer a { color: var(--accent); }
 body { transition: background-color 300ms ease, color 300ms ease; }
 .pane { transition: transform 220ms cubic-bezier(0.22,1,0.36,1), box-shadow 220ms ease; }
 .pane:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+
+/* Ambient background drift, subtle life on the night paper */
+body::before {
+  content: ""; position: fixed; inset: -50%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 18% 12%, color-mix(in srgb, var(--calm, var(--ok)) 8%, transparent), transparent 70%),
+    radial-gradient(50% 42% at 85% 88%, color-mix(in srgb, var(--severe, var(--accent)) 7%, transparent), transparent 70%);
+  animation: igrm-drift 36s ease-in-out infinite alternate;
+}
+@keyframes igrm-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2%, 0) scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }

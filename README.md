@@ -4,11 +4,11 @@
 [![daily-update](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/daily.yml/badge.svg)](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/daily.yml)
 
 A daily, category-decomposed index of geopolitical risk salience for India,
-in the Caldara–Iacoviello article-share tradition — with open data, a
+in the Caldara-Iacoviello article-share tradition, with open data, a
 public methodology, and an event-study layer on India-specific relative
 returns. Live since July 2026.
 
-**Built with AI assistance (Claude)** — pipeline, site, dictionaries, and
+**Built with AI assistance (Claude)**, pipeline, site, dictionaries, and
 methodology. Weekly commentary is the author's. See `methodology.md`.
 
 ## Architecture
@@ -45,7 +45,7 @@ NGrams feed at the maintainer's direction, ratio-spliced on overlap days
   and the query grammar across all term lists.
 - **Weekly note.** Friday's run drops `notes-inbox/datapack_YYYY-Www.md`;
   write ~250 words to `notes/YYYY-Www.md` (the site footer's
-  "write this week's note" link opens the editor) — the next run
+  "write this week's note" link opens the editor), the next run
   publishes it to the site and RSS.
 
 ## Local run
@@ -67,7 +67,7 @@ Friday's Action run drops `notes-inbox/datapack_YYYY-Www.md` (numbers
 only). You write ~250 words, save as `notes/YYYY-Www.md`, commit. The next
 daily run publishes it. That note is also the week's Indiconomics post.
 
-## Roadmap — frozen until 1 Nov 2026
+## Roadmap, frozen until 1 Nov 2026
 
 No new features before the application deadline; every feature-day is a
 data-day lost. Post-freeze candidates: prediction extension (index
@@ -76,6 +76,6 @@ framing), weighting exploration, per-episode case pages.
 
 ## Honest limitations
 
-Association, not causation. Salience, not ground truth — anniversary
+Association, not causation. Salience, not ground truth, anniversary
 coverage counts by construction (disclosed in methodology §7). GDELT
 reaches back to Jan 2017 only. Not investment advice.

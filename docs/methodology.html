@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=20260729a">
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 <header>
@@ -32,22 +32,22 @@ expressed as a percentile against that channel's own trailing 730 days. A
 composite score of 79 means exactly this: <em>today's matching-coverage share,
 averaged across the five channels' percentiles, is higher than it has been
 on 79% of days over roughly the past two years.</em> Nothing more.</p>
-<p>It is built in the Caldara–Iacoviello article-share tradition, whose index
+<p>It is built in the Caldara-Iacoviello article-share tradition, whose index
 is also named "Geopolitical Risk" and also measures newspaper shares. The
 name is a convention of the genre, not a claim: <strong>salience is not risk.</strong>
-The two diverge in known, unavoidable ways — an under-covered crisis scores
+The two diverge in known, unavoidable ways, an under-covered crisis scores
 low; anniversary retrospectives score high (§7); editorial fashion moves
 the series with no change in the world. The index answers "how much is the
 press writing about this?", never "how dangerous is this?". It is not a
 forecast and not investment advice.</p>
 <h2>2. Term selection and the ex-ante rule</h2>
-<p>Each channel's dictionary draws from four categories — geography where
+<p>Each channel's dictionary draws from four categories, geography where
 tension physically manifests, institutions and standing mechanisms,
 recurring doctrine/press vocabulary, and structural chokepoints. Geography
 alone under-detects diplomatic coverage; doctrine vocabulary typically
 carries the most recall. Every term carries a one-line rationale inside
 <code>dictionaries.json</code> itself; that file, not this page, is the term-level
-record. Channels hold 10–14 terms: below ~8 the series is thin and noisy,
+record. Channels hold 10-14 terms: below ~8 the series is thin and noisy,
 above ~15 marginal terms import contamination faster than signal.</p>
 <p><strong>The ex-ante rule.</strong> No term may be a retrospective event name (Galwan,
 Pulwama, Balakot, Sindoor, Kargil, Uri, 26/11, Doklam, …). The reason is
@@ -63,7 +63,7 @@ basis.</p>
 <p><strong>Query grammar.</strong> GDELT's DOC API permits OR only inside a single
 un-nested parenthetical that may not mix AND. Every term is therefore one
 quoted phrase, and disambiguation is done by a single channel-level anchor
-word — e.g. <code>India ("Line of Control" OR "ceasefire violations" OR …)</code>.
+word, e.g. <code>India ("Line of Control" OR "ceasefire violations" OR …)</code>.
 Quoted phrases match exact token sequences (hyphens tokenize to spaces; no
 stemming, hence singular and plural forms where both are common in copy).
 Three generic phrases are accepted with open eyes and disclosed here:
@@ -71,7 +71,7 @@ Three generic phrases are accepted with open eyes and disclosed here:
 kept for recall of policy coverage) and <code>"Suez Canal"</code> (includes routine
 transit coverage; the percentile normalization absorbs its baseline).</p>
 <p><strong>Cross-channel bleed, decided and documented:</strong> <code>"Russian oil"</code> (India)
-sits in <em>US &amp; Trade Policy</em>, not <em>Gulf &amp; Energy</em> — the risk vector is
+sits in <em>US &amp; Trade Policy</em>, not <em>Gulf &amp; Energy</em>, the risk vector is
 sanctions policy, not physical supply. Red Sea tanker coverage belongs to
 <em>Shipping</em>; Persian Gulf tanker incidents to <em>Gulf &amp; Energy</em>. No term
 appears in two channels, so the composite never double-counts an article
@@ -89,19 +89,19 @@ both sub-queries counts twice, making the series a slight upper bound on
 the union share. The partition is fixed and versioned with the
 dictionaries. From July 2026, during a DOC-API disruption, the recent
 tail is computed from GDELT's raw Web NGrams files at the maintainer's
-direction — the same share construct from hourly samples of the raw
-feed — and ratio-spliced to the API series on overlap days, with each
+direction, the same share construct from hourly samples of the raw
+feed, and ratio-spliced to the API series on overlap days, with each
 channel's splice ratio and its dispersion published alongside the data
 (see changelog). The published score is the
 percentile rank of today's share within the channel's trailing 730 days
 (inclusive of today; the window never contains future data). Days with
 no observed value stay missing rather than scoring zero.</p>
 <p><em>Why percentile rather than z-score:</em> news-volume shares are fat-tailed and
-drift with editorial fashion. A z-score inherits both problems — single
+drift with editorial fashion. A z-score inherits both problems, single
 extreme days distort the mean and variance for months. The percentile is
 robust to outliers, invariant to monotone changes in the level of coverage,
 and yields a directly interpretable sentence ("higher than X% of the last
-two years"). Its cost — compression at the top of the range — is why episode
+two years"). Its cost, compression at the top of the range, is why episode
 detection does <em>not</em> run on scores (§5).</p>
 <p><em>Why 730 days:</em> long enough to span more than one editorial cycle and both
 halves of a typical escalation-and-decay arc; short enough that "the last
@@ -114,7 +114,7 @@ thin baseline.</p>
 <h2>4. The composite convention</h2>
 <p>The headline composite is the unweighted mean of the five channel
 percentiles. This is a <strong>transparency convention, not a claim</strong> that the
-five channels matter equally to India — no defensible weighting exists
+five channels matter equally to India, no defensible weighting exists
 (trade-weighted? casualty-weighted? by what?), and any chosen weighting
 would smuggle in an editorial judgment the data cannot support. The
 components are the primary product; the composite exists so the site has
@@ -139,13 +139,13 @@ see the findings are not threshold-dependent.</p>
 <p>The event study reports <strong>India-specific relative returns</strong> around episode
 starts, never outright returns:</p>
 <ul>
-<li><strong>Nifty 50 − MSCI EM</strong> — strips global equity beta; what remains is the
+<li><strong>Nifty 50 − MSCI EM</strong>, strips global equity beta; what remains is the
   India-specific equity move.</li>
-<li><strong>Defence basket − Nifty</strong> — the sharpest India-specific hypothesis: if
+<li><strong>Defence basket − Nifty</strong>, the sharpest India-specific hypothesis: if
   border salience means anything to markets, it should appear in defence
   names relative to the broad index. (Basket: HAL, BEL, BDL, Mazagon Dock,
   Cochin Shipyard; equal-weight, daily-rebalanced.)</li>
-<li><strong>USDINR − DXY</strong> — strips broad dollar moves from the rupee.</li>
+<li><strong>USDINR − DXY</strong>, strips broad dollar moves from the rupee.</li>
 </ul>
 <p>Brent and gold are reported <strong>descriptively only</strong>: no India-specific
 component of a globally-priced commodity is separable, so they carry no
@@ -161,7 +161,7 @@ underlying events; nothing in this design can separate the two, so
 its residual.</p>
 <ol>
 <li><strong>Salience ≠ risk.</strong> The permanent one. Mitigation: this page, §1, and a
-   definition line under the headline number. Residual: total — the index
+   definition line under the headline number. Residual: total, the index
    never becomes a risk measure; it measures attention.</li>
 <li><strong>No causal identification.</strong> No natural experiment or instrument exists
    in this design. Mitigation: association-only language, enforced by
@@ -175,9 +175,9 @@ its residual.</p>
    (planned): Wikipedia-pageview cross-validation. Residual: agreement
    between two biased attention measures is not unbiasedness.</li>
 <li><strong>Hindsight in dictionary construction.</strong> The dictionaries were written
-   in 2026 by people who know 2022–26 history. Mitigation: the ex-ante
-   structural-terms rule bounds the leak — no event names, only vocabulary
-   that predates and outlives specific events — and the robustness harness
+   in 2026 by people who know 2022-26 history. Mitigation: the ex-ante
+   structural-terms rule bounds the leak, no event names, only vocabulary
+   that predates and outlives specific events, and the robustness harness
    (§8) shows results survive reasonable re-wordings. Residual: bounded,
    not eliminated; disclosed.</li>
 <li><strong>Anniversary and editorial-cycle effects.</strong> Retrospectives count as
@@ -190,7 +190,7 @@ its residual.</p>
 <li><strong>Timezone convention.</strong> GDELT days are UTC; Indian market days are IST;
    the daily run at 18:00 IST treats "today" as the UTC date. A same-day
    Indian-evening event lands on the correct UTC day but after the NSE
-   close — event-study windows therefore start at the first trading day on
+   close, event-study windows therefore start at the first trading day on
    or after the episode start, never before.</li>
 <li><strong>Composite arbitrariness.</strong> §4. Mitigation: labelled a convention;
    components published. Residual: no weighting is privileged.</li>
@@ -203,12 +203,12 @@ its residual.</p>
 <h2>8. Validation</h2>
 <p>Where credibility lives. Four checks, all runnable from the repo.</p>
 <p><strong>8a. Pre-registered historical detection</strong> (<code>python -m src.validate
-hit-rate</code>). Twenty-one episodes across the five channels, 2017–2025, were
+hit-rate</code>). Twenty-one episodes across the five channels, 2017-2025, were
 frozen in <code>validation/validation_episodes.json</code> before the first
 validation run (thirteen at the 2026-07-24 freeze; eight pre-2022
 episodes appended, dated, under the file's append-only rule when the
-backfill extended to 2017 — still before any validation ran). None of
-their names appears in any query term — that is the ex-ante rule doing
+backfill extended to 2017, still before any validation ran). None of
+their names appears in any query term, that is the ex-ante rule doing
 its work. A hit is a detected episode in the same channel within ±3
 days. The per-channel hit table is published to <code>docs/data/validation.json</code>
 and is this project's key figure: <strong>18 of 21 detected (86%)</strong> on first
@@ -225,18 +225,18 @@ states the window it covers.</p>
 with no India-geopolitics content (IPL cricket, Bollywood) run through the
 identical pipeline. They must not spike around geopolitical episodes; their
 overlap fraction is published. One disclosed imperfection: Indian sport is
-not perfectly insulated from geopolitics (India–Pakistan fixtures), so the
+not perfectly insulated from geopolitics (India-Pakistan fixtures), so the
 cricket terms avoid Pakistan-linked phrasing.</p>
 <p><strong>8d. Normalization-window stability.</strong> The index recomputed at 365- and
 1095-day windows must be qualitatively unchanged (rank correlation with the
 primary reported alongside 8b's table). Episode detection is additionally
 reported at 1.5σ beside the primary 2σ.</p>
-<p>A note on what validation cannot do: passing 8a–8d shows the instrument
+<p>A note on what validation cannot do: passing 8a-8d shows the instrument
 detects what it claims to detect and is not an artifact of one term list.
 It does not, and cannot, convert salience into risk (§7.1).</p>
 <h2>Changelog</h2>
 <ul>
-<li><strong>2026-07-29 — v1.0.1.</strong> (1) Percentile computation now returns
+<li><strong>2026-07-29, v1.0.1.</strong> (1) Percentile computation now returns
   missing for days with no observed value; previously a missing day
   scored as 0th percentile, deflating the composite when one channel's
   tail lagged. (2) During the July 2026 DOC-API disruption, and at the
@@ -251,12 +251,12 @@ It does not, and cannot, convert salience into risk (§7.1).</p>
   any source at historical depth; the channel currently carries its main
   sub-query, and the series will be re-based when it lands. (4)
   Event-study cells now publish bootstrap p-values with
-  Benjamini–Hochberg FDR flags (10%) across the grid of relative-outcome
+  Benjamini-Hochberg FDR flags (10%) across the grid of relative-outcome
   tests, as §6 specifies.</li>
-<li><strong>2026-07-24 — v1.0.0.</strong> Initial dictionaries frozen (five channels,
-  10–14 terms each, per-term rationale in <code>dictionaries.json</code>). Robustness
+<li><strong>2026-07-24, v1.0.0.</strong> Initial dictionaries frozen (five channels,
+  10-14 terms each, per-term rationale in <code>dictionaries.json</code>). Robustness
   variants and placebo channels frozen the same day. Validation episode
-  list pre-registered (13 episodes, 2022–2025). Parameters: 730-day
+  list pre-registered (13 episodes, 2022-2025). Parameters: 730-day
   percentile window, 180-observation minimum, 2σ/90-day/3-day episode rule,
   1/5/20 trading-day event windows, 1,000-resample bootstrap.</li>
 </ul>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Data viewer — India Geopolitical Risk Monitor</title>
+<title>Data viewer, India Geopolitical Risk Monitor</title>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
@@ -47,7 +47,7 @@ const FILES = {
   "latest.json": "Today's scores", "history.json": "Full score history",
   "episodes.json": "Episode archive", "event_study.json": "Event study",
   "validation.json": "Validation results", "alt_specs.json": "Alternative specifications",
-  "seasonality.json": "Anniversary effects", "priced_risk.json": "Attention–pricing gap",
+  "seasonality.json": "Anniversary effects", "priced_risk.json": "Attention-pricing gap",
   "history.csv": "Full score history", "episodes.csv": "Episode archive",
   "event_study.csv": "Event study",
 };
@@ -56,7 +56,7 @@ const nice = (k) => window.igrmLabel(k).replace(/_/g, " ");
 const fmt = (v) => typeof v === "number" ? (Number.isInteger(v) ? v : v.toFixed(3).replace(/\.?0+$/, "")) : v;
 
 function renderValue(v, depth = 0) {
-  if (v === null || v === undefined) return '<span class="empty">–</span>';
+  if (v === null || v === undefined) return '<span class="empty">-</span>';
   if (Array.isArray(v)) {
     if (!v.length) return '<span class="empty">empty</span>';
     if (typeof v[0] === "object" && v[0] !== null) return renderTable(v);
@@ -78,7 +78,7 @@ function renderTable(arr) {
   const head = cols.map(c => `<th>${esc(nice(c))}</th>`).join("");
   const rows = arr.slice(0, 60).map(o =>
     `<tr>${cols.map(c => `<td>${renderValue(o[c], 3)}</td>`).join("")}</tr>`).join("");
-  const more = arr.length > 60 ? `<p class="truncated">Showing 60 of ${arr.length.toLocaleString()} rows — download for all.</p>` : "";
+  const more = arr.length > 60 ? `<p class="truncated">Showing 60 of ${arr.length.toLocaleString()} rows, download for all.</p>` : "";
   return `<div class="table-scroll"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>${more}`;
 }
 
@@ -87,7 +87,7 @@ function renderCSV(text) {
   const cols = lines[0].split(",");
   const head = cols.map(c => `<th>${esc(nice(c))}</th>`).join("");
   const body = lines.slice(1).slice(-60).map(l =>
-    `<tr>${l.split(",").map(v => `<td>${esc(v === "" ? "–" : v)}</td>`).join("")}</tr>`).join("");
+    `<tr>${l.split(",").map(v => `<td>${esc(v === "" ? "-" : v)}</td>`).join("")}</tr>`).join("");
   return `<p class="kv">${(lines.length - 1).toLocaleString()} rows · showing the most recent 60</p>` +
     `<div class="table-scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
@@ -98,7 +98,7 @@ function renderCSV(text) {
     document.getElementById("content").innerHTML = '<p class="empty">Unknown file.</p>';
     return;
   }
-  document.title = `${FILES[f]} — IGRM data`;
+  document.title = `${FILES[f]}, IGRM data`;
   document.getElementById("filename").textContent = `${FILES[f]} (${f})`;
   document.getElementById("rawlink").href = `data/${f}`;
   const r = await fetch(`data/${f}`, { cache: "no-store" });

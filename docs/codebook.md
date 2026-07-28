@@ -8,13 +8,13 @@ construction; the reasoning lives in [methodology.md](../methodology.md).
 | Column | Definition | Units | Range |
 |---|---|---|---|
 | `date` | Calendar day, UTC (GDELT's day convention) | ISO date | 2017-01-01 onward |
-| `pakistan_west` … `shipping` | Share of all GDELT-monitored articles that day matching the channel's query; where a channel needs two sub-queries (length budget), the SUM of the two shares — a slight upper bound on the union | percent of corpus | ≥ 0, typically ≪ 1 |
+| `pakistan_west` … `shipping` | Share of all GDELT-monitored articles that day matching the channel's query; where a channel needs two sub-queries (length budget), the SUM of the two shares, a slight upper bound on the union | percent of corpus | ≥ 0, typically ≪ 1 |
 
 ## docs/data/episodes.csv
 
 | Column | Definition | Units |
 |---|---|---|
-| `channel` / `label` | Machine key and display name of the spiking channel | — |
+| `channel` / `label` | Machine key and display name of the spiking channel | text |
 | `start`, `end` | First and last spike day of the cluster | ISO date |
 | `peak_date` | Day of maximum raw coverage share inside the episode | ISO date |
 | `peak_value` | That maximum share | percent of monitored corpus |
@@ -41,8 +41,8 @@ date) so a downloaded file explains itself without this website.
 |---|---|
 | `date` | Last day with a full composite |
 | `definition` | The one-line construct definition shown under the headline |
-| `composite` | Unweighted mean of the five channel percentiles, 0–100 |
-| `channels.<ch>.score` | Channel percentile vs its own trailing 730 days, 0–100 |
+| `composite` | Unweighted mean of the five channel percentiles, 0-100 |
+| `channels.<ch>.score` | Channel percentile vs its own trailing 730 days, 0-100 |
 | `channels.<ch>.label` | Display name |
 
 ## docs/data/history.json
@@ -53,7 +53,7 @@ date) so a downloaded file explains itself without this website.
 | `composite[i]` | Composite percentile that day (null before 180 trailing obs) |
 | `channels.<ch>[i]` | Channel percentile that day |
 | `labels` | Channel display names |
-| `wikipedia.*` | Same structure computed from Wikipedia pageviews (present once the second source is active); levels are never comparable across sources — each is percentile-normalized independently |
+| `wikipedia.*` | Same structure computed from Wikipedia pageviews (present once the second source is active); levels are never comparable across sources, each is percentile-normalized independently |
 
 ## docs/data/episodes.json
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portal — India Geopolitical Risk Monitor</title>
+<title>Portal, India Geopolitical Risk Monitor</title>
 <meta name="robots" content="noindex">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
@@ -63,7 +63,7 @@
     <a href="notes.html">Notes</a>
   </nav>
   <p class="definition">The author's portal: write and publish the weekly note, read the week's
-  sourced research, and run the pipeline — from here, authenticated against GitHub, token
+  sourced research, and run the pipeline, from here, authenticated against GitHub, token
   never leaving this device.</p>
 </header>
 
@@ -93,7 +93,7 @@
 
   <div class="portal-grid">
     <div class="pane">
-      <h2>✍️ This week's note — <span id="week-tag"></span></h2>
+      <h2>✍️ This week's note, <span id="week-tag"></span></h2>
       <textarea id="note-text" placeholder="# Headline claim&#10;&#10;Mechanism, grounded in this week's sources…&#10;&#10;What it does and doesn't imply. One number worth remembering."></textarea>
       <div class="row">
         <button class="btn" id="publish">Publish note</button>
@@ -106,8 +106,7 @@
     <div>
       <div class="pane" style="margin-bottom: 1.5rem">
         <h2>📚 This week's research (the datapack)</h2>
-        <p class="kv">Scores, movers, episodes, and the sourced articles behind them —
-        your evidence base for the note.</p>
+        <p class="kv">Scores, movers, episodes, and the sourced articles behind them, your evidence base for the note.</p>
         <div class="prose" id="datapack"><p class="empty">Loading…</p></div>
       </div>
 
@@ -131,7 +130,7 @@
 
 <footer>
   <p><a href="./">&larr; back to the site</a></p>
-  <p>Unlisted page; bookmark it. The token grants write access to your repo — treat it like a password.</p>
+  <p>Unlisted page; bookmark it. The token grants write access to your repo, treat it like a password.</p>
 </footer>
 
 <script>
@@ -202,7 +201,7 @@ async function loadStudio() {
       $("note-text").value = new TextDecoder().decode(
         Uint8Array.from(atob(f.content.replace(/\n/g, "")), c => c.charCodeAt(0)));
       $("note-text").dataset.sha = f.sha;
-      $("publish-status").textContent = "A note for this week already exists — publishing updates it.";
+      $("publish-status").textContent = "A note for this week already exists, publishing updates it.";
     }
   } catch (e) { /* none yet */ }
   updateCount();
@@ -219,7 +218,7 @@ async function loadStudio() {
         Uint8Array.from(atob(f.content.replace(/\n/g, "")), c => c.charCodeAt(0)));
       $("datapack").innerHTML = md(text);
     } else {
-      $("datapack").innerHTML = '<p class="empty">No datapack yet — it lands every Friday.</p>';
+      $("datapack").innerHTML = '<p class="empty">No datapack yet, it lands every Friday.</p>';
     }
   } catch (e) { $("datapack").innerHTML = '<p class="empty">Could not load datapack.</p>'; }
 
@@ -229,12 +228,12 @@ async function loadStudio() {
       fetch("data/latest.json").then(r => r.json()),
       fetch("data/validation.json").then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
-    let html = `<span class="metric"><b>${latest.composite ?? "–"}</b><span>composite · ${esc(latest.date || "")}</span></span>`;
+    let html = `<span class="metric"><b>${latest.composite ?? "-"}</b><span>composite · ${esc(latest.date || "")}</span></span>`;
     if (val && val.hit_rate) {
       html += `<span class="metric"><b>${val.hit_rate.overall.hits}/${val.hit_rate.overall.n}</b><span>pre-registered hits</span></span>`;
     }
     for (const [ch, c] of Object.entries(latest.channels || {})) {
-      html += `<span class="metric"><b>${c.score ?? "–"}</b><span>${esc(c.label)}</span></span>`;
+      html += `<span class="metric"><b>${c.score ?? "-"}</b><span>${esc(c.label)}</span></span>`;
     }
     $("numbers").innerHTML = html;
   } catch (e) { $("numbers").innerHTML = '<p class="empty">Could not load.</p>'; }
@@ -280,7 +279,7 @@ async function publish() {
     const out = await r.json();
     $("note-text").dataset.sha = out.content.sha;
     st.className = "status ok";
-    st.innerHTML = `Published. It appears on the site with the next pipeline run — or trigger one in ⚙️.`;
+    st.innerHTML = `Published. It appears on the site with the next pipeline run, or trigger one in ⚙️.`;
   } catch (e) {
     st.className = "status err"; st.textContent = `Failed: ${e.message}`;
   }
@@ -302,7 +301,7 @@ async function dispatch(workflow, label) {
 $("signin").addEventListener("click", async () => {
   $("login-status").textContent = "Checking…";
   try { await signin($("token").value.trim()); }
-  catch (e) { $("login-status").textContent = "Token rejected — check scopes."; }
+  catch (e) { $("login-status").textContent = "Token rejected, check scopes."; }
 });
 $("signout").addEventListener("click", () => {
   delete localStorage.igrmToken;

@@ -278,3 +278,18 @@ main > section.reveal { animation: none; }
 body, .masthead, .instrument, .glance, .subscribe {
   transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
 }
+
+
+/* Ambient background drift, subtle life on the night paper */
+body::before {
+  content: ""; position: fixed; inset: -50%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 18% 12%, color-mix(in srgb, var(--calm, var(--ok)) 8%, transparent), transparent 70%),
+    radial-gradient(50% 42% at 85% 88%, color-mix(in srgb, var(--severe, var(--accent)) 7%, transparent), transparent 70%);
+  animation: igrm-drift 36s ease-in-out infinite alternate;
+}
+@keyframes igrm-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2%, 0) scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }

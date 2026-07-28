@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=20260729a">
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 <header>
@@ -45,7 +45,7 @@ construction; the reasoning lives in <a href="../methodology.md">methodology.md<
 </tr>
 <tr>
 <td><code>pakistan_west</code> … <code>shipping</code></td>
-<td>Share of all GDELT-monitored articles that day matching the channel's query; where a channel needs two sub-queries (length budget), the SUM of the two shares — a slight upper bound on the union</td>
+<td>Share of all GDELT-monitored articles that day matching the channel's query; where a channel needs two sub-queries (length budget), the SUM of the two shares, a slight upper bound on the union</td>
 <td>percent of corpus</td>
 <td>≥ 0, typically ≪ 1</td>
 </tr>
@@ -64,7 +64,7 @@ construction; the reasoning lives in <a href="../methodology.md">methodology.md<
 <tr>
 <td><code>channel</code> / <code>label</code></td>
 <td>Machine key and display name of the spiking channel</td>
-<td>—</td>
+<td>text</td>
 </tr>
 <tr>
 <td><code>start</code>, <code>end</code></td>
@@ -118,11 +118,11 @@ date) so a downloaded file explains itself without this website.</p>
 </tr>
 <tr>
 <td><code>composite</code></td>
-<td>Unweighted mean of the five channel percentiles, 0–100</td>
+<td>Unweighted mean of the five channel percentiles, 0-100</td>
 </tr>
 <tr>
 <td><code>channels.&lt;ch&gt;.score</code></td>
-<td>Channel percentile vs its own trailing 730 days, 0–100</td>
+<td>Channel percentile vs its own trailing 730 days, 0-100</td>
 </tr>
 <tr>
 <td><code>channels.&lt;ch&gt;.label</code></td>
@@ -157,7 +157,7 @@ date) so a downloaded file explains itself without this website.</p>
 </tr>
 <tr>
 <td><code>wikipedia.*</code></td>
-<td>Same structure computed from Wikipedia pageviews (present once the second source is active); levels are never comparable across sources — each is percentile-normalized independently</td>
+<td>Same structure computed from Wikipedia pageviews (present once the second source is active); levels are never comparable across sources, each is percentile-normalized independently</td>
 </tr>
 </tbody>
 </table>

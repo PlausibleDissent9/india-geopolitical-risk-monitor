@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Analysis — India Geopolitical Risk Monitor</title>
-<meta name="description" content="The attention–pricing gap against India VIX, lead–lag structure, anniversary effects, and specification robustness — rendered, not raw.">
+<title>Analysis, India Geopolitical Risk Monitor</title>
+<meta name="description" content="The attention-pricing gap against India VIX, lead-lag structure, anniversary effects, and specification robustness, rendered, not raw.">
 <link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/analysis.html">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
@@ -28,7 +28,7 @@
   prices respond to the same events, and nothing in this design separates the two.</p>
 </header>
 
-<h2>The attention–pricing gap</h2>
+<h2>The attention-pricing gap</h2>
 <p class="chart-note">Composite attention percentile minus India VIX percentile, daily.
 Above zero: the press is louder than the market. Below zero: the market is pricing
 something the coverage has not caught.</p>
@@ -42,7 +42,7 @@ first; negative, the market.</p>
 <div class="chart-wrap" style="height:260px"><canvas id="ccf-chart"></canvas></div>
 <p class="kv" id="ccf-reading"></p>
 
-<h2>When the press ran hot — and when markets knew first</h2>
+<h2>When the press ran hot, and when markets knew first</h2>
 <div class="table-scroll"><table id="divergence">
   <thead><tr><th>Direction</th><th>Start</th><th>End</th><th>Peak day</th><th class="num">Peak gap</th></tr></thead>
   <tbody><tr><td colspan="5" class="empty">Not computed yet.</td></tr></tbody>
@@ -50,7 +50,7 @@ first; negative, the market.</p>
 
 <h2>Anniversary journalism, measured</h2>
 <p class="chart-note">Share of each channel's (detrended, log) daily variance explained by
-day-of-year recurrence — how much of the series is the calendar rather than the world.</p>
+day-of-year recurrence, how much of the series is the calendar rather than the world.</p>
 <div class="table-scroll"><table id="seasonality">
   <thead><tr><th>Channel</th><th class="num">Calendar share of variance</th><th>Most recurrent date</th></tr></thead>
   <tbody><tr><td colspan="3" class="empty">Not computed yet.</td></tr></tbody>
@@ -148,7 +148,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
       const tr = document.createElement("tr");
       tr.innerHTML = `<td>${esc(igrmLabel(ch))}</td>` +
         `<td class="num">${(s.partial_r2 * 100).toFixed(1)}%</td>` +
-        `<td>${top ? esc(top.month_day) : "–"}</td>`;
+        `<td>${top ? esc(top.month_day) : "-"}</td>`;
       tb.appendChild(tr);
     }
   }
@@ -167,7 +167,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
       if (w !== "730") push("Normalization window", `${w} days (primary: 730)`, v.corr_with_primary);
     }
     for (const [s, v] of Object.entries(alt.episode_thresholds_sigma || {})) {
-      if (s !== "2.0") push("Episode threshold", `${s}σ (primary: 2.0σ) — episode-day overlap`,
+      if (s !== "2.0") push("Episode threshold", `${s}σ (primary: 2.0σ), episode-day overlap`,
                            v.episode_day_jaccard_vs_primary);
     }
   }
