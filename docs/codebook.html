@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codebook — India Geopolitical Risk Monitor</title>
+<meta name="description" content="Column-by-column definitions, units, and construction for every IGRM data file.">
+<link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/codebook.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="data.html" class="current">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+</header>
+<div class="prose">
+<h1>IGRM Codebook</h1>
+<p>Column-by-column definitions for every published file. Units and
+construction; the reasoning lives in <a href="../methodology.md">methodology.md</a>.</p>
+<h2>data/raw/gdelt_volume.csv</h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Definition</th>
+<th>Units</th>
+<th>Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>Calendar day, UTC (GDELT's day convention)</td>
+<td>ISO date</td>
+<td>2017-01-01 onward</td>
+</tr>
+<tr>
+<td><code>pakistan_west</code> … <code>shipping</code></td>
+<td>Share of all GDELT-monitored articles that day matching the channel's query; where a channel needs two sub-queries (length budget), the SUM of the two shares — a slight upper bound on the union</td>
+<td>percent of corpus</td>
+<td>≥ 0, typically ≪ 1</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/latest.json</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>Last day with a full composite</td>
+</tr>
+<tr>
+<td><code>definition</code></td>
+<td>The one-line construct definition shown under the headline</td>
+</tr>
+<tr>
+<td><code>composite</code></td>
+<td>Unweighted mean of the five channel percentiles, 0–100</td>
+</tr>
+<tr>
+<td><code>channels.&lt;ch&gt;.score</code></td>
+<td>Channel percentile vs its own trailing 730 days, 0–100</td>
+</tr>
+<tr>
+<td><code>channels.&lt;ch&gt;.label</code></td>
+<td>Display name</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/history.json</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dates[i]</code></td>
+<td>ISO date for position <code>i</code> in every parallel array</td>
+</tr>
+<tr>
+<td><code>composite[i]</code></td>
+<td>Composite percentile that day (null before 180 trailing obs)</td>
+</tr>
+<tr>
+<td><code>channels.&lt;ch&gt;[i]</code></td>
+<td>Channel percentile that day</td>
+</tr>
+<tr>
+<td><code>labels</code></td>
+<td>Channel display names</td>
+</tr>
+<tr>
+<td><code>wikipedia.*</code></td>
+<td>Same structure computed from Wikipedia pageviews (present once the second source is active); levels are never comparable across sources — each is percentile-normalized independently</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/episodes.json</h2>
+<p>Array of episodes, each:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>channel</code> / <code>label</code></td>
+<td>Which channel spiked</td>
+</tr>
+<tr>
+<td><code>start</code>, <code>end</code></td>
+<td>First and last spike day (raw share &gt; trailing 90-day mean + 2σ, baseline lagged 1 day; days ≤ 3 apart cluster)</td>
+</tr>
+<tr>
+<td><code>peak_date</code>, <code>peak_value</code></td>
+<td>Day and value of the maximum raw share inside the episode; value in percent of corpus</td>
+</tr>
+<tr>
+<td><code>n_spike_days</code></td>
+<td>Count of spike days in the cluster</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/event_study.json</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>windows</code></td>
+<td>Trading-day windows (1, 5, 20), inclusive of first trading day ≥ episode start</td>
+</tr>
+<tr>
+<td><code>units</code></td>
+<td>Cumulative log return, percent</td>
+</tr>
+<tr>
+<td><code>descriptive_only</code></td>
+<td>Outcomes with no separable India-specific component (Brent, gold)</td>
+</tr>
+<tr>
+<td><code>channels.&lt;ch&gt;.outcomes.&lt;o&gt;.&lt;w&gt;</code></td>
+<td><code>{mean, ci95:[lo,hi], n}</code> across the channel's episodes; CI from 1,000 episode resamples</td>
+</tr>
+<tr>
+<td><code>per_episode.&lt;ch&gt;[]</code></td>
+<td><code>{start, outcomes.&lt;o&gt;.&lt;w&gt;}</code> raw window returns for one episode (no CI; n = 1)</td>
+</tr>
+</tbody>
+</table>
+<p>Outcomes: <code>nifty_minus_em</code> (strips global equity beta), <code>defence_minus_nifty</code>
+(the India-specific hypothesis), <code>usdinr_minus_dxy</code> (strips broad dollar
+moves), <code>brent_ret</code>, <code>gold_ret</code> (descriptive).</p>
+<h2>docs/data/validation.json</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hit_rate</code></td>
+<td>Pre-registered episode list vs detected episodes, ±3 days; overall and per channel, plus per-episode hit/miss</td>
+</tr>
+<tr>
+<td><code>placebo</code></td>
+<td>Episodes detected in placebo channels and their overlap with geopolitical episode days</td>
+</tr>
+<tr>
+<td><code>robustness.narrow/.broad</code></td>
+<td>Correlation of primary percentile scores with narrower/broader dictionary constructions, per channel and composite (2022 onward)</td>
+</tr>
+<tr>
+<td><code>cross_source</code></td>
+<td>Per-channel correlation of GDELT and Wikipedia percentile scores</td>
+</tr>
+<tr>
+<td><code>drift</code></td>
+<td>Mean daily monitored corpus by year; sampled domain diversity and top-10 Herfindahl per channel-year; per-channel share-vs-corpus correlation</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/alt_specs.json</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>composite_weightings</code></td>
+<td>Equal (primary) vs trade-/import-exposure composites; correlation with primary</td>
+</tr>
+<tr>
+<td><code>episode_thresholds_sigma</code></td>
+<td>Episode counts at 1.5σ/2.0σ/2.5σ and episode-day Jaccard overlap vs primary</td>
+</tr>
+<tr>
+<td><code>percentile_windows_days</code></td>
+<td>Composite and per-channel correlation of 365-/1095-day windows vs the 730-day primary</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/seasonality.json</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>channels.&lt;ch&gt;.partial_r2</code></td>
+<td>Share of detrended log-share variance explained by smoothed day-of-year effects</td>
+</tr>
+<tr>
+<td><code>channels.&lt;ch&gt;.top_recurring_dates</code></td>
+<td>Calendar dates with the largest positive day-of-year effects (log points)</td>
+</tr>
+<tr>
+<td><code>channels.&lt;ch&gt;.corr_seasonal_vs_deseasonalized</code></td>
+<td>Correlation between primary and deseasonalized percentile indices</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/priced_risk.json</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gap.dates[i]</code>, <code>gap.&lt;ch&gt;[i]</code></td>
+<td>Attention percentile − India-VIX percentile, shared trading days; positive = press louder than the market</td>
+</tr>
+<tr>
+<td><code>divergence_episodes.press_louder/.market_ahead</code></td>
+<td>Top-decile</td>
+</tr>
+<tr>
+<td><code>lead_lag.ccf[]</code></td>
+<td><code>{lag, corr, lo, hi}</code>: correlation of daily changes at each lag (−10..+10 trading days), moving-block bootstrap 95% bands; positive lag = attention leads</td>
+</tr>
+<tr>
+<td><code>lead_lag.reading</code></td>
+<td>The associational one-line interpretation</td>
+</tr>
+</tbody>
+</table>
+<h2>Conventions</h2>
+<ul>
+<li>Every percentile is computed against the series' own trailing 730 days,
+  minimum 180 observations, never using future data.</li>
+<li>GDELT days are UTC; market data uses exchange trading days (IST for NSE).</li>
+<li>All return language is associational. Nothing here is investment advice.</li>
+</ul>
+</div>
+<footer>
+  <p><a href="./">&larr; back to the index</a> &middot; <a href="validation.html">validation results</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+</body>
+</html>

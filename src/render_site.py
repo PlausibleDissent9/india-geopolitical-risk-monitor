@@ -32,9 +32,9 @@ PAGE_SHELL = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Methodology — India Geopolitical Risk Monitor</title>
-<meta name="description" content="Full methodology for the IGRM salience index: construct definition, term selection, normalization, episode detection, event-study design, limitations, and validation.">
-<link rel="canonical" href="{site}/methodology.html">
+<title>{title} — India Geopolitical Risk Monitor</title>
+<meta name="description" content="{description}">
+<link rel="canonical" href="{site}/{slug}.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css">
@@ -43,9 +43,9 @@ PAGE_SHELL = """<!DOCTYPE html>
 <header>
   <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
   <nav class="masthead">
-    <a href="methodology.html" class="current">Methodology</a>
+    <a href="methodology.html"{cur_meth}>Methodology</a>
     <a href="validation.html">Validation</a>
-    <a href="data.html">Data</a>
+    <a href="data.html"{cur_data}>Data</a>
     <a href="notes.html">Notes</a>
   </nav>
 </header>
@@ -61,13 +61,33 @@ PAGE_SHELL = """<!DOCTYPE html>
 """
 
 
-def render_methodology() -> None:
-    md_text = (ROOT / "methodology.md").read_text(encoding="utf-8")
-    body = markdown.markdown(md_text, extensions=["tables"])
-    (DOCS / "methodology.html").write_text(
-        PAGE_SHELL.format(site=SITE_URL, body=body), encoding="utf-8"
+def _render_md_page(src, slug: str, title: str, description: str) -> None:
+    body = markdown.markdown(src.read_text(encoding="utf-8"),
+                             extensions=["tables"])
+    (DOCS / f"{slug}.html").write_text(
+        PAGE_SHELL.format(
+            site=SITE_URL, body=body, slug=slug, title=title,
+            description=description,
+            cur_meth=' class="current"' if slug == "methodology" else "",
+            cur_data=' class="current"' if slug == "codebook" else "",
+        ),
+        encoding="utf-8",
     )
-    print("[render] wrote docs/methodology.html (converted, not generated)")
+    print(f"[render] wrote docs/{slug}.html (converted, not generated)")
+
+
+def render_methodology() -> None:
+    _render_md_page(
+        ROOT / "methodology.md", "methodology", "Methodology",
+        "Full methodology for the IGRM salience index: construct "
+        "definition, term selection, normalization, episode detection, "
+        "event-study design, limitations, and validation.",
+    )
+    _render_md_page(
+        DOCS / "codebook.md", "codebook", "Codebook",
+        "Column-by-column definitions, units, and construction for every "
+        "IGRM data file.",
+    )
 
 
 def _notes() -> list[dict]:

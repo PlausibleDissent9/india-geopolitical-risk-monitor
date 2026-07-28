@@ -22,6 +22,21 @@
   <p class="definition">All series are open data under CC BY 4.0. Attribution required; no other restrictions. Not investment advice.</p>
 </header>
 
+<h2>How to read the data</h2>
+<p class="prose">Every file reduces to one idea: <b>each row is one day, and each number answers
+"how loud is the world's press about this topic today, compared with this topic's own last two
+years?"</b> — 0 means the quietest day in two years, 100 the loudest, 50 a typical day. The
+five channel columns are the five topics; <code>composite</code> is their simple average.
+Nothing here is a price, probability, or prediction. Full column-by-column definitions,
+units, and construction: <a href="codebook.html"><b>the codebook</b></a>.</p>
+
+<h2>Preview: the last ten days of history.csv</h2>
+<div class="table-scroll"><table id="preview">
+  <thead></thead><tbody><tr><td class="empty">Loading preview…</td></tr></tbody>
+</table></div>
+<p class="kv">This is exactly what downloads — no cleaning needed; it loads directly into
+Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
+
 <h2>Published files</h2>
 <table>
   <thead><tr><th>File</th><th>What it is</th></tr></thead>
@@ -39,8 +54,9 @@
 <p class="kv">Raw inputs (GDELT volume shares, chunk cache, market closes) are versioned in the repository under <code>data/raw/</code>.</p>
 
 <h2>Codebook</h2>
-<p>Column-by-column definitions, units, and construction for every file live in the
-<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/docs/codebook.md">codebook</a>.</p>
+<p>Column-by-column definitions, units, and construction for every file live in
+<a href="codebook.html">the codebook</a> (also on
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/docs/codebook.md">GitHub</a>).</p>
 
 <h2>Citation</h2>
 <p class="prose">If you use the data, cite it:</p>
@@ -49,8 +65,31 @@ press-salience index for India. Version 1.0.0. https://plausibledissent9.github.
 <p class="kv">A DOI-minted release via Zenodo is planned; the citation string will gain the DOI when it exists.</p>
 
 <footer>
-  <p><a href="methodology.html">Methodology</a> &middot; <a href="validation.html">Validation</a></p>
+  <p><a href="methodology.html">Methodology</a> &middot; <a href="validation.html">Validation</a> &middot; <a href="codebook.html">Codebook</a></p>
   <p>Association, not causation. Not investment advice.</p>
 </footer>
+
+<script>
+"use strict";
+const NICE = {
+  date: "Date", composite: "Composite",
+  pakistan_west: "Pakistan / W. Border", china_east: "China / E. Border",
+  gulf_energy: "Gulf & Energy", us_trade: "US & Trade", shipping: "Shipping",
+};
+(async () => {
+  try {
+    const text = await (await fetch("data/history.csv", { cache: "no-store" })).text();
+    const lines = text.trim().split("\n");
+    const cols = lines[0].split(",");
+    const rows = lines.slice(-10).map((l) => l.split(","));
+    const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+    document.querySelector("#preview thead").innerHTML =
+      "<tr>" + cols.map((c) => `<th>${esc(NICE[c] || c)}</th>`).join("") + "</tr>";
+    document.querySelector("#preview tbody").innerHTML = rows.map((r) =>
+      "<tr>" + r.map((v, i) => `<td>${esc(v === "" ? "–" : v)}</td>`).join("") + "</tr>"
+    ).join("");
+  } catch (e) { /* preview stays in loading state offline */ }
+})();
+</script>
 </body>
 </html>
