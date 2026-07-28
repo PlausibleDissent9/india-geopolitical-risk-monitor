@@ -7,6 +7,7 @@
 <meta name="description" content="Every published IGRM data file, the codebook, licensing, and the citation string.">
 <link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css">
 </head>
@@ -45,7 +46,7 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
     <tr><td><a href="data/episodes.csv" download>episodes.csv</a></td><td><b>Research artifact:</b> every detected episode — channel, start, end, peak date, peak coverage share, spike days.</td></tr>
     <tr><td><a href="data/event_study.csv" download>event_study.csv</a></td><td><b>Research artifact:</b> the event study flattened — one row per channel × outcome × window, with means, 95% CIs, and n.</td></tr>
     <tr><td><a href="data/latest.json">latest.json</a></td><td>Today's composite and per-channel percentile scores, with the definition line.</td></tr>
-    <tr><td><a href="data/history.json">history.json</a></td><td>Full daily score history per channel and composite (plus a <code>wikipedia</code> block once the second source is active).</td></tr>
+    <tr><td><a href="data/history.json">history.json</a></td><td>Full daily score history per channel and composite (the <code>wikipedia</code> block carries the demand-side second source).</td></tr>
     <tr><td><a href="data/episodes.json">episodes.json</a></td><td>Detected coverage episodes: channel, start, end, peak date, peak volume share, spike-day count.</td></tr>
     <tr><td><a href="data/event_study.json">event_study.json</a></td><td>Mean cumulative relative returns after episode starts with bootstrapped 95% CIs, plus per-episode raw window returns.</td></tr>
     <tr><td><a href="data/validation.json">validation.json</a></td><td>Hit-rate against the pre-registered episode list, placebo-channel overlap, dictionary-robustness correlations, cross-source agreement, coverage-drift diagnostics.</td></tr>
@@ -64,7 +65,7 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
 <h2>Citation</h2>
 <p class="prose">If you use the data, cite it:</p>
 <p class="prose"><code id="cite">Krishna, Ishan (2026). India Geopolitical Risk Monitor: a category-decomposed
-press-salience index for India. Version 1.0.0. https://plausibledissent9.github.io/india-geopolitical-risk-monitor/ (data: CC BY 4.0)</code></p>
+press-salience index for India. Version 1.0.1. https://plausibledissent9.github.io/india-geopolitical-risk-monitor/ (data: CC BY 4.0)</code></p>
 <p class="prose">BibTeX:</p>
 <pre class="prose" style="font-size:0.8rem; overflow-x:auto;"><code>@misc{krishna2026igrm,
   author = {Krishna, Ishan},

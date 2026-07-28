@@ -157,6 +157,62 @@ if (document.getElementById("theme-toggle")) {
     (localStorage.igrmTheme || "dark") === "dark" ? "Light" : "Dark";
 }
 
+/* Subscribe slide-in: appears once after 15s of reading, remembers both
+   dismissal and subscription. Posts to Buttondown once BUTTONDOWN_USER
+   is set; until then it falls back to a prefilled email to the author,
+   so no address is ever silently dropped. */
+const BUTTONDOWN_USER = "";  // set after creating buttondown.com account
+function initSubscribe() {
+  if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
+  const box = document.getElementById("subscribe");
+  if (!box) return;
+  setTimeout(() => { box.hidden = false; }, 15000);
+  document.getElementById("subscribe-close").addEventListener("click", () => {
+    box.hidden = true;
+    localStorage.igrmSubDismissed = "1";
+  });
+  document.getElementById("subscribe-form").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const email = document.getElementById("subscribe-email").value.trim();
+    if (!email) return;
+    if (BUTTONDOWN_USER) {
+      const f = document.createElement("form");
+      f.method = "post";
+      f.action = `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`;
+      f.target = "_blank";
+      const inp = document.createElement("input");
+      inp.name = "email"; inp.value = email;
+      f.appendChild(inp); document.body.appendChild(f); f.submit(); f.remove();
+    } else {
+      location.href = "mailto:ishankrishna9@gmail.com" +
+        "?subject=Subscribe%20to%20the%20IGRM%20weekly%20note" +
+        "&body=" + encodeURIComponent(`Please add ${email} to the weekly note list.`);
+    }
+    localStorage.igrmSubscribed = "1";
+    box.hidden = true;
+  });
+}
+initSubscribe();
+
+/* At-a-glance strip: the biggest mover vs yesterday, in words. */
+function renderGlance(history) {
+  const el = document.getElementById("glance");
+  if (!el || !history || !history.channels) return;
+  let best = null;
+  for (const [key, series] of Object.entries(history.channels)) {
+    const d = delta1d(series);
+    if (d != null && (!best || Math.abs(d) > Math.abs(best.d))) {
+      best = { key, d };
+    }
+  }
+  if (!best || Math.abs(best.d) < 0.05) return;
+  const name = (history.labels && history.labels[best.key]) || best.key;
+  const dir = best.d > 0 ? "up" : "down";
+  el.innerHTML = `Today at a glance: <b>${esc(name)}</b> moved the most, ` +
+    `${dir} <b>${Math.abs(best.d).toFixed(1)}</b> points vs yesterday.`;
+  el.hidden = false;
+}
+
 /* Count-up on the headline number; skipped for reduced-motion users. */
 function countUp(el, target) {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -284,6 +340,7 @@ async function init() {
   if (history) {
     buildToggles(history);
     renderChart();
+    renderGlance(history);
   }
   try {
     const note = await loadJSON("data/note_latest.json");
