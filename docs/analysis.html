@@ -81,7 +81,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
     j("data/priced_risk.json"), j("data/seasonality.json"), j("data/alt_specs.json"),
   ]);
 
-  if (pr && pr.gap && pr.gap.dates) {
+  try { if (pr && pr.gap && pr.gap.dates) {
     const ink = css("--ink"), calm = css("--calm"), severe = css("--severe");
     new Chart(document.getElementById("gap-chart"), {
       type: "line",
@@ -104,7 +104,8 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
     });
   }
 
-  if (pr && pr.lead_lag && pr.lead_lag.ccf) {
+  } catch (e) { console.error("gap:", e); }
+  try { if (pr && pr.lead_lag && pr.lead_lag.ccf) {
     const rows = pr.lead_lag.ccf.filter(r => r.corr != null);
     const sig = rows.map(r => (r.lo > 0 || r.hi < 0));
     new Chart(document.getElementById("ccf-chart"), {
@@ -125,7 +126,8 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
     document.getElementById("ccf-reading").textContent = "Reading: " + pr.lead_lag.reading;
   }
 
-  if (pr && pr.divergence_episodes) {
+  } catch (e) { console.error("ccf:", e); }
+  try { if (pr && pr.divergence_episodes) {
     const tb = document.querySelector("#divergence tbody"); tb.innerHTML = "";
     const add = (list, name, cls) => (list || []).slice(0, 6).forEach(e => {
       const tr = document.createElement("tr");
@@ -138,7 +140,8 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
     add(pr.divergence_episodes.market_ahead, "Market ahead", "hit");
   }
 
-  if (seas && seas.channels) {
+  } catch (e) { console.error("divergence:", e); }
+  try { if (seas && seas.channels) {
     const tb = document.querySelector("#seasonality tbody"); tb.innerHTML = "";
     for (const [ch, s] of Object.entries(seas.channels)) {
       const top = (s.top_recurring_dates || [])[0];
@@ -150,7 +153,8 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
     }
   }
 
-  if (alt) {
+  } catch (e) { console.error("seasonality:", e); }
+  try { if (alt) {
     const tb = document.querySelector("#altspecs tbody"); tb.innerHTML = "";
     const push = (spec, name, corr) => {
       if (corr == null) return;
@@ -167,6 +171,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
                            v.episode_day_jaccard_vs_primary);
     }
   }
+  } catch (e) { console.error("altspecs:", e); }
 })();
 </script>
 <script src="reveal.js"></script>
