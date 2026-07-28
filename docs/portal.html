@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal — India Geopolitical Risk Monitor</title>
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Archivo:wght@400;500;700&display=swap" rel="stylesheet">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css">
+<style>
+  .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 860px) { .portal-grid { grid-template-columns: 1fr; } }
+  .pane { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.3rem; }
+  .pane h2 { border: none; padding: 0; margin: 0 0 0.6rem; font-size: 1rem; }
+  textarea {
+    width: 100%; min-height: 300px; resize: vertical;
+    font: 0.92rem/1.6 ui-monospace, Menlo, monospace;
+    background: var(--bg); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 0.8rem;
+  }
+  textarea:focus, input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  input[type="text"], input[type="password"] {
+    font: inherit; background: var(--bg); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.75rem;
+  }
+  .btn {
+    font: inherit; font-weight: 500; cursor: pointer;
+    background: var(--accent); color: #fff; border: none;
+    border-radius: 8px; padding: 0.55rem 1.1rem;
+    transition: filter 150ms ease;
+  }
+  .btn:hover { filter: brightness(1.12); }
+  .btn.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+  .btn.ghost:hover { color: var(--fg); border-color: var(--muted); }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+  .row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin: 0.6rem 0; }
+  .status { font-size: 0.85rem; color: var(--muted); min-height: 1.2em; }
+  .status.ok { color: var(--ok); } .status.err { color: var(--bad); }
+  .wordcount { font-variant-numeric: tabular-nums; }
+  .wordcount.good { color: var(--ok); }
+  .preview { border-top: 1px dashed var(--line); margin-top: 0.8rem; padding-top: 0.8rem; }
+  .runrow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
+  .runrow:last-child { border: none; }
+  details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
+  .metric { display: inline-block; margin: 0 1.2rem 0.5rem 0; }
+  .metric b { font-family: "Fraunces", Georgia, serif; font-size: 1.5rem; }
+  .metric span { display: block; font-size: 0.75rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">The author's portal: write and publish the weekly note, read the week's
+  sourced research, and run the pipeline — from here, authenticated against GitHub, token
+  never leaving this device.</p>
+</header>
+
+<div id="login" class="pane" style="max-width: 34rem">
+  <h2>Sign in</h2>
+  <p class="kv">Paste a GitHub fine-grained personal access token scoped to
+  <code>india-geopolitical-risk-monitor</code> with <b>Contents: read &amp; write</b> and
+  <b>Actions: read &amp; write</b>. It is stored only in this browser on this device.</p>
+  <div class="row">
+    <input type="password" id="token" placeholder="github_pat_…" style="flex:1; min-width: 240px">
+    <button class="btn" id="signin">Sign in</button>
+  </div>
+  <p class="status" id="login-status"></p>
+  <details><summary>How to create the token (60 seconds)</summary>
+    <p class="kv">GitHub → Settings → Developer settings → Fine-grained tokens → Generate new
+    token → Repository access: <em>Only select repositories</em> →
+    <code>india-geopolitical-risk-monitor</code> → Permissions: Contents (Read and write),
+    Actions (Read and write) → Generate, copy, paste here.</p>
+  </details>
+</div>
+
+<div id="studio" hidden>
+  <p class="kv" style="display:flex; justify-content:space-between; align-items:center">
+    <span id="whoami"></span>
+    <button class="btn ghost" id="signout">Sign out</button>
+  </p>
+
+  <div class="portal-grid">
+    <div class="pane">
+      <h2>✍️ This week's note — <span id="week-tag"></span></h2>
+      <textarea id="note-text" placeholder="# Headline claim&#10;&#10;Mechanism, grounded in this week's sources…&#10;&#10;What it does and doesn't imply. One number worth remembering."></textarea>
+      <div class="row">
+        <button class="btn" id="publish">Publish note</button>
+        <span class="status wordcount" id="wordcount">0 words · aim ~250</span>
+      </div>
+      <p class="status" id="publish-status"></p>
+      <div class="preview prose" id="note-preview"></div>
+    </div>
+
+    <div>
+      <div class="pane" style="margin-bottom: 1.5rem">
+        <h2>📚 This week's research (the datapack)</h2>
+        <p class="kv">Scores, movers, episodes, and the sourced articles behind them —
+        your evidence base for the note.</p>
+        <div class="prose" id="datapack"><p class="empty">Loading…</p></div>
+      </div>
+
+      <div class="pane" style="margin-bottom: 1.5rem">
+        <h2>📈 Today's numbers</h2>
+        <div id="numbers"><p class="empty">Loading…</p></div>
+      </div>
+
+      <div class="pane">
+        <h2>⚙️ Pipeline</h2>
+        <div class="row">
+          <button class="btn ghost" id="run-daily">Run daily update</button>
+          <button class="btn ghost" id="run-validate">Run validation</button>
+        </div>
+        <p class="status" id="run-status"></p>
+        <div id="runs"><p class="empty">Loading…</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><a href="./">&larr; back to the site</a></p>
+  <p>Unlisted page; bookmark it. The token grants write access to your repo — treat it like a password.</p>
+</footer>
+
+<script>
+"use strict";
+const REPO = "PlausibleDissent9/india-geopolitical-risk-monitor";
+const API = "https://api.github.com";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function isoWeekTag(d = new Date()) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  const y = t.getUTCFullYear();
+  const week = Math.ceil((((t - Date.UTC(y, 0, 1)) / 86400000) + 1) / 7);
+  return `${y}-W${String(week).padStart(2, "0")}`;
+}
+
+function md(text) {
+  const escd = esc(text);
+  return escd.split(/\n{2,}/).map(b => {
+    b = b.trim();
+    if (!b) return "";
+    if (b.startsWith("## ")) return `<h3>${b.slice(3)}</h3>`;
+    if (b.startsWith("# ")) return `<h2>${b.slice(2)}</h2>`;
+    if (b.split("\n").every(l => l.trim().startsWith("- "))) {
+      return "<ul>" + b.split("\n").map(l => `<li>${l.trim().slice(2)}</li>`).join("") + "</ul>";
+    }
+    return "<p>" + b.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\[(.+?)\]\((https?:[^)]+)\)/g, '<a href="$2" rel="noopener">$1</a>')
+      .replace(/\n/g, "<br>") + "</p>";
+  }).join("");
+}
+
+const gh = async (path, opts = {}) => {
+  const r = await fetch(`${API}${path}`, {
+    ...opts,
+    headers: {
+      "Authorization": `Bearer ${localStorage.igrmToken}`,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      ...(opts.headers || {}),
+    },
+  });
+  if (!r.ok && r.status !== 404) throw new Error(`${r.status} ${(await r.json().catch(() => ({}))).message || ""}`);
+  return r;
+};
+
+async function signin(token) {
+  localStorage.igrmToken = token;
+  const r = await gh("/user");
+  if (!r.ok) throw new Error("token rejected");
+  const user = await r.json();
+  $("whoami").textContent = `Signed in as ${user.login}`;
+  $("login").hidden = true;
+  $("studio").hidden = false;
+  loadStudio();
+}
+
+async function loadStudio() {
+  const tag = isoWeekTag();
+  $("week-tag").textContent = tag;
+
+  // Existing note for this week, if any
+  try {
+    const r = await gh(`/repos/${REPO}/contents/notes/${tag}.md`);
+    if (r.ok) {
+      const f = await r.json();
+      $("note-text").value = new TextDecoder().decode(
+        Uint8Array.from(atob(f.content.replace(/\n/g, "")), c => c.charCodeAt(0)));
+      $("note-text").dataset.sha = f.sha;
+      $("publish-status").textContent = "A note for this week already exists — publishing updates it.";
+    }
+  } catch (e) { /* none yet */ }
+  updateCount();
+
+  // Latest datapack
+  try {
+    const r = await gh(`/repos/${REPO}/contents/notes-inbox`);
+    const files = (await r.json()).filter(f => f.name.startsWith("datapack"));
+    if (files.length) {
+      const latest = files.sort((a, b) => a.name.localeCompare(b.name)).pop();
+      const fr = await gh(`/repos/${REPO}/contents/notes-inbox/${latest.name}`);
+      const f = await fr.json();
+      const text = new TextDecoder().decode(
+        Uint8Array.from(atob(f.content.replace(/\n/g, "")), c => c.charCodeAt(0)));
+      $("datapack").innerHTML = md(text);
+    } else {
+      $("datapack").innerHTML = '<p class="empty">No datapack yet — it lands every Friday.</p>';
+    }
+  } catch (e) { $("datapack").innerHTML = '<p class="empty">Could not load datapack.</p>'; }
+
+  // Numbers
+  try {
+    const [latest, val] = await Promise.all([
+      fetch("data/latest.json").then(r => r.json()),
+      fetch("data/validation.json").then(r => r.ok ? r.json() : null).catch(() => null),
+    ]);
+    let html = `<span class="metric"><b>${latest.composite ?? "–"}</b><span>composite · ${esc(latest.date || "")}</span></span>`;
+    if (val && val.hit_rate) {
+      html += `<span class="metric"><b>${val.hit_rate.overall.hits}/${val.hit_rate.overall.n}</b><span>pre-registered hits</span></span>`;
+    }
+    for (const [ch, c] of Object.entries(latest.channels || {})) {
+      html += `<span class="metric"><b>${c.score ?? "–"}</b><span>${esc(c.label)}</span></span>`;
+    }
+    $("numbers").innerHTML = html;
+  } catch (e) { $("numbers").innerHTML = '<p class="empty">Could not load.</p>'; }
+
+  loadRuns();
+}
+
+async function loadRuns() {
+  try {
+    const r = await gh(`/repos/${REPO}/actions/runs?per_page=5`);
+    const runs = (await r.json()).workflow_runs || [];
+    $("runs").innerHTML = runs.map(x =>
+      `<div class="runrow"><span>${esc(x.name)} #${x.run_number}</span>` +
+      `<span class="${x.conclusion === "success" ? "hit" : x.conclusion ? "miss" : ""}">` +
+      `${esc(x.conclusion || x.status)}</span></div>`).join("");
+  } catch (e) { $("runs").innerHTML = '<p class="empty">Could not load runs.</p>'; }
+}
+
+function updateCount() {
+  const words = ($("note-text").value.trim().match(/\S+/g) || []).length;
+  const el = $("wordcount");
+  el.textContent = `${words} words · aim ~250`;
+  el.classList.toggle("good", words >= 180 && words <= 330);
+  $("note-preview").innerHTML = md($("note-text").value);
+}
+
+async function publish() {
+  const tag = isoWeekTag();
+  const text = $("note-text").value.trim();
+  const st = $("publish-status");
+  if (!text) { st.textContent = "Nothing to publish."; return; }
+  $("publish").disabled = true;
+  st.className = "status"; st.textContent = "Publishing…";
+  try {
+    const payload = {
+      message: `note: ${tag}`,
+      content: btoa(String.fromCharCode(...new TextEncoder().encode(text + "\n"))),
+    };
+    if ($("note-text").dataset.sha) payload.sha = $("note-text").dataset.sha;
+    const r = await gh(`/repos/${REPO}/contents/notes/${tag}.md`, {
+      method: "PUT", body: JSON.stringify(payload),
+    });
+    const out = await r.json();
+    $("note-text").dataset.sha = out.content.sha;
+    st.className = "status ok";
+    st.innerHTML = `Published. It appears on the site with the next pipeline run — or trigger one in ⚙️.`;
+  } catch (e) {
+    st.className = "status err"; st.textContent = `Failed: ${e.message}`;
+  }
+  $("publish").disabled = false;
+}
+
+async function dispatch(workflow, label) {
+  const st = $("run-status");
+  st.className = "status"; st.textContent = `Starting ${label}…`;
+  try {
+    await gh(`/repos/${REPO}/actions/workflows/${workflow}/dispatches`, {
+      method: "POST", body: JSON.stringify({ ref: "main" }),
+    });
+    st.className = "status ok"; st.textContent = `${label} started.`;
+    setTimeout(loadRuns, 4000);
+  } catch (e) { st.className = "status err"; st.textContent = `Failed: ${e.message}`; }
+}
+
+$("signin").addEventListener("click", async () => {
+  $("login-status").textContent = "Checking…";
+  try { await signin($("token").value.trim()); }
+  catch (e) { $("login-status").textContent = "Token rejected — check scopes."; }
+});
+$("signout").addEventListener("click", () => {
+  delete localStorage.igrmToken;
+  location.reload();
+});
+$("note-text").addEventListener("input", updateCount);
+$("publish").addEventListener("click", publish);
+$("run-daily").addEventListener("click", () => dispatch("daily.yml", "daily update"));
+$("run-validate").addEventListener("click", () => dispatch("validate.yml", "validation"));
+
+if (localStorage.igrmToken) {
+  signin(localStorage.igrmToken).catch(() => {
+    delete localStorage.igrmToken;
+  });
+}
+</script>
+</body>
+</html>
