@@ -46,6 +46,7 @@ PAGE_SHELL = """<!DOCTYPE html>
   <nav class="masthead">
     <a href="methodology.html"{cur_meth}>Methodology</a>
     <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
     <a href="data.html"{cur_data}>Data</a>
     <a href="notes.html">Notes</a>
   </nav>

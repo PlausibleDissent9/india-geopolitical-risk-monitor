@@ -10,6 +10,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css">
+<script src="labels.js"></script>
 </head>
 <body>
 <header>
@@ -17,6 +18,7 @@
   <nav class="masthead">
     <a href="methodology.html">Methodology</a>
     <a href="validation.html" class="current">Validation</a>
+    <a href="analysis.html">Analysis</a>
     <a href="data.html">Data</a>
     <a href="notes.html">Notes</a>
   </nav>
@@ -80,7 +82,7 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     for (const e of h.episodes) {
       const tr = document.createElement("tr");
       tr.innerHTML = '<td class="' + (e.hit ? 'hit">HIT' : 'miss">MISS') + "</td><td>" +
-        esc(e.channel) + "</td><td>" + esc(e.date) + "</td><td>" + esc(e.name) + "</td>";
+        esc(igrmLabel(e.channel)) + "</td><td>" + esc(e.date) + "</td><td>" + esc(e.name) + "</td>";
       tb.appendChild(tr);
     }
   }
@@ -100,7 +102,7 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     for (const ch of chans) {
       const tr = document.createElement("tr");
       const n = (v.robustness.narrow || {})[ch], b = (v.robustness.broad || {})[ch];
-      tr.innerHTML = "<td>" + esc(ch) + '</td><td class="num">' +
+      tr.innerHTML = "<td>" + esc(igrmLabel(ch)) + '</td><td class="num">' +
         (n == null ? "–" : esc(n.toFixed(3))) + '</td><td class="num">' +
         (b == null ? "–" : esc(b.toFixed(3))) + "</td>";
       tb.appendChild(tr);
@@ -111,7 +113,7 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     const tb = document.querySelector("#cross tbody");
     for (const [ch, c] of Object.entries(v.cross_source.per_channel)) {
       const tr = document.createElement("tr");
-      tr.innerHTML = "<td>" + esc(ch) + '</td><td class="num">' + esc(c.toFixed(3)) + "</td>";
+      tr.innerHTML = "<td>" + esc(igrmLabel(ch)) + '</td><td class="num">' + esc(c.toFixed(3)) + "</td>";
       tb.appendChild(tr);
     }
   } else {
@@ -123,12 +125,13 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     const years = Object.entries(v.drift.mean_daily_corpus_by_year || {})
       .map(([y, n]) => y + ": " + Number(n).toLocaleString()).join(" · ");
     const corrs = Object.entries(v.drift.share_vs_corpus_corr || {})
-      .map(([ch, c]) => ch + " " + c.toFixed(2)).join(" · ");
+      .map(([ch, c]) => igrmLabel(ch) + " " + c.toFixed(2)).join(" · ");
     document.getElementById("drift").innerHTML =
       "Mean daily monitored articles &mdash; " + esc(years) +
       (corrs ? "<br>Share-vs-corpus correlation &mdash; " + esc(corrs) : "");
   }
 })();
 </script>
+<script src="reveal.js"></script>
 </body>
 </html>

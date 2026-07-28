@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analysis — India Geopolitical Risk Monitor</title>
+<meta name="description" content="The attention–pricing gap against India VIX, lead–lag structure, anniversary effects, and specification robustness — rendered, not raw.">
+<link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/analysis.html">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css">
+<script src="labels.js"></script>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html" class="current">Analysis</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">Press attention compared against what the options market actually
+  charges for protection. Everything below is association, never causation: coverage and
+  prices respond to the same events, and nothing in this design separates the two.</p>
+</header>
+
+<h2>The attention–pricing gap</h2>
+<p class="chart-note">Composite attention percentile minus India VIX percentile, daily.
+Above zero: the press is louder than the market. Below zero: the market is pricing
+something the coverage has not caught.</p>
+<div class="chart-wrap" style="height:280px"><canvas id="gap-chart"></canvas></div>
+
+<h2>Who moves first?</h2>
+<p class="chart-note">Correlation between daily <em>changes</em> in attention and daily
+changes in the VIX percentile, at each lead/lag. Bars beyond the shaded band are
+distinguishable from zero (bootstrapped 95% bands). Positive lags mean attention moves
+first; negative, the market.</p>
+<div class="chart-wrap" style="height:260px"><canvas id="ccf-chart"></canvas></div>
+<p class="kv" id="ccf-reading"></p>
+
+<h2>When the press ran hot — and when markets knew first</h2>
+<div class="table-scroll"><table id="divergence">
+  <thead><tr><th>Direction</th><th>Start</th><th>End</th><th>Peak day</th><th class="num">Peak gap</th></tr></thead>
+  <tbody><tr><td colspan="5" class="empty">Not computed yet.</td></tr></tbody>
+</table></div>
+
+<h2>Anniversary journalism, measured</h2>
+<p class="chart-note">Share of each channel's (detrended, log) daily variance explained by
+day-of-year recurrence — how much of the series is the calendar rather than the world.</p>
+<div class="table-scroll"><table id="seasonality">
+  <thead><tr><th>Channel</th><th class="num">Calendar share of variance</th><th>Most recurrent date</th></tr></thead>
+  <tbody><tr><td colspan="3" class="empty">Not computed yet.</td></tr></tbody>
+</table></div>
+
+<h2>Does the construction drive the result?</h2>
+<p class="chart-note">The index recomputed under alternative normalization windows and
+episode thresholds. High correlation with the primary means the choices are conventions,
+not results.</p>
+<div class="table-scroll"><table id="altspecs">
+  <thead><tr><th>Specification</th><th>Alternative</th><th class="num">Agreement with primary</th></tr></thead>
+  <tbody><tr><td colspan="3" class="empty">Not computed yet.</td></tr></tbody>
+</table></div>
+
+<footer>
+  <p><a href="data.html">Underlying files &amp; citation</a> &middot; <a href="methodology.html">Methodology</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+
+<script>
+"use strict";
+async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+(async () => {
+  const [pr, seas, alt] = await Promise.all([
+    j("data/priced_risk.json"), j("data/seasonality.json"), j("data/alt_specs.json"),
+  ]);
+
+  if (pr && pr.gap && pr.gap.dates) {
+    const ink = css("--ink"), calm = css("--calm"), severe = css("--severe");
+    new Chart(document.getElementById("gap-chart"), {
+      type: "line",
+      data: { labels: pr.gap.dates, datasets: [{
+        data: pr.gap.composite, borderColor: ink, borderWidth: 1.4,
+        pointRadius: 0, tension: 0.15,
+        fill: { target: { value: 0 } },
+        backgroundColor: (ctx) => {
+          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height || 280);
+          g.addColorStop(0, severe + "30"); g.addColorStop(0.5, "transparent");
+          g.addColorStop(1, calm + "30"); return g;
+        },
+      }]},
+      options: { animation: false, responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        interaction: { mode: "index", intersect: false },
+        scales: { y: { grid: { color: css("--rule-soft") }, ticks: { color: css("--muted") },
+                       title: { display: true, text: "press louder ↑ · market ahead ↓", color: css("--muted") } },
+                  x: { ticks: { maxTicksLimit: 8, color: css("--muted") }, grid: { display: false } } } },
+    });
+  }
+
+  if (pr && pr.lead_lag && pr.lead_lag.ccf) {
+    const rows = pr.lead_lag.ccf.filter(r => r.corr != null);
+    const sig = rows.map(r => (r.lo > 0 || r.hi < 0));
+    new Chart(document.getElementById("ccf-chart"), {
+      type: "bar",
+      data: { labels: rows.map(r => r.lag), datasets: [
+        { type: "line", data: rows.map(r => r.hi), borderWidth: 0, pointRadius: 0,
+          fill: "+1", backgroundColor: css("--rule") + "66" },
+        { type: "line", data: rows.map(r => r.lo), borderWidth: 0, pointRadius: 0 },
+        { data: rows.map(r => r.corr),
+          backgroundColor: rows.map((r, i) => sig[i] ? css("--state") : css("--muted") + "88") },
+      ]},
+      options: { animation: false, responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { grid: { color: css("--rule-soft") }, ticks: { color: css("--muted") } },
+                  x: { title: { display: true, text: "lag in trading days (positive = attention first)", color: css("--muted") },
+                       ticks: { color: css("--muted") }, grid: { display: false } } } },
+    });
+    document.getElementById("ccf-reading").textContent = "Reading: " + pr.lead_lag.reading;
+  }
+
+  if (pr && pr.divergence_episodes) {
+    const tb = document.querySelector("#divergence tbody"); tb.innerHTML = "";
+    const add = (list, name, cls) => (list || []).slice(0, 6).forEach(e => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td class="${cls}">${name}</td><td>${esc(e.start)}</td>` +
+        `<td>${esc(e.end)}</td><td>${esc(e.peak_date)}</td>` +
+        `<td class="num">${e.peak_gap > 0 ? "+" : ""}${esc(e.peak_gap)}</td>`;
+      tb.appendChild(tr);
+    });
+    add(pr.divergence_episodes.press_louder, "Press louder", "bad");
+    add(pr.divergence_episodes.market_ahead, "Market ahead", "hit");
+  }
+
+  if (seas && seas.channels) {
+    const tb = document.querySelector("#seasonality tbody"); tb.innerHTML = "";
+    for (const [ch, s] of Object.entries(seas.channels)) {
+      const top = (s.top_recurring_dates || [])[0];
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${esc(igrmLabel(ch))}</td>` +
+        `<td class="num">${(s.partial_r2 * 100).toFixed(1)}%</td>` +
+        `<td>${top ? esc(top.month_day) : "–"}</td>`;
+      tb.appendChild(tr);
+    }
+  }
+
+  if (alt) {
+    const tb = document.querySelector("#altspecs tbody"); tb.innerHTML = "";
+    const push = (spec, name, corr) => {
+      if (corr == null) return;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${esc(spec)}</td><td>${esc(name)}</td>` +
+        `<td class="num">${esc(Number(corr).toFixed(3))}</td>`;
+      tb.appendChild(tr);
+    };
+    for (const [w, v] of Object.entries(alt.percentile_windows_days || {})) {
+      if (w !== "730") push("Normalization window", `${w} days (primary: 730)`, v.corr_with_primary);
+    }
+    for (const [s, v] of Object.entries(alt.episode_thresholds_sigma || {})) {
+      if (s !== "2.0") push("Episode threshold", `${s}σ (primary: 2.0σ) — episode-day overlap`,
+                           v.episode_day_jaccard_vs_primary);
+    }
+  }
+})();
+</script>
+<script src="reveal.js"></script>
+</body>
+</html>
