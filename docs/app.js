@@ -229,18 +229,21 @@ function renderGlance(history) {
 
 /* Count-up on the headline number; skipped for reduced-motion users. */
 function countUp(el, target) {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    el.textContent = target.toFixed(1);
-    return;
-  }
-  const t0 = performance.now(), dur = 700;
+  const dur = 700;
+  let finished = false;
+  const done = () => { finished = true; el.textContent = target.toFixed(1); };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return done();
+  const t0 = performance.now();
   const tick = (t) => {
+    if (finished) return;
     const p = Math.min(1, (t - t0) / dur);
     const eased = 1 - Math.pow(1 - p, 3);
     el.textContent = (target * eased).toFixed(1);
-    if (p < 1) requestAnimationFrame(tick);
+    if (p < 1) requestAnimationFrame(tick); else finished = true;
   };
   requestAnimationFrame(tick);
+  // rAF is a nicety, never a dependency: the number lands regardless.
+  setTimeout(() => { if (!finished) done(); }, dur + 300);
 }
 
 function buildToggles(h) {
