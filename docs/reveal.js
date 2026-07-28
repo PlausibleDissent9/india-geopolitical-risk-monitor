@@ -25,3 +25,17 @@
     for (const t of below) t.classList.add("in");
   }, 3000);
 })();
+
+/* Reading progress bar */
+(() => {
+  const bar = document.createElement("div");
+  bar.className = "progress";
+  document.body.appendChild(bar);
+  const update = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - innerHeight;
+    bar.style.width = max > 0 ? (100 * h.scrollTop / max) + "%" : "0";
+  };
+  addEventListener("scroll", update, { passive: true });
+  update();
+})();

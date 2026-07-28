@@ -121,7 +121,8 @@ function renderChart() {
     type: "line",
     data: { labels, datasets },
     options: {
-      animation: false,
+      animation: { duration: 900, easing: "easeOutQuart" },
+      animations: { y: { from: (ctx) => ctx.chart.scales.y.getPixelForValue(0) } },
       responsive: true,
       interaction: { mode: "index", intersect: false },
       plugins: { legend: { display: false } },

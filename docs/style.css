@@ -257,3 +257,23 @@ main > section:nth-child(5) { animation-delay: 240ms; }
   transition: opacity 550ms cubic-bezier(0.22,1,0.36,1), transform 550ms cubic-bezier(0.22,1,0.36,1); }
 .reveal.in { opacity: 1; transform: none; }
 main > section.reveal { animation: none; }
+
+/* Reading progress bar */
+.progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--calm), var(--state));
+  z-index: 60; transition: width 120ms linear;
+}
+
+/* Card hover lift */
+.instrument, .glance {
+  transition: transform 220ms cubic-bezier(0.22,1,0.36,1), box-shadow 220ms ease,
+              background 300ms ease, border-color 300ms ease;
+}
+.instrument:hover { transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), 0 16px 44px rgba(0,0,0,0.4); }
+
+/* Smooth theme crossfade */
+body, .masthead, .instrument, .glance, .subscribe {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}

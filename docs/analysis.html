@@ -95,7 +95,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
           g.addColorStop(1, calm + "30"); return g;
         },
       }]},
-      options: { animation: false, responsive: true, maintainAspectRatio: false,
+      options: { animation: { duration: 900, easing: "easeOutQuart" }, responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         interaction: { mode: "index", intersect: false },
         scales: { y: { grid: { color: css("--rule-soft") }, ticks: { color: css("--muted") },
