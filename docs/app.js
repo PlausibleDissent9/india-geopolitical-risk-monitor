@@ -167,7 +167,7 @@ function initSubscribe() {
   const overlay = document.getElementById("subscribe-overlay");
   if (!overlay) return;
   const dismiss = () => {
-    overlay.hidden = true;
+    overlay.hidden = true; overlay.style.display = "none";
     localStorage.igrmSubDismissed = "1";
     document.removeEventListener("keydown", onKey);
   };
@@ -177,13 +177,13 @@ function initSubscribe() {
   overlay.addEventListener("click", (ev) => { if (ev.target === overlay) dismiss(); });
   document.getElementById("subscribe-close").addEventListener("click", dismiss);
   document.addEventListener("keydown", onKey);
-  overlay.hidden = true;  // belt and braces against CSS overriding [hidden]
+  overlay.hidden = true; overlay.style.display = "none";
 
   if (!BUTTONDOWN_USER) return;
   if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
 
   setTimeout(() => {
-    overlay.hidden = false;
+    overlay.hidden = false; overlay.style.display = "flex";
     document.getElementById("subscribe-email").focus({ preventScroll: true });
     document.addEventListener("keydown", onKey);
   }, 15000);
@@ -203,7 +203,7 @@ function initSubscribe() {
     document.querySelector(".subscribe-fine").hidden = true;
     document.getElementById("subscribe-done").hidden = false;
     localStorage.igrmSubscribed = "1";
-    setTimeout(() => { overlay.hidden = true; }, 3500);
+    setTimeout(() => { overlay.hidden = true; overlay.style.display = "none"; }, 3500);
   });
 }
 initSubscribe();
