@@ -12,7 +12,7 @@
 <meta property="og:image" content="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/card.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/card.png" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self' https://buttondown.com mailto:" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://buttondown.com; base-uri 'self'; form-action 'self'" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 <link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/" />
 <script type="application/ld+json">
@@ -128,18 +128,24 @@
   <p class="fine">A descriptive research index of news salience, validated against a pre-registered episode list (see <a href="validation.html">Validation</a>). Association, not causation. Not investment advice.</p>
 </footer>
 
-<aside class="subscribe" id="subscribe" hidden aria-label="Subscribe to the weekly note">
-  <button class="subscribe-close" id="subscribe-close" aria-label="Dismiss">×</button>
-  <p class="mono-eyebrow">The weekly note</p>
-  <p class="subscribe-copy">One ~250-word read each Friday: what moved in India's
-  geopolitical salience and why, grounded in the week's sources.</p>
-  <form id="subscribe-form">
-    <input type="email" id="subscribe-email" placeholder="you@example.com" required
-           autocomplete="email" aria-label="Email address" />
-    <button type="submit">Subscribe</button>
-  </form>
-  <p class="subscribe-alt"><a href="feed.xml">RSS instead</a></p>
-</aside>
+<div class="subscribe-overlay" id="subscribe-overlay" hidden>
+  <aside class="subscribe" role="dialog" aria-modal="true" aria-label="Subscribe to the weekly note">
+    <button class="subscribe-close" id="subscribe-close" aria-label="Dismiss">×</button>
+    <p class="mono-eyebrow">The weekly note</p>
+    <h2 class="subscribe-title">What moved. Why. In two minutes.</h2>
+    <p class="subscribe-copy">One ~250-word read each Friday: what moved in India's
+    geopolitical salience, why it moved, and what it does — and doesn't — imply.
+    Grounded in the week's sources, never more than two minutes of your time.</p>
+    <form id="subscribe-form">
+      <input type="email" id="subscribe-email" placeholder="you@example.com" required
+             autocomplete="email" aria-label="Email address" />
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="subscribe-fine">Free forever. One email a week. Unsubscribe anytime.</p>
+    <p class="subscribe-done" id="subscribe-done" hidden>Done — check your inbox for a
+    confirmation and your welcome letter. See you Friday.</p>
+  </aside>
+</div>
 
 <script src="app.js"></script>
 <script src="reveal.js"></script>

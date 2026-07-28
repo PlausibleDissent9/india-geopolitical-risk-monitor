@@ -1,5 +1,43 @@
 # Notes for the author — changes needing your words
 
+## 0.0 Activate the subscribe list (5 minutes, only you can)
+
+1. Create the free account at buttondown.com (use your normal email).
+2. Settings → paste the welcome email below (edit voice as you like).
+3. Tell Claude your Buttondown username — one constant flips and the
+   centered subscribe modal goes live for every visitor.
+
+**Welcome email draft:**
+
+Subject: Welcome to the IGRM weekly note
+
+> You're in. Here's what you now get, every Friday:
+>
+> **The note.** ~250 words on what actually moved in India's
+> geopolitical salience that week — which of the five channels
+> (Pakistan border, China border, Gulf & energy, US & trade, shipping)
+> ran hot, what drove it (with the sources), and what it does and
+> doesn't imply. Two minutes, no filler.
+>
+> **The numbers behind it.** Every claim links back to the live index —
+> open data since 2017, downloadable as CSV, with a published
+> methodology validated against 21 pre-registered historical episodes
+> (86% detected).
+>
+> **Subscriber perks:**
+> - The weekly *sourced dossier* — the 10–15 articles that drove the
+>   week's biggest mover, before the note interprets them.
+> - First look at new analyses (the attention-vs-market gap, event-study
+>   updates) before they're written up anywhere else.
+> - Early access to the working paper when it ships this autumn.
+>
+> One email a week, free forever, unsubscribe anytime. If something in a
+> note looks wrong, reply — the methodology has a changelog for a
+> reason.
+>
+> — Ishan
+> https://plausibledissent9.github.io/india-geopolitical-risk-monitor/
+
 ## LAUNCH STATE (2026-07-27) — read this first
 
 The site is live with 2017→2026-07-21 data, reconstructed offline from

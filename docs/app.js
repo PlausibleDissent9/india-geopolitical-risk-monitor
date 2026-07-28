@@ -157,39 +157,50 @@ if (document.getElementById("theme-toggle")) {
     (localStorage.igrmTheme || "dark") === "dark" ? "Light" : "Dark";
 }
 
-/* Subscribe slide-in: appears once after 15s of reading, remembers both
-   dismissal and subscription. Posts to Buttondown once BUTTONDOWN_USER
-   is set; until then it falls back to a prefilled email to the author,
-   so no address is ever silently dropped. */
-const BUTTONDOWN_USER = "";  // set after creating buttondown.com account
+/* Subscribe modal: centered, appears once after 15s of reading, fully
+   automated through Buttondown (email in -> subscribed -> welcome email
+   from the service). Gated on BUTTONDOWN_USER so visitors never see a
+   flow that is not yet wired to a real list. */
+const BUTTONDOWN_USER = "";  // buttondown.com username; empty = modal off
 function initSubscribe() {
+  if (!BUTTONDOWN_USER) return;
   if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
-  const box = document.getElementById("subscribe");
-  if (!box) return;
-  setTimeout(() => { box.hidden = false; }, 15000);
-  document.getElementById("subscribe-close").addEventListener("click", () => {
-    box.hidden = true;
+  const overlay = document.getElementById("subscribe-overlay");
+  if (!overlay) return;
+  const dismiss = () => {
+    overlay.hidden = true;
     localStorage.igrmSubDismissed = "1";
+    document.removeEventListener("keydown", onKey);
+  };
+  const onKey = (ev) => { if (ev.key === "Escape") dismiss(); };
+
+  setTimeout(() => {
+    overlay.hidden = false;
+    document.getElementById("subscribe-email").focus({ preventScroll: true });
+    document.addEventListener("keydown", onKey);
+  }, 15000);
+
+  overlay.addEventListener("click", (ev) => {
+    if (ev.target === overlay) dismiss();
   });
-  document.getElementById("subscribe-form").addEventListener("submit", (ev) => {
+  document.getElementById("subscribe-close").addEventListener("click", dismiss);
+
+  document.getElementById("subscribe-form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
     const email = document.getElementById("subscribe-email").value.trim();
     if (!email) return;
-    if (BUTTONDOWN_USER) {
-      const f = document.createElement("form");
-      f.method = "post";
-      f.action = `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`;
-      f.target = "_blank";
-      const inp = document.createElement("input");
-      inp.name = "email"; inp.value = email;
-      f.appendChild(inp); document.body.appendChild(f); f.submit(); f.remove();
-    } else {
-      location.href = "mailto:ishankrishna9@gmail.com" +
-        "?subject=Subscribe%20to%20the%20IGRM%20weekly%20note" +
-        "&body=" + encodeURIComponent(`Please add ${email} to the weekly note list.`);
-    }
+    const body = new URLSearchParams({ email });
+    try {
+      await fetch(
+        `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`,
+        { method: "POST", mode: "no-cors", body }
+      );
+    } catch (e) { /* opaque response either way; Buttondown confirms by email */ }
+    document.getElementById("subscribe-form").hidden = true;
+    document.querySelector(".subscribe-fine").hidden = true;
+    document.getElementById("subscribe-done").hidden = false;
     localStorage.igrmSubscribed = "1";
-    box.hidden = true;
+    setTimeout(() => { overlay.hidden = true; }, 3500);
   });
 }
 initSubscribe();

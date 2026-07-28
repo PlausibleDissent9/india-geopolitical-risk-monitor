@@ -193,14 +193,25 @@ td a { color: var(--state); }
 }
 .glance b { color: var(--ink); }
 
-/* Subscribe slide-in */
-.subscribe {
-  position: fixed; right: 22px; bottom: 22px; z-index: 40;
-  width: min(340px, calc(100vw - 44px));
-  background: var(--surface); border: 1px solid var(--rule);
-  border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow);
-  animation: rise 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+/* Subscribe modal — centered, dimmed backdrop */
+.subscribe-overlay {
+  position: fixed; inset: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  padding: 24px;
 }
+.subscribe {
+  width: min(440px, 100%);
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 16px; padding: 26px 28px; box-shadow: var(--shadow);
+  animation: rise 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  position: relative;
+}
+.subscribe-title { font-size: 1.35rem; margin: 4px 0 0; }
+.subscribe-fine { font-size: 0.75rem; color: var(--muted); margin: 10px 0 0; }
+.subscribe-done { font-size: 0.9rem; color: var(--calm); margin: 12px 0 0; }
 .subscribe-close {
   position: absolute; top: 8px; right: 12px;
   background: none; border: none; color: var(--muted);
