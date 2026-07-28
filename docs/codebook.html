@@ -49,6 +49,54 @@ construction; the reasoning lives in <a href="../methodology.md">methodology.md<
 </tr>
 </tbody>
 </table>
+<h2>docs/data/episodes.csv</h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Definition</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>channel</code> / <code>label</code></td>
+<td>Machine key and display name of the spiking channel</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>start</code>, <code>end</code></td>
+<td>First and last spike day of the cluster</td>
+<td>ISO date</td>
+</tr>
+<tr>
+<td><code>peak_date</code></td>
+<td>Day of maximum raw coverage share inside the episode</td>
+<td>ISO date</td>
+</tr>
+<tr>
+<td><code>peak_value</code></td>
+<td>That maximum share</td>
+<td>percent of monitored corpus</td>
+</tr>
+<tr>
+<td><code>n_spike_days</code></td>
+<td>Spike days in the cluster</td>
+<td>count</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/event_study.csv</h2>
+<p>One row per channel × outcome × window. <code>mean_cum_log_return_pct</code> is the
+mean cumulative log return (percent) over <code>window_trading_days</code> after
+episode starts; <code>ci95_lo</code>/<code>ci95_hi</code> bound the bootstrapped 95% interval;
+<code>n_episodes</code> is the number of episodes with sufficient data;
+<code>descriptive_only</code> marks outcomes (Brent, gold) with no separable
+India-specific component. Association, not causation.</p>
+<h2>JSON <code>_meta</code> blocks</h2>
+<p>Every dict-shaped JSON published by the pipeline embeds a <code>_meta</code> object
+(what the file is, units, license, citation, codebook link, generation
+date) so a downloaded file explains itself without this website.</p>
 <h2>docs/data/latest.json</h2>
 <table>
 <thead>

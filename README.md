@@ -22,26 +22,31 @@ GitHub Actions (daily 18:00 IST) commits outputs; GitHub Pages serves docs/
 notes/*.md (author-written) ──> published to the site weekly
 ```
 
-## Launch checklist
+## Status
 
-1. **Create the repo.** Public GitHub repo named
-   `india-geopolitical-risk-monitor`. Push these contents. Replace the two
-   `PlausibleDissent9` links in `docs/index.html` with your GitHub username.
-2. **Enable Pages.** Settings → Pages → Deploy from branch → `main`,
-   folder `/docs`.
-3. **Review the dictionaries.** `dictionaries.json` is frozen (v1.0.0,
-   2026-07-24) with a per-term rationale; any change you make goes in the
-   methodology changelog. `pytest -q` enforces the ex-ante rule (no
-   retrospective event names) and the GDELT query grammar in CI.
-4. **First run.** Actions tab → `daily-update` → Run workflow →
-   backfill = **true**. Expect 20–40 minutes (GDELT is chunked politely).
-   The daily cron (18:00 IST) takes over afterwards.
-5. **Validate.** After the backfill: `python -m src.validate hit-rate`
-   scores the pre-registered episode list (the key figure), `placebo` and
-   `robustness` run the layer-4 checks. Results land in
-   `docs/data/validation.json`; report them in methodology §8.
-6. **Verify.** Open the Pages URL. Composite number, five components,
-   chart, archive should render. Then write the first weekly note.
+Live at https://plausibledissent9.github.io/india-geopolitical-risk-monitor/
+with daily data since 2017-01-01, frozen v1.0.0 dictionaries, and a
+pre-registered validation hit rate of **18/21 (86%)**. During the July
+2026 DOC-API disruption the recent tail is computed from GDELT's Web
+NGrams feed at the maintainer's direction, ratio-spliced on overlap days
+(methodology changelog v1.0.1).
+
+## Operations
+
+- **Daily (automatic).** `daily-update` runs at 18:00 IST: the ngram
+  bridge heals recent days, the pipeline rebuilds scores/episodes/event
+  study, and outputs commit to `docs/`. It refuses to publish stale or
+  partial data (fail-loud gate).
+- **Validation.** `validate-and-analyze` (Actions) re-runs the full
+  battery; hit-rate/seasonality/alt-specs are offline, the
+  GDELT-dependent checks retry when the API allows.
+- **Dictionaries are frozen.** Any change goes through the methodology
+  changelog; CI enforces the ex-ante rule (no retrospective event names)
+  and the query grammar across all term lists.
+- **Weekly note.** Friday's run drops `notes-inbox/datapack_YYYY-Www.md`;
+  write ~250 words to `notes/YYYY-Www.md` (the site footer's
+  "write this week's note" link opens the editor) — the next run
+  publishes it to the site and RSS.
 
 ## Local run
 

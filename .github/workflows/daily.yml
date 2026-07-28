@@ -34,6 +34,10 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Enforce dictionary rules (ex-ante rule)
         run: python -m pytest -q
+      - name: Ngram bridge - heal recent days (maintainer-sanctioned path)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        run: python -m src.fetch_ngrams --heal 35
       - name: Run pipeline
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,

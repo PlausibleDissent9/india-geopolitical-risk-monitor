@@ -97,7 +97,19 @@ def main() -> None:
         backfill_from = date(y, m, d)
 
     print("[1/5] GDELT volumes")
-    volume = fetch_gdelt.load_or_update(dictionaries, backfill_from=backfill_from)
+    store = Path(fetch_gdelt.RAW_DIR) / "gdelt_volume.csv"
+    try:
+        volume = fetch_gdelt.load_or_update(dictionaries, backfill_from=backfill_from)
+    except (RuntimeError, SystemExit) as e:
+        # DOC API down (July 2026 disruption): fall back to the store,
+        # which the ngram bridge (src/fetch_ngrams, run by CI before this)
+        # keeps current per the GDELT maintainer's guidance. The fail-loud
+        # gate below still refuses stale or partial data.
+        if backfill_from is not None or not store.exists():
+            raise
+        print(f"[warn] DOC API unavailable ({e}); using ngram-healed store")
+        volume = pd.read_csv(store, parse_dates=["date"]).set_index("date")
+        volume.index = [d.date() for d in volume.index]
 
     print("[2/5] Markets")
     _, derived = fetch_markets.load_or_update(start=args.from_date)

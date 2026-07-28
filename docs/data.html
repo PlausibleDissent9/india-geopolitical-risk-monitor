@@ -41,6 +41,9 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
 <table>
   <thead><tr><th>File</th><th>What it is</th></tr></thead>
   <tbody>
+    <tr><td><a href="data/history.csv" download>history.csv</a></td><td><b>The primary research artifact:</b> full daily percentile scores, one row per day, 2017–present.</td></tr>
+    <tr><td><a href="data/episodes.csv" download>episodes.csv</a></td><td><b>Research artifact:</b> every detected episode — channel, start, end, peak date, peak coverage share, spike days.</td></tr>
+    <tr><td><a href="data/event_study.csv" download>event_study.csv</a></td><td><b>Research artifact:</b> the event study flattened — one row per channel × outcome × window, with means, 95% CIs, and n.</td></tr>
     <tr><td><a href="data/latest.json">latest.json</a></td><td>Today's composite and per-channel percentile scores, with the definition line.</td></tr>
     <tr><td><a href="data/history.json">history.json</a></td><td>Full daily score history per channel and composite (plus a <code>wikipedia</code> block once the second source is active).</td></tr>
     <tr><td><a href="data/episodes.json">episodes.json</a></td><td>Detected coverage episodes: channel, start, end, peak date, peak volume share, spike-day count.</td></tr>
@@ -62,7 +65,16 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
 <p class="prose">If you use the data, cite it:</p>
 <p class="prose"><code id="cite">Krishna, Ishan (2026). India Geopolitical Risk Monitor: a category-decomposed
 press-salience index for India. Version 1.0.0. https://plausibledissent9.github.io/india-geopolitical-risk-monitor/ (data: CC BY 4.0)</code></p>
-<p class="kv">A DOI-minted release via Zenodo is planned; the citation string will gain the DOI when it exists.</p>
+<p class="prose">BibTeX:</p>
+<pre class="prose" style="font-size:0.8rem; overflow-x:auto;"><code>@misc{krishna2026igrm,
+  author = {Krishna, Ishan},
+  title  = {India Geopolitical Risk Monitor: a category-decomposed
+            press-salience index for India},
+  year   = {2026},
+  url    = {https://plausibledissent9.github.io/india-geopolitical-risk-monitor/},
+  note   = {Version 1.0.1. Data: CC BY 4.0}
+}</code></pre>
+<p class="kv">A DOI-minted release via Zenodo is planned; the citation will gain the DOI when it exists.</p>
 
 <footer>
   <p><a href="methodology.html">Methodology</a> &middot; <a href="validation.html">Validation</a> &middot; <a href="codebook.html">Codebook</a></p>

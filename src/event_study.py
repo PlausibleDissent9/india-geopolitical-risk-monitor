@@ -33,11 +33,31 @@ def _cum_return(series: pd.Series, start: pd.Timestamp, window: int) -> float | 
     return float(s.loc[idx[0]:idx[window - 1]].sum())
 
 
-def _bootstrap_ci(values: np.ndarray, rng: np.random.Generator) -> tuple[float, float]:
+def _bootstrap(values: np.ndarray, rng: np.random.Generator) -> tuple[float, float, float]:
+    """95% CI and a two-sided bootstrap p-value for mean != 0 (the share
+    of resampled means on the far side of zero, doubled)."""
     means = np.array(
         [values[rng.integers(0, len(values), len(values))].mean() for _ in range(N_BOOT)]
     )
-    return float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5))
+    lo, hi = float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5))
+    frac_le = float(np.mean(means <= 0))
+    p = 2.0 * min(frac_le, 1.0 - frac_le)
+    return lo, hi, min(max(p, 1.0 / N_BOOT), 1.0)
+
+
+def _benjamini_hochberg(cells: list[dict], alpha: float = 0.10) -> None:
+    """FDR correction across the full test grid of RELATIVE outcomes
+    (channels x outcomes x windows), flagging each cell in place.
+    Descriptive outcomes are excluded -- they make no inferential claim."""
+    tested = [c for c in cells if not c["descriptive"] and c.get("p") is not None]
+    tested.sort(key=lambda c: c["p"])
+    m = len(tested)
+    threshold_rank = 0
+    for i, c in enumerate(tested, start=1):
+        if c["p"] <= alpha * i / m:
+            threshold_rank = i
+    for i, c in enumerate(tested, start=1):
+        c["cell"]["bh_significant_10pct"] = i <= threshold_rank
 
 
 def run_event_study(episodes: list[dict], derived: pd.DataFrame) -> dict:
@@ -60,6 +80,7 @@ def run_event_study(episodes: list[dict], derived: pd.DataFrame) -> dict:
         "channels": {},
     }
 
+    all_cells: list[dict] = []
     for ch, eps in sorted(by_channel.items()):
         starts = [pd.Timestamp(e["start"]) for e in eps]
         ch_out: dict = {"n_episodes": len(eps), "outcomes": {}}
@@ -71,15 +92,29 @@ def run_event_study(episodes: list[dict], derived: pd.DataFrame) -> dict:
                 if len(arr) == 0:
                     per_window[str(w)] = None
                     continue
-                lo, hi = (_bootstrap_ci(arr, rng) if len(arr) > 1
-                          else (float(arr[0]), float(arr[0])))
-                per_window[str(w)] = {
+                if len(arr) > 1:
+                    lo, hi, p = _bootstrap(arr, rng)
+                else:
+                    lo = hi = float(arr[0])
+                    p = None
+                cell = {
                     "mean": round(float(arr.mean()), 3),
                     "ci95": [round(lo, 3), round(hi, 3)],
                     "n": int(len(arr)),
                 }
+                if p is not None:
+                    cell["p_boot"] = round(p, 4)
+                per_window[str(w)] = cell
+                all_cells.append({
+                    "cell": cell, "p": p,
+                    "descriptive": outcome in DESCRIPTIVE_OUTCOMES,
+                })
             ch_out["outcomes"][outcome] = per_window
         results["channels"][ch] = ch_out
+
+    # FDR control across the whole grid of inferential tests, so "which
+    # windows are significant" survives the multiplicity of this table.
+    _benjamini_hochberg(all_cells)
 
     # Per-episode raw window returns (no CI -- n=1 by construction), for
     # the site's episode detail pages. Same windows, same outcomes.
@@ -106,6 +141,33 @@ def run_event_study(episodes: list[dict], derived: pd.DataFrame) -> dict:
 
 def write_output(results: dict) -> None:
     SITE_DATA.mkdir(parents=True, exist_ok=True)
+    from .build_index import _file_meta
+
+    results = {"_meta": _file_meta(
+        "Event study: mean cumulative India-specific relative returns "
+        "after episode starts, with bootstrapped 95% CIs, plus raw "
+        "per-episode window returns.",
+        "cumulative log return, percent, over trading-day windows",
+    ), **results}
     (SITE_DATA / "event_study.json").write_text(
-        json.dumps(results, separators=(",", ":")), encoding="utf-8"
+        json.dumps(results, indent=1), encoding="utf-8"
     )
+
+    # Flat research-grade CSV: one row per channel x outcome x window.
+    rows = []
+    for ch, data in results["channels"].items():
+        for outcome, wins in data["outcomes"].items():
+            for w, cell in wins.items():
+                if cell is None:
+                    continue
+                rows.append({
+                    "channel": ch, "outcome": outcome,
+                    "window_trading_days": int(w),
+                    "mean_cum_log_return_pct": cell["mean"],
+                    "ci95_lo": cell["ci95"][0], "ci95_hi": cell["ci95"][1],
+                    "p_boot": cell.get("p_boot"),
+                    "bh_significant_10pct": cell.get("bh_significant_10pct"),
+                    "n_episodes": cell["n"],
+                    "descriptive_only": outcome in results["descriptive_only"],
+                })
+    pd.DataFrame(rows).to_csv(SITE_DATA / "event_study.csv", index=False)

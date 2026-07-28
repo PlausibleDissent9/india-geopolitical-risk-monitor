@@ -10,6 +10,31 @@ construction; the reasoning lives in [methodology.md](../methodology.md).
 | `date` | Calendar day, UTC (GDELT's day convention) | ISO date | 2017-01-01 onward |
 | `pakistan_west` … `shipping` | Share of all GDELT-monitored articles that day matching the channel's query; where a channel needs two sub-queries (length budget), the SUM of the two shares — a slight upper bound on the union | percent of corpus | ≥ 0, typically ≪ 1 |
 
+## docs/data/episodes.csv
+
+| Column | Definition | Units |
+|---|---|---|
+| `channel` / `label` | Machine key and display name of the spiking channel | — |
+| `start`, `end` | First and last spike day of the cluster | ISO date |
+| `peak_date` | Day of maximum raw coverage share inside the episode | ISO date |
+| `peak_value` | That maximum share | percent of monitored corpus |
+| `n_spike_days` | Spike days in the cluster | count |
+
+## docs/data/event_study.csv
+
+One row per channel × outcome × window. `mean_cum_log_return_pct` is the
+mean cumulative log return (percent) over `window_trading_days` after
+episode starts; `ci95_lo`/`ci95_hi` bound the bootstrapped 95% interval;
+`n_episodes` is the number of episodes with sufficient data;
+`descriptive_only` marks outcomes (Brent, gold) with no separable
+India-specific component. Association, not causation.
+
+## JSON `_meta` blocks
+
+Every dict-shaped JSON published by the pipeline embeds a `_meta` object
+(what the file is, units, license, citation, codebook link, generation
+date) so a downloaded file explains itself without this website.
+
 ## docs/data/latest.json
 
 | Field | Definition |

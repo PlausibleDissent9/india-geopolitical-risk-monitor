@@ -1,1 +1,35 @@
-{"date":"2026-06-30","definition":"Measures press salience -- the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.","composite":69.4,"channels":{"pakistan_west":{"label":"Pakistan / Western Border","score":79.1},"china_east":{"label":"China / Eastern Border","score":76.2},"gulf_energy":{"label":"Gulf & Energy Security","score":81.9},"us_trade":{"label":"US & Trade Policy","score":40.3},"shipping":{"label":"Shipping & Chokepoints","score":69.6}}}
+{
+ "_meta": {
+  "what": "Today's IGRM scores: per-channel press-salience percentiles and their unweighted mean.",
+  "units": "percentile of the channel's own trailing 730 days, 0-100",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://plausibledissent9.github.io/india-geopolitical-risk-monitor/",
+  "codebook": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/codebook.html",
+  "generated": "2026-07-29"
+ },
+ "date": "2026-06-30",
+ "definition": "Measures press salience -- the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+ "composite": 69.4,
+ "channels": {
+  "pakistan_west": {
+   "label": "Pakistan / Western Border",
+   "score": 79.1
+  },
+  "china_east": {
+   "label": "China / Eastern Border",
+   "score": 76.2
+  },
+  "gulf_energy": {
+   "label": "Gulf & Energy Security",
+   "score": 81.9
+  },
+  "us_trade": {
+   "label": "US & Trade Policy",
+   "score": 40.3
+  },
+  "shipping": {
+   "label": "Shipping & Chokepoints",
+   "score": 69.6
+  }
+ }
+}
