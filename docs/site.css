@@ -13,6 +13,7 @@
   --ok: #1E6E67; --bad: #A2361F;
 }
 * { box-sizing: border-box; margin: 0; }
+a { color: var(--accent); }
 body {
   background: var(--bg); color: var(--fg);
   font: 16px/1.55 "Archivo", system-ui, sans-serif;
