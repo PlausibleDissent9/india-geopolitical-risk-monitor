@@ -44,7 +44,12 @@ jobs:
           # tee's exit status, so a dead pass looked like a successful one
           # and the retry loop broke on the first iteration.
           set -o pipefail
-          if [ "${{ github.event.inputs.backfill }}" = "true" ] || [ "${{ github.event_name }}" = "push" ] || [ ! -f data/raw/gdelt_volume.csv ]; then
+          # Backfill only when explicitly requested or when no store exists.
+          # A push no longer forces one: now that the store is committed,
+          # re-running the backfill would spend hundreds of requests to
+          # rebuild data already in the repo -- and keep the rate limiter
+          # angry for the daily incremental run that actually matters.
+          if [ "${{ github.event.inputs.backfill }}" = "true" ] || [ ! -f data/raw/gdelt_volume.csv ]; then
             # No store yet means the first backfill hasn't landed: every
             # run (cron included) keeps attempting it on a fresh runner
             # IP until the monotone chunk cache carries it over the line.
