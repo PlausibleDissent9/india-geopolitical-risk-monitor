@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data viewer — India Geopolitical Risk Monitor</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260729a">
+<script src="labels.js?v=20260729a"></script>
+<style>
+  .meta-box { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--ok);
+    border-radius: 8px; padding: 0.9rem 1.1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .meta-box b { display: block; margin-bottom: 0.3rem; }
+  .kvt td:first-child { color: var(--muted); width: 34%; }
+  .section-block { margin: 1.6rem 0; }
+  .truncated { color: var(--muted); font-style: italic; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="data.html" class="current">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition" id="filedesc"></p>
+</header>
+
+<h2 id="filename">Loading…</h2>
+<p class="kv"><a id="rawlink" href="#">Download the raw file</a> · column definitions in the <a href="codebook.html">codebook</a></p>
+<div id="content"><p class="empty">Loading…</p></div>
+
+<footer>
+  <p><a href="data.html">&larr; all data files</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+
+<script src="reveal.js?v=20260729a"></script>
+<script>
+"use strict";
+const FILES = {
+  "latest.json": "Today's scores", "history.json": "Full score history",
+  "episodes.json": "Episode archive", "event_study.json": "Event study",
+  "validation.json": "Validation results", "alt_specs.json": "Alternative specifications",
+  "seasonality.json": "Anniversary effects", "priced_risk.json": "Attention–pricing gap",
+  "history.csv": "Full score history", "episodes.csv": "Episode archive",
+  "event_study.csv": "Event study",
+};
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const nice = (k) => window.igrmLabel(k).replace(/_/g, " ");
+const fmt = (v) => typeof v === "number" ? (Number.isInteger(v) ? v : v.toFixed(3).replace(/\.?0+$/, "")) : v;
+
+function renderValue(v, depth = 0) {
+  if (v === null || v === undefined) return '<span class="empty">–</span>';
+  if (Array.isArray(v)) {
+    if (!v.length) return '<span class="empty">empty</span>';
+    if (typeof v[0] === "object" && v[0] !== null) return renderTable(v);
+    const shown = v.slice(0, 12).map(x => esc(fmt(x))).join(", ");
+    return esc("") + shown + (v.length > 12 ? ` <span class="truncated">… ${v.length.toLocaleString()} values (download for all)</span>` : "");
+  }
+  if (typeof v === "object") {
+    if (depth > 2) return "<em>…</em>";
+    const rows = Object.entries(v).map(([k, x]) =>
+      `<tr><td>${esc(nice(k))}</td><td>${renderValue(x, depth + 1)}</td></tr>`).join("");
+    return `<table class="kvt"><tbody>${rows}</tbody></table>`;
+  }
+  if (typeof v === "boolean") return v ? "✓ yes" : "✗ no";
+  return esc(fmt(v));
+}
+
+function renderTable(arr) {
+  const cols = Object.keys(arr[0]);
+  const head = cols.map(c => `<th>${esc(nice(c))}</th>`).join("");
+  const rows = arr.slice(0, 60).map(o =>
+    `<tr>${cols.map(c => `<td>${renderValue(o[c], 3)}</td>`).join("")}</tr>`).join("");
+  const more = arr.length > 60 ? `<p class="truncated">Showing 60 of ${arr.length.toLocaleString()} rows — download for all.</p>` : "";
+  return `<div class="table-scroll"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>${more}`;
+}
+
+function renderCSV(text) {
+  const lines = text.trim().split("\n");
+  const cols = lines[0].split(",");
+  const head = cols.map(c => `<th>${esc(nice(c))}</th>`).join("");
+  const body = lines.slice(1).slice(-60).map(l =>
+    `<tr>${l.split(",").map(v => `<td>${esc(v === "" ? "–" : v)}</td>`).join("")}</tr>`).join("");
+  return `<p class="kv">${(lines.length - 1).toLocaleString()} rows · showing the most recent 60</p>` +
+    `<div class="table-scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+(async () => {
+  const f = new URLSearchParams(location.search).get("f");
+  if (!FILES[f]) {
+    document.getElementById("content").innerHTML = '<p class="empty">Unknown file.</p>';
+    return;
+  }
+  document.title = `${FILES[f]} — IGRM data`;
+  document.getElementById("filename").textContent = `${FILES[f]} (${f})`;
+  document.getElementById("rawlink").href = `data/${f}`;
+  const r = await fetch(`data/${f}`, { cache: "no-store" });
+  if (!r.ok) {
+    document.getElementById("content").innerHTML = '<p class="empty">Not generated yet.</p>';
+    return;
+  }
+  const el = document.getElementById("content");
+  if (f.endsWith(".csv")) {
+    el.innerHTML = renderCSV(await r.text());
+    return;
+  }
+  const data = await r.json();
+  let html = "";
+  if (data && data._meta) {
+    document.getElementById("filedesc").textContent = data._meta.what || "";
+    html += `<div class="meta-box"><b>About this file</b>` +
+      `${esc(data._meta.units ? "Units: " + data._meta.units + ". " : "")}` +
+      `License ${esc(data._meta.license || "CC BY 4.0")} · generated ${esc(data._meta.generated || "")}.</div>`;
+  }
+  const body = { ...(typeof data === "object" && !Array.isArray(data) ? data : { data }) };
+  delete body._meta;
+  for (const [k, v] of Object.entries(body)) {
+    html += `<div class="section-block"><h2>${esc(nice(k))}</h2>${renderValue(v)}</div>`;
+  }
+  if (Array.isArray(data)) html = renderTable(data);
+  el.innerHTML = html;
+})();
+</script>
+</body>
+</html>

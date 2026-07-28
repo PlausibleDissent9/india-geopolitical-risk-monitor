@@ -43,17 +43,17 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
 <table>
   <thead><tr><th>File</th><th>What it is</th></tr></thead>
   <tbody>
-    <tr><td><a href="data/history.csv" download>history.csv</a></td><td><b>The primary research artifact:</b> full daily percentile scores, one row per day, 2017–present.</td></tr>
-    <tr><td><a href="data/episodes.csv" download>episodes.csv</a></td><td><b>Research artifact:</b> every detected episode — channel, start, end, peak date, peak coverage share, spike days.</td></tr>
-    <tr><td><a href="data/event_study.csv" download>event_study.csv</a></td><td><b>Research artifact:</b> the event study flattened — one row per channel × outcome × window, with means, 95% CIs, and n.</td></tr>
-    <tr><td><a href="data/latest.json">latest.json</a></td><td>Today's composite and per-channel percentile scores, with the definition line.</td></tr>
-    <tr><td><a href="data/history.json">history.json</a></td><td>Full daily score history per channel and composite (the <code>wikipedia</code> block carries the demand-side second source).</td></tr>
-    <tr><td><a href="data/episodes.json">episodes.json</a></td><td>Detected coverage episodes: channel, start, end, peak date, peak volume share, spike-day count.</td></tr>
-    <tr><td><a href="data/event_study.json">event_study.json</a></td><td>Mean cumulative relative returns after episode starts with bootstrapped 95% CIs, plus per-episode raw window returns.</td></tr>
-    <tr><td><a href="data/validation.json">validation.json</a></td><td>Hit-rate against the pre-registered episode list, placebo-channel overlap, dictionary-robustness correlations, cross-source agreement, coverage-drift diagnostics.</td></tr>
-    <tr><td><a href="data/alt_specs.json">alt_specs.json</a></td><td>Secondary specifications: alternative composite weightings, episode thresholds (1.5&sigma;/2.5&sigma;), percentile windows (365/1095 days), each with its correlation to the primary.</td></tr>
-    <tr><td><a href="data/seasonality.json">seasonality.json</a></td><td>Anniversary-effect quantification: day-of-year partial R&sup2; per channel, top recurring dates, deseasonalized-variant correlation.</td></tr>
-    <tr><td><a href="data/priced_risk.json">priced_risk.json</a></td><td>The attention&ndash;pricing gap vs India VIX, largest divergence episodes in both directions, and the attention/VIX lead&ndash;lag cross-correlation with bootstrap bands.</td></tr>
+    <tr><td><a href="data/history.csv" download>history.csv</a> <span class="kv">(<a href="viewer.html?f=history.csv">view</a>)</span></td><td><b>The primary research artifact:</b> full daily percentile scores, one row per day, 2017–present.</td></tr>
+    <tr><td><a href="data/episodes.csv" download>episodes.csv</a> <span class="kv">(<a href="viewer.html?f=episodes.csv">view</a>)</span></td><td><b>Research artifact:</b> every detected episode — channel, start, end, peak date, peak coverage share, spike days.</td></tr>
+    <tr><td><a href="data/event_study.csv" download>event_study.csv</a> <span class="kv">(<a href="viewer.html?f=event_study.csv">view</a>)</span></td><td><b>Research artifact:</b> the event study flattened — one row per channel × outcome × window, with means, 95% CIs, and n.</td></tr>
+    <tr><td><a href="viewer.html?f=latest.json">latest.json</a> <span class="kv">(<a href="data/latest.json">raw</a>)</span></td><td>Today's composite and per-channel percentile scores, with the definition line.</td></tr>
+    <tr><td><a href="viewer.html?f=history.json">history.json</a> <span class="kv">(<a href="data/history.json">raw</a>)</span></td><td>Full daily score history per channel and composite (the <code>wikipedia</code> block carries the demand-side second source).</td></tr>
+    <tr><td><a href="viewer.html?f=episodes.json">episodes.json</a> <span class="kv">(<a href="data/episodes.json">raw</a>)</span></td><td>Detected coverage episodes: channel, start, end, peak date, peak volume share, spike-day count.</td></tr>
+    <tr><td><a href="viewer.html?f=event_study.json">event_study.json</a> <span class="kv">(<a href="data/event_study.json">raw</a>)</span></td><td>Mean cumulative relative returns after episode starts with bootstrapped 95% CIs, plus per-episode raw window returns.</td></tr>
+    <tr><td><a href="viewer.html?f=validation.json">validation.json</a> <span class="kv">(<a href="data/validation.json">raw</a>)</span></td><td>Hit-rate against the pre-registered episode list, placebo-channel overlap, dictionary-robustness correlations, cross-source agreement, coverage-drift diagnostics.</td></tr>
+    <tr><td><a href="viewer.html?f=alt_specs.json">alt_specs.json</a> <span class="kv">(<a href="data/alt_specs.json">raw</a>)</span></td><td>Secondary specifications: alternative composite weightings, episode thresholds (1.5&sigma;/2.5&sigma;), percentile windows (365/1095 days), each with its correlation to the primary.</td></tr>
+    <tr><td><a href="viewer.html?f=seasonality.json">seasonality.json</a> <span class="kv">(<a href="data/seasonality.json">raw</a>)</span></td><td>Anniversary-effect quantification: day-of-year partial R&sup2; per channel, top recurring dates, deseasonalized-variant correlation.</td></tr>
+    <tr><td><a href="viewer.html?f=priced_risk.json">priced_risk.json</a> <span class="kv">(<a href="data/priced_risk.json">raw</a>)</span></td><td>The attention&ndash;pricing gap vs India VIX, largest divergence episodes in both directions, and the attention/VIX lead&ndash;lag cross-correlation with bootstrap bands.</td></tr>
   </tbody>
 </table>
 <p class="kv">Raw inputs (GDELT volume shares, chunk cache, market closes) are versioned in the repository under <code>data/raw/</code>.</p>
