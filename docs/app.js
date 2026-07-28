@@ -164,8 +164,6 @@ if (document.getElementById("theme-toggle")) {
    flow that is not yet wired to a real list. */
 const BUTTONDOWN_USER = "";  // buttondown.com username; empty = modal off
 function initSubscribe() {
-  if (!BUTTONDOWN_USER) return;
-  if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
   const overlay = document.getElementById("subscribe-overlay");
   if (!overlay) return;
   const dismiss = () => {
@@ -174,17 +172,21 @@ function initSubscribe() {
     document.removeEventListener("keydown", onKey);
   };
   const onKey = (ev) => { if (ev.key === "Escape") dismiss(); };
+  // Escape hatches attach unconditionally: whatever else goes wrong,
+  // this dialog must always be closable.
+  overlay.addEventListener("click", (ev) => { if (ev.target === overlay) dismiss(); });
+  document.getElementById("subscribe-close").addEventListener("click", dismiss);
+  document.addEventListener("keydown", onKey);
+  overlay.hidden = true;  // belt and braces against CSS overriding [hidden]
+
+  if (!BUTTONDOWN_USER) return;
+  if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
 
   setTimeout(() => {
     overlay.hidden = false;
     document.getElementById("subscribe-email").focus({ preventScroll: true });
     document.addEventListener("keydown", onKey);
   }, 15000);
-
-  overlay.addEventListener("click", (ev) => {
-    if (ev.target === overlay) dismiss();
-  });
-  document.getElementById("subscribe-close").addEventListener("click", dismiss);
 
   document.getElementById("subscribe-form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
