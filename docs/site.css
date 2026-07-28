@@ -102,3 +102,26 @@ body::before {
   to   { transform: translate3d(2%, 2%, 0) scale(1.06); }
 }
 @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+
+
+/* Cross-page view transitions (Chromium/Safari; graceful elsewhere) */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 240ms; }
+
+/* Page entrance */
+@keyframes igrm-pagein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* Sticky glass masthead on subpages, matching the homepage */
+body > header {
+  position: sticky; top: 0; z-index: 20;
+  margin: -2.5rem -1.25rem 1.2rem; padding: 1.3rem 1.25rem 0.9rem;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
+}
+body > header ~ * { animation: igrm-pagein 420ms cubic-bezier(0.22,1,0.36,1) both; }
+@media (prefers-reduced-motion: reduce) { body > header ~ * { animation: none; } }
