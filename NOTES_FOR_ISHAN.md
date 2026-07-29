@@ -7,68 +7,44 @@
 3. Tell Claude your Buttondown username — one constant flips and the
    centered subscribe modal goes live for every visitor.
 
-**Welcome email draft:**
+**Welcome email, final version (paste into Buttondown):**
 
 Subject: Welcome to the IGRM weekly note
 
-> You're in. Here's what you now get, every Friday:
+> You're in.
 >
-> **The note.** ~250 words on what actually moved in India's
-> geopolitical salience that week — which of the five channels
-> (Pakistan border, China border, Gulf & energy, US & trade, shipping)
-> ran hot, what drove it (with the sources), and what it does and
-> doesn't imply. Two minutes, no filler.
+> Every Friday you'll get one short read, about 250 words, on what
+> actually moved in India's geopolitical salience that week. Which of
+> the five channels ran hot: the Pakistan border, the China border,
+> Gulf and energy security, US and trade policy, or shipping. What
+> drove it, with the sources. And what it does and does not imply,
+> stated plainly.
 >
-> **The numbers behind it.** Every claim links back to the live index —
-> open data since 2017, downloadable as CSV, with a published
-> methodology validated against 21 pre-registered historical episodes
-> (86% detected).
+> Two minutes of your time. No filler, no doom, no forecasts dressed
+> up as insight.
 >
-> **Subscriber perks:**
-> - The weekly *sourced dossier* — the 10–15 articles that drove the
->   week's biggest mover, before the note interprets them.
-> - First look at new analyses (the attention-vs-market gap, event-study
->   updates) before they're written up anywhere else.
-> - Early access to the working paper when it ships this autumn.
+> Why trust a number from a stranger's website? Because you don't have
+> to. Every claim links back to a live, open index: daily data since
+> 2017, downloadable by anyone, with a public methodology tested
+> against 21 major historical episodes chosen in advance. It detected
+> 18. The three it missed are documented on the site, with reasons.
+> When something in the method changes, a dated changelog says so.
 >
-> One email a week, free forever, unsubscribe anytime. If something in a
-> note looks wrong, reply — the methodology has a changelog for a
-> reason.
+> What you get as a subscriber:
+> - The Friday note, before it appears anywhere else
+> - The sourced dossier behind it: the actual articles that drove the
+>   week's biggest mover
+> - First look at new analyses, like when press attention runs ahead
+>   of what markets are pricing, and when markets move first
+> - Early access to the working paper this autumn
 >
-> — Ishan
+> One email a week. Free forever. Unsubscribe in one click.
+>
+> If a note ever looks wrong to you, reply and say so. The methodology
+> has a changelog for exactly that reason.
+>
+> Ishan
 > https://plausibledissent9.github.io/india-geopolitical-risk-monitor/
-
-## LAUNCH STATE (2026-07-27) — read this first
-
-The site is live with 2017→2026-07-21 data, reconstructed offline from
-the banked chunk cache after GDELT refused requests for two days.
-Validation so far: **hit rate 18/21 (86%)**; window-stability 0.96/0.99;
-seasonality partial R² 4–7% (anniversaries explain little — a good
-number to cite in §7); attention–VIX lead–lag: VIX changes tend to
-precede attention by ~2 days (markets first, press second — your best
-§-interpretation material); GDELT-vs-Wikipedia cross-source correlations
-are LOW (−0.02…0.19) — treat as a documented supply-vs-demand divergence
-finding, not a pillar of validation.
-
-Open items, none blocking: (1) gulf_energy currently carries only its
-main sub-query — "crude oil supply" never fetched (possibly under
-GDELT's minimum query length; consider re-wording or dropping it via a
-changelog entry). Two of the three hit-rate misses (Abqaiq, OPEC+
-collapse) sit in this channel; re-run hit-rate after it lands or after
-you amend the term. (2) The GDELT-dependent checks (placebo, robustness,
-drift, precision samples) are deferred until the API relents — dispatch
-the validate-and-analyze workflow then, or ask Claude. (3) The recent
-tail (Jul 22 → today) fills in automatically on the next successful
-daily run.
-
-## 0. Delegated fills to review
-
-At your instruction, the Wikipedia article lists, alternative composite
-weights, Trends search terms, and the pre-2022 validation episodes were
-filled for you (2026-07-24). All Wikipedia titles were verified against
-the pageviews API; the weights are round-number judgment calls with their
-logic in `alt_weights.json`'s `_meta`. Skim them once — they are the kind
-of thing an interviewer asks about.
 
 ## 0.1 Circularity audit of the delegated fills (2026-07-24, post-review)
 
