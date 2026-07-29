@@ -2,134 +2,134 @@
  "note": "Day-of-year effects on log volume share after removing a linear trend; 7-day circular smoothing. Deseasonalized index is a secondary specification only.",
  "channels": {
   "pakistan_west": {
-   "partial_r2": 0.0723,
+   "partial_r2": 0.0737,
    "top_recurring_dates": [
     {
      "month_day": "09-27",
-     "log_effect": 0.461
+     "log_effect": 0.4569
     },
     {
      "month_day": "08-16",
-     "log_effect": 0.4359
+     "log_effect": 0.4321
     },
     {
      "month_day": "09-26",
-     "log_effect": 0.4351
+     "log_effect": 0.431
     },
     {
      "month_day": "08-13",
-     "log_effect": 0.4324
+     "log_effect": 0.4286
     },
     {
      "month_day": "08-15",
-     "log_effect": 0.4225
+     "log_effect": 0.4187
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9482
+   "corr_seasonal_vs_deseasonalized": 0.9474
   },
   "china_east": {
-   "partial_r2": 0.0589,
+   "partial_r2": 0.0571,
    "top_recurring_dates": [
     {
      "month_day": "09-01",
-     "log_effect": 0.3819
+     "log_effect": 0.384
     },
     {
      "month_day": "09-02",
-     "log_effect": 0.3678
+     "log_effect": 0.3698
     },
     {
      "month_day": "08-31",
-     "log_effect": 0.355
+     "log_effect": 0.357
     },
     {
      "month_day": "12-28",
-     "log_effect": 0.3397
+     "log_effect": 0.3422
     },
     {
      "month_day": "12-29",
-     "log_effect": 0.3304
+     "log_effect": 0.3328
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.957
+   "corr_seasonal_vs_deseasonalized": 0.9584
   },
   "gulf_energy": {
-   "partial_r2": 0.0414,
+   "partial_r2": 0.0425,
    "top_recurring_dates": [
     {
      "month_day": "06-16",
-     "log_effect": 0.3085
+     "log_effect": 0.3057
     },
     {
      "month_day": "06-17",
-     "log_effect": 0.2795
+     "log_effect": 0.2769
     },
     {
      "month_day": "04-14",
-     "log_effect": 0.2728
+     "log_effect": 0.2698
     },
     {
      "month_day": "04-13",
-     "log_effect": 0.2702
+     "log_effect": 0.2672
     },
     {
      "month_day": "06-15",
-     "log_effect": 0.2674
+     "log_effect": 0.2646
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9567
+   "corr_seasonal_vs_deseasonalized": 0.9554
   },
   "us_trade": {
-   "partial_r2": 0.0644,
+   "partial_r2": 0.0639,
    "top_recurring_dates": [
     {
      "month_day": "03-08",
-     "log_effect": 0.5857
+     "log_effect": 0.5865
     },
     {
      "month_day": "03-07",
-     "log_effect": 0.574
+     "log_effect": 0.5748
     },
     {
      "month_day": "03-09",
-     "log_effect": 0.5698
+     "log_effect": 0.5706
     },
     {
      "month_day": "03-06",
-     "log_effect": 0.5429
+     "log_effect": 0.5436
     },
     {
      "month_day": "03-05",
-     "log_effect": 0.5281
+     "log_effect": 0.5289
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9353
+   "corr_seasonal_vs_deseasonalized": 0.9352
   },
   "shipping": {
-   "partial_r2": 0.0634,
+   "partial_r2": 0.0648,
    "top_recurring_dates": [
     {
      "month_day": "03-27",
-     "log_effect": 0.3966
+     "log_effect": 0.3905
     },
     {
      "month_day": "03-28",
-     "log_effect": 0.3881
+     "log_effect": 0.382
     },
     {
      "month_day": "03-29",
-     "log_effect": 0.3864
+     "log_effect": 0.3802
     },
     {
      "month_day": "03-30",
-     "log_effect": 0.3421
+     "log_effect": 0.336
     },
     {
      "month_day": "03-26",
-     "log_effect": 0.3349
+     "log_effect": 0.3289
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9398
+   "corr_seasonal_vs_deseasonalized": 0.9366
   }
  }
 }

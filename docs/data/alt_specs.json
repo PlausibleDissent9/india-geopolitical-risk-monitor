@@ -13,7 +13,7 @@
     "us_trade": 0.32,
     "shipping": 0.05
    },
-   "corr_with_primary": 0.8756
+   "corr_with_primary": 0.8736
   },
   "import_exposure": {
    "weights": {
@@ -23,21 +23,21 @@
     "us_trade": 0.1,
     "shipping": 0.15
    },
-   "corr_with_primary": 0.8867
+   "corr_with_primary": 0.8884
   }
  },
  "episode_thresholds_sigma": {
   "2.0": {
    "note": "primary specification",
-   "n_episodes": 517
+   "n_episodes": 522
   },
   "1.5": {
-   "n_episodes": 674,
-   "episode_day_jaccard_vs_primary": 0.672
+   "n_episodes": 678,
+   "episode_day_jaccard_vs_primary": 0.671
   },
   "2.5": {
-   "n_episodes": 374,
-   "episode_day_jaccard_vs_primary": 0.66
+   "n_episodes": 379,
+   "episode_day_jaccard_vs_primary": 0.662
   }
  },
  "percentile_windows_days": {
@@ -46,23 +46,23 @@
    "corr_with_primary": 1.0
   },
   "365": {
-   "corr_with_primary": 0.962,
+   "corr_with_primary": 0.9608,
    "per_channel": {
-    "pakistan_west": 0.9659,
-    "china_east": 0.9497,
-    "gulf_energy": 0.9451,
-    "us_trade": 0.9077,
-    "shipping": 0.9567
+    "pakistan_west": 0.9662,
+    "china_east": 0.95,
+    "gulf_energy": 0.9448,
+    "us_trade": 0.9064,
+    "shipping": 0.9564
    }
   },
   "1095": {
-   "corr_with_primary": 0.9887,
+   "corr_with_primary": 0.9884,
    "per_channel": {
     "pakistan_west": 0.991,
-    "china_east": 0.9768,
-    "gulf_energy": 0.9695,
-    "us_trade": 0.9713,
-    "shipping": 0.9838
+    "china_east": 0.9769,
+    "gulf_energy": 0.9696,
+    "us_trade": 0.9701,
+    "shipping": 0.9836
    }
   }
  }
