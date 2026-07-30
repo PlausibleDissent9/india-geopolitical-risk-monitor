@@ -171,8 +171,9 @@ def render_home() -> None:
                rf"\g<1>{arrow(delta(hist['composite']))} vs yesterday\g<2>",
                s, count=1)
     s = re.sub(r'(<p class="asof" id="asof">)[^<]*(</p>)',
-               rf"\g<1>Data through {latest['date']} · updated daily, "
-               rf"last publish {json.loads((SITE_DATA / 'latest.json').read_text())['_meta']['generated']}\g<2>",
+               rf"\g<1>Showing {latest['date']}, the most recent completed news day. "
+               rf"Today's number publishes after the day ends; pipeline last ran "
+               rf"{latest['_meta']['generated']}.\g<2>",
                s, count=1)
     row_parts = []
     for k, c in latest.get("channels", {}).items():
