@@ -5,31 +5,31 @@
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://plausibledissent9.github.io/india-geopolitical-risk-monitor/",
   "codebook": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/codebook.html",
-  "generated": "2026-07-29"
+  "generated": "2026-07-30"
  },
- "date": "2026-07-28",
+ "date": "2026-07-29",
  "definition": "Measures press salience -- the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
- "composite": 71.0,
+ "composite": 67.2,
  "channels": {
   "pakistan_west": {
    "label": "Pakistan / Western Border",
-   "score": 87.9
+   "score": 79.8
   },
   "china_east": {
    "label": "China / Eastern Border",
-   "score": 61.0
+   "score": 7.6
   },
   "gulf_energy": {
    "label": "Gulf & Energy Security",
-   "score": 78.1
+   "score": 80.8
   },
   "us_trade": {
    "label": "US & Trade Policy",
-   "score": 42.2
+   "score": 70.3
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 85.8
+   "score": 97.5
   }
  }
 }
