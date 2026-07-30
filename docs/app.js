@@ -3,11 +3,11 @@
 const COLORS = {
   composite: "#12233D",
   wikipedia: "#8A93A6",
-  pakistan_west: "#A2361F",
-  china_east: "#B07C1F",
-  gulf_energy: "#1E6E67",
-  us_trade: "#4A5D8A",
-  shipping: "#7A6A54",
+  pakistan_west: "#FF6B6B",
+  china_east: "#FFC94B",
+  gulf_energy: "#31D9C2",
+  us_trade: "#6FA8FF",
+  shipping: "#C39BFF",
 };
 
 const state = { history: null, range: 365, on: { composite: true } };
@@ -96,7 +96,7 @@ function renderChart() {
       label,
       data: sliceRange(data, state.range),
       borderColor: isComposite ? ink : (COLORS[key] || "#888"),
-      borderWidth: isComposite ? 2.2 : 1.2,
+      borderWidth: isComposite ? 2.4 : 1.7,
       borderDash: dashed ? [5, 4] : [],
       fill: isComposite,
       backgroundColor: isComposite ? g : "transparent",
@@ -181,7 +181,6 @@ function initSubscribe() {
 
   const preview = new URLSearchParams(location.search).get("preview") === "subscribe";
   if (!preview) {
-    if (!BUTTONDOWN_USER) return;
     if (localStorage.igrmSubscribed || localStorage.igrmSubDismissed) return;
   }
 
@@ -195,13 +194,21 @@ function initSubscribe() {
     ev.preventDefault();
     const email = document.getElementById("subscribe-email").value.trim();
     if (!email) return;
-    const body = new URLSearchParams({ email });
     try {
-      await fetch(
-        `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`,
-        { method: "POST", mode: "no-cors", body }
-      );
-    } catch (e) { /* opaque response either way; Buttondown confirms by email */ }
+      if (BUTTONDOWN_USER) {
+        await fetch(
+          `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`,
+          { method: "POST", mode: "no-cors", body: new URLSearchParams({ email }) }
+        );
+      } else {
+        // No-signup relay: forwards the address to the author's inbox.
+        await fetch("https://formsubmit.co/ajax/ishankrishna9@gmail.com", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({ email, _subject: "New IGRM subscriber" }),
+        });
+      }
+    } catch (e) { /* the success state is optimistic; addresses also reach the inbox */ }
     document.getElementById("subscribe-form").hidden = true;
     document.querySelector(".subscribe-fine").hidden = true;
     document.getElementById("subscribe-done").hidden = false;
