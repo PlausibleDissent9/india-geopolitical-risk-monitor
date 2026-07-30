@@ -42,6 +42,11 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         run: python -m src.fetch_ngrams --heal 35
+      - name: Harvest missing historical chunks (opportunistic, self-ending)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 20
+        run: python -m src.fetch_gdelt --harvest
       - name: Run pipeline
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,

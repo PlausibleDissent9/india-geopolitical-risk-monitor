@@ -357,8 +357,46 @@ def load_or_update(dictionaries: dict, backfill_from: date | None = None) -> pd.
     return merged
 
 
-if __name__ == "__main__":
+def harvest_missing() -> None:
+    """Opportunistic completion: try once, politely, to fetch any query's
+    settled historical chunk that is not yet cached (currently gulf's
+    "crude oil supply" sub-query). Run daily by CI with continue-on-error:
+    each attempt costs a handful of requests, every success is cached
+    permanently, and the loop ends itself when nothing is missing."""
     with open(ROOT / "dictionaries.json", encoding="utf-8") as f:
         d = json.load(f)
-    df = load_or_update(d, backfill_from=date(2017, 1, 1))
-    print(df.tail())
+    today = date.today()
+    split = date(today.year, today.month, 1) - timedelta(days=1)
+    if (today - split).days <= CACHE_SETTLE_DAYS:
+        split = date(split.year, split.month, 1) - timedelta(days=1)
+    start = date(2017, 1, 1)
+    missing = 0
+    for ch, spec in d.items():
+        if ch.startswith("_"):
+            continue
+        for q in build_queries(spec["terms"], spec.get("anchor")):
+            key_src = f"{q}|{start}|{split}"
+            key = hashlib.sha1(key_src.encode()).hexdigest()[:16]
+            if (CHUNK_CACHE_DIR / f"{key}.json").exists():
+                continue
+            missing += 1
+            print(f"[harvest] attempting {ch}: {q[:60]}...")
+            try:
+                rows = _fetch_chunk(q, start, split)
+                print(f"[harvest] LANDED {ch} ({len(rows)} days)")
+            except Exception as e:
+                print(f"[harvest] not today ({type(e).__name__}); will retry next run")
+    if not missing:
+        print("[harvest] nothing missing; historical cache is complete")
+
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] == "--harvest":
+        harvest_missing()
+    else:
+        with open(ROOT / "dictionaries.json", encoding="utf-8") as f:
+            d = json.load(f)
+        df = load_or_update(d, backfill_from=date(2017, 1, 1))
+        print(df.tail())
