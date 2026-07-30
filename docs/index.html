@@ -63,21 +63,28 @@
 </header>
 
 <main class="wrap">
+  <noscript><p class="glance">Charts on this page need JavaScript; the headline numbers
+  above are baked in at publish time, and every series is downloadable as CSV from the
+  Data page.</p></noscript>
   <p class="glance" id="glance" hidden></p>
   <section class="instrument" aria-labelledby="composite-label">
     <div class="composite">
-      <p class="mono-eyebrow" id="composite-label">Composite · <span id="latest-date">…</span></p>
-      <p class="big-number" id="composite-score" aria-live="polite">…</p>
-      <p class="delta" id="composite-delta">…</p>
+      <p class="mono-eyebrow" id="composite-label">Composite · <span id="latest-date">2026-07-29</span></p>
+      <p class="big-number" id="composite-score" aria-live="polite">67.2</p>
+      <p class="delta" id="composite-delta">▼ -3.8 vs yesterday</p>
       <div class="band" role="img" aria-label="Risk band scale from calm to severe">
         <div class="band-track"></div>
         <div class="band-tick" id="band-tick"></div>
         <div class="band-labels"><span>calm</span><span>elevated</span><span>severe</span></div>
       </div>
     </div>
-    <div class="components" id="components">
-      <p class="empty">No data yet, run the pipeline once (README, step 4).</p>
-    </div>
+    <div class="components" id="components"><!--ssr:components-->
+      <div class="component-row"><span class="component-name">Pakistan / Western Border</span><span class="component-score">79.8</span><span class="component-delta">▼ -8.1</span></div>
+      <div class="component-row"><span class="component-name">China / Eastern Border</span><span class="component-score">7.6</span><span class="component-delta">▼ -53.4</span></div>
+      <div class="component-row"><span class="component-name">Gulf & Energy Security</span><span class="component-score">80.8</span><span class="component-delta">▲ +2.7</span></div>
+      <div class="component-row"><span class="component-name">US & Trade Policy</span><span class="component-score">70.3</span><span class="component-delta">▲ +28.1</span></div>
+      <div class="component-row"><span class="component-name">Shipping & Chokepoints</span><span class="component-score">97.5</span><span class="component-delta">▲ +11.7</span></div>
+    <!--/ssr:components--></div>
   </section>
 
   <section class="chart-section">
@@ -124,7 +131,7 @@
 </main>
 
 <footer class="wrap footer">
-  <p>Open data: <a href="data/history.csv" download>history.csv</a> · <a href="data.html">all files &amp; citation</a> · <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor">source</a> · <a href="portal.html">author portal</a></p>
+  <p>Open data: <a href="data/history.csv" download>history.csv</a> · <a href="data.html">all files &amp; citation</a> · <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor">source</a></p>
   <p class="fine">A descriptive research index of news salience, validated against a pre-registered episode list (see <a href="validation.html">Validation</a>). Association, not causation. Not investment advice.</p>
 </footer>
 

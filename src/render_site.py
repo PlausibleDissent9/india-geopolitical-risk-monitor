@@ -136,9 +136,66 @@ def render_notes() -> None:
     print(f"[render] wrote notes.json ({len(notes)} notes) and feed.xml")
 
 
+def render_home() -> None:
+    """Bake today's numbers into index.html at publish time, so crawlers,
+    link previews, and no-JS readers see real data, not placeholders.
+    The page's JavaScript re-renders the same values on load; this is the
+    static floor beneath it."""
+    import re
+
+    latest_path = SITE_DATA / "latest.json"
+    if not latest_path.exists():
+        return
+    latest = json.loads(latest_path.read_text(encoding="utf-8"))
+    if latest.get("composite") is None:
+        return
+    hist = json.loads((SITE_DATA / "history.json").read_text(encoding="utf-8"))
+
+    def delta(series):
+        vals = [v for v in series if v is not None]
+        return round(vals[-1] - vals[-2], 1) if len(vals) >= 2 else None
+
+    def arrow(d):
+        if d is None:
+            return ""
+        glyph = "▲" if d > 0.05 else ("▼" if d < -0.05 else "·")
+        return f"{glyph} {d:+.1f}"
+
+    idx_path = DOCS / "index.html"
+    s = idx_path.read_text(encoding="utf-8")
+    s = re.sub(r'(<span id="latest-date">)[^<]*(</span>)',
+               rf"\g<1>{latest['date']}\g<2>", s, count=1)
+    s = re.sub(r'(<p class="big-number" id="composite-score"[^>]*>)[^<]*(</p>)',
+               rf"\g<1>{latest['composite']:.1f}\g<2>", s, count=1)
+    s = re.sub(r'(<p class="delta" id="composite-delta">).*?(</p>)',
+               rf"\g<1>{arrow(delta(hist['composite']))} vs yesterday\g<2>",
+               s, count=1)
+    s = re.sub(r'(<p class="asof" id="asof">)[^<]*(</p>)',
+               rf"\g<1>Data through {latest['date']} · updated daily, "
+               rf"last publish {json.loads((SITE_DATA / 'latest.json').read_text())['_meta']['generated']}\g<2>",
+               s, count=1)
+    row_parts = []
+    for k, c in latest.get("channels", {}).items():
+        score = "" if c["score"] is None else f"{c['score']:.1f}"
+        d = arrow(delta(hist["channels"].get(k, [])))
+        row_parts.append(
+            f'\n      <div class="component-row">'
+            f'<span class="component-name">{c["label"]}</span>'
+            f'<span class="component-score">{score}</span>'
+            f'<span class="component-delta">{d}</span></div>'
+        )
+    rows = "".join(row_parts)
+    s = re.sub(r"<!--ssr:components-->.*?<!--/ssr:components-->",
+               f"<!--ssr:components-->{rows}\n    <!--/ssr:components-->",
+               s, flags=re.S, count=1)
+    idx_path.write_text(s, encoding="utf-8")
+    print("[render] baked today's numbers into index.html (static floor)")
+
+
 def main() -> None:
     render_methodology()
     render_notes()
+    render_home()
 
 
 if __name__ == "__main__":

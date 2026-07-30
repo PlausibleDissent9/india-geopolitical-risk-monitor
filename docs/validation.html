@@ -77,7 +77,7 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
       "Detection window &plusmn;" + esc(h.window_days) + " days. Overall: <b>" +
       esc(h.overall.hits) + "/" + esc(h.overall.n) + " (" +
       Math.round(100 * h.overall.hits / h.overall.n) + "%)</b>. " +
-      "List frozen before the first validation run; none of these event names appears in any query term.";
+      "List frozen before the first validation run; none of these event names appears in any query term. <a href=\"https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/validation/validation_episodes.json\" rel=\"noopener\">The pre-registered list itself</a>, with its append-only rule and <a href=\"https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/commits/main/validation/validation_episodes.json\" rel=\"noopener\">dated commit history</a>.";
     const tb = document.querySelector("#hits tbody");
     for (const e of h.episodes) {
       const tr = document.createElement("tr");
