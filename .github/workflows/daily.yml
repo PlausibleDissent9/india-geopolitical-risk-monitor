@@ -2,7 +2,12 @@ name: daily-update
 
 on:
   schedule:
-    - cron: "30 12 * * *"   # 12:30 UTC = 18:00 IST, after NSE close
+    # Primary runs EARLY so that even with GitHub's cron drift (often
+    # 15-90 min) the site is fresh before the promised 18:00 IST. The
+    # measured day (previous UTC day) completes at 05:30 IST, so any
+    # daytime run is valid; later slots are drift insurance.
+    - cron: "0 11 * * *"    # 16:30 IST primary
+    - cron: "30 12 * * *"   # 18:00 IST backup
     # Backup slot: GitHub crons fire late or not at all under load, so a
     # second attempt guarantees at least one daily run; when the first
     # succeeded this one commits "no changes" and costs nothing.
