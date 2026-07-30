@@ -58,6 +58,27 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
 </table>
 <p class="kv">Raw inputs (GDELT volume shares, chunk cache, market closes) are versioned in the repository under <code>data/raw/</code>.</p>
 
+<h2>For integrators</h2>
+<p class="prose">Dashboards, agents, and pipelines can consume IGRM directly; no key, no
+signup, no rate limit beyond ordinary politeness. The endpoints below are stable URLs served
+over HTTPS with open CORS (<code>Access-Control-Allow-Origin: *</code>), refreshed once daily
+by 18:00 IST (12:30 UTC), scoring the most recent completed news day.</p>
+<div class="table-scroll"><table>
+  <thead><tr><th>Endpoint</th><th>Contract</th></tr></thead>
+  <tbody>
+    <tr><td><code>data/latest.json</code></td><td>Smallest useful payload: date, composite, five channel scores with labels, and a <code>_meta</code> block stating the definition and generation time. Poll once daily.</td></tr>
+    <tr><td><code>data/history.json</code></td><td>Full daily series per channel and composite since 2017, date-aligned arrays.</td></tr>
+    <tr><td><code>data/history.csv</code></td><td>The same series as CSV, one row per day.</td></tr>
+    <tr><td><code>data/episodes.json</code></td><td>Detected coverage episodes with channel, dates, and peak share.</td></tr>
+    <tr><td><code>feed.xml</code></td><td>RSS for the weekly analytical notes.</td></tr>
+  </tbody>
+</table></div>
+<p class="kv">Schema promise: fields are added, never renamed or removed, within a major
+version; breaking changes bump the version in the citation and are announced in the
+methodology changelog. All endpoints resolve under
+<code>https://plausibledissent9.github.io/india-geopolitical-risk-monitor/</code>.
+Attribution per CC BY 4.0: "India Geopolitical Risk Monitor (Ishan Krishna)" with a link.</p>
+
 <h2>Codebook</h2>
 <p>Column-by-column definitions, units, and construction for every file live in
 <a href="codebook.html">the codebook</a> (also on

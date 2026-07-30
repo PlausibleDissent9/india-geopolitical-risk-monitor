@@ -116,3 +116,69 @@ After `python -m src.validate hit-rate|placebo|robustness` you'll have
 `docs/data/validation.json`. §8's hit-rate table, placebo overlap, and
 robustness correlations are yours to transcribe and interpret — a missed
 episode explained honestly is a finding, not a failure.
+
+## 4. World Monitor connection (drafted 2026-07-31, awaiting your go)
+
+World Monitor (worldmonitor.app) checks out: open source under AGPL-3.0 at
+github.com/koala73/worldmonitor, 65,000+ stars, 116 contributors, WIRED
+coverage, 2M+ users, a real engineering culture. Its Country Instability
+Index fuses per-country signals from 65+ external providers, which is
+exactly the shape IGRM has for India.
+
+The right first move in a repo that size is a proposal issue, not a cold
+pull request. Post the text below at
+https://github.com/koala73/worldmonitor/issues/new from your account.
+Post it exactly as written or edit it first; either is fine, but it goes
+out under your name, so read it once before you click.
+
+---
+
+**Title:** Data source proposal: India Geopolitical Risk Monitor (open
+daily India risk-salience index, CC BY 4.0, CORS-open JSON)
+
+**Body:**
+
+I maintain the India Geopolitical Risk Monitor (IGRM), a daily
+press-salience index for India-related geopolitical risk in the
+Caldara-Iacoviello article-share tradition: five channels (Pakistan /
+western border, China / eastern border, Gulf and energy security, US and
+trade policy, shipping and chokepoints) computed over GDELT coverage
+since 2017, percentile-normalized against each channel's own trailing
+two years.
+
+Site: https://plausibledissent9.github.io/india-geopolitical-risk-monitor/
+
+Why it might fit World Monitor:
+
+- It is a validated index, not a feed: 86% hit rate (18 of 21) against a
+  pre-registered episode list, with placebo, robustness, and drift checks
+  published at /data/validation.json and a full public methodology.
+- It is decomposed. The India country dossier could show not just that
+  India-related pressure rose, but on which border or corridor.
+- Integration cost is near zero: stable JSON over GitHub Pages with
+  Access-Control-Allow-Origin: *, no key, one small fetch a day.
+  Machine endpoints are documented in the "For integrators" section at
+  /data.html; the smallest useful payload is /data/latest.json (date,
+  composite, five channel scores, definition in _meta).
+- License is CC BY 4.0, AGPL-compatible for data consumption with
+  attribution.
+
+Honest scope note: IGRM measures press salience (attention), not risk
+itself, and updates once daily, so it is a slower, structured complement
+to your real-time signals rather than another live feed. It seems
+closest in spirit to a CII component or a country-dossier enrichment for
+India.
+
+If this is of interest I am happy to open a PR against src/config and
+the relevant service following CONTRIBUTING.md, or to adapt the output
+format to whatever the CII ingestion side prefers.
+
+---
+
+Two things before you post, both optional but both strengthen the pitch:
+
+1. The notes archive should not be empty when a maintainer clicks
+   through. Your first Friday note is due today.
+2. If the maintainer replies with interest, tell me and I will build the
+   actual PR (TypeScript, their conventions) for you to submit from a
+   fork.
