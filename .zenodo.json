@@ -1,0 +1,13 @@
+{
+  "title": "India Geopolitical Risk Monitor (IGRM): daily press-salience index for India, five channels, 2017-present",
+  "description": "A daily, category-decomposed press-salience index for India-related geopolitical risk in the Caldara-Iacoviello article-share tradition: five channels (Pakistan/western border, China/eastern border, Gulf and energy security, US and trade policy, shipping and chokepoints) computed over GDELT coverage since 2017, percentile-normalized against each channel's trailing two years. Includes pre-registered validation against 21 historical episodes, an events-stream layer, chokepoint sub-dictionaries with IMF PortWatch comparison, a pre-registered four-component stress gauge, comparator country series, and a lead-lag predictability study. Measures press salience (attention), not risk; association, never causation.",
+  "creators": [{"name": "Krishna, Ishan"}],
+  "license": "CC-BY-4.0",
+  "upload_type": "dataset",
+  "access_right": "open",
+  "keywords": ["geopolitical risk", "India", "news salience", "GDELT", "event study", "measurement", "open data"],
+  "related_identifiers": [
+    {"relation": "isSupplementTo", "identifier": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/", "resource_type": "other"},
+    {"relation": "isSourceOf", "identifier": "https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor", "resource_type": "software"}
+  ]
+}

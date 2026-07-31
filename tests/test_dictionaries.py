@@ -82,6 +82,21 @@ def all_terms():
     for where, spec in chokepoint_specs():
         for term in spec["terms"]:
             yield where, term
+    # V3 comparators: the shared vocabulary gets the same ex-ante and
+    # grammar enforcement as every other query list.
+    comp = load("comparators.json")
+    for term in comp["shared_terms"]:
+        yield "comparators.json:shared_terms", term
+
+
+def test_comparator_registration_complete():
+    comp = load("comparators.json")
+    assert set(comp["countries"]) == {"india", "pakistan", "indonesia", "vietnam"}
+    missing = set(comp["shared_terms"]) - set(comp["shared_rationale"])
+    assert not missing, f"terms without rationale: {sorted(missing)}"
+    for key, c in comp["countries"].items():
+        import re
+        assert re.match(r"^\w+$", c["anchor"]), f"{key}: anchor must be one bare word"
 
 
 def test_ex_ante_rule_no_event_names():

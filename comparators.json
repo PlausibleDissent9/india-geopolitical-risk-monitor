@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "registered": "2026-07-31",
+    "what": "V3 comparator country-salience series in the Caldara-Iacoviello country-index tradition: ONE shared geopolitical-risk vocabulary, anchored per country, so cross-country comparison is apples-to-apples by construction. India runs through the same instrument for comparability; the five-channel index remains the primary product. Ex-ante rule and query grammar apply unchanged (tests/test_dictionaries.py).",
+    "construct_note": "Shared terms are structural press vocabulary for geopolitical stress, never event names. Differences in press attention across countries include an Anglophone-coverage bias, disclosed; see the V5 audit plan."
+  },
+  "shared_terms": [
+    "\"geopolitical risk\"",
+    "\"military tensions\"",
+    "\"border dispute\"",
+    "\"armed conflict\"",
+    "\"security crisis\"",
+    "\"trade war\"",
+    "\"economic sanctions\"",
+    "\"political instability\"",
+    "\"martial law\"",
+    "\"insurgency\""
+  ],
+  "shared_rationale": {
+    "\"geopolitical risk\"": "doctrine -- the genre's own name; used by wire services as standing vocabulary",
+    "\"military tensions\"": "doctrine -- the generic escalation compound across all four countries' coverage",
+    "\"border dispute\"": "geography -- the standing frame for territorial friction",
+    "\"armed conflict\"": "doctrine -- the wire-service category term",
+    "\"security crisis\"": "doctrine -- the generic acute-stress compound",
+    "\"trade war\"": "doctrine -- the economic-coercion vocabulary",
+    "\"economic sanctions\"": "institution -- the coercion instrument named in coverage",
+    "\"political instability\"": "doctrine -- the country-risk standing phrase",
+    "\"martial law\"": "institution -- the constitutional-rupture marker, category not event",
+    "\"insurgency\"": "doctrine -- the internal-conflict category term"
+  },
+  "countries": {
+    "india": {
+      "anchor": "India",
+      "label": "India"
+    },
+    "pakistan": {
+      "anchor": "Pakistan",
+      "label": "Pakistan"
+    },
+    "indonesia": {
+      "anchor": "Indonesia",
+      "label": "Indonesia"
+    },
+    "vietnam": {
+      "anchor": "Vietnam",
+      "label": "Vietnam"
+    }
+  }
+}
