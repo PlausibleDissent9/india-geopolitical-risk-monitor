@@ -6,12 +6,15 @@ on:
     # 15-90 min) the site is fresh before the promised 18:00 IST. The
     # measured day (previous UTC day) completes at 05:30 IST, so any
     # daytime run is valid; later slots are drift insurance.
-    - cron: "0 11 * * *"    # 16:30 IST primary
-    - cron: "30 12 * * *"   # 18:00 IST backup
+    # Odd minutes on purpose: GitHub silently drops scheduled runs at
+    # congested minutes, and :00/:30 are the worst (2026-07-31: the
+    # 11:00 slot never fired at all).
+    - cron: "6 11 * * *"    # 16:36 IST primary
+    - cron: "34 12 * * *"   # 18:04 IST backup
     # Backup slot: GitHub crons fire late or not at all under load, so a
     # second attempt guarantees at least one daily run; when the first
     # succeeded this one commits "no changes" and costs nothing.
-    - cron: "30 15 * * *"   # 21:00 IST
+    - cron: "23 15 * * *"   # 20:53 IST
   workflow_dispatch:
     inputs:
       backfill:
