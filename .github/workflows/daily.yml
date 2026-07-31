@@ -144,18 +144,31 @@ jobs:
           # only the GDELT store persists (backfill is expensive to redo).
           # docs/ also carries rendered pages (methodology.html, feed.xml,
           # notes.json) produced by the publish step.
-          git add data/raw docs notes-inbox || true
+          # events_*.csv are excluded while the backfill chain owns them:
+          # both sides rewrite the whole sorted file, so any co-commit is
+          # a guaranteed rebase conflict (2026-07-31: that conflict,
+          # swallowed by an || true, silently discarded a computed day
+          # while every step reported success). Re-include them in this
+          # add once the chain has finished and is the site's history;
+          # the daily --update 5 step refetches what this run drops.
+          git add docs notes-inbox || true
+          git add data/raw || true
+          git reset -q data/raw/events_daily.csv data/raw/events_dyads.csv data/raw/events_states.csv 2>/dev/null || true
+          git checkout -q -- data/raw/events_daily.csv data/raw/events_dyads.csv data/raw/events_states.csv 2>/dev/null || true
           git commit -m "data: update $(date -u +%F)" || echo "no changes"
-          # Retry the push: the events-backfill chain commits to the same
-          # branch, and one lost race must not discard a computed day
-          # (2026-07-31: a successful pipeline died exactly here).
+          # Retry the push, and never push from a broken rebase: a failed
+          # rebase is aborted and retried whole, because git push inside
+          # an interrupted rebase reports vacuous success.
           pushed=0
           for i in 1 2 3 4 5; do
-            git pull --rebase origin main || true
-            if git push; then pushed=1; break; fi
-            echo "push race, attempt $i; retrying"
+            if git pull --rebase origin main; then
+              if git push; then pushed=1; break; fi
+            else
+              git rebase --abort || true
+            fi
+            echo "push attempt $i failed; retrying"
             sleep $((10 * i))
           done
-          # Five lost races in a row means the computed day dies with
-          # the runner; fail loudly instead of passing with unpushed data.
+          # Five failures in a row means the computed day dies with the
+          # runner; fail loudly instead of passing with unpushed data.
           [ "$pushed" = "1" ]

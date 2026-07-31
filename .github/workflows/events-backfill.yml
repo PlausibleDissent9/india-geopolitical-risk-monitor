@@ -52,14 +52,19 @@ jobs:
           git config user.email "actions@github.com"
           git add data/raw/events_daily.csv data/raw/events_dyads.csv data/raw/events_states.csv || true
           git commit -m "events backfill batch: $(date -u +%FT%TZ)" || echo "no changes"
+          # Never push from a broken rebase: a conflicted rebase left in
+          # place makes git push report vacuous success (2026-07-31).
           pushed=0
           for i in 1 2 3 4 5; do
-            git pull --rebase origin main || true
-            if git push; then pushed=1; break; fi
-            echo "push race, attempt $i; retrying"
+            if git pull --rebase origin main; then
+              if git push; then pushed=1; break; fi
+            else
+              git rebase --abort || true
+            fi
+            echo "push attempt $i failed; retrying"
             sleep $((10 * i))
           done
-          # Five lost races in a row means the batch dies with the
+          # Five failures in a row means the batch dies with the
           # runner; fail loudly instead of passing with unpushed data.
           [ "$pushed" = "1" ]
           M=$(python -c "from src.fetch_events import _missing_days; print(len(_missing_days()))")
