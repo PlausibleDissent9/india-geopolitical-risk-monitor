@@ -49,6 +49,18 @@ first; negative, the market.</p>
   <tbody><tr><td colspan="5" class="empty">Not computed yet.</td></tr></tbody>
 </table></div>
 
+<h2>Comparators: four countries, one instrument</h2>
+<p class="chart-note">Pakistan, Indonesia, Vietnam, and India itself, each measured by the
+same ten shared risk phrases anchored on the country's name (registered in
+comparators.json before the first fetch), each line a percentile of that country's own
+trailing two years, weekly means. Comparable by construction; levels reflect Anglophone
+press attention, disclosed. Weeks shown only when complete.</p>
+<div class="chart-wrap" style="height:240px"><canvas id="comp-chart"></canvas></div>
+<div class="table-scroll"><table id="comp-table" hidden>
+  <thead><tr><th>Country</th><th class="num">Latest complete week</th><th class="num">Percentile</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+
 <h2>The India Stress Gauge</h2>
 <p class="chart-note">Four sources fused into one daily 0-100 line: press salience, the
 conflict-event stream, market stress (India VIX and INR realized volatility), and
@@ -170,6 +182,36 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
   }
 
   } catch (e) { console.error("divergence:", e); }
+  try {
+    const cm = await j("data/comparators.json");
+    if (cm && cm.countries) {
+      const palette = { india: css("--accent"), pakistan: css("--severe"),
+                        indonesia: css("--ok"), vietnam: css("--muted") };
+      const all = Object.entries(cm.countries);
+      const labels = all.reduce((a, [, v]) => v.weeks.length > a.length ? v.weeks : a, []);
+      new Chart(document.getElementById("comp-chart"), {
+        type: "line",
+        data: { labels, datasets: all.map(([k, v]) => ({
+          label: v.label, data: labels.map(d => {
+            const i = v.weeks.indexOf(d); return i < 0 ? null : v.pct[i];
+          }), borderColor: palette[k] || css("--fg"), borderWidth: 1.3,
+          pointRadius: 0, tension: 0.15, spanGaps: false })) },
+        options: { animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: css("--muted"), boxWidth: 14 } } },
+          interaction: { mode: "index", intersect: false },
+          scales: { y: { min: 0, max: 100, grid: { color: css("--rule-soft") }, ticks: { color: css("--muted") } },
+                    x: { ticks: { maxTicksLimit: 8, color: css("--muted") }, grid: { display: false } } } },
+      });
+      const tb = document.querySelector("#comp-table tbody");
+      for (const [, v] of all) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${esc(v.label)}</td><td class="num">${esc(v.weeks[v.weeks.length - 1])}</td>` +
+          `<td class="num">${esc(v.latest)}</td>`;
+        tb.appendChild(tr);
+      }
+      document.getElementById("comp-table").hidden = false;
+    }
+  } catch (e) { console.error("comparators:", e); }
   try {
     const sg = await j("data/stress_gauge.json");
     if (sg && sg.gauge != null && !(sg._meta || {}).partial) {

@@ -25,7 +25,7 @@
 </header>
 <div class="prose">
 <h1>IGRM Methodology</h1>
-<p>Version 1.2.0 · five channels frozen 2026-07-24, chokepoint sub-dictionaries, nowcast, maps, and stress gauge added 2026-07-31 · <a href="#changelog">changelog</a> at the end.</p>
+<p>Version 1.3.0 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability added 2026-08-01 · <a href="#changelog">changelog</a> at the end.</p>
 <h2>1. What the index measures (and what it does not)</h2>
 <p>The index measures <strong>press salience</strong>: for each of five channels, the share
 of all articles GDELT monitors globally that match the channel's term set,
@@ -256,13 +256,42 @@ episode list publishes with the gauge in
 percentiles behind each day's number. Whatever the hit-rate is, it is
 reported as found; the gauge measures attention and stress, and
 predicts nothing.</p>
+<h2>10. Comparator countries and predictability</h2>
+<p>Three comparator series (Pakistan, Indonesia, Vietnam) plus India run
+through one deliberately simple instrument: a single shared
+geopolitical-risk vocabulary of ten structural phrases, anchored per
+country, registered with per-term rationale in <code>comparators.json</code>
+before the first fetch. Cross-country lines are comparable by
+construction because the instrument is identical; levels still reflect
+Anglophone press attention, disclosed. The five-channel index remains
+the primary product; the comparators exist for context and for the
+cross-country questions V8 will formalize.</p>
+<p>The predictability study (<code>docs/data/predictability.json</code>) asks the
+directed lead-lag question on daily changes: five own-lags with and
+without five lags of the candidate leader, R-squared increment, and a
+permutation p-value from time-shifted nulls. Result, reported as
+found: press salience predicts none of conflict-event intensity, India
+VIX, or INR realized volatility (p 0.37 to 0.82); the only
+near-threshold direction is events leading salience (p 0.053). The
+index measures attention, and attention follows the world. This is the
+empirical basis for the site's standing claim that it is a salience
+monitor, not a risk predictor.</p>
 <h2>Changelog</h2>
 <ul>
-<li><strong>2026-07-31, v1.2.0 (stress gauge).</strong> Section 9 added: the India
+<li>
+<p><strong>2026-08-01, v1.3.0 (comparators and predictability).</strong> Section 10
+  added: four-country comparator series from one registered shared
+  vocabulary, and the directed lead-lag study whose negative result
+  (salience predicts nothing; events marginally lead salience) is
+  published as found.</p>
+</li>
+<li>
+<p><strong>2026-07-31, v1.2.0 (stress gauge).</strong> Section 9 added: the India
   Stress Gauge, four pre-registered components fused into one daily
   0-100 line, gated on the completed events history, hit-rate
   published as found. Registration precedes computation in the commit
-  history.</li>
+  history.</p>
+</li>
 <li><strong>2026-07-31, v1.1.1 (nowcast).</strong> A provisional "today so far" score
   now publishes to <code>docs/data/nowcast.json</code> roughly every two hours,
   computed from a partial-day sample of the Web NGrams bridge with the

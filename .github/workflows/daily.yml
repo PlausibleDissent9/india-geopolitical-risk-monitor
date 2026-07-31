@@ -75,6 +75,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.maps_data
+      - name: Comparator tails (V3; ~8 requests, self-heals July gaps)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python -m src.comparators --update
       - name: Stress gauge (V2-2; refuses until events history is complete)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true

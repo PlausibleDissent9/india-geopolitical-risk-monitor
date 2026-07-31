@@ -1,6 +1,6 @@
 # IGRM Methodology
 
-Version 1.2.0 · five channels frozen 2026-07-24, chokepoint sub-dictionaries, nowcast, maps, and stress gauge added 2026-07-31 · [changelog](#changelog) at the end.
+Version 1.3.0 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability added 2026-08-01 · [changelog](#changelog) at the end.
 
 ## 1. What the index measures (and what it does not)
 
@@ -264,7 +264,36 @@ percentiles behind each day's number. Whatever the hit-rate is, it is
 reported as found; the gauge measures attention and stress, and
 predicts nothing.
 
+## 10. Comparator countries and predictability
+
+Three comparator series (Pakistan, Indonesia, Vietnam) plus India run
+through one deliberately simple instrument: a single shared
+geopolitical-risk vocabulary of ten structural phrases, anchored per
+country, registered with per-term rationale in `comparators.json`
+before the first fetch. Cross-country lines are comparable by
+construction because the instrument is identical; levels still reflect
+Anglophone press attention, disclosed. The five-channel index remains
+the primary product; the comparators exist for context and for the
+cross-country questions V8 will formalize.
+
+The predictability study (`docs/data/predictability.json`) asks the
+directed lead-lag question on daily changes: five own-lags with and
+without five lags of the candidate leader, R-squared increment, and a
+permutation p-value from time-shifted nulls. Result, reported as
+found: press salience predicts none of conflict-event intensity, India
+VIX, or INR realized volatility (p 0.37 to 0.82); the only
+near-threshold direction is events leading salience (p 0.053). The
+index measures attention, and attention follows the world. This is the
+empirical basis for the site's standing claim that it is a salience
+monitor, not a risk predictor.
+
 ## Changelog
+
+- **2026-08-01, v1.3.0 (comparators and predictability).** Section 10
+  added: four-country comparator series from one registered shared
+  vocabulary, and the directed lead-lag study whose negative result
+  (salience predicts nothing; events marginally lead salience) is
+  published as found.
 
 - **2026-07-31, v1.2.0 (stress gauge).** Section 9 added: the India
   Stress Gauge, four pre-registered components fused into one daily
