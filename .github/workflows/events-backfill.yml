@@ -14,6 +14,9 @@ on:
 
 permissions:
   contents: write
+  # actions:write lets the chain re-trigger itself through the dispatch
+  # API; plain GITHUB_TOKEN pushes never fire push-triggered workflows.
+  actions: write
 
 concurrency:
   group: igrm-events-backfill
@@ -42,12 +45,16 @@ jobs:
           git config user.email "actions@github.com"
           git add data/raw/events_daily.csv data/raw/events_dyads.csv data/raw/events_states.csv || true
           git commit -m "events backfill batch: $(date -u +%FT%TZ)" || echo "no changes"
+          pushed=0
           for i in 1 2 3 4 5; do
             git pull --rebase origin main || true
-            git push && break
+            if git push; then pushed=1; break; fi
             echo "push race, attempt $i; retrying"
             sleep $((10 * i))
           done
+          # Five lost races in a row means the batch dies with the
+          # runner; fail loudly instead of passing with unpushed data.
+          [ "$pushed" = "1" ]
           echo "n=$( (wc -l < data/raw/events_daily.csv) 2>/dev/null || echo 0 )" >> "$GITHUB_OUTPUT"
       - name: Re-trigger while incomplete and progressing
         run: |
@@ -60,15 +67,17 @@ jobs:
           )
           echo "store $BEFORE -> $AFTER rows; $MISSING days missing"
           if [ "$MISSING" -gt 0 ] && [ "$AFTER" -gt "$BEFORE" ]; then
-            date -u +%FT%TZ > .trigger/events_backfill
-            git add .trigger/events_backfill
-            git commit -m "events backfill: continue ($MISSING days left)"
-            for i in 1 2 3 4 5; do
-              git pull --rebase origin main || true
-              git push && break
-              echo "push race, attempt $i; retrying"
-              sleep $((10 * i))
-            done
+            # A trigger-file commit pushed with GITHUB_TOKEN never fires
+            # the push trigger (GitHub's recursion guard), which silently
+            # ended the chain on 2026-07-31 with 3496 days still missing.
+            # Dispatch events are the documented exception to that guard,
+            # so the chain continues through the API instead.
+            curl -sf -X POST \
+              -H "Authorization: Bearer ${{ github.token }}" \
+              -H "Accept: application/vnd.github+json" \
+              "${{ github.api_url }}/repos/${{ github.repository }}/actions/workflows/events-backfill.yml/dispatches" \
+              -d '{"ref":"main"}'
+            echo "dispatched next batch"
           else
             echo "chain ends here"
           fi

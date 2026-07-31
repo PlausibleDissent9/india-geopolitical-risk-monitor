@@ -134,9 +134,13 @@ jobs:
           # Retry the push: the events-backfill chain commits to the same
           # branch, and one lost race must not discard a computed day
           # (2026-07-31: a successful pipeline died exactly here).
+          pushed=0
           for i in 1 2 3 4 5; do
             git pull --rebase origin main || true
-            git push && break
+            if git push; then pushed=1; break; fi
             echo "push race, attempt $i; retrying"
             sleep $((10 * i))
           done
+          # Five lost races in a row means the computed day dies with
+          # the runner; fail loudly instead of passing with unpushed data.
+          [ "$pushed" = "1" ]
