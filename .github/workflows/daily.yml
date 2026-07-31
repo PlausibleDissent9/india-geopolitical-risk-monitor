@@ -60,6 +60,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 15
         run: python -m src.fetch_events --update 5
+      - name: PortWatch chokepoint transits (V2, IMF ArcGIS, ~2 requests)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.fetch_portwatch --update
       - name: Run pipeline
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,

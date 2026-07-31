@@ -455,6 +455,47 @@ country-level geocoding without a state).</p>
 </tr>
 </tbody>
 </table>
+<h2>data/raw/portwatch_chokepoints.csv</h2>
+<p>The physical-flow layer (V2): daily ship transits through the four
+chokepoints most relevant to India's trade, from IMF PortWatch
+(portwatch.imf.org), which derives them from satellite AIS with a
+published methodology. Free with attribution; PortWatch publishes with
+roughly a five-day lag and revises recent days, so updates re-fetch a
+trailing window and revisions win.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>Calendar day (UTC)</td>
+</tr>
+<tr>
+<td><code>chokepoint</code></td>
+<td><code>suez</code>, <code>bab_el_mandeb</code>, <code>malacca</code>, or <code>hormuz</code></td>
+</tr>
+<tr>
+<td><code>n_total</code></td>
+<td>Ship transit calls that day</td>
+</tr>
+<tr>
+<td><code>n_tanker</code></td>
+<td>Of those, tankers</td>
+</tr>
+<tr>
+<td><code>n_cargo</code></td>
+<td>Of those, cargo vessels</td>
+</tr>
+<tr>
+<td><code>capacity</code></td>
+<td>Total transiting capacity (deadweight tonnage-based, per PortWatch)</td>
+</tr>
+</tbody>
+</table>
 <h2>Conventions</h2>
 <ul>
 <li>Every percentile is computed against the series' own trailing 730 days,

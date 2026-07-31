@@ -168,6 +168,24 @@ country-level geocoding without a state).
 | `n_conflict` | Of those, QuadClass 3 or 4 |
 | `n_protest` | Of those, CAMEO root code 14 |
 
+## data/raw/portwatch_chokepoints.csv
+
+The physical-flow layer (V2): daily ship transits through the four
+chokepoints most relevant to India's trade, from IMF PortWatch
+(portwatch.imf.org), which derives them from satellite AIS with a
+published methodology. Free with attribution; PortWatch publishes with
+roughly a five-day lag and revises recent days, so updates re-fetch a
+trailing window and revisions win.
+
+| Column | Definition |
+|---|---|
+| `date` | Calendar day (UTC) |
+| `chokepoint` | `suez`, `bab_el_mandeb`, `malacca`, or `hormuz` |
+| `n_total` | Ship transit calls that day |
+| `n_tanker` | Of those, tankers |
+| `n_cargo` | Of those, cargo vessels |
+| `capacity` | Total transiting capacity (deadweight tonnage-based, per PortWatch) |
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,
