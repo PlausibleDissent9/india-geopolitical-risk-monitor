@@ -31,6 +31,39 @@ A cheaper alternative worth considering before any of these: the
 precision audit program (hand-label article samples per channel,
 publish precision numbers). It slots into V5 naturally.
 
+## 0.15 The ladder past V4, authorized 2026-07-31 ("execute up until v14")
+
+Now in the mission queue, one verified increment per night: V5
+measurement quality (English-vs-multilingual bias audit, precision
+samples, uncertainty bands); V6 actors and narratives; V7 citable
+instrument (Zenodo packaging, frozen API, reproduce-from-nothing CI,
+preprint assembly); V8 GRM template (country monitors as config); V9
+priced-risk panel (CDS, risk reversals; markets forecast, IGRM reads);
+V10 outcome layer (UCDP/ACLED ground truth, out-of-sample scoreboard);
+V11 pre-registered forecast experiments, Brier-scored; V12 the fork
+decided only by V11's evidence (probability product with published
+calibration, or the negative published prominently); V13 platform
+(package, widgets, alerts; still no PyPI upload); V14 institution
+(governance, external replication kit, annual report).
+
+Past V14 the lever is adoption, not code: V15 research program (second
+paper from the bias audit); V16 data-platform listings (DBnomics,
+Nasdaq Data Link, Kaggle, R package); V17 the replication wedge
+(re-run a published GPR-India result with IGRM, send to the authors
+who cite GPR); V18 monthly practitioner brief for think tanks and data
+journalists; V19 open calibration challenge; V20 state-level and
+regional-language buildout; V21 self-sustaining series (advisory
+board, annual review, continuity plan). I build every artifact and
+draft every email; each send, submission, listing, and account stays
+yours under the hard limits, and those sends are what convert the
+spike from top-1% to world-class.
+
+If IGRM ever measures risk rather than salience, the honest path is:
+priced-risk panel first (measurement), then the V3 predictability
+study (does salience lead outcomes at all), then an outcome
+arrival-rate model, then a scored forecast layer; the last two change
+what IGRM is and follow only from evidence, per V11-V12.
+
 ## 0.2 Map boundary depiction, please review before you share the Maps page
 
 The new Maps page uses Natural Earth geometry: standard (de facto)
