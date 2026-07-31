@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "what": "Pre-registered weights and detection rule for the India Stress Gauge (V2-2), fixed BEFORE any hit-rate against the validation episodes was computed. Append-only: changes get a new dated block, never an edit.",
+    "registered": "2026-07-31",
+    "rule": "The gauge is a weighted mean of component percentiles (each component ranked against its own trailing 730 days, minimum 180 observations, the index convention). An episode counts as detected when the gauge reaches 90 or higher on any day within 3 days either side of the registered episode date. Both the weights and this rule were written and committed before src/stress_gauge.py --validate first ran."
+  },
+  "weights": {
+    "press": 0.35,
+    "events": 0.25,
+    "market": 0.25,
+    "wikipedia": 0.15
+  },
+  "components": {
+    "press": {
+      "series": "composite press-salience percentile (build_index scores)",
+      "rationale": "The validated core instrument: 86% hit rate (18 of 21) against this same episode list at the channel level. Largest weight because it is the only component with a published validation record."
+    },
+    "events": {
+      "series": "conflict-event intensity: (n_verbal_conflict + n_material_conflict) / n_global from the GDELT Events stream, as a trailing-730-day percentile",
+      "rationale": "The physical-record second source: counts of recorded conflict events rather than column-inches. Independent extraction path from the press channel (Events v1 archive, not the DOC API), which is the point of fusing it."
+    },
+    "market": {
+      "series": "mean of the India VIX level percentile and the USDINR 10-day realized-volatility percentile",
+      "rationale": "What the market charges for India risk, the only component with a price attached. VIX carries equity stress; INR realized vol carries the external-account channel. Averaged so one thin series cannot dominate."
+    },
+    "wikipedia": {
+      "series": "channel-mean Wikipedia attention share, as a trailing-730-day percentile",
+      "rationale": "Demand-side attention (what people look up, not what editors publish). Smallest weight: shortest documented fidelity record of the four and known bot-traffic contamination risk."
+    }
+  },
+  "missing_component_rule": "A day publishes only if press is present and at least two of the remaining three components are present; weights renormalize over the present components. Days failing this stay null rather than publishing a gauge built mostly from one source."
+}
