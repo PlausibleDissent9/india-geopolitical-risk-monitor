@@ -49,6 +49,20 @@ first; negative, the market.</p>
   <tbody><tr><td colspan="5" class="empty">Not computed yet.</td></tr></tbody>
 </table></div>
 
+<h2>The India Stress Gauge</h2>
+<p class="chart-note">Four sources fused into one daily 0-100 line: press salience, the
+conflict-event stream, market stress (India VIX and INR realized volatility), and
+Wikipedia attention, each as a percentile of its own trailing two years. Weights and the
+detection rule were pre-registered in <code>validation/stress_gauge_weights.json</code>
+before any hit-rate was computed. A measurement of attention and stress, not a prediction
+of anything.</p>
+<div class="chart-wrap" id="gauge-wrap" style="height:220px"><canvas id="gauge-chart"></canvas></div>
+<p class="kv" id="gauge-reading" hidden></p>
+<div class="table-scroll"><table id="gauge-components" hidden>
+  <thead><tr><th>Component</th><th class="num">Weight</th><th class="num">Today's percentile</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+
 <h2>Chokepoints: coverage against traffic</h2>
 <p class="chart-note">Weekly press salience for each chokepoint sub-dictionary
 (dictionaries.json v1.1.0) against actual transit calls from IMF PortWatch, each series a
@@ -156,6 +170,41 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
   }
 
   } catch (e) { console.error("divergence:", e); }
+  try {
+    const sg = await j("data/stress_gauge.json");
+    if (sg && sg.gauge != null && !(sg._meta || {}).partial) {
+      new Chart(document.getElementById("gauge-chart"), {
+        type: "line",
+        data: { labels: sg.history_365d.dates, datasets: [{
+          data: sg.history_365d.gauge, borderColor: css("--ink"),
+          borderWidth: 1.4, pointRadius: 0, tension: 0.15, spanGaps: true,
+        }]},
+        options: { animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          interaction: { mode: "index", intersect: false },
+          scales: { y: { min: 0, max: 100, grid: { color: css("--rule-soft") }, ticks: { color: css("--muted") } },
+                    x: { ticks: { maxTicksLimit: 8, color: css("--muted") }, grid: { display: false } } } },
+      });
+      const v = sg.validation || {};
+      const rd = document.getElementById("gauge-reading");
+      rd.textContent = `Today (${sg.date}): ${sg.gauge}. Validation against the ` +
+        `pre-registered episode list: ${v.n_detected} of ${v.n_episodes} detected ` +
+        `(rule: ${v.rule}).`;
+      rd.hidden = false;
+      const tb = document.querySelector("#gauge-components tbody");
+      for (const [name, w] of Object.entries(sg._meta.weights)) {
+        const tr = document.createElement("tr");
+        const val = sg.components[name];
+        tr.innerHTML = `<td>${esc(name)}</td><td class="num">${esc(w)}</td>` +
+          `<td class="num">${val == null ? "-" : esc(val)}</td>`;
+        tb.appendChild(tr);
+      }
+      document.getElementById("gauge-components").hidden = false;
+    } else {
+      document.getElementById("gauge-wrap").innerHTML =
+        '<p class="empty">Not computed yet: the gauge publishes once the 2017 events history completes.</p>';
+    }
+  } catch (e) { console.error("gauge:", e); }
   try { if (cp && cp.chokepoints && Object.keys(cp.chokepoints).length) {
     const sel = document.getElementById("cp-select");
     const names = Object.keys(cp.chokepoints);

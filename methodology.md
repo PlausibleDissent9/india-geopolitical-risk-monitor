@@ -1,6 +1,6 @@
 # IGRM Methodology
 
-Version 1.1.1 · five channels frozen 2026-07-24, chokepoint sub-dictionaries and nowcast added 2026-07-31 · [changelog](#changelog) at the end.
+Version 1.2.0 · five channels frozen 2026-07-24, chokepoint sub-dictionaries, nowcast, maps, and stress gauge added 2026-07-31 · [changelog](#changelog) at the end.
 
 ## 1. What the index measures (and what it does not)
 
@@ -240,8 +240,37 @@ A note on what validation cannot do: passing 8a-8d shows the instrument
 detects what it claims to detect and is not an artifact of one term list.
 It does not, and cannot, convert salience into risk (§7.1).
 
+## 9. The India Stress Gauge
+
+The gauge fuses four sources into one daily 0-100 line: the composite
+press-salience percentile, a conflict-event intensity percentile from
+the GDELT Events stream ((verbal + material conflict events) / global
+events), a market-stress percentile (the mean of the India VIX level
+percentile and the USDINR 10-day realized-volatility percentile), and
+a Wikipedia attention percentile. Each component is ranked against its
+own trailing 730 days with the same 180-observation minimum as the
+index; the gauge is their weighted mean.
+
+The weights (press 0.35, events 0.25, market 0.25, wikipedia 0.15),
+the detection rule (gauge at 90 or higher within 3 days of an episode
+date), and the missing-component rule (press required, at least two of
+the other three present, weights renormalized) were registered in
+`validation/stress_gauge_weights.json` with per-component rationale
+and committed before any hit-rate was computed; the repository history
+is the proof of ordering. The hit-rate against the pre-registered
+episode list publishes with the gauge in
+`docs/data/stress_gauge.json`, along with the per-component
+percentiles behind each day's number. Whatever the hit-rate is, it is
+reported as found; the gauge measures attention and stress, and
+predicts nothing.
+
 ## Changelog
 
+- **2026-07-31, v1.2.0 (stress gauge).** Section 9 added: the India
+  Stress Gauge, four pre-registered components fused into one daily
+  0-100 line, gated on the completed events history, hit-rate
+  published as found. Registration precedes computation in the commit
+  history.
 - **2026-07-31, v1.1.1 (nowcast).** A provisional "today so far" score
   now publishes to `docs/data/nowcast.json` roughly every two hours,
   computed from a partial-day sample of the Web NGrams bridge with the

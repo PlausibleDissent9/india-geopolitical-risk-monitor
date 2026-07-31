@@ -242,6 +242,18 @@ filtered to India) and committed; the site fetches no external
 geometry. Countries keyed by ADM0_A3, Indian states by FIPS. States too
 small for 110m polygons carry a point marker instead of a path.
 
+## docs/data/stress_gauge.json
+
+The India Stress Gauge (methodology section 9): today's 0-100 gauge,
+the per-component percentiles behind it (press, events, market,
+wikipedia), the pre-registered weights, the hit-rate against the
+pre-registered episode list with per-miss detail, and a 365-day
+history. Publishes only once the events history is complete
+(`_meta.partial` stays false on anything served). Weights, detection
+rule, and missing-component rule live in
+`validation/stress_gauge_weights.json`, committed before any hit-rate
+was computed.
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,

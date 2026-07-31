@@ -556,6 +556,16 @@ from Natural Earth public domain data (110m admin-0; 10m admin-1
 filtered to India) and committed; the site fetches no external
 geometry. Countries keyed by ADM0_A3, Indian states by FIPS. States too
 small for 110m polygons carry a point marker instead of a path.</p>
+<h2>docs/data/stress_gauge.json</h2>
+<p>The India Stress Gauge (methodology section 9): today's 0-100 gauge,
+the per-component percentiles behind it (press, events, market,
+wikipedia), the pre-registered weights, the hit-rate against the
+pre-registered episode list with per-miss detail, and a 365-day
+history. Publishes only once the events history is complete
+(<code>_meta.partial</code> stays false on anything served). Weights, detection
+rule, and missing-component rule live in
+<code>validation/stress_gauge_weights.json</code>, committed before any hit-rate
+was computed.</p>
 <h2>Conventions</h2>
 <ul>
 <li>Every percentile is computed against the series' own trailing 730 days,

@@ -75,6 +75,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.maps_data
+      - name: Stress gauge (V2-2; refuses until events history is complete)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.stress_gauge
       - name: Run pipeline
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,
