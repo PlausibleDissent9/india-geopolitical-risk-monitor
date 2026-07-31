@@ -31,9 +31,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Count store before
+      - name: Count missing days before
         id: before
-        run: echo "n=$( (wc -l < data/raw/events_daily.csv) 2>/dev/null || echo 0 )" >> "$GITHUB_OUTPUT"
+        # Progress means the incomplete-day count fell, NOT that the
+        # national store grew: a batch that reprocesses days predating
+        # the dyad/state layers grows only those two files, and a line
+        # count of events_daily.csv read that real progress as none and
+        # ended the chain (2026-07-31, run 30636353123).
+        run: |
+          M=$(python -c "from src.fetch_events import _missing_days; print(len(_missing_days()))")
+          echo "missing=$M" >> "$GITHUB_OUTPUT"
       - name: Fetch a batch (oldest missing first)
         continue-on-error: true
         timeout-minutes: 120
@@ -55,18 +62,14 @@ jobs:
           # Five lost races in a row means the batch dies with the
           # runner; fail loudly instead of passing with unpushed data.
           [ "$pushed" = "1" ]
-          echo "n=$( (wc -l < data/raw/events_daily.csv) 2>/dev/null || echo 0 )" >> "$GITHUB_OUTPUT"
+          M=$(python -c "from src.fetch_events import _missing_days; print(len(_missing_days()))")
+          echo "missing=$M" >> "$GITHUB_OUTPUT"
       - name: Re-trigger while incomplete and progressing
         run: |
-          BEFORE="${{ steps.before.outputs.n }}"
-          AFTER="${{ steps.commit.outputs.n }}"
-          MISSING=$(python - << 'EOF'
-          from src.fetch_events import _load, _missing_days
-          print(len(_missing_days(_load())))
-          EOF
-          )
-          echo "store $BEFORE -> $AFTER rows; $MISSING days missing"
-          if [ "$MISSING" -gt 0 ] && [ "$AFTER" -gt "$BEFORE" ]; then
+          BEFORE="${{ steps.before.outputs.missing }}"
+          AFTER="${{ steps.commit.outputs.missing }}"
+          echo "incomplete days: $BEFORE -> $AFTER"
+          if [ "$AFTER" -gt 0 ] && [ "$AFTER" -lt "$BEFORE" ]; then
             # A trigger-file commit pushed with GITHUB_TOKEN never fires
             # the push trigger (GitHub's recursion guard), which silently
             # ended the chain on 2026-07-31 with 3496 days still missing.
