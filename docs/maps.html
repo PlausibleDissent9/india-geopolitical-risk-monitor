@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maps, India Geopolitical Risk Monitor</title>
+<meta name="description" content="India's press-recorded event geography: partner countries by cooperation-conflict balance, and Indian states by event, conflict, and protest counts. Counts, not causes.">
+<link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/maps.html">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260731a">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html" class="current">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">Where India's press-recorded events point: which partner countries,
+  and which Indian states. Everything here is a count of events the world's press recorded,
+  from the GDELT Events stream since 2017. Counts and shares, never causes.</p>
+</header>
+
+<h2>India relations: the world by cooperation and conflict</h2>
+<p class="chart-note">Color: share of classified India-partner events in the trailing 365
+days that are conflictual (CAMEO QuadClass 3 or 4 as a share of classified events).
+Depth of color runs from the corridor's calm color at 0 to the severe color at the scale
+cap shown in the legend. Grey: fewer than 50 recent events. Circles are states too small
+for the map's polygons. Hover for numbers.</p>
+<div class="chart-wrap" id="world-wrap" style="max-width:1000px"><p class="empty" id="world-empty">Not computed yet: aggregates publish once the 2017 events backfill completes.</p></div>
+<p class="kv" id="world-legend" hidden></p>
+<div class="table-scroll"><table id="partners-table" hidden>
+  <thead><tr><th>Partner</th><th class="num">Events, 365d</th><th class="num">Conflict share, 365d</th><th class="num">Conflict share, 2017-</th><th class="num">Goldstein mean</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+
+<h2>Inside India: events by state</h2>
+<p class="chart-note">Color: press-recorded events located in each state over the trailing
+365 days, log scale from the calm color to the severe color. The table splits conflict
+(QuadClass 3 or 4) and protest (CAMEO root 14) shares. GDELT still emits some pre-2000
+state codes; those are folded into today's boundaries and the fold is documented in the
+codebook. Hover for numbers.</p>
+<div class="chart-wrap" id="india-wrap" style="max-width:620px"><p class="empty" id="india-empty">Not computed yet: aggregates publish once the 2017 events backfill completes.</p></div>
+<div class="table-scroll"><table id="states-table" hidden>
+  <thead><tr><th>State</th><th class="num">Events, 365d</th><th class="num">Conflict share, 365d</th><th class="num">Protest share, 2017-</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+
+<footer>
+  <p><a href="data.html">Underlying files &amp; citation</a> &middot; <a href="methodology.html">Methodology</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+
+<script>
+"use strict";
+async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const SVG = "http://www.w3.org/2000/svg";
+
+function hex2rgb(h) { h = h.replace("#", ""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); }
+function mix(c1, c2, t) {
+  const a = hex2rgb(c1), b = hex2rgb(c2);
+  return "rgb(" + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",") + ")";
+}
+function pct(x) { return x == null ? "-" : (100 * x).toFixed(1) + "%"; }
+
+function drawMap(wrapId, geo, keyName, fillFor, titleFor) {
+  const svg = document.createElementNS(SVG, "svg");
+  svg.setAttribute("viewBox", geo.viewBox);
+  svg.setAttribute("role", "img");
+  svg.style.width = "100%";
+  for (const [code, g] of Object.entries(geo[keyName])) {
+    let el;
+    if (g.d) {
+      el = document.createElementNS(SVG, "path");
+      el.setAttribute("d", g.d);
+    } else if (g.pt) {
+      el = document.createElementNS(SVG, "circle");
+      el.setAttribute("cx", g.pt[0]); el.setAttribute("cy", g.pt[1]);
+      el.setAttribute("r", 3.2);
+    } else { continue; }
+    el.setAttribute("fill", fillFor(code));
+    el.setAttribute("stroke", css("--rule"));
+    el.setAttribute("stroke-width", "0.5");
+    const t = document.createElementNS(SVG, "title");
+    t.textContent = titleFor(code, g.name);
+    el.appendChild(t);
+    svg.appendChild(el);
+  }
+  const wrap = document.getElementById(wrapId);
+  wrap.querySelector(".empty").remove();
+  wrap.appendChild(svg);
+}
+
+(async () => {
+  const [worldGeo, rel, indiaGeo, st] = await Promise.all([
+    j("geo/world.json"), j("data/map_relations.json"),
+    j("geo/india.json"), j("data/map_states.json"),
+  ]);
+  const calm = css("--calm"), severe = css("--severe"),
+        base = css("--rule-soft"), calmHex = calm, sevHex = severe;
+
+  try { if (worldGeo && rel && rel.partners && !(rel._meta || {}).partial) {
+    const MIN_N = 50, CAP = 0.5;
+    const fillFor = (c) => {
+      const p = rel.partners[c];
+      if (!p || p.recent_n < MIN_N || p.recent_conflict_share == null) return base;
+      return mix(calmHex, sevHex, Math.min(p.recent_conflict_share / CAP, 1));
+    };
+    const titleFor = (c, name) => {
+      const p = rel.partners[c];
+      if (!p) return name + ": no India-partner events recorded";
+      return `${name}: ${p.recent_n} events in 365d, conflict share ` +
+        `${pct(p.recent_conflict_share)} (2017- : ${pct(p.conflict_share)}, ` +
+        `Goldstein mean ${p.goldstein_mean == null ? "-" : p.goldstein_mean})`;
+    };
+    drawMap("world-wrap", worldGeo, "countries", fillFor, titleFor);
+    const lg = document.getElementById("world-legend");
+    lg.textContent = `Scale: 0% conflict share to the ${100 * CAP}% cap; ` +
+      `grey below ${MIN_N} events in 365 days. India itself is not a partner and stays uncolored.`;
+    lg.hidden = false;
+    const rows = Object.entries(rel.partners)
+      .filter(([, p]) => p.recent_n > 0)
+      .sort((a, b) => b[1].recent_n - a[1].recent_n).slice(0, 15);
+    const tb = document.querySelector("#partners-table tbody");
+    for (const [, p] of rows) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${esc(p.name)}</td><td class="num">${esc(p.recent_n)}</td>` +
+        `<td class="num">${pct(p.recent_conflict_share)}</td>` +
+        `<td class="num">${pct(p.conflict_share)}</td>` +
+        `<td class="num">${p.goldstein_mean == null ? "-" : esc(p.goldstein_mean)}</td>`;
+      tb.appendChild(tr);
+    }
+    document.getElementById("partners-table").hidden = false;
+  }
+  } catch (e) { console.error("world map:", e); }
+
+  try { if (indiaGeo && st && st.states && !(st._meta || {}).partial) {
+    const vals = Object.values(st.states).map(s => s.recent_n).filter(n => n > 0);
+    const maxLog = Math.log1p(Math.max(...vals, 1));
+    const fillFor = (c) => {
+      const s = st.states[c];
+      if (!s || !s.recent_n) return base;
+      return mix(calmHex, sevHex, Math.log1p(s.recent_n) / maxLog);
+    };
+    const titleFor = (c, name) => {
+      const s = st.states[c];
+      if (!s) return name + ": no located events";
+      return `${name}: ${s.recent_n} events in 365d, conflict share ` +
+        `${pct(s.recent_conflict_share)}, protest share 2017- ${pct(s.protest_share)}`;
+    };
+    drawMap("india-wrap", indiaGeo, "states", fillFor, titleFor);
+    const rows = Object.entries(st.states)
+      .sort((a, b) => b[1].recent_n - a[1].recent_n).slice(0, 10);
+    const tb = document.querySelector("#states-table tbody");
+    for (const [, s] of rows) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${esc(s.name)}</td><td class="num">${esc(s.recent_n)}</td>` +
+        `<td class="num">${pct(s.recent_conflict_share)}</td>` +
+        `<td class="num">${pct(s.protest_share)}</td>`;
+      tb.appendChild(tr);
+    }
+    document.getElementById("states-table").hidden = false;
+  }
+  } catch (e) { console.error("india map:", e); }
+})();
+</script>
+</body>
+</html>

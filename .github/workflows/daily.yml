@@ -70,6 +70,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 15
         run: python -m src.chokepoints --update
+      - name: Map aggregates (V2 maps; refuses until events history is complete)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.maps_data
       - name: Run pipeline
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,

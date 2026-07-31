@@ -31,6 +31,24 @@ A cheaper alternative worth considering before any of these: the
 precision audit program (hand-label article samples per channel,
 publish precision numbers). It slots into V5 naturally.
 
+## 0.2 Map boundary depiction, please review before you share the Maps page
+
+The new Maps page uses Natural Earth geometry: standard (de facto)
+worldview at admin-0, and Indian states as administered at admin-1,
+which includes Jammu and Kashmir and Ladakh as Indian states. Two
+things you should look at once and decide:
+
+1. The world map at 110m draws the India-Pakistan and India-China
+   boundaries per Natural Earth's default international depiction, not
+   per Survey of India. Natural Earth publishes an India-worldview
+   admin-0 variant (ne_10m_admin_0_countries_ind); switching is a
+   one-line change in scripts/prepare_map_geometry.py if you want it.
+2. Indian law has expectations about how maps of India depict J&K,
+   Aksai Chin, and Arunachal Pradesh. The states map (as administered)
+   is the safer of the two; the world map is where the default
+   depiction may differ from the official Indian position. Your call
+   whether to switch the world layer to the IND worldview file.
+
 ## 0.0 Activate the subscribe list (5 minutes, only you can)
 
 1. Create the free account at buttondown.com (use your normal email).

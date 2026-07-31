@@ -217,6 +217,31 @@ sample behind the number. Never enters the historical series; the daily
 run's finalized score supersedes it, and the site renders it only while
 the payload's UTC date is still today.
 
+## docs/data/map_relations.json and map_states.json
+
+Aggregates behind the Maps page, published only once the 2017 events
+backfill is complete (`_meta.partial` stays false on anything served).
+Relations: per partner country (keyed by the dyad actor code), total
+and trailing-365-day event counts, conflict share of classified events
+(QuadClass 3-4 vs 1-2), event-weighted Goldstein mean. States: per
+Indian state, total and trailing-365-day located events with conflict
+(QuadClass 3-4) and protest (root 14) shares. GDELT still emits some
+pre-2000 FIPS state codes; they fold into today's boundaries (IN09 into
+IN35 Madhya Pradesh, IN33 into IN36 Uttar Pradesh, IN25 into IN22
+Tamil Nadu, IN06 into IN52 Dadra and Nagar Haveli and Daman and Diu),
+so a pre-2000 parent's counts include its later split-off child.
+`IN00` (a country-level geocode) and CAMEO regional actor codes (SAS,
+EUR, AFR, ...) are excluded and listed with row counts in each
+payload's excluded block.
+
+## docs/geo/world.json and india.json
+
+Self-hosted map geometry, baked once by scripts/prepare_map_geometry.py
+from Natural Earth public domain data (110m admin-0; 10m admin-1
+filtered to India) and committed; the site fetches no external
+geometry. Countries keyed by ADM0_A3, Indian states by FIPS. States too
+small for 110m polygons carry a point marker instead of a path.
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,
