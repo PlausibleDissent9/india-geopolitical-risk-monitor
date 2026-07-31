@@ -223,12 +223,22 @@ def _missing_days(rows: dict[str, dict] | None = None) -> list[date]:
     national = rows if rows is not None else _load()
     dyads = _load_grouped(STORE_DYADS)
     states = _load_grouped(STORE_STATES)
+    # Days GDELT never published (verified permanent 404s) are not
+    # missing, they are nonexistent: completeness means every published
+    # day is in the store. The list is committed, dated, append-only.
+    unavailable_path = RAW / "events_unavailable_days.json"
+    unavailable: set[str] = set()
+    if unavailable_path.exists():
+        import json
+        unavailable = set(json.loads(
+            unavailable_path.read_text(encoding="utf-8"))["days"])
     last = date.today() - timedelta(days=PUBLISH_LAG_DAYS)
     out = []
     d = START
     while d <= last:
         k = d.isoformat()
-        if k not in national or k not in dyads or k not in states:
+        if k not in unavailable and (
+                k not in national or k not in dyads or k not in states):
             out.append(d)
         d += timedelta(days=1)
     return out
