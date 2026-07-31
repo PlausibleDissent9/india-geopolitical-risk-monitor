@@ -1,0 +1,43 @@
+/* Nocturne — IGRM restyled with the tokens of the author's Claude Design
+   project (claude.ai/design, "Nocturne"): indigo ground #161826, surface
+   #232532, ink #e9e9ed, blurple accent #9184d9, Inter, 8px radii.
+   Loaded on demand by the design chooser (docs/design.html); overrides
+   both token sets (style.css homepage, site.css subpages). State colors
+   (calm/elevated/severe) are data semantics, not brand, and stay.
+   Nocturne is single-theme, so the light toggle becomes a no-op here. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root,
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+  /* style.css (homepage) tokens */
+  --paper: #161826;
+  --surface: #232532;
+  --ink: #e9e9ed;
+  --muted: #9397ab;
+  --rule: #3f424d;
+  --rule-soft: #292b31;
+  --shadow: 0 0 0 1px #3f424d, 0 6px 18px rgba(0, 0, 0, 0.55);
+
+  /* site.css (subpage) tokens */
+  --bg: #161826;
+  --fg: #e9e9ed;
+  --line: #3f424d;
+  --card: #232532;
+  --accent: #9184d9;
+  --shade: rgba(145, 132, 217, 0.14);
+  --ok: #3AA396;
+  --bad: #D96548;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+h1, h2, h3 {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+/* the light/dark button has nothing to do under a single-theme design */
+#theme-toggle, .theme-btn { display: none; }
