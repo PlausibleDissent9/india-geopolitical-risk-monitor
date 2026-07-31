@@ -378,6 +378,83 @@ carry this" framing.</p>
 </tr>
 </tbody>
 </table>
+<h2>data/raw/events_dyads.csv</h2>
+<p>The relations layer: India's bilateral event record with every partner
+country, one row per (day, partner). A dyad event has India as one CAMEO
+actor and the partner as the other; no dictionaries or curation are
+involved, only actor codes, so this layer carries no term-selection bias.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>UTC day of the GDELT v1 daily export file</td>
+</tr>
+<tr>
+<td><code>partner</code></td>
+<td>CAMEO 3-letter code of the non-India actor (e.g. PAK, CHN, USA)</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>India-partner events that day</td>
+</tr>
+<tr>
+<td><code>n_coop</code></td>
+<td>Of those, cooperative (QuadClass 1 verbal / 2 material cooperation)</td>
+</tr>
+<tr>
+<td><code>n_conflict</code></td>
+<td>Of those, conflictual (QuadClass 3 verbal / 4 material conflict)</td>
+</tr>
+<tr>
+<td><code>goldstein_mean</code></td>
+<td>Mean Goldstein score of the dyad's events (−10 to +10)</td>
+</tr>
+<tr>
+<td><code>mentions_sum</code></td>
+<td>Total press mentions across the dyad's events</td>
+</tr>
+</tbody>
+</table>
+<h2>data/raw/events_states.csv</h2>
+<p>The internal layer: events geolocated to an Indian state, one row per
+(day, state). <code>adm1</code> is the FIPS ADM1 code (IN01-IN36; IN00 marks
+country-level geocoding without a state).</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>UTC day of the GDELT v1 daily export file</td>
+</tr>
+<tr>
+<td><code>adm1</code></td>
+<td>FIPS ADM1 code of the state the event action was geolocated to</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>Events located in that state that day</td>
+</tr>
+<tr>
+<td><code>n_conflict</code></td>
+<td>Of those, QuadClass 3 or 4</td>
+</tr>
+<tr>
+<td><code>n_protest</code></td>
+<td>Of those, CAMEO root code 14</td>
+</tr>
+</tbody>
+</table>
 <h2>Conventions</h2>
 <ul>
 <li>Every percentile is computed against the series' own trailing 730 days,

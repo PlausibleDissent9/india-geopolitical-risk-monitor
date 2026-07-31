@@ -137,6 +137,37 @@ carry this" framing.
 | `goldstein_mean` | Mean Goldstein cooperation-conflict score of India events (−10 most conflictual, +10 most cooperative) |
 | `mentions_sum` | Total press mentions across India events that day |
 
+## data/raw/events_dyads.csv
+
+The relations layer: India's bilateral event record with every partner
+country, one row per (day, partner). A dyad event has India as one CAMEO
+actor and the partner as the other; no dictionaries or curation are
+involved, only actor codes, so this layer carries no term-selection bias.
+
+| Column | Definition |
+|---|---|
+| `date` | UTC day of the GDELT v1 daily export file |
+| `partner` | CAMEO 3-letter code of the non-India actor (e.g. PAK, CHN, USA) |
+| `n` | India-partner events that day |
+| `n_coop` | Of those, cooperative (QuadClass 1 verbal / 2 material cooperation) |
+| `n_conflict` | Of those, conflictual (QuadClass 3 verbal / 4 material conflict) |
+| `goldstein_mean` | Mean Goldstein score of the dyad's events (−10 to +10) |
+| `mentions_sum` | Total press mentions across the dyad's events |
+
+## data/raw/events_states.csv
+
+The internal layer: events geolocated to an Indian state, one row per
+(day, state). `adm1` is the FIPS ADM1 code (IN01-IN36; IN00 marks
+country-level geocoding without a state).
+
+| Column | Definition |
+|---|---|
+| `date` | UTC day of the GDELT v1 daily export file |
+| `adm1` | FIPS ADM1 code of the state the event action was geolocated to |
+| `n` | Events located in that state that day |
+| `n_conflict` | Of those, QuadClass 3 or 4 |
+| `n_protest` | Of those, CAMEO root code 14 |
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,
