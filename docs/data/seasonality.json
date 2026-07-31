@@ -6,26 +6,26 @@
    "top_recurring_dates": [
     {
      "month_day": "09-27",
-     "log_effect": 0.4566
+     "log_effect": 0.4563
     },
     {
      "month_day": "08-16",
-     "log_effect": 0.4319
+     "log_effect": 0.4316
     },
     {
      "month_day": "09-26",
-     "log_effect": 0.4307
+     "log_effect": 0.4304
     },
     {
      "month_day": "08-13",
-     "log_effect": 0.4284
+     "log_effect": 0.4281
     },
     {
      "month_day": "08-15",
-     "log_effect": 0.4185
+     "log_effect": 0.4182
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9473
+   "corr_seasonal_vs_deseasonalized": 0.9472
   },
   "china_east": {
    "partial_r2": 0.0568,
@@ -36,11 +36,11 @@
     },
     {
      "month_day": "09-02",
-     "log_effect": 0.3701
+     "log_effect": 0.37
     },
     {
      "month_day": "08-31",
-     "log_effect": 0.3573
+     "log_effect": 0.3572
     },
     {
      "month_day": "12-28",
@@ -54,82 +54,82 @@
    "corr_seasonal_vs_deseasonalized": 0.9586
   },
   "gulf_energy": {
-   "partial_r2": 0.0427,
+   "partial_r2": 0.0429,
    "top_recurring_dates": [
     {
      "month_day": "06-16",
-     "log_effect": 0.3054
+     "log_effect": 0.3051
     },
     {
      "month_day": "06-17",
-     "log_effect": 0.2766
+     "log_effect": 0.2763
     },
     {
      "month_day": "04-14",
-     "log_effect": 0.2695
+     "log_effect": 0.2692
     },
     {
      "month_day": "04-13",
-     "log_effect": 0.2669
+     "log_effect": 0.2666
     },
     {
      "month_day": "06-15",
-     "log_effect": 0.2643
+     "log_effect": 0.264
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9551
+   "corr_seasonal_vs_deseasonalized": 0.9549
   },
   "us_trade": {
    "partial_r2": 0.0639,
    "top_recurring_dates": [
     {
      "month_day": "03-08",
-     "log_effect": 0.5863
+     "log_effect": 0.5865
     },
     {
      "month_day": "03-07",
-     "log_effect": 0.5745
+     "log_effect": 0.5747
     },
     {
      "month_day": "03-09",
-     "log_effect": 0.5703
+     "log_effect": 0.5705
     },
     {
      "month_day": "03-06",
-     "log_effect": 0.5434
+     "log_effect": 0.5436
     },
     {
      "month_day": "03-05",
-     "log_effect": 0.5286
+     "log_effect": 0.5288
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9352
+   "corr_seasonal_vs_deseasonalized": 0.9353
   },
   "shipping": {
-   "partial_r2": 0.0651,
+   "partial_r2": 0.0654,
    "top_recurring_dates": [
     {
      "month_day": "03-27",
-     "log_effect": 0.3901
+     "log_effect": 0.3896
     },
     {
      "month_day": "03-28",
-     "log_effect": 0.3816
+     "log_effect": 0.3811
     },
     {
      "month_day": "03-29",
-     "log_effect": 0.3799
+     "log_effect": 0.3794
     },
     {
      "month_day": "03-30",
-     "log_effect": 0.3356
+     "log_effect": 0.3351
     },
     {
      "month_day": "03-26",
-     "log_effect": 0.3285
+     "log_effect": 0.3281
     }
    ],
-   "corr_seasonal_vs_deseasonalized": 0.9363
+   "corr_seasonal_vs_deseasonalized": 0.936
   }
  }
 }

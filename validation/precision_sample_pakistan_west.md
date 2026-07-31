@@ -1,84 +1,84 @@
 # Precision sample: pakistan_west
 
-Sampled 2026-07-29 from random windows, 2022-01-01..2026-07-29. Mark each [RELEVANT? ] Y or N by
+Sampled 2026-07-31 from random windows, 2022-01-01..2026-07-31. Mark each [RELEVANT? ] Y or N by
 hand, then report the per-channel rate in methodology s8.
 
-1. **Despite Pakistan assurance of adherence : India boycotts Vienna IWT proceedings**  
-   thenews.com.pk · 20251113 · https://www.thenews.com.pk/latest/1357547-despite-pakistan-s-assurance-of-adherence-india-boycotts-vienna-iwt-proceedings  
+1. **Hundreds rally in Pakistan - ruled Kashmir against India G20 meet**  
+   bdnews24.com · 20230523 · https://bdnews24.com/world/t9ss7ue9ni  
    [RELEVANT? ]
 
-2. **India has every right to defend itself against cross - border terrorism from Pakistan : MEA**  
-   economictimes.indiatimes.com · 20260507 · https://economictimes.indiatimes.com/news/defence/india-has-every-right-to-defend-itself-against-cross-border-terrorism-from-pakistan-mea/articleshow/130893047.cms  
+2. **India serves formal notice on Pakistan to review and modify Indus Waters Treaty**  
+   hindustantimes.com · 20240918 · https://www.hindustantimes.com/india-news/india-serves-formal-notice-on-pakistan-to-review-and-modify-indus-waters-treaty-101726656572555.html  
    [RELEVANT? ]
 
-3. **Raksha Mantri Rajnath Singh Said Siachen Is India Capital Of Valour And Bravery - Amar Ujala Hindi News Live - Rajnath In Siachen : रक्षामंत्री राजनाथ बोले - सियाचिन भारत की वीरता और बहादुरी की राजधानी**  
-   amarujala.com · 20240422 · https://www.amarujala.com/jammu/raksha-mantri-rajnath-singh-said-siachen-is-india-capital-of-valour-and-bravery-2024-04-22  
+3. **Completion of hydropower projects in J & K priority ; Indus Water Treaty task force reviews progress [ details ] **  
+   ibtimes.co.in · 20230526 · https://www.ibtimes.co.in/completion-hydropower-projects-jk-priority-indus-water-treaty-task-force-reviews-progress-859381  
    [RELEVANT? ]
 
-4. **Pakistan Leader Makes Big Admission Days After Delhi Blast , Says  We Hit India From Red Fort To Kashmir  **  
-   newsx.com · 20251119 · https://www.newsx.com/world/pakistan-leader-makes-big-admission-days-after-delhi-blast-says-we-hit-india-from-red-fort-to-kashmir-112493/  
+4. **  Actions will certainly have consequence : S Jaishankar warns Pakistan at UNGA**  
+   timesofindia.indiatimes.com · 20240928 · https://timesofindia.indiatimes.com/india/actions-will-certainly-have-consequences-s-jaishankar-warns-pakistan-at-unga/articleshow/113772233.cms  
    [RELEVANT? ]
 
-5. **Advisor warns against weaponising water as threat to global norms**  
-   pakobserver.net · 20251018 · https://pakobserver.net/advisor-warns-against-weaponising-water-as-threat-to-global-norms/  
+5. **Neutral expert upholds India stand on Indus Water Treaty against Pakistan | India News**  
+   timesofindia.indiatimes.com · 20250121 · https://timesofindia.indiatimes.com/india/neutral-expert-upholds-indias-stand-on-indus-water-treaty-against-pakistan/articleshow/117425979.cms  
    [RELEVANT? ]
 
-6. **At UNGA , Nishikant Dubey slams Pakistan over child rights violations**  
-   economictimes.indiatimes.com · 20251014 · https://economictimes.indiatimes.com/news/india/at-unga-nishikant-dubey-slams-pakistan-over-child-rights-violations/articleshow/124542442.cms  
+6. **BIG Win For India Against Pakistan : Expert Upholds New Delhi Stand On Indus Water Treaty | India News**  
+   zeenews.india.com · 20250121 · https://zeenews.india.com/india/big-win-for-india-against-pakistan-expert-upholds-new-delhis-stand-on-indus-water-treaty-2846867.html  
    [RELEVANT? ]
 
-7. **  Worst violator : India slams  highly hypocritical  Pakistan at UN ; calls out killings in Afghanistan | India News**  
-   timesofindia.indiatimes.com · 20251014 · https://timesofindia.indiatimes.com/india/worst-violator-india-slams-highly-hypocritical-pakistan-at-un-calls-out-killings-in-afghanistan/articleshow/124542712.cms  
+7. **Dy NSA Vikram Misri visits J - K ; reviews hydro - power projects , security scenario**  
+   sanantoniopost.com · 20230526 · https://www.sanantoniopost.com/news/273844523/dy-nsa-vikram-misri-visits-j-k-reviews-hydro-power-projects-security-scenario  
    [RELEVANT? ]
 
-8. **India rejects  Court of Arbitration  pondage award , says decision in force to keep Indus Waters Treaty in abeyance**  
-   news.webindia123.com · 20260516 · https://news.webindia123.com/news/Articles/World/20260517/4451114.html  
+8. **Encounter breaks out between security forces , terrorists in J & K Kathua**  
+   business-standard.com · 20240911 · https://www.business-standard.com/external-affairs-defence-security/news/encounter-breaks-out-between-security-forces-terrorists-in-j-k-s-kathua-124091100792_1.html  
    [RELEVANT? ]
 
-9. **At UNGA , Nishikant Dubey slams Pakistan over child rights violations**  
-   thehindu.com · 20251014 · https://www.thehindu.com/news/national/at-unga-nishikant-dubey-slams-pakistan-over-child-rights-violations/article70161262.ece  
+9. **Ready to discuss India concerns on Indus Waters Treaty , says FO**  
+   article.wn.com · 20240920 · https://article.wn.com/view/2024/09/20/Ready_to_discuss_India_s_concerns_on_Indus_Waters_Treaty_say/  
    [RELEVANT? ]
 
-10. **  Dependent on handout : India sharp retort to Pakistan after Zardari comments on Kashmir , Indus Waters Treaty**  
-   hindustantimes.com · 20251105 · https://www.hindustantimes.com/india-news/dependent-on-handouts-indias-sharp-retort-to-pakistan-after-zardaris-comments-on-kashmir-water-treaty-101762352338721.html  
+10. **India welcomes World Bank - appointed expert ruling on Indus Water Treaty - Asia News NetworkAsia News Network**  
+   asianews.network · 20250122 · https://asianews.network/india-welcomes-world-bank-appointed-experts-ruling-on-indus-water-treaty/  
    [RELEVANT? ]
 
-11. **India Spain Review Bilateral Ties Discuss Terrorism Cooperation**  
-   newkerala.com · 20251113 · https://www.newkerala.com/news/o/india-spain-review-bilateral-ties-discuss-issues-mutual-concern-537  
+11. **Water : fault lines of the future**  
+   thenews.com.pk · 20230610 · https://www.thenews.com.pk/print/1078842-water-fault-lines-of-the-future  
    [RELEVANT? ]
 
-12. **At UNGA , India slams Pakistan over child rights violations**  
-   indianexpress.com · 20251014 · https://indianexpress.com/article/india/at-unga-india-slams-pakistan-over-child-rights-violations-10305693/  
+12. **Dy NSA Vikram Misri visits J - K ; reviews hydro - power projects , security scenario**  
+   japanherald.com · 20230526 · https://www.japanherald.com/news/273844523/dy-nsa-vikram-misri-visits-j-k-reviews-hydro-power-projects-security-scenario  
    [RELEVANT? ]
 
-13. **POK will soon merge with India : Rajnath**  
-   thehansindia.com · 20240325 · https://www.thehansindia.com/news/national/pok-will-soon-merge-with-india-rajnath-867604  
+13. **Settlement of water dispute with India : Govt to provide Rs153m against court fees**  
+   brecorder.com · 20230512 · https://www.brecorder.com/news/40241654/settlement-of-water-dispute-with-india-govt-to-provide-rs153m-against-court-fees  
    [RELEVANT? ]
 
-14. **India rejects Hague tribunal arbitration award ; says Indus Waters Treaty is in abeyance**  
-   dailyexcelsior.com · 20260517 · https://www.dailyexcelsior.com/india-rejects-hague-tribunals-arbitration-award-says-indus-waters-treaty-is-in-abeyance/  
+14. **India , Pakistan to hold flag meeting today : Report**  
+   moneycontrol.com · 20250221 · https://www.moneycontrol.com/news/india/india-pakistan-to-hold-flag-meeting-today-sources-12947187.html  
    [RELEVANT? ]
 
-15. **PoK Was Ours , PoK Is Ours And I Am Confident It Will Itself Merge With India : Defence Minister Rajnath Singh**  
-   india.com · 20240324 · https://www.india.com/news/india/pok-was-ours-pok-is-ours-and-i-am-confident-it-will-itself-merge-with-india-defence-minister-rajnath-singh-6810586/  
+15. **Dy NSA Vikram Misri visits J - K ; reviews hydro - power projects , security scenario**  
+   news.webindia123.com · 20230526 · https://news.webindia123.com/news/Articles/India/20230527/4078123.html  
    [RELEVANT? ]
 
-16. **After India , Taliban Too Moves To Curb Pakistan Water Supply ; Announces Dam On Kunar River**  
-   freepressjournal.in · 20251024 · https://www.freepressjournal.in/world/after-india-taliban-too-moves-to-curb-pakistans-water-supply-announces-dam-on-kunar-river  
+16. **Ceasefire along LoC intact : Indian Army denies reports of heavy firing**  
+   siasat.com · 20250213 · https://www.siasat.com/ceasefire-along-loc-intact-indian-army-denies-reports-of-heavy-firing-3179764/  
    [RELEVANT? ]
 
-17. **UKPNP delegation meets united kingdom Parliament members to discuss issues in PoK**  
-   aninews.in · 20240413 · https://www.aninews.in/news/world/asia/ukpnp-delegation-meets-uk-parliament-members-to-discuss-issues-in-pok20240413122906/  
+17. **World News |  If You Leave Open Vulnerability in Competing World , Others Will Exploit It ...: Jaishankar on Pakistan - occupied Kashmir**  
+   latestly.com · 20230630 · https://www.latestly.com/agency-news/world-news-if-you-leave-open-vulnerability-in-competing-world-others-will-exploit-it-jaishankar-on-pakistan-occupied-kashmir-5236742.html  
    [RELEVANT? ]
 
-18. **India rejects Court of Arbitration ruling on Indus Waters Treaty**  
-   economictimes.indiatimes.com · 20260516 · https://economictimes.indiatimes.com/news/india/india-declares-court-of-arbitration-ruling-on-indus-waters-treaty-null-and-void/articleshow/131138149.cms  
+18. **Two martyred as India breaches Feb 2021 LoC truce**  
+   tribune.com.pk · 20230624 · https://tribune.com.pk/story/2423398/two-martyred-as-india-breaches-feb-2021-loc-truce  
    [RELEVANT? ]
 
-19. **India rejects PCA award on J - K projects , Indus Waters Treaty in abeyance**  
-   idrw.org · 20260517 · https://idrw.org/india-rejects-pca-award-on-j-k-projects-indus-waters-treaty-in-abeyance/  
+19. **BSF personnel injured in cross border firing from Pakistan in J - K**  
+   bignewsnetwork.com · 20240911 · https://www.bignewsnetwork.com/news/274579779/bsf-personnel-injured-in-cross-border-firing-from-pakistan-in-j-k  
    [RELEVANT? ]
 
-20. **Damaged fencing fixed by BSF in J & K , work 95 % complete in Punjab**  
-   tribuneindia.com · 20251025 · https://www.tribuneindia.com/news/india/damaged-fencing-fixed-by-bsf-in-jk-work-95-complete-in-punjab/  
+20. **S Jaishankar terms Pakistan Foreign Minister Bilawal Bhutto Zardari as a  spokesperson of terrorism  **  
+   scroll.in · 20230505 · https://scroll.in/latest/1048629/s-jaishankar-terms-pakistan-foreign-minister-bilawal-bhutto-zardari-as-a-spokesperson-of-terrorism  
    [RELEVANT? ]
