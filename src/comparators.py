@@ -85,8 +85,15 @@ def publish() -> None:
     for key, c in spec["countries"].items():
         if key not in sal.columns:
             continue
-        pct = _trailing_percentile(sal[key].sort_index())
+        series = sal[key].sort_index()
+        pct = _trailing_percentile(series)
         wk = pct.resample("W-MON").mean().dropna().round(1)
+        # A trailing week whose label postdates the last observed day is
+        # a partial week wearing a full week's date; publishing it would
+        # compare one country's half-week against another's complete
+        # one. Drop it.
+        last_obs = series.dropna().index.max()
+        wk = wk[wk.index <= last_obs]
         if len(wk) < 26:
             continue
         out["countries"][key] = {

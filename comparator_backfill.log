@@ -1,0 +1,131 @@
+/Users/ishankrishna9/india-geopolitical-risk-monitor/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 198, in _fetch_query_series
+    rows = _fetch_chunk(query, cur, chunk_end,
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 123, in _fetch_chunk
+    rows = _fetch_chunk_network(query, start, end, mode, retries)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
+    raise RuntimeError(
+RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2026-06-30. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 120, in <module>
+    main()
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 111, in main
+    update(backfill=args.backfill)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 59, in update
+    cols[key] = fetch_gdelt.fetch_channel(terms, start, today, c["anchor"])
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 243, in fetch_channel
+    parts = [
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 245, in <listcomp>
+    if not (s := _fetch_query_series(q, start, end)).empty
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 221, in _fetch_query_series
+    rows.extend(_fetch_chunk(query, sub, sub_end))
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 123, in _fetch_chunk
+    rows = _fetch_chunk_network(query, start, end, mode, retries)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
+    raise RuntimeError(
+RuntimeError: GDELT fetch failed after 6 attempts for 2018-01-01..2018-12-31. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+[comparators] india: 2017-01-01 -> 2026-07-31
+[gdelt] tail 2026-07-01..2026-07-31 unavailable; keeping the data already fetched
+[comparators] pakistan: 2017-01-01 -> 2026-07-31
+[gdelt] wide chunk refused; retrying 2017-01-01..2026-06-30 in yearly slices
+/Users/ishankrishna9/india-geopolitical-risk-monitor/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 198, in _fetch_query_series
+    rows = _fetch_chunk(query, cur, chunk_end,
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 123, in _fetch_chunk
+    rows = _fetch_chunk_network(query, start, end, mode, retries)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
+    raise RuntimeError(
+RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2026-06-30. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 120, in <module>
+    main()
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 111, in main
+    update(backfill=args.backfill)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 59, in update
+    cols[key] = fetch_gdelt.fetch_channel(terms, start, today, c["anchor"])
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 243, in fetch_channel
+    parts = [
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 245, in <listcomp>
+    if not (s := _fetch_query_series(q, start, end)).empty
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 221, in _fetch_query_series
+    rows.extend(_fetch_chunk(query, sub, sub_end))
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 123, in _fetch_chunk
+    rows = _fetch_chunk_network(query, start, end, mode, retries)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
+    raise RuntimeError(
+RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2017-12-31. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+[comparators] india: 2017-01-01 -> 2026-07-31
+[comparators] pakistan: 2017-01-01 -> 2026-07-31
+[gdelt] tail 2026-07-01..2026-07-31 unavailable; keeping the data already fetched
+[comparators] indonesia: 2017-01-01 -> 2026-07-31
+[gdelt] wide chunk refused; retrying 2017-01-01..2026-06-30 in yearly slices
+/Users/ishankrishna9/india-geopolitical-risk-monitor/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 198, in _fetch_query_series
+    rows = _fetch_chunk(query, cur, chunk_end,
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 123, in _fetch_chunk
+    rows = _fetch_chunk_network(query, start, end, mode, retries)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
+    raise RuntimeError(
+RuntimeError: GDELT fetch failed after 6 attempts for 2017-01-01..2026-06-30. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 120, in <module>
+    main()
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 111, in main
+    update(backfill=args.backfill)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/comparators.py", line 59, in update
+    cols[key] = fetch_gdelt.fetch_channel(terms, start, today, c["anchor"])
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 243, in fetch_channel
+    parts = [
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 245, in <listcomp>
+    if not (s := _fetch_query_series(q, start, end)).empty
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 221, in _fetch_query_series
+    rows.extend(_fetch_chunk(query, sub, sub_end))
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 123, in _fetch_chunk
+    rows = _fetch_chunk_network(query, start, end, mode, retries)
+  File "/Users/ishankrishna9/india-geopolitical-risk-monitor/src/fetch_gdelt.py", line 168, in _fetch_chunk_network
+    raise RuntimeError(
+RuntimeError: GDELT fetch failed after 6 attempts for 2021-01-01..2021-12-31. Last error: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+[comparators] india: 2017-01-01 -> 2026-07-31
+[gdelt] tail 2026-07-01..2026-07-31 unavailable; keeping the data already fetched
+[comparators] pakistan: 2017-01-01 -> 2026-07-31
+[gdelt] tail 2026-07-01..2026-07-31 unavailable; keeping the data already fetched
+[comparators] indonesia: 2017-01-01 -> 2026-07-31
+[gdelt] tail 2026-07-01..2026-07-31 unavailable; keeping the data already fetched
+[comparators] vietnam: 2017-01-01 -> 2026-07-31
+[gdelt] wide chunk refused; retrying 2017-01-01..2026-06-30 in yearly slices
+/Users/ishankrishna9/india-geopolitical-risk-monitor/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+[comparators] india: 2017-01-01 -> 2026-08-01
+[comparators] pakistan: 2017-01-01 -> 2026-08-01
+[comparators] indonesia: 2017-01-01 -> 2026-08-01
+[gdelt] tail 2026-07-01..2026-08-01 unavailable; keeping the data already fetched
+[comparators] vietnam: 2017-01-01 -> 2026-08-01
+[gdelt] tail 2026-07-01..2026-08-01 unavailable; keeping the data already fetched
+[comparators] wrote comparators.json: {'india': 10.8, 'pakistan': 26.8, 'indonesia': 41.8, 'vietnam': 54.6}
