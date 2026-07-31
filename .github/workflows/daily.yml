@@ -109,7 +109,10 @@ jobs:
             python -m src.run_daily
           fi
       - name: Weekly datapack (Fridays)
-        if: github.event.schedule != ''
+        # Any successful Friday run makes the datapack: a manually
+        # triggered rescue run must not cost the author the week's note
+        # material (2026-07-31: a push-triggered run skipped it).
+        if: github.event.inputs.backfill != 'true'
         run: |
           if [ "$(date -u +%u)" = "5" ]; then python -m src.make_datapack; fi
       - name: Commit data
@@ -128,5 +131,12 @@ jobs:
           # notes.json) produced by the publish step.
           git add data/raw docs notes-inbox || true
           git commit -m "data: update $(date -u +%F)" || echo "no changes"
-          git pull --rebase origin main || true
-          git push
+          # Retry the push: the events-backfill chain commits to the same
+          # branch, and one lost race must not discard a computed day
+          # (2026-07-31: a successful pipeline died exactly here).
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            git push && break
+            echo "push race, attempt $i; retrying"
+            sleep $((10 * i))
+          done

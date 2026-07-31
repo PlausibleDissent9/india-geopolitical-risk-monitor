@@ -40,10 +40,14 @@ jobs:
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
-          git add data/raw/events_daily.csv || true
+          git add data/raw/events_daily.csv data/raw/events_dyads.csv data/raw/events_states.csv || true
           git commit -m "events backfill batch: $(date -u +%FT%TZ)" || echo "no changes"
-          git pull --rebase origin main || true
-          git push
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            git push && break
+            echo "push race, attempt $i; retrying"
+            sleep $((10 * i))
+          done
           echo "n=$( (wc -l < data/raw/events_daily.csv) 2>/dev/null || echo 0 )" >> "$GITHUB_OUTPUT"
       - name: Re-trigger while incomplete and progressing
         run: |
@@ -59,8 +63,12 @@ jobs:
             date -u +%FT%TZ > .trigger/events_backfill
             git add .trigger/events_backfill
             git commit -m "events backfill: continue ($MISSING days left)"
-            git pull --rebase origin main || true
-            git push
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main || true
+              git push && break
+              echo "push race, attempt $i; retrying"
+              sleep $((10 * i))
+            done
           else
             echo "chain ends here"
           fi
