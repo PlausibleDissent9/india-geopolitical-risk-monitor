@@ -34,6 +34,18 @@ TICKERS = {
 }
 DEFENCE_TICKERS = ["HAL.NS", "BEL.NS", "BDL.NS", "MAZDOCK.NS", "COCHINSHIP.NS"]
 
+# V2 sector baskets: equal-weight, daily-rebalanced, fixed before any
+# sector cell was computed (validation/sector_hypotheses.json holds the
+# registration and the channel-to-basket hypotheses). Members are the
+# largest liquid NSE names with the cleanest exposure to each channel's
+# transmission path; changes are append-only with a changelog entry.
+SECTOR_BASKETS = {
+    "defence": DEFENCE_TICKERS,
+    "energy_omc": ["IOC.NS", "BPCL.NS", "HINDPETRO.NS"],
+    "it_services": ["TCS.NS", "INFY.NS", "HCLTECH.NS", "WIPRO.NS"],
+    "ports_logistics": ["ADANIPORTS.NS", "CONCOR.NS"],
+}
+
 
 def _download(tickers: list[str], start: str) -> pd.DataFrame:
     data = yf.download(
@@ -52,7 +64,8 @@ def _log_ret_pct(s: pd.Series) -> pd.Series:
 
 def load_or_update(start: str = "2022-01-01") -> tuple[pd.DataFrame, pd.DataFrame]:
     """Returns (prices, derived). Fetches the full range each run."""
-    prices = _download(list(TICKERS.values()) + DEFENCE_TICKERS, start)
+    all_members = sorted({t for members in SECTOR_BASKETS.values() for t in members})
+    prices = _download(list(TICKERS.values()) + all_members, start)
     prices = prices.rename(columns={v: k for k, v in TICKERS.items()})
 
     rets = pd.DataFrame(index=prices.index)
@@ -60,14 +73,16 @@ def load_or_update(start: str = "2022-01-01") -> tuple[pd.DataFrame, pd.DataFram
         if name in prices.columns:
             rets[name] = _log_ret_pct(prices[name])
 
-    member_rets = pd.DataFrame(
-        {t: _log_ret_pct(prices[t]) for t in DEFENCE_TICKERS if t in prices.columns}
-    )
-    rets["defence"] = member_rets.mean(axis=1)
+    for basket, members in SECTOR_BASKETS.items():
+        member_rets = pd.DataFrame(
+            {t: _log_ret_pct(prices[t]) for t in members if t in prices.columns}
+        )
+        rets[basket] = member_rets.mean(axis=1)
 
     derived = pd.DataFrame(index=prices.index)
     derived["nifty_minus_em"] = rets["nifty"] - rets["em"]
-    derived["defence_minus_nifty"] = rets["defence"] - rets["nifty"]
+    for basket in SECTOR_BASKETS:
+        derived[f"{basket}_minus_nifty"] = rets[basket] - rets["nifty"]
     derived["usdinr_minus_dxy"] = rets["usdinr"] - rets["dxy"]
     derived["brent_ret"] = rets["brent"]
     derived["gold_ret"] = rets["gold"]

@@ -259,6 +259,19 @@ It does not, and cannot, convert salience into risk (§7.1).
   Event-study cells now publish bootstrap p-values with
   Benjamini-Hochberg FDR flags (10%) across the grid of relative-outcome
   tests, as §6 specifies.
+- **2026-07-31, v1.1.0-dev (V2 data layers).** (1) Sector event study:
+  three sector baskets added beside defence (energy_omc, it_services,
+  ports_logistics; members and channel hypotheses pre-registered in
+  `validation/sector_hypotheses.json` before any cell was computed).
+  Outcome grid doubled, so the 10% FDR threshold tightened: 4 cells now
+  flag significant (was 5); the new sector hypotheses are largely NOT
+  confirmed at this threshold, a pre-registered negative reported as
+  such. (2) Events stream: daily GDELT Events v1 counts for India
+  (national, bilateral-dyad, and state layers; `data/raw/events_*.csv`),
+  backfilling to 2017. (3) Physical flow: IMF PortWatch daily transit
+  calls for Suez, Bab el-Mandeb, Malacca, and Hormuz
+  (`data/raw/portwatch_chokepoints.csv`, 2019-present, revisions
+  upserted). Attribution: IMF PortWatch (portwatch.imf.org).
 - **2026-07-24, v1.0.0.** Initial dictionaries frozen (five channels,
   10-14 terms each, per-term rationale in `dictionaries.json`). Robustness
   variants and placebo channels frozen the same day. Validation episode

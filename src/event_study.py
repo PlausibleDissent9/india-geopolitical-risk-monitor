@@ -19,7 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 
 WINDOWS = [1, 5, 20]
-RELATIVE_OUTCOMES = ["nifty_minus_em", "defence_minus_nifty", "usdinr_minus_dxy"]
+RELATIVE_OUTCOMES = ["nifty_minus_em", "defence_minus_nifty",
+                     "energy_omc_minus_nifty", "it_services_minus_nifty",
+                     "ports_logistics_minus_nifty", "usdinr_minus_dxy"]
 DESCRIPTIVE_OUTCOMES = ["brent_ret", "gold_ret"]
 N_BOOT = 1000
 BOOT_SEED = 20260724

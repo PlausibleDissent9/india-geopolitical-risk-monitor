@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "registered": "2026-07-31",
+    "rule": "Baskets and channel-to-basket hypotheses were fixed before any sector cell was first computed. The event study computes the full channel-by-outcome grid and controls false discovery at 10 percent across it; the hypotheses below say which cells were predicted in advance, so a hit outside them is exploratory, not confirmatory. Changes are append-only with a methodology changelog entry.",
+    "basket_construction": "Equal-weight, daily-rebalanced mean of member log returns; outcome is basket return minus Nifty return (strips market beta), cumulative over 1, 5, and 20 trading days after an episode start."
+  },
+  "baskets": {
+    "defence": {
+      "tickers": ["HAL.NS", "BEL.NS", "BDL.NS", "MAZDOCK.NS", "COCHINSHIP.NS"],
+      "rationale": "State defence manufacturers and shipyards: order books and sentiment respond to India's own security posture."
+    },
+    "energy_omc": {
+      "tickers": ["IOC.NS", "BPCL.NS", "HINDPETRO.NS"],
+      "rationale": "Oil marketing companies: refining margins and retail pricing are squeezed when crude supply risk rises, the transmission path of Gulf risk."
+    },
+    "it_services": {
+      "tickers": ["TCS.NS", "INFY.NS", "HCLTECH.NS", "WIPRO.NS"],
+      "rationale": "Dollar-revenue exporters: exposed to US demand, visa and trade policy, and the rupee-dollar rate."
+    },
+    "ports_logistics": {
+      "tickers": ["ADANIPORTS.NS", "CONCOR.NS"],
+      "rationale": "Port operators and container logistics: cargo volumes and freight rates carry chokepoint and shipping-lane disruption."
+    }
+  },
+  "hypotheses": {
+    "pakistan_west": {
+      "predicted": ["defence_minus_nifty"],
+      "direction": "positive after escalation episodes (defence outperforms)"
+    },
+    "china_east": {
+      "predicted": ["defence_minus_nifty"],
+      "direction": "positive after escalation episodes"
+    },
+    "gulf_energy": {
+      "predicted": ["energy_omc_minus_nifty"],
+      "direction": "negative after supply-risk episodes (OMC margins squeezed)"
+    },
+    "us_trade": {
+      "predicted": ["it_services_minus_nifty"],
+      "direction": "negative after trade-friction episodes"
+    },
+    "shipping": {
+      "predicted": ["ports_logistics_minus_nifty"],
+      "direction": "sign not predicted: disruption can cut volumes or raise freight economics; magnitude predicted to exceed other channels"
+    }
+  }
+}
