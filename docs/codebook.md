@@ -115,6 +115,28 @@ moves), `brent_ret`, `gold_ret` (descriptive).
 | `lead_lag.ccf[]` | `{lag, corr, lo, hi}`: correlation of daily changes at each lag (−10..+10 trading days), moving-block bootstrap 95% bands; positive lag = attention leads |
 | `lead_lag.reading` | The associational one-line interpretation |
 
+## data/raw/events_daily.csv
+
+The second measurement modality (V2): counts of recorded events involving
+India from the GDELT Events v1 daily archive, one row per day since
+2017-01-01. Where the salience series measures how loud the press is,
+this series counts what the press recorded happening. An event involves
+India when either CAMEO actor is coded IND or the action geography is
+India. Events are dated by the file they arrive in, the day GDELT
+recorded them, matching the salience series' "when did the world's press
+carry this" framing.
+
+| Column | Definition |
+|---|---|
+| `date` | UTC day of the GDELT v1 daily export file |
+| `n_global` | Total events recorded worldwide that day (normalization denominator; GDELT's coverage grows over time, so raw counts drift without it) |
+| `n_india` | Events involving India (either actor IND, or action geography India) |
+| `n_verbal_conflict` | India events in CAMEO QuadClass 3 (verbal conflict) |
+| `n_material_conflict` | India events in CAMEO QuadClass 4 (material conflict) |
+| `n_protest` | India events with CAMEO root code 14 (protest) |
+| `goldstein_mean` | Mean Goldstein cooperation-conflict score of India events (−10 most conflictual, +10 most cooperative) |
+| `mentions_sum` | Total press mentions across India events that day |
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,

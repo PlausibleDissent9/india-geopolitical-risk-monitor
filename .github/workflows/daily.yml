@@ -55,6 +55,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 20
         run: python -m src.fetch_gdelt --harvest
+      - name: Events stream - recent days (V2, static files, not the API)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python -m src.fetch_events --update 5
       - name: Run pipeline
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,

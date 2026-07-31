@@ -1,0 +1,66 @@
+name: events-backfill
+
+# Walks the GDELT Events v1 daily archive back to 2017-01-01 in batches,
+# committing the store after each batch and re-triggering itself until no
+# days are missing. Static file downloads (no API rate limiter), so the
+# only budget concern is runner time; ~450 days a batch keeps runs near
+# an hour. Re-triggers ONLY when a batch made progress, so a persistent
+# upstream failure stops the chain instead of looping it.
+
+on:
+  workflow_dispatch:
+  push:
+    paths: [".trigger/events_backfill"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: igrm-events-backfill
+  cancel-in-progress: false
+
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Count store before
+        id: before
+        run: echo "n=$( (wc -l < data/raw/events_daily.csv) 2>/dev/null || echo 0 )" >> "$GITHUB_OUTPUT"
+      - name: Fetch a batch (oldest missing first)
+        continue-on-error: true
+        timeout-minutes: 120
+        run: python -m src.fetch_events --backfill 450
+      - name: Commit progress
+        id: commit
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add data/raw/events_daily.csv || true
+          git commit -m "events backfill batch: $(date -u +%FT%TZ)" || echo "no changes"
+          git pull --rebase origin main || true
+          git push
+          echo "n=$( (wc -l < data/raw/events_daily.csv) 2>/dev/null || echo 0 )" >> "$GITHUB_OUTPUT"
+      - name: Re-trigger while incomplete and progressing
+        run: |
+          BEFORE="${{ steps.before.outputs.n }}"
+          AFTER="${{ steps.commit.outputs.n }}"
+          MISSING=$(python - << 'EOF'
+          from src.fetch_events import _load, _missing_days
+          print(len(_missing_days(_load())))
+          EOF
+          )
+          echo "store $BEFORE -> $AFTER rows; $MISSING days missing"
+          if [ "$MISSING" -gt 0 ] && [ "$AFTER" -gt "$BEFORE" ]; then
+            date -u +%FT%TZ > .trigger/events_backfill
+            git add .trigger/events_backfill
+            git commit -m "events backfill: continue ($MISSING days left)"
+            git pull --rebase origin main || true
+            git push
+          else
+            echo "chain ends here"
+          fi
