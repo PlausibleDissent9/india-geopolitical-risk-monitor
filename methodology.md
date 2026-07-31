@@ -1,6 +1,6 @@
 # IGRM Methodology
 
-Version 1.0.0 · frozen 2026-07-24 · [changelog](#changelog) at the end.
+Version 1.1.0 · five channels frozen 2026-07-24, chokepoint sub-dictionaries added 2026-07-31 · [changelog](#changelog) at the end.
 
 ## 1. What the index measures (and what it does not)
 
@@ -242,6 +242,22 @@ It does not, and cannot, convert salience into risk (§7.1).
 
 ## Changelog
 
+- **2026-07-31, v1.1.0 (chokepoint sub-dictionaries).** The shipping
+  channel gains four sub-dictionaries (`shipping.chokepoints` in
+  `dictionaries.json`: Hormuz 5 terms, Bab el-Mandeb 5, Suez 3, Malacca
+  3, each with per-term rationale). They exist only for the
+  salience-vs-transits comparison on the analysis page, where each
+  corridor's weekly press salience is set against IMF PortWatch transit
+  calls, both as percentiles of their own 2019-present weekly history.
+  Sub-dictionary series never enter the composite. A sub-dictionary may
+  repeat a parent-channel term (it is a decomposition of shipping, not
+  an addition) but no term appears in two sub-dictionaries; they carry
+  no anchor word because they measure global corridor salience, not
+  India-linked salience. The ex-ante rule and query grammar apply
+  unchanged and CI enforces both on the new terms
+  (`tests/test_dictionaries.py`). Store:
+  `data/raw/chokepoint_salience.csv`; site payload:
+  `docs/data/chokepoints.json`.
 - **2026-07-29, v1.0.1.** (1) Percentile computation now returns
   missing for days with no observed value; previously a missing day
   scored as 0th percentile, deflating the composite when one channel's

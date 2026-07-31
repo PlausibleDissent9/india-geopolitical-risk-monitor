@@ -6,11 +6,20 @@
   --bg: #0E141E; --fg: #EAE8E0; --muted: #97A0B0; --line: #26303F;
   --card: #141C29; --accent: #D96548; --shade: rgba(217, 101, 72, 0.14);
   --ok: #3AA396; --bad: #D96548;
+  /* Homepage palette names (style.css): the analysis-page charts read
+     these, and until 2026-07-31 they resolved empty here, which crashed
+     the gap chart's gradient and greyed every other chart. Keep the two
+     sheets' values in step. */
+  --ink: #EAE8E0; --rule: #26303F; --rule-soft: #1C2532;
+  --calm: #3AA396; --elevated: #D9A43B; --severe: #D96548;
+  --state: var(--calm);
 }
 :root[data-theme="light"] {
   --bg: #FAFAF7; --fg: #12233D; --muted: #5C6675; --line: #D8D6CE;
   --card: #ffffff; --accent: #A2361F; --shade: rgba(162, 54, 31, 0.10);
   --ok: #1E6E67; --bad: #A2361F;
+  --ink: #12233D; --rule: #D8D6CE; --rule-soft: #E7E5DD;
+  --calm: #1E6E67; --elevated: #B07C1F; --severe: #A2361F;
 }
 * { box-sizing: border-box; margin: 0; }
 a { color: var(--accent); }

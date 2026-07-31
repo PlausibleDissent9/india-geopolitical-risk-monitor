@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=20260729a">
+<link rel="stylesheet" href="site.css?v=20260731a">
 </head>
 <body>
 <header>
@@ -54,6 +54,7 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
     <tr><td><a href="viewer.html?f=alt_specs.json">alt_specs.json</a> <span class="kv">(<a href="data/alt_specs.json">raw</a>)</span></td><td>Secondary specifications: alternative composite weightings, episode thresholds (1.5&sigma;/2.5&sigma;), percentile windows (365/1095 days), each with its correlation to the primary.</td></tr>
     <tr><td><a href="viewer.html?f=seasonality.json">seasonality.json</a> <span class="kv">(<a href="data/seasonality.json">raw</a>)</span></td><td>Anniversary-effect quantification: day-of-year partial R&sup2; per channel, top recurring dates, deseasonalized-variant correlation.</td></tr>
     <tr><td><a href="viewer.html?f=priced_risk.json">priced_risk.json</a> <span class="kv">(<a href="data/priced_risk.json">raw</a>)</span></td><td>The attention-pricing gap vs India VIX, largest divergence episodes in both directions, and the attention/VIX lead-lag cross-correlation with bootstrap bands.</td></tr>
+    <tr><td><a href="viewer.html?f=chokepoints.json">chokepoints.json</a> <span class="kv">(<a href="data/chokepoints.json">raw</a>)</span></td><td>Per-chokepoint weekly press salience vs IMF PortWatch transit calls (both percentiles of own 2019-present history), weekly Spearman on levels, latest gap. Sub-dictionary series; never in the composite.</td></tr>
   </tbody>
 </table>
 <p class="kv">Raw inputs (GDELT volume shares, chunk cache, market closes) are versioned in the repository under <code>data/raw/</code>.</p>

@@ -24,7 +24,7 @@
 </header>
 <div class="prose">
 <h1>IGRM Methodology</h1>
-<p>Version 1.0.0 · frozen 2026-07-24 · <a href="#changelog">changelog</a> at the end.</p>
+<p>Version 1.1.0 · five channels frozen 2026-07-24, chokepoint sub-dictionaries added 2026-07-31 · <a href="#changelog">changelog</a> at the end.</p>
 <h2>1. What the index measures (and what it does not)</h2>
 <p>The index measures <strong>press salience</strong>: for each of five channels, the share
 of all articles GDELT monitors globally that match the channel's term set,
@@ -236,6 +236,22 @@ detects what it claims to detect and is not an artifact of one term list.
 It does not, and cannot, convert salience into risk (§7.1).</p>
 <h2>Changelog</h2>
 <ul>
+<li><strong>2026-07-31, v1.1.0 (chokepoint sub-dictionaries).</strong> The shipping
+  channel gains four sub-dictionaries (<code>shipping.chokepoints</code> in
+  <code>dictionaries.json</code>: Hormuz 5 terms, Bab el-Mandeb 5, Suez 3, Malacca
+  3, each with per-term rationale). They exist only for the
+  salience-vs-transits comparison on the analysis page, where each
+  corridor's weekly press salience is set against IMF PortWatch transit
+  calls, both as percentiles of their own 2019-present weekly history.
+  Sub-dictionary series never enter the composite. A sub-dictionary may
+  repeat a parent-channel term (it is a decomposition of shipping, not
+  an addition) but no term appears in two sub-dictionaries; they carry
+  no anchor word because they measure global corridor salience, not
+  India-linked salience. The ex-ante rule and query grammar apply
+  unchanged and CI enforces both on the new terms
+  (<code>tests/test_dictionaries.py</code>). Store:
+  <code>data/raw/chokepoint_salience.csv</code>; site payload:
+  <code>docs/data/chokepoints.json</code>.</li>
 <li><strong>2026-07-29, v1.0.1.</strong> (1) Percentile computation now returns
   missing for days with no observed value; previously a missing day
   scored as 0th percentile, deflating the composite when one channel's

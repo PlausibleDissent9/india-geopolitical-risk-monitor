@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=20260729a">
+<link rel="stylesheet" href="site.css?v=20260731a">
 <script src="labels.js?v=20260729a"></script>
 </head>
 <body>
@@ -48,6 +48,19 @@ first; negative, the market.</p>
   <tbody><tr><td colspan="5" class="empty">Not computed yet.</td></tr></tbody>
 </table></div>
 
+<h2>Chokepoints: coverage against traffic</h2>
+<p class="chart-note">Weekly press salience for each chokepoint sub-dictionary
+(dictionaries.json v1.1.0) against actual transit calls from IMF PortWatch, each series a
+percentile of its own 2019-present weekly history. Divergence is the story: in a corridor
+crisis, coverage spikes while transits collapse. These sub-dictionary series never enter
+the composite. Attribution: IMF PortWatch (portwatch.imf.org).</p>
+<p class="chart-note"><label for="cp-select">Chokepoint: </label><select id="cp-select"></select></p>
+<div class="chart-wrap" style="height:280px"><canvas id="cp-chart"></canvas></div>
+<div class="table-scroll"><table id="cp-stats">
+  <thead><tr><th>Chokepoint</th><th class="num">Spearman (weekly levels)</th><th class="num">Latest gap (salience minus transits)</th><th class="num">Weeks</th></tr></thead>
+  <tbody><tr><td colspan="4" class="empty">Not computed yet.</td></tr></tbody>
+</table></div>
+
 <h2>Anniversary journalism, measured</h2>
 <p class="chart-note">Share of each channel's (detrended, log) daily variance explained by
 day-of-year recurrence, how much of the series is the calendar rather than the world.</p>
@@ -77,8 +90,9 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
 const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 (async () => {
-  const [pr, seas, alt] = await Promise.all([
+  const [pr, seas, alt, cp] = await Promise.all([
     j("data/priced_risk.json"), j("data/seasonality.json"), j("data/alt_specs.json"),
+    j("data/chokepoints.json"),
   ]);
 
   try { if (pr && pr.gap && pr.gap.dates) {
@@ -141,6 +155,48 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
   }
 
   } catch (e) { console.error("divergence:", e); }
+  try { if (cp && cp.chokepoints && Object.keys(cp.chokepoints).length) {
+    const sel = document.getElementById("cp-select");
+    const names = Object.keys(cp.chokepoints);
+    for (const n of names) {
+      const o = document.createElement("option");
+      o.value = n; o.textContent = cp.chokepoints[n].label;
+      sel.appendChild(o);
+    }
+    let cpChart = null;
+    const draw = (n) => {
+      const c = cp.chokepoints[n];
+      if (cpChart) cpChart.destroy();
+      cpChart = new Chart(document.getElementById("cp-chart"), {
+        type: "line",
+        data: { labels: c.weeks, datasets: [
+          { label: "press salience", data: c.salience_pct, borderColor: css("--ink"),
+            borderWidth: 1.4, pointRadius: 0, tension: 0.15 },
+          { label: "transit calls", data: c.transits_pct, borderColor: css("--state"),
+            borderWidth: 1.4, pointRadius: 0, tension: 0.15 },
+        ]},
+        options: { animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: true, labels: { color: css("--muted"), boxHeight: 2 } } },
+          interaction: { mode: "index", intersect: false },
+          scales: { y: { min: 0, max: 100, grid: { color: css("--rule-soft") }, ticks: { color: css("--muted") },
+                         title: { display: true, text: "percentile of own weekly history", color: css("--muted") } },
+                    x: { ticks: { maxTicksLimit: 8, color: css("--muted") }, grid: { display: false } } } },
+      });
+    };
+    sel.addEventListener("change", () => draw(sel.value));
+    draw(names[0]);
+    const tb = document.querySelector("#cp-stats tbody"); tb.innerHTML = "";
+    for (const n of names) {
+      const c = cp.chokepoints[n];
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${esc(c.label)}</td>` +
+        `<td class="num">${esc(c.spearman_weekly)}</td>` +
+        `<td class="num">${c.latest_gap > 0 ? "+" : ""}${esc(c.latest_gap)}</td>` +
+        `<td class="num">${esc(c.n_weeks)}</td>`;
+      tb.appendChild(tr);
+    }
+  }
+  } catch (e) { console.error("chokepoints:", e); }
   try { if (seas && seas.channels) {
     const tb = document.querySelector("#seasonality tbody"); tb.innerHTML = "";
     for (const [ch, s] of Object.entries(seas.channels)) {

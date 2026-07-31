@@ -65,6 +65,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.fetch_portwatch --update
+      - name: Chokepoint salience tail + divergence JSON (V2-4, ~4 requests)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python -m src.chokepoints --update
       - name: Run pipeline
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,

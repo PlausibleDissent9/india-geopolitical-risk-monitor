@@ -9,3 +9,7 @@ __pycache__/
 .venv/
 .DS_Store
 ngram_*.log
+
+# Session artifacts, never repo content
+.claude/
+chokepoint_backfill.log

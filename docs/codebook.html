@@ -496,6 +496,35 @@ trailing window and revisions win.</p>
 </tr>
 </tbody>
 </table>
+<h2>data/raw/chokepoint_salience.csv</h2>
+<p>Daily GDELT volume-intensity share per chokepoint sub-dictionary
+(<code>shipping.chokepoints</code> in <code>dictionaries.json</code> v1.1.0), 2019-present.
+The 2019 floor matches PortWatch coverage: these series exist only for
+the salience-vs-transits comparison and never enter the composite.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>UTC day</td>
+</tr>
+<tr>
+<td><code>hormuz</code>, <code>bab_el_mandeb</code>, <code>suez</code>, <code>malacca</code></td>
+<td>Share of all GDELT-monitored articles matching that sub-dictionary (sum of sub-query group shares, as for channels)</td>
+</tr>
+</tbody>
+</table>
+<h2>docs/data/chokepoints.json</h2>
+<p>Site payload for the analysis-page chokepoint chart: per chokepoint, the
+weekly-mean salience and PortWatch <code>n_total</code> transits, each ranked as a
+percentile of its own full 2019-present weekly history, plus a weekly
+Spearman correlation on levels and the latest salience-minus-transits
+percentile gap.</p>
 <h2>Conventions</h2>
 <ul>
 <li>Every percentile is computed against the series' own trailing 730 days,

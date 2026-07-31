@@ -64,11 +64,24 @@ def channel_specs(name: str):
 ALL_FILES = ["dictionaries.json", "dictionaries_alt.json", "dictionaries_placebo.json"]
 
 
+def chokepoint_specs():
+    # v1.1.0 sub-dictionaries: a decomposition of shipping for the
+    # salience-vs-transits comparison, never part of the composite. They
+    # get the same ex-ante and grammar enforcement as the channels but
+    # their own size and overlap rules (they may repeat parent terms).
+    d = load("dictionaries.json")
+    for name, spec in d["shipping"].get("chokepoints", {}).items():
+        yield f"dictionaries.json:shipping.chokepoints:{name}", spec
+
+
 def all_terms():
     for name in ALL_FILES:
         for where, spec in channel_specs(name):
             for term in spec["terms"]:
                 yield where, term
+    for where, spec in chokepoint_specs():
+        for term in spec["terms"]:
+            yield where, term
 
 
 def test_ex_ante_rule_no_event_names():
@@ -148,6 +161,41 @@ def test_no_term_in_two_primary_channels():
     # Silent double-counting inflates the composite (methodology s2).
     seen: dict[str, str] = {}
     for where, spec in channel_specs("dictionaries.json"):
+        for term in spec["terms"]:
+            key = term.lower()
+            assert key not in seen, f"{term!r} in both {seen[key]} and {where}"
+            seen[key] = where
+
+
+def test_chokepoint_subdictionaries_complete():
+    specs = dict(chokepoint_specs())
+    expected = {
+        "dictionaries.json:shipping.chokepoints:" + n
+        for n in ("hormuz", "bab_el_mandeb", "suez", "malacca")
+    }
+    assert set(specs) == expected, f"chokepoint set drifted: {sorted(specs)}"
+    for where, spec in specs.items():
+        assert spec.get("label"), f"{where}: missing label"
+        n = len(spec["terms"])
+        assert 3 <= n <= 8, (
+            f"{where}: {n} terms; sub-dictionaries need 3-8 (they are "
+            "precision series, not recall series)"
+        )
+        missing = set(spec["terms"]) - set(spec.get("rationale", {}))
+        extra = set(spec.get("rationale", {})) - set(spec["terms"])
+        assert not missing, f"{where}: terms without rationale: {sorted(missing)}"
+        assert not extra, f"{where}: rationale for absent terms: {sorted(extra)}"
+        assert "anchor" not in spec, (
+            f"{where}: sub-dictionaries are unanchored by design; global "
+            "corridor salience, not India-linked salience"
+        )
+
+
+def test_no_term_in_two_chokepoints():
+    # Parent-channel overlap is the design; cross-sub-dictionary overlap
+    # would blur which corridor a spike belongs to.
+    seen: dict[str, str] = {}
+    for where, spec in chokepoint_specs():
         for term in spec["terms"]:
             key = term.lower()
             assert key not in seen, f"{term!r} in both {seen[key]} and {where}"

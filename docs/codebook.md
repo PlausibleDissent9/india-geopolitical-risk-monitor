@@ -186,6 +186,26 @@ trailing window and revisions win.
 | `n_cargo` | Of those, cargo vessels |
 | `capacity` | Total transiting capacity (deadweight tonnage-based, per PortWatch) |
 
+## data/raw/chokepoint_salience.csv
+
+Daily GDELT volume-intensity share per chokepoint sub-dictionary
+(`shipping.chokepoints` in `dictionaries.json` v1.1.0), 2019-present.
+The 2019 floor matches PortWatch coverage: these series exist only for
+the salience-vs-transits comparison and never enter the composite.
+
+| Column | Definition |
+|---|---|
+| `date` | UTC day |
+| `hormuz`, `bab_el_mandeb`, `suez`, `malacca` | Share of all GDELT-monitored articles matching that sub-dictionary (sum of sub-query group shares, as for channels) |
+
+## docs/data/chokepoints.json
+
+Site payload for the analysis-page chokepoint chart: per chokepoint, the
+weekly-mean salience and PortWatch `n_total` transits, each ranked as a
+percentile of its own full 2019-present weekly history, plus a weekly
+Spearman correlation on levels and the latest salience-minus-transits
+percentile gap.
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,
