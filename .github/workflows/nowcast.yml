@@ -1,0 +1,48 @@
+name: nowcast
+
+# V2-3: a provisional "today so far" score every two hours from the Web
+# NGrams bridge. Writes ONLY docs/data/nowcast.json; the historical
+# series is never touched, and the daily run's finalized number
+# supersedes whatever this published.
+
+on:
+  schedule:
+    # Odd minute on purpose: GitHub drops scheduled runs at congested
+    # minutes (see daily.yml).
+    - cron: "43 */2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: igrm-nowcast
+  cancel-in-progress: false
+
+jobs:
+  nowcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Compute provisional today-so-far
+        run: python -m src.nowcast
+      - name: Commit nowcast payload
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add docs/data/nowcast.json || true
+          git commit -m "nowcast: $(date -u +%FT%TZ)" || echo "no changes"
+          pushed=0
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            if git push; then pushed=1; break; fi
+            echo "push race, attempt $i; retrying"
+            sleep $((10 * i))
+          done
+          # Fail loudly if every attempt lost (same armor as daily.yml).
+          [ "$pushed" = "1" ]

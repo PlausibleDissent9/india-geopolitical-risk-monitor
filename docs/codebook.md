@@ -206,6 +206,17 @@ percentile of its own full 2019-present weekly history, plus a weekly
 Spearman correlation on levels and the latest salience-minus-transits
 percentile gap.
 
+## docs/data/nowcast.json
+
+PROVISIONAL today-so-far scores, replaced roughly every two hours by
+the nowcast workflow. Computed from a partial-day sample of the GDELT
+Web NGrams bridge (same machinery and splice calibration as the heal
+path), each channel ranked against its trailing 730 days exactly as a
+finished day would be. `n_samples` and `n_docs_sampled` disclose the
+sample behind the number. Never enters the historical series; the daily
+run's finalized score supersedes it, and the site renders it only while
+the payload's UTC date is still today.
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,

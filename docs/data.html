@@ -55,6 +55,7 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
     <tr><td><a href="viewer.html?f=seasonality.json">seasonality.json</a> <span class="kv">(<a href="data/seasonality.json">raw</a>)</span></td><td>Anniversary-effect quantification: day-of-year partial R&sup2; per channel, top recurring dates, deseasonalized-variant correlation.</td></tr>
     <tr><td><a href="viewer.html?f=priced_risk.json">priced_risk.json</a> <span class="kv">(<a href="data/priced_risk.json">raw</a>)</span></td><td>The attention-pricing gap vs India VIX, largest divergence episodes in both directions, and the attention/VIX lead-lag cross-correlation with bootstrap bands.</td></tr>
     <tr><td><a href="viewer.html?f=chokepoints.json">chokepoints.json</a> <span class="kv">(<a href="data/chokepoints.json">raw</a>)</span></td><td>Per-chokepoint weekly press salience vs IMF PortWatch transit calls (both percentiles of own 2019-present history), weekly Spearman on levels, latest gap. Sub-dictionary series; never in the composite.</td></tr>
+    <tr><td><a href="viewer.html?f=nowcast.json">nowcast.json</a> <span class="kv">(<a href="data/nowcast.json">raw</a>)</span></td><td>PROVISIONAL today-so-far scores from a partial-day NGrams sample, replaced about every two hours and superseded by the daily run. Sample size disclosed in the payload. Not part of the historical series; treat as volatile.</td></tr>
   </tbody>
 </table>
 <p class="kv">Raw inputs (GDELT volume shares, chunk cache, market closes) are versioned in the repository under <code>data/raw/</code>.</p>

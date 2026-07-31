@@ -112,14 +112,18 @@ def _fetch(url: str) -> bytes | None:
     return None
 
 
-def _day_minute_files(day: date) -> list[str]:
+def _day_minute_files(day: date, until_minute: int | None = None) -> list[str]:
     """One existing timestamp per sampling window (SAMPLES_PER_DAY equal
     windows across the day), scanning each window's minutes in order and
-    keeping the first that exists."""
+    keeping the first that exists. until_minute stops the scan early for
+    partial-day sampling (the nowcast); probing windows the day has not
+    reached yet would waste hundreds of HEAD requests on 404s."""
     window_min = 1440 // SAMPLES_PER_DAY
     stamps = []
     for w in range(SAMPLES_PER_DAY):
         base_minute = w * window_min
+        if until_minute is not None and base_minute >= until_minute:
+            break
         for offset in range(window_min):
             m = base_minute + offset
             ts = f"{day:%Y%m%d}{m // 60:02d}{m % 60:02d}00"
@@ -136,9 +140,15 @@ def _subseq(phrase: tuple[str, ...], tokens: list[str]) -> bool:
     return any(tuple(tokens[i:i + m]) == phrase for i in range(n - m + 1))
 
 
-def compute_day(day: date, specs: dict[str, dict]) -> dict | None:
-    """Pooled-sample shares for one day; None if no files exist."""
-    stamps = _day_minute_files(day)
+def compute_day(
+    day: date, specs: dict[str, dict],
+    until_minute: int | None = None, min_docs: int = 5000,
+) -> dict | None:
+    """Pooled-sample shares for one day; None if no files exist. The
+    nowcast passes until_minute for a partial day and a lower min_docs
+    (its payload discloses the sample size; the heal path keeps the
+    full-day floor)."""
+    stamps = _day_minute_files(day, until_minute)
     if not stamps:
         return None
 
@@ -194,7 +204,7 @@ def compute_day(day: date, specs: dict[str, dict]) -> dict | None:
         time.sleep(0.2)
 
     total = len(en_docs)
-    if total < 5000:  # a day this thin is a feed gap, not a measurement
+    if total < min_docs:  # a sample this thin is a feed gap, not a measurement
         return None
     shares = {}
     for g, s in specs.items():

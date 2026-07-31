@@ -1,6 +1,6 @@
 # IGRM Methodology
 
-Version 1.1.0 · five channels frozen 2026-07-24, chokepoint sub-dictionaries added 2026-07-31 · [changelog](#changelog) at the end.
+Version 1.1.1 · five channels frozen 2026-07-24, chokepoint sub-dictionaries and nowcast added 2026-07-31 · [changelog](#changelog) at the end.
 
 ## 1. What the index measures (and what it does not)
 
@@ -242,6 +242,15 @@ It does not, and cannot, convert salience into risk (§7.1).
 
 ## Changelog
 
+- **2026-07-31, v1.1.1 (nowcast).** A provisional "today so far" score
+  now publishes to `docs/data/nowcast.json` roughly every two hours,
+  computed from a partial-day sample of the Web NGrams bridge with the
+  v1.0.1 splice calibration and ranked against each channel's trailing
+  730 days exactly as a finished day is. It is labeled provisional
+  everywhere it appears, discloses its sample size (`n_samples`,
+  `n_docs_sampled`), never enters the historical series, and is
+  superseded by the daily run's finalized number. The historical
+  construction is unchanged.
 - **2026-07-31, v1.1.0 (chokepoint sub-dictionaries).** The shipping
   channel gains four sub-dictionaries (`shipping.chokepoints` in
   `dictionaries.json`: Hormuz 5 terms, Bab el-Mandeb 5, Suez 3, Malacca

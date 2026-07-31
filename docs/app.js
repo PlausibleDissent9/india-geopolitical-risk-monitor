@@ -349,6 +349,22 @@ function renderEventStudy(ev, history) {
   }
 }
 
+function renderNowcast(nc) {
+  // Render only a payload that is genuinely today's (UTC): a stale file
+  // must vanish rather than masquerade as current. The daily score
+  // above stays the number of record; this line is labeled provisional.
+  if (!nc || !nc.provisional || nc.composite == null) return;
+  if (nc.date !== new Date().toISOString().slice(0, 10)) return;
+  const el = document.getElementById("nowcast");
+  if (!el) return;
+  el.innerHTML =
+    `<span class="prov">Provisional</span> today so far: composite ` +
+    `${esc(nc.composite)} as of ${esc(nc.as_of_utc)} UTC, from a ` +
+    `${esc(Number(nc.n_docs_sampled).toLocaleString("en-IN"))}-article ` +
+    `sample. Finalized by the daily update.`;
+  el.hidden = false;
+}
+
 async function init() {
   bindRanges();
   let history = null;
@@ -364,6 +380,9 @@ async function init() {
         latest.definition + " Updated 18:00 IST.";
     }
   } catch (e) { console.warn("latest.json not available yet", e); }
+  try {
+    renderNowcast(await loadJSON("data/nowcast.json"));
+  } catch (e) { /* absent nowcast is the normal state outside its hours */ }
   if (history) {
     buildToggles(history);
     renderChart();

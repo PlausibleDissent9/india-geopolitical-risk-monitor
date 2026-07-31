@@ -1,5 +1,36 @@
 # Notes for the author — changes needing your words
 
+## 0.1 Beyond V4: three candidate directions, your call only
+
+You asked what V5, V6, V7 could be. Each of these changes what IGRM is
+(a new construct or a new public claim), so per the mission rules none
+of it gets built until you choose. Sketches, in the order I would rank
+them:
+
+- **V5, the English-bias audit.** IGRM measures English-language
+  coverage only (DOC API default; the NGrams bridge filters lang=en).
+  Build parallel channel series from GDELT's translated multilingual
+  corpus and publish the divergence between English and multilingual
+  attention per channel, a number that says how much of the index is
+  Anglophone attention specifically. Measuring your own instrument's
+  bias is the most credible upgrade available, and it reuses the whole
+  existing pipeline.
+- **V6, the actors and narratives layer.** From counting to
+  characterizing, still zero prediction: which country pairs drive each
+  spike (the dyad store already has this), cooperation-conflict balance
+  by partner over time (Goldstein-weighted), and term-level attribution
+  showing which sub-dictionary vocabulary carried each episode
+  (computable from the sub-query shares already stored).
+- **V7, the citable instrument.** Quarterly versioned data releases
+  with Zenodo DOIs, a frozen v1 API contract page, a monthly
+  fresh-clone reproduce-from-nothing CI job, and the paper submission
+  package. This is what turns a website into something other people
+  cite.
+
+A cheaper alternative worth considering before any of these: the
+precision audit program (hand-label article samples per channel,
+publish precision numbers). It slots into V5 naturally.
+
 ## 0.0 Activate the subscribe list (5 minutes, only you can)
 
 1. Create the free account at buttondown.com (use your normal email).
