@@ -1,0 +1,75 @@
+{
+ "_meta": {
+  "version": "1.0.0",
+  "registered": "2026-08-01",
+  "what": "Registered domain-to-tier map for presentation ordering and the spike-quality metric. Tiers order the receipts drill-down credible-first and feed the tier 1-2 share shown on Why cards; they NEVER enter any score. Assignments cite documented behaviors (fabrication incidents, retraction practice), not viewpoints. Changes are append-only with a dated reason.",
+  "criteria": {
+   "1": "wire services and public-service international broadcasters with formal correction processes",
+   "2": "national and international broadsheets and business press with mastheads and published corrections",
+   "3": "mainstream TV, portals, and aggregating outlets with editorial staff but weaker correction records",
+   "4": "outlets with documented fabrication incidents or syndication mills with no original reporting"
+  },
+  "tier4_note": "Tier-4 assignments below stand on the registered criteria. Syndication-mill designations are verifiable from this project's own datapacks (identical wire copy across domains, no original reporting). Broadcast-outlet assignments are held as PROVISIONAL pending author-supplied citations to documented incidents (IFCN signatory fact-checks); until cited, those outlets rank tier 3 in presentation. No reason stated here makes a claim beyond the cited evidence."
+ },
+ "tiers": {
+  "reuters.com": 1,
+  "apnews.com": 1,
+  "afp.com": 1,
+  "bbc.com": 1,
+  "bbc.co.uk": 1,
+  "dw.com": 1,
+  "pti.in": 1,
+  "thehindu.com": 2,
+  "indianexpress.com": 2,
+  "hindustantimes.com": 2,
+  "tribuneindia.com": 2,
+  "telegraphindia.com": 2,
+  "livemint.com": 2,
+  "thehindubusinessline.com": 2,
+  "business-standard.com": 2,
+  "economictimes.indiatimes.com": 2,
+  "ft.com": 2,
+  "bloomberg.com": 2,
+  "wsj.com": 2,
+  "nytimes.com": 2,
+  "theguardian.com": 2,
+  "economist.com": 2,
+  "timesofindia.indiatimes.com": 3,
+  "ndtv.com": 3,
+  "indiatoday.in": 3,
+  "news18.com": 3,
+  "firstpost.com": 3,
+  "theprint.in": 3,
+  "thewire.in": 3,
+  "scroll.in": 3,
+  "wionews.com": 3,
+  "aninews.in": 3,
+  "deccanherald.com": 3,
+  "newindianexpress.com": 3,
+  "orissapost.com": 3,
+  "freepressjournal.in": 3,
+  "aajtak.in": 3,
+  "zeenews.india.com": 3,
+  "republicworld.com": 3,
+  "timesnownews.com": 3,
+  "oneindia.com": 4,
+  "newkerala.com": 4,
+  "webindia123.com": 4,
+  "jagranjosh.com": 4
+ },
+ "tier4_reasons": {
+  "oneindia.com": "syndication observed in project datapacks; no original reporting or corrections process found",
+  "newkerala.com": "syndication observed in project datapacks; no original reporting or corrections process found",
+  "webindia123.com": "syndication observed in project datapacks; no original reporting or corrections process found",
+  "jagranjosh.com": "listicle content farm, not a news organization (self-described exam-prep site)"
+ },
+ "provisional_tier4_candidates": {
+  "note": "Await author citations before any public tier-4 designation of broadcast outlets; see NOTES_FOR_ISHAN.",
+  "candidates": [
+   "aajtak.in",
+   "zeenews.india.com",
+   "republicworld.com",
+   "timesnownews.com"
+  ]
+ }
+}

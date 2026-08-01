@@ -264,3 +264,12 @@ Two things before you post, both optional but both strengthen the pitch:
 2. If the maintainer replies with interest, tell me and I will build the
    actual PR (TypeScript, their conventions) for you to submit from a
    fork.
+
+## 0.4 Source tier-4 designations need your citations
+
+source_tiers.json ranks receipts credible-first. Four syndication mills
+are tier 4 on evidence our own datapacks contain. The broadcast outlets
+you named (Aaj Tak, Zee, Republic, Times Now) are held at tier 3 until
+you attach citations to documented incidents (IFCN fact-checks, the
+Karachi broadcast): a public tier-4 designation is an accusation, and
+the project only publishes what it can cite. Send links, they move.
