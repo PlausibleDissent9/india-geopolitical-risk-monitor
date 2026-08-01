@@ -28,6 +28,10 @@ if [[ "${1:-}" == "--use-cache" ]]; then
   echo "[reproduce] copying raw-data cache from source checkout"
   rm -rf data/raw
   cp -R "$SRC/data/raw" data/raw
+  # Cached mode verifies computation, strictly offline: a cache miss
+  # keeps store data instead of fetching, so the result never depends
+  # on API weather.
+  export IGRM_OFFLINE=1
 fi
 
 .venv/bin/python -m pytest -q

@@ -132,6 +132,15 @@ def _fetch_chunk_network(
     query: str, start: date, end: date, mode: str = "timelinevol",
     retries: int = RETRIES,
 ) -> list[dict]:
+    # IGRM_OFFLINE=1 verifies computation without the network: a cache
+    # miss returns empty (callers keep existing store data) instead of
+    # fetching. reproduce.sh --use-cache sets it so an external
+    # replicator's result never depends on API weather (2026-08-01: a
+    # throttled day failed the cached reproduce on one missing chunk).
+    import os
+    if os.environ.get("IGRM_OFFLINE"):
+        print(f"[gdelt] OFFLINE: cache miss for {start}..{end} skipped")
+        return []
     params = {
         "query": query,
         "mode": mode,
