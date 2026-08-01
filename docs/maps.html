@@ -34,6 +34,7 @@ Depth of color runs from the corridor's calm color at 0 to the severe color at t
 cap shown in the legend. Grey: fewer than 50 recent events. Circles are states too small
 for the map's polygons. Hover for numbers.</p>
 <div class="chart-wrap" id="world-wrap" style="max-width:1000px"><p class="empty" id="world-empty">Not computed yet: aggregates publish once the 2017 events backfill completes.</p></div>
+<div class="card" id="world-detail" hidden style="margin:0.6rem 0; padding:0.8rem 1rem; cursor:default"></div>
 <p class="kv" id="world-legend" hidden></p>
 <div class="table-scroll"><table id="partners-table" hidden>
   <thead><tr><th>Partner</th><th class="num">Events, 365d</th><th class="num">Conflict share, 365d</th><th class="num">Conflict share, 2017-</th><th class="num">Goldstein mean</th></tr></thead>
@@ -47,6 +48,7 @@ for the map's polygons. Hover for numbers.</p>
 state codes; those are folded into today's boundaries and the fold is documented in the
 codebook. Hover for numbers.</p>
 <div class="chart-wrap" id="india-wrap" style="max-width:620px"><p class="empty" id="india-empty">Not computed yet: aggregates publish once the 2017 events backfill completes.</p></div>
+<div class="card" id="india-detail" hidden style="margin:0.6rem 0; padding:0.8rem 1rem; cursor:default"></div>
 <div class="table-scroll"><table id="states-table" hidden>
   <thead><tr><th>State</th><th class="num">Events, 365d</th><th class="num">Conflict share, 365d</th><th class="num">Protest share, 2017-</th></tr></thead>
   <tbody></tbody>
@@ -71,11 +73,12 @@ function mix(c1, c2, t) {
 }
 function pct(x) { return x == null ? "-" : (100 * x).toFixed(1) + "%"; }
 
-function drawMap(wrapId, geo, keyName, fillFor, titleFor) {
+function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
   const svg = document.createElementNS(SVG, "svg");
   svg.setAttribute("viewBox", geo.viewBox);
   svg.setAttribute("role", "img");
   svg.style.width = "100%";
+  let selected = null;
   for (const [code, g] of Object.entries(geo[keyName])) {
     let el;
     if (g.d) {
@@ -89,6 +92,19 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor) {
     el.setAttribute("fill", fillFor(code));
     el.setAttribute("stroke", css("--rule"));
     el.setAttribute("stroke-width", "0.5");
+    el.style.cursor = "pointer";
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "button");
+    el.setAttribute("aria-label", g.name);
+    const pick = () => {
+      if (selected) { selected.setAttribute("stroke", css("--rule")); selected.setAttribute("stroke-width", "0.5"); }
+      selected = el;
+      el.setAttribute("stroke", css("--accent"));
+      el.setAttribute("stroke-width", "1.6");
+      onPick(code, g.name);
+    };
+    el.addEventListener("click", pick);
+    el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
     const t = document.createElementNS(SVG, "title");
     t.textContent = titleFor(code, g.name);
     el.appendChild(t);
@@ -121,7 +137,17 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor) {
         `${pct(p.recent_conflict_share)} (2017- : ${pct(p.conflict_share)}, ` +
         `Goldstein mean ${p.goldstein_mean == null ? "-" : p.goldstein_mean})`;
     };
-    drawMap("world-wrap", worldGeo, "countries", fillFor, titleFor);
+    const worldPick = (code, name) => {
+      const p = rel.partners[code];
+      const d = document.getElementById("world-detail");
+      d.innerHTML = p
+        ? `<strong>${esc(name)}</strong> &middot; 2017-present: ${esc(p.n)} events, ` +
+          `conflict share ${pct(p.conflict_share)}, Goldstein mean ${p.goldstein_mean == null ? "-" : esc(p.goldstein_mean)}. ` +
+          `Trailing 365 days: ${esc(p.recent_n)} events, conflict share ${pct(p.recent_conflict_share)}.`
+        : `<strong>${esc(name)}</strong> &middot; no India-partner events recorded in the stream.`;
+      d.hidden = false;
+    };
+    drawMap("world-wrap", worldGeo, "countries", fillFor, titleFor, worldPick);
     const lg = document.getElementById("world-legend");
     lg.textContent = `Scale: 0% conflict share to the ${100 * CAP}% cap; ` +
       `grey below ${MIN_N} events in 365 days. India itself is not a partner and stays uncolored.`;
@@ -156,7 +182,17 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor) {
       return `${name}: ${s.recent_n} events in 365d, conflict share ` +
         `${pct(s.recent_conflict_share)}, protest share 2017- ${pct(s.protest_share)}`;
     };
-    drawMap("india-wrap", indiaGeo, "states", fillFor, titleFor);
+    const indiaPick = (code, name) => {
+      const s = st.states[code];
+      const d = document.getElementById("india-detail");
+      d.innerHTML = s
+        ? `<strong>${esc(name)}</strong> &middot; 2017-present: ${esc(s.n)} located events, ` +
+          `conflict share ${pct(s.conflict_share)}, protest share ${pct(s.protest_share)}. ` +
+          `Trailing 365 days: ${esc(s.recent_n)} events, conflict share ${pct(s.recent_conflict_share)}.`
+        : `<strong>${esc(name)}</strong> &middot; no located events in the stream.`;
+      d.hidden = false;
+    };
+    drawMap("india-wrap", indiaGeo, "states", fillFor, titleFor, indiaPick);
     const rows = Object.entries(st.states)
       .sort((a, b) => b[1].recent_n - a[1].recent_n).slice(0, 10);
     const tb = document.querySelector("#states-table tbody");
