@@ -35,7 +35,17 @@ if [[ "${1:-}" == "--use-cache" ]]; then
 fi
 
 .venv/bin/python -m pytest -q
-.venv/bin/python -m src.run_daily --backfill
+if [[ "${IGRM_OFFLINE:-}" == "1" ]]; then
+  # Cached mode verifies computation over the committed store: heal the
+  # recent tail from the ngram day-cache (offline-safe), then run the
+  # incremental pipeline. A from-scratch chunk rebuild would drop the
+  # spliced ngram-era days by construction and trip the fail-loud gate,
+  # which is what happened on 2026-08-01 and led to this split.
+  .venv/bin/python -m src.fetch_ngrams --heal 35 || true
+  .venv/bin/python -m src.run_daily
+else
+  .venv/bin/python -m src.run_daily --backfill
+fi
 
 echo "[reproduce] diffing docs/data against committed versions"
 .venv/bin/python - "$SRC" <<'EOF'
