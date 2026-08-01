@@ -91,6 +91,11 @@ def render_methodology() -> None:
         "Column-by-column definitions, units, and construction for every "
         "IGRM data file.",
     )
+    _render_md_page(
+        DOCS / "corrections.md", "corrections", "Corrections",
+        "Every error this project caught, dated, with the fix that keeps "
+        "the class from recurring. Append-only.",
+    )
 
 
 def _notes() -> list[dict]:
