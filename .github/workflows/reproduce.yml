@@ -1,0 +1,27 @@
+name: reproduce
+
+# V7: the reproduce-from-nothing guarantee, verified monthly. A fresh
+# clone and venv recompute every published output from committed raw
+# data (strictly offline; market-vintage tolerance documented inside
+# the script). Failing this workflow means the repo no longer
+# reproduces its own site, which outranks all feature work.
+
+on:
+  schedule:
+    - cron: "37 2 1 * *"   # monthly, 1st, 08:07 IST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Fresh-clone offline reproduction
+        run: bash scripts/reproduce.sh --use-cache
