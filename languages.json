@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "registered": "2026-08-01",
+    "what": "V5 measurement-quality audit: per-language parallel series for each channel, fetched with GDELT sourcelang operators on the identical frozen dictionaries. Purpose is measuring the English-language bias of the index, published as a divergence number per channel. Languages registered with rationale BEFORE the first full fetch; additions append-only with a dated reason. Three languages at v1.0.0 keeps the first fetch to about 30 full-range requests; the roster grows once the pattern is proven.",
+    "construct_note": "Each language series is a share of that language's monitored corpus and ranks against its own trailing 730 days, so cross-language comparison is rank-vs-rank, never raw-share-vs-raw-share (corpus sizes differ by orders of magnitude)."
+  },
+  "languages": {
+    "hin": {"label": "Hindi", "rationale": "largest Indian-language press corpus; the domestic-attention baseline English coverage should be audited against"},
+    "urd": {"label": "Urdu", "rationale": "the language of Pakistan's press and part of India's own; the Pakistan channel's most important non-English mirror"},
+    "zho": {"label": "Chinese", "rationale": "the strategic counterparty's press; china_east salience measured in the other side's language is the sharpest bias probe available"}
+  }
+}

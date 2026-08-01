@@ -236,13 +236,17 @@ def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
 
 
 def fetch_channel(
-    terms: list[str], start: date, end: date, anchor: str | None = None
+    terms: list[str], start: date, end: date, anchor: str | None = None,
+    query_suffix: str = "",
 ) -> pd.Series:
     """Daily volume-intensity series for one channel over [start, end]:
-    the SUM of its sub-query group shares (see QUERY_MAX_CHARS)."""
+    the SUM of its sub-query group shares (see QUERY_MAX_CHARS).
+    query_suffix appends verbatim operators (e.g. " sourcelang:hin" for
+    the V5 multilingual audit); the share stays relative to the matching
+    corpus slice, so per-language series rank against their own history."""
     parts = [
         s for q in build_queries(terms, anchor)
-        if not (s := _fetch_query_series(q, start, end)).empty
+        if not (s := _fetch_query_series(q + query_suffix, start, end)).empty
     ]
     if not parts:
         return pd.Series(dtype=float, name="value")
