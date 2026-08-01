@@ -377,7 +377,7 @@ async function init() {
     renderLatest(latest, history);
     if (latest.definition) {
       document.getElementById("tagline").textContent =
-        latest.definition + " Updated 18:00 IST.";
+        latest.definition + " Final numbers by 6:00 AM IST; provisional nowcast every two hours.";
     }
   } catch (e) { console.warn("latest.json not available yet", e); }
   try {

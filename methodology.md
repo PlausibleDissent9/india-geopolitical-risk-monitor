@@ -187,7 +187,7 @@ its residual.
    absorbed by the share denominator and the trailing percentile; residual
    disclosed.
 8. **Timezone convention.** GDELT days are UTC; Indian market days are IST;
-   the daily run at 18:00 IST treats "today" as the UTC date. A same-day
+   the daily run, final by 6:00 AM IST, treats "today" as the UTC date. A same-day
    Indian-evening event lands on the correct UTC day but after the NSE
    close, event-study windows therefore start at the first trading day on
    or after the episode start, never before.
