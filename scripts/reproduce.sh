@@ -84,6 +84,12 @@ def compare(a, b, path="", dates_len=None):
             compare(a[i], b[i], f"{path}[{i}]")
     elif isinstance(a, (int, float)) and isinstance(b, (int, float)):
         tol = MARKET_TOL if path.startswith(MARKET_FILES) else TOL
+        # Tail maturation: the newest episode's 5- and 20-day market
+        # windows complete as trading days pass, so per-cell episode
+        # counts in market files legitimately differ by one between
+        # vintages (observed 107 vs 108, 2026-08-01).
+        if path.startswith(MARKET_FILES) and path.endswith(".n"):
+            tol = 1.0
         if abs(a - b) > tol:
             failures.append(f"{path}: {a} != {b}")
         elif abs(a - b) > TOL:
