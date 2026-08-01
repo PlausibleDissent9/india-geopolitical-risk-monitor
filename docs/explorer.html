@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outcomes Explorer, India Geopolitical Risk Monitor</title>
+<meta name="description" content="Browse the historical distribution of India-specific relative returns after coverage episodes, by channel, market pair, and horizon. Associations, never predictions.">
+<link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/explorer.html">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260731a">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">What happened to India-specific relative returns after past coverage
+  episodes: the full historical distribution, not just the average. Pick a channel, a market
+  pair, and a horizon. Every number is an association from history; nothing here predicts
+  anything, and past episodes do not constrain future ones.</p>
+</header>
+
+<h2>Conditional outcomes</h2>
+<div class="chart-note" style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center">
+  <label>Channel <select id="sel-ch"></select></label>
+  <label>Outcome <select id="sel-out"></select></label>
+  <label>Horizon <select id="sel-win"></select></label>
+</div>
+<p class="kv" id="summary" hidden></p>
+<div class="chart-wrap" style="height:260px"><canvas id="hist-chart"></canvas></div>
+<div class="table-scroll"><table id="ep-table" hidden>
+  <thead><tr><th>Episode start</th><th class="num">Return over horizon</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+<p class="chart-note">Bars: count of past episodes whose cumulative relative return over the
+chosen horizon fell in each bin. The dashed line marks zero. Summary shows the bootstrap
+mean, its 95% interval, and whether it survives the multiple-testing control
+(Benjamini-Hochberg at 10%); most cells do not, and that absence of separable effects is a
+published finding, not a failure.</p>
+
+<footer>
+  <p><a href="data.html">Underlying files &amp; citation</a> &middot; <a href="methodology.html">Methodology &sect;6</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+
+<script>
+"use strict";
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const LABELS = {
+  nifty_minus_em: "Nifty minus MSCI EM", defence_minus_nifty: "Defence minus Nifty",
+  energy_omc_minus_nifty: "Energy OMCs minus Nifty", it_services_minus_nifty: "IT services minus Nifty",
+  usdinr_minus_dxy: "USDINR minus DXY", banks_minus_nifty: "Banks minus Nifty",
+};
+let ES = null, chart = null;
+
+function options(sel, entries) {
+  sel.innerHTML = entries.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join("");
+}
+
+function render() {
+  const ch = document.getElementById("sel-ch").value;
+  const out = document.getElementById("sel-out").value;
+  const win = document.getElementById("sel-win").value;
+  const eps = (ES.per_episode[ch] || []).map(e => ({
+    start: e.start, v: e.outcomes && e.outcomes[out] ? e.outcomes[out][win] : null,
+  })).filter(e => e.v != null);
+  const vals = eps.map(e => e.v);
+  const agg = ((ES.channels[ch] || {}).outcomes || {})[out];
+  const stat = agg ? agg[win] : null;
+  const s = document.getElementById("summary");
+  if (stat) {
+    s.textContent = `${eps.length} episodes. Mean ${stat.mean > 0 ? "+" : ""}${stat.mean}% ` +
+      `(95% interval ${stat.ci95[0]}% to ${stat.ci95[1]}%), bootstrap p ${stat.p_boot}` +
+      `${stat.bh_significant_10pct ? ", survives BH-10% control" : ", not significant after BH-10% control"}.`;
+    s.hidden = false;
+  } else { s.hidden = true; }
+  // histogram bins
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const nb = Math.min(21, Math.max(7, Math.round(Math.sqrt(vals.length) * 2)));
+  const w = (hi - lo) / nb || 1;
+  const bins = new Array(nb).fill(0);
+  for (const v of vals) bins[Math.min(nb - 1, Math.floor((v - lo) / w))]++;
+  const labels = bins.map((_, i) => (lo + (i + 0.5) * w).toFixed(1));
+  const zeroBin = Math.min(nb - 1, Math.max(0, Math.floor((0 - lo) / w)));
+  const colors = bins.map((_, i) => (lo + (i + 0.5) * w) < 0 ? css("--severe") : css("--calm"));
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById("hist-chart"), {
+    type: "bar",
+    data: { labels, datasets: [{ data: bins, backgroundColor: colors, borderWidth: 0 }] },
+    options: { animation: false, responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: {
+        title: (items) => `~${items[0].label}% cumulative relative return`,
+        label: (item) => `${item.raw} episode(s)` } } },
+      scales: { y: { grid: { color: css("--rule-soft") }, ticks: { color: css("--muted"), precision: 0 } },
+                x: { grid: { display: false }, ticks: { color: css("--muted"), maxTicksLimit: 9 } } } },
+  });
+  const tb = document.querySelector("#ep-table tbody");
+  tb.innerHTML = "";
+  for (const e of [...eps].sort((a, b) => b.start.localeCompare(a.start)).slice(0, 30)) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td><a href="episode.html?start=${esc(e.start)}">${esc(e.start)}</a></td>` +
+      `<td class="num">${e.v > 0 ? "+" : ""}${esc(e.v)}%</td>`;
+    tb.appendChild(tr);
+  }
+  document.getElementById("ep-table").hidden = false;
+}
+
+(async () => {
+  const r = await fetch("data/event_study.json");
+  if (!r.ok) return;
+  ES = await r.json();
+  const chans = Object.keys(ES.per_episode);
+  options(document.getElementById("sel-ch"), chans.map(c => [c, c.replace(/_/g, " ")]));
+  const outs = Object.keys((Object.values(ES.per_episode)[0][0] || {}).outcomes || {});
+  options(document.getElementById("sel-out"), outs.map(o => [o, LABELS[o] || o]));
+  options(document.getElementById("sel-win"), ES.windows.map(w => [String(w), w + " trading day" + (w > 1 ? "s" : "")]));
+  for (const id of ["sel-ch", "sel-out", "sel-win"]) document.getElementById(id).addEventListener("change", render);
+  render();
+})();
+</script>
+</body>
+</html>
