@@ -43,8 +43,9 @@ function fmtCell(w) {
   const q = new URLSearchParams(location.search);
   const channel = q.get("channel"), start = q.get("start");
   const el = document.getElementById("body");
-  const [episodes, ev, hist] = await Promise.all([
+  const [episodes, ev, hist, actors] = await Promise.all([
     j("data/episodes.json"), j("data/event_study.json"), j("data/history.json"),
+    j("data/episode_actors.json"),
   ]);
   const e = (episodes || []).find(x => x.channel === channel && x.start === start);
   if (!e) { el.innerHTML = '<p class="empty">Episode not found.</p>'; return; }
@@ -54,6 +55,29 @@ function fmtCell(w) {
   let html = "<h2>" + esc(label) + ": " + esc(e.start) + " &rarr; " + esc(e.end) + "</h2>" +
     '<p class="kv">Peak ' + esc(e.peak_date) + " at " + esc(e.peak_value) +
     "% of monitored coverage &middot; " + esc(e.n_spike_days) + " spike day(s)</p>";
+
+  const act = actors && actors.episodes && actors.episodes[channel + "|" + e.start];
+  if (act) {
+    html += "<h2>Who was active: the event record during this episode</h2>" +
+      '<p class="kv">India-pair events in the window vs each partner\'s trailing 90-day rate. ' +
+      "Counts of press-recorded events; association, not causation. A channel spike with the " +
+      "channel's own partners BELOW baseline means the coverage wave ran ahead of the physical record.</p>";
+    const row = (x) => "<tr><td>" + esc(x.partner) + '</td><td class="num">' + esc(x.n) +
+      '</td><td class="num">' + (x.excess > 0 ? "+" : "") + esc(x.excess) +
+      '</td><td class="num">' + esc(x.coop) + '</td><td class="num">' + esc(x.conflict) + "</td></tr>";
+    html += '<table><thead><tr><th>Partner</th><th class="num">Events</th><th class="num">vs baseline</th><th class="num">Coop</th><th class="num">Conflict</th></tr></thead><tbody>';
+    if (act.channel_partners.length) {
+      html += act.channel_partners.map(row).join("");
+    } else {
+      html += '<tr><td colspan="5" class="empty">No channel-partner events above the floor in this window.</td></tr>';
+    }
+    html += "</tbody></table>";
+    if (act.other_active_dyads.length) {
+      html += "<details><summary>Other unusually active India dyads that week (context, not attribution)</summary>" +
+        '<table><thead><tr><th>Partner</th><th class="num">Events</th><th class="num">vs baseline</th><th class="num">Coop</th><th class="num">Conflict</th></tr></thead><tbody>' +
+        act.other_active_dyads.map(row).join("") + "</tbody></table></details>";
+    }
+  }
 
   const perEp = ev && ev.per_episode &&
     (ev.per_episode[channel] || []).find(x => x.start === e.start);
