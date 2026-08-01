@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "igrm"
+version = "0.1.0"
+description = "Client for the India Geopolitical Risk Monitor open datasets: daily press-salience index, events layers, stress gauge, and event-study outcomes, as pandas DataFrames."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Ishan Krishna", email = "ishankrishna9@gmail.com" }]
+requires-python = ">=3.9"
+dependencies = ["pandas>=1.5", "requests>=2.28"]
+keywords = ["geopolitical risk", "India", "GDELT", "open data", "economics"]
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+[project.urls]
+Homepage = "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/"
+Repository = "https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor"
