@@ -8,6 +8,13 @@ name: multilingual-backfill
 
 on:
   workflow_dispatch:
+  schedule:
+    # Nightly restarts until the store lands: the DOC API throttles
+    # hard in busy hours (2026-08-01: a fresh-IP batch got zero chunks),
+    # so the chain retries in quiet windows and ends itself once
+    # multilingual_salience.csv exists. Odd minutes per repo convention.
+    - cron: "47 21 * * *"   # 03:17 IST
+    - cron: "9 1 * * *"     # 06:39 IST backup
   push:
     paths: [".trigger/multilingual"]
 
