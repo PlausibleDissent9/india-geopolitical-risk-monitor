@@ -171,7 +171,7 @@
    "china_east": 0.177,
    "gulf_energy": 0.187,
    "us_trade": 0.041,
-   "shipping": 0.186
+   "shipping": 0.187
   }
  },
  "placebo": {
@@ -1100,5 +1100,23 @@
     "n_spike_days": 1
    }
   ]
+ },
+ "robustness": {
+  "narrow": {
+   "pakistan_west": 0.878,
+   "china_east": 0.895,
+   "gulf_energy": 0.527,
+   "us_trade": 0.663,
+   "shipping": 0.861,
+   "composite": 0.796
+  },
+  "broad": {
+   "pakistan_west": 0.919,
+   "china_east": 0.96,
+   "gulf_energy": 0.779,
+   "us_trade": 0.843,
+   "shipping": 0.728,
+   "composite": 0.88
+  }
  }
 }
