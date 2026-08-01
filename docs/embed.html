@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGRM embed</title>
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+<style>
+  :root { --bg:#0E141E; --fg:#EAE8E0; --muted:#97A0B0; --rule:#1C2532; --accent:#D96548; }
+  * { box-sizing:border-box; margin:0 }
+  body { background:var(--bg); color:var(--fg); font:13px/1.4 system-ui,sans-serif; padding:10px 12px }
+  .head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px }
+  .head a { color:var(--muted); text-decoration:none; font-size:11px }
+  .num { font-weight:700; color:var(--accent) }
+  .wrap { height: calc(100vh - 52px); min-height:120px }
+</style>
+</head>
+<body>
+<div class="head"><span id="t">IGRM</span><a id="lnk" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/" target="_blank" rel="noopener">IGRM &nearr;</a></div>
+<div class="wrap"><canvas id="c"></canvas></div>
+<script>
+"use strict";
+const Q = new URLSearchParams(location.search);
+const WHAT = Q.get("chart") || "composite";
+const DAYS = Math.min(1095, Math.max(30, parseInt(Q.get("days") || "365", 10)));
+const BASE = "";
+const NAMES = { composite: "Composite", pakistan_west: "Pakistan / Western Border",
+  china_east: "China / Eastern Border", gulf_energy: "Gulf & Energy",
+  us_trade: "US & Trade Policy", shipping: "Shipping & Chokepoints", gauge: "India Stress Gauge" };
+function draw(labels, values, label, latest) {
+  document.getElementById("t").innerHTML =
+    `${label}: <span class="num">${latest == null ? "-" : latest}</span> <span style="color:var(--muted)">(percentile of trailing 2y; salience, not risk)</span>`;
+  new Chart(document.getElementById("c"), {
+    type: "line",
+    data: { labels, datasets: [{ data: values, borderColor: "#D96548", borderWidth: 1.2,
+      pointRadius: 0, tension: 0.15, spanGaps: true }] },
+    options: { animation: false, responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { min: 0, max: 100, grid: { color: "#1C2532" }, ticks: { color: "#97A0B0" } },
+                x: { grid: { display: false }, ticks: { color: "#97A0B0", maxTicksLimit: 6 } } } },
+  });
+}
+(async () => {
+  try {
+    if (WHAT === "gauge") {
+      const j = await (await fetch(BASE + "data/stress_gauge.json")).json();
+      const h = j.history_365d;
+      draw(h.dates, h.gauge, NAMES.gauge, j.gauge);
+    } else {
+      const j = await (await fetch(BASE + "data/history.json")).json();
+      const s = Array.isArray(j[WHAT]) ? j[WHAT] : (j.channels || {})[WHAT];
+      if (!s) { document.getElementById("t").textContent = "Unknown chart: " + WHAT; return; }
+      const dates = j.dates.slice(-DAYS), vals = s.slice(-DAYS);
+      const last = [...vals].reverse().find(v => v != null);
+      draw(dates, vals, NAMES[WHAT] || WHAT, last == null ? null : Math.round(last * 10) / 10);
+    }
+  } catch (e) { document.getElementById("t").textContent = "IGRM data unavailable"; }
+})();
+</script>
+</body>
+</html>
