@@ -273,3 +273,13 @@ you named (Aaj Tak, Zee, Republic, Times Now) are held at tier 3 until
 you attach citations to documented incidents (IFCN fact-checks, the
 Karachi broadcast): a public tier-4 designation is an accusation, and
 the project only publishes what it can cite. Send links, they move.
+
+## 0.5 Commit derived market returns? Your licensing call
+
+Reproduce cannot byte-match event-study numbers because their market
+inputs (Yahoo) are gitignored by the redistribution-license decision.
+Current policy: those two files verify within a 0.06 tolerance band,
+documented in reproduce.sh. If you ever want byte-exact replication,
+the option is committing derived_returns.csv (log returns, not
+prices); whether derived returns clear the license line is your call,
+not mine. Everything else byte-reproduces.

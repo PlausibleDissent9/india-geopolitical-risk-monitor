@@ -56,6 +56,17 @@ src = Path(sys.argv[1]) / "docs" / "data"
 new = Path("docs") / "data"
 IGNORE_TAIL_DAYS = 7
 TOL = 1e-6
+# Market-dependent outputs (event_study, priced_risk) rest on Yahoo
+# inputs that are deliberately NOT committed (redistribution license),
+# so the committed numbers carry CI's fetch vintage and a replicator
+# carries their own: Yahoo revises recent bars between fetches, which
+# moves seeded-bootstrap fields by resampling-noise scale (observed
+# max 0.046 on 2026-08-01). Those files compare within MARKET_TOL and
+# the run reports how many numbers used the band. Everything whose
+# inputs are fully committed must match to TOL.
+MARKET_TOL = 0.06
+MARKET_FILES = ("event_study.json", "priced_risk.json")
+band_hits = [0]
 failures = []
 
 def compare(a, b, path="", dates_len=None):
@@ -72,11 +83,15 @@ def compare(a, b, path="", dates_len=None):
         for i in range(n):
             compare(a[i], b[i], f"{path}[{i}]")
     elif isinstance(a, (int, float)) and isinstance(b, (int, float)):
-        if abs(a - b) > TOL:
+        tol = MARKET_TOL if path.startswith(MARKET_FILES) else TOL
+        if abs(a - b) > tol:
             failures.append(f"{path}: {a} != {b}")
+        elif abs(a - b) > TOL:
+            band_hits[0] += 1
     elif a != b:
         failures.append(f"{path}: {a!r} != {b!r}")
 
+print(f"[reproduce] market-vintage band: +/-{MARKET_TOL} on {MARKET_FILES}")
 for f in sorted(src.glob("*.json")):
     mine = new / f.name
     if not mine.exists():
