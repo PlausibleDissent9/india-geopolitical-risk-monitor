@@ -9,8 +9,12 @@ on:
     # Odd minutes on purpose: GitHub silently drops scheduled runs at
     # congested minutes, and :00/:30 are the worst (2026-07-31: the
     # 11:00 slot never fired at all).
-    - cron: "6 11 * * *"    # 16:36 IST primary
-    - cron: "34 12 * * *"   # 18:04 IST backup
+    # Morning contract (Ishan + FICCI feedback, 2026-07-31): the measured
+    # day closes 05:30 IST, final publishes by 06:00 IST. Aimed early
+    # because GitHub crons drift 15-90 min; the second slot is the
+    # backup. Afternoon slot retained as drift insurance of last resort.
+    - cron: "7 0 * * *"     # 05:37 IST primary
+    - cron: "51 0 * * *"    # 06:21 IST backup
     # Backup slot: GitHub crons fire late or not at all under load, so a
     # second attempt guarantees at least one daily run; when the first
     # succeeded this one commits "no changes" and costs nothing.
