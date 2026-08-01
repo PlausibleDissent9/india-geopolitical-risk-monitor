@@ -36,12 +36,12 @@ fi
 
 .venv/bin/python -m pytest -q
 if [[ "${IGRM_OFFLINE:-}" == "1" ]]; then
-  # Cached mode verifies computation over the committed store: heal the
-  # recent tail from the ngram day-cache (offline-safe), then run the
-  # incremental pipeline. A from-scratch chunk rebuild would drop the
-  # spliced ngram-era days by construction and trip the fail-loud gate,
-  # which is what happened on 2026-08-01 and led to this split.
-  .venv/bin/python -m src.fetch_ngrams --heal 35 || true
+  # Cached mode verifies the committed vintage EXACTLY: incremental run
+  # over the copied store, no healing, no fetching. Healing here once
+  # pulled one extra day in and shifted a shipping episode's bootstrap
+  # p-values against the committed outputs (2026-08-01, pass 3): any
+  # data added past the committed store is a vintage change, not a
+  # reproduction. A from-scratch chunk rebuild is the uncached path.
   .venv/bin/python -m src.run_daily
 else
   .venv/bin/python -m src.run_daily --backfill
