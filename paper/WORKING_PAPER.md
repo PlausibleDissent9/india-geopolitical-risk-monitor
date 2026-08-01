@@ -131,6 +131,48 @@ bias. Dictionary hindsight is bounded by the ex-ante rule, not
 eliminated. The July 2026 source switch introduces a spliced seam,
 published with its calibration dispersion.
 
+## 7A. Extensions, August 2026 [DRAFTED — from the v1.1-1.3 changelogs]
+
+Five extensions landed after v0.1, each with its registration and
+audit trail in the repository.
+
+**A second, physically grounded layer.** A three-layer daily events
+stream (GDELT Events v1, 2017-present: national counts, partner
+dyads, Indian states; 3,477 published days, 20 upstream-unpublished
+days verified as permanent gaps and excluded by a dated list) now runs
+beside press salience. Corridor sub-dictionaries for four maritime
+chokepoints are compared weekly against IMF PortWatch transit counts;
+the crisis signature (coverage up, transits down) appears where it
+should (Bab el-Mandeb, weekly Spearman -0.53) and nowhere else.
+
+**A pre-registered fused gauge, reported as found.** Four components
+(press, conflict events, market stress, Wikipedia attention) fuse into
+one daily line under weights and a detection rule committed before any
+hit-rate ran. Under the registered rule the gauge detects 1 of 21
+validation episodes where the channel-level index detects 18: fusion
+dilutes single-channel episodes. The contrast is published, and the
+registration makes it unfudgeable.
+
+**Predictability, tested and absent.** Directed lead-lag on daily
+changes (five own-lags, permutation p-values): salience predicts none
+of conflict-event intensity, India VIX, or INR realized volatility
+(p 0.37-0.82); the only near-threshold direction is events leading
+salience (p 0.053). The press follows the world; the site's claim of
+measuring salience, not risk, is an empirical result.
+
+**Comparators on one instrument.** Pakistan, Indonesia, Vietnam, and
+India run through a single shared ten-phrase vocabulary with per-country
+anchors (registered before first fetch), making cross-country lines
+comparable by construction; a registered three-language audit
+(Hindi, Urdu, Chinese) of the index's English bias is in collection.
+
+**A reproduction guarantee.** A fresh clone rebuilds every published
+number offline from committed raw data, byte-exact wherever inputs are
+committed and within a documented 0.06 band on bootstrap fields whose
+market inputs cannot be redistributed; the check runs monthly in CI,
+and a public corrections ledger records every error caught, including
+those that never reached the site.
+
 ## 8. Conclusion [YOUR VOICE]
 
 <!-- Three sentences: what exists now that didn't before; what it can
