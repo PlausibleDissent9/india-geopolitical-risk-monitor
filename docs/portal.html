@@ -223,7 +223,10 @@ async function loadStudio() {
       const f = await fr.json();
       const text = new TextDecoder().decode(
         Uint8Array.from(atob(f.content.replace(/\n/g, "")), c => c.charCodeAt(0)));
-      $("datapack").innerHTML = md(text);
+      const dl = `<p><a class="btn" download="${latest.name}" ` +
+        `href="data:text/markdown;charset=utf-8,${encodeURIComponent(text)}">` +
+        `Download ${latest.name}</a></p>`;
+      $("datapack").innerHTML = dl + md(text) + dl;
     } else {
       $("datapack").innerHTML = '<p class="empty">No datapack yet, it lands every Friday.</p>';
     }
