@@ -63,7 +63,19 @@ def _log_ret_pct(s: pd.Series) -> pd.Series:
 
 
 def load_or_update(start: str = "2022-01-01") -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Returns (prices, derived). Fetches the full range each run."""
+    """Returns (prices, derived). Fetches the full range each run.
+    IGRM_OFFLINE=1 returns the cached CSVs unchanged: reproduce's cached
+    mode must freeze every input, and a live Yahoo tail shifts returns
+    enough to wiggle seeded bootstrap p-values (observed 2026-08-01)."""
+    import os
+    if os.environ.get("IGRM_OFFLINE"):
+        p_path, d_path = RAW_DIR / "prices.csv", RAW_DIR / "derived_returns.csv"
+        if p_path.exists() and d_path.exists():
+            print("[markets] OFFLINE: using cached prices and derived returns")
+            prices = pd.read_csv(p_path, parse_dates=["date"]).set_index("date")
+            derived = pd.read_csv(d_path, parse_dates=["date"]).set_index("date")
+            return prices, derived
+        print("[markets] OFFLINE requested but no cache; fetching anyway")
     all_members = sorted({t for members in SECTOR_BASKETS.values() for t in members})
     prices = _download(list(TICKERS.values()) + all_members, start)
     prices = prices.rename(columns={v: k for k, v in TICKERS.items()})
