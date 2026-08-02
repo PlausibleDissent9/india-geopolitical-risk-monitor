@@ -1,84 +1,84 @@
 # Precision sample: pakistan_west
 
-Sampled 2026-08-01 from random windows, 2022-01-01..2026-08-01. Mark each [RELEVANT? ] Y or N by
+Sampled 2026-08-02 from random windows, 2022-01-01..2026-08-02. Mark each [RELEVANT? ] Y or N by
 hand, then report the per-channel rate in methodology s8.
 
-1. **Pakistan warns India over Chenab - Beas water diversion plan**  
-   idrw.org · 20260605 · https://idrw.org/pakistan-warns-india-over-chenab-beas-water-diversion-plan/  
+1. **भारतीय सेना ने सियाचिन ग्लेशियर में 40 साल किए पूरे ,  ऑपरेशन मेघदूत  में वायु सेना का योगदान किया याद - indian army 40 years of presence in siachen glacier**  
+   punjabkesari.in · 20240414 · https://www.punjabkesari.in/national/news/indian-army-40-years-of-presence-in-siachen-glacier-1967000  
    [RELEVANT? ]
 
-2. **India issues Pak notice on Indus waters treaty review**  
-   hindustantimes.com · 20240919 · https://www.hindustantimes.com/india-news/india-issues-pak-notice-on-indus-waters-treaty-review-101726688520335.html  
+2. **بلوچستان میں دہشت گردوں کو بھارتی معاونت کی اطلاعات ہیں ، دفترخارجہ**  
+   express.pk · 20220204 · https://www.express.pk/story/2280685/1/  
    [RELEVANT? ]
 
-3. **BSF trooper injured in cross - border firing in Jammu and Kashmir Akhnoor | Latest News India**  
-   hindustantimes.com · 20240911 · https://www.hindustantimes.com/india-news/bsf-trooper-injured-in-cross-border-firing-in-jammu-and-kashmir-s-akhnoor-101726028492708.html  
+3. **रक्षा मंत्री राजनाथ सिंह सियाचिन दौरे पर बोले ,  मेरे अनुसार दीपावली का पहला दीया , होली का पहला रंग भारत के रक्षकों के नाम होना चाहिए ... **  
+   india.com · 20240422 · https://www.india.com/hindi-news/india-hindi/defense-minister-rajnath-singh-reached-ladakh-talk-to-soldiers-in-siachen-6876980/  
    [RELEVANT? ]
 
-4. **ऑपरेशन मेघदूत में हुए थे लापता , भारत ने पाकिस्तान को खदेड़ सियाचिन जीता था | Indian Army Operation Meghdoot ( Siachen Conflict ); Chandrashekhar Body Found After 38 Years**  
-   bhaskar.com · 20220818 · https://www.bhaskar.com/db-original/explainer/news/indian-armys-operation-meghdoot-siachen-conflict-chandrashekhar-body-found-130198720.html  
+4. **PoK Was Ours , PoK Is Ours And I Am Confident It Will Itself Merge With India : Defence Minister Rajnath Singh**  
+   india.com · 20240324 · https://www.india.com/news/india/pok-was-ours-pok-is-ours-and-i-am-confident-it-will-itself-merge-with-india-defence-minister-rajnath-singh-6810586/  
    [RELEVANT? ]
 
-5. **indian army launches satelite based internet service in siachen what is this how much useful all you need to know : आर्मी ने सियाचिन में शुरू की सैटलाइट - बेस्ड इंटरनेट सर्विस क्या है ये और कैसे होगा फायदा जानिए हर जरूरी बात**  
-   navbharattimes.indiatimes.com · 20220919 · https://navbharattimes.indiatimes.com/india/indian-army-launches-satelite-based-internet-service-in-siachen-what-is-this-how-much-useful-all-you-need-to-know/articleshow/94299438.cms  
+5. **J & K : BSF Personnel Injured In Cross - Border Firing From Pakistan In Akhnoor Sector**  
+   freepressjournal.in · 20240911 · https://www.freepressjournal.in/india/jk-bsf-personnel-injured-in-cross-border-firing-from-pakistan-in-akhnoor-sector  
    [RELEVANT? ]
 
-6. **BSF personnel injured in cross border firing from Pakistan in J - K**  
-   aninews.in · 20240911 · https://www.aninews.in/news/national/general-news/bsf-personnel-injured-in-cross-border-firing-from-pakistan-in-j-k20240911091016/  
+6. **India And Pakistan Forces Bring In New Year By Exchanging Sweets At LoC – Indian Defence Research Wing**  
+   idrw.org · 20220101 · http://idrw.org/india-and-pakistan-forces-bring-in-new-year-by-exchanging-sweets-at-loc/  
    [RELEVANT? ]
 
-7. **Neutral expert to hear India , Pakistan arguments over Kishenganga and Ratle hydropower projects in J & K**  
-   indianewengland.com · 20240910 · https://indianewengland.com/neutral-expert-to-hear-india-pakistans-arguments-over-kishenganga-and-ratle-hydropower-projects-in-jk/  
+7. **The Indus Waters Treaty between India and Pakistan survived wars . Can it survive climate change ? **  
+   scroll.in · 20220303 · https://scroll.in/article/1018427/the-indus-waters-treaty-between-india-and-pakistan-survived-wars-can-it-survive-climate-change  
    [RELEVANT? ]
 
-8. **  Want to be part of geography or history ? Army chief blunt warning to Pakistan**  
-   moneycontrol.com · 20260516 · https://www.moneycontrol.com/news/india/want-to-be-part-of-geography-or-history-army-chief-s-blunt-warning-to-pakistan-13921085.html  
+8. **Pakistan Imran Khan Offers A TV Debate With PM Modi – Indian Defence Research Wing**  
+   idrw.org · 20220222 · http://idrw.org/pakistans-imran-khan-offers-a-tv-debate-with-pm-modi/  
    [RELEVANT? ]
 
-9. **India tears into Islamabad , says  it is global epicentre of terrorism ; Pakistan PM in attendance**  
-   indiatvnews.com · 20221013 · https://www.indiatvnews.com/news/india/india-desires-normal-relations-with-all-its-neighbours-including-pakistan-meenakshi-lekhi-at-astana-summit-2022-10-13-815981  
-   [RELEVANT? ]
-
-10. **India rejects Hague tribunal arbitration award ; says Indus Waters Treaty is in abeyance**  
-   dailyexcelsior.com · 20260517 · https://www.dailyexcelsior.com/india-rejects-hague-tribunals-arbitration-award-says-indus-waters-treaty-is-in-abeyance/  
-   [RELEVANT? ]
-
-11. **US , German Statements on Kashmir Raise Hope in Pakistan**  
-   thediplomat.com · 20221013 · https://thediplomat.com/2022/10/us-german-statements-on-kashmir-raise-hope-in-pakistan/  
-   [RELEVANT? ]
-
-12. **India desires normal relations with all its neighbours , including Pakistan : MoS Lekhi**  
-   thehindu.com · 20221013 · https://www.thehindu.com/news/national/india-desires-normal-relations-with-all-its-neighbours-including-pakistan-mos-lekhi/article66005482.ece  
-   [RELEVANT? ]
-
-13. **  Naive  to Presume India Isolated Internationally on Kashmir Issue , Ex - Indian Envoy Says**  
-   sputniknews.com · 20221010 · https://sputniknews.com/20221010/naive-to-presume-india-isolated-internationally-on-kashmir-issue-ex-indian-envoy-says-1101675343.html  
-   [RELEVANT? ]
-
-14. **Pakistan continues to be the source of terrorist activities : MoS Lekhi**  
-   business-standard.com · 20221013 · https://www.business-standard.com/article/current-affairs/pakistan-continues-to-be-the-source-of-terrorist-activities-mos-lekhi-122101300888_1.html  
-   [RELEVANT? ]
-
-15. **Encounter breaks out between security forces , terrorists in J & K Kathua**  
-   business-standard.com · 20240911 · https://www.business-standard.com/external-affairs-defence-security/news/encounter-breaks-out-between-security-forces-terrorists-in-j-k-s-kathua-124091100792_1.html  
-   [RELEVANT? ]
-
-16. **  Actions will certainly have consequence : S Jaishankar warns Pakistan at UNGA**  
-   timesofindia.indiatimes.com · 20240928 · https://timesofindia.indiatimes.com/india/actions-will-certainly-have-consequences-s-jaishankar-warns-pakistan-at-unga/articleshow/113772233.cms  
-   [RELEVANT? ]
-
-17. **India serves formal notice on Pakistan to review and modify Indus Waters Treaty**  
+9. **India serves formal notice on Pakistan to review and modify Indus Waters Treaty**  
    hindustantimes.com · 20240918 · https://www.hindustantimes.com/india-news/india-serves-formal-notice-on-pakistan-to-review-and-modify-indus-waters-treaty-101726656572555.html  
    [RELEVANT? ]
 
-18. **India rejects Court of Arbitration ruling on Indus Waters Treaty**  
-   economictimes.indiatimes.com · 20260516 · https://economictimes.indiatimes.com/news/india/india-declares-court-of-arbitration-ruling-on-indus-waters-treaty-null-and-void/articleshow/131138149.cms  
+10. **BSF trooper injured as Pakistan breaches ceasefire in Akhnoor sector , prompting  high alert  along LoC**  
+   livemint.com · 20240911 · https://www.livemint.com/news/india/bsf-injured-pakistan-breaches-ceasefire-high-alert-loc-india-line-of-control-cross-border-terrorism-jammu-kashmir-11726027538496.html  
    [RELEVANT? ]
 
-19. **Operation Sindoor signalled no terror sanctuary is safe : Indian military**  
-   tribuneindia.com · 20260507 · https://www.tribuneindia.com/news/india/operation-sindoor-signalled-no-terror-sanctuary-is-safe-indian-military/  
+11. **BSF trooper injured in cross - border firing in Jammu and Kashmir Akhnoor | Latest News India**  
+   hindustantimes.com · 20240911 · https://www.hindustantimes.com/india-news/bsf-trooper-injured-in-cross-border-firing-in-jammu-and-kashmir-s-akhnoor-101726028492708.html  
    [RELEVANT? ]
 
-20. **India couldnt link Pak to Pahalgam attack : Minister**  
-   theshillongtimes.com · 20260423 · https://theshillongtimes.com/2026/04/23/india-couldnt-link-pak-to-pahalgam-attack-minister/  
+12. **Pakistan Imran Khan Offers A TV Debate With PM Narendra Modi**  
+   ndtv.com · 20220222 · https://www.ndtv.com/india-news/pakistans-imran-khan-offers-a-tv-debate-with-pm-narendra-modi-2782444  
+   [RELEVANT? ]
+
+13. **Do not renegotiate India and Pakistan Indus Rivers Water Treaty | PolicyBristol**  
+   bristol.ac.uk · 20220211 · https://www.bristol.ac.uk/policybristol/policy-briefings/indus-water-treaty/  
+   [RELEVANT? ]
+
+14. **POK will soon merge with India : Rajnath**  
+   thehansindia.com · 20240325 · https://www.thehansindia.com/news/national/pok-will-soon-merge-with-india-rajnath-867604  
+   [RELEVANT? ]
+
+15. **China Building Road In Pok Near Siachen Sattellite Image Reveals Indian Army Tension - Amar Ujala Hindi News Live - China : हरकतों से बाज नहीं आ रहा चीन , सियाचिन के पास Pok में कर रहा सड़क निर्माण ; सैटेलाइट तस्वीरों में खुलासा**  
+   amarujala.com · 20240426 · https://www.amarujala.com/india-news/china-building-road-in-pok-near-siachen-sattellite-image-reveals-indian-army-tension-2024-04-26  
+   [RELEVANT? ]
+
+16. **People Of Pakistan - Occupied Kashmir Will Want To  Merge With India : Rajnath Singh**  
+   timesnownews.com · 20240505 · https://www.timesnownews.com/india/people-of-pakistan-occupied-kashmir-will-want-to-merge-with-india-rajnath-singh-article-109854594  
+   [RELEVANT? ]
+
+17. **  Will not have to use force , demands to merge with India will come from PoK : Defence minister Rajnath Singh | India News**  
+   timesofindia.indiatimes.com · 20240505 · https://timesofindia.indiatimes.com/india/will-not-have-to-use-force-demands-to-merge-with-india-will-come-from-pok-defence-minister-rajnath-singh/articleshow/109853467.cms  
+   [RELEVANT? ]
+
+18. **Watch | India , Pakistan exchange sweets , greetings at Attari - Wagah border**  
+   msn.com · 20220126 · https://www.msn.com/en-in/money/topstories/watch-india-pakistan-exchange-sweets-greetings-at-attari-wagah-border/ar-AAT9lFF  
+   [RELEVANT? ]
+
+19. **Kiwi YouTuber Reflects On  Unforgettable  Journey In Pakistan - Occupied Kashmir**  
+   indianweekender.co.nz · 20241001 · https://www.indianweekender.co.nz/news/kiwi-youtuber-reflects-on-unforgettable-journey-in-pakistan-administered-kashmir  
+   [RELEVANT? ]
+
+20. **BSF , Pak Rangers exchange sweets at Attari - Wagah border**  
+   prokerala.com · 20220126 · https://www.prokerala.com/news/articles/a1241299.html  
    [RELEVANT? ]
