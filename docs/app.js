@@ -351,6 +351,14 @@ function renderEventStudy(ev, history) {
   }
 }
 
+function istTime(hhmm) {
+  // "HH:MM" UTC -> "HH:MM" IST (+05:30); clock time only, freshness cue.
+  const parts = String(hhmm).split(":").map(Number);
+  if (parts.length !== 2 || parts.some(Number.isNaN)) return hhmm + " UTC";
+  const t = (parts[0] * 60 + parts[1] + 330) % 1440;
+  return `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`;
+}
+
 function renderNowcast(nc) {
   // Render only a payload that is genuinely today's (UTC): a stale file
   // must vanish rather than masquerade as current. The daily score
@@ -361,7 +369,7 @@ function renderNowcast(nc) {
   if (!el) return;
   el.innerHTML =
     `<span class="prov">Provisional</span> today so far: composite ` +
-    `${esc(nc.composite)} as of ${esc(nc.as_of_utc)} UTC, from a ` +
+    `${esc(nc.composite)} as of ${esc(istTime(nc.as_of_utc))} IST, from a ` +
     `${esc(Number(nc.n_docs_sampled).toLocaleString("en-IN"))}-article ` +
     `sample. Finalized by the daily update.`;
   el.hidden = false;
