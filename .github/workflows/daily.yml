@@ -175,6 +175,11 @@ jobs:
               echo "multilingual store missing but last kick only ${AGE_H}h ago; leaving it to run"
             fi
           fi
+      - name: Expert attention shelf (practitioner item 3; RSS titles only)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.expert_attention
       - name: Dual-computation audit (fail-loud; two derivations must agree)
         if: github.event.inputs.backfill != 'true'
         run: python -m src.audit
