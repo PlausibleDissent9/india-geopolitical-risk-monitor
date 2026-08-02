@@ -25,7 +25,10 @@ permissions:
   contents: write
 
 concurrency:
-  group: igrm-pipeline
+  # Scoped by ref: an unscoped group lets a Dependabot PR branch's push
+  # event queue a run in the same lane as main and starve it
+  # (2026-08-02, see daily.yml for the mechanism).
+  group: igrm-pipeline-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

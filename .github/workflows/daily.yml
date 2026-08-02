@@ -35,8 +35,14 @@ permissions:
 # dispatched backfill, not race it for git pushes.
 concurrency:
   # Lane name is bumped when a long-running obsolete run would otherwise
-  # hold the queue and starve runs carrying a fix.
-  group: igrm-pipeline-v3
+  # hold the queue and starve runs carrying a fix. Scoped by ref: without
+  # this, a Dependabot PR branch rebased onto main carries main's
+  # .trigger/backfill-touching commit along in its push event, which
+  # matches this workflow's path filter and queues a run on the PR
+  # branch in the SAME lane as main -- starving the real run
+  # (2026-08-02: exactly this stuck a manually-kicked verification run
+  # in "pending" behind two Dependabot-branch runs).
+  group: igrm-pipeline-v3-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

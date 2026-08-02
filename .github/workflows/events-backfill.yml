@@ -19,7 +19,10 @@ permissions:
   actions: write
 
 concurrency:
-  group: igrm-events-backfill
+  # Scoped by ref: an unscoped group lets a Dependabot PR branch's push
+  # event queue a run in the same lane as main and starve it
+  # (2026-08-02, see daily.yml for the mechanism).
+  group: igrm-events-backfill-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

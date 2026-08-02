@@ -16,7 +16,10 @@ permissions:
   contents: write
 
 concurrency:
-  group: igrm-nowcast
+  # Scoped by ref: an unscoped group lets a Dependabot PR branch's push
+  # event queue a run in the same lane as main and starve it
+  # (2026-08-02, see daily.yml for the mechanism).
+  group: igrm-nowcast-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
