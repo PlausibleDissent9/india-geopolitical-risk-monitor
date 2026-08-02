@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receipts, India Geopolitical Risk Monitor</title>
+<meta name="description" content="Receipts drill-down: the exact query behind a channel's score, and a tier-sorted sample of the matched articles.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260731a">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+</header>
+
+<div id="body"><p class="empty">Loading receipts&hellip;</p></div>
+
+<footer>
+  <p><a href="./">&larr; back to the index</a></p>
+  <p>Source tiers order presentation credible-first and feed the tier 1-2 share only; they never enter any score. See the <a href="methodology.html">methodology</a> and <a href="data.html">data page</a>.</p>
+</footer>
+
+<script>
+"use strict";
+async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const TIER_LABEL = { 1: "tier 1", 2: "tier 2", 3: "tier 3", 4: "tier 4" };
+function tierBadge(tier) {
+  const label = TIER_LABEL[tier] || "unranked";
+  return '<span class="tier-badge tier-' + (tier || "u") + '">' + label + "</span>";
+}
+
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const channel = q.get("channel");
+  const el = document.getElementById("body");
+  const receipts = await j("data/receipts.json");
+
+  if (!receipts) { el.innerHTML = '<p class="empty">Receipts not available yet.</p>'; return; }
+  const c = receipts.channels && receipts.channels[channel];
+  if (!c) {
+    el.innerHTML = '<p class="empty">No receipts for that channel. Receipts are published for the latest day only ('
+      + esc(receipts.date) + '); older days are not available.</p>';
+    return;
+  }
+  document.title = c.label + " receipts " + receipts.date + ", India Geopolitical Risk Monitor";
+
+  const caveat = (receipts._meta && receipts._meta.caveat) || "";
+  let html = "<h2>" + esc(c.label) + ": receipts for " + esc(receipts.date) + "</h2>" +
+    '<p class="kv">' + esc(caveat) + "</p>";
+
+  html += "<h2>The exact query</h2>";
+  html += c.queries.map(qq => '<p class="kv"><code>' + esc(qq) + "</code></p>").join("");
+
+  html += "<h2>Matched articles (tier-sorted, sample of " + esc(c.n_retrieved) + ")</h2>";
+  if (c.spike_quality_tier12_share != null) {
+    html += '<p class="kv">Spike-quality: ' + esc((c.spike_quality_tier12_share * 100).toFixed(0)) +
+      "% of this sample is tier 1-2 (wires, broadsheets, business press).</p>";
+  }
+  if (c.articles.length) {
+    html += "<ul class='receipts-list'>" + c.articles.map(a =>
+      "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) + '" rel="noopener" target="_blank">' +
+      esc(a.title || a.url) + "</a> <span class='kv'>&middot; " + esc(a.domain) + "</span></li>"
+    ).join("") + "</ul>";
+  } else {
+    html += '<p class="empty">No articles retrieved for this query on this day.</p>';
+  }
+
+  el.innerHTML = html;
+})();
+</script>
+<script src="reveal.js?v=20260729a"></script>
+</body>
+</html>

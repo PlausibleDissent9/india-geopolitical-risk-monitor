@@ -254,6 +254,19 @@ rule, and missing-component rule live in
 `validation/stress_gauge_weights.json`, committed before any hit-rate
 was computed.
 
+## docs/data/receipts.json
+
+Per-channel receipts for the latest published day only (not a
+historical archive): the exact `dictionaries.json` query, a
+relevance-sorted sample of matched articles (GDELT `mode=artlist`,
+capped at 25 per channel, deduped by URL), each tagged with its source
+tier from `source_tiers.json` (`null` if the domain is not yet
+registered -- shown as "unranked", never assumed into a tier).
+`spike_quality_tier12_share` is the tier 1-2 share of the retrieved
+sample. `_meta.caveat` states the sample-vs-census distinction that
+the site repeats wherever this payload is shown. Tiers order
+presentation only and never enter any score.
+
 ## Conventions
 
 - Every percentile is computed against the series' own trailing 730 days,

@@ -186,10 +186,10 @@ def render_home() -> None:
         score = "" if c["score"] is None else f"{c['score']:.1f}"
         d = arrow(delta(hist["channels"].get(k, [])))
         row_parts.append(
-            f'\n      <div class="component-row">'
+            f'\n      <a class="component-row" href="receipts.html?channel={k}">'
             f'<span class="component-name">{c["label"]}</span>'
             f'<span class="component-score">{score}</span>'
-            f'<span class="component-delta">{d}</span></div>'
+            f'<span class="component-delta">{d}</span></a>'
         )
     rows = "".join(row_parts)
     s = re.sub(r"<!--ssr:components-->.*?<!--/ssr:components-->",

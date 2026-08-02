@@ -287,8 +287,42 @@ index measures attention, and attention follows the world. This is the
 empirical basis for the site's standing claim that it is a salience
 monitor, not a risk predictor.
 
+## 11. Receipts and source tiers
+
+Every channel score traces to a retrievable sample of the articles
+behind it. `docs/data/receipts.json` publishes, for the latest day
+only, each channel's exact GDELT query (the same `dictionaries.json`
+terms and anchor the score itself was built from) and a relevance-
+sorted sample of matched articles (GDELT `mode=artlist`, capped at 25
+per channel). This is a bounded sample, not a census: an active day's
+true coverage count is typically far larger than what artlist returns,
+and the site states this caveat wherever the sample appears.
+
+Each retrieved article's source domain is looked up against
+`source_tiers.json`, a registered, append-only domain-to-tier map:
+tier 1 wire services and public-service international broadcasters,
+tier 2 national and international broadsheets and business press,
+tier 3 mainstream TV, portals, and aggregators, tier 4 outlets with
+documented fabrication incidents or syndication mills with no original
+reporting. Assignments cite documented behaviors, not viewpoints; a
+domain not yet registered shows as "unranked" rather than being
+assumed into any tier. Tiers order the receipts list credible-first
+and produce one number, `spike_quality_tier12_share` (the tier 1-2
+share of that day's retrieved sample) -- **tiers never enter any
+channel score or the composite**, stated here and in the payload's
+`_meta`.
+
 ## Changelog
 
+- **2026-08-02, v1.4.0 (receipts drill-down).** Section 11 added:
+  clicking any channel score on the homepage opens `receipts.html`,
+  showing the exact query and a tier-sorted sample of matched articles
+  for the latest day (`docs/data/receipts.json`, gated by
+  `tests/test_receipts.py`). Source tiers (`source_tiers.json`,
+  registered 2026-08-01) order the list credible-first and produce
+  `spike_quality_tier12_share`; disclosed everywhere as never entering
+  any score. Not a historical archive -- only the latest published day
+  is kept.
 - **2026-08-01, v1.3.0 (comparators and predictability).** Section 10
   added: four-country comparator series from one registered shared
   vocabulary, and the directed lead-lag study whose negative result

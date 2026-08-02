@@ -132,6 +132,14 @@ jobs:
           else
             python -m src.run_daily
           fi
+      - name: Receipts drill-down (practitioner layer; ~10 artlist requests)
+        # Runs after the pipeline step so latest.json already carries
+        # today's date -- otherwise this would publish receipts one day
+        # stale, for the score the site showed yesterday.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.receipts
       - name: Self-heal stalled multilingual backfill (V5)
         # 2026-08-02: the chain's own two scheduled crons never fired even
         # once in their first ~17 hours live (only the original manual

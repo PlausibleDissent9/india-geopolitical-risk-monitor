@@ -139,6 +139,7 @@ h2 { font-size: 1.2rem; letter-spacing: -0.01em; }
 }
 .component-row:hover { background: var(--rule-soft); }
 .component-row:last-child { border-bottom: none; }
+a.component-row { text-decoration: none; color: inherit; cursor: pointer; }
 .component-name { font-size: 0.95rem; }
 .component-score {
   font-family: "Fraunces", Georgia, serif; font-weight: 600;

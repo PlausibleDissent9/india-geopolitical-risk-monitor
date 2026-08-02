@@ -276,8 +276,39 @@ near-threshold direction is events leading salience (p 0.053). The
 index measures attention, and attention follows the world. This is the
 empirical basis for the site's standing claim that it is a salience
 monitor, not a risk predictor.</p>
+<h2>11. Receipts and source tiers</h2>
+<p>Every channel score traces to a retrievable sample of the articles
+behind it. <code>docs/data/receipts.json</code> publishes, for the latest day
+only, each channel's exact GDELT query (the same <code>dictionaries.json</code>
+terms and anchor the score itself was built from) and a relevance-
+sorted sample of matched articles (GDELT <code>mode=artlist</code>, capped at 25
+per channel). This is a bounded sample, not a census: an active day's
+true coverage count is typically far larger than what artlist returns,
+and the site states this caveat wherever the sample appears.</p>
+<p>Each retrieved article's source domain is looked up against
+<code>source_tiers.json</code>, a registered, append-only domain-to-tier map:
+tier 1 wire services and public-service international broadcasters,
+tier 2 national and international broadsheets and business press,
+tier 3 mainstream TV, portals, and aggregators, tier 4 outlets with
+documented fabrication incidents or syndication mills with no original
+reporting. Assignments cite documented behaviors, not viewpoints; a
+domain not yet registered shows as "unranked" rather than being
+assumed into any tier. Tiers order the receipts list credible-first
+and produce one number, <code>spike_quality_tier12_share</code> (the tier 1-2
+share of that day's retrieved sample) -- <strong>tiers never enter any
+channel score or the composite</strong>, stated here and in the payload's
+<code>_meta</code>.</p>
 <h2>Changelog</h2>
 <ul>
+<li><strong>2026-08-02, v1.4.0 (receipts drill-down).</strong> Section 11 added:
+  clicking any channel score on the homepage opens <code>receipts.html</code>,
+  showing the exact query and a tier-sorted sample of matched articles
+  for the latest day (<code>docs/data/receipts.json</code>, gated by
+  <code>tests/test_receipts.py</code>). Source tiers (<code>source_tiers.json</code>,
+  registered 2026-08-01) order the list credible-first and produce
+  <code>spike_quality_tier12_share</code>; disclosed everywhere as never entering
+  any score. Not a historical archive -- only the latest published day
+  is kept.</li>
 <li>
 <p><strong>2026-08-01, v1.3.0 (comparators and predictability).</strong> Section 10
   added: four-country comparator series from one registered shared

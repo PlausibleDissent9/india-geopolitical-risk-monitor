@@ -566,6 +566,17 @@ history. Publishes only once the events history is complete
 rule, and missing-component rule live in
 <code>validation/stress_gauge_weights.json</code>, committed before any hit-rate
 was computed.</p>
+<h2>docs/data/receipts.json</h2>
+<p>Per-channel receipts for the latest published day only (not a
+historical archive): the exact <code>dictionaries.json</code> query, a
+relevance-sorted sample of matched articles (GDELT <code>mode=artlist</code>,
+capped at 25 per channel, deduped by URL), each tagged with its source
+tier from <code>source_tiers.json</code> (<code>null</code> if the domain is not yet
+registered -- shown as "unranked", never assumed into a tier).
+<code>spike_quality_tier12_share</code> is the tier 1-2 share of the retrieved
+sample. <code>_meta.caveat</code> states the sample-vs-census distinction that
+the site repeats wherever this payload is shown. Tiers order
+presentation only and never enter any score.</p>
 <h2>Conventions</h2>
 <ul>
 <li>Every percentile is computed against the series' own trailing 730 days,

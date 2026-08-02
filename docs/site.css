@@ -79,6 +79,21 @@ td a { color: var(--accent); }
 .prose a { color: var(--accent); }
 .empty { color: var(--muted); font-style: italic; }
 .kv { color: var(--muted); font-size: 0.85rem; }
+code { font: 0.85em/1.4 ui-monospace, Menlo, monospace; background: var(--card); border: 1px solid var(--line); border-radius: 3px; padding: 0 0.3em; }
+
+/* Receipts drill-down: tier badges order presentation only, never a score */
+.receipts-list { list-style: none; padding: 0; }
+.receipts-list li { padding: 0.5rem 0; border-bottom: 1px dashed var(--line); }
+.receipts-list li:last-child { border-bottom: none; }
+.tier-badge {
+  display: inline-block; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 0.1em 0.5em; border-radius: 999px; margin-right: 0.4em;
+}
+.tier-badge.tier-1, .tier-badge.tier-2 { background: color-mix(in srgb, var(--calm) 20%, transparent); color: var(--calm); }
+.tier-badge.tier-3 { background: color-mix(in srgb, var(--elevated) 20%, transparent); color: var(--elevated); }
+.tier-badge.tier-4 { background: color-mix(in srgb, var(--severe) 20%, transparent); color: var(--severe); }
+.tier-badge.tier-u { background: color-mix(in srgb, var(--muted) 20%, transparent); color: var(--muted); }
 footer { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1rem; color: var(--muted); font-size: 0.85rem; }
 footer a { color: var(--accent); }
 

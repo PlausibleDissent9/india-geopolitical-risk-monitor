@@ -64,8 +64,10 @@ function renderLatest(latest, history) {
   wrap.innerHTML = "";
   for (const [key, c] of Object.entries(latest.channels || {})) {
     const d = history && history.channels ? delta1d(history.channels[key]) : null;
-    const row = document.createElement("div");
+    const row = document.createElement("a");
     row.className = "component-row";
+    row.href = `receipts.html?channel=${encodeURIComponent(key)}`;
+    row.title = "See the exact query and matched articles behind this score";
     row.innerHTML =
       `<span class="component-name">${esc(c.label)}</span>` +
       `<span class="component-score">${c.score == null ? "–" : esc(c.score.toFixed(1))}</span>` +
