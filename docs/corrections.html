@@ -81,6 +81,18 @@ query list in the repository. No public exposure.</p>
 too-good-to-be-true sanity gate caught it before publication. That
 incident is why every result that flatters the project is treated as
 a bug until independently recomputed.</p>
+<h2>2026-08-02: published map totals exceeded the committed store, caught by the first automated audit</h2>
+<p>The daily workflow updated the events store in its workspace and
+published map aggregates from it, while a stale exclusion (left over
+from the finished backfill chain's race protection) kept the updated
+store files out of the commit. Published partner totals exceeded the
+committed store by 29 to 65 events for about a day; derived shares
+were correct for the data used, but the published numbers were not
+reproducible from the committed raw files. Caught by the first run of
+the dual-computation audit module, the same day it was written. Fixed:
+the exclusion is removed, and the audit now runs inside the daily
+workflow before any commit. Public exposure: map totals ~0.03% high
+relative to the reproducible store, one day.</p>
 </div>
 <footer>
   <p><a href="./">&larr; back to the index</a> &middot; <a href="validation.html">validation results</a></p>

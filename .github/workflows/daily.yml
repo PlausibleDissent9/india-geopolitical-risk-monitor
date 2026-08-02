@@ -175,6 +175,9 @@ jobs:
               echo "multilingual store missing but last kick only ${AGE_H}h ago; leaving it to run"
             fi
           fi
+      - name: Dual-computation audit (fail-loud; two derivations must agree)
+        if: github.event.inputs.backfill != 'true'
+        run: python -m src.audit
       - name: Weekly datapack (Fridays)
         # Any successful Friday run makes the datapack: a manually
         # triggered rescue run must not cost the author the week's note
@@ -197,17 +200,14 @@ jobs:
           # docs/ also carries rendered pages (methodology.html, feed.xml,
           # notes.json) produced by the publish step.
           # events_*.csv are excluded while the backfill chain owns them:
-          # both sides rewrite the whole sorted file, so any co-commit is
-          # a guaranteed rebase conflict (2026-07-31: that conflict,
-          # swallowed by an || true, silently discarded a computed day
-          # while every step reported success). Re-include them in this
-          # add once the chain has finished and is the site's history;
-          # the daily --update 5 step refetches what this run drops.
+          # Events files are committed again as of 2026-08-02: the
+          # backfill chain that owned them finished on 2026-07-31, and
+          # the exclusion had begun publishing map aggregates that the
+          # committed store could not reproduce (caught by the first
+          # run of src.audit; corrections ledger entry the same day).
           git add docs notes-inbox || true
           git add data/raw || true
           git add .trigger || true
-          git reset -q data/raw/events_daily.csv data/raw/events_dyads.csv data/raw/events_states.csv 2>/dev/null || true
-          git checkout -q -- data/raw/events_daily.csv data/raw/events_dyads.csv data/raw/events_states.csv 2>/dev/null || true
           git commit -m "data: update $(date -u +%F)" || echo "no changes"
           # Retry the push, and never push from a broken rebase: a failed
           # rebase is aborted and retried whole, because git push inside
