@@ -141,10 +141,15 @@ jobs:
       - name: Receipts drill-down (practitioner layer; ~10 artlist requests)
         # Runs after the pipeline step so latest.json already carries
         # today's date -- otherwise this would publish receipts one day
-        # stale, for the score the site showed yesterday.
+        # stale, for the score the site showed yesterday. 25 minutes,
+        # not 10: GDELT rate-limit backoff on artlist queries can run
+        # long (2026-08-02: a 10-minute cap killed the whole process
+        # with continue-on-error masking it as a reported "success" and
+        # no file ever written -- src.receipts now also writes after
+        # each channel, so even a timeout kill here keeps partial data).
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        timeout-minutes: 10
+        timeout-minutes: 25
         run: python -m src.receipts
       - name: Self-heal stalled multilingual backfill (V5)
         # 2026-08-02: the chain's own two scheduled crons never fired even

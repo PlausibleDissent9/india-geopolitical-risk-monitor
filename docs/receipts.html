@@ -49,8 +49,10 @@ function tierBadge(tier) {
   if (!receipts) { el.innerHTML = '<p class="empty">Receipts not available yet.</p>'; return; }
   const c = receipts.channels && receipts.channels[channel];
   if (!c) {
-    el.innerHTML = '<p class="empty">No receipts for that channel. Receipts are published for the latest day only ('
-      + esc(receipts.date) + '); older days are not available.</p>';
+    const why = (receipts._meta && receipts._meta.partial)
+      ? "This channel's fetch did not complete in the latest run (a partial result), not that it was never available."
+      : "Receipts are published for the latest day only (" + esc(receipts.date) + "); older days are not available.";
+    el.innerHTML = '<p class="empty">No receipts for that channel. ' + why + '</p>';
     return;
   }
   document.title = c.label + " receipts " + receipts.date + ", India Geopolitical Risk Monitor";
@@ -58,6 +60,9 @@ function tierBadge(tier) {
   const caveat = (receipts._meta && receipts._meta.caveat) || "";
   let html = "<h2>" + esc(c.label) + ": receipts for " + esc(receipts.date) + "</h2>" +
     '<p class="kv">' + esc(caveat) + "</p>";
+  if (receipts._meta && receipts._meta.partial) {
+    html += '<p class="kv">This run did not finish fetching every channel; this channel\'s receipts are complete, others may be missing.</p>';
+  }
 
   html += "<h2>The exact query</h2>";
   html += c.queries.map(qq => '<p class="kv"><code>' + esc(qq) + "</code></p>").join("");

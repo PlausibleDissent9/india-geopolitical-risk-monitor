@@ -69,49 +69,63 @@ def channel_receipts(
     }
 
 
-def build(day: date) -> dict[str, Any]:
+def _meta(partial: bool) -> dict[str, Any]:
+    return {
+        "what": (
+            "Per-channel receipts for the latest published day: the "
+            "exact GDELT query, a relevance-sorted sample of matched "
+            "articles (mode=artlist), and each article's source tier "
+            "(source_tiers.json; tiers order presentation and feed "
+            "spike_quality_tier12_share only, never any score)."
+        ),
+        "caveat": (
+            "This is a bounded relevance-sorted SAMPLE of retrievable "
+            "articles, not the full set of documents the channel's "
+            "score was computed over -- the underlying coverage count "
+            "for an active day is typically much larger than what "
+            "GDELT's artlist mode returns. Treat this as illustrative "
+            "evidence, not a census."
+        ),
+        "partial": partial,
+        "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+
+
+def main() -> None:
+    """One channel's GDELT fetch can run long under rate-limit backoff, and
+    a runner-level step timeout kills the whole process with no chance to
+    write -- 2026-08-02: exactly this left the previous run's payload
+    missing entirely, masked by continue-on-error reporting the step as
+    "success". Each channel is now independent (a failure or a kill after
+    it lands still keeps its receipts) and the payload is rewritten after
+    every channel, so a mid-run kill leaves partial data (flagged
+    _meta.partial) on disk instead of nothing."""
+    latest = json.loads((SITE_DATA / "latest.json").read_text(encoding="utf-8"))
+    day = date.fromisoformat(latest["date"])
     with open(ROOT / "dictionaries.json", encoding="utf-8") as f:
         dictionaries = json.load(f)
     with open(ROOT / "source_tiers.json", encoding="utf-8") as f:
         tiers: dict[str, int] = json.load(f)["tiers"]
 
-    channels = {}
-    for ch in CHANNELS:
-        channels[ch] = channel_receipts(ch, dictionaries[ch], day, tiers)
-
-    return {
-        "_meta": {
-            "what": (
-                "Per-channel receipts for the latest published day: the "
-                "exact GDELT query, a relevance-sorted sample of matched "
-                "articles (mode=artlist), and each article's source tier "
-                "(source_tiers.json; tiers order presentation and feed "
-                "spike_quality_tier12_share only, never any score)."
-            ),
-            "caveat": (
-                "This is a bounded relevance-sorted SAMPLE of retrievable "
-                "articles, not the full set of documents the channel's "
-                "score was computed over -- the underlying coverage count "
-                "for an active day is typically much larger than what "
-                "GDELT's artlist mode returns. Treat this as illustrative "
-                "evidence, not a census."
-            ),
-            "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        },
-        "date": day.isoformat(),
-        "channels": channels,
-    }
-
-
-def main() -> None:
-    latest = json.loads((SITE_DATA / "latest.json").read_text(encoding="utf-8"))
-    day = date.fromisoformat(latest["date"])
-    payload = build(day)
     SITE_DATA.mkdir(parents=True, exist_ok=True)
-    (SITE_DATA / "receipts.json").write_text(
-        json.dumps(payload, indent=1), encoding="utf-8"
-    )
-    print(f"[receipts] wrote docs/data/receipts.json for {day}")
+    out_path = SITE_DATA / "receipts.json"
+    channels: dict[str, Any] = {}
+    for ch in CHANNELS:
+        try:
+            channels[ch] = channel_receipts(ch, dictionaries[ch], day, tiers)
+        except Exception as e:  # noqa: BLE001 -- one bad channel must not lose the rest
+            print(f"[receipts] {ch} failed, skipping: {e}")
+            continue
+        out_path.write_text(
+            json.dumps(
+                {"_meta": _meta(partial=len(channels) < len(CHANNELS)),
+                 "date": day.isoformat(), "channels": channels},
+                indent=1,
+            ),
+            encoding="utf-8",
+        )
+    print(f"[receipts] wrote docs/data/receipts.json for {day} "
+          f"({len(channels)}/{len(CHANNELS)} channels)")
 
 
 if __name__ == "__main__":
