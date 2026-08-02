@@ -3,82 +3,82 @@
 Sampled 2026-08-02 from random windows, 2022-01-01..2026-08-02. Mark each [RELEVANT? ] Y or N by
 hand, then report the per-channel rate in methodology s8.
 
-1. **भारतीय सेना ने सियाचिन ग्लेशियर में 40 साल किए पूरे ,  ऑपरेशन मेघदूत  में वायु सेना का योगदान किया याद - indian army 40 years of presence in siachen glacier**  
-   punjabkesari.in · 20240414 · https://www.punjabkesari.in/national/news/indian-army-40-years-of-presence-in-siachen-glacier-1967000  
+1. **  Uri and Balakot sent their own message : Jaishankar on India response to cross - border terrorism**  
+   aninews.in · 20240226 · https://aninews.in/news/world/asia/uri-and-balakot-sent-their-own-message-jaishankar-on-indias-response-to-cross-border-terrorism20240226185616/  
    [RELEVANT? ]
 
-2. **بلوچستان میں دہشت گردوں کو بھارتی معاونت کی اطلاعات ہیں ، دفترخارجہ**  
-   express.pk · 20220204 · https://www.express.pk/story/2280685/1/  
+2. **  Today India Among Most Powerful Countries In World : Defence Minister Rajnath Singh**  
+   ndtv.com · 20220724 · https://www.ndtv.com/india-news/todays-india-among-most-powerful-countries-in-world-defence-minister-rajnath-singh-3188681  
    [RELEVANT? ]
 
-3. **रक्षा मंत्री राजनाथ सिंह सियाचिन दौरे पर बोले ,  मेरे अनुसार दीपावली का पहला दीया , होली का पहला रंग भारत के रक्षकों के नाम होना चाहिए ... **  
-   india.com · 20240422 · https://www.india.com/hindi-news/india-hindi/defense-minister-rajnath-singh-reached-ladakh-talk-to-soldiers-in-siachen-6876980/  
+3. **Indus Waters Treaty cant be changed unilaterally , Senate told**  
+   thenews.com.pk · 20230408 · https://www.thenews.com.pk/print/1058486-indus-waters-treaty-can-t-be-changed-unilaterally-senate-told  
    [RELEVANT? ]
 
-4. **PoK Was Ours , PoK Is Ours And I Am Confident It Will Itself Merge With India : Defence Minister Rajnath Singh**  
-   india.com · 20240324 · https://www.india.com/news/india/pok-was-ours-pok-is-ours-and-i-am-confident-it-will-itself-merge-with-india-defence-minister-rajnath-singh-6810586/  
+4. **Mysterious blast - like sound creates panic among residents near India - Pakistan border in J & K Kathua**  
+   freepressjournal.in · 20230330 · https://www.freepressjournal.in/india/mysterious-blast-like-sound-creates-panic-among-residents-near-india-pakistan-border-in-jammu-and-kashmirs-kathua  
    [RELEVANT? ]
 
-5. **J & K : BSF Personnel Injured In Cross - Border Firing From Pakistan In Akhnoor Sector**  
-   freepressjournal.in · 20240911 · https://www.freepressjournal.in/india/jk-bsf-personnel-injured-in-cross-border-firing-from-pakistan-in-akhnoor-sector  
+5. **Himalayan challenge~I - The Statesman**  
+   thestatesman.com · 20240306 · https://www.thestatesman.com/opinion/himalayan-challengei-1503276286.html  
    [RELEVANT? ]
 
-6. **India And Pakistan Forces Bring In New Year By Exchanging Sweets At LoC – Indian Defence Research Wing**  
-   idrw.org · 20220101 · http://idrw.org/india-and-pakistan-forces-bring-in-new-year-by-exchanging-sweets-at-loc/  
+6. **Pakistan woman detained along LoC in Poonch**  
+   msn.com · 20220716 · https://www.msn.com/en-in/news/other/pakistan-woman-detained-along-loc-in-poonch/ar-AAZEvu1  
    [RELEVANT? ]
 
-7. **The Indus Waters Treaty between India and Pakistan survived wars . Can it survive climate change ? **  
-   scroll.in · 20220303 · https://scroll.in/article/1018427/the-indus-waters-treaty-between-india-and-pakistan-survived-wars-can-it-survive-climate-change  
+7. **Cops fail to boost water conservation**  
+   tribune.com.pk · 20240226 · https://tribune.com.pk/story/2457612/cops-fail-to-boost-water-conservation  
    [RELEVANT? ]
 
-8. **Pakistan Imran Khan Offers A TV Debate With PM Modi – Indian Defence Research Wing**  
-   idrw.org · 20220222 · http://idrw.org/pakistans-imran-khan-offers-a-tv-debate-with-pm-modi/  
+8. **News stories for Uzair J . Kayani**  
+   dawn.com · 20240211 · https://www.dawn.com/authors/3782/uzair-j-kayani  
    [RELEVANT? ]
 
-9. **India serves formal notice on Pakistan to review and modify Indus Waters Treaty**  
-   hindustantimes.com · 20240918 · https://www.hindustantimes.com/india-news/india-serves-formal-notice-on-pakistan-to-review-and-modify-indus-waters-treaty-101726656572555.html  
+9. **  How is it possible Baba Amarnath here , Maa Sharda Shakti across LoC : Rajnath Singh on PoK conflict**  
+   dnaindia.com · 20220725 · https://www.dnaindia.com/india/report-how-is-it-possible-baba-amarnath-here-maa-sharda-shakti-across-loc-rajnath-singh-on-pok-conflict-pakistan-2971162  
    [RELEVANT? ]
 
-10. **BSF trooper injured as Pakistan breaches ceasefire in Akhnoor sector , prompting  high alert  along LoC**  
-   livemint.com · 20240911 · https://www.livemint.com/news/india/bsf-injured-pakistan-breaches-ceasefire-high-alert-loc-india-line-of-control-cross-border-terrorism-jammu-kashmir-11726027538496.html  
+10. **Army kills infiltrator in Kashmir**  
+   tribuneindia.com · 20230325 · https://www.tribuneindia.com/news/j-k/army-kills-infiltrator-in-kashmir-490988  
    [RELEVANT? ]
 
-11. **BSF trooper injured in cross - border firing in Jammu and Kashmir Akhnoor | Latest News India**  
-   hindustantimes.com · 20240911 · https://www.hindustantimes.com/india-news/bsf-trooper-injured-in-cross-border-firing-in-jammu-and-kashmir-s-akhnoor-101726028492708.html  
+11. **Multiple hydropower projects on the Chenab river ring alarm bells**  
+   india.mongabay.com · 20220707 · https://india.mongabay.com/2022/07/multiple-hydropower-projects-on-the-chenab-river-ring-alarm-bells/  
    [RELEVANT? ]
 
-12. **Pakistan Imran Khan Offers A TV Debate With PM Narendra Modi**  
-   ndtv.com · 20220222 · https://www.ndtv.com/india-news/pakistans-imran-khan-offers-a-tv-debate-with-pm-narendra-modi-2782444  
+12. **What is a Surgical Strike ? **  
+   business-standard.com · 20230325 · https://www.business-standard.com/about/what-is-surgical-strike  
    [RELEVANT? ]
 
-13. **Do not renegotiate India and Pakistan Indus Rivers Water Treaty | PolicyBristol**  
-   bristol.ac.uk · 20220211 · https://www.bristol.ac.uk/policybristol/policy-briefings/indus-water-treaty/  
+13. **Pak violates ceasefire along IB in Jammu , BSF retaliates ; troops on alert**  
+   rediff.com · 20240214 · https://www.rediff.com/news/report/pak-violates-ceasefire-along-ib-in-jammu-bsf-retaliates-troops-on-alert/20240214.htm  
    [RELEVANT? ]
 
-14. **POK will soon merge with India : Rajnath**  
-   thehansindia.com · 20240325 · https://www.thehansindia.com/news/national/pok-will-soon-merge-with-india-rajnath-867604  
+14. **  Uri and Balakot sent their own message : Jaishankar on India response to cross - border terrorism – Indian Defence Research Wing**  
+   idrw.org · 20240227 · https://idrw.org/uri-and-balakot-sent-their-own-message-jaishankar-on-indias-response-to-cross-border-terrorism/  
    [RELEVANT? ]
 
-15. **China Building Road In Pok Near Siachen Sattellite Image Reveals Indian Army Tension - Amar Ujala Hindi News Live - China : हरकतों से बाज नहीं आ रहा चीन , सियाचिन के पास Pok में कर रहा सड़क निर्माण ; सैटेलाइट तस्वीरों में खुलासा**  
-   amarujala.com · 20240426 · https://www.amarujala.com/india-news/china-building-road-in-pok-near-siachen-sattellite-image-reveals-indian-army-tension-2024-04-26  
+15. **Steering committee on Indus Water Treaty meets**  
+   devdiscourse.com · 20230417 · https://www.devdiscourse.com/article/law-order/2419897-steering-committee-on-indus-water-treaty-meets  
    [RELEVANT? ]
 
-16. **People Of Pakistan - Occupied Kashmir Will Want To  Merge With India : Rajnath Singh**  
-   timesnownews.com · 20240505 · https://www.timesnownews.com/india/people-of-pakistan-occupied-kashmir-will-want-to-merge-with-india-rajnath-singh-article-109854594  
+16. **India discusses Kishenganga and Ratle Hydroelectric Projects related to Indus Waters Treaty**  
+   news.webindia123.com · 20230417 · https://news.webindia123.com/news/Articles/World/20230417/4062866.html  
    [RELEVANT? ]
 
-17. **  Will not have to use force , demands to merge with India will come from PoK : Defence minister Rajnath Singh | India News**  
-   timesofindia.indiatimes.com · 20240505 · https://timesofindia.indiatimes.com/india/will-not-have-to-use-force-demands-to-merge-with-india-will-come-from-pok-defence-minister-rajnath-singh/articleshow/109853467.cms  
+17. **The Indus Waters Treaty : An Overview of the Waters - Sharing Agreement between India and Pakistan | India News**  
+   timesofindia.indiatimes.com · 20230223 · https://timesofindia.indiatimes.com/india/the-indus-waters-treaty-an-overview-of-the-waters-sharing-agreement-between-india-and-pakistan/articleshow/98173902.cms  
    [RELEVANT? ]
 
-18. **Watch | India , Pakistan exchange sweets , greetings at Attari - Wagah border**  
-   msn.com · 20220126 · https://www.msn.com/en-in/money/topstories/watch-india-pakistan-exchange-sweets-greetings-at-attari-wagah-border/ar-AAT9lFF  
+18. **India - Pak . ceasefire gives a boost to LoC tourism in Kashmir**  
+   thehindu.com · 20220729 · https://www.thehindu.com/news/national/india-pak-ceasefire-gives-a-boost-to-loc-tourism-in-kashmir/article65698967.ece  
    [RELEVANT? ]
 
-19. **Kiwi YouTuber Reflects On  Unforgettable  Journey In Pakistan - Occupied Kashmir**  
-   indianweekender.co.nz · 20241001 · https://www.indianweekender.co.nz/news/kiwi-youtuber-reflects-on-unforgettable-journey-in-pakistan-administered-kashmir  
+19. **Pakistan says it is ready to listen to New Delhi concerns about the prevalent treaty : Pakistani Media – Indian Defence Research Wing**  
+   idrw.org · 20230405 · https://idrw.org/pakistan-says-it-is-ready-to-listen-to-new-delhis-concerns-about-the-prevalent-treaty-pakistani-media/  
    [RELEVANT? ]
 
-20. **BSF , Pak Rangers exchange sweets at Attari - Wagah border**  
-   prokerala.com · 20220126 · https://www.prokerala.com/news/articles/a1241299.html  
+20. **India to reclaim Pak Occupied Kashmir in next 2 - 3 years : BJP leader**  
+   tehelka.com · 20230306 · http://tehelka.com/india-to-reclaim-pak-occupied-kashmir-in-next-2-3-years-bjp-leader/  
    [RELEVANT? ]
