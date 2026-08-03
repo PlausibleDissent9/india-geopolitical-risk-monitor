@@ -3,10 +3,213 @@
   "what": "Per-channel receipts for the latest published day: the exact GDELT query, a relevance-sorted sample of matched articles (mode=artlist), and each article's source tier (source_tiers.json; tiers order presentation and feed spike_quality_tier12_share only, never any score).",
   "caveat": "This is a bounded relevance-sorted SAMPLE of retrievable articles, not the full set of documents the channel's score was computed over -- the underlying coverage count for an active day is typically much larger than what GDELT's artlist mode returns. Treat this as illustrative evidence, not a census.",
   "partial": true,
-  "generated": "2026-08-03T04:46:41Z"
+  "generated": "2026-08-03T18:24:18Z"
  },
  "date": "2026-08-02",
  "channels": {
+  "pakistan_west": {
+   "label": "Pakistan / Western Border",
+   "anchor": "India",
+   "terms": [
+    "\"Line of Control\"",
+    "\"India Pakistan border\"",
+    "\"Pakistan occupied Kashmir\"",
+    "\"Pakistan administered Kashmir\"",
+    "\"ceasefire violations\"",
+    "\"ceasefire violation\"",
+    "\"cross-border terrorism\"",
+    "\"cross-border firing\"",
+    "\"cross-border shelling\"",
+    "\"infiltration bid\"",
+    "\"surgical strikes\"",
+    "\"Inter-Services Intelligence\"",
+    "\"Indus Waters Treaty\"",
+    "\"Siachen\""
+   ],
+   "queries": [
+    "India (\"Line of Control\" OR \"India Pakistan border\" OR \"Pakistan occupied Kashmir\" OR \"Pakistan administered Kashmir\" OR \"ceasefire violations\" OR \"ceasefire violation\" OR \"cross-border terrorism\" OR \"cross-border firing\")",
+    "India (\"cross-border shelling\" OR \"infiltration bid\" OR \"surgical strikes\" OR \"Inter-Services Intelligence\" OR \"Indus Waters Treaty\" OR \"Siachen\")"
+   ],
+   "n_retrieved": 25,
+   "articles": [
+    {
+     "title": "Pakistan made every effort to dismantle goodwill under Indus Water Treaty : Vinay Mohan Kwatra",
+     "domain": "economictimes.indiatimes.com",
+     "date": "20260802",
+     "url": "https://economictimes.indiatimes.com/news/india/pakistan-made-every-effort-to-dismantle-goodwill-under-indus-water-treaty-vinay-mohan-kwatra-kwatra/articleshow/132800250.cms",
+     "tier": 2
+    },
+    {
+     "title": "10 kg heroin , foreign - made weapons seized along Indo - Pak border in Bikaner , one held",
+     "domain": "economictimes.indiatimes.com",
+     "date": "20260802",
+     "url": "https://economictimes.indiatimes.com/news/india/10-kg-heroin-foreign-made-weapons-seized-along-indo-pak-border-in-bikaner-one-held/articleshow/132807469.cms",
+     "tier": 2
+    },
+    {
+     "title": "Renowned climber Nirmal Purja body recovered from Broad Peak days after fatal avalanche",
+     "domain": "hindustantimes.com",
+     "date": "20260802",
+     "url": "https://www.hindustantimes.com/world-news/renowned-mountaineer-climber-nirmal-purjas-body-recovered-from-broad-peak-days-after-fatal-pakistan-avalanche-101785668948451.html",
+     "tier": 2
+    },
+    {
+     "title": "  Pakistan eroded faith : India envoy to US calls out Islamabad  distraction policy  over Indus Waters Treaty",
+     "domain": "hindustantimes.com",
+     "date": "20260802",
+     "url": "https://www.hindustantimes.com/india-news/pakistan-eroded-faith-india-envoy-to-us-vinay-kwatra-indus-waters-treaty-calls-out-islamabad-distraction-policy-101785653415225.html",
+     "tier": 2
+    },
+    {
+     "title": "Top News of the Day : August 2 , 2026",
+     "domain": "thehindu.com",
+     "date": "20260802",
+     "url": "https://www.thehindu.com/news/top-news-of-the-day-august-2-2026/article71297746.ece",
+     "tier": 2
+    },
+    {
+     "title": "The Hindu Morning Digest : August 2 , 2026",
+     "domain": "thehindu.com",
+     "date": "20260802",
+     "url": "https://www.thehindu.com/news/morning-digest-august-2-2026/article71296889.ece",
+     "tier": 2
+    },
+    {
+     "title": "The Evening Wrap : August 2 , 2026",
+     "domain": "thehindu.com",
+     "date": "20260802",
+     "url": "https://www.thehindu.com/newsletter/the-evening-wrap/the-evening-wrap-august-2-2026/article71298415.ece",
+     "tier": 2
+    },
+    {
+     "title": "Jitendra Singh reviews status of Ujh Multipurpose Project in Jammu and Kashmir",
+     "domain": "aninews.in",
+     "date": "20260802",
+     "url": "https://aninews.in/news/national/general-news/jitendra-singh-reviews-status-of-ujh-multipurpose-project-in-jammu-and-kashmir20260802171014/",
+     "tier": 3
+    },
+    {
+     "title": "Pakistan conduct forced India to keep Indus treaty in abeyance , says envoy Vinay Kwatra",
+     "domain": "newindianexpress.com",
+     "date": "20260802",
+     "url": "https://www.newindianexpress.com/india/2026/Aug/02/pakistans-conduct-forced-india-to-keep-indus-treaty-in-abeyance-says-envoy-vinay-kwatra",
+     "tier": 3
+    },
+    {
+     "title": "Burnt - out vehicles , rock - strewn roads , heavy security : PoK votes in second phase amid unrest",
+     "domain": "timesofindia.indiatimes.com",
+     "date": "20260802",
+     "url": "https://timesofindia.indiatimes.com/world/pakistan/burnt-out-vehicles-rock-strewn-roads-heavy-security-pok-votes-in-second-phase-amid-unrest/articleshow/132800807.cms",
+     "tier": 3
+    },
+    {
+     "title": "PoK Crisis Joins Pakistan Security Flashpoints",
+     "domain": "newkerala.com",
+     "date": "20260802",
+     "url": "https://www.newkerala.com/news/a/pok-joins-growing-list-security-flashpoints-pakistan-report-146.htm",
+     "tier": 4
+    },
+    {
+     "title": "India Envoy : Pakistan Destroyed Indus Treaty Goodwill",
+     "domain": "newkerala.com",
+     "date": "20260802",
+     "url": "https://www.newkerala.com/news/a/pakistan-dismantled-goodwill-behind-indus-waters-treaty-instead-301.htm",
+     "tier": 4
+    },
+    {
+     "title": "Ujh Project Review : Jitendra Singh Pushes for Early Execution",
+     "domain": "newkerala.com",
+     "date": "20260802",
+     "url": "https://www.newkerala.com/news/a/jitendra-singh-reviews-status-ujh-multipurpose-project-jammu-357.htm",
+     "tier": 4
+    },
+    {
+     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "domain": "batonrougepost.com",
+     "date": "20260802",
+     "url": "http://www.batonrougepost.com/news/279219161/india-merely-acknowledged-what-pakistan-conduct-had-already-destroyed-kwatra-on-indus-water-treaty-abeyance",
+     "tier": null
+    },
+    {
+     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "domain": "bignewsnetwork.com",
+     "date": "20260802",
+     "url": "http://www.bignewsnetwork.com/news/279219161/india-merely-acknowledged-what-pakistan-conduct-had-already-destroyed-kwatra-on-indus-water-treaty-abeyance",
+     "tier": null
+    },
+    {
+     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "domain": "calcuttanews.net",
+     "date": "20260802",
+     "url": "http://www.calcuttanews.net/news/279219161/india-merely-acknowledged-what-pakistan-conduct-had-already-destroyed-kwatra-on-indus-water-treaty-abeyance",
+     "tier": null
+    },
+    {
+     "title": "Jitendra Singh reviews status of Ujh Multipurpose Project in Jammu and Kashmir",
+     "domain": "calcuttanews.net",
+     "date": "20260802",
+     "url": "http://www.calcuttanews.net/news/279219783/jitendra-singh-reviews-status-of-ujh-multipurpose-project-in-jammu-and-kashmir",
+     "tier": null
+    },
+    {
+     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "domain": "heraldglobe.com",
+     "date": "20260802",
+     "url": "http://www.heraldglobe.com/news/279219161/india-merely-acknowledged-what-pakistan-conduct-had-already-destroyed-kwatra-on-indus-water-treaty-abeyance",
+     "tier": null
+    },
+    {
+     "title": "Pakistan UNSC Push on Indus Waters Treaty Faces Major Legal and Political Hurdles",
+     "domain": "idrw.org",
+     "date": "20260802",
+     "url": "https://idrw.org/pakistans-unsc-push-on-indus-waters-treaty-faces-major-legal-and-political-hurdles/",
+     "tier": null
+    },
+    {
+     "title": "Pakistan Spent 50 Years Dismantling Indus Waters Treaty Foundation : India US Envoy Vinay Mohan Kwatra",
+     "domain": "idrw.org",
+     "date": "20260802",
+     "url": "https://idrw.org/pakistan-spent-50-years-dismantling-indus-waters-treatys-foundation-indias-us-envoy-vinay-mohan-kwatra/",
+     "tier": null
+    },
+    {
+     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "domain": "indiagazette.com",
+     "date": "20260802",
+     "url": "http://www.indiagazette.com/news/279219161/india-merely-acknowledged-what-pakistan-conduct-had-already-destroyed-kwatra-on-indus-water-treaty-abeyance",
+     "tier": null
+    },
+    {
+     "title": "Jitendra Singh reviews status of Ujh Multipurpose Project in Jammu and Kashmir",
+     "domain": "japanherald.com",
+     "date": "20260802",
+     "url": "http://www.japanherald.com/news/279219783/jitendra-singh-reviews-status-of-ujh-multipurpose-project-in-jammu-and-kashmir",
+     "tier": null
+    },
+    {
+     "title": "JKSA condemns violence in  PaK , calls for UN intervention",
+     "domain": "kashmirreader.com",
+     "date": "20260802",
+     "url": "https://kashmirreader.com/2026/08/02/jksa-condemns-violence-in-pak-calls-for-un-intervention/",
+     "tier": null
+    },
+    {
+     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "domain": "malaysiasun.com",
+     "date": "20260802",
+     "url": "http://www.malaysiasun.com/news/279219161/india-merely-acknowledged-what-pakistan-conduct-had-already-destroyed-kwatra-on-indus-water-treaty-abeyance",
+     "tier": null
+    },
+    {
+     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "domain": "massachusettssun.com",
+     "date": "20260802",
+     "url": "http://www.massachusettssun.com/news/279219161/india-merely-acknowledged-what-pakistan-conduct-had-already-destroyed-kwatra-on-indus-water-treaty-abeyance",
+     "tier": null
+    }
+   ],
+   "spike_quality_tier12_share": 0.28
+  },
   "china_east": {
    "label": "China / Eastern Border",
    "anchor": "India",
@@ -169,6 +372,334 @@
     }
    ],
    "spike_quality_tier12_share": 0.15
+  },
+  "us_trade": {
+   "label": "US & Trade Policy",
+   "anchor": "India",
+   "terms": [
+    "\"US tariffs\"",
+    "\"reciprocal tariffs\"",
+    "\"trade deal\"",
+    "\"trade war\"",
+    "\"trade restrictions\"",
+    "\"export controls\"",
+    "\"Section 301\"",
+    "\"CAATSA\"",
+    "\"H-1B visa\"",
+    "\"WTO dispute\"",
+    "\"secondary sanctions\"",
+    "\"Russian oil\""
+   ],
+   "queries": [
+    "India (\"US tariffs\" OR \"reciprocal tariffs\" OR \"trade deal\" OR \"trade war\" OR \"trade restrictions\" OR \"export controls\" OR \"Section 301\" OR \"CAATSA\" OR \"H-1B visa\" OR \"WTO dispute\" OR \"secondary sanctions\" OR \"Russian oil\")"
+   ],
+   "n_retrieved": 20,
+   "articles": [
+    {
+     "title": "India BRICS Presidency gathers momentum with key Ministerial meets early August",
+     "domain": "economictimes.indiatimes.com",
+     "date": "20260802",
+     "url": "https://economictimes.indiatimes.com/news/india/indias-brics-presidency-gathers-momentum-with-key-ministerial-meets-early-august/articleshow/132799945.cms",
+     "tier": 2
+    },
+    {
+     "title": "RBI fixed deposit rules changes : Could this impact FD interest rates for customers ? We explain \u2026 ",
+     "domain": "livemint.com",
+     "date": "20260802",
+     "url": "https://www.livemint.com/money/personal-finance/rbi-fixed-deposit-rules-changes-could-allow-differential-for-bulk-deposits-impact-fd-interest-rates-customers-explainer-11785664898258.html",
+     "tier": 2
+    },
+    {
+     "title": "India loan story : Women , younger borrowers and non - metro regions driving credit growth as numbers jump to 74 % in 2026",
+     "domain": "livemint.com",
+     "date": "20260802",
+     "url": "https://www.livemint.com/money/personal-finance/women-young-borrowers-non-metro-region-madhya-pradesh-up-bihar-drive-credit-growth-eligible-indian-take-loans-74-pc-2026-11785682505334.html",
+     "tier": 2
+    },
+    {
+     "title": "EPFO : Want to check your employees provident fund balance , download passbook ? Here how using portal , Umang app , SMS",
+     "domain": "livemint.com",
+     "date": "20260802",
+     "url": "https://www.livemint.com/money/personal-finance/epfo-check-your-employees-provident-fund-balance-download-epf-passbook-how-use-portal-umang-app-sms-missed-call-helpline-11785677646528.html",
+     "tier": 2
+    },
+    {
+     "title": "8th pay commission : As panel closes data submission window , check latest updates on group consultations",
+     "domain": "livemint.com",
+     "date": "20260802",
+     "url": "https://www.livemint.com/money/personal-finance/8th-pay-commission-cpc-panel-close-data-submission-window-check-latest-updates-group-consultations-meetings-state-visits-11785672770452.html",
+     "tier": 2
+    },
+    {
+     "title": "Income - tax returns : Here a list of invoices , documentation employees should retain to support tax - free reimbursements",
+     "domain": "livemint.com",
+     "date": "20260802",
+     "url": "https://www.livemint.com/money/personal-finance/income-tax-returns-itr-filing-list-of-invoices-documentation-you-employees-should-retain-support-tax-free-reimbursements-11785680127589.html",
+     "tier": 2
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "arabherald.com",
+     "date": "20260802",
+     "url": "http://www.arabherald.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "bignewsnetwork.com",
+     "date": "20260802",
+     "url": "http://www.bignewsnetwork.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "birminghamstar.com",
+     "date": "20260802",
+     "url": "http://www.birminghamstar.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "generation jet call hinges on geopolitics - ChinaTechNews . com",
+     "domain": "chinatechnews.com",
+     "date": "20260802",
+     "url": "https://www.chinatechnews.com/2026/08/02/126568-generation-jet-call-hinges-on-geopolitics",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "coloradostar.com",
+     "date": "20260802",
+     "url": "http://www.coloradostar.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Vojna iz\u010drpavanja se nadaljuje ; Rusija prisiljena uva\u017eati gorivo",
+     "domain": "demokracija.si",
+     "date": "20260802",
+     "url": "https://demokracija.si/fokus/vojna-izcrpavanja-se-nadaljuje-rusija-prisiljena-uvazati-gorivo/",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "europesun.com",
+     "date": "20260802",
+     "url": "http://www.europesun.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "jamaicantimes.com",
+     "date": "20260802",
+     "url": "http://www.jamaicantimes.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "mainemirror.com",
+     "date": "20260802",
+     "url": "http://www.mainemirror.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "newzealandstar.com",
+     "date": "20260802",
+     "url": "http://www.newzealandstar.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "parisguardian.com",
+     "date": "20260802",
+     "url": "http://www.parisguardian.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "shanghainews.net",
+     "date": "20260802",
+     "url": "http://www.shanghainews.net/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "tucsonpost.com",
+     "date": "20260802",
+     "url": "http://www.tucsonpost.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    },
+    {
+     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "zimbabwestar.com",
+     "date": "20260802",
+     "url": "http://www.zimbabwestar.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
+     "tier": null
+    }
+   ],
+   "spike_quality_tier12_share": 0.3
+  },
+  "shipping": {
+   "label": "Shipping & Chokepoints",
+   "anchor": null,
+   "terms": [
+    "\"Red Sea shipping\"",
+    "\"Red Sea attacks\"",
+    "\"Suez Canal\"",
+    "\"Bab el-Mandeb\"",
+    "\"Strait of Malacca\"",
+    "\"Cape of Good Hope\"",
+    "\"Houthi attacks\"",
+    "\"shipping lanes\"",
+    "\"Somali pirates\"",
+    "\"maritime security\""
+   ],
+   "queries": [
+    "(\"Red Sea shipping\" OR \"Red Sea attacks\" OR \"Suez Canal\" OR \"Bab el-Mandeb\" OR \"Strait of Malacca\" OR \"Cape of Good Hope\" OR \"Houthi attacks\" OR \"shipping lanes\" OR \"Somali pirates\" OR \"maritime security\")"
+   ],
+   "n_retrieved": 20,
+   "articles": [
+    {
+     "title": "What did Saudi Crown Prince Mohammed bin Salman tell Trump that prompted a pause in US strikes on Iran ? ",
+     "domain": "livemint.com",
+     "date": "20260802",
+     "url": "https://www.livemint.com/news/us-news/saudi-crown-prince-calls-on-trump-to-avoid-new-iran-strikes-pursue-diplomacy-to-prevent-wider-middle-east-war-report-11785670259301.html",
+     "tier": 2
+    },
+    {
+     "title": "Iran threatens to strike other nation energy fields if US launches fresh attacks",
+     "domain": "asiaone.com",
+     "date": "20260802",
+     "url": "https://www.asiaone.com:443/world/iran-threatens-strike-other-nations-energy-fields-if-us-launches-fresh-attacks",
+     "tier": null
+    },
+    {
+     "title": "Trump says he will hold off on fresh Iran attack in hope of quick deal",
+     "domain": "asiaone.com",
+     "date": "20260802",
+     "url": "https://www.asiaone.com:443/world/trump-says-he-will-hold-fresh-iran-attack-hope-quick-deal",
+     "tier": null
+    },
+    {
+     "title": "Trump says he will hold off on fresh Iran attack in hope of quick deal",
+     "domain": "asiaone.com",
+     "date": "20260802",
+     "url": "https://www.asiaone.com/world/trump-says-he-will-hold-fresh-iran-attack-hope-quick-deal",
+     "tier": null
+    },
+    {
+     "title": "Global economy hostage to asymmetric warfare as cheap drones cause billions in damage",
+     "domain": "bankingnews.gr",
+     "date": "20260802",
+     "url": "https://www.bankingnews.gr/diethni/articles/891852/global-economy-hostage-to-asymmetric-warfare-as-cheap-drones-cause-billions-in-damage%20title=",
+     "tier": null
+    },
+    {
+     "title": "Global economy hostage to asymmetric warfare as cheap drones cause billions in damage",
+     "domain": "bankingnews.gr",
+     "date": "20260802",
+     "url": "https://www.bankingnews.gr/diethni/articles/891852/global-economy-hostage-to-asymmetric-warfare-as-cheap-drones-cause-billions-in-damage",
+     "tier": null
+    },
+    {
+     "title": "Middle East war : US State Department warns Americans to be ready to leave Middle East as Iran tensions boil",
+     "domain": "brisbanetimes.com.au",
+     "date": "20260802",
+     "url": "https://www.brisbanetimes.com.au/world/middle-east/state-department-warns-us-citizens-to-be-ready-to-leave-middle-east-as-iran-tensions-boil-20260802-p60kn2.html",
+     "tier": null
+    },
+    {
+     "title": "US embassies urge citizens to consider departing Middle East",
+     "domain": "bssnews.net",
+     "date": "20260802",
+     "url": "https://www.bssnews.net/international/410890",
+     "tier": null
+    },
+    {
+     "title": "World Insights : Saudi - led maritime defense alliance underscores shift in regional security calculus",
+     "domain": "heraldglobe.com",
+     "date": "20260802",
+     "url": "http://www.heraldglobe.com/news/279219439/world-insights-saudi-led-maritime-defense-alliance-underscores-shift-in-regional-security-calculus",
+     "tier": null
+    },
+    {
+     "title": "Trump says US , Israel to hold off on Iran strikes",
+     "domain": "naharnet.com",
+     "date": "20260802",
+     "url": "https://www.naharnet.com/stories/en/321602-trump-says-us-israel-to-hold-off-on-iran-strikes",
+     "tier": null
+    },
+    {
+     "title": "Trump says US , Israel to hold off on Iran strikes",
+     "domain": "naharnet.com",
+     "date": "20260802",
+     "url": "https://www.naharnet.com:443/stories/en/321602-trump-says-us-israel-to-hold-off-on-iran-strikes",
+     "tier": null
+    },
+    {
+     "title": "Welcome to the mega - war : Mideast and European conflicts merge , sucking in more countries \u00a0| Peak Oil News and Message Boards",
+     "domain": "peakoil.com",
+     "date": "20260802",
+     "url": "https://peakoil.com/publicpolicy/welcome-to-the-mega-war-mideast-and-european-conflicts-merge-sucking-in-more-countries",
+     "tier": null
+    },
+    {
+     "title": "Trump says US , Israel to hold off on Iran strikes",
+     "domain": "philstar.com",
+     "date": "20260802",
+     "url": "https://www.philstar.com/world/2026/08/02/2546485/trump-says-us-israel-hold-iran-strikes",
+     "tier": null
+    },
+    {
+     "title": "Iran threatens to strike other nation energy fields",
+     "domain": "theadvocate.com.au",
+     "date": "20260802",
+     "url": "https://www.theadvocate.com.au/story/9322027/iran-threatens-to-strike-other-nations-energy-fields/",
+     "tier": null
+    },
+    {
+     "title": "Middle East war : US State Department warns Americans to be ready to leave Middle East as Iran tensions boil",
+     "domain": "theage.com.au",
+     "date": "20260802",
+     "url": "https://www.theage.com.au/world/middle-east/state-department-warns-us-citizens-to-be-ready-to-leave-middle-east-as-iran-tensions-boil-20260802-p60kn2.html",
+     "tier": null
+    },
+    {
+     "title": "Renewed Red Sea Standoff Underscores Persistent Threat Posed By Yemen Houthis",
+     "domain": "theepochtimes.com",
+     "date": "20260802",
+     "url": "https://www.theepochtimes.com/world/renewed-red-sea-standoff-underscores-persistent-threat-posed-by-yemens-houthis-6069379",
+     "tier": null
+    },
+    {
+     "title": "Iran warns of strikes on other\u00a0nation energy fields if U . S . attacks",
+     "domain": "theglobeandmail.com",
+     "date": "20260802",
+     "url": "https://www.theglobeandmail.com/world/article-iran-strikes-us-attacks-energy-fields-other-nations/",
+     "tier": null
+    },
+    {
+     "title": "Trump says he will hold off on fresh Iran attack in hope of quick deal - Middle East and Africa",
+     "domain": "thejakartapost.com",
+     "date": "20260802",
+     "url": "http://www.thejakartapost.com/world/2026/08/02/trump-says-he-will-hold-off-on-fresh-iran-attack-in-hope-of-quick-deal",
+     "tier": null
+    },
+    {
+     "title": "Trump says US , Israel to hold off on Iran strikes",
+     "domain": "vanguardngr.com",
+     "date": "20260802",
+     "url": "https://www.vanguardngr.com/2026/08/trump-says-us-israel-to-hold-off-on-iran-strikes/",
+     "tier": null
+    },
+    {
+     "title": "Middle East war : US State Department warns Americans to be ready to leave Middle East as Iran tensions boil",
+     "domain": "watoday.com.au",
+     "date": "20260802",
+     "url": "https://www.watoday.com.au/world/middle-east/state-department-warns-us-citizens-to-be-ready-to-leave-middle-east-as-iran-tensions-boil-20260802-p60kn2.html",
+     "tier": null
+    }
+   ],
+   "spike_quality_tier12_share": 0.05
   }
  }
 }
