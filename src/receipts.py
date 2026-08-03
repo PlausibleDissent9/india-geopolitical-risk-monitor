@@ -26,8 +26,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 
 CHANNELS = ["pakistan_west", "china_east", "gulf_energy", "us_trade", "shipping"]
-MAX_ARTICLES_PER_QUERY = 20
-MAX_ARTICLES_PUBLISHED = 25
+MAX_ARTICLES_PER_QUERY = 75
+MAX_ARTICLES_PUBLISHED = 60
 UNRANKED = 5  # sorts after every registered tier (1-4); never assumed tier 3
 
 
@@ -51,8 +51,17 @@ def channel_receipts(
             if a["url"]:
                 pool.setdefault(a["url"], a)
     articles = list(pool.values())
+    # Syndication dedup: identical headlines across mirror domains (the
+    # datapacks show one ANI wire story on four domains) collapse to the
+    # best-tiered instance, so depth buys breadth, not repetition.
+    by_title: dict[str, dict[str, Any]] = {}
     for a in articles:
         a["tier"] = tiers.get(a["domain"])
+        key = (a.get("title") or a["url"]).strip().lower()[:120]
+        best = by_title.get(key)
+        if best is None or (a["tier"] or UNRANKED) < (best["tier"] or UNRANKED):
+            by_title[key] = a
+    articles = list(by_title.values())
     articles.sort(key=_tier_sort_key)
     articles = articles[:MAX_ARTICLES_PUBLISHED]
     tier12 = sum(1 for a in articles if a["tier"] in (1, 2))

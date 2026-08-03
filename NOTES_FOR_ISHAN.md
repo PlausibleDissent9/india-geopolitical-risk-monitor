@@ -317,3 +317,27 @@ and whether GRM-Pakistan publishes on the IGRM site or waits for the
 platform. Reply "approve pakistan memo with X" and registration
 follows with full rationale; then Indonesia and Vietnam memos come one
 per night.
+
+## 0.7 Dictionary amendment memo: military-institution vocabulary (your sign-off)
+
+You caught a real recall gap: statements by military leadership (the
+DG ISPR class of story) can carry zero of pakistan_west's current
+phrases, so they are never counted, and no sample-depth fix reaches
+what the dictionary does not match. Proposed dated amendment,
+institution-category vocabulary, ex-ante compliant (standing
+institutions, not event names):
+
+- pakistan_west, add: "ISPR" (the military's media wing; statements
+  are recurring coverage), "army chief" (standing office vocabulary
+  in both countries' press), "DGMO" (the hotline-talks office that
+  anchors de-escalation coverage).
+- Consider also: "Pakistan army" as anchor-paired phrase; your call on
+  whether it is too broad (it will match sport-adjacent and human
+  interest stories; the precision auditor will measure exactly how
+  much).
+
+Effect: recall rises for leadership-statement coverage; precision
+impact gets measured by the auditor within days and published as
+found. Amendment ships as dictionaries v1.2.0 with per-term rationale
+and a changelog entry the moment you reply "approve dictionary memo"
+(edit the list freely first).
