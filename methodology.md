@@ -61,6 +61,14 @@ sanctions policy, not physical supply. Red Sea tanker coverage belongs to
 appears in two channels, so the composite never double-counts an article
 across the declared boundaries.
 
+**Excluded by choice: leadership rhetoric.** Statements by military
+and political leadership are not construct vocabulary: adding them
+would make rhetoric frequency part of the measure, and prolific
+official communication would move a channel even when its underlying
+geography is quiet. Such stories count only when they co-occur with
+structural vocabulary; pure rhetoric does not count, and that is a
+disclosed design decision (2026-08-04), not an oversight.
+
 **Freeze.** Dictionaries froze 2026-07-24 (`_meta.frozen_on`). Any later
 change appears in the [changelog](#changelog) with a date and a reason. An
 index whose definition moves silently is not reproducible.

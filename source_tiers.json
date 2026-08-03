@@ -9,7 +9,8 @@
    "3": "mainstream TV, portals, and aggregating outlets with editorial staff but weaker correction records",
    "4": "outlets with documented fabrication incidents or syndication mills with no original reporting"
   },
-  "tier4_note": "Tier-4 assignments below stand on the registered criteria. Syndication-mill designations are verifiable from this project's own datapacks (identical wire copy across domains, no original reporting). Broadcast-outlet assignments are held as PROVISIONAL pending author-supplied citations to documented incidents (IFCN signatory fact-checks); until cited, those outlets rank tier 3 in presentation. No reason stated here makes a claim beyond the cited evidence."
+  "tier4_note": "Tier-4 assignments below stand on the registered criteria. Syndication-mill designations are verifiable from this project's own datapacks (identical wire copy across domains, no original reporting). Broadcast-outlet assignments are held as PROVISIONAL pending author-supplied citations to documented incidents (IFCN signatory fact-checks); until cited, those outlets rank tier 3 in presentation. No reason stated here makes a claim beyond the cited evidence.",
+  "international_note": "International expansion 2026-08-04 per the founder and the FICCI director: global and regional outlets classified by the same criteria. State-CONTROLLED outlets (editorial line set by a government, an ownership fact) sit at tier 4 with that stated reason; state-FUNDED but editorially independent broadcasters (BBC, DW, France 24, Al Jazeera) are classified on their correction practices like anyone else."
  },
  "tiers": {
   "reuters.com": 1,
@@ -55,13 +56,44 @@
   "oneindia.com": 4,
   "newkerala.com": 4,
   "webindia123.com": 4,
-  "jagranjosh.com": 4
+  "jagranjosh.com": 4,
+  "washingtonpost.com": 2,
+  "aljazeera.com": 2,
+  "france24.com": 2,
+  "nikkei.com": 2,
+  "asia.nikkei.com": 2,
+  "scmp.com": 2,
+  "straitstimes.com": 2,
+  "cnbc.com": 2,
+  "dawn.com": 2,
+  "al-monitor.com": 3,
+  "middleeasteye.net": 3,
+  "gulfnews.com": 3,
+  "arabnews.com": 3,
+  "khaleejtimes.com": 3,
+  "thenews.com.pk": 3,
+  "tribune.com.pk": 3,
+  "cnn.com": 3,
+  "foxnews.com": 3,
+  "moneycontrol.com": 3,
+  "xinhuanet.com": 4,
+  "globaltimes.cn": 4,
+  "rt.com": 4,
+  "tass.com": 4,
+  "presstv.ir": 4,
+  "sputnikglobe.com": 4
  },
  "tier4_reasons": {
   "oneindia.com": "syndication observed in project datapacks; no original reporting or corrections process found",
   "newkerala.com": "syndication observed in project datapacks; no original reporting or corrections process found",
   "webindia123.com": "syndication observed in project datapacks; no original reporting or corrections process found",
-  "jagranjosh.com": "listicle content farm, not a news organization (self-described exam-prep site)"
+  "jagranjosh.com": "listicle content farm, not a news organization (self-described exam-prep site)",
+  "xinhuanet.com": "state-controlled: official news agency of the PRC government (ownership fact)",
+  "globaltimes.cn": "state-controlled: published under the People's Daily, CCP organ (ownership fact)",
+  "rt.com": "state-controlled: funded and directed by the Russian government (ownership fact)",
+  "tass.com": "state-controlled: official news agency of the Russian government (ownership fact)",
+  "presstv.ir": "state-controlled: IRIB, Iranian state broadcaster (ownership fact)",
+  "sputnikglobe.com": "state-controlled: Rossiya Segodnya, Russian government (ownership fact)"
  },
  "provisional_tier4_candidates": {
   "note": "Await author citations before any public tier-4 designation of broadcast outlets; see NOTES_FOR_ISHAN.",

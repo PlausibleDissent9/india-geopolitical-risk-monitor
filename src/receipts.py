@@ -31,9 +31,12 @@ MAX_ARTICLES_PUBLISHED = 75
 UNRANKED = 5  # sorts after every registered tier (1-4); never assumed tier 3
 
 
-def _tier_sort_key(article: dict[str, Any]) -> tuple[int, str]:
+def _tier_sort_key(article: dict[str, Any]) -> tuple[int, int]:
+    """Credibility first, aptness second: within a tier, GDELT's own
+    relevance order (capture position in the fetched pool) decides,
+    never the alphabet (which buried apt stories until 2026-08-04)."""
     tier = article["tier"]
-    return (tier if tier is not None else UNRANKED, article["domain"])
+    return (tier if tier is not None else UNRANKED, article.get("_rel", 10**6))
 
 
 def channel_receipts(
@@ -52,6 +55,7 @@ def channel_receipts(
             # javascript: URL from crawled third-party data would
             # execute on click; only http(s) ever renders.
             if a["url"] and a["url"].startswith(("http://", "https://")):
+                a["_rel"] = len(pool)  # GDELT relevance position
                 pool.setdefault(a["url"], a)
     articles = list(pool.values())
     # Syndication dedup: identical headlines across mirror domains (the
@@ -67,6 +71,8 @@ def channel_receipts(
     articles = list(by_title.values())
     articles.sort(key=_tier_sort_key)
     articles = articles[:MAX_ARTICLES_PUBLISHED]
+    for a in articles:
+        a.pop("_rel", None)
     tier12 = sum(1 for a in articles if a["tier"] in (1, 2))
     return {
         "label": spec["label"],
