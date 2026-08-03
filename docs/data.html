@@ -7,9 +7,25 @@
 <meta name="description" content="Every published IGRM data file, the codebook, licensing, and the citation string.">
 <link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css?v=20260804a">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "India Geopolitical Risk Monitor (IGRM) daily series",
+  "description": "Daily press-salience index for India-related geopolitical risk, five channels plus composite, 2017-present, with events layers, chokepoint series, stress gauge, comparators, and full replication package. Measures attention, not risk.",
+  "url": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data.html",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {"@type": "Person", "name": "Ishan Krishna"},
+  "temporalCoverage": "2017-01-01/..",
+  "keywords": ["geopolitical risk","India","news salience","GDELT","economic data","open data"],
+  "distribution": [
+    {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data/history.csv"},
+    {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data/history.json"}
+  ]
+}
+</script>
 </head>
 <body>
 <header>
@@ -108,6 +124,7 @@ part of the widget and cannot be removed.</p>
 <p class="chart-note"><a href="corrections.html">Corrections and incident ledger</a>: every error this project caught, dated, append-only.</p>
 
 <h2>Citation</h2>
+<p class="chart-note"><a href="igrm.bib" download>BibTeX</a> ready for your reference manager.</p>
 <p class="prose">If you use the data, cite it:</p>
 <p class="prose"><code id="cite">Krishna, Ishan (2026). India Geopolitical Risk Monitor: a category-decomposed
 press-salience index for India. Version 1.0.1. https://plausibledissent9.github.io/india-geopolitical-risk-monitor/ (data: CC BY 4.0)</code></p>

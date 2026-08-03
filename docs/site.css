@@ -1,6 +1,6 @@
 /* Subpage theme matched to the homepage's archival-paper palette
    (style.css): paper / ink / rule / muted, state colors as accents. */
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Archivo:wght@400;500;700&display=swap");
+@import url("fonts.css"); /* self-hosted; no third-party requests */
 /* Night paper by default, matching the homepage; light is a persisted choice. */
 :root {
   --bg: #0E141E; --fg: #EAE8E0; --muted: #97A0B0; --line: #26303F;
