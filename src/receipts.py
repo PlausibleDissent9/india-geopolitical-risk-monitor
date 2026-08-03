@@ -16,6 +16,7 @@ Run by CI daily, or manually: python -m src.receipts
 from __future__ import annotations
 
 import json
+import re
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -31,12 +32,18 @@ MAX_ARTICLES_PUBLISHED = 75
 UNRANKED = 5  # sorts after every registered tier (1-4); never assumed tier 3
 
 
-def _tier_sort_key(article: dict[str, Any]) -> tuple[int, int]:
-    """Credibility first, aptness second: within a tier, GDELT's own
-    relevance order (capture position in the fetched pool) decides,
-    never the alphabet (which buried apt stories until 2026-08-04)."""
+def _tier_sort_key(article: dict[str, Any]) -> tuple[int, int, int]:
+    """Credibility, then visible aptness, then GDELT relevance. The
+    title-hit test exists because GDELT matches full page text, and
+    prolific sites' sidebar boilerplate produces tier-2 matches whose
+    headlines have nothing to do with the channel (2026-08-04:
+    provident-fund stories atop the US-trade card); a title containing
+    a channel phrase is evidence the story itself is about the
+    construct."""
     tier = article["tier"]
-    return (tier if tier is not None else UNRANKED, article.get("_rel", 10**6))
+    return (tier if tier is not None else UNRANKED,
+            0 if article.get("_title_hit") else 1,
+            article.get("_rel", 10**6))
 
 
 def channel_receipts(
@@ -46,6 +53,8 @@ def channel_receipts(
     articles, and the tier1-2 share (the spike-quality number). Tiers order
     presentation only; they never enter any score."""
     queries = fetch_gdelt.build_queries(spec["terms"], spec.get("anchor"))
+    norm_phrases = [" " + re.sub(r"[^a-z0-9 ]+", " ", t.strip('"').lower()).strip() + " "
+                    for t in spec["terms"]]
     pool: dict[str, dict[str, Any]] = {}
     for q in queries:
         for a in fetch_gdelt.fetch_articles(
@@ -56,6 +65,8 @@ def channel_receipts(
             # execute on click; only http(s) ever renders.
             if a["url"] and a["url"].startswith(("http://", "https://")):
                 a["_rel"] = len(pool)  # GDELT relevance position
+                title_norm = " " + re.sub(r"[^a-z0-9 ]+", " ", (a.get("title") or "").lower()).strip() + " "
+                a["_title_hit"] = any(p in title_norm for p in norm_phrases)
                 pool.setdefault(a["url"], a)
     articles = list(pool.values())
     # Syndication dedup: identical headlines across mirror domains (the
@@ -73,6 +84,7 @@ def channel_receipts(
     articles = articles[:MAX_ARTICLES_PUBLISHED]
     for a in articles:
         a.pop("_rel", None)
+        a.pop("_title_hit", None)
     tier12 = sum(1 for a in articles if a["tier"] in (1, 2))
     return {
         "label": spec["label"],
