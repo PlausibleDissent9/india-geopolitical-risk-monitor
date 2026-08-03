@@ -341,3 +341,27 @@ impact gets measured by the auditor within days and published as
 found. Amendment ships as dictionaries v1.2.0 with per-term rationale
 and a changelog entry the moment you reply "approve dictionary memo"
 (edit the list freely first).
+
+### 0.7 addendum, after your inflation concern (2026-08-04)
+
+Your instinct is technically sharp on two counts. First, the
+percentile absorbs CONSTANT rhetoric: if ISPR statements are steady
+background, ranks do not move; only rhetoric SPIKES would register.
+Second, and this is the real issue: adding statement vocabulary makes
+rhetoric variation part of the construct, and Pakistani military
+communication is prolific enough that rhetoric waves would then move
+the channel even when the border itself is quiet. That is a different
+instrument, and "Pakistan reads hot forever" is a fair caricature of
+the risk.
+
+REVISED RECOMMENDATION: do NOT amend. Instead, document the exclusion
+as a construct decision in methodology section 2: leadership rhetoric
+is out of construct by choice; such stories are counted only when
+they co-occur with structural vocabulary (a rhetoric story that
+mentions the LoC counts; pure rhetoric does not). The receipts
+quality depth (now 150-article pools) will still SURFACE those
+stories whenever they brush the construct. If you ever want rhetoric
+measured, the honest form is a separate labeled sub-series, never a
+quiet widening of the main channel. Reply "approve exclusion note"
+and the methodology sentence ships; the amendment memo is withdrawn
+unless you say otherwise.

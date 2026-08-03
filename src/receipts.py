@@ -26,8 +26,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 
 CHANNELS = ["pakistan_west", "china_east", "gulf_energy", "us_trade", "shipping"]
-MAX_ARTICLES_PER_QUERY = 75
-MAX_ARTICLES_PUBLISHED = 60
+MAX_ARTICLES_PER_QUERY = 150
+MAX_ARTICLES_PUBLISHED = 75
 UNRANKED = 5  # sorts after every registered tier (1-4); never assumed tier 3
 
 
