@@ -48,7 +48,10 @@ def channel_receipts(
         for a in fetch_gdelt.fetch_articles(
             q, day, day, maxrecords=MAX_ARTICLES_PER_QUERY
         ):
-            if a["url"]:
+            # Scheme allowlist: with 'unsafe-inline' in the CSP, a
+            # javascript: URL from crawled third-party data would
+            # execute on click; only http(s) ever renders.
+            if a["url"] and a["url"].startswith(("http://", "https://")):
                 pool.setdefault(a["url"], a)
     articles = list(pool.values())
     # Syndication dedup: identical headlines across mirror domains (the

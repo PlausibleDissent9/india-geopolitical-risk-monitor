@@ -105,6 +105,8 @@ def main() -> None:
         for it in items:
             if not it["url"] or it["url"] in existing:
                 continue
+            if not it["url"].startswith(("http://", "https://")):
+                continue
             tokens = _norm(it["title"] + " " + it["summary"][:300])
             channel = "general"
             for ch, phs in phrases.items():
