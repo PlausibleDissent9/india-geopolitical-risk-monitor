@@ -7,7 +7,7 @@
 <meta name="description" content="Full methodology for the IGRM salience index: construct definition, term selection, normalization, episode detection, event-study design, limitations, and validation.">
 <link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/methodology.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css">
 </head>
@@ -302,7 +302,7 @@ reporting. Assignments cite documented behaviors, not viewpoints; a
 domain not yet registered shows as "unranked" rather than being
 assumed into any tier. Tiers order the receipts list credible-first
 and produce one number, <code>spike_quality_tier12_share</code> (the tier 1-2
-share of that day's retrieved sample): <strong>tiers never enter any
+share of that day's retrieved sample) -- <strong>tiers never enter any
 channel score or the composite</strong>, stated here and in the payload's
 <code>_meta</code>.</p>
 <h2>Changelog</h2>
@@ -314,7 +314,7 @@ channel score or the composite</strong>, stated here and in the payload's
   <code>tests/test_receipts.py</code>). Source tiers (<code>source_tiers.json</code>,
   registered 2026-08-01) order the list credible-first and produce
   <code>spike_quality_tier12_share</code>; disclosed everywhere as never entering
-  any score. Not a historical archive: only the latest published day
+  any score. Not a historical archive -- only the latest published day
   is kept.</li>
 <li>
 <p><strong>2026-08-01, v1.3.0 (comparators and predictability).</strong> Section 10

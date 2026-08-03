@@ -273,3 +273,43 @@ presentation only and never enter any score.
   minimum 180 observations, never using future data.
 - GDELT days are UTC; market data uses exchange trading days (IST for NSE).
 - All return language is associational. Nothing here is investment advice.
+
+## docs/data/receipts.json
+
+The evidence behind the latest day's scores: per channel, the exact
+queries, and a bounded relevance sample of matched articles (up to 75
+after syndication dedup), each with its registered source tier.
+Ordering is credibility, then visible aptness (a title containing a
+channel phrase), then GDELT relevance. The sample is illustrative
+evidence for the day, never the census the score was computed over,
+and the page says so. `spike_quality_tier12_share` is the tier 1-2
+share of the sample. Latest published day only.
+
+## docs/data/expert_shelf.json
+
+Latest publications from the registered think-tank roster
+(think_tanks.json), titles and links only, tagged to channels by the
+frozen dictionaries; items matching no channel are kept as general.
+Institutions without a public feed are carried in the registry with
+that status.
+
+## docs/data/precision.json
+
+The standing precision audit: machine labels under the versioned
+rubric (auditor/RUBRIC.md), per-channel precision published as found,
+never tuned. Marked UNCALIBRATED until the author's independent
+labels reach the registered threshold (n=100); the agreement
+statistic then publishes with its n. Abstentions counted, not
+guessed.
+
+## docs/data/reliability.json
+
+The morning contract's measured record, computed from git commit
+timestamps: day D final by 06:00 IST on D+1. Pre-contract days appear
+as context; misses stay listed forever.
+
+## docs/data/predictions.json
+
+The Prediction Archive's registry: every dated, falsifiable
+expectation, registered before outcomes are known, graded at horizon,
+append-only.
