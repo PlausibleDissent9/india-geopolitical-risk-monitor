@@ -180,6 +180,10 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.expert_attention
+      - name: Reliability record from git evidence
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        run: python scripts/build_reliability.py
       - name: Dual-computation audit (fail-loud; two derivations must agree)
         if: github.event.inputs.backfill != 'true'
         run: python -m src.audit
