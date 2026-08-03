@@ -321,10 +321,10 @@ main, .masthead { animation: igrm-pagein 420ms cubic-bezier(0.22,1,0.36,1) both;
 body::before {
   content: ""; position: fixed; inset: -40%; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(45% 38% at 12% 8%, color-mix(in srgb, var(--calm) 22%, transparent), transparent 68%),
-    radial-gradient(40% 34% at 88% 15%, color-mix(in srgb, var(--severe) 16%, transparent), transparent 70%),
-    radial-gradient(50% 45% at 75% 92%, color-mix(in srgb, var(--elevated) 12%, transparent), transparent 72%);
-  filter: blur(24px) saturate(1.25);
+    radial-gradient(45% 38% at 12% 8%, color-mix(in srgb, var(--calm) 11%, transparent), transparent 68%),
+    radial-gradient(40% 34% at 88% 15%, color-mix(in srgb, var(--severe) 8%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 75% 92%, color-mix(in srgb, var(--elevated) 6%, transparent), transparent 72%);
+  filter: blur(34px) saturate(1.1);
   animation: aurora 28s ease-in-out infinite alternate;
 }
 @keyframes aurora {
@@ -341,20 +341,19 @@ body::before {
 }
 .instrument {
   position: relative; overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--state) 22%, var(--rule-soft));
-  box-shadow: var(--shadow), 0 0 80px -30px color-mix(in srgb, var(--state) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--state) 14%, var(--rule-soft));
+  box-shadow: var(--shadow);
 }
 .instrument::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(60% 80% at 18% 20%, color-mix(in srgb, var(--state) 9%, transparent), transparent 60%);
 }
 .big-number {
-  font-size: clamp(5rem, 13vw, 8.5rem);
-  text-shadow: 0 0 60px color-mix(in srgb, var(--state) 45%, transparent),
-               0 0 120px color-mix(in srgb, var(--state) 25%, transparent);
+  font-size: clamp(5rem, 13vw, 8rem);
+  text-shadow: 0 2px 28px color-mix(in srgb, var(--state) 16%, transparent);
 }
-.band-track { height: 7px; box-shadow: 0 0 24px color-mix(in srgb, var(--elevated) 35%, transparent); }
-.component-score { text-shadow: 0 0 18px color-mix(in srgb, var(--state) 30%, transparent); }
+.band-track { height: 6px; }
+
 h2 { position: relative; }
 .chart-section h2::after, .archive-section h2::after, .note-section h2::after {
   content: ""; display: block; width: 56px; height: 2px; margin-top: 8px;
@@ -365,7 +364,7 @@ h2 { position: relative; }
 /* v1.3: sparklines in component rows; band tick breathes */
 .component-row { grid-template-columns: 1fr auto auto auto; }
 .spark { justify-self: end; opacity: 0.9 }
-@keyframes tickpulse { 0%,100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 12px color-mix(in srgb, var(--state) 50%, transparent);} 50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 26px color-mix(in srgb, var(--state) 80%, transparent);} }
+@keyframes tickpulse { 0%,100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 8px color-mix(in srgb, var(--state) 28%, transparent);} 50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 16px color-mix(in srgb, var(--state) 45%, transparent);} }
 .band-tick { animation: tickpulse 3.2s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .band-tick { animation: none; } }
 ::-webkit-scrollbar { width: 10px; height: 10px }

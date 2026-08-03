@@ -128,7 +128,22 @@ def main() -> None:
     SITE_DATA.mkdir(parents=True, exist_ok=True)
     out_path = SITE_DATA / "receipts.json"
     channels: dict[str, Any] = {}
-    for ch in CHANNELS:
+    # Missing-first ordering: when a prior run was throttled mid-way,
+    # the rerun spends its freshest request budget on the channels that
+    # have nothing, instead of refreshing the ones that survived
+    # (2026-08-04: a throttled run left three channels empty twice).
+    prior: dict[str, int] = {}
+    if out_path.exists():
+        try:
+            old = json.loads(out_path.read_text(encoding="utf-8"))
+            if old.get("date") == day.isoformat():
+                prior = {c: len(v.get("articles", []))
+                         for c, v in (old.get("channels") or {}).items()}
+                channels.update(old.get("channels") or {})
+        except Exception:  # noqa: BLE001 -- unreadable prior payload starts fresh
+            prior = {}
+    ordered = sorted(CHANNELS, key=lambda c: prior.get(c, -1))
+    for ch in ordered:
         try:
             channels[ch] = channel_receipts(ch, dictionaries[ch], day, tiers)
         except Exception as e:  # noqa: BLE001 -- one bad channel must not lose the rest
