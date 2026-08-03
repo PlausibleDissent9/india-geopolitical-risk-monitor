@@ -360,3 +360,14 @@ h2 { position: relative; }
   content: ""; display: block; width: 56px; height: 2px; margin-top: 8px;
   background: linear-gradient(90deg, var(--state), transparent); border-radius: 2px;
 }
+
+
+/* v1.3: sparklines in component rows; band tick breathes */
+.component-row { grid-template-columns: 1fr auto auto auto; }
+.spark { justify-self: end; opacity: 0.9 }
+@keyframes tickpulse { 0%,100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 12px color-mix(in srgb, var(--state) 50%, transparent);} 50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 26px color-mix(in srgb, var(--state) 80%, transparent);} }
+.band-tick { animation: tickpulse 3.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .band-tick { animation: none; } }
+::-webkit-scrollbar { width: 10px; height: 10px }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 6px }
+::-webkit-scrollbar-thumb:hover { background: var(--muted) }

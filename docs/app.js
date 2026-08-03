@@ -49,6 +49,20 @@ function delta1d(series) {
   return vals.length === 2 ? vals[0] - vals[1] : null;
 }
 
+function sparkline(series, color) {
+  // 30-day inline trend, 90x22, no lib: the row tells its own story.
+  const data = (series || []).slice(-30).filter(v => v != null);
+  if (data.length < 5) return "";
+  const min = Math.min(...data), max = Math.max(...data), span = (max - min) || 1;
+  const pts = data.map((v, i) =>
+    `${(i / (data.length - 1) * 88 + 1).toFixed(1)},${(20 - (v - min) / span * 18 + 1).toFixed(1)}`).join(" ");
+  const last = data[data.length - 1], ly = (20 - (last - min) / span * 18 + 1).toFixed(1);
+  return `<svg class="spark" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true">` +
+    `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.6" ` +
+    `stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>` +
+    `<circle cx="89" cy="${ly}" r="2.2" fill="${color}"/></svg>`;
+}
+
 function renderLatest(latest, history) {
   const score = latest.composite;
   if (score == null) return;
@@ -68,8 +82,10 @@ function renderLatest(latest, history) {
     row.className = "component-row";
     row.href = `receipts.html?channel=${encodeURIComponent(key)}`;
     row.title = "See the exact query and matched articles behind this score";
+    const hist = history && history.channels ? history.channels[key] : null;
     row.innerHTML =
       `<span class="component-name">${esc(c.label)}</span>` +
+      sparkline(hist, COLORS[key] || "#888") +
       `<span class="component-score">${c.score == null ? "–" : esc(c.score.toFixed(1))}</span>` +
       `<span class="component-delta">${fmtDelta(d)}</span>`;
     wrap.appendChild(row);
