@@ -3,9 +3,9 @@
   "what": "Per-channel receipts for the latest published day: the exact GDELT query, a relevance-sorted sample of matched articles (mode=artlist), and each article's source tier (source_tiers.json; tiers order presentation and feed spike_quality_tier12_share only, never any score).",
   "caveat": "This is a bounded relevance-sorted SAMPLE of retrievable articles, not the full set of documents the channel's score was computed over -- the underlying coverage count for an active day is typically much larger than what GDELT's artlist mode returns. Treat this as illustrative evidence, not a census.",
   "partial": true,
-  "generated": "2026-08-02T19:48:59Z"
+  "generated": "2026-08-03T04:46:41Z"
  },
- "date": "2026-08-01",
+ "date": "2026-08-02",
  "channels": {
   "china_east": {
    "label": "China / Eastern Border",
@@ -28,147 +28,147 @@
    "n_retrieved": 20,
    "articles": [
     {
-     "title": "Amit Shah approves Rs 2 , 117 . 85 crore advance SDRF release for flood - hit states",
+     "title": "Indian Army launches indigenous XWG diesel that works at minus 42\u00b0C for tanks , combat vehicles along LAC , LoC",
      "domain": "economictimes.indiatimes.com",
-     "date": "20260801",
-     "url": "https://economictimes.indiatimes.com/news/india/amit-shah-approves-rs-2117-85-crore-advance-sdrf-release-for-flood-hit-states/articleshow/132793903.cms",
+     "date": "20260802",
+     "url": "https://economictimes.indiatimes.com/news/defence/indian-army-launches-indigenous-xwg-diesel-that-works-at-minus-42c-for-tanks-combat-vehicles-along-lac-loc/articleshow/132803817.cms",
      "tier": 2
     },
     {
-     "title": "This Himalayan treasure helped over 200 families earn lakhs while protecting 100 sq km of forest",
+     "title": "Weather Tomorrow , August 3 : Heavy rain expected across India ; Delhi - NCR , Gujarat , Maharashtra among regions",
      "domain": "economictimes.indiatimes.com",
-     "date": "20260801",
-     "url": "https://economictimes.indiatimes.com/news/new-updates/this-himalayan-treasure-helped-over-200-families-earn-lakhs-while-protecting-100-sq-km-of-forest/articleshow/132781613.cms",
+     "date": "20260802",
+     "url": "https://economictimes.indiatimes.com/news/new-updates/weather-tomorrow-august-3-heavy-rain-expected-across-india-delhi-ncr-gujarat-maharashtra-among-regions/articleshow/132805669.cms",
      "tier": 2
     },
     {
-     "title": "Home Minister Amit Shah approves advance release of Rs 2 , 117 . 85 crore to flood - affected States under SDRF",
-     "domain": "aninews.in",
-     "date": "20260801",
-     "url": "https://aninews.in/news/national/general-news/home-minister-amit-shah-approves-advance-release-of-rs-211785-crore-to-flood-affected-states-under-sdrf20260801222208/",
+     "title": "India - China cross - border trade resumes after 6 years",
+     "domain": "hindustantimes.com",
+     "date": "20260802",
+     "url": "https://www.hindustantimes.com/india-news/india-china-cross-border-trade-resumes-after-6-years-101785637096016.html",
+     "tier": 2
+    },
+    {
+     "title": "Border trade with China through Nathu La Pass resumes after six - year suspension",
+     "domain": "newindianexpress.com",
+     "date": "20260802",
+     "url": "https://www.newindianexpress.com/thesundaystandard/2026/Aug/02/border-trade-with-china-through-nathu-la-pass-resumes-after-six-year-suspension",
      "tier": 3
     },
     {
-     "title": "West Bengal CM Suvendu Adhikari launches self - enumeration process for 2027 census programme",
-     "domain": "aninews.in",
-     "date": "20260801",
-     "url": "https://aninews.in/news/national/general-news/west-bengal-cm-suvendu-adhikari-launches-self-enumeration-process-for-2027-census-programme20260801154806/",
-     "tier": 3
-    },
-    {
-     "title": "Amit Shah Clears Rs 2 , 117 . 85 Cr SDRF for Flood States",
-     "domain": "newkerala.com",
-     "date": "20260801",
-     "url": "https://www.newkerala.com/news/a/home-minister-amit-shah-approves-advance-release-rs-653.htm",
+     "title": "\u092c\u094d\u0930\u0939\u094d\u092e\u092a\u0941\u0924\u094d\u0930 \u0928\u0926\u0940 \u092d\u093e\u0930\u0924 \u092e\u0947\u0902 \u0915\u093f\u0938 \u0938\u094d\u0925\u093e\u0928 \u0938\u0947 \u0915\u0930\u0924\u0940 \u0939\u0948 \u092a\u094d\u0930\u0935\u0947\u0936 ? \u091c\u093e\u0928\u0947\u0902 \u0928\u0926\u0940 \u0938\u0947 \u091c\u0941\u095c\u0947 \u0926\u093f\u0932\u091a\u0938\u094d\u092a \u092b\u0948\u0915\u094d\u091f\u094d\u0938",
+     "domain": "jagranjosh.com",
+     "date": "20260802",
+     "url": "https://www.jagranjosh.com/general-knowledge/brahmaputra-river-source-tibetan-name-entry-point-in-india-key-cities-1820011086-2",
      "tier": 4
     },
     {
-     "title": "NE Rainfall Deficit : 5 States Below Normal Despite Floods",
+     "title": "India - China Ties : Managed Competition , Not Reconciliation",
      "domain": "newkerala.com",
-     "date": "20260801",
-     "url": "https://www.newkerala.com/news/a/five-ne-states-record-below-normal-monsoon-rainfall-june-july-673.htm",
+     "date": "20260802",
+     "url": "https://www.newkerala.com/news/a/indias-approach-towards-china-managed-competition-limited-cooperation-144.htm",
      "tier": 4
     },
     {
-     "title": "WB CM Launches 2027 Census Self - Enumeration Process",
+     "title": "Arunachal Governor 100 - Day Anti - Drug Street Shows Plan",
      "domain": "newkerala.com",
-     "date": "20260801",
-     "url": "https://www.newkerala.com/news/a/west-bengal-cm-suvendu-adhikari-launches-self-enumeration-process-445.htm",
+     "date": "20260802",
+     "url": "https://www.newkerala.com/news/a/arunachal-guv-proposes-100-day-nasha-mukt-street-shows-980.htm",
      "tier": 4
     },
     {
-     "title": "Daily News Wrap \u2013 BILKULONLINE - Bilkul Online",
-     "domain": "bilkulonline.com",
-     "date": "20260801",
-     "url": "https://bilkulonline.com/2026/08/01/daily-news-wrap-bilkulonline-49/",
+     "title": "IMD monsoon forecast : Heavy rain alert for multiple states till August 8 ; northeast on high watch",
+     "domain": "businesstoday.in",
+     "date": "20260802",
+     "url": "https://www.businesstoday.in/india/story/imd-monsoon-forecast-heavy-rain-alert-for-multiple-states-till-august-8-northeast-on-high-watch-546706-2026-08-02",
      "tier": null
     },
     {
-     "title": "\u0915\u0932 \u0915\u093e \u092e\u094c\u0938\u092e 2 \u0905\u0917\u0938\u094d\u0924 : 16 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0939\u0948\u0935\u0940 \u092c\u093e\u0930\u093f\u0936 \u0914\u0930 7 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092c\u0939\u0941\u0924 \u092d\u093e\u0930\u0940 \u092c\u0930\u0938\u093e\u0924 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , \u0926\u093f\u0932\u094d\u0932\u0940 - \u092f\u0942\u092a\u0940 \u0938\u0947 \u092c\u093f\u0939\u093e\u0930 \u0924\u0915 \u092c\u093f\u0917\u0921\u093c\u0947\u0917\u093e \u092e\u094c\u0938\u092e",
+     "title": "Ancient Silk Route to Tibet reopens : India China trade through Shipki La resumes after six years",
+     "domain": "businesstoday.in",
+     "date": "20260802",
+     "url": "https://www.businesstoday.in/latest/economy/story/ancient-silk-route-reopens-india-china-trade-through-shipki-la-resumes-after-six-years-546714-2026-08-02",
+     "tier": null
+    },
+    {
+     "title": "\u0a97\u0ac1\u0a9c\u0ab0\u0abe\u0aa4\u0aa8\u0ac7 \u0a85\u0ab0\u0ac1\u0aa3\u0abe\u0a9a\u0ab2\u0aa5\u0ac0 \u0a9c\u0acb\u0aa1\u0aa4\u0ac0 \u0a8f\u0a95\u0aae\u0abe\u0aa4\u0acd\u0ab0 \u0a9f\u0acd\u0ab0\u0ac7\u0aa8 \u0a86\u0a96\u0ac0 \u0ab0\u0abf\u0a9d\u0ab0\u0acd\u0ab5\u0acd\u0aa1 \u0aa5\u0a87 ,  \u0a88\u0aa8\u0ab0 \u0ab2\u0abe\u0a88\u0aa8 \u0aaa\u0ab0\u0aae\u0abf\u0a9f  \u0ab2\u0abe\u0a97\u0ac1 \u0aa5\u0aa4\u0abe\u0a82 \u0a9c\u0aa8\u0ab0\u0ab2 \u0a9f\u0abf\u0a95\u0abf\u0a9f \u0aa8\u0ab9\u0ac0\u0a82 \u0aae\u0ab3\u0ac7",
+     "domain": "gujaratsamachar.com",
+     "date": "20260802",
+     "url": "https://www.gujaratsamachar.com/news/ahmedabad/the-only-train-connecting-gujarat-with-arunachal-has-been-completely-reserved-general-tickets-will-not-be-available-as-inner-line-permit-is-implemented-62295703780",
+     "tier": null
+    },
+    {
+     "title": "IMD Warns of Heavy Rain , Flash Flood Risk Across Northeast and Himalayan Foothills",
+     "domain": "heraldgoa.in",
+     "date": "20260802",
+     "url": "https://www.heraldgoa.in/goa/imd-warns-of-heavy-rain-flash-flood-risk-across-northeast-and-himalayan-foothills/483933/",
+     "tier": null
+    },
+    {
+     "title": "\u0926\u093f\u0932\u094d\u0932\u0940 \u092e\u0947\u0902 \u091b\u093e\u090f \u0930\u0939\u0947\u0902\u0917\u0947 \u092c\u093e\u0926\u0932 , 23 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f ; \u091c\u093e\u0928\u0947\u0902 \u0906\u092a\u0915\u0947 \u0907\u0932\u093e\u0915\u0947 \u0915\u093e \u0915\u0948\u0938\u093e \u0930\u0939\u0947\u0917\u093e \u0939\u093e\u0932 - delhi weather update imd forecasts heavy rainfall across north india",
+     "domain": "hindi.business-standard.com",
+     "date": "20260802",
+     "url": "https://hindi.business-standard.com/india-news/delhi-weather-update-imd-forecasts-heavy-rainfall-across-north-india-id-541475",
+     "tier": null
+    },
+    {
+     "title": "3 \u0905\u0917\u0938\u094d\u0924 \u0915\u093e \u092e\u094c\u0938\u092e : \u092c\u093f\u0939\u093e\u0930 \u0938\u092e\u0947\u0924 \u0907\u0928 3 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092c\u0939\u0941\u0924 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u0940 \u091a\u0947\u0924\u093e\u0935\u0928\u0940 , IMD \u0928\u0947 \u0926\u093f\u0932\u094d\u0932\u0940 \u0938\u0947 \u092f\u0942\u092a\u0940 \u0924\u0915 \u0926\u093f\u092f\u093e \u092f\u0947 \u0905\u0932\u0930\u094d\u091f",
      "domain": "hindi.moneycontrol.com",
-     "date": "20260801",
-     "url": "https://hindi.moneycontrol.com/india/weather-forecast-for-august-two-alerts-issued-for-heavy-rainfall-in-16-states-india-weather-update-article-2425617.html",
+     "date": "20260802",
+     "url": "https://hindi.moneycontrol.com/india/imd-heavy-rain-alert-3-august-weather-forecast-thunderstorm-alert-delhi-up-punjab-bihar-and-other-article-2425807.html",
      "tier": null
     },
     {
-     "title": "\u0906\u091c 1 \u0905\u0917\u0938\u094d\u0924 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u0940 \u091a\u0947\u0924\u0935\u093e\u0928\u0940 : IMD \u0928\u0947 21+ \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u0915\u0947 \u0932\u093f\u090f \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f \u0926\u093f\u092f\u093e , \u0926\u093f\u0932\u094d\u0932\u0940 - \u0930\u093e\u091c\u0938\u094d\u0925\u093e\u0928 \u0938\u0947 \u0917\u0941\u091c\u0930\u093e\u0924 \u0924\u0915 \u092e\u094c\u0938\u092e \u0915\u093e \u0930\u094c\u0926\u094d\u0930 \u0930\u0942\u092a",
-     "domain": "hindi.moneycontrol.com",
-     "date": "20260801",
-     "url": "https://hindi.moneycontrol.com/india/imd-heavy-rain-alert-1-august-2026-for-delhi-gujarat-rajasthan-mumbai-and-21-states-article-2425484.html",
-     "tier": null
-    },
-    {
-     "title": "\u0935\u0940\u0915\u0932\u0940 \u092e\u094c\u0938\u092e \u0905\u092a\u0921\u0947\u091f : 8 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , \u092f\u0942\u092a\u0940 \u0938\u0947 \u0917\u0941\u091c\u0930\u093e\u0924 \u0924\u0915 \u092e\u0942\u0938\u0932\u093e\u0927\u093e\u0930 , IMD \u0928\u0947 \u092c\u0924\u093e\u092f\u093e \u0905\u0917\u0932\u0947 7 \u0926\u093f\u0928\u094b\u0902 \u0915\u0947 \u092e\u094c\u0938\u092e \u0915\u093e \u0939\u093e\u0932",
-     "domain": "hindi.moneycontrol.com",
-     "date": "20260801",
-     "url": "https://hindi.moneycontrol.com/india/weekly-weather-update-imd-rain-alert-next-7-days-up-gujarat-heavy-rain-article-2425552.html",
-     "tier": null
-    },
-    {
-     "title": "Weather Update : IMD \u0915\u093e \u092c\u0921\u093c\u093e \u0905\u0932\u0930\u094d\u091f , \u0906\u091c \u0907\u0928 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0939\u094b\u0917\u0940 \u092e\u0942\u0938\u0932\u093e\u0927\u093e\u0930 \u092c\u093e\u0930\u093f\u0936 , MP \u0915\u0947 14 \u091c\u093f\u0932\u094b\u0902 \u092e\u0947\u0902 \u092b\u094d\u0932\u0948\u0936 \u092b\u094d\u0932\u0921 \u0915\u093e \u0916\u0924\u0930\u093e",
+     "title": "Weather Alert : 17 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , 13 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 - \u0906\u0902\u0927\u0940 ; \u0926\u093f\u0932\u094d\u0932\u0940 - UP \u0938\u092e\u0947\u0924 \u0907\u0928 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0906\u091c \u0915\u0948\u0938\u093e \u0930\u0939\u0947\u0917\u093e \u092e\u094c\u0938\u092e ? \u0905\u0938\u092e \u092e\u0947\u0902 \u092c\u093e\u0922\u093c \u0938\u0947 \u092c\u093f\u0917\u0921\u093c\u0947 \u0939\u093e\u0932\u093e\u0924",
      "domain": "hindi.webdunia.com",
-     "date": "20260801",
-     "url": "https://hindi.webdunia.com/national-hindi-news/weather-update-1-august-2026-imd-heavy-rain-red-orange-alert-126080100002_1.html",
+     "date": "20260802",
+     "url": "https://hindi.webdunia.com/national-hindi-news/weather-alert-heavy-rain-17-states-assam-flood-delhi-up-today-126080200001_1.html",
      "tier": null
     },
     {
-     "title": "Massive Recruitment Drive Launched for 11 , 403 Customer Service Associate Posts at IBPS ; Apply by August 21",
-     "domain": "khaskhabar.com",
-     "date": "20260801",
-     "url": "https://www.khaskhabar.com/picture-news/career-massive-recruitment-drive-launched-for-11403-customer-service-associate-posts-at-ibps-apply-by-august-21-news-hindi-1-833273-KKN.html",
+     "title": "  India approach towards China is managed competition , limited cooperation , and not reconciliation  ",
+     "domain": "ianslive.in",
+     "date": "20260802",
+     "url": "https://ianslive.in/indias-approach-towards-china-is-managed-competition-limited-cooperation-and-not-reconciliation-report--20260802185836",
      "tier": null
     },
     {
-     "title": "Rain Alert : \u0907\u0928 \u0924\u0940\u0928 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0906\u091c \u092c\u0939\u0941\u0924 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u0940 \u091a\u0947\u0924\u093e\u0935\u0928\u0940 , \u092e\u094c\u0938\u092e \u0935\u093f\u092d\u093e\u0917 \u0928\u0947 \u092c\u0924\u093e\u092f\u093e - \u0915\u092c \u092e\u093f\u0932\u0947\u0917\u0940 \u0930\u093e\u0939\u0924",
-     "domain": "livehindustan.com",
-     "date": "20260801",
-     "url": "https://www.livehindustan.com/weather/rain-alert-imd-weather-update-1-august-up-bihar-delhi-barish-weather-forecast-3-states-heavy-rainfall-relief-201785575460511.html",
+     "title": "\u0938\u094d\u0935\u091a\u094d\u091b\u0924\u093e \u092a\u094d\u0930\u092c\u0902\u0927\u0928 \u092e\u0949\u0921\u0932 \u0915\u093e \u0905\u0927\u094d\u092f\u092f\u0928 \u0915\u0930\u0928\u0947 \u0926\u0947\u0936\u092d\u0930 \u0938\u0947 \u0906\u090f \u0905\u0927\u093f\u0915\u093e\u0930\u0940",
+     "domain": "navabharat.com",
+     "date": "20260802",
+     "url": "https://navabharat.com/?p=535016",
      "tier": null
     },
     {
-     "title": "\u0d06\u0d31\u0d41\u0d35\u0d7c\u0d37\u0d24\u0d4d\u0d24\u0d3f\u0d28\u0d4d \u0d36\u0d47\u0d37\u0d02 \u0d28\u0d3e\u0d25\u0d41\u0d32\u0d3e \u0d1a\u0d41\u0d30\u0d24\u0d4d\u0d24\u0d3f\u0d32\u0d42\u0d1f\u0d46 \u0d35\u0d4d\u0d2f\u0d3e\u0d2a\u0d3e\u0d30\u0d02 \u0d2a\u0d41\u0d28\u0d30\u0d3e\u0d30\u0d02\u0d2d\u0d3f\u0d1a\u0d4d\u0d1a\u0d4d \u0d07\u0d28\u0d4d\u0d24\u0d4d\u0d2f\u0d2f\u0d41\u0d02 \u0d1a\u0d48\u0d28\u0d2f\u0d41\u0d02",
-     "domain": "mathrubhumi.com",
-     "date": "20260801",
-     "url": "https://www.mathrubhumi.com/news/india/india-china-trade-nathu-la-pass-2026-vfer6yao",
-     "tier": null
-    },
-    {
-     "title": "Home Minister Amit Shah approves advance release of Rs 2 , 117 . 85 crore to flood - affected states",
-     "domain": "moneycontrol.com",
-     "date": "20260801",
-     "url": "https://www.moneycontrol.com/news/india/home-minister-amit-shah-approves-advance-release-of-rs-2-117-85-crore-to-flood-affected-states-13991056.html",
-     "tier": null
-    },
-    {
-     "title": "Nathu La border trade resumes : India - China trade route reopens after six - year hiatus",
-     "domain": "moneycontrol.com",
-     "date": "20260801",
-     "url": "https://www.moneycontrol.com/news/india/nathu-la-border-trade-resumes-india-china-trade-route-reopens-after-six-year-hiatus-13990760.html",
-     "tier": null
-    },
-    {
-     "title": "West Bengal CM Suvendu Adhikari launches self - enumeration process for 2027 census programme",
-     "domain": "news.webindia123.com",
-     "date": "20260801",
-     "url": "https://news.webindia123.com/news/Articles/India/20260801/4481967.html",
-     "tier": null
-    },
-    {
-     "title": "Five NE states record below - normal monsoon rainfall in June - July despite widespread floods",
+     "title": "Arunachal January Tali , Hachu Lombo become first state women to scale 7 , 077 - metre Mt Kun",
      "domain": "prokerala.com",
-     "date": "20260801",
-     "url": "https://www.prokerala.com/news/articles/a1795345.html",
+     "date": "20260802",
+     "url": "https://www.prokerala.com/news/articles/a1795636.html",
      "tier": null
     },
     {
-     "title": "Gujarat weather : 4 dead , severely flooded areas evacuated ; red alert in 5 districts today",
+     "title": "  India approach towards China is managed competition , limited cooperation , and not reconciliation  ",
+     "domain": "prokerala.com",
+     "date": "20260802",
+     "url": "https://www.prokerala.com/news/articles/a1795591.html",
+     "tier": null
+    },
+    {
+     "title": "Secret weapons at the border : Did China use DEWs in 2022 Yangtse clash ? ",
      "domain": "theweek.in",
-     "date": "20260801",
-     "url": "https://www.theweek.in/news/india/2026/08/01/gujarat-weather-4-dead-severely-flooded-areas-evacuated-red-alert-in-5-districts-today.html",
+     "date": "20260802",
+     "url": "https://www.theweek.in/theweek/specials/2026/08/01/secret-weapons-at-the-border-did-china-use-dews-in-2022-yangtse-clash.html",
+     "tier": null
+    },
+    {
+     "title": "The Man of the Year who wasnt on the cover",
+     "domain": "theweek.in",
+     "date": "20260802",
+     "url": "https://www.theweek.in/columns/philip-mathew/2026/08/01/the-man-of-the-year-who-wasnt-on-the-cover.html",
      "tier": null
     }
    ],
-   "spike_quality_tier12_share": 0.1
+   "spike_quality_tier12_share": 0.15
   }
  }
 }
