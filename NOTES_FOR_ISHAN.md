@@ -283,3 +283,37 @@ documented in reproduce.sh. If you ever want byte-exact replication,
 the option is committing derived_returns.csv (log returns, not
 prices); whether derived returns clear the license line is your call,
 not mine. Everything else byte-reproduces.
+
+## 0.6 V8 decision memo: Pakistan monitor architecture (founder signs before any registration)
+
+The GRM template needs each country's channel architecture decided by
+you. Proposal for GRM-Pakistan, five channels mirroring the IGRM
+design logic (geography, institutions, doctrine, chokepoints), all
+terms ex-ante (no event names). Term lists below are DRAFTS for your
+edit; final lists get per-term rationale at registration, same as
+India's.
+
+1. india_east: the mirror of our pakistan_west. Draft terms: "Line of
+   Control", "ceasefire violations", "cross-border firing", "Kashmir
+   dispute", "surgical strikes", "airspace violation".
+2. afghanistan_border: Durand Line security. Drafts: "Durand Line",
+   "border fencing", "Torkham crossing", "cross-border militancy",
+   "refugee influx".
+3. internal_security: standing insurgencies and militancy. Drafts:
+   "Balochistan insurgency", "TTP", "sectarian violence", "security
+   operation", "suicide bombing" (category vocabulary, not events).
+4. china_cpec: the China relationship as economic-security corridor.
+   Drafts: "CPEC", "Gwadar port", "Chinese workers", "Belt and Road",
+   "project security".
+5. economy_external: IMF dependence and external stress. YOUR CALL
+   FLAG: this stretches "geopolitical" toward macro-financial risk;
+   Caldara-Iacoviello country series do include economic-coercion
+   vocabulary, but a pure-geopolitical Pakistan monitor would drop
+   this channel for, say, gulf_relations (Saudi/UAE bailout politics).
+   Decide the construct: economy_external or gulf_relations.
+
+Also your call: anchor word ("Pakistan" per the comparator precedent)
+and whether GRM-Pakistan publishes on the IGRM site or waits for the
+platform. Reply "approve pakistan memo with X" and registration
+follows with full rationale; then Indonesia and Vietnam memos come one
+per night.
