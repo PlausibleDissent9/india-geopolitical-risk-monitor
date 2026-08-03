@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prediction Archive, India Geopolitical Risk Monitor</title>
+<meta name="description" content="Every dated, falsifiable expectation this project publishes, graded in public when its horizon arrives. Registered before outcomes are known; never edited, only appended.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260803a">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">Professional research institutions almost never score their own
+  forecasts in public. This page exists so that this one cannot avoid it: every dated,
+  falsifiable expectation we publish is registered here before its outcome is known and
+  graded here when its horizon arrives. Right or wrong, with why.</p>
+</header>
+
+<h2>The rules</h2>
+<p class="chart-note">A prediction enters this archive only through a dated commit made
+before the outcome is knowable. At its horizon it receives exactly one grade: correct,
+wrong, or unresolvable, each with a one-paragraph account and links to the evidence.
+Entries are never edited afterward; corrections of the grading itself would go through
+the <a href="corrections.html">corrections ledger</a>. The index itself predicts nothing
+(<a href="methodology.html">methodology &sect;1</a>); predictions here come from the
+written analyses, and their scoring measures the author's judgment, not the instrument.</p>
+
+<h2>The archive</h2>
+<div id="list"><p class="empty">Loading&hellip;</p></div>
+
+<footer>
+  <p><a href="data.html">Underlying files &amp; citation</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+
+<script>
+"use strict";
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+(async () => {
+  const el = document.getElementById("list");
+  try {
+    const d = await (await fetch("data/predictions.json")).json();
+    if (!d.predictions.length) {
+      el.innerHTML = '<p class="empty">No registered predictions yet. The first arrive with ' +
+        'the forecast-experiment registrations and the quarterly review; each will appear here ' +
+        'the day it is committed, with its horizon date attached.</p>';
+      return;
+    }
+    el.innerHTML = "<ul class='receipts-list'>" + d.predictions.map(p =>
+      "<li><strong>" + esc(p.registered) + "</strong>: " + esc(p.claim) +
+      " <span class='kv'>&middot; horizon " + esc(p.horizon) + " &middot; " +
+      (p.grade ? "graded <strong>" + esc(p.grade) + "</strong>" : "pending") + "</span>" +
+      (p.account ? "<br><span class='kv'>" + esc(p.account) + "</span>" : "") + "</li>"
+    ).join("") + "</ul>";
+  } catch { el.innerHTML = '<p class="empty">Archive unavailable.</p>'; }
+})();
+</script>
+</body>
+</html>
