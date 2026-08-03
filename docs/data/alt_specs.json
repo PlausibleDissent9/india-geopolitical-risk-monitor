@@ -13,7 +13,7 @@
     "us_trade": 0.32,
     "shipping": 0.05
    },
-   "corr_with_primary": 0.8731
+   "corr_with_primary": 0.873
   },
   "import_exposure": {
    "weights": {
@@ -29,15 +29,15 @@
  "episode_thresholds_sigma": {
   "2.0": {
    "note": "primary specification",
-   "n_episodes": 523
+   "n_episodes": 524
   },
   "1.5": {
-   "n_episodes": 679,
+   "n_episodes": 680,
    "episode_day_jaccard_vs_primary": 0.67
   },
   "2.5": {
    "n_episodes": 380,
-   "episode_day_jaccard_vs_primary": 0.663
+   "episode_day_jaccard_vs_primary": 0.662
   }
  },
  "percentile_windows_days": {
