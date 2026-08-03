@@ -315,3 +315,48 @@ main, .masthead { animation: igrm-pagein 420ms cubic-bezier(0.22,1,0.36,1) both;
 /* Elevation v1.1: designed light on the headline (2026-08-04) */
 .big-number { text-shadow: 0 0 44px color-mix(in srgb, var(--state) 32%, transparent); }
 .component-row:hover { box-shadow: inset 2px 0 0 var(--state); }
+
+/* ==== Elevation v1.2, 2026-08-04: the cinematic pass, unmissable.
+   Layers-register: dimensional aurora, gradient ink, dramatic hero. ==== */
+body::before {
+  content: ""; position: fixed; inset: -40%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(45% 38% at 12% 8%, color-mix(in srgb, var(--calm) 22%, transparent), transparent 68%),
+    radial-gradient(40% 34% at 88% 15%, color-mix(in srgb, var(--severe) 16%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 75% 92%, color-mix(in srgb, var(--elevated) 12%, transparent), transparent 72%);
+  filter: blur(24px) saturate(1.25);
+  animation: aurora 28s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  from { transform: translate3d(-3%, -2%, 0) rotate(-1deg) scale(1); }
+  to   { transform: translate3d(3%, 3%, 0) rotate(1.5deg) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+:root[data-theme="light"] body::before { opacity: 0.55; filter: blur(30px); }
+
+.masthead .mono-eyebrow {
+  background: linear-gradient(90deg, var(--calm), var(--elevated), var(--severe));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-weight: 700;
+}
+.instrument {
+  position: relative; overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--state) 22%, var(--rule-soft));
+  box-shadow: var(--shadow), 0 0 80px -30px color-mix(in srgb, var(--state) 45%, transparent);
+}
+.instrument::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 80% at 18% 20%, color-mix(in srgb, var(--state) 9%, transparent), transparent 60%);
+}
+.big-number {
+  font-size: clamp(5rem, 13vw, 8.5rem);
+  text-shadow: 0 0 60px color-mix(in srgb, var(--state) 45%, transparent),
+               0 0 120px color-mix(in srgb, var(--state) 25%, transparent);
+}
+.band-track { height: 7px; box-shadow: 0 0 24px color-mix(in srgb, var(--elevated) 35%, transparent); }
+.component-score { text-shadow: 0 0 18px color-mix(in srgb, var(--state) 30%, transparent); }
+h2 { position: relative; }
+.chart-section h2::after, .archive-section h2::after, .note-section h2::after {
+  content: ""; display: block; width: 56px; height: 2px; margin-top: 8px;
+  background: linear-gradient(90deg, var(--state), transparent); border-radius: 2px;
+}

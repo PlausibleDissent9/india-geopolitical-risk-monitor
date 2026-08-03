@@ -212,3 +212,16 @@ tbody tr:hover { box-shadow: inset 2px 0 0 var(--accent); }
   -webkit-backdrop-filter: none; backdrop-filter: none;
   background: var(--card);
 }
+
+/* ==== Elevation v1.2: subpage cinematic depth to match the homepage. ==== */
+body::before {
+  background:
+    radial-gradient(50% 42% at 15% 10%, color-mix(in srgb, var(--calm, var(--ok)) 18%, transparent), transparent 68%),
+    radial-gradient(44% 38% at 88% 88%, color-mix(in srgb, var(--severe, var(--accent)) 14%, transparent), transparent 70%) !important;
+  filter: blur(22px) saturate(1.2);
+}
+header h1 a { 
+  background: linear-gradient(120deg, var(--fg) 60%, var(--accent));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.headline .num { text-shadow: 0 0 44px color-mix(in srgb, var(--accent) 40%, transparent); }
