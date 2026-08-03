@@ -13,361 +13,273 @@
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css?v=20260804a">
 <style>
-  .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  @media (max-width: 860px) { .portal-grid { grid-template-columns: 1fr; } }
-  .pane { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.3rem; }
-  .pane h2 { border: none; padding: 0; margin: 0 0 0.6rem; font-size: 1rem; }
-  textarea {
-    width: 100%; min-height: 300px; resize: vertical;
-    font: 0.92rem/1.6 ui-monospace, Menlo, monospace;
-    background: var(--bg); color: var(--fg);
-    border: 1px solid var(--line); border-radius: 8px; padding: 0.8rem;
-  }
-  textarea:focus, input:focus { outline: 2px solid var(--accent); border-color: transparent; }
-  input[type="text"], input[type="password"] {
-    font: inherit; background: var(--bg); color: var(--fg);
-    border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.75rem;
-  }
-  .btn {
-    font: inherit; font-weight: 500; cursor: pointer;
-    background: var(--accent); color: #fff; border: none;
-    border-radius: 8px; padding: 0.55rem 1.1rem;
-    transition: filter 150ms ease;
-  }
-  .btn:hover { filter: brightness(1.12); }
-  .btn.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
-  .btn.ghost:hover { color: var(--fg); border-color: var(--muted); }
-  .btn:disabled { opacity: 0.5; cursor: default; }
-  .row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin: 0.6rem 0; }
-  .status { font-size: 0.85rem; color: var(--muted); min-height: 1.2em; }
-  .status.ok { color: var(--ok); } .status.err { color: var(--bad); }
-  .wordcount { font-variant-numeric: tabular-nums; }
-  .wordcount.good { color: var(--ok); }
-  .preview { border-top: 1px dashed var(--line); margin-top: 0.8rem; padding-top: 0.8rem; }
-  .runrow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
-  .runrow:last-child { border: none; }
-  details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
-  .metric { display: inline-block; margin: 0 1.2rem 0.5rem 0; }
-  .metric b { font-family: "Fraunces", Georgia, serif; font-size: 1.5rem; }
-  .metric span { display: block; font-size: 0.75rem; color: var(--muted); }
+  .tabs { display:flex; gap:6px; margin:1.2rem 0 0; flex-wrap:wrap }
+  .tab { font:inherit; font-size:0.86rem; padding:7px 16px; border-radius:999px 999px 0 0;
+         border:1px solid var(--line); border-bottom:none; background:transparent;
+         color:var(--muted); cursor:pointer }
+  .tab.on { background:var(--card); color:var(--fg); border-color:var(--accent) }
+  .panel { border:1px solid var(--line); border-radius:0 10px 10px 10px; padding:1.1rem 1.2rem;
+           background:color-mix(in srgb, var(--card) 70%, transparent) }
+  .row { display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap }
+  input[type="password"], input[type="text"], textarea { font:inherit; background:var(--bg); color:var(--fg);
+    border:1px solid var(--line); border-radius:8px; padding:0.5rem 0.75rem }
+  textarea { width:100%; min-height:300px; resize:vertical; font:0.9rem/1.5 ui-monospace,Menlo,monospace }
+  textarea:focus, input:focus { outline:2px solid var(--accent); border-color:transparent }
+  .btn.primary { background:var(--accent); color:#fff; border-color:var(--accent) }
+  .status { font-size:0.85rem; color:var(--muted); margin-top:0.5rem; min-height:1.2em }
+  .scorecards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:0.7rem }
+  .sc { border:1px solid var(--line); border-radius:10px; padding:0.7rem 0.9rem; background:var(--card) }
+  .sc .v { font-family:"Fraunces",Georgia,serif; font-size:1.7rem; font-weight:600;
+           text-shadow:0 0 22px color-mix(in srgb, var(--accent) 25%, transparent) }
+  .sc a { text-decoration:none }
+  .labelcard { border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem; margin:0.7rem 0;
+               background:var(--card) }
+  .labelcard .t { font-size:1.02rem; line-height:1.45 }
+  .labelbtns { display:flex; gap:0.5rem; margin-top:0.7rem }
+  .labelbtns .btn { padding:0.45rem 1.1rem; font-weight:600 }
+  .on-b { border-color:var(--ok); color:var(--ok) } .off-b { border-color:var(--bad); color:var(--bad) }
+  .health-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:0.7rem }
+  .prose-mini h1,.prose-mini h2 { font-size:1rem } .prose-mini { font-size:0.9rem }
+  .pill { display:inline-block; font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase;
+          padding:0.1em 0.55em; border-radius:999px; border:1px solid var(--line); color:var(--muted) }
+  .pill.ok { color:var(--ok); border-color:var(--ok) } .pill.bad { color:var(--bad); border-color:var(--bad) }
 </style>
 </head>
 <body>
 <header>
   <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
   <nav class="masthead">
-    <a href="methodology.html">Methodology</a>
-    <a href="validation.html">Validation</a>
-    <a href="analysis.html">Analysis</a>
-    <a href="maps.html">Maps</a>
-    <a href="data.html">Data</a>
-    <a href="notes.html">Notes</a>
+    <a href="methodology.html">Methodology</a><a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a><a href="data.html">Data</a><a href="notes.html">Notes</a>
   </nav>
-  <p class="definition">The author's portal: write and publish the weekly note, read the week's
-  sourced research, and run the pipeline, from here, authenticated against GitHub, token
-  never leaving this device.</p>
+  <p class="definition">The author's console. Sign in once per device with a fine-grained
+  GitHub token (Contents read-write + Actions read, this repository only); it is stored in
+  this browser only and sent nowhere except api.github.com.</p>
 </header>
 
-<div id="login" class="pane" style="max-width: 34rem">
-  <h2>Sign in</h2>
-  <p class="kv">Paste a GitHub fine-grained personal access token scoped to
-  <code>india-geopolitical-risk-monitor</code> with <b>Contents: read &amp; write</b> and
-  <b>Actions: read &amp; write</b>. It is stored only in this browser on this device.</p>
+<div id="auth" class="panel" style="margin-top:1rem">
   <div class="row">
-    <input type="password" id="token" placeholder="github_pat_…" style="flex:1; min-width: 240px">
-    <button class="btn" id="signin">Sign in</button>
+    <input type="password" id="token" placeholder="github_pat_…" style="flex:1;min-width:240px">
+    <button class="btn primary" id="signin">Sign in</button>
+    <button class="btn" id="signout" hidden>Sign out</button>
   </div>
   <p class="status" id="login-status"></p>
-  <details><summary>How to create the token (60 seconds)</summary>
-    <p class="kv">GitHub → Settings → Developer settings → Fine-grained tokens → Generate new
-    token → Repository access: <em>Only select repositories</em> →
-    <code>india-geopolitical-risk-monitor</code> → Permissions: Contents (Read and write),
-    Actions (Read and write) → Generate, copy, paste here.</p>
-  </details>
 </div>
 
-<div id="studio" hidden>
-  <p class="kv" style="display:flex; justify-content:space-between; align-items:center">
-    <span id="whoami"></span>
-    <button class="btn ghost" id="signout">Sign out</button>
-  </p>
+<div class="tabs" id="tabs" hidden>
+  <button class="tab on" data-t="today">Today</button>
+  <button class="tab" data-t="label">Label <span id="label-count" class="pill"></span></button>
+  <button class="tab" data-t="write">Write</button>
+  <button class="tab" data-t="health">Health</button>
+  <button class="tab" data-t="research">Research</button>
+</div>
 
-  <div class="portal-grid">
-    <div class="pane">
-      <h2>✍️ This week's note, <span id="week-tag"></span></h2>
-      <textarea id="note-text" placeholder="# Headline claim&#10;&#10;Mechanism, grounded in this week's sources…&#10;&#10;What it does and doesn't imply. One number worth remembering."></textarea>
-      <div class="row">
-        <button class="btn" id="publish">Publish note</button>
-        <span class="status wordcount" id="wordcount">0 words · aim ~250</span>
-      </div>
-      <p class="status" id="publish-status"></p>
-      <div class="preview prose" id="note-preview"></div>
-    </div>
+<div class="panel" id="panel-today" hidden>
+  <div class="scorecards" id="scorecards"></div>
+  <p class="kv" id="today-note" style="margin-top:0.8rem"></p>
+</div>
 
-    <div>
-      <div class="pane" style="margin-bottom: 1.5rem">
-        <h2>📚 This week's research (the datapack)</h2>
-        <p class="kv">Scores, movers, episodes, and the sourced articles behind them, your evidence base for the note.</p>
-        <div class="prose" id="datapack"><p class="empty">Loading…</p></div>
-      </div>
-
-      <div class="pane" style="margin-bottom: 1.5rem">
-        <h2>📈 Today's numbers</h2>
-        <div id="numbers"><p class="empty">Loading…</p></div>
-      </div>
-
-      <div class="pane" style="margin-bottom: 1.5rem">
-        <h2>📊 Analytics</h2>
-        <div id="analytics"><p class="empty">Loading…</p></div>
-        <p class="kv" id="referrers"></p>
-      </div>
-
-      <div class="pane">
-        <h2>⚙️ Pipeline</h2>
-        <div class="row">
-          <button class="btn ghost" id="run-daily">Run daily update</button>
-          <button class="btn ghost" id="run-validate">Run validation</button>
-        </div>
-        <p class="status" id="run-status"></p>
-        <div id="runs"><p class="empty">Loading…</p></div>
-      </div>
-    </div>
+<div class="panel" id="panel-label" hidden>
+  <p class="kv">The calibration flow: your independent ruling per sampled article, by the
+  <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/auditor/RUBRIC.md" rel="noopener" target="_blank">rubric</a>.
+  Title and domain are the whole evidence; ABSTAIN when a ruling would need the full text.
+  Rulings commit in batches straight to the repository; the auditor calibrates at 100.</p>
+  <div id="labelwrap"><p class="empty">Loading queue&hellip;</p></div>
+  <div class="row" style="margin-top:0.6rem">
+    <button class="btn primary" id="savelabels" disabled>Commit labels</button>
+    <span class="status" id="label-status"></span>
   </div>
 </div>
 
-<footer>
-  <p><a href="./">&larr; back to the site</a></p>
-  <p>Unlisted page; bookmark it. The token grants write access to your repo, treat it like a password.</p>
-</footer>
+<div class="panel" id="panel-write" hidden>
+  <p class="kv">Weekly note: commits to <code>notes/</code>; the site republishes within a minute.</p>
+  <div class="row"><input type="text" id="notename" placeholder="2026-W32.md" style="min-width:160px"></div>
+  <textarea id="notebody" placeholder="# Week 32, 2026&#10;&#10;Headline claim…"></textarea>
+  <div class="row" style="margin-top:0.6rem">
+    <button class="btn primary" id="publishnote">Publish note</button>
+    <span class="status" id="note-status"></span>
+  </div>
+</div>
+
+<div class="panel" id="panel-health" hidden>
+  <div class="health-grid" id="healthgrid"></div>
+  <p class="kv" style="margin-top:0.8rem">
+    <a href="corrections.html">Corrections ledger</a> &middot;
+    <a href="data/reliability.json">Reliability record</a> &middot;
+    <a href="data/precision.json">Precision audit</a> &middot;
+    <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions" rel="noopener" target="_blank">Actions</a></p>
+</div>
+
+<div class="panel" id="panel-research" hidden>
+  <div id="datapack" class="prose prose-mini"><p class="empty">Loading&hellip;</p></div>
+</div>
 
 <script>
 "use strict";
 const REPO = "PlausibleDissent9/india-geopolitical-risk-monitor";
-const API = "https://api.github.com";
-const $ = (id) => document.getElementById(id);
-const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+const $ = id => document.getElementById(id);
+let TOKEN = localStorage.igrmPat || "";
 
-function isoWeekTag(d = new Date()) {
-  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
-  const y = t.getUTCFullYear();
-  const week = Math.ceil((((t - Date.UTC(y, 0, 1)) / 86400000) + 1) / 7);
-  return `${y}-W${String(week).padStart(2, "0")}`;
+function gh(path, opts = {}) {
+  return fetch("https://api.github.com" + path, { ...opts, headers: {
+    "Authorization": "Bearer " + TOKEN, "Accept": "application/vnd.github+json",
+    ...(opts.headers || {}) } });
 }
-
-function md(text) {
-  const escd = esc(text);
-  return escd.split(/\n{2,}/).map(b => {
-    b = b.trim();
-    if (!b) return "";
-    if (b.startsWith("## ")) return `<h3>${b.slice(3)}</h3>`;
-    if (b.startsWith("# ")) return `<h2>${b.slice(2)}</h2>`;
-    if (b.split("\n").every(l => l.trim().startsWith("- "))) {
-      return "<ul>" + b.split("\n").map(l => `<li>${l.trim().slice(2)}</li>`).join("") + "</ul>";
+const b64e = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+const b64d = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")), c=>c.charCodeAt(0)));
+async function getFile(path) {
+  const r = await gh(`/repos/${REPO}/contents/${encodeURI(path)}`);
+  if (r.status === 404) return { exists:false, sha:null, text:"" };
+  const f = await r.json();
+  return { exists:true, sha:f.sha, text:b64d(f.content) };
+}
+async function putFile(path, text, message, sha) {
+  const body = { message, content: b64e(text) };
+  if (sha) body.sha = sha;
+  const r = await gh(`/repos/${REPO}/contents/${encodeURI(path)}`, { method:"PUT", body: JSON.stringify(body) });
+  if (!r.ok) throw new Error("commit " + r.status);
+  return r.json();
+}
+function csvParse(text) {
+  const lines = text.trim().split("\n"); if (lines.length < 2) return [];
+  const head = lines[0].split(",");
+  return lines.slice(1).filter(Boolean).map(l => {
+    const cells = []; let cur = "", inq = false;
+    for (const ch of l) {
+      if (ch === '"') inq = !inq;
+      else if (ch === "," && !inq) { cells.push(cur); cur = ""; }
+      else cur += ch;
     }
-    return "<p>" + b.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\[(.+?)\]\((https?:[^)]+)\)/g, '<a href="$2" rel="noopener">$1</a>')
-      .replace(/\n/g, "<br>") + "</p>";
-  }).join("");
-}
-
-const gh = async (path, opts = {}) => {
-  const r = await fetch(`${API}${path}`, {
-    ...opts,
-    headers: {
-      "Authorization": `Bearer ${localStorage.igrmToken}`,
-      "Accept": "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      ...(opts.headers || {}),
-    },
+    cells.push(cur);
+    return Object.fromEntries(head.map((h,i)=>[h, cells[i] ?? ""]));
   });
-  if (!r.ok && r.status !== 404) throw new Error(`${r.status} ${(await r.json().catch(() => ({}))).message || ""}`);
-  return r;
-};
-
-async function signin(token) {
-  localStorage.igrmToken = token;
-  const r = await gh("/user");
-  if (!r.ok) throw new Error("token rejected");
-  const user = await r.json();
-  $("whoami").textContent = `Signed in as ${user.login}`;
-  $("login").hidden = true;
-  $("studio").hidden = false;
-  loadStudio();
 }
 
-async function loadStudio() {
-  const tag = isoWeekTag();
-  $("week-tag").textContent = tag;
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  ["today","label","write","health","research"].forEach(t => $("panel-"+t).hidden = (t !== b.dataset.t));
+}));
 
-  // Existing note for this week, if any
+async function boot() {
+  const r = await gh("/user");
+  if (!r.ok) { $("login-status").textContent = "Token rejected."; return; }
+  const u = await r.json();
+  $("login-status").textContent = "Signed in as " + u.login + ".";
+  localStorage.igrmPat = TOKEN;
+  $("signout").hidden = false; $("tabs").hidden = false; $("panel-today").hidden = false;
+  loadToday(); loadLabels(); loadHealth(); loadResearch();
+}
+$("signin").addEventListener("click", () => { TOKEN = $("token").value.trim(); if (TOKEN) boot(); });
+$("signout").addEventListener("click", () => { localStorage.removeItem("igrmPat"); location.reload(); });
+if (TOKEN) boot();
+
+async function loadToday() {
   try {
-    const r = await gh(`/repos/${REPO}/contents/notes/${tag}.md`);
-    if (r.ok) {
-      const f = await r.json();
-      $("note-text").value = new TextDecoder().decode(
-        Uint8Array.from(atob(f.content.replace(/\n/g, "")), c => c.charCodeAt(0)));
-      $("note-text").dataset.sha = f.sha;
-      $("publish-status").textContent = "A note for this week already exists, publishing updates it.";
+    const latest = await (await fetch("data/latest.json?ts=" + Date.now())).json();
+    let sg = null;
+    try { sg = await (await fetch("data/stress_gauge.json")).json(); } catch {}
+    let html = `<div class="sc"><div class="kv">Composite &middot; ${esc(latest.date)}</div>
+      <div class="v">${esc(latest.composite)}</div></div>`;
+    for (const [k,c] of Object.entries(latest.channels || {})) {
+      html += `<div class="sc"><div class="kv">${esc(c.label)}</div><div class="v">${c.score==null?"–":esc(c.score.toFixed(1))}</div>
+        <a class="kv" href="receipts.html?channel=${esc(k)}">evidence &rarr;</a></div>`;
     }
-  } catch (e) { /* none yet */ }
-  updateCount();
+    if (sg && sg.gauge != null) html += `<div class="sc"><div class="kv">Stress gauge</div><div class="v">${esc(sg.gauge)}</div></div>`;
+    $("scorecards").innerHTML = html;
+    $("today-note").textContent = "Every card links to its evidence page: query, tier-ranked articles, expert shelf, event record.";
+  } catch { $("scorecards").innerHTML = '<p class="empty">Scores unavailable.</p>'; }
+}
 
-  // Latest datapack
+let QUEUE = [], AUTHOR = {}, PICKS = {};
+async function loadLabels() {
+  const q = await getFile("data/raw/audit_queue.csv");
+  const a = await getFile("data/raw/audit_labels_author.csv");
+  AUTHOR = {};
+  if (a.exists) for (const r of csvParse(a.text)) if (r.url) AUTHOR[r.url] = r.label;
+  QUEUE = q.exists ? csvParse(q.text).filter(r => r.url && !AUTHOR[r.url]) : [];
+  $("label-count").textContent = Object.keys(AUTHOR).length + "/100";
+  const wrap = $("labelwrap");
+  if (!QUEUE.length) { wrap.innerHTML = '<p class="empty">Queue clear. New samples arrive with each daily run.</p>'; return; }
+  wrap.innerHTML = QUEUE.slice(0, 15).map((r,i) => `
+    <div class="labelcard" data-i="${i}">
+      <span class="pill">${esc(r.channel)}</span> <span class="kv">${esc(r.domain)}</span>
+      <div class="t">${esc(r.title)}</div>
+      <div class="labelbtns">
+        <button class="btn on-b" data-l="ON">ON</button>
+        <button class="btn off-b" data-l="OFF">OFF</button>
+        <button class="btn" data-l="ABSTAIN">Abstain</button>
+      </div>
+    </div>`).join("");
+  wrap.querySelectorAll(".labelcard").forEach(card => {
+    card.querySelectorAll("[data-l]").forEach(b => b.addEventListener("click", () => {
+      const row = QUEUE[Number(card.dataset.i)];
+      PICKS[row.url] = b.dataset.l;
+      card.style.opacity = 0.45;
+      card.querySelectorAll("[data-l]").forEach(x => x.disabled = true);
+      b.disabled = false; b.style.outline = "2px solid var(--accent)";
+      $("savelabels").disabled = false;
+      $("label-status").textContent = Object.keys(PICKS).length + " ruling(s) pending commit";
+    }));
+  });
+}
+$("savelabels").addEventListener("click", async () => {
+  try {
+    $("savelabels").disabled = true;
+    const a = await getFile("data/raw/audit_labels_author.csv");
+    let text = a.exists ? a.text.trim() + "\n" : "url,label\n";
+    for (const [url, label] of Object.entries(PICKS))
+      text += `"${url.replace(/"/g,'""')}",${label}\n`;
+    await putFile("data/raw/audit_labels_author.csv", text,
+      `author labels: +${Object.keys(PICKS).length} (${new Date().toISOString().slice(0,10)})`, a.sha);
+    $("label-status").textContent = "Committed " + Object.keys(PICKS).length + " ruling(s).";
+    PICKS = {}; loadLabels();
+  } catch (e) { $("label-status").textContent = "Commit failed; retry. " + e.message; $("savelabels").disabled = false; }
+});
+
+$("publishnote").addEventListener("click", async () => {
+  const name = $("notename").value.trim(), body = $("notebody").value;
+  if (!/^\d{4}-W\d{2}\.md$/.test(name)) { $("note-status").textContent = "Filename like 2026-W32.md"; return; }
+  if (body.trim().length < 100) { $("note-status").textContent = "Note looks too short."; return; }
+  try {
+    const existing = await getFile("notes/" + name);
+    await putFile("notes/" + name, body, "note: " + name, existing.sha);
+    $("note-status").textContent = "Published. The site regenerates within a minute.";
+  } catch (e) { $("note-status").textContent = "Failed: " + e.message; }
+});
+
+async function loadHealth() {
+  try {
+    const runs = await (await gh(`/repos/${REPO}/actions/runs?per_page=10`)).json();
+    let rel = null, prec = null;
+    try { rel = await (await fetch("data/reliability.json")).json(); } catch {}
+    try { prec = await (await fetch("data/precision.json")).json(); } catch {}
+    const bad = (runs.workflow_runs||[]).filter(r => !["success","skipped",null].includes(r.conclusion));
+    let html = `<div class="sc"><div class="kv">Workflow failures (recent)</div>
+      <div class="v">${bad.length}</div><span class="pill ${bad.length? "bad":"ok"}">${bad.length? "attention":"all green"}</span></div>`;
+    if (rel) html += `<div class="sc"><div class="kv">Morning contract</div>
+      <div class="v">${rel.on_time}/${rel.scored_days}</div><span class="kv">on time, all-time; misses stay listed</span></div>`;
+    if (prec) html += `<div class="sc"><div class="kv">Precision audit</div>
+      <div class="v">${prec.author_labels_n}/${prec.calibration_threshold}</div>
+      <span class="pill ${prec.calibrated? "ok":""}">${prec.calibrated? "calibrated":"uncalibrated"}</span></div>`;
+    $("healthgrid").innerHTML = html;
+  } catch { $("healthgrid").innerHTML = '<p class="empty">Health unavailable.</p>'; }
+}
+
+function md(t){return t.replace(/^### (.*)$/gm,"<h3>$1</h3>").replace(/^## (.*)$/gm,"<h2>$1</h2>")
+  .replace(/^# (.*)$/gm,"<h1>$1</h1>").replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" rel="noopener" target="_blank">$1</a>')
+  .replace(/^\* (.*)$/gm,"<li>$1</li>").replace(/\n{2,}/g,"<br><br>");}
+async function loadResearch() {
   try {
     const r = await gh(`/repos/${REPO}/contents/notes-inbox`);
     const files = (await r.json()).filter(f => f.name.startsWith("datapack"));
-    if (files.length) {
-      const latest = files.sort((a, b) => a.name.localeCompare(b.name)).pop();
-      const fr = await gh(`/repos/${REPO}/contents/notes-inbox/${latest.name}`);
-      const f = await fr.json();
-      const text = new TextDecoder().decode(
-        Uint8Array.from(atob(f.content.replace(/\n/g, "")), c => c.charCodeAt(0)));
-      const dl = `<p><a class="btn" download="${latest.name}" ` +
-        `href="data:text/markdown;charset=utf-8,${encodeURIComponent(text)}">` +
-        `Download ${latest.name}</a></p>`;
-      $("datapack").innerHTML = dl + md(text) + dl;
-    } else {
-      $("datapack").innerHTML = '<p class="empty">No datapack yet, it lands every Friday.</p>';
-    }
-  } catch (e) { $("datapack").innerHTML = '<p class="empty">Could not load datapack.</p>'; }
-
-  // Numbers
-  try {
-    const [latest, val] = await Promise.all([
-      fetch("data/latest.json").then(r => r.json()),
-      fetch("data/validation.json").then(r => r.ok ? r.json() : null).catch(() => null),
-    ]);
-    let html = `<span class="metric"><b>${latest.composite ?? "-"}</b><span>composite · ${esc(latest.date || "")}</span></span>`;
-    if (val && val.hit_rate) {
-      html += `<span class="metric"><b>${val.hit_rate.overall.hits}/${val.hit_rate.overall.n}</b><span>pre-registered hits</span></span>`;
-    }
-    for (const [ch, c] of Object.entries(latest.channels || {})) {
-      html += `<span class="metric"><b>${c.score ?? "-"}</b><span>${esc(c.label)}</span></span>`;
-    }
-    $("numbers").innerHTML = html;
-  } catch (e) { $("numbers").innerHTML = '<p class="empty">Could not load.</p>'; }
-
-  loadRuns();
-  loadAnalytics();
-}
-
-async function loadAnalytics() {
-  const el = $("analytics");
-  try {
-    const [runsR, viewsR, refsR, latest, notes] = await Promise.all([
-      gh(`/repos/${REPO}/actions/runs?per_page=14`),
-      gh(`/repos/${REPO}/traffic/views`),
-      gh(`/repos/${REPO}/traffic/popular/referrers`),
-      fetch("data/latest.json").then(r => r.json()),
-      fetch("data/notes.json").then(r => r.ok ? r.json() : []).catch(() => []),
-    ]);
-    const runs = ((await runsR.json()).workflow_runs || []).filter(r => r.conclusion);
-    const okRate = runs.length
-      ? Math.round(100 * runs.filter(r => r.conclusion === "success").length / runs.length)
-      : null;
-    const views = await viewsR.json();
-    const staleDays = Math.max(0, Math.round(
-      (Date.now() - new Date(latest.date)) / 86400000) - 1);
-    const fresh = staleDays <= 1 ? "current" : `${staleDays}d behind`;
-
-    let streak = 0;
-    const noteWeeks = new Set(notes.map(n => n.week));
-    const probe = new Date();
-    for (;;) {
-      if (noteWeeks.has(isoWeekTag(probe))) { streak++; probe.setDate(probe.getDate() - 7); }
-      else break;
-    }
-    el.innerHTML =
-      `<span class="metric"><b>${views.count ?? "…"}</b><span>repo views · 14d</span></span>` +
-      `<span class="metric"><b>${views.uniques ?? "…"}</b><span>unique visitors</span></span>` +
-      `<span class="metric"><b>${okRate == null ? "…" : okRate + "%"}</b><span>pipeline health · 14 runs</span></span>` +
-      `<span class="metric"><b>${fresh}</b><span>data freshness</span></span>` +
-      `<span class="metric"><b>${notes.length}</b><span>notes published</span></span>` +
-      `<span class="metric"><b>${streak}</b><span>week streak</span></span>`;
-    const refs = (await refsR.json()).slice(0, 3)
-      .map(r => `${r.referrer} (${r.uniques})`).join(" · ");
-    $("referrers").textContent = refs ? "Top referrers: " + refs : "";
-  } catch (e) {
-    el.innerHTML = '<p class="empty">Analytics need the token scopes on the sign-in card.</p>';
-  }
-}
-
-async function loadRuns() {
-  try {
-    const r = await gh(`/repos/${REPO}/actions/runs?per_page=5`);
-    const runs = (await r.json()).workflow_runs || [];
-    $("runs").innerHTML = runs.map(x =>
-      `<div class="runrow"><span>${esc(x.name)} #${x.run_number}</span>` +
-      `<span class="${x.conclusion === "success" ? "hit" : x.conclusion ? "miss" : ""}">` +
-      `${esc(x.conclusion || x.status)}</span></div>`).join("");
-  } catch (e) { $("runs").innerHTML = '<p class="empty">Could not load runs.</p>'; }
-}
-
-function updateCount() {
-  const words = ($("note-text").value.trim().match(/\S+/g) || []).length;
-  const el = $("wordcount");
-  el.textContent = `${words} words · aim ~250`;
-  el.classList.toggle("good", words >= 180 && words <= 330);
-  $("note-preview").innerHTML = md($("note-text").value);
-}
-
-async function publish() {
-  const tag = isoWeekTag();
-  const text = $("note-text").value.trim();
-  const st = $("publish-status");
-  if (!text) { st.textContent = "Nothing to publish."; return; }
-  $("publish").disabled = true;
-  st.className = "status"; st.textContent = "Publishing…";
-  try {
-    const payload = {
-      message: `note: ${tag}`,
-      content: btoa(String.fromCharCode(...new TextEncoder().encode(text + "\n"))),
-    };
-    if ($("note-text").dataset.sha) payload.sha = $("note-text").dataset.sha;
-    const r = await gh(`/repos/${REPO}/contents/notes/${tag}.md`, {
-      method: "PUT", body: JSON.stringify(payload),
-    });
-    const out = await r.json();
-    $("note-text").dataset.sha = out.content.sha;
-    st.className = "status ok";
-    st.innerHTML = `Published. It appears on the site with the next pipeline run, or trigger one in ⚙️.`;
-  } catch (e) {
-    st.className = "status err"; st.textContent = `Failed: ${e.message}`;
-  }
-  $("publish").disabled = false;
-}
-
-async function dispatch(workflow, label) {
-  const st = $("run-status");
-  st.className = "status"; st.textContent = `Starting ${label}…`;
-  try {
-    await gh(`/repos/${REPO}/actions/workflows/${workflow}/dispatches`, {
-      method: "POST", body: JSON.stringify({ ref: "main" }),
-    });
-    st.className = "status ok"; st.textContent = `${label} started.`;
-    setTimeout(loadRuns, 4000);
-  } catch (e) { st.className = "status err"; st.textContent = `Failed: ${e.message}`; }
-}
-
-$("signin").addEventListener("click", async () => {
-  $("login-status").textContent = "Checking…";
-  try { await signin($("token").value.trim()); }
-  catch (e) { $("login-status").textContent = "Token rejected, check scopes."; }
-});
-$("signout").addEventListener("click", () => {
-  delete localStorage.igrmToken;
-  location.reload();
-});
-$("note-text").addEventListener("input", updateCount);
-$("publish").addEventListener("click", publish);
-$("run-daily").addEventListener("click", () => dispatch("daily.yml", "daily update"));
-$("run-validate").addEventListener("click", () => dispatch("validate.yml", "validation"));
-
-if (localStorage.igrmToken) {
-  signin(localStorage.igrmToken).catch(() => {
-    delete localStorage.igrmToken;
-  });
+    if (!files.length) { $("datapack").innerHTML = '<p class="empty">No datapack yet; it lands every Friday.</p>'; return; }
+    const latest = files.sort((a,b)=>a.name.localeCompare(b.name)).pop();
+    const f = await getFile("notes-inbox/" + latest.name);
+    const dl = `<p><a class="btn" download="${esc(latest.name)}" href="data:text/markdown;charset=utf-8,${encodeURIComponent(f.text)}">Download ${esc(latest.name)}</a></p>`;
+    $("datapack").innerHTML = dl + md(esc(f.text)) + dl;
+  } catch { $("datapack").innerHTML = '<p class="empty">Could not load datapack.</p>'; }
 }
 </script>
 </body>
