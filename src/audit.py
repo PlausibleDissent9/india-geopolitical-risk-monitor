@@ -60,7 +60,12 @@ def main() -> None:
         present = {k: v for k, v in sg["components"].items() if v is not None}
         if present and sg.get("gauge") is not None:
             calc = sum(present[k] * w[k] for k in present) / sum(w[k] for k in present)
-            _fail(failures, abs(calc - sg["gauge"]) <= TOL,
+            # Both sides are published rounded to 0.1: the gauge itself
+            # (+/-0.05) and each component feeding this recompute
+            # (weighted +/-0.05 combined), so honest arithmetic can
+            # differ by up to ~0.10. A 0.051 tolerance here blocked
+            # three green days over 2026-08-02/03 (ledger entry).
+            _fail(failures, abs(calc - sg["gauge"]) <= 0.101,
                   f"gauge {sg['gauge']} == weighted components {round(calc, 2)}")
 
     cm_path = DATA / "comparators.json"

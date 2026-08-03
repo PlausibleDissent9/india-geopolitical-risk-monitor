@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   # Scoped by ref: an unscoped group lets a Dependabot PR branch's push
@@ -32,6 +33,22 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
+      - name: Morning-contract guarantor (dispatch daily if stale past 00:30 UTC)
+        # The daily workflow's own schedule crons have never fired on
+        # time in this repo (2026-08-01 through 08-03: every on-time
+        # morning publish was a push or self-heal, never the cron).
+        # THIS workflow's 2-hourly cron demonstrably does fire, so it
+        # doubles as the heartbeat: any nowcast run after 00:30 UTC
+        # that finds yesterday's final unpublished dispatches the daily.
+        run: |
+          NOW_H=$(date -u +%H); NOW_M=$(date -u +%M); TODAY=$(date -u +%F)
+          GEN=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
+          if [ "$GEN" != "$TODAY" ] && { [ "$NOW_H" -gt 0 ] || [ "$NOW_M" -ge 30 ]; }; then
+            echo "latest generated $GEN != $TODAY; dispatching daily-update"
+            curl -s -X POST               -H "Authorization: Bearer ${{ github.token }}"               -H "Accept: application/vnd.github+json"               "https://api.github.com/repos/${{ github.repository }}/actions/workflows/daily.yml/dispatches"               -d '{"ref":"main"}'
+          else
+            echo "final already published today ($GEN) or before 00:30 UTC; no dispatch"
+          fi
       - name: Compute provisional today-so-far
         run: python -m src.nowcast
       - name: Commit nowcast payload

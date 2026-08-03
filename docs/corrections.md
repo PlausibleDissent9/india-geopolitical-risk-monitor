@@ -88,3 +88,17 @@ the dual-computation audit module, the same day it was written. Fixed:
 the exclusion is removed, and the audit now runs inside the daily
 workflow before any commit. Public exposure: map totals ~0.03% high
 relative to the reproducible store, one day.
+
+## 2026-08-03: audit tolerance blocked three green days, fixed with the arithmetic documented
+
+The dual-computation audit's gauge check compared two independently
+rounded published values under a 0.051 tolerance, but rounded-inputs
+arithmetic can honestly differ by up to about 0.10, so the audit
+false-positived (54.9 vs 54.85) and failed three daily runs across
+2026-08-02 and 08-03. By design the failure was loud and the site
+served stale-but-labeled data, never wrong data; the availability cost
+was real. Tolerance corrected to 0.101 for that one check with the
+derivation in a comment. Also armored the same day: the daily
+schedule's crons have never fired on time in this repository, so the
+reliably-firing nowcast workflow now dispatches the daily run whenever
+yesterday's final is unpublished past 00:30 UTC.
