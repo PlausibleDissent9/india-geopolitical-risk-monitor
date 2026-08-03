@@ -44,41 +44,105 @@ function tierBadge(tier) {
   const q = new URLSearchParams(location.search);
   const channel = q.get("channel");
   const el = document.getElementById("body");
-  const receipts = await j("data/receipts.json");
+  const [receipts, shelf, rel, cp, latest, sg] = await Promise.all([
+    j("data/receipts.json"), j("data/expert_shelf.json"),
+    j("data/map_relations.json"), j("data/chokepoints.json"),
+    j("data/latest.json"), j("data/stress_gauge.json"),
+  ]);
 
-  if (!receipts) { el.innerHTML = '<p class="empty">Receipts not available yet.</p>'; return; }
-  const c = receipts.channels && receipts.channels[channel];
-  if (!c) {
-    const why = (receipts._meta && receipts._meta.partial)
-      ? "This channel's fetch did not complete in the latest run (a partial result), not that it was never available."
-      : "Receipts are published for the latest day only (" + esc(receipts.date) + "); older days are not available.";
-    el.innerHTML = '<p class="empty">No receipts for that channel. ' + why + '</p>';
-    return;
+  // Evidence layers degrade INDEPENDENTLY: a missing articles sample
+  // must not hide the expert shelf, the event record, or the physical
+  // check, which come from different pipelines entirely.
+  const c = receipts && receipts.channels && receipts.channels[channel];
+  const chLabel = (c && c.label) || (latest && latest.channels && latest.channels[channel]
+    ? latest.channels[channel].label : channel);
+  if (!chLabel) { el.innerHTML = '<p class="empty">Unknown channel.</p>'; return; }
+  document.title = chLabel + " evidence, India Geopolitical Risk Monitor";
+
+  let html = "<h2>" + esc(chLabel) + ": the evidence card" +
+    (receipts && receipts.date ? " for " + esc(receipts.date) : "") + "</h2>";
+  if (latest && latest.channels && latest.channels[channel]
+      && latest.channels[channel].score != null) {
+    html += '<p class="kv">Score today: <strong>' +
+      esc(latest.channels[channel].score.toFixed(1)) +
+      "</strong> (percentile of this channel's own trailing two years; salience, not risk).</p>";
   }
-  document.title = c.label + " receipts " + receipts.date + ", India Geopolitical Risk Monitor";
 
-  const caveat = (receipts._meta && receipts._meta.caveat) || "";
-  let html = "<h2>" + esc(c.label) + ": receipts for " + esc(receipts.date) + "</h2>" +
-    '<p class="kv">' + esc(caveat) + "</p>";
-  if (receipts._meta && receipts._meta.partial) {
-    html += '<p class="kv">This run did not finish fetching every channel; this channel\'s receipts are complete, others may be missing.</p>';
-  }
-
-  html += "<h2>The exact query</h2>";
-  html += c.queries.map(qq => '<p class="kv"><code>' + esc(qq) + "</code></p>").join("");
-
-  html += "<h2>Matched articles (tier-sorted, sample of " + esc(c.n_retrieved) + ")</h2>";
-  if (c.spike_quality_tier12_share != null) {
-    html += '<p class="kv">Spike-quality: ' + esc((c.spike_quality_tier12_share * 100).toFixed(0)) +
-      "% of this sample is tier 1-2 (wires, broadsheets, business press).</p>";
-  }
-  if (c.articles.length) {
-    html += "<ul class='receipts-list'>" + c.articles.map(a =>
-      "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) + '" rel="noopener" target="_blank">' +
-      esc(a.title || a.url) + "</a> <span class='kv'>&middot; " + esc(a.domain) + "</span></li>"
-    ).join("") + "</ul>";
+  if (c) {
+    const caveat = (receipts._meta && receipts._meta.caveat) || "";
+    html += '<p class="kv">' + esc(caveat) + "</p>";
+    html += "<h2>The exact query</h2>";
+    html += c.queries.map(qq => '<p class="kv"><code>' + esc(qq) + "</code></p>").join("");
+    html += "<h2>Matched articles (tier-sorted, sample of " + esc(c.n_retrieved) + ")</h2>";
+    if (c.spike_quality_tier12_share != null) {
+      html += '<p class="kv">Spike-quality: ' + esc((c.spike_quality_tier12_share * 100).toFixed(0)) +
+        "% of this sample is tier 1-2 (wires, broadsheets, business press).</p>";
+    }
+    if (c.articles.length) {
+      html += "<ul class='receipts-list'>" + c.articles.map(a =>
+        "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) + '" rel="noopener" target="_blank">' +
+        esc(a.title || a.url) + "</a> <span class='kv'>&middot; " + esc(a.domain) + "</span></li>"
+      ).join("") + "</ul>";
+    } else {
+      html += '<p class="empty">No articles retrieved for this query on this day.</p>';
+    }
   } else {
-    html += '<p class="empty">No articles retrieved for this query on this day.</p>';
+    const why = (receipts && receipts._meta && receipts._meta.partial)
+      ? "the latest fetch run did not complete this channel (a partial result)"
+      : "article samples publish for the latest day only";
+    html += '<p class="empty">Article sample not available: ' + why +
+      ". The layers below come from independent pipelines and are current.</p>";
+  }
+
+  // ---- Why card layers (practitioner item 1): every evidence source ----
+  const PARTNERS = { pakistan_west: ["PAK", "AFG"], china_east: ["CHN", "BTN", "NPL"],
+    gulf_energy: ["IRN", "SAU", "ARE", "QAT", "IRQ", "ISR"], us_trade: ["USA"],
+    shipping: ["IRN", "YEM", "EGY", "SAU", "SGP", "MYS", "IDN"] };
+
+  if (shelf && shelf.channels) {
+    const items = (shelf.channels[channel] || []).slice(0, 5);
+    html += "<h2>What the expert roster published</h2>";
+    if (items.length) {
+      html += "<ul class='receipts-list'>" + items.map(it =>
+        "<li><a href='" + esc(it.url) + "' rel='noopener' target='_blank'>" + esc(it.title) +
+        "</a> <span class='kv'>&middot; " + esc((shelf._meta.labels || {})[it.institution] || it.institution) +
+        ", " + esc(it.date) + "</span></li>").join("") + "</ul>";
+    } else {
+      html += '<p class="kv">No roster publication matched this channel\'s vocabulary in the last ' +
+        esc(shelf._meta.window_days) + " days; the press wave, if any, is not echoed by the think-tank shelf yet.</p>";
+    }
+  }
+
+  if (rel && rel.partners) {
+    html += "<h2>The event record: this channel's partners, trailing year</h2><ul class='receipts-list'>";
+    for (const p of (PARTNERS[channel] || [])) {
+      const d = rel.partners[p];
+      if (!d) continue;
+      html += "<li><strong>" + esc(d.name) + "</strong>: " + esc(d.recent_n) +
+        " press-recorded events, conflict share " +
+        (d.recent_conflict_share == null ? "-" : esc((d.recent_conflict_share * 100).toFixed(1)) + "%") + "</li>";
+    }
+    html += "</ul><p class='kv'>Counts of events the world's press recorded (GDELT dyads); a coverage spike with these numbers flat means the narrative is running ahead of the record.</p>";
+  }
+
+  if (channel === "shipping" && cp && cp.chokepoints) {
+    html += "<h2>The physical check: corridors, latest complete week</h2><ul class='receipts-list'>";
+    for (const [k, c2] of Object.entries(cp.chokepoints)) {
+      const n = c2.weeks.length - 1;
+      html += "<li><strong>" + esc(k.replace(/_/g, " ")) + "</strong>: salience " +
+        esc(c2.salience_pct[n]) + " pct vs transits " + esc(c2.transits_pct[n]) + " pct</li>";
+    }
+    html += "</ul><p class='kv'>Attention high while transits are normal reads as a media wave; both moving together reads as a real disruption.</p>";
+  }
+
+  if (sg && sg.components) {
+    html += "<h2>Cross-source context, today</h2><p class='kv'>" +
+      "Market stress component (India VIX + INR realized vol): <strong>" +
+      (sg.components.market == null ? "-" : esc(sg.components.market)) + "</strong> pct &middot; " +
+      "Wikipedia demand-side attention (composite): <strong>" +
+      (sg.components.wikipedia == null ? "-" : esc(sg.components.wikipedia)) + "</strong> pct &middot; " +
+      "Stress gauge: <strong>" + (sg.gauge == null ? "-" : esc(sg.gauge)) + "</strong>. " +
+      "Composite-level context, not channel-specific; the gauge page documents the registered weights.</p>";
   }
 
   el.innerHTML = html;
