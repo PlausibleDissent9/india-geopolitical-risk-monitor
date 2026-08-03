@@ -313,3 +313,29 @@ as context; misses stay listed forever.
 The Prediction Archive's registry: every dated, falsifiable
 expectation, registered before outcomes are known, graded at horizon,
 append-only.
+
+## docs/data/comparators.json
+
+Four comparator country series (India, Pakistan, Indonesia, Vietnam)
+from one registered shared vocabulary (comparators.json at repo root)
+anchored per country. `countries.<k>.weeks[]` and `.pct[]` are weekly
+means of the trailing-730-day percentile of that country's own
+coverage-share history; only complete weeks publish. `latest` repeats
+the final complete week's value. Cross-country comparison is
+rank-vs-rank; levels reflect Anglophone press attention, disclosed.
+
+## docs/data/predictability.json
+
+Directed lead-lag study on daily changes: for each pair, the R-squared
+increment from adding five lags of the candidate leader to five own
+lags, with a permutation p-value from time-shifted nulls (300 draws).
+Reported as found; predictability in this sense is association across
+time, never causality.
+
+## docs/data/episode_actors.json
+
+Per-episode driver decomposition from the dyad layer, keyed
+"channel|start": partners whose India-pair event counts in the episode
+window most exceed their trailing 90-day baseline, split into the
+channel's registered partners (attribution) and other unusually active
+dyads (context, never attribution), with cooperation-conflict splits.

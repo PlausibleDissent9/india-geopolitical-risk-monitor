@@ -31,7 +31,8 @@ def test_every_published_payload_is_documented():
     codebook = (ROOT / "docs" / "codebook.md").read_text()
     for payload in ("receipts.json", "expert_shelf.json", "precision.json",
                     "reliability.json", "predictions.json", "nowcast.json",
-                    "stress_gauge.json", "comparators.json"):
+                    "stress_gauge.json", "comparators.json",
+                    "predictability.json", "episode_actors.json"):
         assert payload in codebook, f"{payload} missing from codebook"
 
 
