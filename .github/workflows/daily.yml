@@ -180,6 +180,10 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.expert_attention
+      - name: Precision audit sample (labels applied by the nightly agent run)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        run: python -m src.precision_auditor --sample --publish
       - name: Reliability record from git evidence
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
