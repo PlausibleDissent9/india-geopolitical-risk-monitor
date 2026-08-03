@@ -35,7 +35,7 @@ EPISODE_SIGMA = 2.0
 EPISODE_GAP_DAYS = 3
 
 DEFINITION = (
-    "Measures press salience -- the share of global news coverage matching "
+    "Measures press salience: the share of global news coverage matching "
     "each channel, ranked against its own trailing two years. Not a measure "
     "of risk, and not investment advice."
 )

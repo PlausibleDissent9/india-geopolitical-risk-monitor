@@ -384,7 +384,7 @@ function renderNowcast(nc) {
   const el = document.getElementById("nowcast");
   if (!el) return;
   el.innerHTML =
-    `<span class="prov">Provisional</span> today so far: composite ` +
+    `<span class="prov">Provisional</span> ${esc(nc.date)} so far: composite ` +
     `${esc(nc.composite)} as of ${esc(istTime(nc.as_of_utc))} IST, from a ` +
     `${esc(Number(nc.n_docs_sampled).toLocaleString("en-IN"))}-article ` +
     `sample. Finalized by the daily update.`;

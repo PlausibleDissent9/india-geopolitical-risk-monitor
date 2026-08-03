@@ -58,7 +58,11 @@ by channel, market pair, and horizon. Associations, never predictions.</p>
 same ten shared risk phrases anchored on the country's name (registered in
 comparators.json before the first fetch), each line a percentile of that country's own
 trailing two years, weekly means. Comparable by construction; levels reflect Anglophone
-press attention, disclosed. Weeks shown only when complete.</p>
+press attention, disclosed. Weeks shown only when complete. These lines can and do diverge from the
+composite above: this is a deliberately blunter instrument (ten generic
+phrases against the channels' sixty-plus specific terms), so it measures
+broad country-name risk chatter, not India's specific fault lines; the
+two disagreeing is information, not error.</p>
 <div class="chart-wrap" style="height:240px"><canvas id="comp-chart"></canvas></div>
 <div class="table-scroll"><table id="comp-table" hidden>
   <thead><tr><th>Country</th><th class="num">Latest complete week</th><th class="num">Percentile</th></tr></thead>
@@ -233,7 +237,7 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
       });
       const v = sg.validation || {};
       const rd = document.getElementById("gauge-reading");
-      rd.textContent = `Today (${sg.date}): ${sg.gauge}. Validation against the ` +
+      rd.textContent = `Latest (${sg.date}): ${sg.gauge}. Validation against the ` +
         `pre-registered episode list: ${v.n_detected} of ${v.n_episodes} detected ` +
         `(rule: ${v.rule}).`;
       rd.hidden = false;
