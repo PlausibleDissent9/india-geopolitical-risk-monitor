@@ -543,3 +543,35 @@ The math of it: roughly 45 minutes of accounts, 25 minutes of
 decisions, and the taps make everything below V15 fully autonomous.
 V15-V21 then cost you one send at a time, each with the artifact
 already built and the draft already written.
+
+## 0.12 BigQuery lane setup (approved 2026-08-04; ~15 minutes, only you)
+
+You approved the GDELT-via-BigQuery lane and full-scale LLM aptness.
+Both go live the day these secrets exist. Likely cost: $0 for
+BigQuery (Google's 1TB/month query free tier covers our volumes;
+every query is also hard-capped with maximum_bytes_billed so a bad
+one fails instead of billing), $8-15/month for aptness + briefs
+combined.
+
+BigQuery (~15 min):
+1. console.cloud.google.com, sign in with your Google account.
+2. Top bar > New project > name it igrm-data. No billing card needed
+   to start (the free "sandbox" tier is enough); if Google ever asks
+   for billing later, add it WITH a budget alert at $10.
+3. Left menu > IAM & Admin > Service Accounts > Create service
+   account > name igrm-ci > grant it the role "BigQuery Job User" on
+   the project > done.
+4. Open the new service account > Keys > Add key > JSON. A .json
+   file downloads.
+5. Repo > Settings > Secrets and variables > Actions:
+   - New secret GCP_SA_JSON: paste the ENTIRE contents of that file.
+   - New secret GCP_PROJECT_ID: the project id (e.g. igrm-data-4711).
+6. Delete the downloaded .json from your machine afterward.
+
+Aptness (piggybacks on the brief key):
+7. When you do the ANTHROPIC_API_KEY step from 0.10, set the console
+   monthly spend cap to $20 instead of $5. That is the only change.
+
+The night crew builds src/fetch_bigquery.py and the batch aptness
+classifier the first night both secrets exist. Declined and closed:
+paid designer, bounties/prizes, commercial market data.
