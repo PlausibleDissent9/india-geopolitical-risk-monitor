@@ -18,3 +18,6 @@ data/raw/naturalearth/
 releases/
 daily_local.log
 heal_local.log
+
+# Root-level session logs are scratch, never repo content (data/raw/last_backfill_failure.log stays tracked on purpose)
+/*.log

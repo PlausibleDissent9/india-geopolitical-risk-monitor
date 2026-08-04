@@ -1,0 +1,90 @@
+name: morning-contract
+
+# The 06:00 IST contract lane. The full daily pipeline takes 40+ minutes
+# (receipts alone is capped at 25), which cannot fit the contract window:
+# the measured UTC day closes at 05:30 IST (00:00 UTC) and the final is
+# promised by 06:00 IST (00:30 UTC). This lane publishes ONLY the final
+# index -- heal, pipeline, audit, reliability, push -- in ~5 minutes, and
+# leaves receipts/events/maps/comparators enrichment to the full daily
+# runs later in the day, which overwrite nothing the final depends on.
+#
+# Why three cron entries: GitHub drops scheduled events under congestion,
+# and 00:00-01:00 UTC is the worst window of the day. 2026-08-03/04
+# overnight it dropped FOUR consecutive events in this repo (daily's
+# 00:07 and 00:51, nowcast's 00:43 and 02:43) -- the contract missed not
+# because any run failed but because no run was ever created. Multiple
+# staggered odd-minute shots plus the nowcast guarantor (which now
+# dispatches this lane, fail-loud) is the maximum redundancy available
+# without external infrastructure. If GitHub suspends all scheduling for
+# hours, the miss is recorded honestly by scripts/build_reliability.py;
+# that ledger is part of the product.
+
+on:
+  schedule:
+    - cron: "3 0 * * *"     # 05:33 IST -- first shot
+    - cron: "17 0 * * *"    # 05:47 IST -- second shot
+    - cron: "29 0 * * *"    # 05:59 IST -- last shot inside the window
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Same lane as the full daily pipeline: these two workflows push the same
+# files and must queue, never race. Concurrency groups are repo-wide, so
+# sharing daily.yml's group name serializes them.
+concurrency:
+  group: igrm-pipeline-v3-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  final:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Idempotence guard (multiple shots, at most one publish)
+        id: guard
+        run: |
+          TODAY=$(date -u +%F)
+          GEN=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
+          if [ "$GEN" = "$TODAY" ]; then
+            echo "final already generated today ($GEN); nothing to do"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Enforce dictionary rules (ex-ante rule)
+        if: steps.guard.outputs.skip != 'true'
+        run: python -m pytest -q
+      - name: Heal recent days (fresh runner IP)
+        if: steps.guard.outputs.skip != 'true'
+        run: python -m src.fetch_ngrams --heal 5
+      - name: Run pipeline (final index only)
+        if: steps.guard.outputs.skip != 'true'
+        run: python -m src.run_daily
+      - name: Dual-computation audit (fail-loud gate before any push)
+        if: steps.guard.outputs.skip != 'true'
+        run: python -m src.audit
+      - name: Reliability record from git evidence
+        if: steps.guard.outputs.skip != 'true'
+        continue-on-error: true
+        run: python scripts/build_reliability.py
+      - name: Commit and push
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add docs/data data/raw || true
+          git commit -m "data: final $(date -u -d 'yesterday' +%F) via morning-contract lane" || echo "no changes"
+          pushed=0
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            if git push; then pushed=1; break; fi
+            echo "push race, attempt $i; retrying"
+            sleep $((10 * i))
+          done
+          [ "$pushed" = "1" ]

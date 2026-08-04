@@ -44,8 +44,18 @@ jobs:
           NOW_H=$(date -u +%H); NOW_M=$(date -u +%M); TODAY=$(date -u +%F)
           GEN=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
           if [ "$GEN" != "$TODAY" ] && { [ "$NOW_H" -gt 0 ] || [ "$NOW_M" -ge 30 ]; }; then
-            echo "latest generated $GEN != $TODAY; dispatching daily-update"
-            curl -s -X POST               -H "Authorization: Bearer ${{ github.token }}"               -H "Accept: application/vnd.github+json"               "https://api.github.com/repos/${{ github.repository }}/actions/workflows/daily.yml/dispatches"               -d '{"ref":"main"}'
+            echo "latest generated $GEN != $TODAY; dispatching morning-contract lane"
+            # -f so an HTTP error fails this step LOUDLY. 2026-08-04: the
+            # original `curl -s` returned exit 0 on any API rejection, so a
+            # guarantor that dispatched nothing still showed green -- the
+            # exact fail-silent pattern this repo's doctrine forbids.
+            CODE=$(curl -s -o /tmp/dispatch_body -w "%{http_code}" -X POST \
+              -H "Authorization: Bearer ${{ github.token }}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/morning.yml/dispatches" \
+              -d '{"ref":"main"}')
+            echo "dispatch HTTP $CODE"; cat /tmp/dispatch_body || true
+            [ "$CODE" = "204" ]
           else
             echo "final already published today ($GEN) or before 00:30 UTC; no dispatch"
           fi
