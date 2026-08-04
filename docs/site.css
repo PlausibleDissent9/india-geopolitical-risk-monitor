@@ -225,3 +225,4 @@ header h1 a {
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .headline .num { text-shadow: 0 0 44px color-mix(in srgb, var(--accent) 40%, transparent); }
+.prov { color: var(--elevated); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.72rem; }

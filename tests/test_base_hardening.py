@@ -33,7 +33,7 @@ def test_every_published_payload_is_documented():
                     "reliability.json", "predictions.json", "nowcast.json",
                     "stress_gauge.json", "comparators.json",
                     "predictability.json", "episode_actors.json",
-                    "api_contract.json"):
+                    "api_contract.json", "daily_brief.json"):
         assert payload in codebook, f"{payload} missing from codebook"
 
 

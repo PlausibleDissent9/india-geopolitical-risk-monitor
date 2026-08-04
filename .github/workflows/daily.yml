@@ -151,6 +151,17 @@ jobs:
         continue-on-error: true
         timeout-minutes: 25
         run: python -m src.receipts
+      - name: Machine-written daily brief (founder-approved 2026-08-04)
+        # Runs after receipts so the brief can cite today's evidence.
+        # Fail-closed: without the ANTHROPIC_API_KEY secret the module
+        # prints a skip line and writes nothing; the site shows no
+        # brief rather than a stale or fabricated one.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m src.daily_brief
       - name: Self-heal stalled multilingual backfill (V5)
         # 2026-08-02: the chain's own two scheduled crons never fired even
         # once in their first ~17 hours live (only the original manual

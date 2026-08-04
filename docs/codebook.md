@@ -340,3 +340,18 @@ fields" (JSON keys or CSV columns) promised stable within major
 version 1, plus the contract's promise, deprecation policy, and access
 terms in `_meta`. Rendered for humans at `docs/api.html`. See
 methodology.md section 12 for the versioning rule.
+
+## docs/data/daily_brief.json
+
+Machine-written daily brief: one short paragraph per channel plus a
+composite line, generated once per day by a language model
+(claude-opus-5) from payloads this site already publishes (latest
+scores, receipts evidence, stress gauge). It is labeled
+machine-written everywhere it appears and is never the author's
+voice. The generating prompt is a registered instrument
+(prompts/daily_brief.md, versioned, append-only changelog), and a
+measurement-language lint drops any brief that crosses into
+prediction; a dropped channel is null and listed in
+`_meta.lint_dropped` rather than softened. Absent entirely on days
+the generation did not run (no API key, model refusal): fail-closed
+by design. Approved by the author 2026-08-04 (NOTES 0.10 option b).
