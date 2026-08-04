@@ -365,3 +365,51 @@ measured, the honest form is a separate labeled sub-series, never a
 quiet widening of the main channel. Reply "approve exclusion note"
 and the methodology sentence ships; the amendment memo is withdrawn
 unless you say otherwise.
+
+## 0.8 IST rebinning of event layers (practitioner item 6): scope and your call
+
+The mission file's practitioner layer asks for event data rebinned
+onto IST calendar days (5:30 AM boundary) from GDELT's 15-minute
+files, instead of the current convention: `src/fetch_events.py`
+attributes each event to "the day GDELT's file arrived," which is a
+UTC/US-Eastern publication-day convention, not IST, and is currently
+disclosed as such in the codebook.
+
+Why this is a decision, not just a build task: rebinning would
+recompute the day-boundary for the entire committed events history
+(`data/raw/events_daily.csv`, `events_dyads.csv`, `events_states.csv`,
+3,927 days) onto a different clock. Some events currently counted on
+day D would shift to D-1 or D+1. That changes every published event
+count, dyad count, and state count in the historical record, not just
+future days. Per the mission rule against silently changing anything
+that would alter a published number, this needs your sign-off before
+any registration, even though the change is "just" a clock convention
+and not a new construct.
+
+Two honest paths, your call:
+
+1. **Forward-only cutover.** Keep the existing UTC/publication-day
+   history exactly as published (disclosed as such, permanently), and
+   switch only new days going forward to IST-15-minute rebinning,
+   dated and versioned like the chokepoint sub-dictionaries were. The
+   series has a documented, dated seam; nothing already published
+   changes. Cheapest, and matches how the site already treats other
+   methodology changes (append, don't rewrite).
+2. **Full retroactive rebin.** Refetch and reprocess the entire
+   history on GDELT's 15-minute files (a meaningfully larger fetch
+   than the current daily-file backfill; GDELT 2.0's 15-minute exports
+   go back to 2015, so coverage exists, but at roughly 96x the file
+   count of the current daily approach) and republish the full series
+   under the new convention, with the old convention's numbers kept
+   only in the corrections ledger. Byte-for-byte "IST-native" history,
+   but every previously-cited number in a note or the paper would
+   technically now read differently, which is the kind of silent
+   change the corrections ledger exists to prevent, not commit.
+
+My recommendation is option 1: it delivers the IST framing the
+practitioner layer wants for everything reported going forward,
+costs a bounded amount of new engineering, and never quietly moves a
+number anyone has already cited. Reply "approve forward-only IST
+rebin" (or specify option 2, or a cutover date) and it enters the
+queue as a normal dated registration, methodology changelog entry
+included.
