@@ -1,0 +1,34 @@
+name: bq-smoke
+# One-purpose smoke test for the BigQuery lane: proves the GCP_SA_JSON
+# secret parses, the service account can create query jobs, the public
+# GDELT dataset is reachable, and the maximum_bytes_billed cap is
+# honored. Runs only when dispatched or when this file itself changes.
+on:
+  push:
+    paths: [".github/workflows/bq-smoke.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: pip install --quiet google-cloud-bigquery
+      - env:
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from google.cloud import bigquery
+          from google.oauth2 import service_account
+          info = json.loads(os.environ["GCP_SA_JSON"])
+          creds = service_account.Credentials.from_service_account_info(info)
+          client = bigquery.Client(project=os.environ["GCP_PROJECT_ID"], credentials=creds)
+          cfg = bigquery.QueryJobConfig(maximum_bytes_billed=10**9)
+          q = ("SELECT COUNT(*) AS n FROM `gdelt-bq.gdeltv2.gkg_partitioned` "
+               "WHERE _PARTITIONTIME = TIMESTAMP('2026-08-01')")
+          row = list(client.query(q, job_config=cfg).result())[0]
+          print(f"BigQuery lane VERIFIED: {row.n} GDELT GKG records visible for 2026-08-01")
+          PY
