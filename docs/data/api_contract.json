@@ -1,0 +1,355 @@
+{
+  "_meta": {
+    "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
+    "contract_version": "1.0.0",
+    "frozen_date": "2026-08-04",
+    "base_url": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/",
+    "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
+    "deprecation_policy": "A field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the deprecation date recorded here, before removal in the next major version.",
+    "access": {
+      "auth": "none",
+      "cors": "Access-Control-Allow-Origin: *",
+      "rate_limit": "none stated; ordinary politeness (poll daily, not per-request)",
+      "refresh": "daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)"
+    },
+    "deprecated": []
+  },
+  "endpoints": [
+    {
+      "path": "data/alt_specs.json",
+      "format": "json",
+      "description": "Secondary specifications beside the primary; the primary never changes here. Correlations answer 'does the choice drive the result?'",
+      "frozen_fields": [
+        "note",
+        "composite_weightings",
+        "episode_thresholds_sigma",
+        "percentile_windows_days"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/chokepoints.json",
+      "format": "json",
+      "description": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history.",
+      "frozen_fields": [
+        "_meta",
+        "chokepoints"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/comparators.json",
+      "format": "json",
+      "description": "Comparator country salience: one shared risk vocabulary anchored per country (comparators.json v1.0.0), each series a percentile of its own trailing 730 days, then weekly means. Cross-country levels reflect Anglophone press attention; association, not risk.",
+      "frozen_fields": [
+        "_meta",
+        "countries"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/episode_actors.json",
+      "format": "json",
+      "description": "Per-episode driver decomposition from the GDELT Events dyad layer: partners whose India-pair event counts in the episode window most exceed their trailing 90-day baseline rate, with the window's cooperation-conflict split. Counts of press-recorded events; association, not causation.",
+      "frozen_fields": [
+        "_meta",
+        "episodes"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/episodes.csv",
+      "format": "csv",
+      "description": "The same detected episodes as CSV, one row per episode.",
+      "frozen_fields": [
+        "channel",
+        "label",
+        "start",
+        "end",
+        "peak_date",
+        "peak_value",
+        "n_spike_days"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/episodes.json",
+      "format": "json",
+      "description": "Detected coverage episodes (array): channel, start and end dates, and peak percentile, from the frozen 2sigma/90-day spike rule.",
+      "frozen_fields": [
+        "channel",
+        "start",
+        "end",
+        "peak_date",
+        "peak_value",
+        "n_spike_days",
+        "label"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/event_study.csv",
+      "format": "csv",
+      "description": "Event-study relative-return cells as CSV, one row per channel x window x market series.",
+      "frozen_fields": [
+        "channel",
+        "outcome",
+        "window_trading_days",
+        "mean_cum_log_return_pct",
+        "ci95_lo",
+        "ci95_hi",
+        "p_boot",
+        "bh_significant_10pct",
+        "n_episodes",
+        "descriptive_only"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/event_study.json",
+      "format": "json",
+      "description": "Event study: mean cumulative India-specific relative returns after episode starts, with bootstrapped 95% CIs, plus raw per-episode window returns.",
+      "frozen_fields": [
+        "_meta",
+        "generated",
+        "windows",
+        "units",
+        "language",
+        "descriptive_only",
+        "channels",
+        "per_episode"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/expert_shelf.json",
+      "format": "json",
+      "description": "Latest publications from the registered think-tank roster (think_tanks.json), tagged to channels by the frozen dictionaries. Titles and links only. Institutions without public feeds are listed in the registry with that status.",
+      "frozen_fields": [
+        "_meta",
+        "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/history.csv",
+      "format": "csv",
+      "description": "The full daily series (composite and five channels) as CSV, one row per day, since 2017.",
+      "frozen_fields": [
+        "date",
+        "pakistan_west",
+        "china_east",
+        "gulf_energy",
+        "us_trade",
+        "shipping",
+        "composite"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/history.json",
+      "format": "json",
+      "description": "Full daily IGRM score history; parallel arrays share the dates index. Machine feed for the site chart -- researchers should prefer history.csv.",
+      "frozen_fields": [
+        "_meta",
+        "dates",
+        "composite",
+        "channels",
+        "labels",
+        "wikipedia"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/latest.json",
+      "format": "json",
+      "description": "Today's IGRM scores: per-channel press-salience percentiles and their unweighted mean.",
+      "frozen_fields": [
+        "_meta",
+        "date",
+        "definition",
+        "composite",
+        "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/map_relations.json",
+      "format": "json",
+      "description": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
+      "frozen_fields": [
+        "_meta",
+        "partners",
+        "excluded_actor_codes"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/map_states.json",
+      "format": "json",
+      "description": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
+      "frozen_fields": [
+        "_meta",
+        "states",
+        "excluded_adm1"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/note_latest.json",
+      "format": "json",
+      "description": "The most recent published weekly note: filename and raw markdown body.",
+      "frozen_fields": [
+        "filename",
+        "markdown"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/notes.json",
+      "format": "json",
+      "description": "Index of published weekly notes (array): ISO week label and the full markdown body of each note.",
+      "frozen_fields": [
+        "week",
+        "markdown"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/nowcast.json",
+      "format": "json",
+      "description": "PROVISIONAL today-so-far scores from a partial-day sample of the GDELT Web NGrams bridge. Superseded by the daily run's finalized number; never part of the historical series.",
+      "frozen_fields": [
+        "_meta",
+        "date",
+        "as_of_utc",
+        "provisional",
+        "n_samples",
+        "n_docs_sampled",
+        "composite",
+        "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/precision.json",
+      "format": "json",
+      "description": "Standing precision audit: machine labels applied under the versioned rubric (auditor/RUBRIC.md), published as found, never tuned to a target. UNCALIBRATED until the author's independent labels reach the registration threshold; the agreement statistic publishes with its n. Abstentions are counted, not guessed.",
+      "frozen_fields": [
+        "_meta",
+        "calibrated",
+        "author_labels_n",
+        "calibration_threshold",
+        "agreement",
+        "abstained",
+        "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/predictability.json",
+      "format": "json",
+      "description": "Directed lead-lag predictability on daily changes: R2 increment from adding five lags of the leading series to five own-lags, permutation p-values (time-shifted null, 300 draws). Predictability in this sense is an association across time, never causality, and none of this is a forecast or investment advice.",
+      "frozen_fields": [
+        "_meta",
+        "pairs"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/predictions.json",
+      "format": "json",
+      "description": "The Prediction Archive: every dated, falsifiable expectation this project publishes, graded in public when its horizon arrives, right or wrong, with why. Registrations are append-only and timestamped before outcomes are known; grading entries link the evidence. Empty rows are impossible: a prediction exists only once its registration commit exists.",
+      "frozen_fields": [
+        "_meta",
+        "predictions"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/priced_risk.json",
+      "format": "json",
+      "description": "gap = attention percentile minus India-VIX percentile, shared trading days. Positive: press louder than the market. Negative: the market is pricing risk the coverage has not caught. Associational throughout.",
+      "frozen_fields": [
+        "definition",
+        "gap",
+        "divergence_episodes",
+        "lead_lag"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/receipts.json",
+      "format": "json",
+      "description": "Per-channel receipts for the latest published day: the exact GDELT query, a relevance-sorted sample of matched articles (mode=artlist), and each article's source tier (source_tiers.json; tiers order presentation and feed spike_quality_tier12_share only, never any score).",
+      "frozen_fields": [
+        "_meta",
+        "date",
+        "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/reliability.json",
+      "format": "json",
+      "description": "The morning contract's measured record, computed from git commit timestamps, nothing self-reported: day D final by 06:00 IST on D+1. Pre-contract days shown as context. Misses stay listed forever.",
+      "frozen_fields": [
+        "_meta",
+        "on_time",
+        "scored_days",
+        "rate",
+        "days"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/seasonality.json",
+      "format": "json",
+      "description": "Day-of-year effects on log volume share after removing a linear trend; 7-day circular smoothing. Deseasonalized index is a secondary specification only.",
+      "frozen_fields": [
+        "note",
+        "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/stress_gauge.json",
+      "format": "json",
+      "description": "India Stress Gauge: four attention and stress sources fused per the pre-registered weights in validation/stress_gauge_weights.json. A salience and stress measurement, not a risk prediction.",
+      "frozen_fields": [
+        "_meta",
+        "date",
+        "gauge",
+        "components",
+        "validation",
+        "history_365d"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/validation.json",
+      "format": "json",
+      "description": "The pre-registered validation record: hit rate against the 21-episode list, cross-source and placebo checks, robustness under alternate specifications.",
+      "frozen_fields": [
+        "hit_rate",
+        "cross_source",
+        "placebo",
+        "robustness"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "feed.xml",
+      "format": "rss",
+      "description": "RSS 2.0 feed of the weekly analytical notes.",
+      "frozen_fields": [
+        "title",
+        "link",
+        "pubDate",
+        "description",
+        "guid"
+      ],
+      "stability": "stable"
+    }
+  ]
+}
