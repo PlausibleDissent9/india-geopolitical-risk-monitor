@@ -330,6 +330,24 @@ summarises or serves whatever the visitor asks. Three honest options:
 
 Reply "approve ai memo a", "a+b", or "a+b+c"; (a) alone needs no reply.
 
+### 0.10 RESOLVED: you approved a+b in chat, 2026-08-04
+
+The machinery is built and pushed (c5a828c): registered prompt
+(prompts/daily_brief.md v1.0.0), lint, fail-closed paths, workflow
+step, codebook entry, page rendering. It activates the day you do the
+one part only you can (about 10 minutes):
+
+1. Create an account at console.anthropic.com (your normal email).
+2. Billing: add the minimum credit ($5 covers roughly 2-3 months) and
+   set a monthly spend limit of $5 so a bug can never run up a bill.
+3. Create an API key, copy it once.
+4. Repo Settings > Secrets and variables > Actions > New repository
+   secret, name ANTHROPIC_API_KEY, paste the key.
+
+The next daily run after that publishes the first brief. Until then
+the step prints a skip line and the site shows nothing. Option c
+(ask-anything chat) stays open; nothing is built for it.
+
 Reproduce cannot byte-match event-study numbers because their market
 inputs (Yahoo) are gitignored by the redistribution-license decision.
 Current policy: those two files verify within a 0.06 tolerance band,
