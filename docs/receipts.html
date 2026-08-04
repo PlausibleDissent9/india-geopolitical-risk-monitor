@@ -73,11 +73,38 @@ function tierBadge(tier) {
     html += '<p class="kv">' + esc(caveat) + "</p>";
     html += "<h2>The exact query</h2>";
     html += c.queries.map(qq => '<p class="kv"><code>' + esc(qq) + "</code></p>").join("");
-    html += "<h2>Matched articles (tier-sorted, sample of " + esc(c.n_retrieved) + ")</h2>";
+    // An exhausted pool is "all N", never a "sample": calling the full
+    // retrievable set a sample implies withheld depth that does not
+    // exist. Payloads from before 2026-08-04 lack the flag and keep the
+    // old wording.
+    if (c.pool_exhausted) {
+      html += "<h2>Matched articles (tier-sorted; all " + esc(c.n_retrieved) +
+        " unique articles retrievable for this day)</h2>";
+    } else if (c.n_pool_unique != null) {
+      html += "<h2>Matched articles (top " + esc(c.n_retrieved) + " of " +
+        esc(c.n_pool_unique) + " unique retrieved, tier-sorted)</h2>";
+    } else {
+      html += "<h2>Matched articles (tier-sorted, sample of " + esc(c.n_retrieved) + ")</h2>";
+    }
     if (c.spike_quality_tier12_share != null) {
       html += '<p class="kv">Spike-quality: ' + esc((c.spike_quality_tier12_share * 100).toFixed(0)) +
         "% of this sample is tier 1-2 (wires, broadsheets, business press).</p>";
     }
+    html += "<div class='kv tier-legend'><p><strong>What the tiers mean</strong> " +
+      "(registered criteria, source_tiers.json, append-only with dated reasons):</p><ul class='receipts-list'>" +
+      "<li>" + tierBadge(1) + " wire services and public-service international broadcasters " +
+      "with formal correction processes (Reuters, AP, AFP, BBC)</li>" +
+      "<li>" + tierBadge(2) + " national and international broadsheets and business press " +
+      "with mastheads and published corrections</li>" +
+      "<li>" + tierBadge(3) + " mainstream TV, portals, and aggregating outlets with " +
+      "editorial staff but weaker correction records</li>" +
+      "<li>" + tierBadge(4) + " outlets with documented fabrication incidents, or " +
+      "syndication mills with no original reporting</li>" +
+      "<li>" + tierBadge(null) + " domain not yet registered; sorts after every tier, " +
+      "never assumed into one</li></ul>" +
+      "<p>Tiers order this list credible-first and feed the tier 1-2 share; they never " +
+      "enter any score. A day with no tier-1 rows means no wire-service article was " +
+      "retrievable for this exact query that day, not that wires were filtered out.</p></div>";
     if (c.articles.length) {
       html += "<ul class='receipts-list'>" + c.articles.map(a =>
         "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) + '" rel="noopener" target="_blank">' +

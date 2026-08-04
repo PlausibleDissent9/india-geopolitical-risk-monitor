@@ -27,8 +27,14 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 
 CHANNELS = ["pakistan_west", "china_east", "gulf_energy", "us_trade", "shipping"]
-MAX_ARTICLES_PER_QUERY = 150
+MAX_ARTICLES_PER_QUERY = 250  # GDELT artlist's per-request ceiling
 MAX_ARTICLES_PUBLISHED = 75
+# Each sub-query is fetched twice: hybridrel surfaces what GDELT ranks
+# most relevant, datedesc sweeps the same day chronologically and reaches
+# articles the relevance ranking never returns. Single-sort 150-record
+# pools left three channels publishing 19-34 articles against the 75
+# target (2026-08-04 founder review).
+SORTS = ("hybridrel", "datedesc")
 UNRANKED = 5  # sorts after every registered tier (1-4); never assumed tier 3
 
 
@@ -57,17 +63,18 @@ def channel_receipts(
                     for t in spec["terms"]]
     pool: dict[str, dict[str, Any]] = {}
     for q in queries:
-        for a in fetch_gdelt.fetch_articles(
-            q, day, day, maxrecords=MAX_ARTICLES_PER_QUERY
-        ):
-            # Scheme allowlist: with 'unsafe-inline' in the CSP, a
-            # javascript: URL from crawled third-party data would
-            # execute on click; only http(s) ever renders.
-            if a["url"] and a["url"].startswith(("http://", "https://")):
-                a["_rel"] = len(pool)  # GDELT relevance position
-                title_norm = " " + re.sub(r"[^a-z0-9 ]+", " ", (a.get("title") or "").lower()).strip() + " "
-                a["_title_hit"] = any(p in title_norm for p in norm_phrases)
-                pool.setdefault(a["url"], a)
+        for sort in SORTS:
+            for a in fetch_gdelt.fetch_articles(
+                q, day, day, maxrecords=MAX_ARTICLES_PER_QUERY, sort=sort
+            ):
+                # Scheme allowlist: with 'unsafe-inline' in the CSP, a
+                # javascript: URL from crawled third-party data would
+                # execute on click; only http(s) ever renders.
+                if a["url"] and a["url"].startswith(("http://", "https://")):
+                    a["_rel"] = len(pool)  # GDELT relevance position
+                    title_norm = " " + re.sub(r"[^a-z0-9 ]+", " ", (a.get("title") or "").lower()).strip() + " "
+                    a["_title_hit"] = any(p in title_norm for p in norm_phrases)
+                    pool.setdefault(a["url"], a)
     articles = list(pool.values())
     # Syndication dedup: identical headlines across mirror domains (the
     # datapacks show one ANI wire story on four domains) collapse to the
@@ -80,6 +87,7 @@ def channel_receipts(
         if best is None or (a["tier"] or UNRANKED) < (best["tier"] or UNRANKED):
             by_title[key] = a
     articles = list(by_title.values())
+    n_pool_unique = len(articles)
     articles.sort(key=_tier_sort_key)
     articles = articles[:MAX_ARTICLES_PUBLISHED]
     for a in articles:
@@ -92,6 +100,11 @@ def channel_receipts(
         "terms": spec["terms"],
         "queries": queries,
         "n_retrieved": len(articles),
+        "n_pool_unique": n_pool_unique,
+        # When everything retrievable is already published, the page must
+        # say "all N" -- calling an exhausted pool a "sample" implies
+        # withheld depth that does not exist (2026-08-04 founder review).
+        "pool_exhausted": n_pool_unique <= MAX_ARTICLES_PUBLISHED,
         "articles": articles,
         "spike_quality_tier12_share": (
             round(tier12 / len(articles), 3) if articles else None
