@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.0.0",
+    "contract_version": "1.1.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -44,6 +44,18 @@
       "frozen_fields": [
         "_meta",
         "countries"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/daily_brief.json",
+      "format": "json",
+      "description": "Machine-written daily brief per channel plus a composite line, generated from the payloads this site already publishes. Written by a language model, not the author; measurement language enforced by prompt and lint.",
+      "frozen_fields": [
+        "_meta",
+        "date",
+        "composite",
+        "channels"
       ],
       "stability": "stable"
     },

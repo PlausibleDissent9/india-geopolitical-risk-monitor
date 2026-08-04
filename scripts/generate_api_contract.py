@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.0.0"
+CONTRACT_VERSION = "1.1.0"
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
