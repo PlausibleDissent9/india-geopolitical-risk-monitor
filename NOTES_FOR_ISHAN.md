@@ -485,3 +485,61 @@ number anyone has already cited. Reply "approve forward-only IST
 rebin" (or specify option 2, or a cutover date) and it enters the
 queue as a normal dated registration, methodology changelog entry
 included.
+
+## 0.11 Your complete list through V21 (reconfirmed 2026-08-04)
+
+You said keep climbing through V21. The machine builds every artifact;
+this is everything only you can do, ordered by unblock value per
+minute of your time. August override still binds: items marked AUG fit
+inside it; everything else can wait for September unless you say
+otherwise.
+
+ACCOUNTS AND KEYS, one-time, ~45 minutes total:
+1. AUG ANTHROPIC_API_KEY repo secret (activates daily briefs; steps in
+   0.10 RESOLVED above). ~10 min.
+2. AUG Zenodo account (V7 DOI; packaging is ready and waiting). ~10 min.
+3. Buttondown account (weekly note delivery + subscribe modal; welcome
+   email ready in 0.0). ~5 min.
+4. ACLED access key at acleddata.com (unblocks V10 outcome layer). ~10 min.
+5. indiconomics repo creation on GitHub (starts track two). ~1 min.
+
+DECISIONS, reply in chat, ~2 minutes each:
+6. Memo 0.9 swimmer amendment: a/b/c (recommendation: b).
+7. "Approve exclusion note" (0.7 addendum, leadership rhetoric).
+8. V8 Pakistan memo: economy_external or gulf_relations, plus anchor.
+9. IST rebinning memo (0.8).
+10. Map worldview: IND variant or default (0.2).
+11. Derived returns licensing (0.5).
+12. Tier-4 citations for broadcast outlets, or leave at tier 3 (0.4).
+13. Four staging memos in ~/indiconomics-staging/DECISION_MEMOS.md.
+14. V5 range-cut (2019-2022) if Kalev stays silent another week.
+
+RECURRING, small:
+15. AUG Daily Why-card taps, 10-15 inside your normal reading; two
+    weeks of this makes the precision auditor citable (n~100).
+16. Friday note, ~250 words from the pre-assembled evidence; biweekly
+    is fine in August per your own override.
+
+SENDS THAT CONVERT V15-V21 (drafted by the machine, sent by you;
+these ARE the top rungs; September unless you choose sooner):
+17. World Monitor proposal issue (text ready in section 4).
+18. Kalev follow-up if no reply by ~Aug 10 (raises every data ceiling).
+19. Mint the V7 Zenodo DOI once your account exists (two clicks).
+20. V15 paper: write your voice sections (methodology intent,
+    interpretation, conclusions; the factual apparatus is drafted for
+    you), then submit the preprint (SSRN or arXiv account, your name).
+21. V16 listings: DBnomics, Nasdaq Data Link, Kaggle datasets; account
+    + submission each, packages prepared for you.
+22. V17 replication wedge: send the prepared replication note to
+    authors who cite GPR (emails drafted, your send).
+23. V18 practitioner brief: forward the monthly brief to the FICCI
+    director and the think-tank list (via Buttondown once it exists).
+24. V19 calibration challenge: one announcement post, your account.
+25. V21 institution: invite 2-3 people to an advisory shell and one
+    external replicator to run reproduce.sh (invitation drafts ready);
+    an institution is real when someone outside reproduces it.
+
+The math of it: roughly 45 minutes of accounts, 25 minutes of
+decisions, and the taps make everything below V15 fully autonomous.
+V15-V21 then cost you one send at a time, each with the artifact
+already built and the draft already written.
