@@ -3,9 +3,9 @@
   "what": "Per-channel receipts for the latest published day: the exact GDELT query, a relevance-sorted sample of matched articles (mode=artlist), and each article's source tier (source_tiers.json; tiers order presentation and feed spike_quality_tier12_share only, never any score).",
   "caveat": "This is a bounded relevance-sorted SAMPLE of retrievable articles, not the full set of documents the channel's score was computed over -- the underlying coverage count for an active day is typically much larger than what GDELT's artlist mode returns. Treat this as illustrative evidence, not a census.",
   "partial": true,
-  "generated": "2026-08-03T22:01:48Z"
+  "generated": "2026-08-04T13:10:03Z"
  },
- "date": "2026-08-02",
+ "date": "2026-08-03",
  "channels": {
   "pakistan_west": {
    "label": "Pakistan / Western Border",
@@ -30,248 +30,156 @@
     "India (\"Line of Control\" OR \"India Pakistan border\" OR \"Pakistan occupied Kashmir\" OR \"Pakistan administered Kashmir\" OR \"ceasefire violations\" OR \"ceasefire violation\" OR \"cross-border terrorism\" OR \"cross-border firing\")",
     "India (\"cross-border shelling\" OR \"infiltration bid\" OR \"surgical strikes\" OR \"Inter-Services Intelligence\" OR \"Indus Waters Treaty\" OR \"Siachen\")"
    ],
-   "n_retrieved": 34,
+   "n_retrieved": 18,
+   "n_pool_unique": 18,
+   "pool_exhausted": true,
    "articles": [
     {
-     "title": "  Pakistan eroded faith : India envoy to US calls out Islamabad  distraction policy  over Indus Waters Treaty",
+     "title": "Why is Pakistan - occupied Kashmir rocked by protests ? | Explained",
+     "domain": "thehindu.com",
+     "date": "20260803",
+     "url": "https://www.thehindu.com/news/international/why-is-pakistan-occupied-kashmir-rocked-by-protests-explained/article71300521.ece",
+     "tier": 2,
+     "match": "full-text"
+    },
+    {
+     "title": "Pakistani TV host announces end of  Hasna Mana Hai  after remarks on PoK protests ; confusion prevails over revival",
      "domain": "hindustantimes.com",
-     "date": "20260802",
-     "url": "https://www.hindustantimes.com/india-news/pakistan-eroded-faith-india-envoy-to-us-vinay-kwatra-indus-waters-treaty-calls-out-islamabad-distraction-policy-101785653415225.html",
-     "tier": 2
+     "date": "20260803",
+     "url": "https://www.hindustantimes.com/world-news/pakistani-tv-host-tabish-hashmi-end-of-show-hasna-mana-hai-pok-protests-remarks-confusion-x-post-geo-news-channel-101785732696790.html",
+     "tier": 2,
+     "match": "full-text"
     },
     {
-     "title": "Top News of the Day : August 2 , 2026",
-     "domain": "thehindu.com",
-     "date": "20260802",
-     "url": "https://www.thehindu.com/news/top-news-of-the-day-august-2-2026/article71297746.ece",
-     "tier": 2
-    },
-    {
-     "title": "Pakistan made every effort to dismantle goodwill under Indus Water Treaty : Vinay Mohan Kwatra",
+     "title": "Main Vaapas Aaunga OTT release date and platform details : When and where to watch Imtiaz Ali hit period romantic movie",
      "domain": "economictimes.indiatimes.com",
-     "date": "20260802",
-     "url": "https://economictimes.indiatimes.com/news/india/pakistan-made-every-effort-to-dismantle-goodwill-under-indus-water-treaty-vinay-mohan-kwatra-kwatra/articleshow/132800250.cms",
-     "tier": 2
+     "date": "20260803",
+     "url": "https://economictimes.indiatimes.com/magazines/panache/main-vaapas-aaunga-ott-release-date-and-platform-details-when-and-where-to-watch-imtiaz-alis-hit-period-romantic-movie/articleshow/132819587.cms",
+     "tier": 2,
+     "match": "full-text"
     },
     {
-     "title": "10 kg heroin , foreign - made weapons seized along Indo - Pak border in Bikaner , one held",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260802",
-     "url": "https://economictimes.indiatimes.com/news/india/10-kg-heroin-foreign-made-weapons-seized-along-indo-pak-border-in-bikaner-one-held/articleshow/132807469.cms",
-     "tier": 2
-    },
-    {
-     "title": "Renowned climber Nirmal Purja body recovered from Broad Peak days after fatal avalanche",
-     "domain": "hindustantimes.com",
-     "date": "20260802",
-     "url": "https://www.hindustantimes.com/world-news/renowned-mountaineer-climber-nirmal-purjas-body-recovered-from-broad-peak-days-after-fatal-pakistan-avalanche-101785668948451.html",
-     "tier": 2
-    },
-    {
-     "title": "The Hindu Morning Digest : August 2 , 2026",
-     "domain": "thehindu.com",
-     "date": "20260802",
-     "url": "https://www.thehindu.com/news/morning-digest-august-2-2026/article71296889.ece",
-     "tier": 2
-    },
-    {
-     "title": "The Evening Wrap : August 2 , 2026",
-     "domain": "thehindu.com",
-     "date": "20260802",
-     "url": "https://www.thehindu.com/newsletter/the-evening-wrap/the-evening-wrap-august-2-2026/article71298415.ece",
-     "tier": 2
-    },
-    {
-     "title": "Mountaineer Nirmal Purja final message before fatal broad peak avalanche :  Never took a mountain for granted  ",
-     "domain": "livemint.com",
-     "date": "20260802",
-     "url": "https://www.livemint.com/news/trends/mountaineer-nirmal-purjas-final-message-before-fatal-broad-peak-avalanche-never-took-a-mountain-for-granted-11785656669961.html",
-     "tier": 2
-    },
-    {
-     "title": "Military courtesy at Attari - Wagah border : Pakistani Ranger salutes Indian Army officer amid tensions",
-     "domain": "tribuneindia.com",
-     "date": "20260802",
-     "url": "https://www.tribuneindia.com/news/trending/military-courtesy-at-attari-wagah-border-pakistani-ranger-salutes-indian-army-officer-amid-tensions/",
-     "tier": 2
-    },
-    {
-     "title": "Indian Army launches indigenous XWG diesel that works at minus 42\u00b0C for tanks , combat vehicles along LAC , LoC",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260802",
-     "url": "https://economictimes.indiatimes.com/news/defence/indian-army-launches-indigenous-xwg-diesel-that-works-at-minus-42c-for-tanks-combat-vehicles-along-lac-loc/articleshow/132803817.cms",
-     "tier": 2
-    },
-    {
-     "title": "Pakistan conduct forced India to keep Indus treaty in abeyance , says envoy Vinay Kwatra",
-     "domain": "newindianexpress.com",
-     "date": "20260802",
-     "url": "https://www.newindianexpress.com/india/2026/Aug/02/pakistans-conduct-forced-india-to-keep-indus-treaty-in-abeyance-says-envoy-vinay-kwatra",
-     "tier": 3
-    },
-    {
-     "title": "Burnt - out vehicles , rock - strewn roads , heavy security : PoK votes in second phase amid unrest",
-     "domain": "timesofindia.indiatimes.com",
-     "date": "20260802",
-     "url": "https://timesofindia.indiatimes.com/world/pakistan/burnt-out-vehicles-rock-strewn-roads-heavy-security-pok-votes-in-second-phase-amid-unrest/articleshow/132800807.cms",
-     "tier": 3
-    },
-    {
-     "title": "Indus Water Treaty abeyance reflects Pakistan actions , says India envoy",
-     "domain": "orissapost.com",
-     "date": "20260802",
-     "url": "https://www.orissapost.com/indus-water-treaty-abeyance-reflects-pakistans-actions-says-indias-envoy/",
-     "tier": 3
-    },
-    {
-     "title": "Weekly current affairs : SC refuses blanket ban on pellet guns , Ceuta migrant surge explained & more",
-     "domain": "timesofindia.indiatimes.com",
-     "date": "20260802",
-     "url": "https://timesofindia.indiatimes.com/education/news/weekly-current-affairs-sc-refuses-blanket-ban-on-pellet-guns-ceuta-migrant-surge-explained-more/articleshow/132804752.cms",
-     "tier": 3
-    },
-    {
-     "title": "  Cockroache and crackdowns : Can Pakistan Gen Z storm the barricades ? ",
-     "domain": "timesofindia.indiatimes.com",
-     "date": "20260802",
-     "url": "https://timesofindia.indiatimes.com/world/pakistan/cockroaches-and-crackdowns-can-pakistans-gen-z-storm-the-barricades/articleshow/132792463.cms",
-     "tier": 3
-    },
-    {
-     "title": "BSF joins Rajasthan forest department to protect endangered caracal along India - Pakistan border",
-     "domain": "timesofindia.indiatimes.com",
-     "date": "20260802",
-     "url": "https://timesofindia.indiatimes.com/city/jaipur/bsf-joins-rajasthan-forest-department-to-protect-endangered-caracal-along-india-pakistan-border/articleshow/132805921.cms",
-     "tier": 3
-    },
-    {
-     "title": "Jitendra Singh reviews status of Ujh Multipurpose Project in Jammu and Kashmir",
+     "title": "India conveys support to Uzbekistan for NAM Chairship 2027 - 29 : Jaishankar",
      "domain": "aninews.in",
-     "date": "20260802",
-     "url": "https://aninews.in/news/national/general-news/jitendra-singh-reviews-status-of-ujh-multipurpose-project-in-jammu-and-kashmir20260802171014/",
-     "tier": 3
+     "date": "20260803",
+     "url": "https://aninews.in/news/world/asia/india-conveys-support-to-uzbekistan-for-nam-chairship-2027-29-jaishankar20260803201721/",
+     "tier": 3,
+     "match": "full-text"
     },
     {
-     "title": "UNAMA documents 399 civilian casualties in Afghanistan from Pakistan cross - border violence in Apr - Jun",
+     "title": "Broad Peak Avalanche : Death Toll Rises To 8 As Rescuers Search For 2 Missing Climbers",
+     "domain": "freepressjournal.in",
+     "date": "20260803",
+     "url": "https://www.freepressjournal.in/world/broad-peak-avalanche-death-toll-rises-to-8-as-rescuers-search-for-2-missing-climbers",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "  Ballot - box not democratic because it is in a polling station , Analysis points out hollow PoJK elections",
      "domain": "aninews.in",
-     "date": "20260802",
-     "url": "https://aninews.in/news/world/asia/unama-documents-399-civilian-casualties-in-afghanistan-from-pakistan-cross-border-violence-in-apr-jun20260802204613/",
-     "tier": 3
+     "date": "20260803",
+     "url": "https://aninews.in/news/world/asia/ballot-box-not-democratic-because-it-is-in-a-polling-station-analysis-points-out-hollow-pojk-elections20260803101147/",
+     "tier": 3,
+     "match": "full-text"
     },
     {
-     "title": "PoK Crisis Joins Pakistan Security Flashpoints",
+     "title": "Pakistan defence deals bring money but not military prestige",
+     "domain": "moneycontrol.com",
+     "date": "20260803",
+     "url": "https://www.moneycontrol.com/news/opinion/pakistan-s-defence-deals-bring-money-but-not-military-prestige-13992416.html",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "Satyanjal Pandey Assumes Charge in Islamabad",
      "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/pok-joins-growing-list-security-flashpoints-pakistan-report-146.htm",
-     "tier": 4
+     "date": "20260803",
+     "url": "https://www.newkerala.com/news/a/satyanjal-pandey-assumes-charge-as-indias-new-charge-290.htm",
+     "tier": 4,
+     "match": "full-text"
     },
     {
-     "title": "India Envoy : Pakistan Destroyed Indus Treaty Goodwill",
+     "title": "Ex - Envoy Exposes Pakistan Kashmir Hypocrisy",
      "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/pakistan-dismantled-goodwill-behind-indus-waters-treaty-instead-301.htm",
-     "tier": 4
+     "date": "20260803",
+     "url": "https://www.newkerala.com/news/a/protest-movements-exposed-how-pakistan-treated-kashmiris-its-632.htm",
+     "tier": 4,
+     "match": "full-text"
     },
     {
-     "title": "India - China Ties : Managed Competition , Not Reconciliation",
-     "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/indias-approach-towards-china-managed-competition-limited-cooperation-144.htm",
-     "tier": 4
-    },
-    {
-     "title": "Ujh Project Review : Jitendra Singh Pushes for Early Execution",
-     "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/jitendra-singh-reviews-status-ujh-multipurpose-project-jammu-357.htm",
-     "tier": 4
-    },
-    {
-     "title": "UN : 399 Afghan Casualties from Pakistan Cross - Border Strikes",
-     "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/unama-documents-399-civilian-casualties-afghanistan-from-pakistan-927.htm",
-     "tier": 4
-    },
-    {
-     "title": "Pakistan  dismantled goodwill  behind Indus Waters Treaty , instead of dismantling terror infrastructure : Indian envoy to US",
-     "domain": "prokerala.com",
-     "date": "20260802",
-     "url": "https://www.prokerala.com/news/articles/a1795485.html",
-     "tier": null
-    },
-    {
-     "title": "Pakistan UNSC Push on Indus Waters Treaty Faces Major Legal and Political Hurdles",
+     "title": "The Sound of Silence : Why International Media Turns a Blind Eye to Bloodshed in PoK",
      "domain": "idrw.org",
-     "date": "20260802",
-     "url": "https://idrw.org/pakistans-unsc-push-on-indus-waters-treaty-faces-major-legal-and-political-hurdles/",
-     "tier": null
+     "date": "20260803",
+     "url": "https://idrw.org/the-sound-of-silence-why-international-media-turns-a-blind-eye-to-bloodshed-in-pok/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Pakistan Spent 50 Years Dismantling Indus Waters Treaty Foundation : India US Envoy Vinay Mohan Kwatra",
-     "domain": "idrw.org",
-     "date": "20260802",
-     "url": "https://idrw.org/pakistan-spent-50-years-dismantling-indus-waters-treatys-foundation-indias-us-envoy-vinay-mohan-kwatra/",
-     "tier": null
+     "title": "At India Nuclear Testing Site - IAF Helicopters Train as Low - Cost Drone Hunters in Rotor Clap - III Drills",
+     "domain": "chinatechnews.com",
+     "date": "20260803",
+     "url": "https://www.chinatechnews.com/2026/08/03/126640-at-indias-nuclear-testing-site-iaf-helicopters-train-as-low-cost-drone-hunters-in-rotor-clap-iii-drills",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "JKSA condemns violence in  PaK , calls for UN intervention",
-     "domain": "kashmirreader.com",
-     "date": "20260802",
-     "url": "https://kashmirreader.com/2026/08/02/jksa-condemns-violence-in-pak-calls-for-un-intervention/",
-     "tier": null
+     "title": "Satyanjal Pandey assumes charge as India new Charge dAffaires in Islamabad",
+     "domain": "southeastasiapost.com",
+     "date": "20260803",
+     "url": "http://www.southeastasiapost.com/news/279221061/satyanjal-pandey-assumes-charge-as-india-new-charge-daffaires-in-islamabad",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance",
+     "title": "  My only son was shot standing up for justice  - inside city gripped by deadly protests in Pakistan - administered Kashmir",
+     "domain": "yahoo.com",
+     "date": "20260803",
+     "url": "https://www.yahoo.com/news/world/articles/only-son-shot-standing-justice-033234083.html",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Inside city gripped by deadly protests in Pakistan - administered Kashmir",
+     "domain": "the-star.co.ke",
+     "date": "20260803",
+     "url": "https://www.the-star.co.ke/news/world/2026-08-03-inside-city-gripped-by-deadly-protests-in-pakistan-administered-kashmir",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "APHC renews call for observing August 5 as Black Day",
+     "domain": "radio.gov.pk",
+     "date": "20260803",
+     "url": "https://www.radio.gov.pk/03-08-2026/aphc-calls-for-observing-august-5-as-black-day-over-abrogation-of-articles-370-35a",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Protest movements exposed how Pakistan has treated Kashmiris on its side : Former Iranian envoy Dinkar Srivastava",
      "domain": "news.webindia123.com",
-     "date": "20260802",
-     "url": "https://news.webindia123.com/news/Articles/World/20260802/4482199.html",
-     "tier": null
+     "date": "20260803",
+     "url": "https://news.webindia123.com/news/Articles/World/20260803/4482650.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "  India approach towards China is managed competition , limited cooperation , and not reconciliation  ",
-     "domain": "prokerala.com",
-     "date": "20260802",
-     "url": "https://www.prokerala.com/news/articles/a1795591.html",
-     "tier": null
+     "title": "PoJK protests reach Islamabad , Rawalpindi amid state violence",
+     "domain": "organiser.org",
+     "date": "20260803",
+     "url": "https://organiser.org/2026/08/03/373217/world/pojk-protests-reach-islamabad-news-portals-banned-for-reporting-pakistan-atrocities-in-occupied-territory/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Jimmy Sheirgill says he would shoot for  Operation Safed Sagar  from 4 am till 11 pm",
-     "domain": "prokerala.com",
-     "date": "20260802",
-     "url": "https://www.prokerala.com/news/articles/a1795634.html",
-     "tier": null
-    },
-    {
-     "title": "\u092d\u093e\u0930\u0924 - \u092a\u093e\u0915 \u092c\u0949\u0930\u094d\u0921\u0930 \u092a\u0930 \u0924\u0938\u094d\u0915\u0930\u0940 \u0915\u093e \u092c\u0921\u093c\u093e \u092d\u0902\u0921\u093e\u092b\u094b\u0921\u093c , 10 \u0915\u093f\u0932\u094b \u0939\u0947\u0930\u094b\u0907\u0928 , 11 \u092a\u093f\u0938\u094d\u091f\u0932 \u0914\u0930 \u0921\u094d\u0930\u094b\u0928 \u092c\u0930\u093e\u092e\u0926 , \u0938\u0941\u0930\u0915\u094d\u0937\u093e \u090f\u091c\u0947\u0902\u0938\u093f\u092f\u093e\u0902 \u0905\u0932\u0930\u094d\u091f | india - pak - border - drone - smuggling - busted - 10kg - heroin - 11 - pistols - drone - seized",
-     "domain": "deshbandhu.co.in",
-     "date": "20260802",
-     "url": "https://www.deshbandhu.co.in/rajasthan/india-pak-border-drone-smuggling-busted-10kg-heroin-11-pistols-drone-seized-313393",
-     "tier": null
-    },
-    {
-     "title": "The Malacca Dilemma : How the Indian Navy Could Pressure China in a Full - Scale Conflict",
-     "domain": "idrw.org",
-     "date": "20260802",
-     "url": "https://idrw.org/the-malacca-dilemma-how-the-indian-navy-could-pressure-china-in-a-full-scale-conflict/",
-     "tier": null
-    },
-    {
-     "title": "Secret weapons at the border : Did China use DEWs in 2022 Yangtse clash ? ",
-     "domain": "theweek.in",
-     "date": "20260802",
-     "url": "https://www.theweek.in/theweek/specials/2026/08/01/secret-weapons-at-the-border-did-china-use-dews-in-2022-yangtse-clash.html",
-     "tier": null
-    },
-    {
-     "title": "Prez Murmu flags off inaugural Soldierathon honouring President Bodyguard , Kargil heroes",
-     "domain": "prokerala.com",
-     "date": "20260802",
-     "url": "https://www.prokerala.com/news/articles/a1795389.html",
-     "tier": null
+     "title": "Stolen water , poisoned rivers",
+     "domain": "geo.tv",
+     "date": "20260803",
+     "url": "https://www.geo.tv/latest/675876-stolen-water-poisoned-rivers",
+     "tier": null,
+     "match": "full-text"
     }
    ],
-   "spike_quality_tier12_share": 0.294
+   "spike_quality_tier12_share": 0.167
   },
   "china_east": {
    "label": "China / Eastern Border",
@@ -291,227 +199,11 @@
    "queries": [
     "India (\"Line of Actual Control\" OR \"India China border\" OR \"eastern Ladakh\" OR \"Arunachal Pradesh\" OR \"Aksai Chin\" OR \"Tawang\" OR \"People's Liberation Army\" OR \"border standoff\" OR \"India China relations\" OR \"disengagement\")"
    ],
-   "n_retrieved": 31,
-   "articles": [
-    {
-     "title": "Indian Army launches indigenous XWG diesel that works at minus 42\u00b0C for tanks , combat vehicles along LAC , LoC",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260802",
-     "url": "https://economictimes.indiatimes.com/news/defence/indian-army-launches-indigenous-xwg-diesel-that-works-at-minus-42c-for-tanks-combat-vehicles-along-lac-loc/articleshow/132803817.cms",
-     "tier": 2
-    },
-    {
-     "title": "India - China cross - border trade resumes after 6 years",
-     "domain": "hindustantimes.com",
-     "date": "20260802",
-     "url": "https://www.hindustantimes.com/india-news/india-china-cross-border-trade-resumes-after-6-years-101785637096016.html",
-     "tier": 2
-    },
-    {
-     "title": "Weather Tomorrow , August 3 : Heavy rain expected across India ; Delhi - NCR , Gujarat , Maharashtra among regions",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260802",
-     "url": "https://economictimes.indiatimes.com/news/new-updates/weather-tomorrow-august-3-heavy-rain-expected-across-india-delhi-ncr-gujarat-maharashtra-among-regions/articleshow/132805669.cms",
-     "tier": 2
-    },
-    {
-     "title": "GeM at 10 : How Womaniya is Empowering Women Entrepreneurs in India",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260802",
-     "url": "https://economictimes.indiatimes.com/small-biz/entrepreneurship/a-decade-of-inclusion-how-gem-is-transforming-public-procurement-for-women-entrepreneurs-in-india/articleshow/132803752.cms",
-     "tier": 2
-    },
-    {
-     "title": "Border trade with China through Nathu La Pass resumes after six - year suspension",
-     "domain": "newindianexpress.com",
-     "date": "20260802",
-     "url": "https://www.newindianexpress.com/thesundaystandard/2026/Aug/02/border-trade-with-china-through-nathu-la-pass-resumes-after-six-year-suspension",
-     "tier": 3
-    },
-    {
-     "title": "\u092c\u094d\u0930\u0939\u094d\u092e\u092a\u0941\u0924\u094d\u0930 \u0928\u0926\u0940 \u092d\u093e\u0930\u0924 \u092e\u0947\u0902 \u0915\u093f\u0938 \u0938\u094d\u0925\u093e\u0928 \u0938\u0947 \u0915\u0930\u0924\u0940 \u0939\u0948 \u092a\u094d\u0930\u0935\u0947\u0936 ? \u091c\u093e\u0928\u0947\u0902 \u0928\u0926\u0940 \u0938\u0947 \u091c\u0941\u095c\u0947 \u0926\u093f\u0932\u091a\u0938\u094d\u092a \u092b\u0948\u0915\u094d\u091f\u094d\u0938",
-     "domain": "jagranjosh.com",
-     "date": "20260802",
-     "url": "https://www.jagranjosh.com/general-knowledge/brahmaputra-river-source-tibetan-name-entry-point-in-india-key-cities-1820011086-2",
-     "tier": 4
-    },
-    {
-     "title": "India - China Ties : Managed Competition , Not Reconciliation",
-     "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/indias-approach-towards-china-managed-competition-limited-cooperation-144.htm",
-     "tier": 4
-    },
-    {
-     "title": "Arunachal Governor 100 - Day Anti - Drug Street Shows Plan",
-     "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/arunachal-guv-proposes-100-day-nasha-mukt-street-shows-980.htm",
-     "tier": 4
-    },
-    {
-     "title": "Historic Silk Route Back in Business : India Reopens Shipki La Trade Corridor With China",
-     "domain": "jagranjosh.com",
-     "date": "20260802",
-     "url": "https://www.jagranjosh.com/general-knowledge/where-is-shipki-la-route-know-the-reasons-behind-its-closure-and-its-current-opening-1820011082-1",
-     "tier": 4
-    },
-    {
-     "title": "Monsoon Mayhem : Assam Flood Toll 82 , Kerala 8 Dead , IMD Alert",
-     "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/monsoon-mayhem-across-india-assam-flood-toll-rises-573.htm",
-     "tier": 4
-    },
-    {
-     "title": "Secret weapons at the border : Did China use DEWs in 2022 Yangtse clash ? ",
-     "domain": "theweek.in",
-     "date": "20260802",
-     "url": "https://www.theweek.in/theweek/specials/2026/08/01/secret-weapons-at-the-border-did-china-use-dews-in-2022-yangtse-clash.html",
-     "tier": null
-    },
-    {
-     "title": "Arunachal January Tali , Hachu Lombo become first state women to scale 7 , 077 - metre Mt Kun",
-     "domain": "prokerala.com",
-     "date": "20260802",
-     "url": "https://www.prokerala.com/news/articles/a1795636.html",
-     "tier": null
-    },
-    {
-     "title": "  India approach towards China is managed competition , limited cooperation , and not reconciliation  ",
-     "domain": "prokerala.com",
-     "date": "20260802",
-     "url": "https://www.prokerala.com/news/articles/a1795591.html",
-     "tier": null
-    },
-    {
-     "title": "IMD Warns of Heavy Rain , Flash Flood Risk Across Northeast and Himalayan Foothills",
-     "domain": "heraldgoa.in",
-     "date": "20260802",
-     "url": "https://www.heraldgoa.in/goa/imd-warns-of-heavy-rain-flash-flood-risk-across-northeast-and-himalayan-foothills/483933/",
-     "tier": null
-    },
-    {
-     "title": "IMD monsoon forecast : Heavy rain alert for multiple states till August 8 ; northeast on high watch",
-     "domain": "businesstoday.in",
-     "date": "20260802",
-     "url": "https://www.businesstoday.in/india/story/imd-monsoon-forecast-heavy-rain-alert-for-multiple-states-till-august-8-northeast-on-high-watch-546706-2026-08-02",
-     "tier": null
-    },
-    {
-     "title": "\u0a97\u0ac1\u0a9c\u0ab0\u0abe\u0aa4\u0aa8\u0ac7 \u0a85\u0ab0\u0ac1\u0aa3\u0abe\u0a9a\u0ab2\u0aa5\u0ac0 \u0a9c\u0acb\u0aa1\u0aa4\u0ac0 \u0a8f\u0a95\u0aae\u0abe\u0aa4\u0acd\u0ab0 \u0a9f\u0acd\u0ab0\u0ac7\u0aa8 \u0a86\u0a96\u0ac0 \u0ab0\u0abf\u0a9d\u0ab0\u0acd\u0ab5\u0acd\u0aa1 \u0aa5\u0a87 ,  \u0a88\u0aa8\u0ab0 \u0ab2\u0abe\u0a88\u0aa8 \u0aaa\u0ab0\u0aae\u0abf\u0a9f  \u0ab2\u0abe\u0a97\u0ac1 \u0aa5\u0aa4\u0abe\u0a82 \u0a9c\u0aa8\u0ab0\u0ab2 \u0a9f\u0abf\u0a95\u0abf\u0a9f \u0aa8\u0ab9\u0ac0\u0a82 \u0aae\u0ab3\u0ac7",
-     "domain": "gujaratsamachar.com",
-     "date": "20260802",
-     "url": "https://www.gujaratsamachar.com/news/ahmedabad/the-only-train-connecting-gujarat-with-arunachal-has-been-completely-reserved-general-tickets-will-not-be-available-as-inner-line-permit-is-implemented-62295703780",
-     "tier": null
-    },
-    {
-     "title": "3 \u0905\u0917\u0938\u094d\u0924 \u0915\u093e \u092e\u094c\u0938\u092e : \u092c\u093f\u0939\u093e\u0930 \u0938\u092e\u0947\u0924 \u0907\u0928 3 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092c\u0939\u0941\u0924 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u0940 \u091a\u0947\u0924\u093e\u0935\u0928\u0940 , IMD \u0928\u0947 \u0926\u093f\u0932\u094d\u0932\u0940 \u0938\u0947 \u092f\u0942\u092a\u0940 \u0924\u0915 \u0926\u093f\u092f\u093e \u092f\u0947 \u0905\u0932\u0930\u094d\u091f",
-     "domain": "hindi.moneycontrol.com",
-     "date": "20260802",
-     "url": "https://hindi.moneycontrol.com/india/imd-heavy-rain-alert-3-august-weather-forecast-thunderstorm-alert-delhi-up-punjab-bihar-and-other-article-2425807.html",
-     "tier": null
-    },
-    {
-     "title": "Ancient Silk Route to Tibet reopens : India China trade through Shipki La resumes after six years",
-     "domain": "businesstoday.in",
-     "date": "20260802",
-     "url": "https://www.businesstoday.in/latest/economy/story/ancient-silk-route-reopens-india-china-trade-through-shipki-la-resumes-after-six-years-546714-2026-08-02",
-     "tier": null
-    },
-    {
-     "title": "\u0926\u093f\u0932\u094d\u0932\u0940 \u092e\u0947\u0902 \u091b\u093e\u090f \u0930\u0939\u0947\u0902\u0917\u0947 \u092c\u093e\u0926\u0932 , 23 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f ; \u091c\u093e\u0928\u0947\u0902 \u0906\u092a\u0915\u0947 \u0907\u0932\u093e\u0915\u0947 \u0915\u093e \u0915\u0948\u0938\u093e \u0930\u0939\u0947\u0917\u093e \u0939\u093e\u0932 - delhi weather update imd forecasts heavy rainfall across north india",
-     "domain": "hindi.business-standard.com",
-     "date": "20260802",
-     "url": "https://hindi.business-standard.com/india-news/delhi-weather-update-imd-forecasts-heavy-rainfall-across-north-india-id-541475",
-     "tier": null
-    },
-    {
-     "title": "Weather Alert : 17 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , 13 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 - \u0906\u0902\u0927\u0940 ; \u0926\u093f\u0932\u094d\u0932\u0940 - UP \u0938\u092e\u0947\u0924 \u0907\u0928 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0906\u091c \u0915\u0948\u0938\u093e \u0930\u0939\u0947\u0917\u093e \u092e\u094c\u0938\u092e ? \u0905\u0938\u092e \u092e\u0947\u0902 \u092c\u093e\u0922\u093c \u0938\u0947 \u092c\u093f\u0917\u0921\u093c\u0947 \u0939\u093e\u0932\u093e\u0924",
-     "domain": "hindi.webdunia.com",
-     "date": "20260802",
-     "url": "https://hindi.webdunia.com/national-hindi-news/weather-alert-heavy-rain-17-states-assam-flood-delhi-up-today-126080200001_1.html",
-     "tier": null
-    },
-    {
-     "title": "The Man of the Year who wasnt on the cover",
-     "domain": "theweek.in",
-     "date": "20260802",
-     "url": "https://www.theweek.in/columns/philip-mathew/2026/08/01/the-man-of-the-year-who-wasnt-on-the-cover.html",
-     "tier": null
-    },
-    {
-     "title": "\u0938\u094d\u0935\u091a\u094d\u091b\u0924\u093e \u092a\u094d\u0930\u092c\u0902\u0927\u0928 \u092e\u0949\u0921\u0932 \u0915\u093e \u0905\u0927\u094d\u092f\u092f\u0928 \u0915\u0930\u0928\u0947 \u0926\u0947\u0936\u092d\u0930 \u0938\u0947 \u0906\u090f \u0905\u0927\u093f\u0915\u093e\u0930\u0940",
-     "domain": "navabharat.com",
-     "date": "20260802",
-     "url": "https://navabharat.com/?p=535016",
-     "tier": null
-    },
-    {
-     "title": "\u0915\u0932 \u0915\u093e \u092e\u094c\u0938\u092e , 3 \u0905\u0917\u0938\u094d\u0924 : \u0938\u094b\u092e\u0935\u093e\u0930 \u0915\u094b \u0917\u0930\u091c - \u091a\u092e\u0915 \u0915\u0947 \u0938\u093e\u0925 \u0939\u094b\u0917\u0940 \u092c\u093e\u0930\u093f\u0936 , IMD \u0915\u093e \u0907\u0928 \u0907\u0932\u093e\u0915\u094b\u0902 \u092e\u0947\u0902 \u0905\u0932\u0930\u094d\u091f",
-     "domain": "livehindustan.com",
-     "date": "20260802",
-     "url": "https://www.livehindustan.com/weather/kal-ka-mausam-kaisa-rahega-up-bihar-delhi-weather-today-forecast-imd-alert-august-3-201785680811919.html",
-     "tier": null
-    },
-    {
-     "title": "Heavy Rainfall & Landslide Alert | Kerala Surat Jammu Kashmir Updates",
-     "domain": "bhaskar.com",
-     "date": "20260802",
-     "url": "https://www.bhaskar.com/g/national/news/heavy-rainfall-landslide-kerala-surat-jammu-kashmir-cloudburst-138605592.html",
-     "tier": null
-    },
-    {
-     "title": "Heavy Rain Alert : 4 \u0905\u0917\u0938\u094d\u0924 \u0938\u0947 \u0928\u092f\u093e \u0935\u0947\u0938\u094d\u091f\u0930\u094d\u0928 \u0921\u093f\u0938\u094d\u091f\u0930\u094d\u092c\u0947\u0902\u0938 \u090f\u0915\u094d\u091f\u093f\u0935 , \u0905\u0917\u0932\u0947 7 \u0926\u093f\u0928 \u0924\u0915 \u0907\u0928 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092e\u0942\u0938\u0932\u093e\u0927\u093e\u0930 \u092c\u093e\u0930\u093f\u0936 ! IMD \u0928\u0947 \u092c\u0924\u093e\u092f\u093e \u092f\u0942\u092a\u0940 \u0938\u0947 \u0926\u093f\u0932\u094d\u0932\u0940 \u0924\u0915 \u0915\u093e \u092e\u094c\u0938\u092e \u0905\u092a\u0921\u0947\u091f",
-     "domain": "hindi.moneycontrol.com",
-     "date": "20260802",
-     "url": "https://hindi.moneycontrol.com/india/imd-heavy-rain-alert-from-up-to-delhi-new-western-disturbance-active-from-august-4-torrential-rain-expected-over-next-7-days-article-2425784.html",
-     "tier": null
-    },
-    {
-     "title": "The Malacca Dilemma : How the Indian Navy Could Pressure China in a Full - Scale Conflict",
-     "domain": "idrw.org",
-     "date": "20260802",
-     "url": "https://idrw.org/the-malacca-dilemma-how-the-indian-navy-could-pressure-china-in-a-full-scale-conflict/",
-     "tier": null
-    },
-    {
-     "title": "Surat Heavy Rain & Kerala Landslide ; Kishtwar Cloudburst Update",
-     "domain": "divyamarathi.bhaskar.com",
-     "date": "20260802",
-     "url": "https://divyamarathi.bhaskar.com/national/news/surat-heavy-rain-kerala-landslide-kishtwar-cloudburst-update-138608089.html",
-     "tier": null
-    },
-    {
-     "title": "Historic Shipki - La border trade resumes after 6 - 7 years ; first batch of 16 traders flagged off for Tibet",
-     "domain": "asiabulletin.com",
-     "date": "20260802",
-     "url": "http://www.asiabulletin.com/news/279218879/historic-shipki-la-border-trade-resumes-after-6-7-years-first-batch-of-16-traders-flagged-off-for-tibet",
-     "tier": null
-    },
-    {
-     "title": "Monsoon mayhem across India : Assam flood toll rises to 82 , Kerala reports 8 deaths , IMD warns of more heavy rain",
-     "domain": "mexicostar.com",
-     "date": "20260802",
-     "url": "http://www.mexicostar.com/news/279219970/monsoon-mayhem-across-india-assam-flood-toll-rises-to-82-kerala-reports-8-deaths-imd-warns-of-more-heavy-rain",
-     "tier": null
-    },
-    {
-     "title": "Ten Crore Sankalpas for a Nasha Mukt Bharat",
-     "domain": "thenorthlines.com",
-     "date": "20260802",
-     "url": "https://thenorthlines.com/ten-crore-sankalpas-for-a-nasha-mukt-bharat/",
-     "tier": null
-    },
-    {
-     "title": "India Together : What the youth asked us all",
-     "domain": "indiatogether.org",
-     "date": "20260802",
-     "url": "https://indiatogether.org/youth-protests-education",
-     "tier": null
-    }
-   ],
-   "spike_quality_tier12_share": 0.129
+   "n_retrieved": 0,
+   "n_pool_unique": 0,
+   "pool_exhausted": true,
+   "articles": [],
+   "spike_quality_tier12_share": null
   },
   "us_trade": {
    "label": "US & Trade Policy",
@@ -533,691 +225,268 @@
    "queries": [
     "India (\"US tariffs\" OR \"reciprocal tariffs\" OR \"trade deal\" OR \"trade war\" OR \"trade restrictions\" OR \"export controls\" OR \"Section 301\" OR \"CAATSA\" OR \"H-1B visa\" OR \"WTO dispute\" OR \"secondary sanctions\" OR \"Russian oil\")"
    ],
-   "n_retrieved": 19,
+   "n_retrieved": 32,
+   "n_pool_unique": 32,
+   "pool_exhausted": true,
    "articles": [
     {
-     "title": "India BRICS Presidency gathers momentum with key Ministerial meets early August",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260802",
-     "url": "https://economictimes.indiatimes.com/news/india/indias-brics-presidency-gathers-momentum-with-key-ministerial-meets-early-august/articleshow/132799945.cms",
-     "tier": 2
-    },
-    {
-     "title": "RBI fixed deposit rules changes : Could this impact FD interest rates for customers ? We explain \u2026 ",
+     "title": "HDFC Bank , ICICI Bank hike FCNR rates Check here for how much interest depositors now get",
      "domain": "livemint.com",
-     "date": "20260802",
-     "url": "https://www.livemint.com/money/personal-finance/rbi-fixed-deposit-rules-changes-could-allow-differential-for-bulk-deposits-impact-fd-interest-rates-customers-explainer-11785664898258.html",
-     "tier": 2
+     "date": "20260803",
+     "url": "https://www.livemint.com/money/personal-finance/hdfc-bank-icici-hike-fcnr-b-interest-rate-25-bps-increase-6-25-percent-foreign-currency-non-resident-tenure-3-5-years-fd-11785747809784.html",
+     "tier": 2,
+     "match": "full-text"
     },
     {
-     "title": "India loan story : Women , younger borrowers and non - metro regions driving credit growth as numbers jump to 74 % in 2026",
+     "title": "Finance Ministry moves to enable MDR on UPI Here what scrapping zero MDR provision means for UPI users",
      "domain": "livemint.com",
-     "date": "20260802",
-     "url": "https://www.livemint.com/money/personal-finance/women-young-borrowers-non-metro-region-madhya-pradesh-up-bihar-drive-credit-growth-eligible-indian-take-loans-74-pc-2026-11785682505334.html",
-     "tier": 2
+     "date": "20260803",
+     "url": "https://www.livemint.com/money/personal-finance/finance-ministry-moves-enable-mdr-on-upi-propose-scrap-zero-mdr-provision-what-means-upi-users-customer-no-extra-charges-11785772283031.html",
+     "tier": 2,
+     "match": "full-text"
     },
     {
-     "title": "EPFO : Want to check your employees provident fund balance , download passbook ? Here how using portal , Umang app , SMS",
-     "domain": "livemint.com",
-     "date": "20260802",
-     "url": "https://www.livemint.com/money/personal-finance/epfo-check-your-employees-provident-fund-balance-download-epf-passbook-how-use-portal-umang-app-sms-missed-call-helpline-11785677646528.html",
-     "tier": 2
-    },
-    {
-     "title": "8th pay commission : As panel closes data submission window , check latest updates on group consultations",
-     "domain": "livemint.com",
-     "date": "20260802",
-     "url": "https://www.livemint.com/money/personal-finance/8th-pay-commission-cpc-panel-close-data-submission-window-check-latest-updates-group-consultations-meetings-state-visits-11785672770452.html",
-     "tier": 2
-    },
-    {
-     "title": "Income - tax returns : Here a list of invoices , documentation employees should retain to support tax - free reimbursements",
-     "domain": "livemint.com",
-     "date": "20260802",
-     "url": "https://www.livemint.com/money/personal-finance/income-tax-returns-itr-filing-list-of-invoices-documentation-you-employees-should-retain-support-tax-free-reimbursements-11785680127589.html",
-     "tier": 2
-    },
-    {
-     "title": "Vojna iz\u010drpavanja se nadaljuje ; Rusija prisiljena uva\u017eati gorivo",
-     "domain": "demokracija.si",
-     "date": "20260802",
-     "url": "https://demokracija.si/fokus/vojna-izcrpavanja-se-nadaljuje-rusija-prisiljena-uvazati-gorivo/",
-     "tier": null
-    },
-    {
-     "title": "generation jet call hinges on geopolitics - ChinaTechNews . com",
-     "domain": "chinatechnews.com",
-     "date": "20260802",
-     "url": "https://www.chinatechnews.com/2026/08/02/126568-generation-jet-call-hinges-on-geopolitics",
-     "tier": null
-    },
-    {
-     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
-     "domain": "zimbabwestar.com",
-     "date": "20260802",
-     "url": "http://www.zimbabwestar.com/news/279219703/economic-watch-exhibitors-at-us-textile-trade-show-grapple-with-unprecedented-headwinds",
-     "tier": null
-    },
-    {
-     "title": "Economic Watch : Exhibitors at U . S . textile trade show grapple with unprecedented headwinds - Xinhua",
-     "domain": "english.news.cn",
-     "date": "20260802",
-     "url": "https://english.news.cn/20260802/cade956cf6ee4edb951de8b403c63180/c.html",
-     "tier": null
-    },
-    {
-     "title": "\u5ed6\u7b71\u541b\u6253\u9020 \u300c \u807d\u898b\u4e16\u754c \u300d \u8ad6\u58c7 \uff01 \u638c\u63e1\u5168\u7403\u653f\u7d93\u8108\u52d5 | \u751f\u6d3b | \u4e09\u7acb\u65b0\u805e\u7db2 SETN . COM",
-     "domain": "setn.com",
-     "date": "20260802",
-     "url": "https://www.setn.com/news/1882536",
-     "tier": null
-    },
-    {
-     "title": "\u0421\u0428\u0410 \u0440\u0438\u0441\u043a\u0443\u044e\u0442 \u043e\u0442\u043b\u043e\u0436\u0438\u0442\u044c \u0443\u0436\u0435\u0441\u0442\u043e\u0447\u0435\u043d\u0438\u0435 \u0441\u0430\u043d\u043a\u0446\u0438\u0439 \u043f\u0440\u043e\u0442\u0438\u0432 \u0420\u0424",
-     "domain": "korrespondent.net",
-     "date": "20260802",
-     "url": "https://korrespondent.net/world/4899350-ssha-ryskuuit-otlozhyt-uzhestochenye-sanktsyi-protyv-rf",
-     "tier": null
-    },
-    {
-     "title": "\u5cb3\u4e91\u971e \uff1a \u7f8e\u5173\u7a0e\u5927\u68d2\u4e3a\u4f55\u6325\u5411  \u5df4\u897f\u652f\u4ed8\u5b9d \uff1f ",
-     "domain": "baijiahao.baidu.com",
-     "date": "20260802",
-     "url": "https://baijiahao.baidu.com/s?id=1872000636172911145",
-     "tier": null
-    },
-    {
-     "title": "NEET - PG 2026 rolls out key reforms with more time per question , centres closer to home ; all you need to know",
-     "domain": "ibtimes.co.in",
-     "date": "20260802",
-     "url": "https://www.ibtimes.co.in/neet-pg-2026-rolls-out-key-reforms-more-time-per-question-centres-closer-home-all-you-need-know-904392",
-     "tier": null
-    },
-    {
-     "title": "Trump Offers Word - Salad Gibberish To Explain His Position On Patriots For Ukraine",
-     "domain": "huffingtonpost.co.uk",
-     "date": "20260802",
-     "url": "https://www.huffingtonpost.co.uk/entry/trump-patriots-ukraine-russia_uk_6a6eedade4b03026f4efe219",
-     "tier": null
-    },
-    {
-     "title": "It time to cash in on Canada value and growth",
-     "domain": "moneyweek.com",
-     "date": "20260802",
-     "url": "https://moneyweek.com/investments/its-time-to-cash-in-on-canadas-value-and-growth",
-     "tier": null
-    },
-    {
-     "title": "\u7f8e\u56fd\u4e00\u53e3\u6c14\u62c9\u9ed143\u5bb6\u4e2d\u4f01 \uff0c \u4e2d\u65b9\u575a\u51b3\u53cd\u5bf9 \uff01 \u5546\u52a1\u90e8\u6700\u65b0\u56de\u5e94",
-     "domain": "163.com",
-     "date": "20260802",
-     "url": "https://www.163.com/news/article/L3C3AK0I0001899O.html",
-     "tier": null
-    },
-    {
-     "title": "\u6797\u4fdd\u83ef | \u65e5\u5e38\u8a18\u9304\u5206\u4eab | \u75de\u5ba2\u90a6",
-     "domain": "lingfengcomment.pixnet.net",
-     "date": "20260802",
-     "url": "https://lingfengcomment.pixnet.net/blog?tagId=2552981",
-     "tier": null
-    },
-    {
-     "title": "Colombiamoda 2026 : US$22 Million Spillover Masks Buyer Decline",
-     "domain": "riotimesonline.com",
-     "date": "20260802",
-     "url": "https://www.riotimesonline.com/colombiamoda-2026-medellin-economic-spillover/",
-     "tier": null
-    }
-   ],
-   "spike_quality_tier12_share": 0.316
-  },
-  "shipping": {
-   "label": "Shipping & Chokepoints",
-   "anchor": null,
-   "terms": [
-    "\"Red Sea shipping\"",
-    "\"Red Sea attacks\"",
-    "\"Suez Canal\"",
-    "\"Bab el-Mandeb\"",
-    "\"Strait of Malacca\"",
-    "\"Cape of Good Hope\"",
-    "\"Houthi attacks\"",
-    "\"shipping lanes\"",
-    "\"Somali pirates\"",
-    "\"maritime security\""
-   ],
-   "queries": [
-    "(\"Red Sea shipping\" OR \"Red Sea attacks\" OR \"Suez Canal\" OR \"Bab el-Mandeb\" OR \"Strait of Malacca\" OR \"Cape of Good Hope\" OR \"Houthi attacks\" OR \"shipping lanes\" OR \"Somali pirates\" OR \"maritime security\")"
-   ],
-   "n_retrieved": 75,
-   "articles": [
-    {
-     "title": "What did Saudi Crown Prince Mohammed bin Salman tell Trump that prompted a pause in US strikes on Iran ? ",
-     "domain": "livemint.com",
-     "date": "20260802",
-     "url": "https://www.livemint.com/news/us-news/saudi-crown-prince-calls-on-trump-to-avoid-new-iran-strikes-pursue-diplomacy-to-prevent-wider-middle-east-war-report-11785670259301.html",
-     "tier": 2
-    },
-    {
-     "title": "Trump holds Off Iran strikes on pledge a Hormuz deal is close",
+     "title": "Weak rupee : Import dependence of exports is a soft spot - The HinduBusinessLine",
      "domain": "thehindubusinessline.com",
-     "date": "20260802",
-     "url": "https://www.thehindubusinessline.com/news/world/trump-holds-off-iran-strikes-on-pledge-a-hormuz-deal-is-close/article71298637.ece",
-     "tier": 2
+     "date": "20260803",
+     "url": "https://www.thehindubusinessline.com/specials/current-account/weak-rupee-import-dependence-of-exports-is-a-soft-spot/article71298805.ece",
+     "tier": 2,
+     "match": "full-text"
     },
     {
-     "title": "Trump says US , Israel to hold off on Iran strikes",
-     "domain": "al-monitor.com",
-     "date": "20260802",
-     "url": "https://www.al-monitor.com/originals/2026/08/trump-says-us-israel-hold-iran-strikes",
-     "tier": 3
+     "title": "Samyukta Kisan Morcha sounds agitation call against  corporatisation  of agriculture",
+     "domain": "tribuneindia.com",
+     "date": "20260803",
+     "url": "https://www.tribuneindia.com/news/punjab/samyukta-kisan-morcha-sounds-agitation-call-against-corporatisation-of-agriculture/",
+     "tier": 2,
+     "match": "full-text"
     },
     {
-     "title": "Trump says US will hold off on fresh Iran attack in hope of quick deal",
-     "domain": "al-monitor.com",
-     "date": "20260802",
-     "url": "https://www.al-monitor.com/originals/2026/08/trump-says-us-will-hold-fresh-iran-attack-hope-quick-deal",
-     "tier": 3
-    },
-    {
-     "title": "Trump says he will hold off on fresh Iran attack in hope of quick deal",
-     "domain": "tribune.com.pk",
-     "date": "20260802",
-     "url": "https://tribune.com.pk/story/2621639/trump-says-he-will-hold-off-on-fresh-iran-attack-in-hope-of-quick-deal",
-     "tier": 3
-    },
-    {
-     "title": "Iran secret war plan exposed as proxy attacks spread across Middle East",
+     "title": "US immigration lawyers are asking H - 1B holders to carry papers during domestic travel",
      "domain": "moneycontrol.com",
-     "date": "20260802",
-     "url": "https://www.moneycontrol.com/world/iran-s-secret-war-plan-exposed-as-proxy-attacks-spread-across-middle-east-article-13991224.html",
-     "tier": 3
+     "date": "20260803",
+     "url": "https://www.moneycontrol.com/world/us-immigration-lawyers-are-asking-h-1b-holders-to-carry-papers-during-domestic-travel-here-s-why-article-13992846.html",
+     "tier": 3,
+     "match": "full-text"
     },
     {
-     "title": "Trump Arctic push sparks USD 6 . 8 billion shipbuilding controversy",
+     "title": "One 97 Communications Paytm Shares Gain 2 . 19 % on Monday - Moneycontrol . com",
      "domain": "moneycontrol.com",
-     "date": "20260802",
-     "url": "https://www.moneycontrol.com/world/trump-s-arctic-push-sparks-usd-6-8-billion-shipbuilding-controversy-article-13991214.html",
-     "tier": 3
+     "date": "20260803",
+     "url": "https://www.moneycontrol.com/news/business/stocks/one-97-communications-paytm-shares-gain-2-19-on-monday-alpha-article-13991612.html",
+     "tier": 3,
+     "match": "full-text"
     },
     {
-     "title": "Vice admiral AN Pramod assumes charge as deputy chief of naval staff",
-     "domain": "timesofindia.indiatimes.com",
-     "date": "20260802",
-     "url": "https://timesofindia.indiatimes.com/defence/news/vice-admiral-an-pramod-assumes-charge-as-deputy-chief-of-naval-staff/articleshow/132803695.cms",
-     "tier": 3
+     "title": "Why India bought record Russian oil in July despite Trump 100 percent tariff threat",
+     "domain": "sangbadpratidin.in",
+     "date": "20260803",
+     "url": "https://www.sangbadpratidin.in/india/why-india-bought-record-russian-oil-in-july-despite-trumps-100-percent-tariff-threat/pid/1272485/",
+     "tier": null,
+     "match": "headline"
     },
     {
-     "title": "Iran Warns US Against Fresh Attacks in Talks With Allies",
-     "domain": "newkerala.com",
-     "date": "20260802",
-     "url": "https://www.newkerala.com/news/a/iran-warns-against-further-us-attacks-talks-pakistan-935.htm",
-     "tier": 4
-    },
-    {
-     "title": "EU , Philippines strengthen defense ties with maritime security assistance",
-     "domain": "manilatimes.net",
-     "date": "20260802",
-     "url": "https://www.manilatimes.net/2026/08/03/expats-diplomats/eu-philippines-strengthen-defense-ties-with-maritime-security-assistance/2396527",
-     "tier": null
-    },
-    {
-     "title": "Global economy hostage to asymmetric warfare as cheap drones cause billions in damage",
-     "domain": "bankingnews.gr",
-     "date": "20260802",
-     "url": "https://www.bankingnews.gr/diethni/articles/891852/global-economy-hostage-to-asymmetric-warfare-as-cheap-drones-cause-billions-in-damage%20title=",
-     "tier": null
-    },
-    {
-     "title": "US embassies urge citizens to consider departing Middle East",
-     "domain": "bssnews.net",
-     "date": "20260802",
-     "url": "https://www.bssnews.net/international/410890",
-     "tier": null
-    },
-    {
-     "title": "World Insights : Saudi - led maritime defense alliance underscores shift in regional security calculus",
-     "domain": "heraldglobe.com",
-     "date": "20260802",
-     "url": "http://www.heraldglobe.com/news/279219439/world-insights-saudi-led-maritime-defense-alliance-underscores-shift-in-regional-security-calculus",
-     "tier": null
-    },
-    {
-     "title": "Iran warns of strikes on other\u00a0nation energy fields if U . S . attacks",
-     "domain": "theglobeandmail.com",
-     "date": "20260802",
-     "url": "https://www.theglobeandmail.com/world/article-iran-strikes-us-attacks-energy-fields-other-nations/",
-     "tier": null
-    },
-    {
-     "title": "Iran threatens to strike other nation energy fields if US launches fresh attacks",
-     "domain": "asiaone.com",
-     "date": "20260802",
-     "url": "https://www.asiaone.com:443/world/iran-threatens-strike-other-nations-energy-fields-if-us-launches-fresh-attacks",
-     "tier": null
-    },
-    {
-     "title": "Renewed Red Sea Standoff Underscores Persistent Threat Posed By Yemen Houthis",
-     "domain": "theepochtimes.com",
-     "date": "20260802",
-     "url": "https://www.theepochtimes.com/world/renewed-red-sea-standoff-underscores-persistent-threat-posed-by-yemens-houthis-6069379",
-     "tier": null
-    },
-    {
-     "title": "Middle East war : US State Department warns Americans to be ready to leave Middle East as Iran tensions boil",
-     "domain": "theage.com.au",
-     "date": "20260802",
-     "url": "https://www.theage.com.au/world/middle-east/state-department-warns-us-citizens-to-be-ready-to-leave-middle-east-as-iran-tensions-boil-20260802-p60kn2.html",
-     "tier": null
-    },
-    {
-     "title": "Welcome to the mega - war : Mideast and European conflicts merge , sucking in more countries \u00a0| Peak Oil News and Message Boards",
-     "domain": "peakoil.com",
-     "date": "20260802",
-     "url": "https://peakoil.com/publicpolicy/welcome-to-the-mega-war-mideast-and-european-conflicts-merge-sucking-in-more-countries",
-     "tier": null
-    },
-    {
-     "title": "Trump says he will hold off on fresh Iran attack in hope of quick deal - Middle East and Africa",
-     "domain": "thejakartapost.com",
-     "date": "20260802",
-     "url": "http://www.thejakartapost.com/world/2026/08/02/trump-says-he-will-hold-off-on-fresh-iran-attack-in-hope-of-quick-deal",
-     "tier": null
-    },
-    {
-     "title": "Iran threatens to strike other nation energy fields",
-     "domain": "theadvocate.com.au",
-     "date": "20260802",
-     "url": "https://www.theadvocate.com.au/story/9322027/iran-threatens-to-strike-other-nations-energy-fields/",
-     "tier": null
-    },
-    {
-     "title": "Trump says he will hold off on fresh Iran attack in hope of a quick deal on nuclear threat , Hormuz",
-     "domain": "businesstimes.com.sg",
-     "date": "20260802",
-     "url": "https://www.businesstimes.com.sg/international/global/trump-says-he-will-hold-fresh-iran-attack-hope-quick-deal-nuclear-threat-hormuz",
-     "tier": null
-    },
-    {
-     "title": "US - Israel to hold back fire as Trump hopes for quick Iran deal",
-     "domain": "dailysabah.com",
-     "date": "20260802",
-     "url": "https://www.dailysabah.com/world/mid-east/us-israel-to-hold-back-fire-as-trump-hopes-for-quick-iran-deal",
-     "tier": null
-    },
-    {
-     "title": "Trump says he will hold off fresh Iran attack in hope of quick deal",
-     "domain": "bworldonline.com",
-     "date": "20260802",
-     "url": "https://bworldonline.com/world/2026/08/02/767502/trump-says-he-will-hold-off-fresh-iran-attack-in-hope-of-quick-deal/",
-     "tier": null
-    },
-    {
-     "title": "Iran threatens to target Gulf energy fields if US attacks again",
-     "domain": "middle-east-online.com",
-     "date": "20260802",
-     "url": "https://www.middle-east-online.com/en/iran-threatens-target-gulf-energy-fields-if-us-attacks-again",
-     "tier": null
-    },
-    {
-     "title": "Iraqi gov . denies reports of US aircraft landing at Ain al - Asad Air Base",
-     "domain": "presstv.co.uk",
-     "date": "20260802",
-     "url": "https://www.presstv.co.uk/Detail/2026/08/02/773581/Iraq-Ain-al-Assad-Maan-SMC",
-     "tier": null
-    },
-    {
-     "title": "LNG Carrier Hit By Iranian Attack in Strait of Hormuz",
-     "domain": "maritime-executive.com",
-     "date": "20260802",
-     "url": "https://maritime-executive.com/article/lng-carrier-hit-by-iranian-attack-in-strait-of-hormuz",
-     "tier": null
-    },
-    {
-     "title": "Trump says he will hold off on fresh Iran attack in hope of quick deal | Ariana News",
-     "domain": "ariananews.af",
-     "date": "20260802",
-     "url": "https://www.ariananews.af/trump-says-he-will-hold-off-on-fresh-iran-attack-in-hope-of-quick-deal/",
-     "tier": null
-    },
-    {
-     "title": "\u7f8e\u4f0a\u5bf9\u5cd9\u654f\u611f\u671f\u57c3\u53ca\u6e2f\u53e3\u9047\u88ad \u5206\u6790\u79f0\u7cfb\u76f8\u5173\u65b9  \u8bd5\u63a2  \u57c3\u65b9\u53cd\u5e94 _ \u4e2d\u56fd\u7f51",
-     "domain": "news.china.com.cn",
-     "date": "20260802",
-     "url": "http://news.china.com.cn/2026-08/02/content_118630055.shtml",
-     "tier": null
-    },
-    {
-     "title": "\u062a\u0646\u0633\u064a\u0642 \u0627\u0644\u0643\u0644\u064a\u0627\u062a 2026 \u0639\u0644\u0645\u064a \u0639\u0644\u0648\u0645 \u0648\u0631\u064a\u0627\u0636\u0629 \u0648\u0623\u062f\u0628\u064a .. \u0643\u0644\u064a\u0627\u062a \u062a\u0642\u0628\u0644 \u0645\u0646 70 \u066a \u0645\u0627 \u0647\u064a \u061f ",
-     "domain": "almasryalyoum.com",
-     "date": "20260802",
-     "url": "https://www.almasryalyoum.com/news/details/4328354",
-     "tier": null
-    },
-    {
-     "title": "Trump threatens more strikes on Iran , and other developments in the Middle East",
-     "domain": "asiaone.com",
-     "date": "20260802",
-     "url": "https://www.asiaone.com:443/world/trump-threatens-more-strikes-iran-and-other-developments-middle-east",
-     "tier": null
-    },
-    {
-     "title": "US will hold off on Iran attacks in hope of quick deal",
-     "domain": "dailyadvertiser.com.au",
-     "date": "20260802",
-     "url": "https://www.dailyadvertiser.com.au/story/9322027/us-will-hold-off-on-iran-attacks-in-hope-of-quick-deal/",
-     "tier": null
-    },
-    {
-     "title": "Trump suspends fresh Iran strike , cites hope to reach quick deal",
-     "domain": "middle-east-online.com",
-     "date": "20260802",
-     "url": "https://www.middle-east-online.com/en/trump-suspends-fresh-iran-strike-cites-hope-reach-quick-deal",
-     "tier": null
-    },
-    {
-     "title": "Nigeria joins Saudi - led Red Sea defence alliance",
-     "domain": "thenationonlineng.net",
-     "date": "20260802",
-     "url": "https://thenationonlineng.net/nigeria-joins-saudi-led-red-sea-defence-alliance/",
-     "tier": null
-    },
-    {
-     "title": "Iran Warns US Against Fresh Strikes in Talks with Pakistan and Turkey",
-     "domain": "deccanchronicle.com",
-     "date": "20260802",
-     "url": "https://www.deccanchronicle.com/west-asia/iran-warns-us-against-fresh-strikes-during-talks-with-pakistan-and-turkey-1975909",
-     "tier": null
-    },
-    {
-     "title": "Iran warns against further US attacks in talks with Pakistan and Turkey",
-     "domain": "news.webindia123.com",
-     "date": "20260802",
-     "url": "https://news.webindia123.com/news/Articles/World/20260802/4482147.html",
-     "tier": null
-    },
-    {
-     "title": "LTN\u7d93\u6fdf\u901a \u300b \u8449\u9580\u53db\u8ecd\u55c6\u5835 \u627c\u4f4f\u6c99\u570b\u539f\u6cb9\u51fa\u53e3\u54bd\u5589",
-     "domain": "ec.ltn.com.tw",
-     "date": "20260802",
-     "url": "https://ec.ltn.com.tw/article/breakingnews/5525071",
-     "tier": null
-    },
-    {
-     "title": "Iran war updates : US President Trump threatens more strikes on Iran ; tensions from Hormuz to Kuwait and Gaza lead to more warnings",
-     "domain": "abc11.com",
-     "date": "20260802",
-     "url": "https://abc11.com/post/iran-war-updates-us-president-trump-threatens-more-strikes-tensions-hormuz-kuwait-gaza-lead-warnings/19612862/",
-     "tier": null
-    },
-    {
-     "title": "Trump threatens more strikes on Iran . Tensions from Hormuz to Kuwait and Gaza lead to more warnings",
-     "domain": "thegazette.com",
-     "date": "20260802",
-     "url": "http://www.thegazette.com/news/world/trump-threatens-more-strikes-on-iran-tensions-from-hormuz-to-kuwait-and-gaza-lead-to/article_f29a7ded-8ba4-5ab1-b8d8-581c92d01974.html",
-     "tier": null
-    },
-    {
-     "title": "Trump threatens more strikes on Iran ; Iranian FM warns US",
-     "domain": "siasat.com",
-     "date": "20260802",
-     "url": "https://www.siasat.com/trump-threatens-more-strikes-on-iran-iranian-fm-warns-us-3517323/",
-     "tier": null
-    },
-    {
-     "title": "13 . 60 \u062c\u0646\u064a\u0647 \u0633\u0639\u0631 \u0635\u0631\u0641 \u0627\u0644\u0631\u064a\u0627\u0644 \u0627\u0644\u0633\u0639\u0648\u062f\u064a \u0641\u064a \u0645\u0635\u0631",
-     "domain": "okaz.com.sa",
-     "date": "20260802",
-     "url": "https://www.okaz.com.sa/economy/na/2259591",
-     "tier": null
-    },
-    {
-     "title": "Abqaiq Is a Warning That Oil Markets May Be Misreading",
+     "title": "A former Oracle engineer on an H - 1B visa says AI and tech layoffs pushed him into constant career - prep mode",
      "domain": "finance.yahoo.com",
-     "date": "20260802",
-     "url": "https://finance.yahoo.com/energy/articles/abqaiq-warning-oil-markets-may-200000359.html",
-     "tier": null
+     "date": "20260803",
+     "url": "https://finance.yahoo.com/technology/ai/articles/former-oracle-engineer-h-1b-091502200.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Trump threatens more strikes on Iran",
-     "domain": "wxii12.com",
-     "date": "20260802",
-     "url": "https://www.wxii12.com/article/trump-threatens-more-strikes-iran/73324781",
-     "tier": null
+     "title": "Indias Russian crude imports hit record high media",
+     "domain": "russiaherald.com",
+     "date": "20260803",
+     "url": "http://www.russiaherald.com/news/279220814/indias-russian-crude-imports-hit-record-high-media",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Trump says he will order halt to Iran strikes after parameters reached for deal to end war",
-     "domain": "thegazette.com",
-     "date": "20260802",
-     "url": "http://www.thegazette.com/news/world/trump-says-he-will-order-halt-to-iran-strikes-after-parameters-reached-for-deal-to/article_f29a7ded-8ba4-5ab1-b8d8-581c92d01974.html",
-     "tier": null
+     "title": "Indias July Russian crude imports hit record high media",
+     "domain": "russiaherald.com",
+     "date": "20260803",
+     "url": "http://www.russiaherald.com/news/279220803/indias-july-russian-crude-imports-hit-record-high-media",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Trump to halt Iran strikes once parameters for ending war are met",
-     "domain": "manilatimes.net",
-     "date": "20260802",
-     "url": "https://www.manilatimes.net/2026/08/03/world/trump-to-halt-iran-strikes-once-parameters-for-ending-war-are-met/2396632",
-     "tier": null
+     "title": "Half of US states sue Trump admin over latest tariffs",
+     "domain": "theadvocate.com.au",
+     "date": "20260803",
+     "url": "https://www.theadvocate.com.au/story/9323225/half-of-us-states-sue-trump-admin-over-latest-tariffs/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Markets signal investors are back in buying mode after Kospi record surge , Trump Iran reversal",
-     "domain": "fortune.com",
-     "date": "20260802",
-     "url": "https://fortune.com/2026/08/02/kospi-index-dow-futures-us-stocks-trump-iran-war-reversal-oil-prices/",
-     "tier": null
+     "title": "\u0418\u043d\u0434\u0438\u044f \u043d\u0430\u0440\u0430\u0441\u0442\u0438\u043b\u0430 \u0437\u0430\u043a\u0443\u043f\u043a\u0438 \u0440\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u043e\u0439 \u043d\u0435\u0444\u0442\u0438 \u0434\u043e \u0440\u0435\u043a\u043e\u0440\u0434\u0430 \u0441 2022 \u0433\u043e\u0434\u0430",
+     "domain": "vestikavkaza.ru",
+     "date": "20260803",
+     "url": "https://vestikavkaza.ru/news/india-narastila-zakupki-rossijskoj-nefti-do-rekorda-s-2022-goda.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Disruptions on multiple fronts put oil markets on the brink \u00a0| Peak Oil News and Message Boards",
-     "domain": "peakoil.com",
-     "date": "20260802",
-     "url": "https://peakoil.com/publicpolicy/disruptions-on-multiple-fronts-put-oil-markets-on-the-brink",
-     "tier": null
+     "title": "US lifts tariff barrier - Weekend Post",
+     "domain": "weekendpost.co.bw",
+     "date": "20260803",
+     "url": "https://weekendpost.co.bw/us-lifts-tariff-barrier/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u30a4\u30e9\u30f3 \u3001 \u4ee3\u7406\u52e2\u529b\u901a\u3058\u63fa\u3055\u3076\u308a\u304b \u5bfe\u7c73\u4ea4\u6e09\u306e\u4e3b\u5c0e\u6a29\u72d9\u3046 \uff1a \u6642\u4e8b\u30c9\u30c3\u30c8\u30b3\u30e0",
-     "domain": "jiji.com",
-     "date": "20260802",
-     "url": "https://www.jiji.com/jc/article?k=2026080200179&g=int",
-     "tier": null
+     "title": "India Imports of Russian Crude Hit New High in July",
+     "domain": "oilprice.com",
+     "date": "20260803",
+     "url": "https://oilprice.com/Latest-Energy-News/World-News/Indias-Imports-of-Russian-Crude-Hit-New-High-in-July.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u0645\u0624\u0634\u0631\u0627\u062a \u062a\u0646\u0633\u064a\u0642 \u0627\u0644\u0645\u0631\u062d\u0644\u0629 \u0627\u0644\u0623\u0648\u0644\u064a \u0644\u0637\u0644\u0627\u0628 \u0627\u0644\u062b\u0627\u0646\u0648\u064a\u0629 \u0627\u0644\u0639\u0627\u0645\u0629 \u0623\u062f\u0628\u064a \u0648\u0641\u0642 \u0646\u062a\u064a\u062c\u0629 \u062a\u0646\u0633\u064a\u0642 2025",
-     "domain": "almasryalyoum.com",
-     "date": "20260802",
-     "url": "https://www.almasryalyoum.com/news/details/4328548",
-     "tier": null
+     "title": "\u041a\u043b\u044e\u0447\u0435\u0432\u043e\u0439 \u0438\u043c\u043f\u043e\u0440\u0442\u0435\u0440 \u0440\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u043e\u0439 \u043d\u0435\u0444\u0442\u0438 \u043d\u0430\u0440\u0430\u0441\u0442\u0438\u043b \u0435\u0435 \u0437\u0430\u043a\u0443\u043f\u043a\u0438 \u0434\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430",
+     "domain": "lenta.ru",
+     "date": "20260803",
+     "url": "https://lenta.ru/news/2026/08/03/klyuchevoy-importer-rossiyskoy-nefti-narastil-ee-zakupki-do-maksimuma/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Houthi bantah rencana kenakan tarif transit pada kapal yang lintasi Selat Bab al - Mandab",
-     "domain": "antaranews.com",
-     "date": "20260802",
-     "url": "https://www.antaranews.com/berita/5676436/houthi-bantah-rencana-kenakan-tarif-transit-pada-kapal-yang-lintasi-selat-bab-al-mandab",
-     "tier": null
+     "title": "The Times of India : \u0438\u043c\u043f\u043e\u0440\u0442 \u043d\u0435\u0444\u0442\u0438 \u0438\u0437 \u0420\u0424 \u0432 \u0418\u043d\u0434\u0438\u044e \u0432 \u0438\u044e\u043b\u0435 \u0441\u0442\u0430\u043b \u0440\u0435\u043a\u043e\u0440\u0434\u043d\u044b\u043c \u0441 2022 \u0433\u043e\u0434\u0430",
+     "domain": "bfm.ru",
+     "date": "20260803",
+     "url": "https://www.bfm.ru/news/613981",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Middle East press weighs war , diplomacy , technology , and sport",
-     "domain": "jpost.com",
-     "date": "20260802",
-     "url": "http://www.jpost.com/middle-east/article-904102",
-     "tier": null
+     "title": "Malaysia mulls easing rare - earth export curbs to meet demand",
+     "domain": "businesstimes.com.sg",
+     "date": "20260803",
+     "url": "https://www.businesstimes.com.sg/international/asean/malaysia-mulls-easing-rare-earth-export-curbs-meet-demand",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "US Warns Americans To Leave Middle - East As Trump Threatens Iran , Regional War Escalates",
-     "domain": "saharareporters.com",
-     "date": "20260802",
-     "url": "https://saharareporters.com/2026/08/01/us-warns-americans-leave-middle-east-trump-threatens-iran-regional-war-escalates",
-     "tier": null
+     "title": "Reuters : \u0446\u0435\u043d\u0430 \u043f\u0435\u0440\u0435\u0432\u043e\u0437\u043a\u0438 \u043d\u0435\u0444\u0442\u0438 \u0438\u0437 \u0420\u043e\u0441\u0441\u0438\u0438 \u0432 \u0418\u043d\u0434\u0438\u044e \u043f\u043e \u043c\u043e\u0440\u044e \u0432\u044b\u0440\u043e\u0441\u043b\u0430 \u043d\u0430 50 % ",
+     "domain": "svoboda.org",
+     "date": "20260803",
+     "url": "https://www.svoboda.org/a/reuters-tsena-perevozki-nefti-iz-rossii-v-indiyu-po-moryu-vyrosla-na-50/33821052.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u0623\u0633\u0639\u0627\u0631 \u0627\u0644\u064a\u0648\u0631\u0648 \u0627\u0644\u064a\u0648\u0645 \u0641\u064a \u0627\u0644\u0628\u0646\u0648\u0643 \u0627\u0644\u0645\u0635\u0631\u064a\u0629 .. \u062a\u062d\u0631\u0643\u0627\u062a \u062c\u062f\u064a\u062f\u0629 \u0648\u064a\u0642\u062a\u0631\u0628 \u0645\u0646 59 . 20 \u062c\u0646\u064a\u0647",
-     "domain": "dostor.org",
-     "date": "20260802",
-     "url": "https://www.dostor.org/5654860",
-     "tier": null
+     "title": "Amid reports of Aug 5 event , Bangladesh asks India to prevent Hasina political speeches",
+     "domain": "thedailystar.net",
+     "date": "20260803",
+     "url": "https://www.thedailystar.net/news/bangladesh/diplomacy/news/amid-reports-aug-5-event-bangladesh-asks-india-prevent-hasinas-political-speeches-4239186",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Pakistan , Bangladesh face mounting economic risks as prolonged US - Iran conflict fuels oil price surge",
-     "domain": "prokerala.com",
-     "date": "20260802",
-     "url": "https://www.prokerala.com/news/articles/a1795530.html",
-     "tier": null
+     "title": "Crude Oil Import : \u0930\u0936\u093f\u092f\u0928 \u0924\u0947\u0932\u093e\u0935\u0930 \u092d\u093e\u0930\u0924\u093e\u091a\u093e \u0935\u093e\u0922\u0924\u093e \u0935\u093f\u0936\u094d\u0935\u093e\u0938 ! \u091c\u0941\u0932\u0948\u092e\u0927\u094d\u092f\u0947 \u0935\u093f\u0915\u094d\u0930\u092e\u0940 \u0906\u092f\u093e\u0924 , \u0905\u092e\u0947\u0930\u093f\u0915\u0947\u0915\u0921\u0942\u0928\u0939\u0940 LPG\u091a\u0940 \u092e\u094b\u0920\u0940 \u0916\u0930\u0947\u0926\u0940",
+     "domain": "prahaar.in",
+     "date": "20260803",
+     "url": "https://prahaar.in/2026/08/03/crude-oil-import-indias-growing-reliance-on-russian-oil-record-imports-in-july-significant-lpg-purchases-from-the-us-as-well/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Trump says he will order halt to Iran strikes after parameters reached for deal to end war \u2013 Brandon Sun",
-     "domain": "brandonsun.com",
-     "date": "20260802",
-     "url": "https://www.brandonsun.com/lifestyles/2026/08/01/trump-says-he-will-order-halt-to-iran-strikes-after-parameters-reached-for-deal-to-end-war",
-     "tier": null
+     "title": "\u0a35\u0a3f\u0a26\u0a47\u0a38\u0a3c \u0a28\u0a40\u0a24\u0a40  \u0a1a \u0a38\u0a41\u0a23\u0a40 \u0a1c\u0a3e\u0a35\u0a47 \u0a38\u0a42\u0a2c\u0a3f\u0a06\u0a02 \u0a26\u0a40 \u0a06\u0a35\u0a3e\u0a1c\u0a3c - Punjabi Tribune",
+     "domain": "punjabitribuneonline.com",
+     "date": "20260803",
+     "url": "https://www.punjabitribuneonline.com/news/comment/the-voice-of-the-states-should-be-heard-in-foreign-policy/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u5df4\u62ff\u9a6c\u8fd0\u6cb3  \u7f3a\u6c34  \u5f71\u54cd\u51e0\u4f55 - CFi . CN \u4e2d\u8d22\u7f51",
-     "domain": "cfi.net.cn",
-     "date": "20260802",
-     "url": "http://www.cfi.net.cn/p20260802000104.html",
-     "tier": null
+     "title": "\u0418\u043d\u0434\u0438\u044f \u0432 \u0438\u044e\u043b\u0435 \u0438\u043c\u043f\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043b\u0430 \u0438\u0437 \u0420\u043e\u0441\u0441\u0438\u0438 \u0440\u0435\u043a\u043e\u0440\u0434\u043d\u044b\u0435 \u0441 2022 \u0433\u043e\u0434\u0430 \u043e\u0431\u044a\u0435\u043c\u044b \u043d\u0435\u0444\u0442\u0438",
+     "domain": "vesti.ru",
+     "date": "20260803",
+     "url": "https://www.vesti.ru/ns/rossiya-v-iyule-importirovala-v-indiyu-rekordnye-s-2022-goda-obemy-nefti",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Trump Pauses Iran Strike Amid Push for Nuclear Deal",
-     "domain": "paktribune.com",
-     "date": "20260802",
-     "url": "https://paktribune.com/trump-pauses-iran-strike-amid-push-for-nuclear-deal/",
-     "tier": null
+     "title": "\u0412 \u043a\u0430\u043a\u0438\u0445 \u0441\u0442\u0440\u0430\u043d\u0430\u0445 \u0440\u043e\u0441\u0441\u0438\u044f\u043d\u0435 \u043c\u043e\u0433\u0443\u0442 \u043f\u043b\u0430\u0442\u0438\u0442\u044c \u043f\u043e QR - \u043a\u043e\u0434\u0443 \u0438 \u043e \u043a\u0430\u043a\u0438\u0445 \u043d\u044e\u0430\u043d\u0441\u0430\u0445 \u0441\u043b\u0435\u0434\u0443\u0435\u0442 \u043f\u043e\u043c\u043d\u0438\u0442\u044c",
+     "domain": "rg.ru",
+     "date": "20260803",
+     "url": "https://rg.ru/2026/08/03/kodovoe-slovo.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u5df4\u62ff\u9a6c\u8fd0\u6cb3  \u7f3a\u6c34 \uff0c \u548b\u529e \uff1f ",
-     "domain": "baijiahao.baidu.com",
-     "date": "20260802",
-     "url": "https://baijiahao.baidu.com/s?id=1872402960691191975",
-     "tier": null
+     "title": " \u2013 P\u00e5 randen av en stagnasjon",
+     "domain": "e24.no",
+     "date": "20260803",
+     "url": "https://e24.no/internasjonal-oekonomi/i/wr9gGL/paa-randen-av-en-stagnasjon",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u5df4\u62ff\u9a6c\u8fd0\u6cb3  \u7f3a\u6c34  \u5f71\u54cd\u51e0\u4f55 _ \u65b0\u6d6a\u79d1\u6280 _ \u65b0\u6d6a\u7f51",
-     "domain": "finance.sina.com.cn",
-     "date": "20260802",
-     "url": "https://finance.sina.com.cn/tech/roll/2026-08-03/doc-inikyarf6475797.shtml",
-     "tier": null
+     "title": "U . S . Government Announces Largest Expansion Of The UFLPA Entity List In History , Continues Focus On Forced Labor Trade Enforcement",
+     "domain": "mondaq.com",
+     "date": "20260803",
+     "url": "https://www.mondaq.com:443/unitedstates/government/1825586/us-government-announces-largest-expansion-of-the-uflpa-entity-list-in-history-continues-focus-on-forced-labor-trade-enforcement",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u5df4\u62ff\u9a6c\u8fd0\u6cb3  \u7f3a\u6c34  \u5f71\u54cd\u51e0\u4f55 _ \u4e2d\u56fd\u7f51",
-     "domain": "news.china.com.cn",
-     "date": "20260802",
-     "url": "http://news.china.com.cn/2026-08/02/content_118629928.shtml",
-     "tier": null
+     "title": "Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
+     "domain": "en.people.cn",
+     "date": "20260803",
+     "url": "http://en.people.cn/n3/2026/0803/c90000-20484619.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u05d0\u05e8\u05d4  \u05d1 \u05e9\u05d5\u05d1 \u05de\u05e9\u05e0\u05d4 \u05db\u05d9\u05d5\u05d5\u05df , \u05d1\u05d9\u05e9\u05e8\u05d0\u05dc \u05e2\u05d3\u05d9\u05d9\u05df \u05e9\u05d5\u05ea\u05e7\u05d9\u05dd - \u05d5\u05d1\u05d0\u05d9\u05e8\u05d0\u05df \u05dc\u05d5\u05e2\u05d2\u05d9\u05dd :  \u05d8\u05e8\u05d0\u05de\u05e4 \u05e0\u05e1\u05d5\u05d2  ",
-     "domain": "ynet.co.il",
-     "date": "20260802",
-     "url": "https://www.ynet.co.il/news/article/r1easshrmx",
-     "tier": null
+     "title": "Brazil Minister Visits India to Expand Trade",
+     "domain": "riotimesonline.com",
+     "date": "20260803",
+     "url": "https://www.riotimesonline.com/brazil-mdic-minister-india-trade-mission-2026/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u4f0a\u6717\u5c0f\u5144\u5f1f\u80e1\u585e\u8ba4\u6002 \uff01 \u7a81\u7136\u6539\u53e3\u5426\u8ba4\u4e86",
-     "domain": "aboluowang.com",
-     "date": "20260802",
-     "url": "https://www.aboluowang.com/2026/0802/2415903.html",
-     "tier": null
+     "title": "Democratising Corridor Justice \u2013 Insulating Supply Chain Beyond State - To - State : A Corridor ADR Architecture For Malaysia - India Trade Relationship",
+     "domain": "livelaw.in",
+     "date": "20260803",
+     "url": "https://www.livelaw.in/articles/corridor-adr-architecture-malaysia-india-trade-relationship-543922",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Five swimmers to take on English Channel for Havens hospices",
-     "domain": "echo-news.co.uk",
-     "date": "20260802",
-     "url": "https://www.echo-news.co.uk/news/26421827.five-swimmers-take-english-channel-havens-hospices/",
-     "tier": null
+     "title": "\u0395\u03bd\u03b5\u03c1\u03b3\u03b5\u03b9\u03b1\u03ba\u03cc\u03c2 \u0391\u03c1\u03bc\u03b1\u03b3\u03b5\u03b4\u03b4\u03ce\u03bd : \u039a\u03bb\u03b5\u03af\u03bd\u03b5\u03b9 \u03b7 \u03c3\u03c4\u03c1\u03cc\u03c6\u03b9\u03b3\u03b3\u03b1 \u03c4\u03b7\u03c2 \u03a3\u03b1\u03bf\u03c5\u03b4\u03b9\u03ba\u03ae\u03c2 \u0391\u03c1\u03b1\u03b2\u03af\u03b1\u03c2 , \u03b7 \u0395\u03c5\u03c1\u03ce\u03c0\u03b7 \u03b1\u03c0\u03b5\u03b9\u03bb\u03b5\u03af\u03c4\u03b1\u03b9 \u03bc\u03b5 \u03bd\u03ad\u03bf \u03c3\u03bf\u03ba , \u03c4\u03bf Brent \u03c3\u03cd\u03bd\u03c4\u03bf\u03bc\u03b1 \u03c3\u03c4\u03b1 150 \u03b4\u03bf\u03bb\u03ac\u03c1\u03b9\u03b1",
+     "domain": "bankingnews.gr",
+     "date": "20260803",
+     "url": "https://www.bankingnews.gr/diethni/articles/891921/energeiakos-armageddon-kleinei-i-strofigga-tis-saoudikis-aravias-i-evropi-apeileitai-me-neo-sok-to-brent-syntoma-sta-150-dolaria",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u09ae\u09bf\u09b8\u09b0\u09c7 \u09aa\u09cd\u09b0\u09b6\u09be\u09b8\u09a8 \u09b8\u09be\u09ae\u09b0\u09bf\u0995\u09c0\u0995\u09b0\u09a3",
-     "domain": "dailynayadiganta.com",
-     "date": "20260802",
-     "url": "https://www.dailynayadiganta.com/opinions/editorial/sub-editorial/NMSOfLGuzsVu",
-     "tier": null
+     "title": "The great AI price war : How Chinese open models are squeezing GPT - 5 . 6 Sol and Claude Fable 5",
+     "domain": "digit.in",
+     "date": "20260803",
+     "url": "https://www.digit.in/features/general/the-great-ai-price-war-how-chinese-open-models-are-squeezing-gpt-5-6-sol-and-claude-fable-5.html",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "Putra Mahkota Saudi dan Trump Bahas Upaya Redakan Konflik Timur Tengah",
-     "domain": "cnnindonesia.com",
-     "date": "20260802",
-     "url": "https://www.cnnindonesia.com/internasional/20260802162735-120-1387704/putra-mahkota-saudi-dan-trump-bahas-upaya-redakan-konflik-timur-tengah",
-     "tier": null
+     "title": "\u0421\u0442\u0430\u043b\u044c\u043d\u043e\u0439 \u0440\u044b\u043d\u043e\u043a : 28 \u0438\u044e\u043b\u044f - 3 \u0430\u0432\u0433\u0443\u0441\u0442\u0430",
+     "domain": "metalbulletin.ru",
+     "date": "20260803",
+     "url": "https://www.metalbulletin.ru/publications/4721/",
+     "tier": null,
+     "match": "full-text"
     },
     {
-     "title": "\u0623\u062c\u0648\u0627\u0621 \u0627\u0644\u062d\u0631\u0628 \u062a\u0631\u0641\u0639 \u062a\u0643\u0627\u0644\u064a\u0641 \u0634\u062d\u0646 \u0627\u0644\u0646\u0641\u0637 \u0627\u0644\u062e\u0644\u064a\u062c\u064a",
-     "domain": "aljazeera.net",
-     "date": "20260802",
-     "url": "https://www.aljazeera.net/ebusiness/2026/8/2/%D8%A5%D8%BA%D9%84%D8%A7%D9%82-%D9%87%D8%B1%D9%85%D8%B2-%D9%8A%D8%B9%D9%8A%D8%AF-%D8%B1%D8%B3%D9%85-%D8%AE%D8%B1%D8%A7%D8%A6%D8%B7-%D8%A7%D9%84%D8%B7%D8%A7%D9%82%D8%A9-%D9%88%D8%AF%D9%88%D9%84",
-     "tier": null
-    },
-    {
-     "title": "U . S ., Israel strikes in Iran on hold on promise of peace deal : Trump",
-     "domain": "nationalpost.com",
-     "date": "20260802",
-     "url": "https://nationalpost.com/news/world/u-s-israel-strikes-in-iran-on-hold-after-word-of-potential-deal-trump",
-     "tier": null
-    },
-    {
-     "title": "\u0639\u0646\u0648\u0627\u0646 \u0645\u0643\u062a\u0628 \u0627\u0644\u062a\u0646\u0633\u064a\u0642 \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a \u0641\u064a \u0627\u0644\u062c\u0627\u0645\u0639\u0627\u062a \u0627\u0644\u0645\u0635\u0631\u064a\u0629 2026 .. \u0627\u0644\u0623\u0645\u0627\u0643\u0646 \u0648\u0623\u0631\u0642\u0627\u0645 \u0627\u0644\u062a\u0648\u0627\u0635\u0644",
-     "domain": "dostor.org",
-     "date": "20260802",
-     "url": "https://www.dostor.org/5654526",
-     "tier": null
-    },
-    {
-     "title": "Saudi Arabia gearing up for major assault on Houthis",
-     "domain": "nypost.com",
-     "date": "20260802",
-     "url": "https://nypost.com/2026/08/01/world-news/saudi-arabia-gearing-up-for-major-assault-on-houthis/",
-     "tier": null
-    },
-    {
-     "title": "Strait of Hormuz idle ships risk  super - spreader  event , warn experts",
-     "domain": "aol.co.uk",
-     "date": "20260802",
-     "url": "https://www.aol.co.uk/articles/strait-hormuz-idle-ships-risk-225000000.html",
-     "tier": null
-    },
-    {
-     "title": "\u0987\u09b0\u09be\u09a8\u09c7 \u09b9\u09be\u09ae\u09b2\u09be \u09a5\u09c7\u0995\u09c7 \u0986\u09aa\u09be\u09a4\u09a4 \u09ac\u09bf\u09b0\u09a4 \u09a5\u09be\u0995\u09ac\u09c7 \u09af\u09c1\u0995\u09cd\u09a4\u09b0\u09be\u09b7\u09cd\u099f\u09cd\u09b0 - \u0987\u09b8\u09b0\u09be\u0987\u09b2 : \u099f\u09cd\u09b0\u09be\u09ae\u09cd\u09aa",
-     "domain": "dailynayadiganta.com",
-     "date": "20260802",
-     "url": "https://www.dailynayadiganta.com/international/asia/middle-east/QWwPUYeAfSJZ",
-     "tier": null
-    },
-    {
-     "title": "\u91d1\u878d\u65f6\u62a5 \uff1a \u7279\u6717\u666e\u6539\u53e3 \uff0c \u4f0a\u6717\u5df2\u5728\u6218\u4e89\u4e2d\u5360\u636e\u4e3b\u52a8\u6743",
-     "domain": "news.ifeng.com",
-     "date": "20260802",
-     "url": "https://news.ifeng.com/c/8vGGvjm7cpp",
-     "tier": null
-    },
-    {
-     "title": "\u0627\u0644\u0648\u0644\u0627\u064a\u0627\u062a \u0627\u0644\u0645\u062a\u062d\u062f\u0629 \u0648\u0625\u0633\u0631\u0627\u0626\u064a\u0644 \u062a\u0639\u0644\u0651\u0642\u0627\u0646 \u0634\u0646\u0651 \u0636\u0631\u0628\u0627\u062a \u0639\u0644\u0649 \u0625\u064a\u0631\u0627\u0646",
-     "domain": "alwatanvoice.com",
-     "date": "20260802",
-     "url": "https://www.alwatanvoice.com/arabic/news/2026/08/02/1553486.html",
-     "tier": null
-    },
-    {
-     "title": "US Embassies In Middle East Warn Of  Potential Unforeseen Escalation  ",
-     "domain": "southeastasiapost.com",
-     "date": "20260802",
-     "url": "http://www.southeastasiapost.com/news/279218563/us-embassies-in-middle-east-warn-of-potential-unforeseen-escalation",
-     "tier": null
-    },
-    {
-     "title": "US advises citizens to  consider leaving Middle East  as Trump vows to hit Iran  very hard  ",
-     "domain": "britainnews.net",
-     "date": "20260802",
-     "url": "http://www.britainnews.net/news/279218911/us-advises-citizens-to-consider-leaving-middle-east-as-trump-vows-to-hit-iran-very-hard",
-     "tier": null
-    },
-    {
-     "title": "The Malacca Dilemma : How the Indian Navy Could Pressure China in a Full - Scale Conflict",
-     "domain": "idrw.org",
-     "date": "20260802",
-     "url": "https://idrw.org/the-malacca-dilemma-how-the-indian-navy-could-pressure-china-in-a-full-scale-conflict/",
-     "tier": null
+     "title": "The best banking stocks to buy as profits surge",
+     "domain": "moneyweek.com",
+     "date": "20260803",
+     "url": "https://moneyweek.com/investments/bank-stocks/best-banking-stocks-as-sector-profits-surge",
+     "tier": null,
+     "match": "full-text"
     }
    ],
-   "spike_quality_tier12_share": 0.027
+   "spike_quality_tier12_share": 0.125
   }
  }
 }
