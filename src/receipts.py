@@ -100,8 +100,15 @@ def channel_receipts(
     articles.sort(key=_tier_sort_key)
     articles = articles[:MAX_ARTICLES_PUBLISHED]
     for a in articles:
+        # The aptness signal ships instead of dying here: "headline"
+        # means a channel phrase is in the title (the story is about the
+        # construct), "full-text" means the phrase appears only in the
+        # body -- a tier-1 wire that barely brushes the channel is
+        # redundant to a practitioner, and the label lets the reader see
+        # which is which without the list hiding any genuine match
+        # (FICCI round 2, 2026-08-04).
+        a["match"] = "headline" if a.pop("_title_hit", False) else "full-text"
         a.pop("_rel", None)
-        a.pop("_title_hit", None)
     tier12 = sum(1 for a in articles if a["tier"] in (1, 2))
     return {
         "label": spec["label"],

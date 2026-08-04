@@ -54,6 +54,9 @@ def test_channel_receipts_dedupes_by_url_and_scores_tier12_share(monkeypatch):
     assert out["spike_quality_tier12_share"] == 0.5  # 1 of 2 tier1-2
     assert out["n_pool_unique"] == 2
     assert out["pool_exhausted"] is True  # everything retrievable is shown
+    # Aptness ships as a label, never as a silent filter: no title here
+    # carries a channel phrase, so both are body-only matches.
+    assert all(a["match"] == "full-text" for a in out["articles"])
 
 
 def test_channel_receipts_caps_at_max_published(monkeypatch):

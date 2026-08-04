@@ -274,7 +274,61 @@ you attach citations to documented incidents (IFCN fact-checks, the
 Karachi broadcast): a public tier-4 designation is an accusation, and
 the project only publishes what it can cite. Send links, they move.
 
-## 0.5 Commit derived market returns? Your licensing call
+## 0.9 Dictionary amendment memo: the swimmer leak (shipping precision, your sign-off)
+
+The FICCI director found a charity swim story ("Five swimmers to take
+on English Channel for Havens hospices") on the shipping receipts card.
+Diagnosis, exact: the shipping dictionary has no India anchor by
+registered design (chokepoints are global corridors), and GDELT matches
+full article text, so any story whose body mentions "shipping lanes"
+(Channel swim stories always describe dodging them) or "maritime
+security" boilerplate enters the channel. The score impact is tiny (one
+article in a share-of-all-coverage denominator); the credibility impact
+of a swimmer on the evidence card is not.
+
+Options, ex-ante compliant in all cases:
+
+- (a) Drop the two generic terms ("shipping lanes", "maritime
+  security") in dictionaries v1.2.0. Cleanest precision gain; recall
+  cost: genuine corridor stories that use only generic vocabulary are
+  lost.
+- (b) RECOMMENDED. Keep the concepts but scope them: replace the bare
+  terms with corridor-anchored forms, e.g. "shipping lanes" AND (Red
+  Sea OR Suez OR Hormuz OR Malacca OR Aden OR India), same for
+  "maritime security". Kills the swimmer class, keeps corridor recall,
+  per-term rationale documented, and the precision auditor measures
+  the effect within days.
+- (c) No amendment; presentation-only mitigation (title-hit stories
+  already sort first, body-text-only matches get labeled "full-text
+  match" so odd stories explain themselves).
+
+Reply "approve shipping memo with a/b/c" (edit freely first);
+registration, changelog, and CI-test updates follow the same night.
+
+## 0.10 AI serving layer on the site (FICCI ask, your money and your voice, so your call)
+
+The director asked whether the site could carry an AI method that
+summarises or serves whatever the visitor asks. Three honest options:
+
+- (a) FREE, SHIPPABLE NOW, no decision needed: auto-assembled daily
+  briefs per channel, template-generated from payloads the site already
+  publishes (what moved, by how much, which receipts, event record,
+  transits). No LLM, zero cost, labeled "auto-assembled" and never in
+  your voice. The night crew builds this regardless unless you say
+  stop.
+- (b) LLM-WRITTEN NIGHTLY SUMMARIES: one API call per channel per day
+  inside the daily CI run. Order-of-magnitude cost at current API
+  pricing: well under $5/month. Needs your API account (the money
+  hard limit binds me), a "machine-written, not the author" label, and
+  a decision on whether generated prose belongs on a measurement
+  instrument at all. My honest note: this is a credibility trade, not
+  a technical one.
+- (c) INTERACTIVE ASK-ANYTHING: needs a backend or serverless proxy,
+  key management, abuse control, and a spend cap. Real product work,
+  real standing cost, real injection-attack surface. If you want it,
+  it is a V13-adjacent build with its own design memo first.
+
+Reply "approve ai memo a", "a+b", or "a+b+c"; (a) alone needs no reply.
 
 Reproduce cannot byte-match event-study numbers because their market
 inputs (Yahoo) are gitignored by the redistribution-license decision.

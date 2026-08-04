@@ -383,11 +383,22 @@ function renderNowcast(nc) {
   if (nc.date !== new Date().toISOString().slice(0, 10)) return;
   const el = document.getElementById("nowcast");
   if (!el) return;
+  // Per-channel provisional scores made first-class (FICCI round 2,
+  // 2026-08-04: an evening event must be findable the same evening,
+  // and a composite-only line hid which border was moving).
+  let chips = "";
+  for (const [k, c] of Object.entries(nc.channels || {})) {
+    if (c.score == null) continue;
+    chips += `<a class="nowcast-chip" href="receipts.html?channel=${esc(k)}">` +
+      `<span class="nc-label">${esc(c.label)}</span>` +
+      `<span class="nc-score">${esc(c.score)}</span></a>`;
+  }
   el.innerHTML =
     `<span class="prov">Provisional</span> ${esc(nc.date)} so far: composite ` +
     `${esc(nc.composite)} as of ${esc(istTime(nc.as_of_utc))} IST, from a ` +
     `${esc(Number(nc.n_docs_sampled).toLocaleString("en-IN"))}-article ` +
-    `sample. Finalized by the daily update.`;
+    `sample. Finalized by the daily update.` +
+    (chips ? `<span class="nowcast-channels">${chips}</span>` : "");
   el.hidden = false;
 }
 

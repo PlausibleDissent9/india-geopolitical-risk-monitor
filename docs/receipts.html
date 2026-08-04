@@ -104,11 +104,15 @@ function tierBadge(tier) {
       "never assumed into one</li></ul>" +
       "<p>Tiers order this list credible-first and feed the tier 1-2 share; they never " +
       "enter any score. A day with no tier-1 rows means no wire-service article was " +
-      "retrievable for this exact query that day, not that wires were filtered out.</p></div>";
+      "retrievable for this exact query that day, not that wires were filtered out. " +
+      "Stories whose headline carries a channel phrase sort first within each tier; " +
+      "a <em>full-text match</em> tag means the phrase appears only in the article body, " +
+      "so the story may merely mention the channel rather than be about it.</p></div>";
     if (c.articles.length) {
       html += "<ul class='receipts-list'>" + c.articles.map(a =>
         "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) + '" rel="noopener" target="_blank">' +
-        esc(a.title || a.url) + "</a> <span class='kv'>&middot; " + esc(a.domain) + "</span></li>"
+        esc(a.title || a.url) + "</a> <span class='kv'>&middot; " + esc(a.domain) +
+        (a.match === "full-text" ? " &middot; full-text match" : "") + "</span></li>"
       ).join("") + "</ul>";
     } else {
       html += '<p class="empty">No articles retrieved for this query on this day.</p>';
