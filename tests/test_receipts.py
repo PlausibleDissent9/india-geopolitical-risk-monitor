@@ -75,3 +75,32 @@ def test_channel_receipts_caps_at_max_published(monkeypatch):
     assert all(a["tier"] is None for a in out["articles"])
     assert out["n_pool_unique"] == receipts.MAX_ARTICLES_PUBLISHED + 10
     assert out["pool_exhausted"] is False  # a real sample, honestly labeled
+
+
+def test_second_sort_skipped_when_first_pass_exhausts_the_day(monkeypatch):
+    # Under the per-request ceiling, both sorts return the same set
+    # (probed 2026-08-04), so the second request is pure rate-limit
+    # spend; at the ceiling, the second sort reaches articles the first
+    # ranking cut off and must run.
+    calls: list[str] = []
+
+    def counting_fetch(query, start, end, maxrecords=20, sort="hybridrel"):
+        calls.append(sort)
+        n = maxrecords if query == "full" else 3
+        return [
+            {"title": f"{sort}{i}", "domain": "d.example", "date": "20260801",
+             "url": f"https://d.example/{sort}/{i}"}
+            for i in range(n)
+        ]
+
+    monkeypatch.setattr(fetch_gdelt, "fetch_articles", counting_fetch)
+    spec = {"label": "Test channel", "anchor": None, "terms": ["term-a"]}
+
+    monkeypatch.setattr(fetch_gdelt, "build_queries", lambda t, anchor=None: ["small"])
+    receipts.channel_receipts("test", spec, date(2026, 8, 1), {})
+    assert calls == ["hybridrel"], "under-ceiling day must not spend a second request"
+
+    calls.clear()
+    monkeypatch.setattr(fetch_gdelt, "build_queries", lambda t, anchor=None: ["full"])
+    receipts.channel_receipts("test", spec, date(2026, 8, 1), {})
+    assert calls == list(receipts.SORTS), "at-ceiling day must sweep both sorts"

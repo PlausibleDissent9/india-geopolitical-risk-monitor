@@ -64,9 +64,10 @@ def channel_receipts(
     pool: dict[str, dict[str, Any]] = {}
     for q in queries:
         for sort in SORTS:
-            for a in fetch_gdelt.fetch_articles(
+            arts = fetch_gdelt.fetch_articles(
                 q, day, day, maxrecords=MAX_ARTICLES_PER_QUERY, sort=sort
-            ):
+            )
+            for a in arts:
                 # Scheme allowlist: with 'unsafe-inline' in the CSP, a
                 # javascript: URL from crawled third-party data would
                 # execute on click; only http(s) ever renders.
@@ -75,6 +76,14 @@ def channel_receipts(
                     title_norm = " " + re.sub(r"[^a-z0-9 ]+", " ", (a.get("title") or "").lower()).strip() + " "
                     a["_title_hit"] = any(p in title_norm for p in norm_phrases)
                     pool.setdefault(a["url"], a)
+            # A pass returning under the ceiling already delivered this
+            # sub-query's full retrievable universe for the day; a second
+            # sort would refetch the same set (probed 2026-08-04:
+            # hybridrel and datedesc both returned the identical 38 for
+            # pakistan_west). Every skipped request is budget the rate
+            # limiter cannot take away from another channel.
+            if len(arts) < MAX_ARTICLES_PER_QUERY:
+                break
     articles = list(pool.values())
     # Syndication dedup: identical headlines across mirror domains (the
     # datapacks show one ANI wire story on four domains) collapse to the
