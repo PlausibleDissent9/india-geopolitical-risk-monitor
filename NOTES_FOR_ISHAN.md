@@ -630,3 +630,27 @@ volume, and custom sector dashboards, never the index itself.
 Reply "approve exposure layer" (Part A alone, recommended now) or
 "approve exposure layer and assistant" (both), and edit the sector
 list however you like first; your list is the registration.
+
+### 0.13 APPROVED AND EXPANDED in chat 2026-08-05 ("execute all, make this max")
+
+The exposure program is a build order now; the architecture from the
+brainstorm is the spec. What the founder approved: exposure as a
+DERIVED object (trade flows to corridors to channels to measured
+sensitivity), three doors (sector tap, sentence extraction, HS codes),
+profiles in the URL with no accounts, measured sectoral sensitivities
+from NSE indices (feasibility verified 2026-08-05: 13-19 years of
+daily data per sector, free), the macro transmission table, per-sector
+feeds, the reverse lens, personalized analogues, computation shown on
+every personalized page, alerts later on the VPS, API via V13. Core
+free forever; no logins; no forecasts anywhere, enforced by the same
+lint discipline as the briefs.
+
+Still yours, two items:
+1. sectors.json first registration: the ten-sector draft in 0.13 above
+   plus per-sector corridor rationale ships as DRAFT v0.9 for your
+   edit; reply "freeze sectors" (with any edits) and it registers as
+   v1.0.0.
+2. WhatsApp Channel for the daily brief: only you can create it (your
+   WhatsApp, Updates tab > Channels > Create). Say the word when made
+   and the crews wire the daily post into your review flow; nothing
+   posts without your tap in August.
