@@ -113,6 +113,11 @@ deprecation policy, machine-readable at <a href="data/api_contract.json">data/ap
 <a href="codebook.html">the codebook</a> (also on
 <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/docs/codebook.md">GitHub</a>).</p>
 
+<h2>Per-channel quick sheets</h2>
+<p class="chart-note">Working on one channel? Everything that carries it, in one place.
+The same files serve every channel; only the key changes.</p>
+<div id="channel-sheets"></div>
+
 <h2>The reliability record</h2>
 <p class="chart-note">The morning contract, scored from git commit timestamps rather than
 self-reporting: day D final by 6:00 AM IST on D+1. Misses stay listed forever.
@@ -172,6 +177,36 @@ const NICE = {
       "<tr>" + r.map((v, i) => `<td>${esc(v === "" ? "-" : v)}</td>`).join("") + "</tr>"
     ).join("");
   } catch (e) { /* preview stays in loading state offline */ }
+})();
+
+/* Per-channel quick sheets (MI6): one card per channel listing every
+   file that carries it, the key to read, and a citation line. */
+(() => {
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const CH = {
+    pakistan_west: "Pakistan / Western Border", china_east: "China / Eastern Border",
+    gulf_energy: "Gulf & Energy Security", us_trade: "US & Trade Policy",
+    shipping: "Shipping & Chokepoints",
+  };
+  const FILES = (ch) => [
+    ["data/history.csv", "daily percentile scores since 2017; column <code>" + ch + "</code>"],
+    ["data/latest.json", "today's finalized score: <code>channels." + ch + ".score</code>"],
+    ["data/receipts.json", "today's matched articles: <code>channels." + ch + ".articles</code>, lane-labeled"],
+    ["data/uncertainty.json", "95% sampling band on recent days: <code>days.&lt;date&gt;." + ch + "</code>"],
+    ["data/episodes.json", "detected coverage episodes: filter rows by <code>channel == \"" + ch + "\"</code>"],
+    ["data/event_study.json", "post-episode market cells with 95% CIs: <code>channels." + ch + ".outcomes</code>"],
+    ["data/robustness_series.json", "primary vs dictionary variants, weekly: <code>channels." + ch + "</code>"],
+  ];
+  const wrap = document.getElementById("channel-sheets");
+  if (!wrap) return;
+  wrap.innerHTML = Object.entries(CH).map(([ch, label]) =>
+    '<details class="prose"><summary><b>' + esc(label) + "</b></summary><ul>" +
+    FILES(ch).map(([f, what]) =>
+      '<li><a href="' + esc(f) + '">' + esc(f) + "</a> &mdash; " + what + "</li>").join("") +
+    "</ul><p class='kv'>Cite as: Krishna, Ishan (2026). India Geopolitical Risk Monitor, " +
+    esc(label) + " channel. https://igrm.in/ (CC BY 4.0). Terms behind the channel: " +
+    '<a href="receipts.html?channel=' + esc(ch) + '">registered dictionary and today\'s receipts</a>.</p></details>'
+  ).join("");
 })();
 </script>
 <script src="reveal.js?v=20260729a"></script>
