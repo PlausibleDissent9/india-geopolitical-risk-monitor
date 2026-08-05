@@ -132,8 +132,7 @@ def build() -> dict:
                 "governing changes.",
             "contract_version": CONTRACT_VERSION,
             "frozen_date": FROZEN_DATE,
-            "base_url": "https://plausibledissent9.github.io/"
-                "india-geopolitical-risk-monitor/",
+            "base_url": "https://igrm.in/",
             "promise": "Frozen fields are never removed, renamed, or "
                 "repurposed to a different meaning within major version "
                 "1. New fields may be added to any payload at any time "

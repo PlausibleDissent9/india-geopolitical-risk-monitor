@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Data, India Geopolitical Risk Monitor</title>
 <meta name="description" content="Every published IGRM data file, the codebook, licensing, and the citation string.">
-<link rel="canonical" href="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data.html">
+<link rel="canonical" href="https://igrm.in/data.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
@@ -15,14 +15,14 @@
   "@context": "https://schema.org", "@type": "Dataset",
   "name": "India Geopolitical Risk Monitor (IGRM) daily series",
   "description": "Daily press-salience index for India-related geopolitical risk, five channels plus composite, 2017-present, with events layers, chokepoint series, stress gauge, comparators, and full replication package. Measures attention, not risk.",
-  "url": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data.html",
+  "url": "https://igrm.in/data.html",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "creator": {"@type": "Person", "name": "Ishan Krishna"},
   "temporalCoverage": "2017-01-01/..",
   "keywords": ["geopolitical risk","India","news salience","GDELT","economic data","open data"],
   "distribution": [
-    {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data/history.csv"},
-    {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/data/history.json"}
+    {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://igrm.in/data/history.csv"},
+    {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://igrm.in/data/history.json"}
   ]
 }
 </script>
@@ -103,7 +103,7 @@ by 6:00 AM IST (00:30 UTC), scoring the news day that closed at 5:30 AM IST; a p
 <p class="kv">Schema promise: fields are added, never renamed or removed, within a major
 version; breaking changes bump the version in the citation and are announced in the
 methodology changelog. All endpoints resolve under
-<code>https://plausibledissent9.github.io/india-geopolitical-risk-monitor/</code>.
+<code>https://igrm.in/</code>.
 Attribution per CC BY 4.0: "India Geopolitical Risk Monitor (Ishan Krishna)" with a link.
 The five endpoints above are the quick-start set; <a href="api.html"><b>the full frozen v1 API
 contract</b></a> lists every endpoint this project serves, its promised fields, and the
@@ -131,7 +131,7 @@ the <a href="corrections.html">corrections ledger</a> carries every cause.</p>
 <code>gulf_energy</code>, <code>us_trade</code>, <code>shipping</code>,
 <code>gauge</code>; optional <code>days=90..1095</code>. The salience-not-risk label is
 part of the widget and cannot be removed.</p>
-<pre style="overflow-x:auto; background:var(--card); border:1px solid var(--line); border-radius:6px; padding:0.8rem; font-size:0.8rem">&lt;iframe src="https://plausibledissent9.github.io/india-geopolitical-risk-monitor/embed.html?chart=composite&amp;days=365"
+<pre style="overflow-x:auto; background:var(--card); border:1px solid var(--line); border-radius:6px; padding:0.8rem; font-size:0.8rem">&lt;iframe src="https://igrm.in/embed.html?chart=composite&amp;days=365"
         width="100%" height="220" frameborder="0" loading="lazy"
         title="India Geopolitical Risk Monitor, composite salience"&gt;&lt;/iframe&gt;</pre>
 
@@ -141,14 +141,14 @@ part of the widget and cannot be removed.</p>
 <p class="chart-note"><a href="igrm.bib" download>BibTeX</a> ready for your reference manager.</p>
 <p class="prose">If you use the data, cite it:</p>
 <p class="prose"><code id="cite">Krishna, Ishan (2026). India Geopolitical Risk Monitor: a category-decomposed
-press-salience index for India. Version 1.0.1. https://plausibledissent9.github.io/india-geopolitical-risk-monitor/ (data: CC BY 4.0)</code></p>
+press-salience index for India. Version 1.0.1. https://igrm.in/ (data: CC BY 4.0)</code></p>
 <p class="prose">BibTeX:</p>
 <pre class="prose" style="font-size:0.8rem; overflow-x:auto;"><code>@misc{krishna2026igrm,
   author = {Krishna, Ishan},
   title  = {India Geopolitical Risk Monitor: a category-decomposed
             press-salience index for India},
   year   = {2026},
-  url    = {https://plausibledissent9.github.io/india-geopolitical-risk-monitor/},
+  url    = {https://igrm.in/},
   note   = {Version 1.0.1. Data: CC BY 4.0}
 }</code></pre>
 <p class="kv">A DOI-minted release via Zenodo is planned; the citation will gain the DOI when it exists.</p>

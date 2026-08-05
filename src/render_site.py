@@ -25,7 +25,7 @@ DOCS = ROOT / "docs"
 SITE_DATA = DOCS / "data"
 NOTES_DIR = ROOT / "notes"
 
-SITE_URL = "https://plausibledissent9.github.io/india-geopolitical-risk-monitor"
+SITE_URL = "https://igrm.in"
 
 PAGE_SHELL = """<!DOCTYPE html>
 <html lang="en">

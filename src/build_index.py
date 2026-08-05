@@ -124,7 +124,7 @@ def detect_all_episodes(
     return out
 
 
-SITE_URL = "https://plausibledissent9.github.io/india-geopolitical-risk-monitor"
+SITE_URL = "https://igrm.in"
 
 
 def _file_meta(what: str, units: str) -> dict:
