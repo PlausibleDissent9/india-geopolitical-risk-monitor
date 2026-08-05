@@ -1,224 +1,225 @@
 {
-  "_meta": {
-    "version": "1.1.0",
-    "frozen_on": "2026-07-24",
-    "owner_note": "Every term carries a one-line rationale (category -- why this term); these lines are the raw material for methodology.md section 2. Post-freeze changes go in the methodology changelog with a date and a reason.",
-    "ex_ante_rule": "No retrospective event names (Galwan, Pulwama, Balakot, Sindoor, Kargil, Uri, 26/11, Doklam...). Enforced by tests/test_dictionaries.py. Spikes at those events must be DETECTED by structural terms, not baked in.",
-    "query_grammar": "GDELT DOC API: OR only inside parens, no nesting, no AND/OR mixing inside a group. Therefore every term is a single quoted phrase; per-channel disambiguation uses one 'anchor' word ANDed outside the OR group. Hyphenated text tokenizes to spaces, so \"India Pakistan border\" also matches 'India-Pakistan border'.",
-    "chokepoints_note": "shipping carries four chokepoint sub-dictionaries (shipping.chokepoints) used only for the salience-vs-transits comparison against IMF PortWatch counts; they never enter the composite. A sub-dictionary may repeat a parent-channel term (it is a decomposition, not an addition), but no term appears in two sub-dictionaries. No anchor: these measure global corridor salience, not India-linked salience. Enforced by tests/test_dictionaries.py."
-  },
-  "pakistan_west": {
-    "label": "Pakistan / Western Border",
-    "anchor": "India",
-    "terms": [
-      "\"Line of Control\"",
-      "\"India Pakistan border\"",
-      "\"Pakistan occupied Kashmir\"",
-      "\"Pakistan administered Kashmir\"",
-      "\"ceasefire violations\"",
-      "\"ceasefire violation\"",
-      "\"cross-border terrorism\"",
-      "\"cross-border firing\"",
-      "\"cross-border shelling\"",
-      "\"infiltration bid\"",
-      "\"surgical strikes\"",
-      "\"Inter-Services Intelligence\"",
-      "\"Indus Waters Treaty\"",
-      "\"Siachen\""
-    ],
-    "rationale": {
-      "\"Line of Control\"": "geography -- the standing name of the militarised Kashmir boundary; near-universal in escalation coverage",
-      "\"India Pakistan border\"": "geography -- the generic international-press phrasing (also matches 'India-Pakistan border')",
-      "\"Pakistan occupied Kashmir\"": "geography -- Indian-press variant for the disputed territory",
-      "\"Pakistan administered Kashmir\"": "geography -- international-press variant for the same territory; both needed for recall",
-      "\"ceasefire violations\"": "doctrine -- the recurring LoC vocabulary; anchor 'India' excludes Gaza/Ukraine ceasefire coverage",
-      "\"ceasefire violation\"": "doctrine -- singular form; GDELT phrases do not stem, so both forms are needed",
-      "\"cross-border terrorism\"": "doctrine -- India's standing diplomatic framing, reused across two decades of coverage",
-      "\"cross-border firing\"": "doctrine -- the wire-service phrase for LoC exchanges",
-      "\"cross-border shelling\"": "doctrine -- artillery variant of the same press vocabulary",
-      "\"infiltration bid\"": "doctrine -- the recurring Indian-press phrase for LoC crossing attempts",
-      "\"surgical strikes\"": "doctrine -- response vocabulary reused across escalations; a phrase, not an event name (borderline case, discussed in methodology s2)",
-      "\"Inter-Services Intelligence\"": "institution -- the actor named in terrorism-linkage coverage; anchor keeps it India-related, not Afghanistan-related",
-      "\"Indus Waters Treaty\"": "institution -- the standing water-sharing mechanism whose stress signals escalation",
-      "\"Siachen\"": "geography -- the standing high-altitude military deployment"
-    }
-  },
-  "china_east": {
-    "label": "China / Eastern Border",
-    "anchor": "India",
-    "terms": [
-      "\"Line of Actual Control\"",
-      "\"India China border\"",
-      "\"eastern Ladakh\"",
-      "\"Arunachal Pradesh\"",
-      "\"Aksai Chin\"",
-      "\"Tawang\"",
-      "\"People's Liberation Army\"",
-      "\"border standoff\"",
-      "\"India China relations\"",
-      "\"disengagement\""
-    ],
-    "rationale": {
-      "\"Line of Actual Control\"": "geography -- the standing name of the disputed boundary; the channel's core term",
-      "\"India China border\"": "geography -- generic international phrasing (also matches 'India-China border')",
-      "\"eastern Ladakh\"": "geography -- the western-sector name where standoff coverage concentrates; a place, not an event name",
-      "\"Arunachal Pradesh\"": "geography -- the eastern disputed sector; with the India anchor, global coverage is dominated by the dispute, not state politics",
-      "\"Aksai Chin\"": "geography -- the Chinese-held disputed territory",
-      "\"Tawang\"": "geography -- the standing focal town of the eastern-sector dispute",
-      "\"People's Liberation Army\"": "institution -- the force; anchor 'India' excludes Taiwan-only PLA coverage",
-      "\"border standoff\"": "doctrine -- the recurring press phrase for LAC confrontations; anchored to India",
-      "\"India China relations\"": "institution -- catches the diplomatic/talks news cycle that geography terms miss",
-      "\"disengagement\"": "doctrine -- the specific vocabulary of LAC de-escalation coverage; anchored to India"
-    }
-  },
-  "gulf_energy": {
-    "label": "Gulf & Energy Security",
-    "terms": [
-      "\"Strait of Hormuz\"",
-      "\"Gulf of Oman\"",
-      "\"Gulf tensions\"",
-      "\"Middle East conflict\"",
-      "\"Israel Iran\"",
-      "\"Iran Israel\"",
-      "\"Iran sanctions\"",
-      "\"energy security\"",
-      "\"oil supply disruption\"",
-      "\"oil supply disruptions\"",
-      "\"crude oil supply\""
-    ],
-    "rationale": {
-      "\"Strait of Hormuz\"": "chokepoint -- the single most important term: the passage for the bulk of India's crude imports",
-      "\"Gulf of Oman\"": "chokepoint -- the adjacent waterway where tanker incidents recur",
-      "\"Gulf tensions\"": "doctrine -- the recurring headline phrase for regional escalation",
-      "\"Middle East conflict\"": "doctrine -- the generic press frame; high recall for the channel's topic",
-      "\"Israel Iran\"": "doctrine -- matches 'Israel-Iran conflict/tensions/war' via hyphen tokenization",
-      "\"Iran Israel\"": "doctrine -- the reverse word order; both orders appear in copy",
-      "\"Iran sanctions\"": "institution -- the standing sanctions regime governing an Indian supply option",
-      "\"energy security\"": "doctrine -- the policy vocabulary; broader than the Gulf, accepted and disclosed in methodology s2",
-      "\"oil supply disruption\"": "doctrine -- the market-press phrase for the risk this channel tracks",
-      "\"oil supply disruptions\"": "doctrine -- plural form; no stemming in GDELT phrases",
-      "\"crude oil supply\"": "doctrine -- supply-side coverage, avoiding the price-only news the channel excludes"
-    }
-  },
-  "us_trade": {
-    "label": "US & Trade Policy",
-    "anchor": "India",
-    "terms": [
-      "\"US tariffs\"",
-      "\"reciprocal tariffs\"",
-      "\"trade deal\"",
-      "\"trade war\"",
-      "\"trade restrictions\"",
-      "\"export controls\"",
-      "\"Section 301\"",
-      "\"CAATSA\"",
-      "\"H-1B visa\"",
-      "\"WTO dispute\"",
-      "\"secondary sanctions\"",
-      "\"Russian oil\""
-    ],
-    "rationale": {
-      "\"US tariffs\"": "doctrine -- the robust bigram in tariff coverage; anchor 'India' scopes it to India-relevant stories",
-      "\"reciprocal tariffs\"": "doctrine -- standing trade-policy vocabulary that long predates any single administration",
-      "\"trade deal\"": "institution -- catches the negotiation news cycle; India-anchored",
-      "\"trade war\"": "doctrine -- escalation vocabulary; India-anchored so only India-relevant coverage counts",
-      "\"trade restrictions\"": "doctrine -- the generic restriction vocabulary",
-      "\"export controls\"": "doctrine -- the technology-denial vocabulary (semiconductors, dual-use)",
-      "\"Section 301\"": "institution -- the standing US trade-law instrument, used against India before",
-      "\"CAATSA\"": "institution -- the US sanctions statute hanging over India's Russian defence purchases since 2017",
-      "\"H-1B visa\"": "institution -- the standing services-trade friction point",
-      "\"WTO dispute\"": "institution -- the multilateral dispute channel",
-      "\"secondary sanctions\"": "doctrine -- the vocabulary of extraterritorial pressure on India's Russia trade",
-      "\"Russian oil\"": "doctrine -- India-anchored; assigned here rather than gulf_energy because the risk vector is US policy, not physical supply (bleed decision, methodology s2)"
-    }
-  },
-  "shipping": {
-    "label": "Shipping & Chokepoints",
-    "terms": [
-      "\"Red Sea shipping\"",
-      "\"Red Sea attacks\"",
-      "\"Suez Canal\"",
-      "\"Bab el-Mandeb\"",
-      "\"Strait of Malacca\"",
-      "\"Cape of Good Hope\"",
-      "\"Houthi attacks\"",
-      "\"shipping lanes\"",
-      "\"Somali pirates\"",
-      "\"maritime security\""
-    ],
-    "rationale": {
-      "\"Red Sea shipping\"": "chokepoint -- the standing compound in rerouting/crisis coverage; bare 'Red Sea' would import tourism and environment coverage",
-      "\"Red Sea attacks\"": "doctrine -- the attack-coverage variant of the same story",
-      "\"Suez Canal\"": "chokepoint -- the canal itself; routine-transit coverage is modest and disclosed",
-      "\"Bab el-Mandeb\"": "chokepoint -- the Red Sea's southern gate ('Bab el Mandeb' also matches via tokenization)",
-      "\"Strait of Malacca\"": "chokepoint -- the eastern passage for India's Asia trade",
-      "\"Cape of Good Hope\"": "geography -- the rerouting marker: diversion coverage names it constantly",
-      "\"Houthi attacks\"": "actor -- the group whose signature is shipping attack; an actor name, not an event name",
-      "\"shipping lanes\"": "doctrine -- the generic sea-lane security vocabulary",
-      "\"Somali pirates\"": "actor -- the recurring piracy story on India's western sea lanes",
-      "\"maritime security\"": "doctrine -- the policy vocabulary for the whole channel; broad, accepted and disclosed"
-    },
-    "chokepoints": {
-      "hormuz": {
-        "label": "Strait of Hormuz",
-        "terms": [
-          "\"Strait of Hormuz\"",
-          "\"Hormuz Strait\"",
-          "\"Hormuz closure\"",
-          "\"tanker seizure\"",
-          "\"tanker seizures\""
-        ],
-        "rationale": {
-          "\"Strait of Hormuz\"": "chokepoint -- the standing name; routine-transit and crisis coverage both use it",
-          "\"Hormuz Strait\"": "chokepoint -- word-order variant in wire copy; GDELT phrases do not reorder",
-          "\"Hormuz closure\"": "doctrine -- the recurring closure-threat vocabulary, reused across decades of tension coverage",
-          "\"tanker seizure\"": "doctrine -- the corridor's signature incident category, recurring across years; a category, not an event name",
-          "\"tanker seizures\"": "doctrine -- plural form; GDELT phrases do not stem"
-        }
-      },
-      "bab_el_mandeb": {
-        "label": "Bab el-Mandeb",
-        "terms": [
-          "\"Bab el-Mandeb\"",
-          "\"Bab al-Mandab\"",
-          "\"Red Sea shipping\"",
-          "\"Red Sea attacks\"",
-          "\"Houthi attacks\""
-        ],
-        "rationale": {
-          "\"Bab el-Mandeb\"": "chokepoint -- the Red Sea's southern gate; shared with the parent channel ('Bab el Mandeb' also matches via tokenization)",
-          "\"Bab al-Mandab\"": "chokepoint -- alternative transliteration in Gulf and agency copy",
-          "\"Red Sea shipping\"": "chokepoint -- the crisis compound for this corridor; shared with the parent channel",
-          "\"Red Sea attacks\"": "doctrine -- the attack-coverage variant of the same story; shared with the parent channel",
-          "\"Houthi attacks\"": "actor -- the group whose signature is shipping attack in this corridor; shared with the parent channel"
-        }
-      },
-      "suez": {
-        "label": "Suez Canal",
-        "terms": [
-          "\"Suez Canal\"",
-          "\"Suez Canal Authority\"",
-          "\"Cape of Good Hope\""
-        ],
-        "rationale": {
-          "\"Suez Canal\"": "chokepoint -- the canal's standing name; shared with the parent channel",
-          "\"Suez Canal Authority\"": "institution -- the operator whose statements carry transit, toll, and disruption news",
-          "\"Cape of Good Hope\"": "geography -- the named alternative when Suez transits are avoided; shared with the parent channel"
-        }
-      },
-      "malacca": {
-        "label": "Strait of Malacca",
-        "terms": [
-          "\"Strait of Malacca\"",
-          "\"Malacca Strait\"",
-          "\"Singapore Strait\""
-        ],
-        "rationale": {
-          "\"Strait of Malacca\"": "chokepoint -- the standing name; shared with the parent channel",
-          "\"Malacca Strait\"": "chokepoint -- word-order variant in wire and Asian-press copy",
-          "\"Singapore Strait\"": "chokepoint -- the adjoining passage; piracy and incident coverage names the two together"
-        }
-      }
-    }
+ "_meta": {
+  "version": "1.2.0",
+  "frozen_on": "2026-07-24",
+  "owner_note": "Every term carries a one-line rationale (category -- why this term); these lines are the raw material for methodology.md section 2. Post-freeze changes go in the methodology changelog with a date and a reason.",
+  "ex_ante_rule": "No retrospective event names (Galwan, Pulwama, Balakot, Sindoor, Kargil, Uri, 26/11, Doklam...). Enforced by tests/test_dictionaries.py. Spikes at those events must be DETECTED by structural terms, not baked in.",
+  "query_grammar": "GDELT DOC API: OR only inside parens, no nesting, no AND/OR mixing inside a group. Therefore every term is a single quoted phrase; per-channel disambiguation uses one 'anchor' word ANDed outside the OR group. Hyphenated text tokenizes to spaces, so \"India Pakistan border\" also matches 'India-Pakistan border'.",
+  "chokepoints_note": "shipping carries four chokepoint sub-dictionaries (shipping.chokepoints) used only for the salience-vs-transits comparison against IMF PortWatch counts; they never enter the composite. A sub-dictionary may repeat a parent-channel term (it is a decomposition, not an addition), but no term appears in two sub-dictionaries. No anchor: these measure global corridor salience, not India-linked salience. Enforced by tests/test_dictionaries.py.",
+  "amended": "2026-08-05"
+ },
+ "pakistan_west": {
+  "label": "Pakistan / Western Border",
+  "anchor": "India",
+  "terms": [
+   "\"Line of Control\"",
+   "\"India Pakistan border\"",
+   "\"Pakistan occupied Kashmir\"",
+   "\"Pakistan administered Kashmir\"",
+   "\"ceasefire violations\"",
+   "\"ceasefire violation\"",
+   "\"cross-border terrorism\"",
+   "\"cross-border firing\"",
+   "\"cross-border shelling\"",
+   "\"infiltration bid\"",
+   "\"surgical strikes\"",
+   "\"Inter-Services Intelligence\"",
+   "\"Indus Waters Treaty\"",
+   "\"Siachen\""
+  ],
+  "rationale": {
+   "\"Line of Control\"": "geography -- the standing name of the militarised Kashmir boundary; near-universal in escalation coverage",
+   "\"India Pakistan border\"": "geography -- the generic international-press phrasing (also matches 'India-Pakistan border')",
+   "\"Pakistan occupied Kashmir\"": "geography -- Indian-press variant for the disputed territory",
+   "\"Pakistan administered Kashmir\"": "geography -- international-press variant for the same territory; both needed for recall",
+   "\"ceasefire violations\"": "doctrine -- the recurring LoC vocabulary; anchor 'India' excludes Gaza/Ukraine ceasefire coverage",
+   "\"ceasefire violation\"": "doctrine -- singular form; GDELT phrases do not stem, so both forms are needed",
+   "\"cross-border terrorism\"": "doctrine -- India's standing diplomatic framing, reused across two decades of coverage",
+   "\"cross-border firing\"": "doctrine -- the wire-service phrase for LoC exchanges",
+   "\"cross-border shelling\"": "doctrine -- artillery variant of the same press vocabulary",
+   "\"infiltration bid\"": "doctrine -- the recurring Indian-press phrase for LoC crossing attempts",
+   "\"surgical strikes\"": "doctrine -- response vocabulary reused across escalations; a phrase, not an event name (borderline case, discussed in methodology s2)",
+   "\"Inter-Services Intelligence\"": "institution -- the actor named in terrorism-linkage coverage; anchor keeps it India-related, not Afghanistan-related",
+   "\"Indus Waters Treaty\"": "institution -- the standing water-sharing mechanism whose stress signals escalation",
+   "\"Siachen\"": "geography -- the standing high-altitude military deployment"
   }
+ },
+ "china_east": {
+  "label": "China / Eastern Border",
+  "anchor": "India",
+  "terms": [
+   "\"Line of Actual Control\"",
+   "\"India China border\"",
+   "\"eastern Ladakh\"",
+   "\"Aksai Chin\"",
+   "\"Tawang\"",
+   "\"People's Liberation Army\"",
+   "\"border standoff\"",
+   "\"India China relations\"",
+   "\"disengagement\"",
+   "\"McMahon Line\""
+  ],
+  "rationale": {
+   "\"Line of Actual Control\"": "geography -- the standing name of the disputed boundary; the channel's core term",
+   "\"India China border\"": "geography -- generic international phrasing (also matches 'India-China border')",
+   "\"eastern Ladakh\"": "geography -- the western-sector name where standoff coverage concentrates; a place, not an event name",
+   "\"Aksai Chin\"": "geography -- the Chinese-held disputed territory",
+   "\"Tawang\"": "geography -- the standing focal town of the eastern-sector dispute",
+   "\"People's Liberation Army\"": "institution -- the force; anchor 'India' excludes Taiwan-only PLA coverage",
+   "\"border standoff\"": "doctrine -- the recurring press phrase for LAC confrontations; anchored to India",
+   "\"India China relations\"": "institution -- catches the diplomatic/talks news cycle that geography terms miss",
+   "\"disengagement\"": "doctrine -- the specific vocabulary of LAC de-escalation coverage; anchored to India",
+   "\"McMahon Line\"": "the standing boundary term of the eastern-sector dispute since 1914; dispute coverage names it, monsoon and administrative coverage never does; replaces the bare state name that imported Northeast weather"
+  }
+ },
+ "gulf_energy": {
+  "label": "Gulf & Energy Security",
+  "terms": [
+   "\"Strait of Hormuz\"",
+   "\"Gulf of Oman\"",
+   "\"Gulf tensions\"",
+   "\"Middle East conflict\"",
+   "\"Israel Iran\"",
+   "\"Iran Israel\"",
+   "\"Iran sanctions\"",
+   "\"energy security\"",
+   "\"oil supply disruption\"",
+   "\"oil supply disruptions\"",
+   "\"crude oil supply\""
+  ],
+  "rationale": {
+   "\"Strait of Hormuz\"": "chokepoint -- the single most important term: the passage for the bulk of India's crude imports",
+   "\"Gulf of Oman\"": "chokepoint -- the adjacent waterway where tanker incidents recur",
+   "\"Gulf tensions\"": "doctrine -- the recurring headline phrase for regional escalation",
+   "\"Middle East conflict\"": "doctrine -- the generic press frame; high recall for the channel's topic",
+   "\"Israel Iran\"": "doctrine -- matches 'Israel-Iran conflict/tensions/war' via hyphen tokenization",
+   "\"Iran Israel\"": "doctrine -- the reverse word order; both orders appear in copy",
+   "\"Iran sanctions\"": "institution -- the standing sanctions regime governing an Indian supply option",
+   "\"energy security\"": "doctrine -- the policy vocabulary; broader than the Gulf, accepted and disclosed in methodology s2",
+   "\"oil supply disruption\"": "doctrine -- the market-press phrase for the risk this channel tracks",
+   "\"oil supply disruptions\"": "doctrine -- plural form; no stemming in GDELT phrases",
+   "\"crude oil supply\"": "doctrine -- supply-side coverage, avoiding the price-only news the channel excludes"
+  }
+ },
+ "us_trade": {
+  "label": "US & Trade Policy",
+  "anchor": "India",
+  "terms": [
+   "\"US tariffs\"",
+   "\"reciprocal tariffs\"",
+   "\"trade deal\"",
+   "\"trade war\"",
+   "\"trade restrictions\"",
+   "\"export controls\"",
+   "\"Section 301\"",
+   "\"CAATSA\"",
+   "\"H-1B visa\"",
+   "\"WTO dispute\"",
+   "\"secondary sanctions\"",
+   "\"Russian oil\""
+  ],
+  "rationale": {
+   "\"US tariffs\"": "doctrine -- the robust bigram in tariff coverage; anchor 'India' scopes it to India-relevant stories",
+   "\"reciprocal tariffs\"": "doctrine -- standing trade-policy vocabulary that long predates any single administration",
+   "\"trade deal\"": "institution -- catches the negotiation news cycle; India-anchored",
+   "\"trade war\"": "doctrine -- escalation vocabulary; India-anchored so only India-relevant coverage counts",
+   "\"trade restrictions\"": "doctrine -- the generic restriction vocabulary",
+   "\"export controls\"": "doctrine -- the technology-denial vocabulary (semiconductors, dual-use)",
+   "\"Section 301\"": "institution -- the standing US trade-law instrument, used against India before",
+   "\"CAATSA\"": "institution -- the US sanctions statute hanging over India's Russian defence purchases since 2017",
+   "\"H-1B visa\"": "institution -- the standing services-trade friction point",
+   "\"WTO dispute\"": "institution -- the multilateral dispute channel",
+   "\"secondary sanctions\"": "doctrine -- the vocabulary of extraterritorial pressure on India's Russia trade",
+   "\"Russian oil\"": "doctrine -- India-anchored; assigned here rather than gulf_energy because the risk vector is US policy, not physical supply (bleed decision, methodology s2)"
+  }
+ },
+ "shipping": {
+  "label": "Shipping & Chokepoints",
+  "terms": [
+   "\"Red Sea shipping\"",
+   "\"Red Sea attacks\"",
+   "\"Suez Canal\"",
+   "\"Bab el-Mandeb\"",
+   "\"Strait of Malacca\"",
+   "\"Cape of Good Hope\"",
+   "\"Houthi attacks\"",
+   "\"Somali pirates\"",
+   "\"Gulf of Aden\"",
+   "\"merchant vessels\""
+  ],
+  "rationale": {
+   "\"Red Sea shipping\"": "chokepoint -- the standing compound in rerouting/crisis coverage; bare 'Red Sea' would import tourism and environment coverage",
+   "\"Red Sea attacks\"": "doctrine -- the attack-coverage variant of the same story",
+   "\"Suez Canal\"": "chokepoint -- the canal itself; routine-transit coverage is modest and disclosed",
+   "\"Bab el-Mandeb\"": "chokepoint -- the Red Sea's southern gate ('Bab el Mandeb' also matches via tokenization)",
+   "\"Strait of Malacca\"": "chokepoint -- the eastern passage for India's Asia trade",
+   "\"Cape of Good Hope\"": "geography -- the rerouting marker: diversion coverage names it constantly",
+   "\"Houthi attacks\"": "actor -- the group whose signature is shipping attack; an actor name, not an event name",
+   "\"Somali pirates\"": "actor -- the recurring piracy story on India's western sea lanes",
+   "\"Gulf of Aden\"": "standing corridor geography on the India-Europe route; piracy/escort coverage names it; no event names",
+   "\"merchant vessels\"": "construct vocabulary of commercial-shipping threat coverage (attacks/harassment/escorts of merchant vessels); replaces the recall of the dropped generics without their swimmer-class full-text leaks"
+  },
+  "chokepoints": {
+   "hormuz": {
+    "label": "Strait of Hormuz",
+    "terms": [
+     "\"Strait of Hormuz\"",
+     "\"Hormuz Strait\"",
+     "\"Hormuz closure\"",
+     "\"tanker seizure\"",
+     "\"tanker seizures\""
+    ],
+    "rationale": {
+     "\"Strait of Hormuz\"": "chokepoint -- the standing name; routine-transit and crisis coverage both use it",
+     "\"Hormuz Strait\"": "chokepoint -- word-order variant in wire copy; GDELT phrases do not reorder",
+     "\"Hormuz closure\"": "doctrine -- the recurring closure-threat vocabulary, reused across decades of tension coverage",
+     "\"tanker seizure\"": "doctrine -- the corridor's signature incident category, recurring across years; a category, not an event name",
+     "\"tanker seizures\"": "doctrine -- plural form; GDELT phrases do not stem"
+    }
+   },
+   "bab_el_mandeb": {
+    "label": "Bab el-Mandeb",
+    "terms": [
+     "\"Bab el-Mandeb\"",
+     "\"Bab al-Mandab\"",
+     "\"Red Sea shipping\"",
+     "\"Red Sea attacks\"",
+     "\"Houthi attacks\""
+    ],
+    "rationale": {
+     "\"Bab el-Mandeb\"": "chokepoint -- the Red Sea's southern gate; shared with the parent channel ('Bab el Mandeb' also matches via tokenization)",
+     "\"Bab al-Mandab\"": "chokepoint -- alternative transliteration in Gulf and agency copy",
+     "\"Red Sea shipping\"": "chokepoint -- the crisis compound for this corridor; shared with the parent channel",
+     "\"Red Sea attacks\"": "doctrine -- the attack-coverage variant of the same story; shared with the parent channel",
+     "\"Houthi attacks\"": "actor -- the group whose signature is shipping attack in this corridor; shared with the parent channel"
+    }
+   },
+   "suez": {
+    "label": "Suez Canal",
+    "terms": [
+     "\"Suez Canal\"",
+     "\"Suez Canal Authority\"",
+     "\"Cape of Good Hope\""
+    ],
+    "rationale": {
+     "\"Suez Canal\"": "chokepoint -- the canal's standing name; shared with the parent channel",
+     "\"Suez Canal Authority\"": "institution -- the operator whose statements carry transit, toll, and disruption news",
+     "\"Cape of Good Hope\"": "geography -- the named alternative when Suez transits are avoided; shared with the parent channel"
+    }
+   },
+   "malacca": {
+    "label": "Strait of Malacca",
+    "terms": [
+     "\"Strait of Malacca\"",
+     "\"Malacca Strait\"",
+     "\"Singapore Strait\""
+    ],
+    "rationale": {
+     "\"Strait of Malacca\"": "chokepoint -- the standing name; shared with the parent channel",
+     "\"Malacca Strait\"": "chokepoint -- word-order variant in wire and Asian-press copy",
+     "\"Singapore Strait\"": "chokepoint -- the adjoining passage; piracy and incident coverage names the two together"
+    }
+   }
+  }
+ }
 }

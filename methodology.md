@@ -407,6 +407,20 @@ a promise that rewrote itself every night would not be a promise.
   Event-study cells now publish bootstrap p-values with
   Benjamini-Hochberg FDR flags (10%) across the grid of relative-outcome
   tests, as §6 specifies.
+- **2026-08-05, dictionaries v1.2.0 (precision amendment, founder-
+  approved).** Two full-text leak classes removed after practitioner
+  and founder review. Shipping: bare `"shipping lanes"` and
+  `"maritime security"` dropped (a charity swim story reached the
+  receipts via body-text mentions of dodging shipping lanes); standing
+  corridor geography `"Gulf of Aden"` and construct vocabulary
+  `"merchant vessels"` added to carry the recall. China/East: bare
+  `"Arunachal Pradesh"` dropped (as a state name it matched monsoon,
+  flood and administrative coverage across the Northeast); the
+  standing boundary term `"McMahon Line"` added. Both channels remain
+  single sub-queries, so no series-construction change rides along.
+  Effects on recall and precision will be measured by the standing
+  auditor and published as found. Ex-ante rule enforced by CI on the
+  amended lists as on the originals.
 - **2026-07-31, v1.1.0-dev (V2 data layers).** (1) Sector event study:
   three sector baskets added beside defence (energy_omc, it_services,
   ports_logistics; members and channel hypotheses pre-registered in
