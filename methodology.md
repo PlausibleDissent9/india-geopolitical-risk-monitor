@@ -338,6 +338,32 @@ a promise that rewrote itself every night would not be a promise.
 
 ## Changelog
 
+- **2026-08-06, v1.6.0 (corpus receipts and sampling bands; founder MI
+  work order of 2026-08-05).** Receipts construction changed: the
+  primary lane now enumerates matched articles from the same sampled
+  ngrams corpus the day's scores are computed from (matcher, anchor,
+  and tokenizer identical to the series -- an article in this lane is
+  one the estimator actually counted), with a bounded artlist
+  supplement restoring wire originals whose syndicated copies the
+  sample caught; every article is lane-labeled and the artlist-only
+  path remains as fallback (`src/receipts_ngrams.py`, gated by
+  `tests/test_receipts_ngrams.py`). Sampling uncertainty published and
+  displayed: Wilson 95% intervals on each sample-estimated day's
+  matched share, passed through the identical splice ratio and
+  trailing-percentile transform as the point value, shaded on the
+  composite chart and disclosed in the at-a-glance strip when a
+  headline move sits inside two days' bands
+  (`docs/data/uncertainty.json`, `src/uncertainty.py`, gated by
+  `tests/test_uncertainty.py`). Robustness made legible: ex-ante
+  reading conventions on the validation page, per-channel plain
+  readings, a public discussion of the gulf_energy narrow correlation
+  (0.527), and weekly primary-vs-variant overlay series
+  (`docs/data/robustness_series.json`). The founder's first 16 firm
+  calibration rulings now count toward the registered n=100 threshold
+  (author-machine agreement 0.875 on the overlap; series remains
+  flagged UNCALIBRATED). No score construction changed anywhere in
+  this entry: series values are bit-identical; receipts, uncertainty,
+  and validation displays are evidence layers.
 - **2026-08-04, v1.5.0 (API contract).** Section 12 added: the v1.0.0
   API contract (`docs/data/api_contract.json`, `docs/api.html`) freezes
   27 endpoints across `docs/data/*.json`, three CSVs, and `feed.xml`,
