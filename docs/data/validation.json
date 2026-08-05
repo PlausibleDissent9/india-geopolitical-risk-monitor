@@ -1118,5 +1118,154 @@
    "shipping": 0.727,
    "composite": 0.88
   }
+ },
+ "drift": {
+  "note": "Domain stats are approximations from relevance-sorted samples (first sub-query per channel), not a census. 1 channel-year domain samples were unavailable at computation time (source rate limits) and are omitted rather than guessed.",
+  "mean_daily_corpus_by_year": {
+   "2022": 282419,
+   "2023": 187046,
+   "2024": 163328,
+   "2025": 160975,
+   "2026": 144069
+  },
+  "per_channel_domains": {
+   "pakistan_west": {
+    "2022": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 49,
+     "herfindahl_top10": 0.0341
+    },
+    "2023": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 58,
+     "herfindahl_top10": 0.0151
+    },
+    "2024": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 46,
+     "herfindahl_top10": 0.0347
+    },
+    "2025": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 49,
+     "herfindahl_top10": 0.0261
+    },
+    "2026": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 53,
+     "herfindahl_top10": 0.0228
+    }
+   },
+   "china_east": {
+    "2022": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 41,
+     "herfindahl_top10": 0.0408
+    },
+    "2023": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 43,
+     "herfindahl_top10": 0.0406
+    },
+    "2024": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 42,
+     "herfindahl_top10": 0.0524
+    },
+    "2025": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 51,
+     "herfindahl_top10": 0.0197
+    },
+    "2026": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 59,
+     "herfindahl_top10": 0.0243
+    }
+   },
+   "gulf_energy": {
+    "2022": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 85,
+     "herfindahl_top10": 0.0045
+    },
+    "2023": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 77,
+     "herfindahl_top10": 0.01
+    },
+    "2024": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 76,
+     "herfindahl_top10": 0.0093
+    },
+    "2025": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 89,
+     "herfindahl_top10": 0.0053
+    },
+    "2026": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 72,
+     "herfindahl_top10": 0.0123
+    }
+   },
+   "us_trade": {
+    "2022": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 60,
+     "herfindahl_top10": 0.0211
+    },
+    "2023": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 61,
+     "herfindahl_top10": 0.0261
+    },
+    "2024": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 48,
+     "herfindahl_top10": 0.0401
+    },
+    "2025": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 53,
+     "herfindahl_top10": 0.0301
+    },
+    "2026": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 43,
+     "herfindahl_top10": 0.0563
+    }
+   },
+   "shipping": {
+    "2022": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 72,
+     "herfindahl_top10": 0.0182
+    },
+    "2023": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 81,
+     "herfindahl_top10": 0.0081
+    },
+    "2024": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 66,
+     "herfindahl_top10": 0.0229
+    },
+    "2025": {
+     "n_articles_sampled": 100,
+     "n_distinct_domains": 65,
+     "herfindahl_top10": 0.016
+    }
+   }
+  },
+  "share_vs_corpus_corr": {
+   "pakistan_west": -0.064,
+   "china_east": 0.017,
+   "gulf_energy": -0.2,
+   "us_trade": 0.012,
+   "shipping": -0.244
+  }
  }
 }
