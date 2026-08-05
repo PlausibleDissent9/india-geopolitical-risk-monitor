@@ -62,10 +62,33 @@ def test_assemble_channel_dedupes_syndication_and_labels_aptness():
     assert [a["domain"] for a in block["articles"]] == ["reuters.com"]
     art = block["articles"][0]
     assert art["tier"] == 1
+    assert art["lane"] == "corpus"
     assert art["match"] == "headline"  # "border talks" is in the title
     assert "_title_hit" not in art and "_rel" not in art
     assert block["pool_exhausted"] is True
     assert block["spike_quality_tier12_share"] == 1.0
+
+
+def test_artlist_supplement_merges_deduped_and_lane_labeled():
+    spec = {"label": "Test channel", "anchor": "india",
+            "terms": ['"border talks"', '"line of control"']}
+    supplement = [
+        # Duplicate of a corpus URL: must not double-count.
+        {"title": "Border talks stall", "domain": "reuters.com",
+         "date": "20260805", "url": "https://reuters.com/a", "match": "headline"},
+        # Genuinely new tier-1 wire original.
+        {"title": "Line of Control shelling resumes", "domain": "apnews.com",
+         "date": "20260805", "url": "https://apnews.com/x", "match": "headline"},
+    ]
+    block = receipts_ngrams.assemble_channel(
+        "ch", spec, {"t1:1", "t1:2"}, _corpus(),
+        tiers={"reuters.com": 1, "apnews.com": 1}, supplement=supplement,
+    )
+    assert block["n_matched_in_corpus"] == 2
+    assert block["n_artlist_supplement"] == 1
+    lanes = {a["url"]: a["lane"] for a in block["articles"]}
+    assert lanes["https://reuters.com/a"] == "corpus"
+    assert lanes["https://apnews.com/x"] == "artlist"
 
 
 def test_assemble_channel_full_text_label_when_phrase_not_in_title():

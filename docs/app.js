@@ -122,6 +122,25 @@ function renderChart() {
       tension: 0.2,
     });
   };
+  // Composite sampling band (MI3): shaded 95% envelope on the days that
+  // are sample-estimated. Drawn beneath the composite line; days without
+  // a band (API-era) simply have none, never a faked one.
+  if (state.on.composite && state.uncertainty && state.uncertainty.days) {
+    const ud = state.uncertainty.days;
+    const lo = labels.map(d => (ud[d] && ud[d].composite) ? ud[d].composite[0] : null);
+    const hi = labels.map(d => (ud[d] && ud[d].composite) ? ud[d].composite[1] : null);
+    if (hi.some(v => v != null)) {
+      datasets.push({
+        label: "95% band (sampling)", data: hi, borderWidth: 0,
+        pointRadius: 0, fill: "+1", backgroundColor: ink + "2e",
+        tension: 0.2, spanGaps: false,
+      });
+      datasets.push({
+        label: "_band_lo", data: lo, borderWidth: 0, pointRadius: 0,
+        fill: false, tension: 0.2, spanGaps: false,
+      });
+    }
+  }
   addSeries("composite", h.composite, "Composite");
   for (const [key, data] of Object.entries(h.channels || {})) {
     addSeries(key, data, (h.labels && h.labels[key]) || key);
@@ -143,7 +162,8 @@ function renderChart() {
       animations: { y: { from: (ctx) => ctx.chart.scales.y.getPixelForValue(0) } },
       responsive: true,
       interaction: { mode: "index", intersect: false },
-      plugins: { legend: { display: false } },
+      plugins: { legend: { display: false },
+        tooltip: { filter: (item) => item.dataset.label !== "_band_lo" } },
       scales: {
         y: { min: 0, max: 100,
              grid: { color: getCSS("--rule-soft") },
@@ -267,8 +287,28 @@ function renderGlance(history) {
   if (!best || Math.abs(best.d) < 0.05) return;
   const name = (history.labels && history.labels[best.key]) || best.key;
   const dir = best.d > 0 ? "up" : "down";
+  // A big move on a thin channel can sit inside two days' sampling
+  // bands; when it does, the strip says so instead of selling noise as
+  // news (MI3 discipline: the band applies to every claim, not only
+  // the chart).
+  let caveat = "";
+  const ud = state.uncertainty && state.uncertainty.days;
+  if (ud) {
+    const idxs = [];
+    for (let i = history.dates.length - 1; i >= 0 && idxs.length < 2; i--) {
+      if (history.channels[best.key][i] != null) idxs.push(i);
+    }
+    if (idxs.length === 2) {
+      const b1 = (ud[history.dates[idxs[0]]] || {})[best.key];
+      const b0 = (ud[history.dates[idxs[1]]] || {})[best.key];
+      if (b0 && b1 && b1[0] <= b0[1] && b0[0] <= b1[1]) {
+        caveat = ` The two days' 95% sampling bands overlap, so part of ` +
+          `this move can be sampling noise.`;
+      }
+    }
+  }
   el.innerHTML = `Today at a glance: <b>${esc(name)}</b> moved the most, ` +
-    `${dir} <b>${Math.abs(best.d).toFixed(1)}</b> points vs yesterday.`;
+    `${dir} <b>${Math.abs(best.d).toFixed(1)}</b> points vs yesterday.${caveat}`;
   el.hidden = false;
 }
 
@@ -426,6 +466,11 @@ async function init() {
     history = await loadJSON("data/history.json");
     state.history = history;
   } catch (e) { console.warn("history.json not available yet", e); }
+  try {
+    // 95% sampling bands for sample-estimated days (MI3); absence is
+    // fine -- pre-ngrams days have no sampling design to band.
+    state.uncertainty = await loadJSON("data/uncertainty.json");
+  } catch (e) { state.uncertainty = null; }
   try {
     const latest = await loadJSON("data/latest.json");
     renderLatest(latest, history);

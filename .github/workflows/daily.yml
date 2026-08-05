@@ -138,6 +138,11 @@ jobs:
           else
             python -m src.run_daily
           fi
+      - name: Sampling bands (MI3; offline, from the day caches)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python -m src.uncertainty
       - name: Receipts at construction depth (ngrams corpus scan)
         # Runs after the pipeline step so latest.json already carries
         # today's date -- otherwise this would publish receipts one day
