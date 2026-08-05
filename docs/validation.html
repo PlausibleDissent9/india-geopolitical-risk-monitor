@@ -41,11 +41,32 @@
 <p id="placebo" class="kv">Not yet computed.</p>
 
 <h2>Dictionary robustness</h2>
-<p class="chart-note">The full index recomputed under broader and narrower term sets. Correlations above 0.9 mean the result is not an artifact of one term list.</p>
+<p class="chart-note">The full index recomputed under a registered narrower and a registered broader
+term set (<code>dictionaries_alt.json</code>), correlated with the primary over the 2022&ndash;present
+overlap. Reading conventions, stated ex ante: <b>&ge;&#8202;0.90</b> the series does not depend on the
+term list; <b>0.70&ndash;0.90</b> moderately term-dependent &mdash; the large moves survive the change
+while day-to-day levels shift; <b>&lt;&#8202;0.70</b> materially term-dependent &mdash; the variant
+produces a different series, and the divergence is discussed individually below, never averaged away.</p>
 <table id="robust">
   <thead><tr><th>Channel</th><th class="num">vs narrow</th><th class="num">vs broad</th></tr></thead>
   <tbody></tbody>
 </table>
+<div id="robustRead"></div>
+<p class="chart-note" id="gulfNote"><b>The weak spot, stated plainly.</b> Gulf &amp; energy vs the
+narrow variant is <b>0.527</b> &mdash; the lowest number on this page, and it is informative. The
+narrow variant keeps only four of the channel's eleven registered phrases (Strait of Hormuz,
+Israel&ndash;Iran, Gulf tensions, and one supply-disruption phrasing) and drops the energy-security
+vocabulary entirely (crude oil supply, energy security, Iran sanctions, Middle East conflict, Gulf
+of Oman). At 0.527, those two halves of the channel move differently: this channel is a deliberate
+composite of conflict-proximity coverage and energy-supply coverage, and cutting it to the conflict
+core yields a different series. Practical reading: treat single-day moves in this channel with more
+caution than the others and read its <a href="receipts.html">receipts</a> before quoting it. The
+composite is insulated from this choice (vs narrow 0.796, vs broad 0.880).</p>
+<h3>Primary vs variants, weekly means</h3>
+<div class="toggle" id="overlayCtl" role="tablist" aria-label="Channel"></div>
+<svg id="overlay" viewBox="0 0 720 280" width="100%" role="img"
+     aria-label="Weekly mean scores of the primary index against its narrow and broad dictionary variants"></svg>
+<p class="chart-note" id="overlayNote"></p>
 
 <h2>Cross-source agreement</h2>
 <p class="chart-note">GDELT (supply-side: what editors publish) vs Wikipedia pageviews (demand-side: what readers look up). High agreement means the signal is not a GDELT artifact; persistent divergence is a documented finding, not noise.</p>
@@ -100,6 +121,7 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     const chans = new Set([
       ...Object.keys(v.robustness.narrow || {}), ...Object.keys(v.robustness.broad || {}),
     ]);
+    const readings = [];
     for (const ch of chans) {
       const tr = document.createElement("tr");
       const n = (v.robustness.narrow || {})[ch], b = (v.robustness.broad || {})[ch];
@@ -107,7 +129,94 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
         (n == null ? "-" : esc(n.toFixed(3))) + '</td><td class="num">' +
         (b == null ? "-" : esc(b.toFixed(3))) + "</td>";
       tb.appendChild(tr);
+      // Plain-language reading per channel, keyed off the weaker of its
+      // two correlations, under the ex-ante conventions stated above.
+      const worst = Math.min(n == null ? 1 : n, b == null ? 1 : b);
+      let read;
+      if (worst >= 0.9) {
+        read = "moves the same way under all three term lists; not an artifact of one dictionary.";
+      } else if (worst >= 0.7) {
+        read = "moderately term-dependent (weaker correlation " + worst.toFixed(3) +
+          "): the large moves survive the change of terms, day-to-day levels shift.";
+      } else {
+        read = "materially term-dependent (weaker correlation " + worst.toFixed(3) +
+          "): the variant produces a different series; see the note below.";
+      }
+      readings.push("<li><b>" + esc(igrmLabel(ch)) + "</b>: " + read + "</li>");
     }
+    document.getElementById("robustRead").innerHTML =
+      '<ul class="chart-note">' + readings.join("") + "</ul>";
+  }
+
+  // MI2 overlay: show the series behind each robustness number instead
+  // of asserting a coefficient. Weekly means, shared 0-100 scale, gaps
+  // where a variant store has no data (never interpolated).
+  const rs = await j("data/robustness_series.json");
+  if (rs && rs.weeks && rs.channels) {
+    const svg = document.getElementById("overlay");
+    const ctl = document.getElementById("overlayCtl");
+    const W = 720, H = 280, L = 34, R = 8, T = 12, B = 28;
+    const x = i => L + i / (rs.weeks.length - 1) * (W - L - R);
+    const y = val => T + (1 - val / 100) * (H - T - B);
+    function pathOf(series) {
+      let d = "", pen = false;
+      for (let i = 0; i < series.length; i++) {
+        const val = series[i];
+        if (val == null) { pen = false; continue; }
+        d += (pen ? "L" : "M") + x(i).toFixed(1) + " " + y(val).toFixed(1);
+        pen = true;
+      }
+      return d;
+    }
+    function draw(ch) {
+      const block = rs.channels[ch] || {};
+      let g = "";
+      for (const gv of [0, 25, 50, 75, 100]) {
+        g += '<line x1="' + L + '" y1="' + y(gv).toFixed(1) + '" x2="' + (W - R) +
+          '" y2="' + y(gv).toFixed(1) + '" stroke="var(--rule-soft)" stroke-width="1"/>' +
+          '<text x="' + (L - 6) + '" y="' + (y(gv) + 4).toFixed(1) +
+          '" text-anchor="end" font-size="11" fill="var(--muted)">' + gv + "</text>";
+      }
+      const seenYears = new Set();
+      rs.weeks.forEach((w, i) => {
+        const yr = w.slice(0, 4);
+        if (!seenYears.has(yr)) {
+          seenYears.add(yr);
+          if (i > 0) g += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 8) +
+            '" text-anchor="middle" font-size="11" fill="var(--muted)">' + esc(yr) + "</text>";
+        }
+      });
+      if (block.broad) g += '<path d="' + pathOf(block.broad) +
+        '" fill="none" stroke="var(--muted)" stroke-width="1.2" opacity="0.75"/>';
+      if (block.narrow) g += '<path d="' + pathOf(block.narrow) +
+        '" fill="none" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.8"/>';
+      if (block.primary) g += '<path d="' + pathOf(block.primary) +
+        '" fill="none" stroke="var(--accent)" stroke-width="2"/>';
+      g += '<g font-size="11">' +
+        '<line x1="' + (L + 8) + '" y1="' + (T + 6) + '" x2="' + (L + 30) + '" y2="' + (T + 6) + '" stroke="var(--accent)" stroke-width="2"/>' +
+        '<text x="' + (L + 34) + '" y="' + (T + 10) + '" fill="var(--muted)">primary</text>' +
+        '<line x1="' + (L + 92) + '" y1="' + (T + 6) + '" x2="' + (L + 114) + '" y2="' + (T + 6) + '" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="4 3"/>' +
+        '<text x="' + (L + 118) + '" y="' + (T + 10) + '" fill="var(--muted)">narrow</text>' +
+        '<line x1="' + (L + 172) + '" y1="' + (T + 6) + '" x2="' + (L + 194) + '" y2="' + (T + 6) + '" stroke="var(--muted)" stroke-width="1.2"/>' +
+        '<text x="' + (L + 198) + '" y="' + (T + 10) + '" fill="var(--muted)">broad</text></g>';
+      svg.innerHTML = g;
+      for (const b of ctl.querySelectorAll("button")) {
+        b.classList.toggle("on", b.dataset.ch === ch);
+      }
+    }
+    const order = ["gulf_energy", "pakistan_west", "china_east", "us_trade", "shipping", "composite"];
+    for (const ch of order) {
+      if (!rs.channels[ch]) continue;
+      const b = document.createElement("button");
+      b.textContent = ch === "composite" ? "Composite" : igrmLabel(ch);
+      b.dataset.ch = ch;
+      b.addEventListener("click", () => draw(ch));
+      ctl.appendChild(b);
+    }
+    draw("gulf_energy");  // the channel the note above discusses
+    document.getElementById("overlayNote").textContent =
+      "Weekly means, " + rs._meta.window[0] + " to " + rs._meta.window[1] +
+      ", shared 0-100 percentile scale. Gaps are missing variant store days, shown as gaps, never interpolated.";
   }
 
   if (v.cross_source && v.cross_source.per_channel) {

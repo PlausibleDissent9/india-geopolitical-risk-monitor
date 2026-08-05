@@ -38,7 +38,7 @@ CALIBRATION_N = 100
 SEED_SALT = 20260803
 
 FIELDS = ["date", "channel", "url", "title", "domain",
-          "machine_label", "rubric_version"]
+          "machine_label", "rubric_version", "human_label"]
 
 
 def sample() -> None:
@@ -65,7 +65,8 @@ def sample() -> None:
             rows.append({"date": day, "channel": ch, "url": a["url"],
                          "title": (a.get("title") or "")[:300],
                          "domain": a.get("domain", ""),
-                         "machine_label": "", "rubric_version": RUBRIC_VERSION})
+                         "machine_label": "", "rubric_version": RUBRIC_VERSION,
+                         "human_label": ""})
             added += 1
     QUEUE.parent.mkdir(parents=True, exist_ok=True)
     with QUEUE.open("w", encoding="utf-8", newline="") as f:
@@ -88,6 +89,18 @@ def publish() -> None:
         with AUTHOR.open(encoding="utf-8") as f:
             author = {r["url"]: r["label"].strip().upper()
                       for r in csv.DictReader(f) if r.get("label")}
+    # The founder's live-review rulings land in the queue's human_label
+    # column (the in-chat flow, 2026-08-05, after the portal tap flow
+    # broke); they are author labels in every sense and count toward
+    # calibration. Firm rulings only: an abstention calibrates nothing,
+    # so it is counted separately and never inflates n.
+    author_abstained = 0
+    for r in rows:
+        h = (r.get("human_label") or "").strip().upper()
+        if h in ("ON", "OFF"):
+            author.setdefault(r["url"], h)
+        elif h == "ABSTAIN":
+            author_abstained += 1
     overlap = [r for r in labeled if r["url"] in author]
     agree = sum(1 for r in overlap if r["machine_label"] == author[r["url"]])
     n_author = len(author)
@@ -116,6 +129,7 @@ def publish() -> None:
         },
         "calibrated": calibrated,
         "author_labels_n": n_author,
+        "author_abstained_n": author_abstained,
         "calibration_threshold": CALIBRATION_N,
         "agreement": {"n_overlap": len(overlap),
                       "rate": round(agree / len(overlap), 3) if overlap else None},

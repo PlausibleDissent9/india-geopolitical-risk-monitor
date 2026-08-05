@@ -138,19 +138,20 @@ jobs:
           else
             python -m src.run_daily
           fi
-      - name: Receipts drill-down (practitioner layer; ~10 artlist requests)
+      - name: Receipts at construction depth (ngrams corpus scan)
         # Runs after the pipeline step so latest.json already carries
         # today's date -- otherwise this would publish receipts one day
-        # stale, for the score the site showed yesterday. 25 minutes,
-        # not 10: GDELT rate-limit backoff on artlist queries can run
-        # long (2026-08-02: a 10-minute cap killed the whole process
-        # with continue-on-error masking it as a reported "success" and
-        # no file ever written -- src.receipts now also writes after
-        # each channel, so even a timeout kill here keeps partial data).
+        # stale, for the score the site showed yesterday. The corpus
+        # lane re-scans the same ~48 half-hourly ngrams files the day's
+        # scores were computed from (~1GB of public GCS objects, no
+        # credentials, no API rate limits) and publishes every matched
+        # article; on a feed gap it falls back to the bounded artlist
+        # lane inside the module, so the payload is never silently
+        # absent and _meta.method says which lane produced it.
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        timeout-minutes: 25
-        run: python -m src.receipts
+        timeout-minutes: 35
+        run: python -m src.receipts_ngrams
       - name: Machine-written daily brief (founder-approved 2026-08-04)
         # Runs after receipts so the brief can cite today's evidence.
         # Fail-closed: without the ANTHROPIC_API_KEY secret the module

@@ -151,6 +151,57 @@ def robustness() -> None:
     _merge_results("robustness", report)
 
 
+def robustness_series() -> None:
+    """MI2 (founder QA 2026-08-05): a bare correlation is illegible to a
+    reader; publish the overlay series behind each robustness number so
+    the validation page can SHOW primary vs variant instead of asserting
+    a coefficient. Offline: reads the cached variant volume stores the
+    robustness mode already fetched. Weekly means keep the payload small
+    and the chart honest (daily wiggle is not the construct question).
+    The variants exist from 2022-01-01, so the overlap window is
+    disclosed rather than silently extended."""
+    primary_vol = pd.read_csv(RAW_DIR / "gdelt_volume.csv",
+                              parse_dates=["date"]).set_index("date")
+    series = {"primary": build_index.build_scores(primary_vol)}
+    for variant in ("narrow", "broad"):
+        store = RAW_DIR / f"gdelt_volume_{variant}.csv"
+        if not store.exists():
+            sys.exit(f"no {store.name} -- run 'validate robustness' first")
+        vol = pd.read_csv(store, parse_dates=["date"]).set_index("date")
+        series[variant] = build_index.build_scores(vol)
+
+    start = max(s.index.min() for s in series.values())
+    end = min(s.index.max() for s in series.values())
+    weekly = {k: s.loc[start:end].resample("W-MON").mean()
+              for k, s in series.items()}
+    weeks = [ts.date().isoformat() for ts in weekly["primary"].index]
+
+    channels: dict = {}
+    for ch in list(primary_vol.columns) + ["composite"]:
+        block = {}
+        for k, s in weekly.items():
+            if ch in s.columns:
+                block[k] = [None if pd.isna(x) else round(float(x), 2)
+                            for x in s[ch].reindex(weekly["primary"].index)]
+        channels[ch] = block
+    payload = {
+        "_meta": {
+            "what": ("Weekly mean percentile scores of the primary index "
+                     "and its narrow/broad dictionary variants, over the "
+                     "window where all three exist. The overlay behind "
+                     "validation.json's robustness correlations."),
+            "window": [start.date().isoformat(), end.date().isoformat()],
+            "generated": date.today().isoformat(),
+        },
+        "weeks": weeks,
+        "channels": channels,
+    }
+    out = SITE_DATA / "robustness_series.json"
+    out.write_text(json.dumps(payload), encoding="utf-8")
+    print(f"[validate] wrote {out.name}: {len(weeks)} weeks, "
+          f"{len(channels)} channels, {out.stat().st_size // 1024} KB")
+
+
 def precision() -> None:
     """Layer 4 precision audit (recall's missing half): sample 20 articles
     per channel from random windows across the sample period and write them
@@ -266,8 +317,8 @@ def drift() -> None:
 
 def main() -> None:
     modes = {"hit-rate": hit_rate, "placebo": placebo,
-             "robustness": robustness, "precision": precision,
-             "drift": drift}
+             "robustness": robustness, "robustness-series": robustness_series,
+             "precision": precision, "drift": drift}
     if len(sys.argv) != 2 or sys.argv[1] not in modes:
         sys.exit(f"usage: python -m src.validate [{'|'.join(modes)}]")
     modes[sys.argv[1]]()

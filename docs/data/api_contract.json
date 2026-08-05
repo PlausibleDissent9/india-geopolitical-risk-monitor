@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.1.0",
+    "contract_version": "1.2.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://plausibledissent9.github.io/india-geopolitical-risk-monitor/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -251,6 +251,7 @@
         "_meta",
         "calibrated",
         "author_labels_n",
+        "author_abstained_n",
         "calibration_threshold",
         "agreement",
         "abstained",
@@ -311,6 +312,17 @@
         "scored_days",
         "rate",
         "days"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/robustness_series.json",
+      "format": "json",
+      "description": "Weekly mean percentile scores of the primary index and its narrow/broad dictionary variants, over the window where all three exist. The overlay behind validation.json's robustness correlations.",
+      "frozen_fields": [
+        "_meta",
+        "weeks",
+        "channels"
       ],
       "stability": "stable"
     },
