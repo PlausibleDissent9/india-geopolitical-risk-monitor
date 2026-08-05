@@ -13,7 +13,7 @@
     "us_trade": 0.32,
     "shipping": 0.05
    },
-   "corr_with_primary": 0.873
+   "corr_with_primary": 0.8729
   },
   "import_exposure": {
    "weights": {
@@ -33,11 +33,11 @@
   },
   "1.5": {
    "n_episodes": 680,
-   "episode_day_jaccard_vs_primary": 0.67
+   "episode_day_jaccard_vs_primary": 0.671
   },
   "2.5": {
    "n_episodes": 380,
-   "episode_day_jaccard_vs_primary": 0.662
+   "episode_day_jaccard_vs_primary": 0.661
   }
  },
  "percentile_windows_days": {
@@ -48,9 +48,9 @@
   "365": {
    "corr_with_primary": 0.9607,
    "per_channel": {
-    "pakistan_west": 0.9662,
+    "pakistan_west": 0.9663,
     "china_east": 0.95,
-    "gulf_energy": 0.9447,
+    "gulf_energy": 0.9446,
     "us_trade": 0.9065,
     "shipping": 0.9565
    }
