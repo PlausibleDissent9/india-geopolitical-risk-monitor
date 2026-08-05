@@ -132,6 +132,15 @@
    ],
    "rationale": "Seafood exports move refrigerated by sea to the US and East Asia; corridor disruption and US import policy are the binding risks.",
    "nse_index": null
+  },
+  "petroleum_refining": {
+   "label": "Petroleum Refining & Export",
+   "channels": [
+    "gulf_energy",
+    "shipping"
+   ],
+   "rationale": "India's largest export by value: crude in from the Gulf, refined products out by sea; doubly exposed to Hormuz and the western corridors.",
+   "nse_index": "^CNXENERGY"
   }
  }
 }
