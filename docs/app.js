@@ -212,23 +212,40 @@ function initSubscribe() {
     ev.preventDefault();
     const email = document.getElementById("subscribe-email").value.trim();
     if (!email) return;
+    // Double-clicks used to relay the same address two or three times.
+    const btn = document.querySelector("#subscribe-form button");
+    btn.disabled = true;
+    let delivered = false;
     try {
       if (BUTTONDOWN_USER) {
         await fetch(
           `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`,
           { method: "POST", mode: "no-cors", body: new URLSearchParams({ email }) }
         );
+        // no-cors responses are opaque; the service's own welcome email
+        // is the subscriber's receipt.
+        delivered = true;
       } else {
         // No-signup relay: forwards the address to the author's inbox.
-        await fetch("https://formsubmit.co/ajax/ishankrishna9@gmail.com", {
+        const res = await fetch("https://formsubmit.co/ajax/ishankrishna9@gmail.com", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify({ email, _subject: "New IGRM subscriber" }),
         });
+        const body = res.ok ? await res.json() : null;
+        delivered = !!body && (body.success === true || body.success === "true");
       }
-    } catch (e) { /* the success state is optimistic; addresses also reach the inbox */ }
+    } catch (e) { delivered = false; }
+    if (!delivered) {
+      // Never claim success that didn't happen: show the mailto fallback
+      // and leave the form usable (and the modal re-armed for next visit).
+      btn.disabled = false;
+      document.getElementById("subscribe-error").hidden = false;
+      return;
+    }
     document.getElementById("subscribe-form").hidden = true;
     document.querySelector(".subscribe-fine").hidden = true;
+    document.getElementById("subscribe-error").hidden = true;
     document.getElementById("subscribe-done").hidden = false;
     localStorage.igrmSubscribed = "1";
     setTimeout(() => { overlay.hidden = true; overlay.style.display = "none"; }, 3500);
