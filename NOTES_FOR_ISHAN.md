@@ -575,3 +575,58 @@ Aptness (piggybacks on the brief key):
 The night crew builds src/fetch_bigquery.py and the batch aptness
 classifier the first night both secrets exist. Declined and closed:
 paid designer, bounties/prizes, commercial market data.
+
+## 0.13 Business exposure layer + the ask-anything assistant (your idea, 2026-08-05; your call)
+
+You asked how IGRM becomes functional for businesses: a textile owner
+arrives and wants to know what this means for him, with the economic
+ramifications foregrounded. The instinct is right and it is the
+biggest usefulness upgrade on the board. It also carries the one risk
+that could end the project, so the design below separates what is
+safe and buildable now from what needs your signature.
+
+THE HARD LINE, non-negotiable in any version: the instrument measures
+press salience, not risk, and makes no forecasts. An assistant that
+says "prices will rise" or "you should hedge" is (a) a claim the index
+cannot support, (b) the end of the salience-not-risk discipline that
+is the project's whole credibility, and (c) advisory territory with
+regulatory weight in India. Everything below is retrieval,
+description, and disclosed historical association only.
+
+PART A, EXPOSURE LAYER (buildable now, no construct change, needs
+only your sector list). A registered sectors.json mapping Indian
+export/import sectors to the channels that touch them, built with the
+same discipline as dictionaries.json: ex-ante, versioned, per-sector
+rationale, append-only changelog. Draft starting set, edit freely:
+textiles and apparel (shipping, us_trade), gems and jewellery
+(shipping, gulf_energy), pharmaceuticals (us_trade, shipping),
+IT services (us_trade), auto components (us_trade, shipping),
+agriculture and food (shipping, gulf_energy), energy-intensive
+manufacturing (gulf_energy), chemicals (gulf_energy, shipping),
+defence and aerospace (pakistan_west, china_east), electronics
+(china_east, us_trade). Each sector gets a page: which channels touch
+it and why, today's readings for those channels, the receipts behind
+them, corridor transit data where relevant (PortWatch), and the
+market echo already computed. Zero new claims; it is a re-cut of
+published data by the reader's own frame.
+
+PART B, THE ASSISTANT (this is memo 0.10 option c, still unapproved).
+A question box that answers ONLY from published payloads, always with
+citations, and refuses to forecast by construction: same prompt
+registration and measurement-language lint as the daily brief, plus
+hard refusal on any request for prediction, advice, or price
+direction. Cost with a spend cap: perhaps 10-40 dollars a month
+depending on traffic, and it needs a small backend (the VPS can host
+it). It should ship only AFTER Part A, because Part A is what gives
+it something honest to say.
+
+WHAT IT DOES FOR THE PROJECT: this is what makes practitioners use
+the thing weekly instead of admiring it once. Usage generates the
+feedback that has been worth more than any feature (FICCI proved it).
+Revenue is NOT the reason to build it now, and the open core must
+stay free forever; if a paid tier ever exists it is alerts, API
+volume, and custom sector dashboards, never the index itself.
+
+Reply "approve exposure layer" (Part A alone, recommended now) or
+"approve exposure layer and assistant" (both), and edit the sector
+list however you like first; your list is the registration.
