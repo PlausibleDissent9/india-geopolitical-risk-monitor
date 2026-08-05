@@ -47,7 +47,9 @@ for the map's polygons. Hover for numbers.</p>
 365 days, log scale from the calm color to the severe color. The table splits conflict
 (QuadClass 3 or 4) and protest (CAMEO root 14) shares. GDELT still emits some pre-2000
 state codes; those are folded into today's boundaries and the fold is documented in the
-codebook. Hover for numbers.</p>
+codebook. Telangana, Ladakh, and Goa show grey because the source's geocoding predates
+their current boundaries; their events are counted under the parent states, and an
+event-level re-split is queued. Hover for numbers.</p>
 <div class="chart-wrap" id="india-wrap" style="max-width:620px"><p class="empty" id="india-empty">Not computed yet: aggregates publish once the 2017 events backfill completes.</p></div>
 <div class="card" id="india-detail" hidden style="margin:0.6rem 0; padding:0.8rem 1rem; cursor:default"></div>
 <div class="table-scroll"><table id="states-table" hidden>
@@ -191,6 +193,16 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
   }
   } catch (e) { console.error("world map:", e); }
 
+  // Source-geocoding vintage: GDELT's admin-1 coder predates newer
+  // state boundaries, so these polygons' events are counted under
+  // their parent codes. Saying "no located events" here would be
+  // false; say what actually happens instead. The event-level
+  // re-split is queued (see codebook).
+  const VINTAGE_GAP = {
+    IN40: "events counted under Andhra Pradesh: the source's geocoding predates the 2014 split",
+    IN42: "events counted under Jammu and Kashmir: the source's geocoding predates 2019",
+    IN08: "rarely resolved as a separate unit by the source's geocoding vintage",
+  };
   try { if (indiaGeo && st && st.states && !(st._meta || {}).partial) {
     const vals = Object.values(st.states).map(s => s.recent_n).filter(n => n > 0);
     const maxLog = Math.log1p(Math.max(...vals, 1));
@@ -201,7 +213,7 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
     };
     const titleFor = (c, name) => {
       const s = st.states[c];
-      if (!s) return name + ": no located events";
+      if (!s) return name + ": " + (VINTAGE_GAP[c] || "no located events");
       return `${name}: ${s.recent_n} events in 365d, conflict share ` +
         `${pct(s.recent_conflict_share)}, protest share 2017- ${pct(s.protest_share)}`;
     };
@@ -212,7 +224,7 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
         ? `<strong>${esc(name)}</strong> &middot; 2017-present: ${esc(s.n)} located events, ` +
           `conflict share ${pct(s.conflict_share)}, protest share ${pct(s.protest_share)}. ` +
           `Trailing 365 days: ${esc(s.recent_n)} events, conflict share ${pct(s.recent_conflict_share)}.`
-        : `<strong>${esc(name)}</strong> &middot; no located events in the stream.`;
+        : `<strong>${esc(name)}</strong> &middot; ${esc(VINTAGE_GAP[code] || "no located events in the stream.")}`;
       d.hidden = false;
     };
     drawMap("india-wrap", indiaGeo, "states", fillFor, titleFor, indiaPick);
