@@ -277,14 +277,30 @@ def drift() -> None:
         norm.groupby(norm.index.year).mean().round().items()
     }
 
+    # The two statistics the validation page PROMISES (corpus size by
+    # year; share-vs-corpus correlation) need no artlist calls at all.
+    # The per-domain concentration numbers are bonus diagnostics served
+    # by GDELT's heavily rate-limited artlist mode -- 2026-08-06: two
+    # full drift runs died on artlist 429s AFTER the promised stats
+    # were computable, which is the wrong thing to be hostage to. Each
+    # year's sample now fails soft; whatever resolves publishes, and
+    # the payload notes any gap.
     domain_stats: dict = {}
+    domain_gaps = 0
     for ch, spec in channels.items():
         q = fetch_gdelt.build_queries(spec["terms"], spec.get("anchor"))[0]
         per_year: dict = {}
         for y in sorted({ts.year for ts in norm.index}):
-            arts = fetch_gdelt.fetch_articles(
-                q, date(y, 1, 1), min(date(y, 12, 31), today), maxrecords=100
-            )
+            try:
+                arts = fetch_gdelt.fetch_articles(
+                    q, date(y, 1, 1), min(date(y, 12, 31), today),
+                    maxrecords=100,
+                )
+            except RuntimeError as e:
+                domain_gaps += 1
+                print(f"[validate] drift domains {ch}/{y} unavailable "
+                      f"({str(e)[:80]}); continuing")
+                continue
             domains = pd.Series([a["domain"] for a in arts if a["domain"]])
             if domains.empty:
                 continue
@@ -306,9 +322,14 @@ def drift() -> None:
             if len(joined) >= 60:
                 vol_corr[ch] = round(float(joined.corr().iloc[0, 1]), 3)
 
+    note = ("Domain stats are approximations from relevance-sorted "
+            "samples (first sub-query per channel), not a census.")
+    if domain_gaps:
+        note += (f" {domain_gaps} channel-year domain samples were "
+                 "unavailable at computation time (source rate limits) "
+                 "and are omitted rather than guessed.")
     _merge_results("drift", {
-        "note": ("Domain stats are approximations from relevance-sorted "
-                 "samples (first sub-query per channel), not a census."),
+        "note": note,
         "mean_daily_corpus_by_year": by_year,
         "per_channel_domains": domain_stats,
         "share_vs_corpus_corr": vol_corr,
