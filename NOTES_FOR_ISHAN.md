@@ -665,3 +665,16 @@ Still yours, two items:
    WhatsApp, Updates tab > Channels > Create). Say the word when made
    and the crews wire the daily post into your review flow; nothing
    posts without your tap in August.
+
+## 0.14 Tranche-2 validation episodes — YOUR SIGNATURE NEEDED (MI4)
+
+`validation/validation_episodes_tranche2_DRAFT.json` holds 8 new candidate
+episodes (2 pakistan_west, 4 gulf_energy, 2 us_trade — exactly the thin
+channels), drafted blind from external chronology without consulting the
+series, with ex-ante criteria and recorded exclusions. NO hit-rate has been
+or will be computed until you sign. To sign: say "sign tranche 2" (or move
+the entries into validation_episodes.json yourself in a dated commit).
+If any date or event looks wrong to you, strike it before signing —
+striking candidates before grading is exactly what the process is for.
+Also registered there: the out-of-sample rule (future episodes registered
+within 7 days of occurrence, graded mechanically at +3 days).

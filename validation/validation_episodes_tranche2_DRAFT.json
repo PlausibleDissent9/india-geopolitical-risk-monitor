@@ -1,0 +1,75 @@
+{
+ "_meta": {
+  "status": "DRAFT-UNSIGNED. No hit-rate may be computed against any entry in this file until the founder signs it. Signing = moving entries into validation_episodes.json in a dated commit with added set to the signing date. The validation harness reads validation_episodes.json only; this file is invisible to it by construction.",
+  "drafted_on": "2026-08-06",
+  "drafted_by": "overnight session under the founder's MI4 work order (2026-08-05 QA pass)",
+  "selection_criteria_ex_ante": [
+   "Drafted BLIND: candidates chosen from external chronology knowledge without consulting the index series, its episodes payload, or any IGRM output. Selecting episodes by browsing the index would make the test circular; this list was written before any lookup.",
+   "Discrete and dateable: a single event day, not a slow development.",
+   "Wire-covered internationally on the day (Reuters/AP/AFP class).",
+   "Maps plausibly to exactly ONE channel construct. Candidates that plausibly load on two channels (e.g., a tanker seizure in Hormuz: gulf_energy phrase territory AND shipping construct) were excluded under this criterion, and that exclusion is recorded here.",
+   "Falls inside the backfill range (2017-01-01 onward).",
+   "Event names never appear in query terms (the tranche-1 rule, unchanged).",
+   "The original 21 stay frozen; this tranche is graded separately and reported separately when signed."
+  ],
+  "excluded_under_criteria": [
+   "Stena Impero seizure (2019-07-19): dual-construct, gulf_energy phrases vs shipping construct.",
+   "Baltimore bridge collapse (2024-03-26): shipping accident without the geopolitical-chokepoint construct.",
+   "Modi US state visit (2023-06-22): not a discrete shock; summit coverage loads diffusely.",
+   "US 25% tariff announcement (2025-07-30): inside the +/-3-day window of the already-registered 2025-08-06 escalation; one wave, one episode.",
+   "2026 candidates: deliberately none. Post-launch events belong to the out-of-sample section below, registered at occurrence, not reconstructed from memory."
+  ],
+  "out_of_sample_rule": "For episodes occurring AFTER this draft's date: register the event (channel, date, name) within 7 days of occurrence in a dated commit, before the +3-day detection window has been examined; grading is then mechanical. This makes future validation self-expanding and immune to hindsight selection.",
+  "window_days": 3
+ },
+ "episodes": [
+  {
+   "channel": "pakistan_west",
+   "date": "2019-08-05",
+   "name": "Article 370 abrogation; Jammu and Kashmir special status revoked",
+   "added": "2026-08-06"
+  },
+  {
+   "channel": "pakistan_west",
+   "date": "2022-03-09",
+   "name": "Accidental BrahMos missile launch into Pakistan (disclosed by Pakistan March 10; an honest hard case for event-day timing)",
+   "added": "2026-08-06"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2018-05-08",
+   "name": "United States withdraws from the JCPOA (Iran nuclear deal)",
+   "added": "2026-08-06"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2019-06-13",
+   "name": "Gulf of Oman tanker attacks (Front Altair and Kokuka Courageous)",
+   "added": "2026-08-06"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2020-01-03",
+   "name": "US strike kills Qasem Soleimani in Baghdad",
+   "added": "2026-08-06"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2022-10-05",
+   "name": "OPEC+ announces 2 million bpd production cut",
+   "added": "2026-08-06"
+  },
+  {
+   "channel": "us_trade",
+   "date": "2018-03-08",
+   "name": "US Section 232 steel and aluminium tariffs signed (global trade-war onset; India affected)",
+   "added": "2026-08-06"
+  },
+  {
+   "channel": "us_trade",
+   "date": "2019-05-31",
+   "name": "US announces termination of India's GSP trade preference status",
+   "added": "2026-08-06"
+  }
+ ]
+}
