@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start here — India Geopolitical Risk Monitor</title>
+<meta name="description" content="What IGRM is, how to read it in ninety seconds, and where to check its work. A daily, receipts-backed index of India's geopolitical salience.">
+<link rel="canonical" href="https://igrm.in/start.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260804b">
+<style>
+.start-hero { padding: 2.2rem 0 1.4rem; position: relative; }
+.start-hero h2 { font-size: clamp(1.6rem, 4.5vw, 2.4rem); line-height: 1.15; margin: 0 0 0.8rem; }
+.start-hero .lede { max-width: 46rem; font-size: 1.05rem; }
+.start-live { display: inline-flex; align-items: baseline; gap: 0.55rem; margin-top: 1rem;
+  border: 1px solid var(--rule); border-radius: 8px; padding: 0.5rem 0.9rem; background: var(--card); }
+.start-live b { font-size: 1.6rem; font-variant-numeric: tabular-nums; color: var(--accent); }
+.paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+.path { border: 1px solid var(--rule); border-radius: 10px; padding: 1rem 1.1rem; background: var(--card); }
+.path h3 { margin: 0 0 0.4rem; font-size: 1.02rem; }
+.path p { margin: 0.2rem 0; font-size: 0.92rem; color: var(--muted); }
+.ninety li { margin: 0.45rem 0; }
+.instrument li { margin: 0.4rem 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .path { transition: border-color 0.25s ease; }
+  .path:hover { border-color: var(--accent); }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+</header>
+
+<section class="start-hero">
+  <h2>One number for how loudly the world's press is talking about India's geopolitics. Updated every morning. Every number backed by the articles behind it.</h2>
+  <p class="lede prose">IGRM measures <b>press salience</b>: the share of global news coverage matching
+  five registered channels of India-relevant geopolitics &mdash; the Pakistan border, the China border,
+  Gulf &amp; energy security, US &amp; trade policy, and shipping chokepoints &mdash; each ranked against
+  its own trailing two years. It is <b>not</b> a measure of risk, it makes <b>no forecasts</b>, and it
+  is not investment advice. What it offers instead is discipline: every construction choice registered
+  before use, every claim checkable, every miss recorded in public.</p>
+  <p class="start-live" id="live" hidden><span class="kv">Composite today</span> <b id="live-score">–</b>
+  <span class="kv" id="live-date"></span></p>
+</section>
+
+<h2>Read it in ninety seconds</h2>
+<ol class="ninety prose">
+  <li><b><a href="./">The headline number</a></b> is the composite: the mean of five channel scores,
+  each a 0&ndash;100 percentile of today's coverage share against that channel's own last two years.
+  70 means louder than 70% of days in that window. That's all it means.</li>
+  <li><b>The five channels</b> decompose it. A quiet composite can hide one loud channel; the channel
+  rows and their sparklines show which one.</li>
+  <li><b><a href="receipts.html">The receipts</a></b> are the evidence: for each channel, the exact
+  registered query and the matched articles &mdash; most of them drawn from the very sample the day's
+  score was computed over, tier-sorted by source credibility.</li>
+  <li><b><a href="validation.html">The validation record</a></b> is how you know it measures anything:
+  detection of a pre-registered episode list the query terms never name, placebo channels that must
+  stay quiet, robustness under alternative dictionaries, and the sampling bands on recent scores.</li>
+</ol>
+
+<h2>Choose your door</h2>
+<div class="paths">
+  <div class="path">
+    <h3>Policy practitioner</h3>
+    <p>Today's picture and what moved: <a href="./">the front page</a>, then
+    <a href="receipts.html">receipts</a> for the loud channel, then
+    <a href="maps.html">the maps</a>.</p>
+  </div>
+  <div class="path">
+    <h3>Researcher</h3>
+    <p>Constructions and reuse: <a href="methodology.html">methodology</a>,
+    <a href="codebook.html">codebook with a five-line quick-start</a>, and the
+    <a href="api.html">frozen API contract</a>. Data CC BY 4.0.</p>
+  </div>
+  <div class="path">
+    <h3>Journalist</h3>
+    <p>The weekly <a href="notes.html">notes</a> say what moved and why in ~250 words;
+    <a href="analysis.html">analysis</a> holds the longer studies. Quote with attribution.</p>
+  </div>
+</div>
+
+<h2>Why this is an instrument, not a dashboard</h2>
+<ul class="instrument prose">
+  <li><b>Registered dictionaries.</b> The query terms are versioned with per-term rationales and an
+  append-only changelog; they never chase events after the fact.</li>
+  <li><b>Pre-registered validation.</b> The episode list was frozen before the first test; hit and
+  miss both publish. Current record: on the <a href="validation.html">validation page</a>, misses included.</li>
+  <li><b>Public reliability record.</b> The morning contract is scored from commit timestamps, not
+  self-reporting; <a href="data/reliability.json">misses stay listed forever</a>.</li>
+  <li><b>A corrections ledger.</b> <a href="corrections.html">Every error caught, dated, append-only.</a></li>
+  <li><b>Frozen machine interface.</b> <a href="api.html">Thirty endpoints with promised fields</a>,
+  no key, no rate limit, open CORS.</li>
+</ul>
+
+<h2>What this cannot tell you</h2>
+<p class="prose">Whether markets will move, whether a crisis will escalate, or what a
+government intends. Salience is attention, and attention is not risk: the
+<a href="analysis.html">attention-pricing gap study</a> documents exactly where press
+attention and market pricing diverge, as a finding, not a signal.</p>
+
+<footer>
+  <p><a href="./">Today's numbers</a> &middot; <a href="methodology.html">Methodology</a> &middot;
+  <a href="data.html">Data &amp; citation</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+
+<script>
+"use strict";
+(async () => {
+  try {
+    const r = await fetch("data/latest.json");
+    if (!r.ok) return;
+    const latest = await r.json();
+    if (latest.composite == null) return;
+    document.getElementById("live-score").textContent = latest.composite.toFixed(1);
+    document.getElementById("live-date").textContent = latest.date;
+    document.getElementById("live").hidden = false;
+  } catch (e) { /* static page works without the payload */ }
+})();
+</script>
+</body>
+</html>
