@@ -3,184 +3,10 @@
   "what": "Per-channel receipts for the latest published day: the exact GDELT query, a relevance-sorted sample of matched articles (mode=artlist), and each article's source tier (source_tiers.json; tiers order presentation and feed spike_quality_tier12_share only, never any score).",
   "caveat": "This is a bounded relevance-sorted SAMPLE of retrievable articles, not the full set of documents the channel's score was computed over -- the underlying coverage count for an active day is typically much larger than what GDELT's artlist mode returns. Treat this as illustrative evidence, not a census.",
   "partial": true,
-  "generated": "2026-08-04T18:15:30Z"
+  "generated": "2026-08-05T04:44:24Z"
  },
- "date": "2026-08-03",
+ "date": "2026-08-04",
  "channels": {
-  "pakistan_west": {
-   "label": "Pakistan / Western Border",
-   "anchor": "India",
-   "terms": [
-    "\"Line of Control\"",
-    "\"India Pakistan border\"",
-    "\"Pakistan occupied Kashmir\"",
-    "\"Pakistan administered Kashmir\"",
-    "\"ceasefire violations\"",
-    "\"ceasefire violation\"",
-    "\"cross-border terrorism\"",
-    "\"cross-border firing\"",
-    "\"cross-border shelling\"",
-    "\"infiltration bid\"",
-    "\"surgical strikes\"",
-    "\"Inter-Services Intelligence\"",
-    "\"Indus Waters Treaty\"",
-    "\"Siachen\""
-   ],
-   "queries": [
-    "India (\"Line of Control\" OR \"India Pakistan border\" OR \"Pakistan occupied Kashmir\" OR \"Pakistan administered Kashmir\" OR \"ceasefire violations\" OR \"ceasefire violation\" OR \"cross-border terrorism\" OR \"cross-border firing\")",
-    "India (\"cross-border shelling\" OR \"infiltration bid\" OR \"surgical strikes\" OR \"Inter-Services Intelligence\" OR \"Indus Waters Treaty\" OR \"Siachen\")"
-   ],
-   "n_retrieved": 18,
-   "n_pool_unique": 18,
-   "pool_exhausted": true,
-   "articles": [
-    {
-     "title": "Why is Pakistan - occupied Kashmir rocked by protests ? | Explained",
-     "domain": "thehindu.com",
-     "date": "20260803",
-     "url": "https://www.thehindu.com/news/international/why-is-pakistan-occupied-kashmir-rocked-by-protests-explained/article71300521.ece",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Pakistani TV host announces end of  Hasna Mana Hai  after remarks on PoK protests ; confusion prevails over revival",
-     "domain": "hindustantimes.com",
-     "date": "20260803",
-     "url": "https://www.hindustantimes.com/world-news/pakistani-tv-host-tabish-hashmi-end-of-show-hasna-mana-hai-pok-protests-remarks-confusion-x-post-geo-news-channel-101785732696790.html",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Main Vaapas Aaunga OTT release date and platform details : When and where to watch Imtiaz Ali hit period romantic movie",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260803",
-     "url": "https://economictimes.indiatimes.com/magazines/panache/main-vaapas-aaunga-ott-release-date-and-platform-details-when-and-where-to-watch-imtiaz-alis-hit-period-romantic-movie/articleshow/132819587.cms",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "India conveys support to Uzbekistan for NAM Chairship 2027 - 29 : Jaishankar",
-     "domain": "aninews.in",
-     "date": "20260803",
-     "url": "https://aninews.in/news/world/asia/india-conveys-support-to-uzbekistan-for-nam-chairship-2027-29-jaishankar20260803201721/",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Broad Peak Avalanche : Death Toll Rises To 8 As Rescuers Search For 2 Missing Climbers",
-     "domain": "freepressjournal.in",
-     "date": "20260803",
-     "url": "https://www.freepressjournal.in/world/broad-peak-avalanche-death-toll-rises-to-8-as-rescuers-search-for-2-missing-climbers",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "  Ballot - box not democratic because it is in a polling station , Analysis points out hollow PoJK elections",
-     "domain": "aninews.in",
-     "date": "20260803",
-     "url": "https://aninews.in/news/world/asia/ballot-box-not-democratic-because-it-is-in-a-polling-station-analysis-points-out-hollow-pojk-elections20260803101147/",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Pakistan defence deals bring money but not military prestige",
-     "domain": "moneycontrol.com",
-     "date": "20260803",
-     "url": "https://www.moneycontrol.com/news/opinion/pakistan-s-defence-deals-bring-money-but-not-military-prestige-13992416.html",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Satyanjal Pandey Assumes Charge in Islamabad",
-     "domain": "newkerala.com",
-     "date": "20260803",
-     "url": "https://www.newkerala.com/news/a/satyanjal-pandey-assumes-charge-as-indias-new-charge-290.htm",
-     "tier": 4,
-     "match": "full-text"
-    },
-    {
-     "title": "Ex - Envoy Exposes Pakistan Kashmir Hypocrisy",
-     "domain": "newkerala.com",
-     "date": "20260803",
-     "url": "https://www.newkerala.com/news/a/protest-movements-exposed-how-pakistan-treated-kashmiris-its-632.htm",
-     "tier": 4,
-     "match": "full-text"
-    },
-    {
-     "title": "The Sound of Silence : Why International Media Turns a Blind Eye to Bloodshed in PoK",
-     "domain": "idrw.org",
-     "date": "20260803",
-     "url": "https://idrw.org/the-sound-of-silence-why-international-media-turns-a-blind-eye-to-bloodshed-in-pok/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "At India Nuclear Testing Site - IAF Helicopters Train as Low - Cost Drone Hunters in Rotor Clap - III Drills",
-     "domain": "chinatechnews.com",
-     "date": "20260803",
-     "url": "https://www.chinatechnews.com/2026/08/03/126640-at-indias-nuclear-testing-site-iaf-helicopters-train-as-low-cost-drone-hunters-in-rotor-clap-iii-drills",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Satyanjal Pandey assumes charge as India new Charge dAffaires in Islamabad",
-     "domain": "southeastasiapost.com",
-     "date": "20260803",
-     "url": "http://www.southeastasiapost.com/news/279221061/satyanjal-pandey-assumes-charge-as-india-new-charge-daffaires-in-islamabad",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "  My only son was shot standing up for justice  - inside city gripped by deadly protests in Pakistan - administered Kashmir",
-     "domain": "yahoo.com",
-     "date": "20260803",
-     "url": "https://www.yahoo.com/news/world/articles/only-son-shot-standing-justice-033234083.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Inside city gripped by deadly protests in Pakistan - administered Kashmir",
-     "domain": "the-star.co.ke",
-     "date": "20260803",
-     "url": "https://www.the-star.co.ke/news/world/2026-08-03-inside-city-gripped-by-deadly-protests-in-pakistan-administered-kashmir",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "APHC renews call for observing August 5 as Black Day",
-     "domain": "radio.gov.pk",
-     "date": "20260803",
-     "url": "https://www.radio.gov.pk/03-08-2026/aphc-calls-for-observing-august-5-as-black-day-over-abrogation-of-articles-370-35a",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Protest movements exposed how Pakistan has treated Kashmiris on its side : Former Iranian envoy Dinkar Srivastava",
-     "domain": "news.webindia123.com",
-     "date": "20260803",
-     "url": "https://news.webindia123.com/news/Articles/World/20260803/4482650.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "PoJK protests reach Islamabad , Rawalpindi amid state violence",
-     "domain": "organiser.org",
-     "date": "20260803",
-     "url": "https://organiser.org/2026/08/03/373217/world/pojk-protests-reach-islamabad-news-portals-banned-for-reporting-pakistan-atrocities-in-occupied-territory/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Stolen water , poisoned rivers",
-     "domain": "geo.tv",
-     "date": "20260803",
-     "url": "https://www.geo.tv/latest/675876-stolen-water-poisoned-rivers",
-     "tier": null,
-     "match": "full-text"
-    }
-   ],
-   "spike_quality_tier12_share": 0.167
-  },
   "china_east": {
    "label": "China / Eastern Border",
    "anchor": "India",
@@ -199,1184 +25,244 @@
    "queries": [
     "India (\"Line of Actual Control\" OR \"India China border\" OR \"eastern Ladakh\" OR \"Arunachal Pradesh\" OR \"Aksai Chin\" OR \"Tawang\" OR \"People's Liberation Army\" OR \"border standoff\" OR \"India China relations\" OR \"disengagement\")"
    ],
-   "n_retrieved": 33,
-   "n_pool_unique": 33,
+   "n_retrieved": 29,
+   "n_pool_unique": 29,
    "pool_exhausted": true,
    "articles": [
     {
-     "title": "Arunachal Pradesh Glaw Lake is India 101st Ramsar site : Bhupender Yadav",
-     "domain": "hindustantimes.com",
-     "date": "20260803",
-     "url": "https://www.hindustantimes.com/india-news/arunachal-pradesh-s-glaw-lake-is-india-s-101st-ramsar-site-bhupender-yadav-101785772004813.html",
-     "tier": 2,
-     "match": "headline"
-    },
-    {
-     "title": "IMD warns of flash flood risk in northeast as monsoon intensifies across India",
-     "domain": "livemint.com",
-     "date": "20260803",
-     "url": "https://www.livemint.com/news/india/imd-warns-of-flash-flood-risk-in-northeast-as-monsoon-intensifies-across-india-11785748569028.html",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "India records highest - ever 20 , 138 organ transplants in 2025 , fourfold rise since 2013",
-     "domain": "tribuneindia.com",
-     "date": "20260803",
-     "url": "https://www.tribuneindia.com/news/india/india-records-highest-ever-20138-organ-transplants-in-2025-fourfold-rise-since-2013/",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "India closes in on its first homegrown fighter jet engine",
-     "domain": "hindustantimes.com",
-     "date": "20260803",
-     "url": "https://www.hindustantimes.com/india-news/india-closes-in-on-its-first-homegrown-fighter-jet-engine-101785743233606.html",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Supreme Court summons Arunachal Chief Secretary , Home Secretary for non - cooperation with CBI probe against CM Pema Khandu",
-     "domain": "aninews.in",
-     "date": "20260803",
-     "url": "https://aninews.in/news/national/general-news/supreme-court-summons-arunachals-chief-secretary-home-secretary-for-non-cooperation-with-cbi-probe-against-cm-pema-khandu20260803134229/",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Kerala Heavy Rains Shut Schools as IMD Issues Orange Alert , Warns of Flash Floods and Landslides",
-     "domain": "gulfnews.com",
-     "date": "20260803",
-     "url": "https://gulfnews.com/world/asia/india/heavy-rain-continues-in-kerala-schools-shut-as-imd-warns-of-flash-floods-landslides-1.500628770",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Arunachal Biri Takar Clinches Double Medal At BWF Para World Circuit In Brazil",
-     "domain": "northeasttoday.in",
-     "date": "20260803",
-     "url": "https://northeasttoday.in/northeast/arunachal-pradesh/arunachals-biri-takar-clinches-double-medal-at-bwf-para-world-circuit-in-brazil/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0909\u0924\u094d\u0924\u0930 - \u092a\u0942\u0930\u094d\u0935 \u092d\u093e\u0930\u0924 \u092e\u0947\u0902 \u092c\u093e\u0922\u093c \u0915\u093e \u0916\u0924\u0930\u093e , \u092f\u0942\u092a\u0940 - \u0926\u093f\u0932\u094d\u0932\u0940 \u0938\u0947 \u0930\u093e\u091c\u0938\u094d\u0925\u093e\u0928 \u0924\u0915 \u091c\u093e\u0928\u0947\u0902 \u092e\u094c\u0938\u092e \u0915\u093e \u0939\u093e\u0932",
-     "domain": "hindi.webdunia.com",
-     "date": "20260803",
-     "url": "https://hindi.webdunia.com/national-hindi-news/imd-weather-update-heavy-rain-alert-assam-meghalaya-delhi-up-rajasthan-126080300070_1.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": " [ Hindi ] \u0938\u092e\u094d\u092a\u0942\u0930\u094d\u0923 \u092d\u093e\u0930\u0924 \u0915\u093e 04 \u0905\u0917\u0938\u094d\u0924 , 2026 \u0915\u093e \u092e\u094c\u0938\u092e \u092a\u0942\u0930\u094d\u0935\u093e\u0928\u0941\u092e\u093e\u0928",
-     "domain": "skymetweather.com",
-     "date": "20260803",
-     "url": "https://www.skymetweather.com/content/weather-news-and-analysis/hindi-weather-forecast-latest-news-updates-for-across-india-on-august-04-2026",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u65b0\u601d\u60f3\u5f15\u9886\u65b0\u5f81\u7a0b\u4e28\u5728\u515a\u7684\u65d7\u5e1c\u4e0b\u4e66\u5199\u5f3a\u519b\u5174\u519b\u65b0\u8363\u5149",
-     "domain": "news.china.com.cn",
-     "date": "20260803",
-     "url": "http://news.china.com.cn/2026-08/03/content_118631772.shtml",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u65b0\u601d\u60f3\u5f15\u9886\u65b0\u5f81\u7a0b\u4e28\u5728\u515a\u7684\u65d7\u5e1c\u4e0b\u4e66\u5199\u5f3a\u519b\u5174\u519b\u65b0\u8363\u5149 _ \u56db\u5ddd\u5728\u7ebf",
-     "domain": "focus.scol.com.cn",
-     "date": "20260803",
-     "url": "https://focus.scol.com.cn/gcdt/202608/83299822.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u5728\u515a\u7684\u65d7\u5e1c\u4e0b\u4e66\u5199\u5f3a\u519b\u5174\u519b\u65b0\u8363\u5149",
-     "domain": "news.cyol.com",
-     "date": "20260803",
-     "url": "http://news.cyol.com/gb/news/articles/2026-08/03/content_996E5lIBVA.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u65b0\u601d\u60f3\u5f15\u9886\u65b0\u5f81\u7a0b\u4e28\u5728\u515a\u7684\u65d7\u5e1c\u4e0b\u4e66\u5199\u5f3a\u519b\u5174\u519b\u65b0\u8363\u5149 - \u5357\u6d77\u7f51",
-     "domain": "hinews.cn",
-     "date": "20260803",
-     "url": "https://www.hinews.cn/page?n=2837877&m=1&s=1044",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u65b0\u601d\u60f3\u5f15\u9886\u65b0\u5f81\u7a0b\u4e28\u5728\u515a\u7684\u65d7\u5e1c\u4e0b\u4e66\u5199\u5f3a\u519b\u5174\u519b\u65b0\u8363\u5149 _ \u817e\u8baf\u65b0\u95fb",
-     "domain": "news.qq.com",
-     "date": "20260803",
-     "url": "https://news.qq.com/rain/a/20260801A0B72C00",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "2026\u8d63\u8d85\u7b2c\u4e5d\u8f6e\u7efc\u8ff0 \uff1a \u4ee5\u8db3\u7403\u7684\u540d\u4e49 \uff0c \u5411\u4eba\u6c11\u519b\u961f\u6df1\u60c5\u732e\u793c",
-     "domain": "jx.ifeng.com",
-     "date": "20260803",
-     "url": "https://jx.ifeng.com/c/8vGE3OnHX0T",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "4 \u0905\u0917\u0938\u094d\u0924 \u0915\u093e \u092e\u094c\u0938\u092e : \u092c\u0902\u0917\u093e\u0932 \u0938\u092e\u0947\u0924 3 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u0915\u0947 \u0932\u093f\u090f \u0930\u0947\u0921 \u0915\u0932\u0930 \u0935\u0949\u0930\u094d\u0928\u093f\u0902\u0917 , \u0926\u093f\u0932\u094d\u0932\u0940 \u0938\u0947 \u092f\u0942\u092a\u0940 \u0924\u0915 \u0927\u0941\u0906\u0902\u0927\u093e\u0930 \u092c\u093e\u0930\u093f\u0936 , \u0907\u0928 21 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0939\u0948\u0935\u0940 \u0930\u0947\u0928 \u0915\u093e \u0905\u0932\u0930\u094d\u091f",
-     "domain": "hindi.moneycontrol.com",
-     "date": "20260803",
-     "url": "https://hindi.moneycontrol.com/india/weather-update-for-august-4-imd-heavy-rain-alert-for-3-states-including-bengal-from-delhi-to-up-heavy-rain-alert-for-these-21-states-article-2426253.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u65b0\u601d\u60f3\u5f15\u9886\u65b0\u5f81\u7a0b\u4e28\u5728\u515a\u7684\u65d7\u5e1c\u4e0b\u4e66\u5199\u5f3a\u519b\u5174\u519b\u65b0\u8363\u5149 - \u6c34\u6bcd\u7f51",
-     "domain": "news.shm.com.cn",
-     "date": "20260803",
-     "url": "https://news.shm.com.cn/2026-08/03/content_5499653.htm",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Weather Update : \u092f\u0942\u092a\u0940 \u0938\u0947 \u0930\u093e\u091c\u0938\u094d\u0925\u093e\u0928 \u0924\u0915 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 , 24 \u0918\u0902\u091f\u0947 \u092e\u0947\u0902 21 \u092e\u094c\u0924\u0947\u0902 ; \u0907\u0928 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 IMD \u0915\u093e \u0905\u0932\u0930\u094d\u091f",
-     "domain": "hindi.webdunia.com",
-     "date": "20260803",
-     "url": "https://hindi.webdunia.com/national-hindi-news/imd-rain-alert-3-august-2026-heavy-rain-orange-alert-monsoon-update-india-126080300008_1.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u090f\u0915 \u092e\u093f\u0930\u094d\u091a \u0907\u0924\u0928\u0940 \u0924\u0940\u0916\u0940 \u0915\u093f \u092d\u093e\u0930\u0924\u0940\u092f \u0938\u0947\u0928\u093e \u0928\u0947 \u092c\u0928\u093e \u0921\u093e\u0932\u093e \u0917\u094d\u0930\u0947\u0928\u0947\u0921 ! \u091c\u093e\u0928\u093f\u090f \u091f\u0949\u092a 5 \u0924\u0940\u0916\u0940 \u092e\u093f\u0930\u094d\u091a\u0947\u0902",
-     "domain": "livehindustan.com",
-     "date": "20260803",
-     "url": "https://www.livehindustan.com/lifestyle/from-bhut-jolokia-to-byadgi-5-hottest-chilies-of-india-201785749360787.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0926\u0947\u0936 \u0915\u0947 15 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u0940 \u091a\u0947\u0924\u093e\u0935\u0928\u0940 , \u092e\u094c\u0938\u092e \u0935\u093f\u092d\u093e\u0917 \u0915\u093e \u090f\u0932\u0930\u094d\u091f , \u092f\u0947 \u0939\u0948\u0902 \u092a\u094d\u0930\u092d\u093e\u0935\u093f\u0924 \u0930\u093e\u091c\u094d\u092f",
-     "domain": "palpalindia.com",
-     "date": "20260803",
-     "url": "https://www.palpalindia.com/2026/08/03/New-Delhi-%E2%80%93-Heavy-rain-in-15-states-%E2%80%93-Weather-Department-alert.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Orange Alert for Heavy Rain in East and Northeast India Today | IMD Weather Update and Monsoon Tracker",
-     "domain": "downtoearth.org.in",
-     "date": "20260803",
-     "url": "https://www.downtoearth.org.in/climate-change/daily-weather-tracker-orange-alert-for-heavy-rainfall-across-eastern-and-northeastern-india-know-where-it-will-pour-today",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Explained : Why India New Rs 272 - Crore Rail Line Near Doklam Border Matters",
-     "domain": "newsx.com",
-     "date": "20260803",
-     "url": "https://www.newsx.com/india/explained-why-indias-new-rs-272-crore-rail-line-near-doklam-border-matters-256323/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0906\u091c \u0915\u093e \u092e\u094c\u0938\u092e , 3 \u0905\u0917\u0938\u094d\u0924 : \u092f\u0942\u092a\u0940 - \u092c\u093f\u0939\u093e\u0930 \u0938\u0947 \u0932\u0947\u0915\u0930 \u0915\u0936\u094d\u092e\u0940\u0930 \u0924\u0915 \u092e\u0942\u0938\u0932\u093e\u0927\u093e\u0930 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f ; \u091a\u0932\u0947\u0902\u0917\u0940 \u0924\u0947\u091c \u0939\u0935\u093e\u090f\u0902",
-     "domain": "livehindustan.com",
-     "date": "20260803",
-     "url": "https://www.livehindustan.com/weather/aaj-ka-mausam-3-august-heavy-rain-alert-up-bihar-kashmir-assam-bhari-barish-201785729571757.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0906\u091c \u0915\u093e \u092e\u094c\u0938\u092e 3 \u0905\u0917\u0938\u094d\u0924 : \u092f\u0942\u092a\u0940 - \u092c\u093f\u0939\u093e\u0930 \u0938\u092e\u0947\u0924 15 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , 75 \u0915\u0940 \u0938\u094d\u092a\u0940\u0921 \u0938\u0947 \u091a\u0932\u0947\u0917\u0940 \u0939\u0935\u093e ; IMD \u0905\u092a\u0921\u0947\u091f",
-     "domain": "navbharattimes.indiatimes.com",
-     "date": "20260803",
-     "url": "https://navbharattimes.indiatimes.com/india/today-weather-3-august-imd-heavy-rain-alert-in-15-states-including-up-bihar-rajasthan-himachal-punjab-delhi-winds-to-blow-at-75-kmh/articleshow/132815965.cms",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Govt launches upgraded NYPS 2 . 0 portal , records over 54 , 000 individual registrations since 2024",
-     "domain": "indiagazette.com",
-     "date": "20260803",
-     "url": "http://www.indiagazette.com/news/279220932/govt-launches-upgraded-nyps-20-portal-records-over-54000-individual-registrations-since-2024",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Aaj Ka Mausam : UP - \u092c\u093f\u0939\u093e\u0930 \u0938\u092e\u0947\u0924 \u0915\u0908 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u091d\u092e\u093e\u091d\u092e \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , \u0917\u0930\u091c - \u091a\u092e\u0915 \u0915\u0947 \u0938\u093e\u0925 75KMPH \u0915\u0940 \u0938\u094d\u092a\u0940\u0921 \u0938\u0947 \u091a\u0932\u0947\u0917\u0940 \u0939\u0935\u093e\u090f\u0902 ; \u092f\u0939\u093e\u0902 \u092a\u0922\u093c\u0947 03 \u0905\u0917\u0938\u094d\u0924 \u0915\u093e \u092e\u094c\u0938\u092e \u0905\u092a\u0921\u0947\u091f",
-     "domain": "khabarfast.com",
-     "date": "20260803",
-     "url": "https://www.khabarfast.com/national-weather-update-heavy-rain-alert-for-several-states-including-up-bihar-know-here-03-august-ka-mausam",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "India and China resume historic border trade",
-     "domain": "indiagazette.com",
-     "date": "20260803",
-     "url": "http://www.indiagazette.com/news/279220521/india-and-china-resume-historic-border-trade",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Monsoon Havoc Across India : Assam Floods Displace Nearly 2 Lakh as Rains Batter Multiple States",
-     "domain": "openthemagazine.com",
-     "date": "20260803",
-     "url": "https://openthemagazine.com/india/monsoon-havoc-across-india-nearly-2-lakh-displaced-in-assam-as-floods-flash-floods-batter-multiple-states",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u092f\u0942\u092a\u0940 - \u092c\u093f\u0939\u093e\u0930 \u0938\u0947 \u0915\u0936\u094d\u092e\u0940\u0930 \u0924\u0915 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , IMD \u0928\u0947 \u0915\u0908 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0924\u0947\u091c \u0939\u0935\u093e\u0913\u0902 \u0914\u0930 \u092d\u0942\u0938\u094d\u0916\u0932\u0928 \u0915\u0940 \u091a\u0947\u0924\u093e\u0935\u0928\u0940 \u091c\u093e\u0930\u0940 \u0915\u0940 | imd - heavy - rain - alert - up - bihar - delhi - kashmir - weather - update - august - 2026",
-     "domain": "deshbandhu.co.in",
-     "date": "20260803",
-     "url": "https://www.deshbandhu.co.in/featured-news/imd-heavy-rain-alert-up-bihar-delhi-kashmir-weather-update-august-2026-313546",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u74f7\u4e0a\u7ed8\u6587\u7269 \u5200\u4e0b\u523b\u5f81\u7a0b \uff1a \u4ed6\u4eec\u7528\u7ea2\u8272\u4e3b\u9898\u4f5c\u54c1\u81f4\u656c\u957f\u5f81",
-     "domain": "81.cn",
-     "date": "20260803",
-     "url": "http://www.81.cn/yw_208727/16477388.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Today Weather : \u092f\u0942\u092a\u0940 - \u092c\u093f\u0939\u093e\u0930 \u0938\u092e\u0947\u0924 17 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u0940 \u091a\u0947\u0924\u093e\u0935\u0928\u0940 , \u091c\u093e\u0928\u093f\u090f \u0915\u092c \u0914\u0930 \u0915\u0939\u093e\u0902 \u092c\u0930\u0938\u0947\u0902\u0917\u0947 \u092c\u093e\u0926\u0932",
-     "domain": "panchjanya.com",
-     "date": "20260803",
-     "url": "https://panchjanya.com/2026/08/03/484647/bharat/heavy-rain-warning-in-17-states-including-up-bihar-know-when-and-where-it-will-rain/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Tibetans and Japanese Observe Unite for Tibet and Global Day of Action to Honour Martyr Lobga Rangzen in Tokyo \u2013 Central Tibetan Administration",
-     "domain": "tibet.net",
-     "date": "20260803",
-     "url": "https://tibet.net/tibetans-and-japanese-observe-unite-for-tibet-and-global-day-of-action-to-honour-martyr-lobga-rangzen-in-tokyo/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0397 \u0394\u03b9\u03b1\u03ba\u03ae\u03c1\u03c5\u03be\u03b7 \u03c4\u03b7\u03c2 \u0394\u03b9\u03b5\u03b8\u03bd\u03b9\u03c3\u03c4\u03b9\u03ba\u03ae\u03c2 \u0391\u03bd\u03c4\u03b9\u03c0\u03bf\u03bb\u03b5\u03bc\u03b9\u03ba\u03ae\u03c2 \u03a3\u03c5\u03bd\u03b4\u03b9\u03ac\u03c3\u03ba\u03b5\u03c8\u03b7\u03c2 \u03c4\u03b7\u03c2 \u0391\u03b8\u03ae\u03bd\u03b1\u03c2 22",
-     "domain": "prin.gr",
-     "date": "20260803",
-     "url": "https://prin.gr/2026/08/%CE%B7-%CE%B4%CE%B9%CE%B1%CE%BA%CE%AE%CF%81%CF%85%CE%BE%CE%B7-%CF%84%CE%B7%CF%82-%CE%B4%CE%B9%CE%B5%CE%B8%CE%BD%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CE%AE%CF%82-%CE%B1%CE%BD%CF%84%CE%B9%CF%80%CE%BF%CE%BB/",
-     "tier": null,
-     "match": "full-text"
-    }
-   ],
-   "spike_quality_tier12_share": 0.121
-  },
-  "us_trade": {
-   "label": "US & Trade Policy",
-   "anchor": "India",
-   "terms": [
-    "\"US tariffs\"",
-    "\"reciprocal tariffs\"",
-    "\"trade deal\"",
-    "\"trade war\"",
-    "\"trade restrictions\"",
-    "\"export controls\"",
-    "\"Section 301\"",
-    "\"CAATSA\"",
-    "\"H-1B visa\"",
-    "\"WTO dispute\"",
-    "\"secondary sanctions\"",
-    "\"Russian oil\""
-   ],
-   "queries": [
-    "India (\"US tariffs\" OR \"reciprocal tariffs\" OR \"trade deal\" OR \"trade war\" OR \"trade restrictions\" OR \"export controls\" OR \"Section 301\" OR \"CAATSA\" OR \"H-1B visa\" OR \"WTO dispute\" OR \"secondary sanctions\" OR \"Russian oil\")"
-   ],
-   "n_retrieved": 32,
-   "n_pool_unique": 32,
-   "pool_exhausted": true,
-   "articles": [
-    {
-     "title": "HDFC Bank , ICICI Bank hike FCNR rates Check here for how much interest depositors now get",
-     "domain": "livemint.com",
-     "date": "20260803",
-     "url": "https://www.livemint.com/money/personal-finance/hdfc-bank-icici-hike-fcnr-b-interest-rate-25-bps-increase-6-25-percent-foreign-currency-non-resident-tenure-3-5-years-fd-11785747809784.html",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Finance Ministry moves to enable MDR on UPI Here what scrapping zero MDR provision means for UPI users",
-     "domain": "livemint.com",
-     "date": "20260803",
-     "url": "https://www.livemint.com/money/personal-finance/finance-ministry-moves-enable-mdr-on-upi-propose-scrap-zero-mdr-provision-what-means-upi-users-customer-no-extra-charges-11785772283031.html",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Weak rupee : Import dependence of exports is a soft spot - The HinduBusinessLine",
+     "title": "More rain forecast for Assam - Meghalaya as monsoon roars in North - East",
      "domain": "thehindubusinessline.com",
-     "date": "20260803",
-     "url": "https://www.thehindubusinessline.com/specials/current-account/weak-rupee-import-dependence-of-exports-is-a-soft-spot/article71298805.ece",
+     "date": "20260804",
+     "url": "https://www.thehindubusinessline.com/economy/agri-business/more-rain-forecast-for-assam-meghalaya-as-monsoon-roars-in-north-east/article71304160.ece",
      "tier": 2,
      "match": "full-text"
     },
     {
-     "title": "Samyukta Kisan Morcha sounds agitation call against  corporatisation  of agriculture",
-     "domain": "tribuneindia.com",
-     "date": "20260803",
-     "url": "https://www.tribuneindia.com/news/punjab/samyukta-kisan-morcha-sounds-agitation-call-against-corporatisation-of-agriculture/",
+     "title": "Assam flood toll rises to 87 with 2 more deaths , nearly 1 . 3 lakh still affected",
+     "domain": "economictimes.indiatimes.com",
+     "date": "20260804",
+     "url": "https://economictimes.indiatimes.com/news/india/assam-flood-toll-rises-to-87-with-2-more-deaths-nearly-1-3-lakh-still-affected/articleshow/132846836.cms",
      "tier": 2,
      "match": "full-text"
     },
     {
-     "title": "US immigration lawyers are asking H - 1B holders to carry papers during domestic travel",
-     "domain": "moneycontrol.com",
-     "date": "20260803",
-     "url": "https://www.moneycontrol.com/world/us-immigration-lawyers-are-asking-h-1b-holders-to-carry-papers-during-domestic-travel-here-s-why-article-13992846.html",
-     "tier": 3,
+     "title": "Heavy rain to lash northeast , east India over next week ; IMD issues extremely heavy rainfall alert",
+     "domain": "livemint.com",
+     "date": "20260804",
+     "url": "https://www.livemint.com/news/heavy-rain-to-lash-northeast-east-india-over-next-week-imd-issues-extremely-heavy-rainfall-alert-11785833990422.html",
+     "tier": 2,
      "match": "full-text"
     },
     {
-     "title": "One 97 Communications Paytm Shares Gain 2 . 19 % on Monday - Moneycontrol . com",
-     "domain": "moneycontrol.com",
-     "date": "20260803",
-     "url": "https://www.moneycontrol.com/news/business/stocks/one-97-communications-paytm-shares-gain-2-19-on-monday-alpha-article-13991612.html",
-     "tier": 3,
+     "title": "Register a birth two years late and you may have to go to courts : Amendments in key law passed by Parliament",
+     "domain": "hindustantimes.com",
+     "date": "20260804",
+     "url": "https://www.hindustantimes.com/ht-explainers/parliament-monsoon-session-births-deaths-registrations-bill-2026-lok-sabha-rajya-sabha-what-changes-in-law-101785653552903.html",
+     "tier": 2,
      "match": "full-text"
     },
     {
-     "title": "Why India bought record Russian oil in July despite Trump 100 percent tariff threat",
-     "domain": "sangbadpratidin.in",
-     "date": "20260803",
-     "url": "https://www.sangbadpratidin.in/india/why-india-bought-record-russian-oil-in-july-despite-trumps-100-percent-tariff-threat/pid/1272485/",
-     "tier": null,
+     "title": "Arunachal Pradesh Glaw Lake becomes India 101st Ramsar site",
+     "domain": "timesofindia.indiatimes.com",
+     "date": "20260804",
+     "url": "https://timesofindia.indiatimes.com/city/guwahati/arunachal-pradeshs-glaw-lake-becomes-indias-101st-ramsar-site/articleshow/132848192.cms",
+     "tier": 3,
      "match": "headline"
     },
     {
-     "title": "A former Oracle engineer on an H - 1B visa says AI and tech layoffs pushed him into constant career - prep mode",
-     "domain": "finance.yahoo.com",
-     "date": "20260803",
-     "url": "https://finance.yahoo.com/technology/ai/articles/former-oracle-engineer-h-1b-091502200.html",
-     "tier": null,
+     "title": "North Korea Urges Citizens To Eat Dog Meat To Beat Summer Heat , Says It  Highly Nutritious  ",
+     "domain": "freepressjournal.in",
+     "date": "20260804",
+     "url": "https://www.freepressjournal.in/lifestyle/north-korea-urges-citizens-to-eat-dog-meat-to-beat-summer-heat-says-its-highly-nutritious",
+     "tier": 3,
      "match": "full-text"
     },
     {
-     "title": "Indias Russian crude imports hit record high media",
-     "domain": "russiaherald.com",
-     "date": "20260803",
-     "url": "http://www.russiaherald.com/news/279220814/indias-russian-crude-imports-hit-record-high-media",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Indias July Russian crude imports hit record high media",
-     "domain": "russiaherald.com",
-     "date": "20260803",
-     "url": "http://www.russiaherald.com/news/279220803/indias-july-russian-crude-imports-hit-record-high-media",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Half of US states sue Trump admin over latest tariffs",
-     "domain": "theadvocate.com.au",
-     "date": "20260803",
-     "url": "https://www.theadvocate.com.au/story/9323225/half-of-us-states-sue-trump-admin-over-latest-tariffs/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0418\u043d\u0434\u0438\u044f \u043d\u0430\u0440\u0430\u0441\u0442\u0438\u043b\u0430 \u0437\u0430\u043a\u0443\u043f\u043a\u0438 \u0440\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u043e\u0439 \u043d\u0435\u0444\u0442\u0438 \u0434\u043e \u0440\u0435\u043a\u043e\u0440\u0434\u0430 \u0441 2022 \u0433\u043e\u0434\u0430",
-     "domain": "vestikavkaza.ru",
-     "date": "20260803",
-     "url": "https://vestikavkaza.ru/news/india-narastila-zakupki-rossijskoj-nefti-do-rekorda-s-2022-goda.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "US lifts tariff barrier - Weekend Post",
-     "domain": "weekendpost.co.bw",
-     "date": "20260803",
-     "url": "https://weekendpost.co.bw/us-lifts-tariff-barrier/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "India Imports of Russian Crude Hit New High in July",
-     "domain": "oilprice.com",
-     "date": "20260803",
-     "url": "https://oilprice.com/Latest-Energy-News/World-News/Indias-Imports-of-Russian-Crude-Hit-New-High-in-July.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u041a\u043b\u044e\u0447\u0435\u0432\u043e\u0439 \u0438\u043c\u043f\u043e\u0440\u0442\u0435\u0440 \u0440\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u043e\u0439 \u043d\u0435\u0444\u0442\u0438 \u043d\u0430\u0440\u0430\u0441\u0442\u0438\u043b \u0435\u0435 \u0437\u0430\u043a\u0443\u043f\u043a\u0438 \u0434\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430",
-     "domain": "lenta.ru",
-     "date": "20260803",
-     "url": "https://lenta.ru/news/2026/08/03/klyuchevoy-importer-rossiyskoy-nefti-narastil-ee-zakupki-do-maksimuma/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "The Times of India : \u0438\u043c\u043f\u043e\u0440\u0442 \u043d\u0435\u0444\u0442\u0438 \u0438\u0437 \u0420\u0424 \u0432 \u0418\u043d\u0434\u0438\u044e \u0432 \u0438\u044e\u043b\u0435 \u0441\u0442\u0430\u043b \u0440\u0435\u043a\u043e\u0440\u0434\u043d\u044b\u043c \u0441 2022 \u0433\u043e\u0434\u0430",
-     "domain": "bfm.ru",
-     "date": "20260803",
-     "url": "https://www.bfm.ru/news/613981",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Malaysia mulls easing rare - earth export curbs to meet demand",
-     "domain": "businesstimes.com.sg",
-     "date": "20260803",
-     "url": "https://www.businesstimes.com.sg/international/asean/malaysia-mulls-easing-rare-earth-export-curbs-meet-demand",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Reuters : \u0446\u0435\u043d\u0430 \u043f\u0435\u0440\u0435\u0432\u043e\u0437\u043a\u0438 \u043d\u0435\u0444\u0442\u0438 \u0438\u0437 \u0420\u043e\u0441\u0441\u0438\u0438 \u0432 \u0418\u043d\u0434\u0438\u044e \u043f\u043e \u043c\u043e\u0440\u044e \u0432\u044b\u0440\u043e\u0441\u043b\u0430 \u043d\u0430 50 % ",
-     "domain": "svoboda.org",
-     "date": "20260803",
-     "url": "https://www.svoboda.org/a/reuters-tsena-perevozki-nefti-iz-rossii-v-indiyu-po-moryu-vyrosla-na-50/33821052.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Amid reports of Aug 5 event , Bangladesh asks India to prevent Hasina political speeches",
-     "domain": "thedailystar.net",
-     "date": "20260803",
-     "url": "https://www.thedailystar.net/news/bangladesh/diplomacy/news/amid-reports-aug-5-event-bangladesh-asks-india-prevent-hasinas-political-speeches-4239186",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Crude Oil Import : \u0930\u0936\u093f\u092f\u0928 \u0924\u0947\u0932\u093e\u0935\u0930 \u092d\u093e\u0930\u0924\u093e\u091a\u093e \u0935\u093e\u0922\u0924\u093e \u0935\u093f\u0936\u094d\u0935\u093e\u0938 ! \u091c\u0941\u0932\u0948\u092e\u0927\u094d\u092f\u0947 \u0935\u093f\u0915\u094d\u0930\u092e\u0940 \u0906\u092f\u093e\u0924 , \u0905\u092e\u0947\u0930\u093f\u0915\u0947\u0915\u0921\u0942\u0928\u0939\u0940 LPG\u091a\u0940 \u092e\u094b\u0920\u0940 \u0916\u0930\u0947\u0926\u0940",
-     "domain": "prahaar.in",
-     "date": "20260803",
-     "url": "https://prahaar.in/2026/08/03/crude-oil-import-indias-growing-reliance-on-russian-oil-record-imports-in-july-significant-lpg-purchases-from-the-us-as-well/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0a35\u0a3f\u0a26\u0a47\u0a38\u0a3c \u0a28\u0a40\u0a24\u0a40  \u0a1a \u0a38\u0a41\u0a23\u0a40 \u0a1c\u0a3e\u0a35\u0a47 \u0a38\u0a42\u0a2c\u0a3f\u0a06\u0a02 \u0a26\u0a40 \u0a06\u0a35\u0a3e\u0a1c\u0a3c - Punjabi Tribune",
-     "domain": "punjabitribuneonline.com",
-     "date": "20260803",
-     "url": "https://www.punjabitribuneonline.com/news/comment/the-voice-of-the-states-should-be-heard-in-foreign-policy/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0418\u043d\u0434\u0438\u044f \u0432 \u0438\u044e\u043b\u0435 \u0438\u043c\u043f\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043b\u0430 \u0438\u0437 \u0420\u043e\u0441\u0441\u0438\u0438 \u0440\u0435\u043a\u043e\u0440\u0434\u043d\u044b\u0435 \u0441 2022 \u0433\u043e\u0434\u0430 \u043e\u0431\u044a\u0435\u043c\u044b \u043d\u0435\u0444\u0442\u0438",
-     "domain": "vesti.ru",
-     "date": "20260803",
-     "url": "https://www.vesti.ru/ns/rossiya-v-iyule-importirovala-v-indiyu-rekordnye-s-2022-goda-obemy-nefti",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0412 \u043a\u0430\u043a\u0438\u0445 \u0441\u0442\u0440\u0430\u043d\u0430\u0445 \u0440\u043e\u0441\u0441\u0438\u044f\u043d\u0435 \u043c\u043e\u0433\u0443\u0442 \u043f\u043b\u0430\u0442\u0438\u0442\u044c \u043f\u043e QR - \u043a\u043e\u0434\u0443 \u0438 \u043e \u043a\u0430\u043a\u0438\u0445 \u043d\u044e\u0430\u043d\u0441\u0430\u0445 \u0441\u043b\u0435\u0434\u0443\u0435\u0442 \u043f\u043e\u043c\u043d\u0438\u0442\u044c",
-     "domain": "rg.ru",
-     "date": "20260803",
-     "url": "https://rg.ru/2026/08/03/kodovoe-slovo.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": " \u2013 P\u00e5 randen av en stagnasjon",
-     "domain": "e24.no",
-     "date": "20260803",
-     "url": "https://e24.no/internasjonal-oekonomi/i/wr9gGL/paa-randen-av-en-stagnasjon",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "U . S . Government Announces Largest Expansion Of The UFLPA Entity List In History , Continues Focus On Forced Labor Trade Enforcement",
-     "domain": "mondaq.com",
-     "date": "20260803",
-     "url": "https://www.mondaq.com:443/unitedstates/government/1825586/us-government-announces-largest-expansion-of-the-uflpa-entity-list-in-history-continues-focus-on-forced-labor-trade-enforcement",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Exhibitors at U . S . textile trade show grapple with unprecedented headwinds",
-     "domain": "en.people.cn",
-     "date": "20260803",
-     "url": "http://en.people.cn/n3/2026/0803/c90000-20484619.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Brazil Minister Visits India to Expand Trade",
-     "domain": "riotimesonline.com",
-     "date": "20260803",
-     "url": "https://www.riotimesonline.com/brazil-mdic-minister-india-trade-mission-2026/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Democratising Corridor Justice \u2013 Insulating Supply Chain Beyond State - To - State : A Corridor ADR Architecture For Malaysia - India Trade Relationship",
-     "domain": "livelaw.in",
-     "date": "20260803",
-     "url": "https://www.livelaw.in/articles/corridor-adr-architecture-malaysia-india-trade-relationship-543922",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0395\u03bd\u03b5\u03c1\u03b3\u03b5\u03b9\u03b1\u03ba\u03cc\u03c2 \u0391\u03c1\u03bc\u03b1\u03b3\u03b5\u03b4\u03b4\u03ce\u03bd : \u039a\u03bb\u03b5\u03af\u03bd\u03b5\u03b9 \u03b7 \u03c3\u03c4\u03c1\u03cc\u03c6\u03b9\u03b3\u03b3\u03b1 \u03c4\u03b7\u03c2 \u03a3\u03b1\u03bf\u03c5\u03b4\u03b9\u03ba\u03ae\u03c2 \u0391\u03c1\u03b1\u03b2\u03af\u03b1\u03c2 , \u03b7 \u0395\u03c5\u03c1\u03ce\u03c0\u03b7 \u03b1\u03c0\u03b5\u03b9\u03bb\u03b5\u03af\u03c4\u03b1\u03b9 \u03bc\u03b5 \u03bd\u03ad\u03bf \u03c3\u03bf\u03ba , \u03c4\u03bf Brent \u03c3\u03cd\u03bd\u03c4\u03bf\u03bc\u03b1 \u03c3\u03c4\u03b1 150 \u03b4\u03bf\u03bb\u03ac\u03c1\u03b9\u03b1",
-     "domain": "bankingnews.gr",
-     "date": "20260803",
-     "url": "https://www.bankingnews.gr/diethni/articles/891921/energeiakos-armageddon-kleinei-i-strofigga-tis-saoudikis-aravias-i-evropi-apeileitai-me-neo-sok-to-brent-syntoma-sta-150-dolaria",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "The great AI price war : How Chinese open models are squeezing GPT - 5 . 6 Sol and Claude Fable 5",
-     "domain": "digit.in",
-     "date": "20260803",
-     "url": "https://www.digit.in/features/general/the-great-ai-price-war-how-chinese-open-models-are-squeezing-gpt-5-6-sol-and-claude-fable-5.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0421\u0442\u0430\u043b\u044c\u043d\u043e\u0439 \u0440\u044b\u043d\u043e\u043a : 28 \u0438\u044e\u043b\u044f - 3 \u0430\u0432\u0433\u0443\u0441\u0442\u0430",
-     "domain": "metalbulletin.ru",
-     "date": "20260803",
-     "url": "https://www.metalbulletin.ru/publications/4721/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "The best banking stocks to buy as profits surge",
-     "domain": "moneyweek.com",
-     "date": "20260803",
-     "url": "https://moneyweek.com/investments/bank-stocks/best-banking-stocks-as-sector-profits-surge",
-     "tier": null,
-     "match": "full-text"
-    }
-   ],
-   "spike_quality_tier12_share": 0.125
-  },
-  "shipping": {
-   "label": "Shipping & Chokepoints",
-   "anchor": null,
-   "terms": [
-    "\"Red Sea shipping\"",
-    "\"Red Sea attacks\"",
-    "\"Suez Canal\"",
-    "\"Bab el-Mandeb\"",
-    "\"Strait of Malacca\"",
-    "\"Cape of Good Hope\"",
-    "\"Houthi attacks\"",
-    "\"shipping lanes\"",
-    "\"Somali pirates\"",
-    "\"maritime security\""
-   ],
-   "queries": [
-    "(\"Red Sea shipping\" OR \"Red Sea attacks\" OR \"Suez Canal\" OR \"Bab el-Mandeb\" OR \"Strait of Malacca\" OR \"Cape of Good Hope\" OR \"Houthi attacks\" OR \"shipping lanes\" OR \"Somali pirates\" OR \"maritime security\")"
-   ],
-   "n_retrieved": 75,
-   "n_pool_unique": 178,
-   "pool_exhausted": false,
-   "articles": [
-    {
-     "title": "Trump announces new round of talks with Iran",
-     "domain": "dw.com",
-     "date": "20260803",
-     "url": "https://www.dw.com/en/trump-announces-new-talks-with-iran-after-calling-off-massive-attack/live-78210315",
-     "tier": 1,
-     "match": "full-text"
-    },
-    {
-     "title": "Iran denies talks with US underway after Trump comments",
-     "domain": "dw.com",
-     "date": "20260803",
-     "url": "https://www.dw.com/en/iran-denies-talks-with-us-underway-after-trump-comments/live-78210315",
-     "tier": 1,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0647\u0644 \u0645\u0627 \u0632\u0627\u0644\u062a \u0639\u064f\u0645\u0627\u0646 \u062a\u0646\u062a\u0647\u062c \u0627\u0644\u062d\u064a\u0627\u062f \u0627\u0644\u062f\u0628\u0644\u0648\u0645\u0627\u0633\u064a \u061f ",
-     "domain": "bbc.com",
-     "date": "20260803",
-     "url": "https://www.bbc.com/arabic/articles/c4gx9gyx490o",
-     "tier": 1,
-     "match": "full-text"
-    },
-    {
-     "title": "Iran war : Trump tells Iranians to make deal or surrender",
-     "domain": "dw.com",
-     "date": "20260803",
-     "url": "https://www.dw.com/en/iran-war-trump-tells-iranian-leaders-to-make-deal-or-surrender/live-78210315",
-     "tier": 1,
-     "match": "full-text"
-    },
-    {
-     "title": " \u00ab \u0627\u0626\u062a\u0644\u0627\u0641 \u062f\u0631\u06cc\u0627\u06cc\u06cc \u0628\u0647 \u0631\u0647\u0628\u0631\u06cc \u0639\u0631\u0628\u0633\u062a\u0627\u0646 \u0686\u06cc\u0633\u062a \u0648 \u06a9\u062f\u0627\u0645 \u06a9\u0634\u0648\u0631\u0647\u0627 \u0628\u0647 \u0622\u0646 \u067e\u06cc\u0648\u0633\u062a\u0647\u200c\u0627\u0646\u062f \u061f\u00bb ",
-     "domain": "bbc.com",
-     "date": "20260803",
-     "url": "https://www.bbc.com/persian/articles/crk5jzxyg75o",
-     "tier": 1,
-     "match": "full-text"
-    },
-    {
-     "title": "Tanker carrying Russian cargo reroutes around Africa after Red Sea U - turn",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260803",
-     "url": "https://economictimes.indiatimes.com/news/international/world-news/tanker-carrying-russian-cargo-reroutes-around-africa-after-red-sea-u-turn/articleshow/132819736.cms",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Singapore factory activity expands amid AI boom",
-     "domain": "straitstimes.com",
-     "date": "20260803",
-     "url": "https://www.straitstimes.com/business/economy/spore-factory-activity-expands-in-july-on-ai-boom-but-supply-chain-crisis-brews-due-to-iran-war",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Oil prices tumble as Trump cancels attack on Iran to reach nuclear deal",
-     "domain": "thehindu.com",
-     "date": "20260803",
-     "url": "https://www.thehindu.com/news/international/oil-prices-tumble-as-trump-cancels-attack-on-iran-to-reach-nuclear-deal/article71299732.ece",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Oil prices plunge and Europe stock markets rally after Trump calls off Iran strikes | Oil",
-     "domain": "theguardian.com",
-     "date": "20260803",
-     "url": "https://www.theguardian.com/business/2026/aug/03/oil-prices-fall-europe-stock-markets-donald-trump-iran-us-brent-crude",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "How Iran is widening its pressure campaign to force US concessions",
-     "domain": "economictimes.indiatimes.com",
-     "date": "20260803",
-     "url": "https://economictimes.indiatimes.com/news/defence/how-iran-is-widening-its-pressure-campaign-to-force-us-concessions/articleshow/132827500.cms",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Is Ireland unprotected ocean the weak link in European defence ? | Ireland",
-     "domain": "theguardian.com",
-     "date": "20260803",
-     "url": "https://www.theguardian.com/world/2026/aug/03/is-irelands-unprotected-ocean-the-weak-link-in-european-defence",
-     "tier": 2,
-     "match": "full-text"
-    },
-    {
-     "title": "Six Saudi tankers turn away from Gulf of Aden , ship - tracking data shows",
+     "title": "Births and Deaths Amendment Bill : Why India is tightening delayed birth and death registration despite 99 % coverage",
      "domain": "moneycontrol.com",
-     "date": "20260803",
-     "url": "https://www.moneycontrol.com/world/six-saudi-tankers-turn-away-from-gulf-of-aden-ship-tracking-data-shows-article-13992706.html",
+     "date": "20260804",
+     "url": "https://www.moneycontrol.com/news/india/births-and-deaths-amendment-bill-why-india-is-tightening-delayed-birth-and-death-registration-despite-99-coverage-13994411.html",
      "tier": 3,
      "match": "full-text"
     },
     {
-     "title": "Saudi Yanbu port sees busy days despite Houthi threats ; crude transits as oil tankers go dark",
-     "domain": "timesofindia.indiatimes.com",
-     "date": "20260803",
-     "url": "https://timesofindia.indiatimes.com/business/international-business/saudis-yanbu-port-sees-busy-days-despite-houthi-threats-crude-transits-as-oil-tankers-go-dark/articleshow/132824893.cms",
-     "tier": 3,
-     "match": "full-text"
+     "title": "Which is the First Ramsar Site in Arunachal Pradesh ? Know About Glaw Lake , India 101st Ramsar Wetland",
+     "domain": "jagranjosh.com",
+     "date": "20260804",
+     "url": "https://www.jagranjosh.com/general-knowledge/glaw-lake-becomes-arunachal-pradeshs-first-ramsar-site-india-now-has-101-ramsar-wetlands-location-biodiversity-important-1820011121-1",
+     "tier": 4,
+     "match": "headline"
     },
     {
-     "title": "Saudi tankers turn away from Gulf of Aden",
-     "domain": "middleeasteye.net",
-     "date": "20260803",
-     "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-tankers-turn-away-gulf-aden",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Trump claims Iran talks continue as IRGC commander issues threat warning",
-     "domain": "gulfnews.com",
-     "date": "20260803",
-     "url": "https://gulfnews.com/world/mena/trump-says-iran-talks-ongoing-as-irgc-warns-it-is-ready-for-any-threat-1.500628738",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Two tankers with Saudi oil exit Red Sea over weekend , data shows",
-     "domain": "arabnews.com",
-     "date": "20260803",
-     "url": "https://www.arabnews.com/node/2653201/middle-east",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "India - bound Saudi oil tanker crosses Bab el - Mandeb as Hormuz traffic slows after attacks",
-     "domain": "moneycontrol.com",
-     "date": "20260803",
-     "url": "https://www.moneycontrol.com/world/india-bound-saudi-oil-tanker-crosses-bab-el-mandeb-as-hormuz-traffic-slows-after-attacks-article-13991429.html",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Oil tumbles as Trump cancels attack on Iran to reach nuclear deal",
-     "domain": "arabnews.com",
-     "date": "20260803",
-     "url": "https://www.arabnews.com/node/2653197/business-economy",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "US Pacific Fleet Commander Steve Koehler to visit Bangladesh",
-     "domain": "aninews.in",
-     "date": "20260803",
-     "url": "https://aninews.in/news/world/asia/us-pacific-fleet-commander-steve-koehler-to-visit-bangladesh20260803214335/",
-     "tier": 3,
-     "match": "full-text"
-    },
-    {
-     "title": "Explosion Near Tanker Off Oman Coast : Crew Safe",
-     "domain": "newkerala.com",
-     "date": "20260803",
-     "url": "https://www.newkerala.com/news/a/explosion-reported-near-tanker-off-oman-coast-crew-576.htm",
+     "title": "IMD Predicts Heavy Rain Today ; Kerala , Assam Schools May Shut Due to Rains",
+     "domain": "jagranjosh.com",
+     "date": "20260804",
+     "url": "https://www.jagranjosh.com/news/imd-predicts-heavy-rain-august-4-kerala-assam-schools-may-shut-due-to-rains-186185",
      "tier": 4,
      "match": "full-text"
     },
     {
-     "title": "The Arsenal of Autonomy : Why Taiwan Must Learn from Ukraine Drone Defense Before It Too Late | Center for International Maritime Security",
-     "domain": "cimsec.org",
-     "date": "20260803",
-     "url": "https://cimsec.org/the-arsenal-of-autonomy-why-taiwan-must-learn-from-ukraines-drone-defense-before-its-too-late/",
+     "title": "IMD Rainfall Forecast : Heavy Rain Predicted in These States Today ; Check Complete Weather Alert , School Closure Updates",
+     "domain": "jagranjosh.com",
+     "date": "20260804",
+     "url": "https://www.jagranjosh.com/news/imd-rainfall-forecast-rain-predicted-in-these-states-check-complete-weather-alert-186230",
+     "tier": 4,
+     "match": "full-text"
+    },
+    {
+     "title": "Gauhati High Court Upholds Amendment To Arunachal Pradesh Police Rules Aimed At  Equitable Distribution  Of Promotion Opportunities",
+     "domain": "livelaw.in",
+     "date": "20260804",
+     "url": "https://www.livelaw.in/high-court/gauhati-high-court/gauhati-high-court-constitutional-validity-arunachal-pradesh-police-promotion-rules-544248",
      "tier": null,
      "match": "headline"
     },
     {
-     "title": "Tanker Shipping Under Fire from Middle East Tensions | Hellenic Shipping News Worldwide",
-     "domain": "hellenicshippingnews.com",
+     "title": "10 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0906\u0902\u0927\u0940 - \u0924\u0942\u092b\u093e\u0928 \u0915\u0947 \u0938\u093e\u0925 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f , UP \u092e\u0947\u0902 \u092d\u0940 \u092c\u093f\u0917\u0921\u093c\u0947\u0917\u093e \u092e\u094c\u0938\u092e",
+     "domain": "livehindustan.com",
      "date": "20260804",
-     "url": "https://www.hellenicshippingnews.com/tanker-shipping-under-fire-from-middle-east-tensions/",
+     "url": "https://www.livehindustan.com/weather/aaj-ka-mausam-kaisa-rahega-imd-tuesday-7-august-weather-update-up-rain-alert-delhi-me-barish-201785817172180.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Shipping Tribune",
-     "domain": "shippingtribune.com",
-     "date": "20260803",
-     "url": "https://www.shippingtribune.com/news/shipping/Six+Saudi+Oil+Tankers+Reroute+Around+Africa+to+Dodge+Houthi+Threat",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Saudi Arabia Forms Multinational Red Sea Defence Alliance as U . S .- Iran War Threatens Global Shipping",
-     "domain": "ipsnews.net",
-     "date": "20260803",
-     "url": "https://www.ipsnews.net/2026/08/saudi-arabia-forms-multinational-red-sea-defence-alliance-as-u-s-iran-war-threatens-global-shipping/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "The World Maritime Chokepoints Are Becoming Geopolitical Battlegrounds Not Just Shipping Routes \u2013 My Blog",
-     "domain": "alnas-news.com",
-     "date": "20260803",
-     "url": "https://alnas-news.com/2026/08/03/the-worlds-maritime-chokepoints-are-becoming-geopolitical-battlegrounds-not-just-shipping-routes/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0631\u0648\u064a\u062a\u0631\u0632 \u0639\u0646 \u0628\u064a\u0627\u0646\u0627\u062a \u0645\u0644\u0627\u062d\u064a\u0629 : 6 \u0646\u0627\u0642\u0644\u0627\u062a \u0646\u0641\u0637 \u062a\u0631\u0641\u0639 \u0639\u0644\u0645 \u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629 \u062a\u063a\u064a\u0631 \u0645\u0633\u0627\u0631\u0647\u0627 \u0628\u0639\u064a\u062f\u0627 \u0639\u0646 \u062e\u0644\u064a\u062c \u0639\u062f\u0646",
-     "domain": "shorouknews.com",
-     "date": "20260803",
-     "url": "https://www.shorouknews.com/news/view.aspx?cdate=03082026&id=b5c9e0d4-6c42-4395-b38a-a1cb630df10d",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Six\u00a0Saudi\u00a0Tankers Turn Away From Gulf of Aden , Ship - tracking Data Shows",
-     "domain": "gcaptain.com",
-     "date": "20260803",
-     "url": "https://gcaptain.com/six-saudi-tankers-turn-away-from-gulf-of-aden-ship-tracking-data-shows/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u6d77\u4e8b\u5206\u6790\u516c\u53f8 \uff1a 6\u8258\u6c99\u7279\u6cb9\u8f6e\u7ed5\u884c\u597d\u671b\u89d2\u907f\u5f00\u7ea2\u6d77\u822a\u7ebf",
-     "domain": "world.qianlong.com",
-     "date": "20260803",
-     "url": "https://world.qianlong.com/2026/0804/8706979.shtml",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Saudi oil port sees busiest day since Houthi blockade : Report",
-     "domain": "aa.com.tr",
-     "date": "20260803",
-     "url": "https://aa.com.tr/en/middle-east/saudi-oil-port-sees-busiest-day-since-houthi-blockade-report/4016800",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0628\u0633\u0628\u0628 \u062a\u0647\u062f\u064a\u062f\u0627\u062a \u0627\u0644\u062d\u0648\u062b\u064a\u064a\u0646 .. 6 \u0646\u0627\u0642\u0644\u0627\u062a \u0646\u0641\u0637 \u062a\u0631\u0641\u0639 \u0639\u0644\u0645 \u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629 \u062a\u063a\u064a\u0631 \u0645\u0633\u0627\u0631\u0647\u0627 \u0628\u0639\u064a\u062f\u0627 \u0639\u0646 \u062e\u0644\u064a\u062c \u0639\u062f\u0646",
-     "domain": "alquds.co.uk",
-     "date": "20260803",
-     "url": "https://www.alquds.co.uk/%D8%A8%D8%B3%D8%A8%D8%A8-%D8%AA%D9%87%D8%AF%D9%8A%D8%AF%D8%A7%D8%AA-%D8%A7%D9%84%D8%AD%D9%88%D8%AB%D9%8A%D9%8A%D9%86-6-%D9%86%D8%A7%D9%82%D9%84%D8%A7%D8%AA-%D9%86%D9%81%D8%B7-%D8%AA%D8%B1%D9%81/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "India Imports of Russian Crude Hit New High in July",
-     "domain": "oilprice.com",
-     "date": "20260803",
-     "url": "https://oilprice.com/Latest-Energy-News/World-News/Indias-Imports-of-Russian-Crude-Hit-New-High-in-July.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Saudi Oil Tankers Cross Red Sea As Hormuz Traffic",
-     "domain": "marinelink.com",
-     "date": "20260803",
-     "url": "https://www.marinelink.com/news/saudi-oil-tankers-cross-red-sea-hormuz-541712",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Saudi oil exports surge through Yanbu despite Houthi blockade threats",
-     "domain": "azernews.az",
-     "date": "20260803",
-     "url": "https://www.azernews.az/region/261958.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0645\u062d\u0627\u0641\u0638 \u0628\u0648\u0631\u0633\u0639\u064a\u062f \u064a\u062a\u0627\u0628\u0639 \u062e\u0637\u0629 \u0635\u064a\u0627\u0646\u0629 \u0643\u0648\u0628\u0631\u064a \u0627\u0644\u0646\u0635\u0631 \u0627\u0644\u0639\u0627\u0626\u0645 \u0627\u0644\u0642\u062f\u064a\u0645 \u0628\u0627\u0644\u062a\u0646\u0633\u064a\u0642 \u0645\u0639 \u0647\u064a\u0626\u0629 \u0642\u0646\u0627\u0629 \u0627\u0644\u0633\u0648\u064a\u0633",
-     "domain": "shorouknews.com",
-     "date": "20260803",
-     "url": "https://www.shorouknews.com/news/view.aspx?cdate=03082026&id=c7d8fcb6-2fcd-4ef2-903a-27a8866c9fcf",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Why Have China and Russia Just Stepped Out Of The Shadows In The U . S .- Iran War ? ",
-     "domain": "oilprice.com",
-     "date": "20260803",
-     "url": "https://oilprice.com/Geopolitics/Middle-East/Why-Have-China-and-Russia-Just-Stepped-Out-Of-The-Shadows-In-The-US-Iran-War.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u041d\u0435\u0444\u0442\u044f\u043d\u043e\u0439 \u0440\u044b\u043d\u043e\u043a \u043e\u0441\u0442\u0430\u0435\u0442\u0441\u044f \u0432 \u0433\u043b\u0443\u0431\u043e\u043a\u043e\u043c \u043c\u0438\u043d\u0443\u0441\u0435 , Brent \u0442\u043e\u0440\u0433\u0443\u0435\u0442\u0441\u044f \u0443 $83 , 5 \u0437\u0430 \u0431\u0430\u0440\u0440\u0435\u043b\u044c",
-     "domain": "interfax.ru",
-     "date": "20260803",
-     "url": "https://www.interfax.ru/business/1107187",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u7f8e\u4f0a\u5bf9\u5cd9\u654f\u611f\u671f\u57c3\u53ca\u6e2f\u53e3\u9047\u88ad _ \u65b0\u95fb\u9891\u9053 _ \u4e2d\u534e\u7f51",
-     "domain": "news.china.com",
-     "date": "20260803",
-     "url": "https://news.china.com/international/1000/20260803/49649869.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Unhinged Donald Trump takes aim at Iran in latest tirade after Tehran denies peace talk claims",
-     "domain": "mirror.co.uk",
-     "date": "20260803",
-     "url": "https://www.mirror.co.uk/news/world-news/trump-iran-war-peace-talks-37509548",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Oil Prices Drop Nearly 5 % as Trump Delays Iran Strike , Markets Eye Strait of Hormuz Deal",
-     "domain": "econotimes.com",
-     "date": "20260803",
-     "url": "http://www.econotimes.com/Oil-Prices-Drop-Nearly-5-as-Trump-Delays-Iran-Strike-Markets-Eye-Strait-of-Hormuz-Deal-1748381",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "The Economics of Calm Waters",
-     "domain": "omanobserver.om",
-     "date": "20260803",
-     "url": "https://www.omanobserver.om/article/1193898/opinion/the-economics-of-calm-waters",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Trump threatens more strikes on Iran ; Kuwait reports new drone attacks",
-     "domain": "latimes.com",
-     "date": "20260803",
-     "url": "https://www.latimes.com/world-nation/story/2026-08-01/trump-threatens-more-strikes-on-iran-kuwait-reports-new-drone-attacks",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0411\u043b\u0438\u0436\u043d\u0438\u0439 \u0412\u043e\u0441\u0442\u043e\u043a \u0432 \u043e\u0433\u043d\u0435 . \u041d\u043e\u0432\u044b\u0435 \u0433\u043e\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u0430 \u0432\u0441\u0442\u0443\u043f\u0430\u044e\u0442 \u0432 \u0432\u043e\u0439\u043d\u0443 \u0421\u0428\u0410 \u043f\u0440\u043e\u0442\u0438\u0432 \u0418\u0440\u0430\u043d\u0430",
-     "domain": "aif.ru",
-     "date": "20260803",
-     "url": "https://aif.ru/politics/world/blizhniy-vostok-v-ogne-novye-gosudarstva-vstupayut-v-voynu-ssha-protiv-irana",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Iran Found a  More Powerful Weapon Than a Nuclear Bomb  And It Working",
-     "domain": "newsweek.com",
-     "date": "20260803",
-     "url": "https://www.newsweek.com/iran-found-a-more-powerful-weapon-than-a-nuclear-bomb-and-its-working-12277526",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Erdbeben in \u00c4gypten : Ersch\u00fctterungen erreichen Millionenmetropole Kairo",
-     "domain": "abendblatt.de",
-     "date": "20260803",
-     "url": "https://www.abendblatt.de/panorama/article412748002/erdbeben-in-aegypten-beben-bis-nach-kairo-deutlich-zu-spueren.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Saudi Arabia forms Multinational Maritime Defence Alliance to counter Houthi threats in Red Sea",
-     "domain": "theweek.in",
-     "date": "20260803",
-     "url": "https://www.theweek.in/news/middle-east/2026/08/03/saudi-arabia-forms-multinational-maritime-defence-alliance-to-counter-houthi-threats-in-red-sea.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "A Saudi - Emirati Thaw Can Help Contain Iran",
-     "domain": "foreignpolicy.com",
-     "date": "20260803",
-     "url": "https://foreignpolicy.com/2026/08/03/saudi-arabia-emirates-iran-israel-uae-missile-defense-sanctions-hormuz/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Earthquake in northern Suez , Egypt \u2013 Shafaqna English | International Shia News & Fatwas",
-     "domain": "en.shafaqna.com",
-     "date": "20260803",
-     "url": "https://en.shafaqna.com/468322/earthquake-in-northern-suez-egypt/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Shame , and Eternal Shame , Nothing but Shame",
-     "domain": "dailykos.com",
-     "date": "20260803",
-     "url": "https://www.dailykos.com/stories/2026/8/2/800078886/community/baaaaa/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "5 . 6 - magnitude earthquake strikes near Egypt Suez ; no damage reported",
-     "domain": "sana.sy",
-     "date": "20260803",
-     "url": "https://sana.sy/en/middle-east/2333858/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Yemen , August 2026 Monthly Forecast : Security Council Report",
-     "domain": "securitycouncilreport.org",
-     "date": "20260803",
-     "url": "https://www.securitycouncilreport.org/monthly-forecast/2026-08/yemen-90.php",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Egypt earthquake today : Magnitude 5 . 6 quake strikes near Suez with reports of shaking across Middle East",
-     "domain": "independent.co.uk",
-     "date": "20260803",
-     "url": "https://www.independent.co.uk/news/world/middle-east/egypt-earthquake-today-suez-magnitude-b3026228.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0420\u0443\u0431\u043b\u044c \u0432 \u043f\u043e\u043d\u0435\u0434\u0435\u043b\u044c\u043d\u0438\u043a \u0443\u043f\u0430\u043b \u0432 \u043f\u0430\u0440\u0435 \u0441 \u044e\u0430\u043d\u0435\u043c \u043d\u0430 \u0444\u043e\u043d\u0435 \u043d\u0435\u0433\u0430\u0442\u0438\u0432\u043d\u043e\u0439 \u0434\u0438\u043d\u0430\u043c\u0438\u043a\u0438 \u0446\u0435\u043d \u043d\u0430 \u043d\u0435\u0444\u0442\u044c",
-     "domain": "interfax.ru",
-     "date": "20260803",
-     "url": "https://www.interfax.ru/business/1107248",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0426\u0435\u043d\u044b \u043d\u0430 \u043d\u0435\u0444\u0442\u044c \u0441\u043d\u0438\u0437\u0438\u043b\u0438\u0441\u044c 3 \u0430\u0432\u0433\u0443\u0441\u0442\u0430 \u0438\u0437 - \u0437\u0430 \u043f\u043e\u043f\u044b\u0442\u043e\u043a \u0422\u0440\u0430\u043c\u043f\u0430 \u0434\u043e\u0431\u0438\u0442\u044c\u0441\u044f \u0441\u0434\u0435\u043b\u043a\u0438 \u0441 \u0418\u0440\u0430\u043d\u043e\u043c",
-     "domain": "pronedra.ru",
-     "date": "20260803",
-     "url": "https://pronedra.ru/tramp-opyat-pytaetsya-dogovoritsya-s-iranom-czeny-na-neft-upali-827316.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0422\u0440\u0430\u043c\u043f \u043e\u0431\u044a\u044f\u0432\u0438\u043b \u043e \u0432\u043e\u0437\u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0438 \u043f\u0435\u0440\u0435\u0433\u043e\u0432\u043e\u0440\u043e\u0432 \u0441 \u0418\u0440\u0430\u043d\u043e\u043c",
-     "domain": "news.israelinfo.co.il",
-     "date": "20260803",
-     "url": "https://news.israelinfo.co.il/146589",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "MABUX : Bunker Market Volatility to Persist in August | Hellenic Shipping News Worldwide",
-     "domain": "hellenicshippingnews.com",
+     "title": "Union Minister Nadda on visit to flood - hit North - East states to review relief and health services",
+     "domain": "news.webindia123.com",
      "date": "20260804",
-     "url": "https://www.hellenicshippingnews.com/mabux-bunker-market-volatility-to-persist-in-august/",
+     "url": "https://news.webindia123.com/news/Articles/India/20260804/4483049.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Saudi Arabia prepares military operations against Houthis in Yemen conflict",
-     "domain": "jpost.com",
-     "date": "20260803",
-     "url": "https://www.jpost.com/middle-east/article-904431",
+     "title": "Heavy Rain Alert : \u0926\u0947\u0936 \u0915\u0947 \u0915\u0908 \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092c\u0930\u0938\u0947\u0902\u0917\u0947 \u092c\u093e\u0926\u0932 , \u0905\u0938\u092e - \u092e\u0947\u0918\u093e\u0932\u092f \u0938\u092e\u0947\u0924 \u0915\u0908 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 7 \u0905\u0917\u0938\u094d\u0924 \u0924\u0915 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e IMD \u0905\u0932\u0930\u094d\u091f | Imd Heavy Rain Alert 4 7 August 2026 Assam Meghalaya Odisha Rajasthan",
+     "domain": "patrika.com",
+     "date": "20260804",
+     "url": "https://www.patrika.com/national-news/imd-heavy-rain-alert-4-7-august-2026-assam-meghalaya-odisha-rajasthan-20803661",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0648\u0627\u0646\u0626 \u0627\u0644\u0645\u0635\u0631\u064a\u0629",
-     "domain": "dostor.org",
-     "date": "20260803",
-     "url": "https://www.dostor.org/5656111",
+     "title": "Heavy rain to occur in Assam and other N - E states : MeT dept",
+     "domain": "morungexpress.com",
+     "date": "20260804",
+     "url": "https://morungexpress.com/heavy-rain-to-occur-in-assam-and-other-n-e-states-met-dept",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Seltenes Erdbeben trifft Region nahe Kairo \u2013 zun\u00e4chst keine Berichte \u00fcber Sch\u00e4den",
-     "domain": "at.wetter.com",
-     "date": "20260803",
-     "url": "https://at.wetter.com/news/seltenes-erdbeben-trifft-region-nahe-kairo-zunaechst-keine-berichte-ueber-schaeden_aid_6a703e121d72e1906205dc14.html",
+     "title": "Fresh landslides , flash floods hit three Arunachal districts",
+     "domain": "dailypioneer.com",
+     "date": "20260804",
+     "url": "https://dailypioneer.com/news/fresh-landslides-flash-floods-hit-three-arunachal-districts",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Crude Oil Nosedives After Trump Calls Off Planned Attacks On Iran",
-     "domain": "finanzen.ch",
-     "date": "20260803",
-     "url": "https://www.finanzen.ch/nachrichten/aktien/crude-oil-nosedives-after-trump-calls-off-planned-attacks-on-iran-1036401656",
+     "title": "India and China reopen Himalayan border trade , marking a new chapter in bilateral relations",
+     "domain": "weeklyblitz.net",
+     "date": "20260804",
+     "url": "https://weeklyblitz.net/2026/08/04/india-and-china-reopen-himalayan-border-trade-marking-a-new-chapter-in-bilateral-relations/",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u041e\u0431\u043b\u0430\u0447\u043d\u044b\u0435 \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u044b \u0441\u0442\u0430\u043b\u0438 \u0432\u043e\u0435\u043d\u043d\u043e\u0439 \u0446\u0435\u043b\u044c\u044e : \u0441\u043f\u0443\u0442\u043d\u0438\u043a\u0438 \u0441\u043d\u044f\u043b\u0438 \u043f\u043e\u0441\u043b\u0435\u0434\u0441\u0442\u0432\u0438\u044f \u0440\u0430\u043a\u0435\u0442\u043d\u044b\u0445 \u0443\u0434\u0430\u0440\u043e\u0432 \u043f\u043e \u0434\u0430\u0442\u0430 - \u0446\u0435\u043d\u0442\u0440\u0430\u043c",
-     "domain": "securitylab.ru",
-     "date": "20260803",
-     "url": "https://www.securitylab.ru/news/575596.php",
+     "title": "Arunachal hidden Glaw Lake becomes India 101st Ramsar Site . Why you should visit | Indiablooms",
+     "domain": "indiablooms.com",
+     "date": "20260804",
+     "url": "https://www.indiablooms.com/travel/arunachals-hidden-glaw-lake-becomes-indias-101st-ramsar-site-why-you-should-visit/details",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Middelhavet blir varmere \u2013 lokker til seg hundrevis av fremmede fiskearter - Teknisk Ukeblad",
-     "domain": "tu.no",
-     "date": "20260803",
-     "url": "https://www.tu.no/nyhetsstudio/middelhavet-blir-varmere-lokker-til-seg-hundrevis-av-fremmede-fiskearter/127063",
+     "title": "\u092a\u0942\u0930\u094d\u0935\u094b\u0924\u094d\u0924\u0930 \u092e\u0947\u0902 \u092d\u0942\u0938\u094d\u0916\u0932\u0928 \u0915\u093e \u0916\u0924\u0930\u093e , \u0909\u0924\u094d\u0924\u0930 \u092d\u093e\u0930\u0924 \u092e\u0947\u0902 \u092d\u0940 \u092d\u093e\u0930\u0940 \u092c\u093e\u0930\u093f\u0936 \u0915\u0947 \u0906\u0938\u093e\u0930 , IMD \u0928\u0947 \u091c\u093e\u0930\u0940 \u0915\u093f\u092f\u093e \u0905\u0932\u0930\u094d\u091f",
+     "domain": "hindi.webdunia.com",
+     "date": "20260804",
+     "url": "https://hindi.webdunia.com/national-hindi-news/imd-weather-alert-heavy-rain-assam-meghalaya-delhi-up-rajasthan-monsoon-update-126080400007_1.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u09ae\u09a7\u09cd\u09af\u09aa\u09cd\u09b0\u09be\u099a\u09cd\u09af\u09c7\u09b0 \u09b8\u09be\u09ae\u09c1\u09a6\u09cd\u09b0\u09bf\u0995 \u09aa\u09cd\u09b0\u09a4\u09bf\u09b0\u0995\u09cd\u09b7\u09be \u099c\u09cb\u099f : \u09ad\u09c2\u09b0\u09be\u099c\u09a8\u09c8\u09a4\u09bf\u0995 \u09a4\u09be\u09ce\u09aa\u09b0\u09cd\u09af",
-     "domain": "dailynayadiganta.com",
-     "date": "20260803",
-     "url": "https://www.dailynayadiganta.com/opinions/editorial/sub-editorial/lrWC3by2Lv48",
+     "title": "5 \u0905\u0917\u0938\u094d\u0924 \u0915\u094b \u0924\u0942\u092b\u093e\u0928\u0940 \u092c\u093e\u0930\u093f\u0936 : \u092c\u093f\u0939\u093e\u0930 \u0938\u0947 \u092f\u0942\u092a\u0940 \u0924\u0915 \u0911\u0930\u0947\u0902\u091c \u0915\u0932\u0930 \u0935\u0949\u0930\u094d\u0928\u093f\u0902\u0917 , IMD \u0928\u0947 \u0907\u0928 25 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0939\u0948\u0935\u0940 \u0930\u0947\u0928 \u0915\u093e \u0905\u0932\u0930\u094d\u091f \u091c\u093e\u0930\u0940 \u0915\u093f\u092f\u093e",
+     "domain": "hindi.moneycontrol.com",
+     "date": "20260804",
+     "url": "https://hindi.moneycontrol.com/india/orange-warning-for-the-region-from-bihar-to-up-on-august-5-imd-issues-heavy-rain-alert-for-these-25-states-article-2426734.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u0645\u0627\u0631\u064a\u0646 \u062a\u0631\u0627\u0641\u064a\u0643 : \u0646\u0627\u0642\u0644\u0627\u062a \u0646\u0641\u0637 \u0633\u0639\u0648\u062f\u064a\u0629 \u062a\u0644\u062a\u0641 \u062d\u0648\u0644 \u0623\u0641\u0631\u064a\u0642\u064a\u0627 \u062a\u0641\u0627\u062f\u064a\u064b\u0627 \u0644\u0645\u062e\u0627\u0637\u0631 \u0645\u0644\u0627\u062d\u064a\u0629",
-     "domain": "arabic.cnn.com",
-     "date": "20260803",
-     "url": "https://arabic.cnn.com/middle-east/article/2026/08/03/saudi-ships-avoid-houthi-blockade-by-rerouting-around-africa",
+     "title": "\u0906\u091c \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0924\u093e\u0902\u0921\u0935 : \u0907\u0928 3 \u0907\u0932\u093e\u0915\u094b\u0902 \u092e\u0947\u0902 \u0930\u0947\u0921 \u0915\u0932\u0930 \u0935\u0949\u0930\u094d\u0928\u093f\u0902\u0917 , \u0926\u093f\u0932\u094d\u0932\u0940 - \u092f\u0942\u092a\u0940 \u0914\u0930 \u092c\u093f\u0939\u093e\u0930 \u0938\u092e\u0947\u0924 \u0907\u0928 22 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u0915\u0947 \u0932\u093f\u090f IMD \u0928\u0947 \u0939\u0948\u0935\u0940 \u0930\u0947\u0928 \u0915\u093e \u0905\u0932\u0930\u094d\u091f \u0926\u093f\u092f\u093e",
+     "domain": "hindi.moneycontrol.com",
+     "date": "20260804",
+     "url": "https://hindi.moneycontrol.com/india/imd-heavy-rain-alert-today-red-warning-for-22-states-including-delhi-up-and-bihar-weather-update-august-4-article-2426471.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Hundrevis av fremmede fiskearter i Middelhavet : \u2013 Vi vet hva som burde gj\u00f8res",
-     "domain": "forskning.no",
-     "date": "20260803",
-     "url": "https://www.forskning.no/hundrevis-av-fremmede-fiskearter-i-middelhavet-vi-vet-hva-som-burde-gjores/2694905",
+     "title": "\u0905\u0930\u0941\u0923\u093e\u091a\u0932 \u0915\u0940 \u0917\u094d\u0932\u0949\u0935 \u091d\u0940\u0932 \u092c\u0928\u0940 \u092a\u0939\u0932\u093e \u0930\u093e\u092e\u0938\u0930 \u0938\u094d\u0925\u0932 , \u0926\u0947\u0936 \u092e\u0947\u0902 \u0938\u0902\u0916\u094d\u092f\u093e 101 \u0939\u0941\u0908",
+     "domain": "tarunmitra.in",
+     "date": "20260804",
+     "url": "https://www.tarunmitra.in/state/uttar-pradesh/arunachals-glove-lake-becomes-first-ramsar-site-number-101-in/article-156221",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Oil prices plunge and Europe markets rally after Trump calls off Iran strikes",
-     "domain": "aol.co.uk",
-     "date": "20260803",
-     "url": "https://www.aol.co.uk/articles/oil-prices-plunge-europe-stock-084452000.html",
+     "title": "\u0905\u0917\u0932\u0947 48 \u0918\u0902\u091f\u0947 \u092a\u094d\u0930\u091a\u0902\u0921 \u092c\u093e\u0930\u093f\u0936 \u0915\u093e \u0905\u0932\u0930\u094d\u091f : \u092a\u0942\u0930\u094d\u0935\u094b\u0924\u094d\u0924\u0930 \u0938\u0947 \u0909\u0924\u094d\u0924\u0930 \u092d\u093e\u0930\u0924 \u0924\u0915 \u092c\u0930\u0938\u0947\u0902\u0917\u0947 \u092c\u093e\u0926\u0932 ! \u092f\u0942\u092a\u0940 - \u0926\u093f\u0932\u094d\u0932\u0940 \u0938\u092e\u0947\u0924 \u0907\u0928 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u0939\u094b\u0917\u0940 \u092e\u0942\u0938\u0932\u093e\u0927\u093e\u0930 \u092c\u093e\u0930\u093f\u0936",
+     "domain": "hindi.moneycontrol.com",
+     "date": "20260804",
+     "url": "https://hindi.moneycontrol.com/india/imd-weekly-weather-update-alert-for-heavy-rainfall-over-the-next-48-hours-rain-to-lash-regions-from-the-northeast-to-north-india-including-up-and-delhi-ncr-article-2426660.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u067e\u06cc\u0634\u0631\u0641\u062a \u062f\u0631 \u0645\u0630\u0627\u06a9\u0631\u0627\u062a \u0627\u06cc\u0631\u0627\u0646 \u0648 \u0639\u0645\u0627\u0646 \u062f\u0631\u0628\u0627\u0631\u0647 \u062a\u0646\u06af\u0647 \u0647\u0631\u0645\u0632",
-     "domain": "khaama.com",
-     "date": "20260803",
-     "url": "https://www.khaama.com/persian/archives/172644",
+     "title": "Aaj Ka Mausam 4 August 2026 : \u0926\u093f\u0932\u094d\u0932\u0940 \u0938\u0947 \u092c\u093f\u0939\u093e\u0930 \u0924\u0915 \u091d\u092e\u093e\u091d\u092e \u092c\u093e\u0930\u093f\u0936 , 19 \u0930\u093e\u091c\u094d\u092f\u094b\u0902 \u092e\u0947\u0902 \u092e\u094c\u0938\u092e \u0915\u093e \u0905\u0932\u0930\u094d\u091f , \u091c\u093e\u0928\u0947\u0902 \u0924\u093e\u091c\u093e \u0935\u0947\u0926\u0930 \u0905\u092a\u0921\u0947\u091f",
+     "domain": "punjabkesari.com",
+     "date": "20260804",
+     "url": "https://www.punjabkesari.com/india-news/today-weather-update-4-august-2026/",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u0627\u0644\u0645\u0635\u0631\u064a \u064a\u0641\u0648\u0632 \u0639\u0644\u0649 \u062f\u0628\u0627 \u0627\u0644\u0641\u062c\u064a\u0631\u0629 \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a\u064a 3 - 1 \u0648\u062f\u064a\u0627 \u0628\u0627\u0644\u0625\u0633\u0645\u0627\u0639\u064a\u0644\u064a\u0629 ( \u0635\u0648\u0631 ) ",
-     "domain": "vetogate.com",
-     "date": "20260803",
-     "url": "https://www.vetogate.com/5706004",
+     "title": "\u0915\u0932 \u0915\u093e \u092e\u094c\u0938\u092e , 5 \u0905\u0917\u0938\u094d\u0924 : \u092c\u0941\u0927\u0935\u093e\u0930 \u0915\u094b \u0917\u0930\u091c - \u091a\u092e\u0915 \u0915\u0947 \u0938\u093e\u0925 \u0939\u094b\u0917\u0940 \u0924\u0947\u091c \u092c\u093e\u0930\u093f\u0936 , \u0924\u0947\u091c \u0939\u0935\u093e\u090f\u0902 \u091a\u0932\u0928\u0947 \u0915\u0940 \u0906\u0936\u0902\u0915\u093e",
+     "domain": "livehindustan.com",
+     "date": "20260804",
+     "url": "https://www.livehindustan.com/weather/kal-ka-mausam-kaisa-rahega-up-bihar-delhi-weather-today-forecast-imd-alert-august-5-201785852769738.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u0627\u0644\u0634\u0631\u0642 \u0627\u0644\u0623\u0648\u0633\u0637 \u0641\u064a \u062d\u0631\u0628 \u0627\u0644\u0622\u062e\u0631\u064a\u0646 - \u0628\u0648\u0627\u0628\u0629 \u0627\u0644\u0623\u0647\u0631\u0627\u0645",
-     "domain": "gate.ahram.org.eg",
-     "date": "20260803",
-     "url": "https://gate.ahram.org.eg/News/5882226.aspx",
+     "title": "One year after Dharali : The growing cost of building in a fragile Himalaya",
+     "domain": "newslaundry.com",
+     "date": "20260804",
+     "url": "https://www.newslaundry.com/2026/08/04/one-year-after-dharali-the-growing-cost-of-building-in-a-fragile-himalaya",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "US manufacturing grows for 7th month in July : ISM",
-     "domain": "argusmedia.com",
-     "date": "20260803",
-     "url": "https://www.argusmedia.com/en/news-and-insights/latest-market-news/2860534-us-manufacturing-grows-for-7th-month-in-july-ism",
+     "title": "Maharashtra Religious Freedom Act 2026 : Provisions , Controversy & Impact \u0964 CM Fadnavis , Prakash Ambedkar",
+     "domain": "divyamarathi.bhaskar.com",
+     "date": "20260804",
+     "url": "https://divyamarathi.bhaskar.com/dvm-originals/news/maharashtra-religious-freedom-act-2026-provisions-controversy-explained-prakash-ambedkar-138621802.html",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "Trump says Iran talks set for Monday as Tehran and Oman discuss strait of Hormuz deal",
-     "domain": "aol.co.uk",
-     "date": "20260803",
-     "url": "https://www.aol.co.uk/articles/trump-says-iran-talks-set-013153000.html",
+     "title": "Condemn the Vindictive Use of NSA Against Pranab Doley",
+     "domain": "countercurrents.org",
+     "date": "20260804",
+     "url": "https://countercurrents.org/2026/08/condemn-the-vindictive-use-of-nsa-against-pranab-doley/",
      "tier": null,
      "match": "full-text"
     },
     {
-     "title": "\u0633\u0639\u0631 \u0627\u0644\u062f\u0648\u0644\u0627\u0631 \u0627\u0644\u064a\u0648\u0645 \u0627\u0644\u0625\u062b\u0646\u064a\u0646 3 \u0623\u063a\u0633\u0637\u0633 2026 \u0641\u064a \u0627\u0644\u0628\u0646\u0648\u0643 \u0627\u0644\u0645\u0635\u0631\u064a\u0629 .. \u0627\u0633\u062a\u0642\u0631\u0627\u0631 \u0627\u0644\u0639\u0645\u0644\u0629 \u0627\u0644\u0623\u0645\u0631\u064a\u0643\u064a\u0629 \u0623\u0645\u0627\u0645 \u0627\u0644\u062c\u0646\u064a\u0647",
-     "domain": "dostor.org",
-     "date": "20260803",
-     "url": "https://www.dostor.org/5655428",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u7f8e\u4f0a\u51b2\u7a81\u7f13\u548c\u4ec5\u662f\u77ed\u6682\u95f4\u6b47 \u9009\u4e3e\u540e\u6216\u5927\u5e45\u5347\u7ea7\u63a8\u9ad8\u6cb9\u4ef7 - CFi . CN \u4e2d\u8d22\u7f51",
-     "domain": "cfi.net.cn",
-     "date": "20260803",
-     "url": "http://www.cfi.net.cn/p20260803004486.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Saudi Oil Reroutes Hit Capacity and Security Limits",
-     "domain": "oilprice.com",
-     "date": "20260803",
-     "url": "https://oilprice.com/Energy/Crude-Oil/Saudi-Oil-Reroutes-Hit-Capacity-and-Security-Limits.html",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "\u0628\u0639\u062f \u062a\u0647\u062f\u064a\u062f \u0625\u064a\u0631\u0627\u0646 \u0648\u0627\u0644\u062d\u0648\u062b\u064a\u064a\u0646 \u0628\u063a\u0644\u0642 \u00ab \u0628\u0627\u0628 \u0627\u0644\u0645\u0646\u062f\u0628 \u00bb.. \u0647\u0644 \u0627\u0633\u062a\u0639\u062f\u062a \u0627\u0644\u062d\u0643\u0648\u0645\u0629 \u0644\u0640 \u00ab \u0633\u064a\u0646\u0627\u0631\u064a\u0648 \u0627\u0644\u062e\u0631\u0627\u0628 \u0627\u0644\u0645\u0637\u0644\u0642 \u00bb\u061f ",
-     "domain": "fj-p.com",
-     "date": "20260803",
-     "url": "https://www.fj-p.com/432283/%D8%A8%D8%B9%D8%AF-%D8%AA%D9%87%D8%AF%D9%8A%D8%AF-%D8%A5%D9%8A%D8%B1%D8%A7%D9%86-%D9%88%D8%A7%D9%84%D8%AD%D9%88%D8%AB%D9%8A%D9%8A%D9%86-%D8%A8%D8%BA%D9%84%D9%82-%D8%A8%D8%A7%D8%A8-%D8%A7%D9%84/",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "The Terrifying Ocean Monster That Scientists Cannot Catch , Study , Or Stop Thinking About",
-     "domain": "boredpanda.com",
-     "date": "20260803",
-     "url": "https://www.boredpanda.com/giant-squid-mystery-newfoundland/",
+     "title": "\u05db\u05d9\u05e6\u05d3 \u05d4\u05d3\u05d9\u05e7\u05d8\u05d8\u05d5\u05e8\u05d9\u05dd \u05d4\u05d7\u05d3\u05e9\u05d9\u05dd \u05de\u05e9\u05ea\u05dc\u05d8\u05d9\u05dd \u05e2\u05dc \u05d4\u05ea\u05d5\u05d3\u05e2\u05d4 , \u05e4\u05e8\u05e7 \u05de\u05e1\u05e4\u05e8\u05d4 \u05e9\u05dc \u05d0\u05df \u05d0\u05e4\u05dc\u05d1\u05d0\u05d5\u05dd  \u05d0\u05d5\u05d8\u05d5\u05e7\u05e8\u05d8\u05d9\u05d4 \u05d1\u05e2  \u05de  ",
+     "domain": "the7eye.org.il",
+     "date": "20260804",
+     "url": "https://www.the7eye.org.il/562502",
      "tier": null,
      "match": "full-text"
     }
    ],
-   "spike_quality_tier12_share": 0.147
+   "spike_quality_tier12_share": 0.138
   }
  }
 }
