@@ -36,6 +36,7 @@ for the map's polygons. Hover for numbers.</p>
 <div class="chart-wrap" id="world-wrap" style="max-width:1000px"><p class="empty" id="world-empty">Not computed yet: aggregates publish once the 2017 events backfill completes.</p></div>
 <div class="card" id="world-detail" hidden style="margin:0.6rem 0; padding:0.8rem 1rem; cursor:default"></div>
 <p class="kv" id="world-legend" hidden></p>
+<p class="kv">Boundary depiction: both maps use Natural Earth's India point-of-view geometry, showing national boundaries as depicted by the Government of India. State-level event data covers the administered states; the national border is drawn in full.</p>
 <div class="table-scroll"><table id="partners-table" hidden>
   <thead><tr><th>Partner</th><th class="num">Events, 365d</th><th class="num">Conflict share, 365d</th><th class="num">Conflict share, 2017-</th><th class="num">Goldstein mean</th></tr></thead>
   <tbody></tbody>
@@ -78,6 +79,19 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
   svg.setAttribute("viewBox", geo.viewBox);
   svg.setAttribute("role", "img");
   svg.style.width = "100%";
+  // Full national outline per India's official depiction (present only
+  // in india.json): drawn first as a filled base layer so territory
+  // beyond the administered states (PoK, Gilgit-Baltistan, Aksai Chin)
+  // renders inside the national border, the way official Indian maps
+  // draw it; a crisp border stroke is re-applied on top after the
+  // states so internal lines never overpaint the outer boundary.
+  if (geo.national_outline) {
+    const baseLayer = document.createElementNS(SVG, "path");
+    baseLayer.setAttribute("d", geo.national_outline);
+    baseLayer.setAttribute("fill", css("--rule-soft"));
+    baseLayer.setAttribute("stroke", "none");
+    svg.appendChild(baseLayer);
+  }
   let selected = null;
   for (const [code, g] of Object.entries(geo[keyName])) {
     let el;
@@ -109,6 +123,15 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
     t.textContent = titleFor(code, g.name);
     el.appendChild(t);
     svg.appendChild(el);
+  }
+  if (geo.national_outline) {
+    const border = document.createElementNS(SVG, "path");
+    border.setAttribute("d", geo.national_outline);
+    border.setAttribute("fill", "none");
+    border.setAttribute("stroke", css("--ink"));
+    border.setAttribute("stroke-width", "1.1");
+    border.setAttribute("pointer-events", "none");
+    svg.appendChild(border);
   }
   const wrap = document.getElementById(wrapId);
   wrap.querySelector(".empty").remove();

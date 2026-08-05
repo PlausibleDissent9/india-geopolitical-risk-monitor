@@ -29,7 +29,12 @@ CACHE = ROOT / "data" / "raw" / "naturalearth"
 
 BASE = ("https://raw.githubusercontent.com/nvkelso/natural-earth-vector/"
         "master/geojson/")
-WORLD_FILE = "ne_110m_admin_0_countries.geojson"
+# India-worldview admin-0 (founder decision, 2026-08-05, resolving the
+# NOTES 0.2 question): boundaries depicted per India's official position
+# via Natural Earth's point-of-view variant, which ships only at 10m;
+# the simplifier below brings it to web weight. The depiction choice is
+# disclosed on the maps page.
+WORLD_FILE = "ne_10m_admin_0_countries_ind.geojson"
 ADM1_FILE = "ne_10m_admin_1_states_provinces.geojson"
 
 WORLD_W, WORLD_H = 1000.0, 520.0
@@ -118,7 +123,7 @@ def build_world() -> None:
         name = f["properties"].get("NAME_LONG") or f["properties"].get("NAME")
         if not code or f["properties"].get("NAME") == "Antarctica":
             continue
-        d = path_d(f["geometry"], project, tol=0.15)
+        d = path_d(f["geometry"], project, tol=0.18)
         if d:
             countries[code] = {"name": name, "d": d}
     # States too small for 110m polygons but present in the dyad stream
@@ -149,7 +154,21 @@ def build_india() -> None:
     data = fetch(ADM1_FILE)
     feats = [f for f in data["features"]
              if f["properties"].get("adm0_a3") == "IND"]
+    # Full national outline per India's official depiction (founder
+    # decision 2026-08-05): Natural Earth ships no admin-1 POV file, so
+    # the states map draws the IND-worldview country polygon as its
+    # outer boundary, the way official Indian maps do; territory beyond
+    # the administered states (PoK, Gilgit-Baltistan, Aksai Chin) falls
+    # inside the national border. The projection frame is computed over
+    # BOTH layers so the outline is never clipped.
+    ind_world = fetch(WORLD_FILE)
+    outline_geom = next(f["geometry"] for f in ind_world["features"]
+                        if f["properties"].get("ADMIN") == "India")
     lons, lats = [], []
+    for ring in rings(outline_geom):
+        for lon, lat in ring:
+            lons.append(lon)
+            lats.append(lat)
     for f in feats:
         for ring in rings(f["geometry"]):
             for lon, lat in ring:
@@ -177,10 +196,12 @@ def build_india() -> None:
         d = path_d(f["geometry"], project, tol=0.01)
         if d:
             states[fips] = {"name": name, "d": d}
-    out = {"viewBox": f"0 0 {INDIA_W:.0f} {INDIA_H:.0f}", "states": states}
+    outline_d = path_d(outline_geom, project, tol=0.01)
+    out = {"viewBox": f"0 0 {INDIA_W:.0f} {INDIA_H:.0f}", "states": states,
+           "national_outline": outline_d}
     p = GEO / "india.json"
     p.write_text(json.dumps(out), encoding="utf-8")
-    print(f"[geo] india.json: {len(states)} states, "
+    print(f"[geo] india.json: {len(states)} states + national outline, "
           f"{p.stat().st_size // 1024} KB")
 
 

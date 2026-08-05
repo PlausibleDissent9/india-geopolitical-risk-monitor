@@ -64,7 +64,18 @@ study (does salience lead outcomes at all), then an outcome
 arrival-rate model, then a scored forecast layer; the last two change
 what IGRM is and follow only from evidence, per V11-V12.
 
-## 0.2 Map boundary depiction, please review before you share the Maps page
+## 0.2 RESOLVED 2026-08-05: maps now use India's official depiction
+
+You decided in chat ("execute the Indian map as India has it... J&K and
+PoK is an integral part of India"). Done the same hour: the world map
+uses Natural Earth's India point-of-view admin-0 geometry (India's
+polygon verified reaching 37.1N, i.e. including PoK, Gilgit-Baltistan
+and Aksai Chin), and the states map now draws the full national
+outline as its outer border with the administered states inside it,
+the way official Indian maps are drawn. A depiction disclosure is on
+the maps page. Original memo below for the record.
+
+## 0.2 (original memo) Map boundary depiction
 
 The new Maps page uses Natural Earth geometry: standard (de facto)
 worldview at admin-0, and Indian states as administered at admin-1,
