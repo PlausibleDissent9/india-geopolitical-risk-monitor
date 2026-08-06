@@ -743,3 +743,11 @@ point is elapsed time — every unsigned day is a week of evidence the
 Aug 15 page cannot show accruing. Say "sign the forecast registration"
 and question generation ships the same day, clearly separated on a
 research page that presumes the null.
+
+## 0.20 China V8 dictionaries — DRAFTED FOR YOUR SIGNATURE
+
+countries/china_DRAFT.json: five channels from China's own exposure
+(Taiwan Strait, South China Sea, US tech & trade, India border — the
+deliberate mirror of our china_east — and energy/supply lanes), every
+term with a rationale, ex-ante rule enforced. Strike anything, then say
+"sign china" and the V8 template build begins. Nothing fetches unsigned.
