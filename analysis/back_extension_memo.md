@@ -1,7 +1,10 @@
-# Decision memo: the 1979–2016 back-extension (M1) — UNSIGNED
+# Decision memo: the 1979–2016 back-extension (M1) — SIGNED 2026-08-06
 
-Status: DRAFT for the founder's signature. Nothing here fetches,
-computes, or publishes until signed. This is a construct-level
+Status: SIGNED by the founder in chat 2026-08-06 ("sign
+back-extensions"). The four-channel roster, the nine validation
+anchors, and the overlap thresholds below are now FROZEN — registered
+before the first computation, which may now begin. Amendments are
+dated and append-only. This is a construct-level
 decision because it creates a new historical series that readers will
 inevitably compare to the live instrument; every boundary choice
 below changes what that comparison means.
