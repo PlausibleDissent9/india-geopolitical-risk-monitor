@@ -39,3 +39,15 @@ beside the V6 term attribution, descriptive only, entering no score.
 Guessed table names, unmeasured cost claims, and any daily-cadence
 design for a 100-billion-row table. The probe's measured bytes go in
 this file when it runs.
+
+## S8 verification note (2026-08-06, appended)
+
+MEA's press-release RSS resolves (after redirects) to an empty feed;
+PIB's per-ministry RSS system responds but its feed directory
+(AllRss.aspx) serves a ~166-character stub to both curl and a real
+browser session from this environment — the External Affairs ministry
+feed id could not be verified. Per the source discipline (only
+verified feeds register), S8 registers NOTHING today. Next honest
+step: the founder opens pib.gov.in's RSS directory from his own
+browser and pastes the External Affairs feed URL; verification and
+registration then take minutes. No guessed feed ids.
