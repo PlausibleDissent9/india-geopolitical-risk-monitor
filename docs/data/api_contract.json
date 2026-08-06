@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.17.0",
+    "contract_version": "1.18.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -76,6 +76,17 @@
       "frozen_fields": [
         "_meta",
         "countries"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/cow_mids.json",
+      "format": "json",
+      "description": "Correlates of War MID 5.0 aggregates (S12): distinct militarized interstate disputes involving India by start year and opponent, 1816-2014 -- historian-coded conflict as independent context beside the M1 historical attention proxy (research/history.html). Static dataset, fetched once; only aggregates publish. Context only; enters no score.",
+      "frozen_fields": [
+        "_meta",
+        "disputes_by_start_year",
+        "totals"
       ],
       "stability": "stable"
     },

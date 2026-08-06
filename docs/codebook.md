@@ -614,3 +614,13 @@ instrument over 36 shared months — border channels track (0.893,
 and therefore publish NO historical series (`series` carries only
 channels that pass; the refusal is the finding). Shipping is excluded
 entirely: chokepoint salience has no actor coding.
+
+## docs/data/cow_mids.json
+
+Correlates of War MID 5.0 aggregates (S12): distinct militarized
+interstate disputes involving India by start year and opponent
+(`disputes_by_start_year.pakistan/.china`), 1816–2014 —
+historian-coded conflict as independent context beside the M1
+historical attention proxy. Static dataset, fetched once; only
+aggregates publish with attribution (Palmer et al. 2022, Correlates
+of War Project). Context only; enters no score.
