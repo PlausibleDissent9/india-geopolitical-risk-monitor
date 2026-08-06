@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from src import alerts
 
-
 HISTORY = {
     "dates": ["2026-08-04", "2026-08-05"],
     "channels": {"china_east": [74.3, 4.5]},
