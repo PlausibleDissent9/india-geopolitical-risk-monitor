@@ -40,3 +40,26 @@ archive overlaps the M1 historical proxy era and could join that
 study's context; (b) POLECAT, its successor, is the real candidate
 for live event-stream cross-validation and gets its own verification
 before anything builds.
+
+## S1 UPDATE (2026-08-06 night): envelope recovered, server refusing
+
+Reading the SPA's own bundle (main.*.js) beat runtime spying. The
+request shape is now KNOWN, verbatim from their code:
+
+    POST /CIMS_Gateway_DBIE/GATEWAY/SERVICES/dbie_foreignExchangeReserves
+    headers: Content-Type: application/json, channelkey: key2,
+             datatype: application/json, authorization: <session>
+    body: {"body": {"currencyCode": "USD", "reserveCode": "TR",
+            "fromDate": "YYYY-MM-DD 00:00:00",
+            "toDate": "YYYY-MM-DD 00:00:00", "frequency": "Weekly"}}
+
+The `authorization` value comes from a guest session minted by
+`login_CIMSaudit` (username GUEST_USER). Tested tonight: BOTH the
+audit handshake and the data call return errorCode 8706 "Internal
+Server Error Occurred. Please try after some time" -- server-side,
+not a client mistake (the browser session succeeded minutes earlier
+against the same endpoints). Verdict: the shape is solved, the
+service is intermittently unavailable. Retry on a later day before
+writing the fetcher; if 8706 persists, the Weekly Statistical
+Supplement publication files are the fallback path and carry the
+same series.
