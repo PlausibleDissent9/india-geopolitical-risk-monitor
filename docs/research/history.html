@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Historical attention proxy, 1979–2016 — IGRM research</title>
+<meta name="description" content="A pre-registered historical study: India's geopolitical press attention 1979–2016 reconstructed from GDELT's event archive — a different construct from the live instrument, graded against nine frozen anchor episodes, with two channels refusing to publish as the registered negative finding.">
+<link rel="canonical" href="https://igrm.in/research/history.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="../site.css?v=20260804b">
+<script src="../vendor/chart.umd.min.js"></script>
+<style>
+.mandate { border: 2px solid var(--accent); border-radius: 10px; padding: 1rem 1.2rem;
+  background: var(--card); margin: 1rem 0; font-size: 0.98rem; }
+.h-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.h-table th, .h-table td { text-align: left; padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+.h-table th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--muted); }
+.hit { color: var(--accent); font-weight: 600; }
+.miss { color: var(--warn, #c86); font-weight: 600; }
+.tblwrap { overflow-x: auto; }
+.chart-wrap { position: relative; height: 340px; margin: 1rem 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="../">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="../start.html">Start here</a>
+    <a href="../methodology.html">Methodology</a>
+    <a href="../validation.html">Validation</a>
+    <a href="../analysis.html">Analysis</a>
+    <a href="../maps.html">Maps</a>
+    <a href="../data.html">Data</a>
+    <a href="../notes.html">Notes</a>
+  </nav>
+</header>
+
+<h2>Historical attention proxy, 1979–2016</h2>
+
+<div class="mandate prose"><b>Read this first.</b> This series is a <b>different
+construct</b> from the live instrument and is never spliced into it, averaged with it,
+or drawn on the same axis. The live index (2017–) measures phrase-dictionary share of
+an English article corpus; no such corpus exists before ~2015, so this study measures
+the monthly share of global <b>event-mentions</b> involving frozen actor-pair filters
+in GDELT's coded event archive. "IGRM before 2017" is a phrase this project will never
+print. The registration — filters, anchor episodes, and publication thresholds — was
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/analysis/back_extension_memo.md">frozen
+before the first query ran</a>, verifiably from git history.</div>
+
+<p class="prose">Two channels publish; two refused. The registered rule: a channel's
+historical proxy publishes only if its raw-share co-movement with the live instrument
+over their 36 shared months reaches r ≥ 0.4. The border channels passed decisively —
+<b>pakistan_west r = 0.893, china_east r = 0.848</b>, two entirely different
+constructions hearing the same waves. <b>us_trade (r = 0.216) and gulf_energy
+(r = 0.153) publish no historical series</b>: event coding and policy salience diverge
+exactly as the registration flagged before any number existed, and that refusal is the
+finding, not a footnote. Shipping never ran — chokepoint salience has no actor coding.</p>
+
+<h3>The two publishing channels</h3>
+<p class="chart-note prose">Trailing-10-year percentile of each channel's monthly
+event-mention share. The dashed vertical line is the GDELT 1.0 → 2.0 generation seam
+(2015-02); each segment is normalized against its own history and the raw shares are
+published in the payload so the seam is inspectable.</p>
+<div class="chart-wrap"><canvas id="hist-chart"></canvas></div>
+
+<h3>The nine frozen anchors, graded</h3>
+<p class="prose">Registered ex-ante with a top-decile rule: each anchor's month must
+rank in its channel's top 10% of the trailing decade, or the miss publishes with the
+series. Six of nine hit — and each miss is informative: <b>Blue Star (52.3)</b> is the
+registered construct-edge outcome (the bilateral filter does not hear domestic events —
+which is evidence it is truly bilateral); <b>26/11 (89.1)</b> falls 0.9 points short
+because non-state perpetrators thin state-actor coding; <b>Sumdorong Chu (54.8)</b>
+sits in the thin wire coverage of 1986.</p>
+<div class="tblwrap"><table class="h-table">
+  <thead><tr><th>Anchor</th><th>Month</th><th>Channel</th>
+  <th>Percentile (trailing 10y)</th><th>Top decile</th></tr></thead>
+  <tbody id="anchor-body"><tr><td colspan="5">Loading back_extension.json…</td></tr></tbody>
+</table></div>
+
+<p class="prose" id="gen-note"></p>
+
+<footer>
+  <p><a href="../validation.html">Validation</a> &middot;
+  <a href="../methodology.html">Methodology</a> &middot;
+  <a href="../data/back_extension.json">This page's payload</a></p>
+  <p>A historical research study, separate from the live instrument. Association, not causation.</p>
+</footer>
+
+<script>
+(async function () {
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g,
+    c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const d = await (await fetch("../data/back_extension.json")).json();
+
+  document.getElementById("anchor-body").innerHTML = d.anchor_grades.map(a =>
+    "<tr><td>" + esc(a.anchor) + "</td><td>" + esc(a.month) + "</td>" +
+    "<td>" + esc(a.channel) + "</td>" +
+    "<td>" + (a.pctl_trailing_10y == null ? "—" : esc(a.pctl_trailing_10y.toFixed(1))) + "</td>" +
+    "<td>" + (a.top_decile == null ? "—" : a.top_decile
+      ? '<span class="hit">hit</span>' : '<span class="miss">miss</span>') +
+    "</td></tr>").join("");
+
+  const chans = Object.keys(d.series);
+  if (chans.length && window.Chart) {
+    const first = d.series[chans[0]];
+    const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    const colors = { pakistan_west: css("--severe") || "#c65", china_east: css("--accent") || "#889" };
+    const seam = first.months.indexOf("2015-02");
+    new Chart(document.getElementById("hist-chart"), {
+      type: "line",
+      data: {
+        labels: first.months,
+        datasets: chans.map(ch => ({
+          label: ch, data: d.series[ch].pctl_10y,
+          borderColor: colors[ch] || "#888", borderWidth: 1.6,
+          pointRadius: 0, tension: 0.2, spanGaps: false,
+        })),
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        scales: { y: { min: 0, max: 100 },
+                  x: { ticks: { maxTicksLimit: 12 } } },
+        plugins: { legend: { display: true } },
+      },
+      plugins: [{
+        id: "seam",
+        afterDraw(chart) {
+          if (seam < 0) return;
+          const x = chart.scales.x.getPixelForValue(seam);
+          const ctx = chart.ctx;
+          ctx.save(); ctx.setLineDash([5, 4]);
+          ctx.strokeStyle = css("--muted") || "#999";
+          ctx.beginPath();
+          ctx.moveTo(x, chart.chartArea.top);
+          ctx.lineTo(x, chart.chartArea.bottom);
+          ctx.stroke(); ctx.restore();
+        },
+      }],
+    });
+  }
+  document.getElementById("gen-note").textContent =
+    "Payload generated " + (d._meta.generated || "—") +
+    ". Store: 493 months, one-time 22GB aggregation, committed and never re-queried.";
+})().catch(e => {
+  document.getElementById("anchor-body").textContent =
+    "back_extension.json unavailable — " + e.message;
+});
+</script>
+</body>
+</html>
