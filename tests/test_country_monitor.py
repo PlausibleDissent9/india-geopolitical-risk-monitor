@@ -26,9 +26,11 @@ def test_terms_dict_with_rationales_adapts_to_query_list():
     assert d["ch"]["anchor"] is None
 
 
-def test_china_draft_is_currently_refused():
-    """The shipped China file must stay a draft until the founder signs;
-    if someone flips it, this test forces the flip to be deliberate."""
+def test_china_is_registered_and_frozen():
+    """Flipped deliberately on the founder's signature ('sign china',
+    2026-08-06) -- exactly the ceremony the old refusal test demanded.
+    The registration must carry its frozen_on date."""
     specs = country_monitor.discover()
     assert "china" in specs
-    assert not country_monitor.registered(specs["china"]["_meta"])
+    assert country_monitor.registered(specs["china"]["_meta"])
+    assert specs["china"]["_meta"]["frozen_on"] == "2026-08-06"
