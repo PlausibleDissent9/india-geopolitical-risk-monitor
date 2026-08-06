@@ -696,3 +696,16 @@ analysis/reviewer_audit_2026-08-06.md item 5. One sentence added to the
 methodology splice note would fully disclose it; say "disclose the
 china_east ratio" and it ships. Read Aug 5's china_east 4.5 with this
 in mind (the crash itself is real: Aug 4/Aug 5 bands do not overlap).
+
+## 0.16 UCDP V10 — context live; the construct decision is yours
+
+UCDP monthly context is published (ucdp_context.json, 2017-present,
+candidate months flagged preliminary; Pahalgam/Sindoor months visibly
+spike — the lane face-checks). What remains founder-gated before UCDP
+can be SCORED against channels: (a) corridor mapping — which UCDP
+events count toward pakistan_west vs china_east (by dyad? by state
+geography? Kashmir insurgency events are the hard call); (b) the
+outcome variable (events? deaths_best? binary violent-month?); (c) the
+comparison design (does a salience episode within ±k days of recorded
+violence count as corroboration?). Say "draft the V10 registration"
+and a signed-before-scored draft lands like tranche 2 did.

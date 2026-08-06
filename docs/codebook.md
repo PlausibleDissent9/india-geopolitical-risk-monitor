@@ -421,3 +421,16 @@ prediction; a dropped channel is null and listed in
 `_meta.lint_dropped` rather than softened. Absent entirely on days
 the generation did not run (no API key, model refusal): fail-closed
 by design. Approved by the author 2026-08-04 (NOTES 0.10 option b).
+
+## docs/data/ucdp_context.json
+
+Monthly organized-violence event counts and best-estimate fatalities
+located in India, from the UCDP Georeferenced Event Dataset (pinned
+annual release, finalized) extended by UCDP Candidate monthlies
+(`preliminary: true` per month; replaced when the next annual release
+finalizes them). Keyed `india.<YYYY-MM> = {events, deaths_best,
+preliminary}`, 2017 on. **Context beside the salience index, never an
+input**: IGRM measures press attention, UCDP records violence, and
+divergence between them is a documented finding. Cite UCDP for these
+numbers, not IGRM. Raw per-event store (id-keyed, revisable):
+`data/raw/ucdp_events.csv`.

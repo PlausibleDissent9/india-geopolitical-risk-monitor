@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.3.0"  # + robustness_series.json (MI2), uncertainty.json (MI3)
+CONTRACT_VERSION = "1.4.0"  # + ucdp_context.json (V10 context lane)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to

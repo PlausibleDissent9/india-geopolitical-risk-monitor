@@ -595,15 +595,19 @@ rule, and missing-component rule live in
 was computed.</p>
 <h2>docs/data/receipts.json</h2>
 <p>Per-channel receipts for the latest published day only (not a
-historical archive). Two lanes, both labeled per article in <code>lane</code>:
+historical archive). Three lanes, labeled per article in <code>lane</code>:
 <code>"corpus"</code> articles were matched inside the same sampled ngrams corpus
 the day's scores are computed from (the estimator actually counted
-them; matcher, anchor, and tokenizer identical to the series), and
-<code>"artlist"</code> articles come from GDELT's bounded relevance search over
-the full day, restoring wire originals whose syndicated copies the
-sample caught. <code>n_matched_in_corpus</code> and <code>n_artlist_supplement</code> count
-the two lanes before URL dedup; <code>n_pool_unique</code> counts the merged pool
-after syndication dedup; up to 75 publish per channel. Each article
+them; matcher, anchor, and tokenizer identical to the series);
+<code>"corpus-extended"</code> articles matched under the identical matcher in
+the REST of the day's minute-files, outside the half-hourly scoring
+sample (they exist in the day's monitored coverage; the estimator did
+not count them); <code>"artlist"</code> articles come from GDELT's bounded
+relevance search, restoring wire originals whose syndicated copies the
+corpus caught. <code>n_matched_in_corpus</code>, <code>n_matched_extended</code>, and
+<code>n_artlist_supplement</code> count the lanes before URL dedup;
+<code>n_pool_unique</code> counts the merged pool after syndication dedup; up to
+150 publish per channel. Each article
 carries its source tier from <code>source_tiers.json</code> (<code>null</code> = "unranked",
 never assumed into a tier) and a <code>match</code> tag (<code>"headline"</code> when a
 channel phrase is in the title, else <code>"full-text"</code>). Ordering is
@@ -703,6 +707,17 @@ prediction; a dropped channel is null and listed in
 <code>_meta.lint_dropped</code> rather than softened. Absent entirely on days
 the generation did not run (no API key, model refusal): fail-closed
 by design. Approved by the author 2026-08-04 (NOTES 0.10 option b).</p>
+<h2>docs/data/ucdp_context.json</h2>
+<p>Monthly organized-violence event counts and best-estimate fatalities
+located in India, from the UCDP Georeferenced Event Dataset (pinned
+annual release, finalized) extended by UCDP Candidate monthlies
+(<code>preliminary: true</code> per month; replaced when the next annual release
+finalizes them). Keyed <code>india.&lt;YYYY-MM&gt; = {events, deaths_best,
+preliminary}</code>, 2017 on. <strong>Context beside the salience index, never an
+input</strong>: IGRM measures press attention, UCDP records violence, and
+divergence between them is a documented finding. Cite UCDP for these
+numbers, not IGRM. Raw per-event store (id-keyed, revisable):
+<code>data/raw/ucdp_events.csv</code>.</p>
 </div>
 <footer>
   <p><a href="./">&larr; back to the index</a> &middot; <a href="validation.html">validation results</a></p>

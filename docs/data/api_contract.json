@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.3.0",
+    "contract_version": "1.4.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -351,6 +351,16 @@
       "stability": "stable"
     },
     {
+      "path": "data/ucdp_context.json",
+      "format": "json",
+      "description": "Monthly organized-violence event counts and best-estimate fatalities located in India, from UCDP GED (finalized annual release) extended by UCDP Candidate monthlies (flagged preliminary per month; replaced when finalized). Context BESIDE the salience index, never an input: divergence between recorded violence and press salience is a documented finding, not an error in either.",
+      "frozen_fields": [
+        "_meta",
+        "india"
+      ],
+      "stability": "stable"
+    },
+    {
       "path": "data/uncertainty.json",
       "format": "json",
       "description": "95% sampling bands for sample-estimated daily scores: Wilson interval on the day's matched share, passed through the same splice ratio and trailing-percentile transform as the published point value. The composite band is the mean of channel bounds -- an envelope, conservative because channel sampling errors are independent. Days before the first banded date were computed over the full monitored corpus (no sampling design of this kind), so they carry no band.",
@@ -368,7 +378,8 @@
         "hit_rate",
         "cross_source",
         "placebo",
-        "robustness"
+        "robustness",
+        "drift"
       ],
       "stability": "stable"
     },
