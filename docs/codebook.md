@@ -1,7 +1,37 @@
 # IGRM Codebook
 
-Column-by-column definitions for every published file. Units and
-construction; the reasoning lives in [methodology.md](../methodology.md).
+**Purpose.** This document exists so a researcher can reuse IGRM data
+without reading the source code or emailing the author: every published
+file, every field in it, its units, and its construction, in one place.
+Definitions here are column-by-column and mechanical; the *reasoning*
+behind each construction choice lives in the
+[methodology](methodology.html), and the evidence that the
+constructions measure anything lives in [validation](validation.html).
+If a published field is not documented here, that is a defect —
+[report it](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/issues).
+
+## Researcher quick-start
+
+Fetch, cite, and reproduce in five lines. No key, no rate limit, CORS
+open; field stability is promised by the
+[frozen API contract](data/api_contract.json).
+
+```
+# 1. The full daily series, 2017-present (composite + five channels):
+curl -s https://igrm.in/data/history.csv -o igrm_history.csv
+# 2. Today's finalized scores with metadata:
+curl -s https://igrm.in/data/latest.json | python -m json.tool
+# 3. The evidence behind today's numbers (per-channel matched articles):
+curl -s https://igrm.in/data/receipts.json | python -m json.tool
+# 4. The validation record (hit-rate, placebo, robustness, drift):
+curl -s https://igrm.in/data/validation.json | python -m json.tool
+# 5. Reproduce the index from source (pinned deps, same raw stores):
+#    git clone https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor
+```
+
+Citation: *Krishna, Ishan (2026). India Geopolitical Risk Monitor.
+https://igrm.in/* — data CC BY 4.0, code MIT. A ready-made BibTeX entry
+is at [igrm.bib](igrm.bib).
 
 ## data/raw/gdelt_volume.csv
 
@@ -257,17 +287,49 @@ was computed.
 ## docs/data/receipts.json
 
 Per-channel receipts for the latest published day only (not a
-historical archive): the exact `dictionaries.json` query, GDELT
-`mode=artlist` pulled up to 150 per query and published up to 75 per
-channel after syndication dedup, each article tagged with its source
-tier from `source_tiers.json` (`null` if the domain is not yet
-registered -- shown as "unranked", never assumed into a tier).
-Ordering is credibility (tier), then visible aptness (a title
-containing a channel phrase), then GDELT relevance.
-`spike_quality_tier12_share` is the tier 1-2 share of the retrieved
-sample. `_meta.caveat` states the sample-vs-census distinction that
-the site repeats wherever this payload is shown. Tiers order
-presentation only and never enter any score.
+historical archive). Two lanes, both labeled per article in `lane`:
+`"corpus"` articles were matched inside the same sampled ngrams corpus
+the day's scores are computed from (the estimator actually counted
+them; matcher, anchor, and tokenizer identical to the series), and
+`"artlist"` articles come from GDELT's bounded relevance search over
+the full day, restoring wire originals whose syndicated copies the
+sample caught. `n_matched_in_corpus` and `n_artlist_supplement` count
+the two lanes before URL dedup; `n_pool_unique` counts the merged pool
+after syndication dedup; up to 75 publish per channel. Each article
+carries its source tier from `source_tiers.json` (`null` = "unranked",
+never assumed into a tier) and a `match` tag (`"headline"` when a
+channel phrase is in the title, else `"full-text"`). Ordering is
+credibility (tier), then visible aptness, then arrival order.
+`spike_quality_tier12_share` is the tier 1-2 share of the published
+list. `_meta.method` says which lane(s) produced the file (the
+artlist-only fallback publishes when the corpus files are
+unavailable). Tiers order presentation only and never enter any score.
+
+## docs/data/uncertainty.json
+
+95% sampling bands for sample-estimated daily scores, keyed
+`days.<date>.<channel> = [lo, hi]` in percentile-score units (0-100),
+plus `days.<date>.composite`. Construction: the day's matched share
+(sum of sub-query group shares over `n` sampled documents; the
+sum-of-groups construction can count a document under two groups, so
+the effective count inherits that convention) gets a Wilson 95%
+interval, and both bounds pass through the same splice ratio
+(`ngram_calibration.json`) and the same trailing-percentile transform
+as the published point value. The composite band is the mean of
+channel bounds — an envelope, conservative because channel sampling
+errors are independent. Days before `_meta.first_banded_date` were
+computed over the full monitored corpus and carry no band; absence of
+a band is a statement about the estimation design, not missing data.
+
+## docs/data/robustness_series.json
+
+The overlay behind the validation page's robustness correlations:
+weekly mean percentile scores of the primary index and its registered
+narrow/broad dictionary variants (`dictionaries_alt.json`), keyed
+`channels.<ch>.{primary,narrow,broad}` aligned to the shared `weeks`
+axis, over the window where all three exist (`_meta.window`; the
+variants begin 2022-01-01). `null` = the variant store has no data
+that week, shown as a gap, never interpolated.
 
 ## Conventions
 

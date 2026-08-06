@@ -36,7 +36,7 @@ PAGE_SHELL = """<!DOCTYPE html>
 <meta name="description" content="{description}">
 <link rel="canonical" href="{site}/{slug}.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css">
 </head>
@@ -44,6 +44,7 @@ PAGE_SHELL = """<!DOCTYPE html>
 <header>
   <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
   <nav class="masthead">
+    <a href="start.html">Start here</a>
     <a href="methodology.html"{cur_meth}>Methodology</a>
     <a href="validation.html">Validation</a>
     <a href="analysis.html">Analysis</a>

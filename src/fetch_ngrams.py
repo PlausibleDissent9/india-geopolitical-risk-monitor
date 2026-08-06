@@ -43,6 +43,8 @@ import json
 import re
 import sys
 import time
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -112,27 +114,64 @@ def _fetch(url: str) -> bytes | None:
     return None
 
 
+def _probe_window(day: date, base_minute: int, window_min: int) -> str | None:
+    """First existing timestamp inside one sampling window, probing its
+    minutes in order (the heartbeat drops files at arbitrary minutes)."""
+    for offset in range(window_min):
+        m = base_minute + offset
+        ts = f"{day:%Y%m%d}{m // 60:02d}{m % 60:02d}00"
+        try:
+            r = requests.head(f"{BASE}{ts}.ngrams.txt.gz",
+                              timeout=30, headers=HEADERS)
+        except requests.RequestException:
+            continue
+        if r.status_code == 200:
+            return ts
+    return None
+
+
 def _day_minute_files(day: date, until_minute: int | None = None) -> list[str]:
     """One existing timestamp per sampling window (SAMPLES_PER_DAY equal
-    windows across the day), scanning each window's minutes in order and
-    keeping the first that exists. until_minute stops the scan early for
-    partial-day sampling (the nowcast); probing windows the day has not
-    reached yet would waste hundreds of HEAD requests on 404s."""
+    windows across the day). Windows are independent, so they are probed
+    concurrently (founder-approved heal parallelization, 2026-08-06);
+    results keep window order, so the stamp list is identical to the
+    sequential scan's. until_minute stops early for partial-day sampling
+    (the nowcast)."""
     window_min = 1440 // SAMPLES_PER_DAY
-    stamps = []
+    bases = []
     for w in range(SAMPLES_PER_DAY):
         base_minute = w * window_min
         if until_minute is not None and base_minute >= until_minute:
             break
-        for offset in range(window_min):
-            m = base_minute + offset
-            ts = f"{day:%Y%m%d}{m // 60:02d}{m % 60:02d}00"
-            r = requests.head(f"{BASE}{ts}.ngrams.txt.gz",
-                              timeout=30, headers=HEADERS)
-            if r.status_code == 200:
-                stamps.append(ts)
-                break
-    return stamps
+        bases.append(base_minute)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        found = pool.map(lambda b: _probe_window(day, b, window_min), bases)
+    return [ts for ts in found if ts is not None]
+
+
+def prefetch_pairs(stamps: list[str], workers: int = 4, ahead: int = 6):
+    """Yield (ts, toc_gz, ng_gz) in stamp order while later downloads
+    run ahead on threads. The parse stays serial (and byte-identical);
+    only the waiting overlaps. Submission is BOUNDED at `ahead` in
+    flight: an unbounded map would buffer every finished ~21MB blob
+    ahead of a slow parser and can exhaust a 2GB droplet; six in flight
+    caps the buffer near 150MB while keeping the workers saturated."""
+    def fetch_pair(ts: str) -> tuple[str, bytes | None, bytes | None]:
+        return (ts, _fetch(f"{BASE}{ts}.toc.json.gz"),
+                _fetch(f"{BASE}{ts}.ngrams.txt.gz"))
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        pending: deque = deque()
+        idx = 0
+        while idx < len(stamps) and len(pending) < ahead:
+            pending.append(pool.submit(fetch_pair, stamps[idx]))
+            idx += 1
+        while pending:
+            ts, toc_gz, ng_gz = pending.popleft().result()
+            if idx < len(stamps):
+                pending.append(pool.submit(fetch_pair, stamps[idx]))
+                idx += 1
+            yield ts, toc_gz, ng_gz
 
 
 def _subseq(phrase: tuple[str, ...], tokens: list[str]) -> bool:
@@ -160,9 +199,7 @@ def compute_day(
     india_docs: set[str] = set()
     matched: dict[str, set[str]] = {g: set() for g in specs}
 
-    for ts in stamps:
-        toc_gz = _fetch(f"{BASE}{ts}.toc.json.gz")
-        ng_gz = _fetch(f"{BASE}{ts}.ngrams.txt.gz")
+    for ts, toc_gz, ng_gz in prefetch_pairs(stamps):
         if not toc_gz or not ng_gz:
             continue
         toc_en: set[str] = set()
@@ -201,7 +238,6 @@ def compute_day(
                         if len(ph) <= len(tokens) and _subseq(ph, tokens):
                             matched[g].add(key)
                             break
-        time.sleep(0.2)
 
     total = len(en_docs)
     if total < min_docs:  # a sample this thin is a feed gap, not a measurement

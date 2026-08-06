@@ -52,6 +52,7 @@ from .fetch_ngrams import (
     _norm_tokens,
     _subseq,
     group_specs,
+    prefetch_pairs,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -120,9 +121,7 @@ def collect_corpus(day: date, specs: dict[str, dict]) -> dict[str, Any] | None:
     matched: dict[str, set[str]] = {g: set() for g in specs}
     meta: dict[str, dict[str, str]] = {}  # doc key -> {url, title, date}
 
-    for ts in stamps:
-        toc_gz = _fetch(f"{BASE}{ts}.toc.json.gz")
-        ng_gz = _fetch(f"{BASE}{ts}.ngrams.txt.gz")
+    for ts, toc_gz, ng_gz in prefetch_pairs(stamps):
         if not toc_gz or not ng_gz:
             continue
         toc_en: dict[str, dict[str, str]] = {}
@@ -168,7 +167,6 @@ def collect_corpus(day: date, specs: dict[str, dict]) -> dict[str, Any] | None:
                             matched[g].add(key)
                             meta.setdefault(key, rec2)
                             break
-        time.sleep(0.2)
 
     if total_en == 0:
         return None
