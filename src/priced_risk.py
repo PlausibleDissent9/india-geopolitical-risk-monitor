@@ -193,6 +193,24 @@ def main() -> None:
     print(f"[priced_risk] gap series: {len(gaps)} trading days, "
           f"cols={list(gaps.columns)}")
 
+    # V9 free-proxy panel member 2: INR realized volatility (20-day,
+    # annualized), percentile-ranked with the same trailing window as
+    # everything else. A currency-stress mirror beside the equity-fear
+    # mirror; both live BESIDE attention, never inside any score.
+    print("[priced_risk] pulling USDINR for realized vol")
+    inr_gap_block = None
+    try:
+        usdinr = fetch_markets._download(["USDINR=X"], VIX_START)["USDINR=X"]
+        rv = (usdinr.pct_change().rolling(20).std() * (252 ** 0.5) * 100).dropna()
+        rv_pct = vix_percentile(rv)  # identical percentile construction
+        inr_gaps = gap_series(att, rv_pct)
+        inr_gap_block = {
+            "dates": [d.date().isoformat() for d in inr_gaps.index],
+            "composite": [build_index._r1(x) for x in inr_gaps["composite"]],
+        }
+    except Exception as e:  # noqa: BLE001 -- a proxy outage never kills VIX
+        print(f"[priced_risk] INR realized vol unavailable: {e}")
+
     payload: dict = {
         "definition": ("gap = attention percentile minus India-VIX "
                        "percentile, shared trading days. Positive: press "
@@ -204,8 +222,25 @@ def main() -> None:
             **{col: [build_index._r1(x) for x in gaps[col]]
                for col in gaps.columns},
         },
+        "gap_inr_realized_vol": inr_gap_block,
         "divergence_episodes": divergence_episodes(gaps["composite"]),
         "lead_lag": lead_lag(att["composite"], vix_pct),
+        # V9 registered panel, completeness stated instead of implied:
+        # what is live, what is proxied, what is absent and why. The
+        # absent members wait for university Bloomberg access -- a
+        # disclosed constraint, not a gap a reviewer should discover.
+        "panel": {
+            "india_vix": "live (NSE India VIX, free feed)",
+            "inr_realized_vol": ("live proxy (20-day realized vol from "
+                                 "USDINR closes; a realized proxy for the "
+                                 "implied-vol series a terminal would give)"),
+            "sovereign_cds": ("absent: no free source meets the "
+                              "registered-quality bar; queued for "
+                              "university terminal access"),
+            "inr_risk_reversals": ("absent: options data is not freely "
+                                   "available; queued for university "
+                                   "terminal access"),
+        },
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")

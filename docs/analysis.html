@@ -49,6 +49,7 @@ first; negative, the market.</p>
   <thead><tr><th>Direction</th><th>Start</th><th>End</th><th>Peak day</th><th class="num">Peak gap</th></tr></thead>
   <tbody><tr><td colspan="5" class="empty">Not computed yet.</td></tr></tbody>
 </table></div>
+<p class="chart-note" id="panel-note"></p>
 
 <p class="chart-note"><a href="explorer.html">Open the Outcomes Explorer</a> to browse the
 full historical distribution behind the event study: every past episode's relative return,
@@ -188,6 +189,17 @@ const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n
     });
     add(pr.divergence_episodes.press_louder, "Press louder", "bad");
     add(pr.divergence_episodes.market_ahead, "Market ahead", "hit");
+    // V9 panel completeness: what is live, proxied, and absent-with-
+    // reason, stated on the page instead of left for a reviewer to find.
+    if (pr.panel) {
+      const inr = pr.gap_inr_realized_vol;
+      document.getElementById("panel-note").innerHTML =
+        "<b>Panel members.</b> " +
+        Object.entries(pr.panel).map(([k, v]) => esc(k) + ": " + esc(v)).join(" &middot; ") +
+        (inr ? "<br>Attention&minus;INR-realized-vol gap (composite), latest: <b>" +
+          esc(inr.composite[inr.composite.length - 1]) + "</b> on " +
+          esc(inr.dates[inr.dates.length - 1]) + "." : "");
+    }
   }
 
   } catch (e) { console.error("divergence:", e); }
