@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.4.0",
+    "contract_version": "1.5.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -298,6 +298,16 @@
       "frozen_fields": [
         "_meta",
         "date",
+        "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/receipts_archive.json",
+      "format": "json",
+      "description": "Trailing-week receipts archive: per channel and day, the matched articles from that day's committed corpus cache, assembled identically to receipts.json (same matcher provenance, tier sort, syndication dedup, lane labels), capped per day. Today's full list lives in receipts.json; this file guarantees a week of enumerable, dated evidence per channel.",
+      "frozen_fields": [
+        "_meta",
         "channels"
       ],
       "stability": "stable"

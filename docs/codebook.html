@@ -718,6 +718,15 @@ input</strong>: IGRM measures press attention, UCDP records violence, and
 divergence between them is a documented finding. Cite UCDP for these
 numbers, not IGRM. Raw per-event store (id-keyed, revisable):
 <code>data/raw/ucdp_events.csv</code>.</p>
+<h2>docs/data/receipts_archive.json</h2>
+<p>Trailing-week receipts archive: per channel and day (up to 7 days from
+the committed corpus day-caches), the matched articles assembled
+identically to <code>receipts.json</code> (same matcher provenance, tier sort,
+syndication dedup, lane labels), capped at <code>_meta.per_day_cap</code> per
+channel-day (<code>n_matched</code> still reports the day's full match count).
+Today's full list lives in <code>receipts.json</code>; this file exists so a
+channel page always carries a week of enumerable, dated evidence.
+Depth comes from days, never from padding.</p>
 </div>
 <footer>
   <p><a href="./">&larr; back to the index</a> &middot; <a href="validation.html">validation results</a></p>

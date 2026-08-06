@@ -142,6 +142,7 @@ function tierBadge(tier) {
     } else {
       html += '<p class="empty">No articles retrieved for this query on this day.</p>';
     }
+    html += '<div id="archive-slot"></div>';
   } else {
     const why = (receipts && receipts._meta && receipts._meta.partial)
       ? "the latest fetch run did not complete this channel (a partial result)"
@@ -202,6 +203,43 @@ function tierBadge(tier) {
   }
 
   el.innerHTML = html;
+
+  // Trailing-week archive (founder floor: 100+ visible articles per
+  // channel, guaranteed by depth of days, never by padding). Loaded
+  // after the main render so today's evidence paints first.
+  const slot = document.getElementById("archive-slot");
+  if (slot) {
+    const arch = await j("data/receipts_archive.json");
+    const chArch = arch && arch.channels && arch.channels[channel];
+    const today = receipts && receipts.date;
+    if (chArch && chArch.days) {
+      const days = Object.keys(chArch.days).sort().reverse()
+        .filter(d => d !== today);
+      let ahtml = "";
+      let total = 0;
+      for (const d of days) {
+        const block = chArch.days[d];
+        if (!block.articles || !block.articles.length) continue;
+        total += block.articles.length;
+        ahtml += "<details><summary><b>" + esc(d) + "</b> &middot; " +
+          esc(block.articles.length) + " shown of " + esc(block.n_matched) +
+          " matched</summary><ul class='receipts-list'>" +
+          block.articles.map(a =>
+            "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) +
+            '" rel="noopener" target="_blank">' + esc(a.title || a.url) +
+            "</a> <span class='kv'>&middot; " + esc(a.domain) +
+            (a.match === "full-text" ? " &middot; full-text match" : "") +
+            "</span></li>").join("") + "</ul></details>";
+      }
+      if (ahtml) {
+        slot.innerHTML = "<h2>Earlier this week</h2>" +
+          '<p class="kv">' + esc(total) + " more matched articles across " +
+          "the trailing days, from the same committed corpus scans, " +
+          "assembled and tier-sorted identically. Every article is dated; " +
+          "depth comes from days, never from padding.</p>" + ahtml;
+      }
+    }
+  }
 })();
 </script>
 <script src="reveal.js?v=20260729a"></script>
