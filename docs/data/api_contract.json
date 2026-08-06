@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.5.0",
+    "contract_version": "1.6.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -66,6 +66,16 @@
       "frozen_fields": [
         "_meta",
         "episodes"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/episode_terms.json",
+      "format": "json",
+      "description": "Term-level attribution per channel-day: how many matched-article HEADLINES in the day's corpus cache contain each registered phrase. Derived from the same corpus the scores come from; reproducible from the repo alone. Headline attribution undercounts body-text phrases and the record starts at the first committed cache day -- earlier episodes carry no attribution rather than a refetched guess.",
+      "frozen_fields": [
+        "_meta",
+        "days"
       ],
       "stability": "stable"
     },

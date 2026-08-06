@@ -445,3 +445,14 @@ channel-day (`n_matched` still reports the day's full match count).
 Today's full list lives in `receipts.json`; this file exists so a
 channel page always carries a week of enumerable, dated evidence.
 Depth comes from days, never from padding.
+
+## docs/data/episode_terms.json
+
+Term-level attribution per channel-day: how many matched-article
+HEADLINES in the day's corpus cache contain each registered phrase
+(`days.<date>.<channel>.term_headline_hits`), plus
+`n_matched_titles`. Derived from the same corpus the scores come from;
+reproducible from the repo alone. Headline attribution undercounts
+body-text phrases (stated), and the record starts at
+`_meta.first_day` — earlier episodes carry no attribution rather than
+a refetched guess.

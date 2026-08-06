@@ -716,3 +716,19 @@ Your "add china to v8" is registered (monitor, not comparator — the
 control group stays clean). The V8 night will produce five draft China
 channel dictionaries with per-term rationales; nothing is fetched until
 you sign them, same as India's own registration discipline.
+
+## 0.18 Your two ideas from today, registered
+
+**A. Machine BS-filter (your framing: "let me do the heavy lifting, but
+a child could kill the rainfall stories").** Building as the approved
+aptness classifier: Haiku labels receipts articles ON/OFF under the
+registered rubric; the page collapses OFF with a visible count (never
+silent deletion); your taps become the audit of the machine
+(agreement published); scores untouched. No action needed from you —
+except taps remain the calibration gold standard.
+
+**B. India Domestic Monitor (states + investment salience).** Registered
+as a post-Aug-15 second instrument on the V8 monitors-as-config chassis:
+state-level configs with their own ex-ante dictionaries (policy,
+investment, FDI-attention channels), same validation discipline. Say
+"prioritize domestic" if you want it ahead of V15-V21.

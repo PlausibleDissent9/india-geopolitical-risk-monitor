@@ -44,9 +44,9 @@ function fmtCell(w) {
   const q = new URLSearchParams(location.search);
   const channel = q.get("channel"), start = q.get("start");
   const el = document.getElementById("body");
-  const [episodes, ev, hist, actors] = await Promise.all([
+  const [episodes, ev, hist, actors, terms] = await Promise.all([
     j("data/episodes.json"), j("data/event_study.json"), j("data/history.json"),
-    j("data/episode_actors.json"),
+    j("data/episode_actors.json"), j("data/episode_terms.json"),
   ]);
   const e = (episodes || []).find(x => x.channel === channel && x.start === start);
   if (!e) { el.innerHTML = '<p class="empty">Episode not found.</p>'; return; }
@@ -77,6 +77,43 @@ function fmtCell(w) {
       html += "<details><summary>Other unusually active India dyads that week (context, not attribution)</summary>" +
         '<table><thead><tr><th>Partner</th><th class="num">Events</th><th class="num">vs baseline</th><th class="num">Coop</th><th class="num">Conflict</th></tr></thead><tbody>' +
         act.other_active_dyads.map(row).join("") + "</tbody></table></details>";
+    }
+  }
+
+  // V6 term attribution: which registered phrases appear in matched
+  // HEADLINES on the episode's cached days. Days without a committed
+  // corpus cache carry no attribution -- stated, never guessed.
+  if (terms && terms.days) {
+    const dayKeys = Object.keys(terms.days)
+      .filter(d => d >= e.start && d <= e.end);
+    const agg = {};
+    let titles = 0;
+    for (const d of dayKeys) {
+      const chDay = terms.days[d] && terms.days[d][channel];
+      if (!chDay) continue;
+      titles += chDay.n_matched_titles;
+      for (const [t, n] of Object.entries(chDay.term_headline_hits || {})) {
+        agg[t] = (agg[t] || 0) + n;
+      }
+    }
+    html += "<h2>What drove it: registered phrases in matched headlines</h2>";
+    if (dayKeys.length && titles) {
+      const rows = Object.entries(agg).sort((a, b) => b[1] - a[1]);
+      html += '<p class="kv">' + esc(titles) + " matched-article headlines across " +
+        esc(dayKeys.length) + " cached day(s) of this episode. Headline counts " +
+        "undercount phrases living in body text; attribution is derived from the " +
+        "same corpus the scores come from.</p>";
+      if (rows.length) {
+        html += '<table><thead><tr><th>Registered phrase</th><th class="num">Headline hits</th></tr></thead><tbody>' +
+          rows.map(([t, n]) => "<tr><td>" + esc(t) + '</td><td class="num">' + esc(n) + "</td></tr>").join("") +
+          "</tbody></table>";
+      } else {
+        html += '<p class="empty">No registered phrase appears verbatim in these headlines: every match came from body text. That is itself informative.</p>';
+      }
+    } else {
+      html += '<p class="empty">No corpus cache covers this episode\'s days (the attribution record starts ' +
+        esc((terms._meta && terms._meta.first_day) || "2026-08-05") +
+        " and deepens daily; earlier episodes carry no attribution rather than a refetched guess).</p>";
     }
   }
 

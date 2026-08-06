@@ -102,10 +102,29 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
       Math.round(100 * h.overall.hits / h.overall.n) + "%)</b>. " +
       "List frozen before the first validation run; none of these event names appears in any query term. <a href=\"https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/validation/validation_episodes.json\" rel=\"noopener\">The pre-registered list itself</a>, with its append-only rule and <a href=\"https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/commits/main/validation/validation_episodes.json\" rel=\"noopener\">dated commit history</a>.";
     const tb = document.querySelector("#hits tbody");
+    // V6: a HIT links to the anatomy page of the detected episode that
+    // scored it (nearest detected start within the +/- window). Misses
+    // have no detected episode to open -- that absence is the finding.
+    const eps = await j("data/episodes.json") || [];
+    const near = (ch, d) => {
+      const t = new Date(d).getTime(), win = 1000 * 86400 * (h.window_days + 1);
+      let best = null;
+      for (const x of eps) {
+        if (x.channel !== ch) continue;
+        const dt = Math.abs(new Date(x.start).getTime() - t);
+        if (dt <= win && (!best || dt < best.dt)) best = { start: x.start, dt };
+      }
+      return best;
+    };
     for (const e of h.episodes) {
       const tr = document.createElement("tr");
+      const m = e.hit ? near(e.channel, e.date) : null;
+      const name = m
+        ? '<a href="episode.html?channel=' + encodeURIComponent(e.channel) +
+          "&start=" + encodeURIComponent(m.start) + '">' + esc(e.name) + "</a>"
+        : esc(e.name);
       tr.innerHTML = '<td class="' + (e.hit ? 'hit">HIT' : 'miss">MISS') + "</td><td>" +
-        esc(igrmLabel(e.channel)) + "</td><td>" + esc(e.date) + "</td><td>" + esc(e.name) + "</td>";
+        esc(igrmLabel(e.channel)) + "</td><td>" + esc(e.date) + "</td><td>" + name + "</td>";
       tb.appendChild(tr);
     }
   }
