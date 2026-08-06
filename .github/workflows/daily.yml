@@ -242,6 +242,11 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         run: python scripts/build_reliability.py
+      - name: Per-sector feeds (E4; re-cut of published payloads only)
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python -m src.sector_feeds
       - name: Status payload (M4; derives from committed files only)
         # After reliability so the contract summary is current. The
         # module never fetches anything; a missing store shows as a

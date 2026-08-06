@@ -554,3 +554,15 @@ result publishes in `_meta.multiple_comparisons`. Association, never
 causation; sensitivities change no weight, score, or exposure
 reading. Sectors without a signed index publish nothing. Yahoo prices
 are used but not redistributed.
+
+## docs/data/sector_&lt;key&gt;.json (fifteen per-sector feeds)
+
+E4: one machine-consumable feed per registered sector
+(`sector_textiles_apparel.json` … `sector_petroleum_refining.json`),
+regenerated nightly as a pure re-cut of already-published payloads:
+the sector's registered channels with today's score, 95% sampling
+band, weight under the registered exposure rule, and a receipts URL
+per channel; `measured_sensitivity` appears only where a signed NSE
+mapping exists (see sector_sensitivity.json). Nothing is computed
+here that is not already published elsewhere; the salience-not-risk
+statement travels in every file's `_meta`.

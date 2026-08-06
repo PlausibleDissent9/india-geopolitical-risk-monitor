@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.11.0"  # + sector_sensitivity.json (measured E2, signed mapping)
+CONTRACT_VERSION = "1.12.0"  # + 15 per-sector feeds (E4, re-cut of published payloads)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
