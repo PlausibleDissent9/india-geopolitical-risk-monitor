@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forecast experiment (V11) — IGRM research</title>
+<meta name="description" content="A pre-registered experiment: does press salience contain any predictive information about its own future spikes? Mechanical weekly questions, a dumb baseline, Brier scores, and a frozen fork criterion. Presumed null until resolved.">
+<link rel="canonical" href="https://igrm.in/research/forecasts.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="../site.css?v=20260804b">
+<style>
+.mandate { border: 2px solid var(--accent); border-radius: 10px; padding: 1rem 1.2rem;
+  background: var(--card); margin: 1rem 0; font-size: 0.98rem; }
+.q-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.q-table th, .q-table td { text-align: left; padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+.q-table th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--muted); }
+.tblwrap { overflow-x: auto; }
+.brier-strip { display: flex; gap: 1.6rem; flex-wrap: wrap; margin: 0.8rem 0;
+  border: 1px solid var(--rule); border-radius: 10px; padding: 0.9rem 1.1rem;
+  background: var(--card); }
+.brier-strip b { font-size: 1.4rem; font-variant-numeric: tabular-nums; display: block; }
+.brier-strip .kv { font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="../">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="../start.html">Start here</a>
+    <a href="../methodology.html">Methodology</a>
+    <a href="../validation.html">Validation</a>
+    <a href="../analysis.html">Analysis</a>
+    <a href="../maps.html">Maps</a>
+    <a href="../data.html">Data</a>
+    <a href="../notes.html">Notes</a>
+  </nav>
+</header>
+
+<h2>Forecast experiment (V11)</h2>
+
+<div class="mandate prose"><b>Read this first.</b> This is an experiment about the index,
+not advice, and until the registered criterion resolves it should be presumed to show
+that salience does not forecast. The monitor itself makes no forecasts anywhere; this
+page exists to test — in public, against a dumb baseline, under a
+<a href="../data/forecasts.json">registration signed before any question opened</a> —
+whether press salience contains any predictive information about its own future spikes.
+Nothing here is a probability of conflict, risk, or harm; the outcome variable is a
+property of press coverage.</div>
+
+<p class="prose">The design, frozen on signature (2026-08-06): every Monday, five
+mechanical questions — "will channel C record at least one spike day within 14
+days?" — each committed before its window opens. Two arms answer: <b>climatology</b>
+(the trailing 104-week frequency of that exact event) and a <b>salience-informed
+logistic model</b> on two registered inputs whose coefficients were fit once on
+pre-registration history and frozen. Grading is mechanical from the committed series;
+voids count and publish. The fork criterion is registered: after 26+ resolved weeks
+per channel, the salience arm must beat climatology's Brier by ≥5% relatively at
+p&nbsp;&lt;&nbsp;0.05, or the negative result publishes prominently — there is no
+third outcome.</p>
+
+<div class="brier-strip" id="briers" hidden>
+  <div><b id="b-clim">–</b><span class="kv">climatology cumulative Brier</span></div>
+  <div><b id="b-sal">–</b><span class="kv">salience-arm cumulative Brier</span></div>
+  <div><b id="b-n">–</b><span class="kv">resolved / total questions (voids shown below)</span></div>
+</div>
+
+<h3>The question tape</h3>
+<p class="prose">Newest first. Probabilities are recorded at generation and never
+edited; outcomes are graded by the registered spike detector when each window closes.</p>
+<div class="tblwrap"><table class="q-table">
+  <thead><tr><th>Question</th><th>Window</th><th>P(clim)</th><th>P(salience)</th>
+  <th>Outcome</th></tr></thead>
+  <tbody id="q-body"><tr><td colspan="5">Loading forecasts.json…</td></tr></tbody>
+</table></div>
+<p class="prose" id="gen-note"></p>
+
+<footer>
+  <p><a href="../validation.html">Validation</a> &middot;
+  <a href="../methodology.html">Methodology</a> &middot;
+  <a href="../data/forecasts.json">This page's payload</a></p>
+  <p>An experiment about the index, not advice. Association, not causation.</p>
+</footer>
+
+<script>
+(async function () {
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g,
+    c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const d = await (await fetch("../data/forecasts.json")).json();
+  const qs = d.questions.slice().reverse();
+  document.getElementById("q-body").innerHTML = qs.map(q =>
+    "<tr><td>" + esc(q.channel) + "</td>" +
+    "<td>" + esc(q.window_start) + " → " + esc(q.window_end) + "</td>" +
+    "<td>" + esc(q.p_climatology) + "</td>" +
+    "<td>" + esc(q.p_salience) + "</td>" +
+    "<td>" + (q.void ? "void" : q.outcome == null ? "open"
+      : q.outcome ? "spike" : "no spike") + "</td></tr>").join("");
+  const m = d._meta, c = d.cumulative || {};
+  if (m.n_resolved > 0) {
+    document.getElementById("briers").hidden = false;
+    document.getElementById("b-clim").textContent = c.brier_climatology ?? "–";
+    document.getElementById("b-sal").textContent = c.brier_salience ?? "–";
+    document.getElementById("b-n").textContent =
+      m.n_resolved + " / " + m.n_questions;
+  }
+  document.getElementById("gen-note").textContent =
+    m.n_questions + " question(s), " + m.n_resolved + " resolved, " +
+    m.n_void + " void. Payload generated " + m.generated + ".";
+})().catch(e => {
+  document.getElementById("q-body").innerHTML =
+    "<tr><td colspan=\"5\">forecasts.json unavailable — " + e.message + "</td></tr>";
+});
+</script>
+</body>
+</html>

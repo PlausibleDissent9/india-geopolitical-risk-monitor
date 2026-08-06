@@ -843,6 +843,20 @@ because the instrument's failures alert the same channel its
 successes do). Every field is a number or the direction of a
 completed move; nothing forecasts. Webhook push (Phase 1) follows a
 four-week observation period per the signed design.</p>
+<h2>docs/data/forecasts.json</h2>
+<p>The V11 forecast experiment's public record
+(<code>validation/forecast_registration.json</code>, founder-signed 2026-08-06).
+RESEARCH SURFACE ONLY, rendered at <code>research/forecasts.html</code> under its
+mandatory header: an experiment about the index, not advice, presumed
+null until the registered criterion resolves. <code>questions[]</code>: weekly
+mechanical questions (any spike day within 14 days, the registered
+episode rule), each committed before its window opens, with both
+arms' probabilities recorded at generation (<code>p_climatology</code> —
+trailing 104-week frequency; <code>p_salience</code> — frozen-coefficient
+logistic on two registered inputs,
+<code>validation/forecast_logit_frozen.json</code>), outcome graded mechanically
+at window close, voids counted. <code>cumulative</code>: Brier per arm. The fork
+criterion is frozen in the registration; there is no third outcome.</p>
 </div>
 <footer>
   <p><a href="./">&larr; back to the index</a> &middot; <a href="validation.html">validation results</a></p>

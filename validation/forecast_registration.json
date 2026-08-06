@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "status": "DRAFT-UNSIGNED. No probability may be generated, no question opened, and no score computed until the founder signs by renaming this file to forecast_registration.json in a dated commit. The monitor's no-forecast rule stands everywhere else on the site; this experiment lives only under a clearly separated research page whose header states it is an experiment about the index, not a product of it.",
+  "status": "REGISTERED. Founder-signed in chat 2026-08-06 ('sign the forecast registration'); this file was renamed from the DRAFT in this dated commit per its own signing rule. The design below is frozen; amendments are new registrations, never edits. The evidence clock runs from the first committed question set.",
   "drafted_on": "2026-08-06",
   "purpose": "V11: measure, in public and against a dumb baseline, whether salience contains any predictive information about its own future spikes. V12's fork is decided by this evidence and only by it: demonstrable calibration means an honestly repositioned probability product; anything less means the negative result publishes prominently and the monitor stays a monitor."
  },
@@ -19,5 +19,8 @@
   "fork_criterion_ex_ante": "After at least 26 resolved weeks per channel: the salience arm must beat climatology's cumulative Brier by at least 5 percent relatively, with a paired bootstrap p < 0.05 across questions. Meeting it triggers the V12 repositioning DISCUSSION (founder decision, public). Failing it triggers prominent publication of the negative result. There is no third outcome and no re-rolling the criterion.",
   "separation": "Research page only (research/forecasts.html), never the front page, never latest.json, never the brief, never the newsletter. The page header carries: 'This is an experiment about the index, not advice, and until the registered criterion resolves it should be presumed to show that salience does not forecast.' The site-wide measurement-language lint gains a single scoped exemption for research/ paths whose pages carry that mandatory header, enforced by test."
  },
- "founder_signature": null
+ "founder_signature": {
+  "signed": "2026-08-06",
+  "by": "founder in chat ('sign the forecast registration')"
+ }
 }

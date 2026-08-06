@@ -1,0 +1,20 @@
+{
+ "fit_date": "2026-08-06",
+ "train_mondays": [
+  "2018-01-07",
+  "2026-08-03"
+ ],
+ "n_obs": 2210,
+ "base_rate": 0.3846,
+ "inputs": [
+  "intercept",
+  "score_pctl",
+  "score_change_7d"
+ ],
+ "coefficients": [
+  -0.645479,
+  0.003153,
+  0.008114
+ ],
+ "note": "Fit once on pre-registration history, pooled across channels, then FROZEN. Refits are new registrations, never silent updates."
+}

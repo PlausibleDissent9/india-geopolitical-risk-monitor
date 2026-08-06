@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.13.0",
+    "contract_version": "1.14.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -180,6 +180,17 @@
       "frozen_fields": [
         "_meta",
         "sectors"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/forecasts.json",
+      "format": "json",
+      "description": "V11 forecast experiment record (registration: validation/forecast_registration.json, signed 2026-08-06). RESEARCH PAGE ONLY: this is an experiment about the index, not advice, and until the registered criterion resolves it should be presumed to show that salience does not forecast. Questions are mechanical, committed before their windows, graded by the registered detector; the frozen-logit arm's coefficients are in validation/forecast_logit_frozen.json.",
+      "frozen_fields": [
+        "_meta",
+        "cumulative",
+        "questions"
       ],
       "stability": "stable"
     },

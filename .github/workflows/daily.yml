@@ -205,6 +205,14 @@ jobs:
         run: |
           pip install --quiet google-cloud-bigquery
           python -m src.fetch_tone
+      - name: V11 forecast experiment (registration signed 2026-08-06)
+        # Generates next Monday's questions (committed before the
+        # window opens, or void by rule) and grades matured windows
+        # mechanically. Research-page separation enforced by test.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.forecasts
       - name: Alerts Phase 0 (registered triggers, founder-signed 2026-08-06)
         # After reliability/status so T3 reads the fresh contract
         # record. Computes only from published payloads; an alert can
