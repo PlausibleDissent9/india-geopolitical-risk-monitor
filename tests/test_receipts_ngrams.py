@@ -92,6 +92,7 @@ def test_extended_scan_labels_lanes_by_scoring_membership():
 
 def test_scoring_stamps_derives_first_file_per_window():
     from datetime import date as _date
+
     from src.fetch_ngrams import scoring_stamps
     stamps = ["20260805000100", "20260805000700", "20260805003200",
               "20260805010500"]
