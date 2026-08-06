@@ -41,6 +41,8 @@ import zipfile
 from datetime import date, timedelta
 from pathlib import Path
 
+from src import geo_split
+
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
 STORE = RAW / "events_daily.csv"
@@ -63,6 +65,13 @@ COL_GOLDSTEIN = 30
 COL_MENTIONS = 31
 COL_ACTIONGEO_COUNTRY = 51   # FIPS code: India is "IN"
 COL_ACTIONGEO_ADM1 = 52      # FIPS state code, e.g. "IN25"
+# V20: coordinates beside the FIPS code. GDELT's admin-1 geocoding
+# predates Telangana (2014) and Ladakh (2019), so those events land
+# under parent codes and their states render grey; the point places
+# them correctly (src/geo_split.py). Captured now so the re-split has
+# data going forward without a second pass over the archives.
+COL_ACTIONGEO_LAT = 53
+COL_ACTIONGEO_LON = 54
 
 FIELDS = ["date", "n_global", "n_india", "n_verbal_conflict",
           "n_material_conflict", "n_protest", "goldstein_mean",
@@ -94,6 +103,12 @@ def compute_day(day: date) -> tuple[dict, list[dict], list[dict]] | None:
     blob = _download(day)
     if blob is None:
         return None
+    # Polygons load once per day-file, not per row.
+    try:
+        geo_states = geo_split.load_states()
+    except (OSError, ValueError) as e:
+        print(f"[events] geometry unavailable ({e}); FIPS codes only")
+        geo_states = None
     n_global = n_india = n_verbal = n_material = n_protest = 0
     goldstein_total = 0.0
     goldstein_n = 0
@@ -147,10 +162,25 @@ def compute_day(day: date) -> tuple[dict, list[dict], list[dict]] | None:
                         d[3] += gold
                         d[4] += 1
                     d[5] += ment
-                # state layer: action geolocated to an Indian state
+                # state layer: action geolocated to an Indian state.
+                # Placement prefers the POINT (V20): FIPS codes predate
+                # Telangana and Ladakh, coordinates do not. The FIPS code
+                # remains the fallback when coordinates are absent or fall
+                # outside every polygon -- never a snap to the nearest.
                 adm1 = cols[COL_ACTIONGEO_ADM1]
                 if geo_in and adm1.startswith("IN") and len(adm1) == 4:
-                    s = states.setdefault(adm1, [0, 0, 0])
+                    key = adm1
+                    if geo_states is not None:
+                        try:
+                            lat = float(cols[COL_ACTIONGEO_LAT])
+                            lon = float(cols[COL_ACTIONGEO_LON])
+                        except (ValueError, IndexError):
+                            lat = lon = None  # type: ignore[assignment]
+                        if lat is not None and lon is not None:
+                            placed = geo_split.place(lat, lon, geo_states)
+                            if placed:
+                                key = "NE:" + placed
+                    s = states.setdefault(key, [0, 0, 0])
                     s[0] += 1
                     if quad in ("3", "4"):
                         s[1] += 1
