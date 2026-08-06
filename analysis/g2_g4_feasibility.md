@@ -51,3 +51,13 @@ verified feeds register), S8 registers NOTHING today. Next honest
 step: the founder opens pib.gov.in's RSS directory from his own
 browser and pastes the External Affairs feed URL; verification and
 registration then take minutes. No guessed feed ids.
+
+## G2 VERDICT (2026-08-06, measured — see gfg_probe_results.md)
+
+Recent day (2026-08-04): 39,351 links from 230 frontpages, 0.00 GB.
+Historical day (2019-05-15): dry-run 6.9 GB — three-plus orders of
+magnitude more data. Per the ex-ante interpretation rule: **the GFG
+has stalled; G2 is infeasible for the live instrument and is retired
+to historical-study use only.** This finding publishes here rather
+than a front-page-share lane shipping on a husk. G4 is unaffected
+(it rides the GKG, which the shipped tone lane proves live).

@@ -221,7 +221,15 @@ their names appears in any query term, that is the ex-ante rule doing
 its work. A hit is a detected episode in the same channel within ±3
 days. The per-channel hit table is published to `docs/data/validation.json`
 and is this project's key figure: **18 of 21 detected (86%)** on first
-run.
+run. A second tranche of 8 episodes (2018–2022, concentrated in the
+thin channels) was drafted blind from external chronology, registered
+with ex-ante criteria and recorded exclusions
+(`validation/validation_episodes_tranche2_SIGNED.json`), founder-signed
+on 2026-08-06, and graded only after that signature: **6 of 8
+detected**, bringing the combined record to **24 of 29 (83%)**. The
+two tranche-2 misses (the 2022 BrahMos accidental launch, the 2022
+OPEC+ production cut) are listed in the payload like every miss —
+the sequence draft-blind, sign, then grade is the figure's warrant.
 
 **8b. Dictionary robustness** (`python -m src.validate robustness`).
 Broader and narrower constructions of every channel are frozen in

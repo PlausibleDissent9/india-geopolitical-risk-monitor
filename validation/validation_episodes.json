@@ -1,30 +1,185 @@
 {
-  "_meta": {
-    "frozen_on": "2026-07-24",
-    "rule": "Compiled BEFORE the first validation run. A hit = a detected episode for the same channel overlapping [date-3, date+3]. Event names appear here as validation targets only; the ex-ante rule bans them from query terms, which is exactly what makes this test meaningful. Events must fall inside the backfill range (2017-01-01 onward). Entries may be appended pre-registration-style (dated, 'added' field) but never removed.",
-    "window_days": 3
+ "_meta": {
+  "frozen_on": "2026-07-24",
+  "rule": "Compiled BEFORE the first validation run. A hit = a detected episode for the same channel overlapping [date-3, date+3]. Event names appear here as validation targets only; the ex-ante rule bans them from query terms, which is exactly what makes this test meaningful. Events must fall inside the backfill range (2017-01-01 onward). Entries may be appended pre-registration-style (dated, 'added' field) but never removed.",
+  "window_days": 3,
+  "tranche2": {
+   "signed": "2026-08-06",
+   "by": "founder in chat ('sign tranche 2')",
+   "n_added": 8,
+   "criteria_record": "validation/validation_episodes_tranche2_SIGNED.json (ex-ante criteria, exclusions, and the out-of-sample rule, drafted blind before any series was consulted)",
+   "note": "Original 21 untouched; hit-rates on the 8 additions computed for the FIRST time after this signature -- the sequence is the point."
+  }
+ },
+ "episodes": [
+  {
+   "channel": "china_east",
+   "date": "2017-06-16",
+   "name": "Doklam standoff begins (slow-building coverage; an honest hard case for a +/-3-day window)",
+   "added": "2026-07-24"
   },
-  "episodes": [
-    {"channel": "china_east", "date": "2017-06-16", "name": "Doklam standoff begins (slow-building coverage; an honest hard case for a +/-3-day window)", "added": "2026-07-24"},
-    {"channel": "pakistan_west", "date": "2019-02-14", "name": "Pulwama attack", "added": "2026-07-24"},
-    {"channel": "pakistan_west", "date": "2019-02-26", "name": "Balakot airstrike and aerial engagement", "added": "2026-07-24"},
-    {"channel": "gulf_energy", "date": "2019-09-14", "name": "Abqaiq-Khurais drone attack on Saudi oil facilities", "added": "2026-07-24"},
-    {"channel": "gulf_energy", "date": "2020-03-08", "name": "OPEC+ collapse; oil price war begins", "added": "2026-07-24"},
-    {"channel": "china_east", "date": "2020-06-15", "name": "Galwan Valley clash", "added": "2026-07-24"},
-    {"channel": "pakistan_west", "date": "2021-02-25", "name": "India-Pakistan LoC ceasefire reaffirmation", "added": "2026-07-24"},
-    {"channel": "shipping", "date": "2021-03-23", "name": "Ever Given grounds in the Suez Canal", "added": "2026-07-24"},
-    {"channel": "gulf_energy", "date": "2022-02-24", "name": "Russia invades Ukraine (oil-supply shock; tests the energy-security half of the channel)"},
-    {"channel": "china_east", "date": "2022-12-09", "name": "Tawang sector clash, Arunachal Pradesh"},
-    {"channel": "gulf_energy", "date": "2023-10-07", "name": "Hamas attack on Israel"},
-    {"channel": "shipping", "date": "2023-11-19", "name": "Galaxy Leader seizure; start of Houthi Red Sea shipping attacks"},
-    {"channel": "shipping", "date": "2024-01-12", "name": "First US-UK strikes on Houthi targets; peak Red Sea coverage"},
-    {"channel": "gulf_energy", "date": "2024-04-13", "name": "Iran direct drone/missile strike on Israel"},
-    {"channel": "gulf_energy", "date": "2024-10-01", "name": "Iran ballistic-missile strike on Israel"},
-    {"channel": "china_east", "date": "2024-10-21", "name": "India-China patrolling agreement (Depsang/Demchok disengagement)"},
-    {"channel": "us_trade", "date": "2025-04-02", "name": "US reciprocal-tariff announcement"},
-    {"channel": "pakistan_west", "date": "2025-04-22", "name": "Pahalgam terror attack"},
-    {"channel": "pakistan_west", "date": "2025-05-07", "name": "India-Pakistan military exchange (to ceasefire of May 10)"},
-    {"channel": "gulf_energy", "date": "2025-06-13", "name": "Israel strikes Iran; 12-day war, Hormuz closure fears"},
-    {"channel": "us_trade", "date": "2025-08-06", "name": "US doubles tariffs on India to 50% over Russian-oil purchases"}
-  ]
+  {
+   "channel": "pakistan_west",
+   "date": "2019-02-14",
+   "name": "Pulwama attack",
+   "added": "2026-07-24"
+  },
+  {
+   "channel": "pakistan_west",
+   "date": "2019-02-26",
+   "name": "Balakot airstrike and aerial engagement",
+   "added": "2026-07-24"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2019-09-14",
+   "name": "Abqaiq-Khurais drone attack on Saudi oil facilities",
+   "added": "2026-07-24"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2020-03-08",
+   "name": "OPEC+ collapse; oil price war begins",
+   "added": "2026-07-24"
+  },
+  {
+   "channel": "china_east",
+   "date": "2020-06-15",
+   "name": "Galwan Valley clash",
+   "added": "2026-07-24"
+  },
+  {
+   "channel": "pakistan_west",
+   "date": "2021-02-25",
+   "name": "India-Pakistan LoC ceasefire reaffirmation",
+   "added": "2026-07-24"
+  },
+  {
+   "channel": "shipping",
+   "date": "2021-03-23",
+   "name": "Ever Given grounds in the Suez Canal",
+   "added": "2026-07-24"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2022-02-24",
+   "name": "Russia invades Ukraine (oil-supply shock; tests the energy-security half of the channel)"
+  },
+  {
+   "channel": "china_east",
+   "date": "2022-12-09",
+   "name": "Tawang sector clash, Arunachal Pradesh"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2023-10-07",
+   "name": "Hamas attack on Israel"
+  },
+  {
+   "channel": "shipping",
+   "date": "2023-11-19",
+   "name": "Galaxy Leader seizure; start of Houthi Red Sea shipping attacks"
+  },
+  {
+   "channel": "shipping",
+   "date": "2024-01-12",
+   "name": "First US-UK strikes on Houthi targets; peak Red Sea coverage"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2024-04-13",
+   "name": "Iran direct drone/missile strike on Israel"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2024-10-01",
+   "name": "Iran ballistic-missile strike on Israel"
+  },
+  {
+   "channel": "china_east",
+   "date": "2024-10-21",
+   "name": "India-China patrolling agreement (Depsang/Demchok disengagement)"
+  },
+  {
+   "channel": "us_trade",
+   "date": "2025-04-02",
+   "name": "US reciprocal-tariff announcement"
+  },
+  {
+   "channel": "pakistan_west",
+   "date": "2025-04-22",
+   "name": "Pahalgam terror attack"
+  },
+  {
+   "channel": "pakistan_west",
+   "date": "2025-05-07",
+   "name": "India-Pakistan military exchange (to ceasefire of May 10)"
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2025-06-13",
+   "name": "Israel strikes Iran; 12-day war, Hormuz closure fears"
+  },
+  {
+   "channel": "us_trade",
+   "date": "2025-08-06",
+   "name": "US doubles tariffs on India to 50% over Russian-oil purchases"
+  },
+  {
+   "channel": "pakistan_west",
+   "date": "2019-08-05",
+   "name": "Article 370 abrogation; Jammu and Kashmir special status revoked",
+   "added": "2026-08-06",
+   "tranche": 2
+  },
+  {
+   "channel": "pakistan_west",
+   "date": "2022-03-09",
+   "name": "Accidental BrahMos missile launch into Pakistan (disclosed by Pakistan March 10; an honest hard case for event-day timing)",
+   "added": "2026-08-06",
+   "tranche": 2
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2018-05-08",
+   "name": "United States withdraws from the JCPOA (Iran nuclear deal)",
+   "added": "2026-08-06",
+   "tranche": 2
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2019-06-13",
+   "name": "Gulf of Oman tanker attacks (Front Altair and Kokuka Courageous)",
+   "added": "2026-08-06",
+   "tranche": 2
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2020-01-03",
+   "name": "US strike kills Qasem Soleimani in Baghdad",
+   "added": "2026-08-06",
+   "tranche": 2
+  },
+  {
+   "channel": "gulf_energy",
+   "date": "2022-10-05",
+   "name": "OPEC+ announces 2 million bpd production cut",
+   "added": "2026-08-06",
+   "tranche": 2
+  },
+  {
+   "channel": "us_trade",
+   "date": "2018-03-08",
+   "name": "US Section 232 steel and aluminium tariffs signed (global trade-war onset; India affected)",
+   "added": "2026-08-06",
+   "tranche": 2
+  },
+  {
+   "channel": "us_trade",
+   "date": "2019-05-31",
+   "name": "US announces termination of India's GSP trade preference status",
+   "added": "2026-08-06",
+   "tranche": 2
+  }
+ ]
 }

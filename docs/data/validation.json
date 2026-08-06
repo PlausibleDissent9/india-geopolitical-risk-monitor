@@ -2,8 +2,8 @@
  "hit_rate": {
   "window_days": 3,
   "overall": {
-   "n": 21,
-   "hits": 18
+   "n": 29,
+   "hits": 24
   },
   "per_channel": {
    "china_east": {
@@ -11,20 +11,20 @@
     "hits": 3
    },
    "pakistan_west": {
-    "n": 5,
-    "hits": 5
+    "n": 7,
+    "hits": 6
    },
    "gulf_energy": {
-    "n": 7,
-    "hits": 5
+    "n": 11,
+    "hits": 8
    },
    "shipping": {
     "n": 3,
     "hits": 3
    },
    "us_trade": {
-    "n": 2,
-    "hits": 2
+    "n": 4,
+    "hits": 4
    }
   },
   "episodes": [
@@ -160,6 +160,70 @@
     "channel": "us_trade",
     "date": "2025-08-06",
     "name": "US doubles tariffs on India to 50% over Russian-oil purchases",
+    "hit": true
+   },
+   {
+    "channel": "pakistan_west",
+    "date": "2019-08-05",
+    "name": "Article 370 abrogation; Jammu and Kashmir special status revoked",
+    "added": "2026-08-06",
+    "tranche": 2,
+    "hit": true
+   },
+   {
+    "channel": "pakistan_west",
+    "date": "2022-03-09",
+    "name": "Accidental BrahMos missile launch into Pakistan (disclosed by Pakistan March 10; an honest hard case for event-day timing)",
+    "added": "2026-08-06",
+    "tranche": 2,
+    "hit": false
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2018-05-08",
+    "name": "United States withdraws from the JCPOA (Iran nuclear deal)",
+    "added": "2026-08-06",
+    "tranche": 2,
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2019-06-13",
+    "name": "Gulf of Oman tanker attacks (Front Altair and Kokuka Courageous)",
+    "added": "2026-08-06",
+    "tranche": 2,
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2020-01-03",
+    "name": "US strike kills Qasem Soleimani in Baghdad",
+    "added": "2026-08-06",
+    "tranche": 2,
+    "hit": true
+   },
+   {
+    "channel": "gulf_energy",
+    "date": "2022-10-05",
+    "name": "OPEC+ announces 2 million bpd production cut",
+    "added": "2026-08-06",
+    "tranche": 2,
+    "hit": false
+   },
+   {
+    "channel": "us_trade",
+    "date": "2018-03-08",
+    "name": "US Section 232 steel and aluminium tariffs signed (global trade-war onset; India affected)",
+    "added": "2026-08-06",
+    "tranche": 2,
+    "hit": true
+   },
+   {
+    "channel": "us_trade",
+    "date": "2019-05-31",
+    "name": "US announces termination of India's GSP trade preference status",
+    "added": "2026-08-06",
+    "tranche": 2,
     "hit": true
    }
   ]
