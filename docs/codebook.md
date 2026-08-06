@@ -624,3 +624,13 @@ historian-coded conflict as independent context beside the M1
 historical attention proxy. Static dataset, fetched once; only
 aggregates publish with attribution (Palmer et al. 2022, Correlates
 of War Project). Context only; enters no score.
+
+## docs/data/energy_context.json
+
+India's monthly crude-oil imports in thousand barrels per day, as
+reported to JODI (the IEA/OPEC-backed official oil-data exchange;
+open annual CSVs, verified endpoints) — official energy statistics as
+context beside the gulf_energy channel (S3). Trailing 48 months;
+`latest` names the latest *reported* month, because JODI reporting
+lags one-to-three months and recent values revise. Attribution in
+`_meta`; context only; enters no score.

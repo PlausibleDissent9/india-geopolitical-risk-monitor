@@ -51,6 +51,10 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.gpr_comparison
+      - name: S3 energy context (JODI official statistics, weekly)
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.fetch_jodi
       - name: Commit
         run: |
           git config user.name "igrm-bot"

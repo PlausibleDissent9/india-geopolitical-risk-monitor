@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.18.0",
+    "contract_version": "1.19.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -99,6 +99,18 @@
         "date",
         "composite",
         "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/energy_context.json",
+      "format": "json",
+      "description": "India's monthly crude-oil imports (thousand barrels per day, as reported to JODI) -- official energy statistics as context beside the gulf_energy channel. Context only; enters no score. Reporting lags one-to-three months and recent values revise; the latest month shown is the latest reported, not the latest that occurred.",
+      "frozen_fields": [
+        "_meta",
+        "months",
+        "crude_imports_kbd",
+        "latest"
       ],
       "stability": "stable"
     },
