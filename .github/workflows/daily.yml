@@ -183,6 +183,20 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python -m src.aptness
+      - name: Tone second axis (G1; annotates matched articles by URL)
+        # After receipts so the day cache is fresh. Construction-
+        # identical: the registered dictionaries choose the articles,
+        # BigQuery only annotates their V2Tone. Fail-closed without
+        # the GCP secrets; capped bytes per query inside the module.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          pip install --quiet google-cloud-bigquery
+          python -m src.fetch_tone
       - name: Self-heal stalled multilingual backfill (V5)
         # 2026-08-02: the chain's own two scheduled crons never fired even
         # once in their first ~17 hours live (only the original manual

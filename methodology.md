@@ -338,6 +338,18 @@ a promise that rewrote itself every night would not be a promise.
 
 ## Changelog
 
+- **2026-08-06, v1.7.0 (tone as a second axis; G-track layer 1).**
+  Each channel's matched articles — the same articles the registered
+  dictionaries selected and the receipts pages enumerate — are
+  annotated with GDELT GKG's V2Tone by URL join, and the per-channel
+  daily mean publishes as `docs/data/tone.json` with the join rate
+  disclosed (GKG does not carry every URL). Tone introduces **no new
+  article selection**: the registered dictionaries remain the only
+  selector, and tone is an annotation, never a filter. **Context axis
+  only: tone enters no score, no percentile, and no composite**, and
+  may never do so without a founder-signed memo recorded here. No
+  score construction changed anywhere in this entry; series values
+  are bit-identical.
 - **2026-08-06, v1.6.0 (corpus receipts and sampling bands; founder MI
   work order of 2026-08-05).** Receipts construction changed: the
   primary lane now enumerates matched articles from the same sampled

@@ -782,6 +782,16 @@ numbers by the reader's own frame and adds no new claim, no forecast,
 and no risk score. Rendered at <code>exposure.html</code>; profiles encode in the
 URL (<code>?s=sector:share,...</code>), no accounts, nothing stored. Amendments
 to the map are dated changelog entries by the founder, never silent.</p>
+<h2>docs/data/tone.json</h2>
+<p>Tone as a second axis (G-track layer 1): per channel per day, the
+mean GKG V2Tone of the channel's MATCHED articles — the same articles
+the registered dictionaries selected — joined by URL in BigQuery
+(<code>days.&lt;date&gt;.&lt;channel&gt;.mean_tone</code>, GDELT's conventional roughly
+−10..+10 scaling), with the join rate disclosed (<code>n_tone_found</code> vs
+<code>n_matched</code>; GKG does not carry every URL). Tone is an annotation,
+never a filter, and enters no score, percentile, or composite
+(methodology changelog v1.7.0). Absent without the CI lane's GCP
+credentials — fail-closed, the axis is simply missing, never guessed.</p>
 </div>
 <footer>
   <p><a href="./">&larr; back to the index</a> &middot; <a href="validation.html">validation results</a></p>
