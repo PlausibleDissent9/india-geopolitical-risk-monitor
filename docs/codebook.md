@@ -634,3 +634,18 @@ context beside the gulf_energy channel (S3). Trailing 48 months;
 `latest` names the latest *reported* month, because JODI reporting
 lags one-to-three months and recent values revise. Attribution in
 `_meta`; context only; enters no score.
+
+## docs/data/shares.csv and shares.json
+
+**The quantity, not the transform.** Each channel's daily share of the
+GDELT-monitored article corpus, in percent — the input from which the
+published percentile series is computed. Promoted to a first-class
+artifact so a reader who disagrees with the normalization can apply
+their own and recompute everything. `shares.json` carries the
+metadata, including `known_gaps`: the days absent from the store
+entirely (21 as of 2026-08-07), listed rather than interpolated,
+because a user computing monthly means deserves to know which months
+are short. Shares are commensurable across channels and across years;
+percentiles are not (they are within-channel ranks against each
+channel's own trailing two years), and percentiles saturate during
+sustained crises where shares do not — see methodology v1.9.0.

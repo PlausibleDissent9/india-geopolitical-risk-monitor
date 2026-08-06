@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.19.0"  # + energy_context.json (S3 official statistics)
+CONTRACT_VERSION = "1.20.0"  # + shares.csv/json (the quantity, referee finding)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
@@ -49,6 +49,10 @@ DESCRIPTIONS = {
         "divergence episodes and a lead-lag cross-correlation study.",
     "seasonality.json": "Day-of-week and month-of-year salience means, "
         "descriptive only, no seasonal adjustment applied anywhere else.",
+    "shares.csv": "The QUANTITY the index is built from: each channel's "
+        "daily share of the GDELT-monitored corpus, in percent. Published "
+        "so any reader can apply their own normalization; commensurable "
+        "across channels and years where percentiles are not.",
     "validation.json": "The pre-registered validation record: hit rate "
         "against the 21-episode list, cross-source and placebo checks, "
         "robustness under alternate specifications.",

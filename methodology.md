@@ -1,6 +1,6 @@
 # IGRM Methodology
 
-Version 1.6.0 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability added 2026-08-01, receipts drill-down added 2026-08-02, API contract frozen 2026-08-04, corpus receipts and sampling bands added 2026-08-06 · [changelog](#changelog) at the end.
+Version 1.9.0 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability 2026-08-01, receipts drill-down 2026-08-02, API contract frozen 2026-08-04, corpus receipts and sampling bands 2026-08-06, 7-day headline 2026-08-06, raw shares published 2026-08-07 · [changelog](#changelog) at the end.
 
 ## 1. What the index measures (and what it does not)
 
@@ -97,8 +97,17 @@ drift with editorial fashion. A z-score inherits both problems, single
 extreme days distort the mean and variance for months. The percentile is
 robust to outliers, invariant to monotone changes in the level of coverage,
 and yields a directly interpretable sentence ("higher than X% of the last
-two years"). Its cost, compression at the top of the range, is why episode
-detection does *not* run on scores (§5).
+two years"). Its cost is **saturation**, and the cost is large enough to
+state with a number rather than a phrase: between 2025-04-23 and
+2025-05-14 the `pakistan_west` percentile moved 2.2 points (97.8-100.0)
+while the underlying share moved 5.5-fold (0.214% to 1.173%). During a
+sustained crisis the percentile therefore carries almost no intensity
+information — it cannot distinguish the peak day from the twentieth day —
+and the share carries all of it. Two consequences follow and are honoured
+elsewhere in this document: episode detection runs on raw shares, not
+scores (§5), and **the raw shares are published as a first-class artifact**
+(`docs/data/shares.csv`) so any reader can apply a non-saturating
+transform of their own.
 
 *Why 730 days:* long enough to span more than one editorial cycle and both
 halves of a typical escalation-and-decay arc; short enough that "the last
@@ -346,6 +355,28 @@ a promise that rewrote itself every night would not be a promise.
 
 ## Changelog
 
+- **2026-08-07, v1.9.0 (the quantity publishes; referee findings).**
+  Raw channel shares — the input the percentile series is computed
+  from — are promoted to a first-class published artifact
+  (`docs/data/shares.csv`, `shares.json`), with the store's 21 known
+  missing days disclosed in the payload rather than left for a user to
+  discover. This answers three findings at once, all now stated as
+  limitations rather than implied: **(a) ceiling saturation** — across
+  2025-04-23 to 2025-05-14 the pakistan_west percentile moved 2.2
+  points (97.8–100.0) while the underlying share moved 5.5-fold
+  (0.214%→1.173%), so during a sustained crisis the percentile carries
+  almost no intensity information and the share carries all of it;
+  **(b) cross-channel incommensurability** — percentiles are
+  within-channel ranks against different reference distributions, so
+  averaging them into a composite has no clean interpretation, whereas
+  shares are fractions of one common daily corpus; **(c)
+  cross-time incomparability** — a score of 90 in 2019 and in 2026 are
+  ranks against different two-year baselines, while a share means the
+  same thing in every year. The percentile series is unchanged and
+  remains the headline because it answers "loud for this channel?",
+  which a bare share cannot; publishing the quantity beside it lets any
+  reader apply their own normalization and recompute the index from
+  scratch. No published value changed in this entry.
 - **2026-08-06, v1.8.0 (the headline becomes the 7-day; founder-signed
   in chat the same day).** The front page now leads with
   `composite7`/`score7`: the trailing-7-day mean of each channel's raw
