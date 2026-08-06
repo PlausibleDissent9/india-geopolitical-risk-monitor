@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.9.0"  # + exposure_sectors.json (registered sector map, E1)
+CONTRACT_VERSION = "1.10.0"  # + spike_breadth.json (source diversity, G3)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to

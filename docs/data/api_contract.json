@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.9.0",
+    "contract_version": "1.10.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -375,6 +375,16 @@
       "frozen_fields": [
         "note",
         "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/spike_breadth.json",
+      "format": "json",
+      "description": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
+      "frozen_fields": [
+        "_meta",
+        "days"
       ],
       "stability": "stable"
     },

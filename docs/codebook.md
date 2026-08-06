@@ -522,3 +522,16 @@ the registered dictionaries selected — joined by URL in BigQuery
 never a filter, and enters no score, percentile, or composite
 (methodology changelog v1.7.0). Absent without the CI lane's GCP
 credentials — fail-closed, the axis is simply missing, never guessed.
+
+## docs/data/spike_breadth.json
+
+Spike breadth (G-track layer 3): per channel per day, the number of
+distinct source domains among matched articles
+(`days.<date>.<channel>.n_domains`), total matches, and the largest
+single domain's share (`top_domain_share`; near 1.0 means a
+one-outlet story, low values a broad-based narrative). Computed from
+the committed receipt day-caches with the identical union-plus-anchor
+arithmetic the day's estimator uses — the registered dictionaries
+chose every article counted. Descriptive context beside
+spike-quality; breadth enters no score. Depth grows automatically as
+extended day-caches accrue.
