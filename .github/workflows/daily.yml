@@ -26,6 +26,7 @@ on:
         type: boolean
         default: false
   push:
+    branches: [main]
     paths: [".trigger/backfill"]  # committing this file requests a backfill run
 
 permissions:

@@ -5,6 +5,7 @@ name: bq-backext
 # and the module never re-queries an existing store.
 on:
   push:
+    branches: [main]
     paths: [".github/workflows/bq-backext.yml"]
   workflow_dispatch:
 permissions:

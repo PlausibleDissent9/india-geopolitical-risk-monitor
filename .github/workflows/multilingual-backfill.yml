@@ -16,6 +16,7 @@ on:
     - cron: "47 21 * * *"   # 03:17 IST
     - cron: "9 1 * * *"     # 06:39 IST backup
   push:
+    branches: [main]
     paths: [".trigger/multilingual"]
 
 permissions:

@@ -10,6 +10,7 @@ name: events-backfill
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths: [".trigger/events_backfill"]
 
 permissions:

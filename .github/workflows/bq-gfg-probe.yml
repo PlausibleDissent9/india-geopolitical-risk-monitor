@@ -5,6 +5,7 @@ name: bq-gfg-probe
 # live query only if the dry-run fits the cap. Numbers before design.
 on:
   push:
+    branches: [main]
     paths: [".github/workflows/bq-gfg-probe.yml"]
   workflow_dispatch:
 permissions:

@@ -5,6 +5,7 @@ name: bq-smoke
 # honored. Runs only when dispatched or when this file itself changes.
 on:
   push:
+    branches: [main]
     paths: [".github/workflows/bq-smoke.yml"]
   workflow_dispatch:
 permissions:
