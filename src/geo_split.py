@@ -7,9 +7,10 @@ Ladakh 2019) or codes them under a parent; their events land under
 IN02/IN12/IN36 and similar. The honest fix is not a lookup table of
 guesses -- it is to place each event by its own coordinates.
 
-This module does the placing: ray-cast point-in-polygon against the
-Natural Earth admin-1 polygons already committed in data/raw, no new
-dependencies, deterministic. Events carry ActionGeo_Lat/Long in the
+This module does the placing: ray-cast point-in-polygon against a
+committed India-only extract of the Natural Earth admin-1 polygons
+(data/geo/india_admin1.geojson, 0.8 MB), no new dependencies,
+deterministic. Events carry ActionGeo_Lat/Long in the
 GDELT export (columns 53/54 of the v1 schema, beside the ADM1 code
 the fetcher already reads), so the re-split needs no new source --
 only the coordinates the fetcher will now keep.
@@ -27,8 +28,11 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-GEOJSON = (ROOT / "data" / "raw" / "naturalearth"
-           / "ne_10m_admin_1_states_provinces.geojson")
+# India-only extract, COMMITTED (0.8 MB) so every lane can place
+# points -- the full 41 MB Natural Earth world file is gitignored, so
+# depending on it meant V20 worked on one laptop and silently fell back
+# to FIPS codes everywhere else. Regenerate with scripts/slim_geo.py.
+GEOJSON = ROOT / "data" / "geo" / "india_admin1.geojson"
 
 # Cities whose state is unambiguous, used as the module's self-test.
 # Three of them are exactly the states that render grey today.
