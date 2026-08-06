@@ -84,6 +84,8 @@ LANES: list[dict[str, str]] = [
      "file": "docs/data/robustness_series.json", "field": "_meta.generated"},
     {"key": "reliability", "name": "Reliability record",
      "file": "docs/data/reliability.json", "field": "_meta.generated"},
+    {"key": "permanence", "name": "Archive snapshots (twice daily)",
+     "file": "docs/data/permanence.json", "field": "_meta.generated"},
 ]
 
 

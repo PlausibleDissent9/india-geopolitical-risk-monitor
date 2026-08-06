@@ -1,0 +1,45 @@
+name: permanence
+
+on:
+  schedule:
+    # After each daily-update slot has published and Pages has
+    # deployed: the archives capture the day's final pages, not a
+    # mid-deploy state. Odd minutes on purpose (congested :00/:30
+    # slots get silently dropped).
+    - cron: "37 1 * * *"    # 07:07 IST, after the morning final
+    - cron: "23 16 * * *"   # 21:53 IST, after the evening slot
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: igrm-permanence
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests
+      - name: Snapshot site + register repo (fail-soft by design)
+        run: python -m src.permanence
+      - name: Commit the permanence record
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add docs/data/permanence.json
+          git commit -m "permanence: archive snapshot record $(date -u +%F)" || exit 0
+          for i in 1 2 3; do
+            if git pull --rebase origin main; then
+              git push && exit 0
+            else
+              git rebase --abort || true
+            fi
+            sleep $((10 * i))
+          done
+          echo "push failed; record will be retaken next run"
