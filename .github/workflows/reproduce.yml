@@ -10,6 +10,14 @@ on:
   schedule:
     - cron: "37 2 1 * *"   # monthly, 1st, 08:07 IST
   workflow_dispatch:
+  push:
+    # Editing this file IS the no-CLI dispatch (same pattern as
+    # drift.yml): touch the run-stamp and push to force a proof run.
+    paths: [".github/workflows/reproduce.yml"]
+
+# run-stamp: 2026-08-06 (first proof run: the job existed for a week
+# without ever running once, which made "reproduce-from-nothing CI" a
+# claim without a receipt)
 
 permissions:
   contents: read
