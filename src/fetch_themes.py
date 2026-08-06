@@ -79,7 +79,7 @@ def fetch_day_themes(day: str,
         counts: Counter[str] = Counter()
         found = 0
         for u in set(urls):
-            codes = themes_by_url.get(u)
+            codes: set[str] | None = themes_by_url.get(u)
             if codes is None:
                 continue
             found += 1
