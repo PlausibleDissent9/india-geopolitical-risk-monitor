@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.16.0"  # + gpr_comparison.json (V17 wedge, external validation)
+CONTRACT_VERSION = "1.17.0"  # + back_extension.json (M1 historical proxy, graded)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to

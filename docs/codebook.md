@@ -597,3 +597,20 @@ logistic on two registered inputs,
 `validation/forecast_logit_frozen.json`), outcome graded mechanically
 at window close, voids counted. `cumulative`: Brier per arm. The fork
 criterion is frozen in the registration; there is no third outcome.
+
+## docs/data/back_extension.json
+
+The historical attention proxy, 1979–2016 (M1; registration frozen
+before first computation in `analysis/back_extension_memo.md`). A
+DIFFERENT construct from the live instrument — monthly shares of
+global event-mentions by frozen actor-pair filters from GDELT's 1.0
+and 2.0 event streams — never spliced into or drawn with the 2017+
+series. `anchor_grades[]`: nine pre-registered episodes graded
+top-decile-or-miss against trailing-10-year percentiles (Kargil
+100.0; Blue Star's 52.3 miss is the registered construct-edge
+finding). `overlap_audit`: raw-share correlation vs the live
+instrument over 36 shared months — border channels track (0.893,
+0.848); us_trade and gulf_energy fall under the frozen 0.4 threshold
+and therefore publish NO historical series (`series` carries only
+channels that pass; the refusal is the finding). Shipping is excluded
+entirely: chokepoint salience has no actor coding.
