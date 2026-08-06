@@ -80,6 +80,22 @@ composite is insulated from this choice (vs narrow 0.796, vs broad 0.880).</p>
 <p class="chart-note">GDELT's monitored corpus is not constant. Mean daily corpus size by year, and whether channel shares trend with it.</p>
 <p id="drift" class="kv">Not yet computed.</p>
 
+<section id="ml-section" hidden>
+<h2>Anglophone-lens audit (V5)</h2>
+<p class="chart-note">The instrument reads English coverage; this audit measures what that
+lens costs. Per channel: the weekly percentile of each registered non-English language's
+own-language coverage against its own history, beside the English percentile. Divergence
+is English minus the mean non-English percentile — a positive number means the English
+press ran hotter than the non-English press that week. This measures the instrument's
+bias; it changes no score.</p>
+<table id="ml-table">
+  <thead><tr><th>Channel</th><th class="num">latest divergence (pctl pts)</th>
+  <th class="num">mean |divergence|, 26 wks</th><th class="num">weeks compared</th></tr></thead>
+  <tbody></tbody>
+</table>
+<p class="kv" id="ml-langs"></p>
+</section>
+
 <footer>
   <p><a href="methodology.html">Methodology</a> &middot; <a href="data.html">Data &amp; citation</a></p>
   <p>Association, not causation. Not investment advice.</p>
@@ -259,6 +275,29 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     document.getElementById("drift").innerHTML =
       "Mean daily monitored articles, " + esc(years) +
       (corrs ? "<br>Share-vs-corpus correlation, " + esc(corrs) : "");
+  }
+
+  // Anglophone-lens audit: renders only when the multilingual payload
+  // exists with at least one channel -- absent stays absent, honestly.
+  const ml = await j("data/multilingual.json");
+  if (ml && ml.channels && Object.keys(ml.channels).length) {
+    document.getElementById("ml-section").hidden = false;
+    const tb = document.querySelector("#ml-table tbody");
+    for (const [ch, d] of Object.entries(ml.channels)) {
+      const tail = d.divergence.slice(-26);
+      const meanAbs = tail.reduce((a, x) => a + Math.abs(x), 0) / tail.length;
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + esc(igrmLabel(ch)) + '</td><td class="num">' +
+        esc(d.latest_divergence.toFixed(1)) + '</td><td class="num">' +
+        esc(meanAbs.toFixed(1)) + '</td><td class="num">' +
+        esc(d.weeks.length) + "</td>";
+      tb.appendChild(tr);
+    }
+    const langs = Object.values((ml._meta && ml._meta.languages) || {});
+    document.getElementById("ml-langs").textContent = langs.length
+      ? "Registered languages: " + langs.join(", ") +
+        ". Weekly means; each language ranked against its own history only."
+      : "";
   }
 })();
 </script>
