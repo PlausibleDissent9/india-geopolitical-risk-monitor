@@ -3,7 +3,6 @@ that must track build_index's percentile window."""
 from __future__ import annotations
 
 import pandas as pd
-
 from src import build_index, uncertainty
 
 
