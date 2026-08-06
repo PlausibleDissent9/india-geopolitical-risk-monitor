@@ -39,6 +39,14 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Compute coverage drift
         run: python -m src.validate drift
+      - name: S5 Media Cloud cross-validation (weekly; fail-closed sans key)
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          MEDIACLOUD_API_KEY: ${{ secrets.MEDIACLOUD_API_KEY }}
+        run: |
+          pip install --quiet mediacloud
+          python -m src.media_cloud
       - name: Commit
         run: |
           git config user.name "igrm-bot"

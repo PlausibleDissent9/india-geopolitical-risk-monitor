@@ -752,6 +752,16 @@ deliberate mirror of our china_east — and energy/supply lanes), every
 term with a rationale, ex-ante rule enforced. Strike anything, then say
 "sign china" and the V8 template build begins. Nothing fetches unsigned.
 
+## 0.23 Media Cloud key — 2 minutes, unlocks the S5 armor
+
+The independent-corpus replication (the first thing a hostile
+institutional reviewer asks for) is fully built and its design was
+registered BEFORE any account existed — verifiable from git. To arm
+it: create the free account at search.mediacloud.org, copy the API
+key, add it as MEDIACLOUD_API_KEY in GitHub repo secrets. ~12
+requests against a 4,000/week free quota; the weekly lane does the
+rest, and a channel that fails to replicate publishes as the finding.
+
 ## 0.22 The code license — RESOLVED 2026-08-06 (MIT shipped)
 
 The repo declares the DATA as CC BY 4.0 everywhere, but the CODE
