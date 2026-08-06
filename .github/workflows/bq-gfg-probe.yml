@@ -8,12 +8,13 @@ on:
     paths: [".github/workflows/bq-gfg-probe.yml"]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v4
       - run: pip install --quiet google-cloud-bigquery
       - env:
           GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
@@ -21,8 +22,18 @@ jobs:
         run: |
           python - <<'PY'
           import json, os
+          from datetime import datetime, timezone
           from google.cloud import bigquery
           from google.oauth2 import service_account
+
+          def record(lines):
+              # The probe's findings persist in the repo, not in run
+              # logs nobody can read a week later.
+              stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+              with open("analysis/gfg_probe_results.md", "a") as f:
+                  f.write(f"\n## Probe run {stamp}\n\n")
+                  for ln in lines:
+                      f.write(ln + "\n")
 
           info = json.loads(os.environ["GCP_SA_JSON"])
           creds = service_account.Credentials.from_service_account_info(info)
@@ -39,21 +50,36 @@ jobs:
           )
           dry = client.query(q, job_config=bigquery.QueryJobConfig(dry_run=True))
           gb = dry.total_bytes_processed / 1e9
+          lines = [f"- DRY RUN: one day (2026-08-04), two columns = {gb:.2f} GB"]
           print(f"[gfg-probe] DRY RUN: one day, two columns = {gb:.2f} GB")
           CAP = 5 * 10**9
           if dry.total_bytes_processed <= CAP:
               job = client.query(q, job_config=bigquery.QueryJobConfig(
                   maximum_bytes_billed=CAP))
               row = list(job)[0]
-              print(f"[gfg-probe] LIVE: {row['n_links']:,} links from "
-                    f"{row['n_frontpages']:,} frontpages; "
-                    f"billed <= {job.total_bytes_billed or 0:,} bytes")
-              print("[gfg-probe] VERDICT: within cap -- G2 spike-days-only "
-                    "lane is affordable; record this number in "
-                    "analysis/g2_g4_feasibility.md")
+              lines.append(f"- LIVE: {row['n_links']:,} links from "
+                           f"{row['n_frontpages']:,} frontpages; billed "
+                           f"{job.total_bytes_billed or 0:,} bytes")
+              lines.append("- VERDICT: within the 5 GB cap; a spike-days-"
+                           "only G2 lane is affordable at ~{:.1f} GB per "
+                           "queried day".format(gb))
+              print("[gfg-probe] VERDICT: within cap")
           else:
-              print(f"[gfg-probe] VERDICT: {gb:.1f} GB exceeds the 5 GB cap "
-                    "-- G2 publishes as measured-infeasible under the "
-                    "stated budget discipline (that is a finding); "
-                    "record in analysis/g2_g4_feasibility.md")
+              lines.append(f"- VERDICT: {gb:.1f} GB exceeds the 5 GB cap; "
+                           "G2 is measured-infeasible under the stated "
+                           "budget discipline (published as the finding)")
+              print(f"[gfg-probe] VERDICT: {gb:.1f} GB exceeds cap")
+          record(lines)
           PY
+      - name: Commit the measured result
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add analysis/gfg_probe_results.md
+          git commit -m "gfg probe: measured result $(date -u +%F)" || exit 0
+          for i in 1 2 3; do
+            if git pull --rebase origin main; then git push && exit 0
+            else git rebase --abort || true; fi
+            sleep $((10 * i))
+          done
+          echo "push failed; result remains in run log"
