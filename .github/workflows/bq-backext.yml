@@ -22,18 +22,25 @@ jobs:
       - env:
           GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        continue-on-error: true
         run: |
-          if [ -f data/raw/back_extension_monthly.csv ]; then
-            echo "store exists; publish only"
-            python -m src.back_extension --publish
-          else
-            python -m src.back_extension --build --publish
-          fi
+          set -o pipefail
+          {
+            if [ -f data/raw/back_extension_monthly.csv ]; then
+              echo "store exists; publish only"
+              python -m src.back_extension --publish
+            else
+              python -m src.back_extension --build --publish
+            fi
+          } 2>&1 | tee backext.log || {
+            echo "== backext run $(date -u) FAILED ==" > analysis/backext_run_log.md
+            tail -30 backext.log >> analysis/backext_run_log.md
+          }
       - name: Commit store + payload
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
-          git add data/raw/back_extension_monthly.csv docs/data/back_extension.json
+          git add data/raw/back_extension_monthly.csv docs/data/back_extension.json analysis/backext_run_log.md 2>/dev/null || git add analysis/backext_run_log.md
           git commit -m "back-extension: M1 store + graded anchors $(date -u +%F)" || exit 0
           for i in 1 2 3; do
             if git pull --rebase origin main; then git push && exit 0
