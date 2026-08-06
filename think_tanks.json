@@ -1,75 +1,80 @@
 {
-  "_meta": {
-    "version": "1.0.0",
-    "registered": "2026-08-02",
-    "what": "Registered think-tank roster for the expert-attention layer (practitioner item 3). Titles and links only, never content. Institutions without a public feed are listed with that status rather than dropped: the roster is the registration, collection covers the feed-publishing subset, and feed discovery is revisited monthly. Spectrum note: the Indian institutions span independent to official-leaning; disclosed in the codebook so the roster cannot be read as ideologically curated.",
-    "match_rule": "an item is tagged to a channel when its title or summary contains any of that channel's registered dictionary phrases (normalized token subsequence); items matching no channel are kept as general roster output"
+ "_meta": {
+  "version": "1.0.0",
+  "registered": "2026-08-02",
+  "what": "Registered think-tank roster for the expert-attention layer (practitioner item 3). Titles and links only, never content. Institutions without a public feed are listed with that status rather than dropped: the roster is the registration, collection covers the feed-publishing subset, and feed discovery is revisited monthly. Spectrum note: the Indian institutions span independent to official-leaning; disclosed in the codebook so the roster cannot be read as ideologically curated.",
+  "match_rule": "an item is tagged to a channel when its title or summary contains any of that channel's registered dictionary phrases (normalized token subsequence); items matching no channel are kept as general roster output"
+ },
+ "institutions": {
+  "gateway_house": {
+   "label": "Gateway House",
+   "feed": "https://www.gatewayhouse.in/feed/",
+   "status": "verified 2026-08-02"
   },
-  "institutions": {
-    "gateway_house": {
-      "label": "Gateway House",
-      "feed": "https://www.gatewayhouse.in/feed/",
-      "status": "verified 2026-08-02"
-    },
-    "csep": {
-      "label": "CSEP",
-      "feed": "https://csep.org/feed/",
-      "status": "verified 2026-08-02"
-    },
-    "cpr": {
-      "label": "Centre for Policy Research",
-      "feed": "https://cprindia.org/feed/",
-      "status": "advertised 2026-08-02 but serves unparseable XML; collector skips; revisit"
-    },
-    "idsa": {
-      "label": "MP-IDSA",
-      "feed": "https://idsa.in/feed",
-      "status": "advertised 2026-08-02"
-    },
-    "rand": {
-      "label": "RAND",
-      "feed": "https://www.rand.org/pubs/new.xml",
-      "status": "verified 2026-08-02"
-    },
-    "crisisgroup": {
-      "label": "International Crisis Group",
-      "feed": "https://www.crisisgroup.org/rss",
-      "status": "verified 2026-08-02"
-    },
-    "orf": {
-      "label": "Observer Research Foundation",
-      "feed": null,
-      "status": "no public feed found 2026-08-02; revisit"
-    },
-    "takshashila": {
-      "label": "Takshashila Institution",
-      "feed": null,
-      "status": "no public feed found 2026-08-02; revisit"
-    },
-    "carnegie_india": {
-      "label": "Carnegie India",
-      "feed": null,
-      "status": "no public feed found 2026-08-02; revisit"
-    },
-    "vif": {
-      "label": "Vivekananda International Foundation",
-      "feed": null,
-      "status": "no public feed found 2026-08-02; revisit"
-    },
-    "iiss": {
-      "label": "IISS",
-      "feed": null,
-      "status": "no public feed found 2026-08-02; revisit"
-    },
-    "csis": {
-      "label": "CSIS",
-      "feed": null,
-      "status": "no public feed found 2026-08-02; revisit"
-    },
-    "chatham": {
-      "label": "Chatham House",
-      "feed": null,
-      "status": "no public feed found 2026-08-02; revisit"
-    }
+  "csep": {
+   "label": "CSEP",
+   "feed": "https://csep.org/feed/",
+   "status": "verified 2026-08-02"
+  },
+  "cpr": {
+   "label": "Centre for Policy Research",
+   "feed": "https://cprindia.org/feed/",
+   "status": "advertised 2026-08-02 but serves unparseable XML; collector skips; revisit"
+  },
+  "idsa": {
+   "label": "MP-IDSA",
+   "feed": "https://idsa.in/feed",
+   "status": "advertised 2026-08-02"
+  },
+  "rand": {
+   "label": "RAND",
+   "feed": "https://www.rand.org/pubs/new.xml",
+   "status": "verified 2026-08-02"
+  },
+  "crisisgroup": {
+   "label": "International Crisis Group",
+   "feed": "https://www.crisisgroup.org/rss",
+   "status": "verified 2026-08-02"
+  },
+  "orf": {
+   "label": "Observer Research Foundation",
+   "feed": null,
+   "status": "no public feed found 2026-08-02; revisit"
+  },
+  "takshashila": {
+   "label": "Takshashila Institution",
+   "feed": null,
+   "status": "no public feed found 2026-08-02; revisit"
+  },
+  "carnegie_india": {
+   "label": "Carnegie India",
+   "feed": null,
+   "status": "no public feed found 2026-08-02; revisit"
+  },
+  "vif": {
+   "label": "Vivekananda International Foundation",
+   "feed": null,
+   "status": "no public feed found 2026-08-02; revisit"
+  },
+  "iiss": {
+   "label": "IISS",
+   "feed": null,
+   "status": "no public feed found 2026-08-02; revisit"
+  },
+  "csis": {
+   "label": "CSIS",
+   "feed": null,
+   "status": "no public feed found 2026-08-02; revisit"
+  },
+  "chatham": {
+   "label": "Chatham House",
+   "feed": null,
+   "status": "no public feed found 2026-08-02; revisit"
+  },
+  "reliefweb": {
+   "label": "ReliefWeb (UN OCHA)",
+   "feed": "https://reliefweb.int/updates/rss.xml?advanced-search=%28PC119%29",
+   "status": "verified 2026-08-06; S4 source-wave addition, founder-directed 2026-08-05: UN-provenance situation reports and updates, India primary-country filter (PC119); titles, links, dates only, same as every shelf source"
   }
+ }
 }

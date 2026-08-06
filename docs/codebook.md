@@ -348,7 +348,11 @@ Latest publications from the registered think-tank roster
 (think_tanks.json), titles and links only, tagged to channels by the
 frozen dictionaries; items matching no channel are kept as general.
 Institutions without a public feed are carried in the registry with
-that status.
+that status. As of 2026-08-06 the roster includes ReliefWeb (UN
+OCHA), India primary-country filter — UN-provenance situation
+reports joining the shelf under the same titles-only rule (S4);
+ReliefWeb is an evidence shelf source only and, like every
+aggregation, never a data input to any score.
 
 ## docs/data/precision.json
 
