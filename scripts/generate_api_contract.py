@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.15.0"  # + weekly headline fields (composite7/score7, additive)
+CONTRACT_VERSION = "1.16.0"  # + gpr_comparison.json (V17 wedge, external validation)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
