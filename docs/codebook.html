@@ -7,7 +7,7 @@
 <meta name="description" content="Column-by-column definitions, units, and construction for every IGRM data file.">
 <link rel="canonical" href="https://igrm.in/codebook.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css">
 </head>
@@ -15,7 +15,6 @@
 <header>
   <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
   <nav class="masthead">
-    <a href="start.html">Start here</a>
     <a href="methodology.html">Methodology</a>
     <a href="validation.html">Validation</a>
     <a href="analysis.html">Analysis</a>
@@ -26,32 +25,8 @@
 </header>
 <div class="prose">
 <h1>IGRM Codebook</h1>
-<p><b>Purpose.</b> This document exists so a researcher can reuse IGRM data without
-reading the source code or emailing the author: every published file, every field
-in it, its units, and its construction, in one place. Definitions here are
-column-by-column and mechanical; the <em>reasoning</em> behind each construction
-choice lives in the <a href="methodology.html">methodology</a>, and the evidence
-that the constructions measure anything lives in
-<a href="validation.html">validation</a>. If a published field is not documented
-here, that is a defect &mdash; <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/issues" rel="noopener">report it</a>.</p>
-
-<h2>Researcher quick-start</h2>
-<p>Fetch, cite, and reproduce in five lines. No key, no rate limit, CORS open;
-field stability is promised by the <a href="data/api_contract.json">frozen API
-contract</a>.</p>
-<pre><code># 1. The full daily series, 2017-present (composite + five channels):
-curl -s https://igrm.in/data/history.csv -o igrm_history.csv
-# 2. Today's finalized scores with metadata:
-curl -s https://igrm.in/data/latest.json | python -m json.tool
-# 3. The evidence behind today's numbers (per-channel matched articles):
-curl -s https://igrm.in/data/receipts.json | python -m json.tool
-# 4. The validation record (hit-rate, placebo, robustness, drift):
-curl -s https://igrm.in/data/validation.json | python -m json.tool
-# 5. Reproduce the index from source (pinned deps, same raw stores):
-#    git clone https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor</code></pre>
-<p>Citation: <em>Krishna, Ishan (2026). India Geopolitical Risk Monitor.
-https://igrm.in/</em> &mdash; data CC BY 4.0, code MIT. A ready-made BibTeX entry is
-at <a href="igrm.bib">igrm.bib</a>.</p>
+<p>Column-by-column definitions for every published file. Units and
+construction; the reasoning lives in <a href="../methodology.md">methodology.md</a>.</p>
 <h2>data/raw/gdelt_volume.csv</h2>
 <table>
 <thead>
@@ -593,50 +568,17 @@ rule, and missing-component rule live in
 was computed.</p>
 <h2>docs/data/receipts.json</h2>
 <p>Per-channel receipts for the latest published day only (not a
-historical archive). Two lanes, both labeled per article in
-<code>lane</code>: <code>"corpus"</code> articles were matched inside the same sampled
-ngrams corpus the day's scores are computed from (the estimator
-actually counted them; matcher, anchor, and tokenizer identical to the
-series), and <code>"artlist"</code> articles come from GDELT's bounded relevance
-search over the full day, restoring wire originals whose syndicated
-copies the sample caught. <code>n_matched_in_corpus</code> and
-<code>n_artlist_supplement</code> count the two lanes before URL dedup;
-<code>n_pool_unique</code> counts the merged pool after syndication dedup;
-up to 75 publish per channel. Each article carries its source tier
-from <code>source_tiers.json</code> (<code>null</code> = "unranked", never assumed into a
-tier) and a <code>match</code> tag (<code>"headline"</code> when a channel phrase is in
-the title, else <code>"full-text"</code>). Ordering is credibility (tier), then
-visible aptness, then arrival order. <code>spike_quality_tier12_share</code> is
-the tier 1-2 share of the published list. <code>_meta.method</code> says which
-lane(s) produced the file (the artlist-only fallback publishes when the
-corpus files are unavailable). Tiers order presentation only and never
-enter any score.</p>
-
-<h2>docs/data/uncertainty.json</h2>
-<p>95% sampling bands for sample-estimated daily scores, keyed
-<code>days.&lt;date&gt;.&lt;channel&gt; = [lo, hi]</code> in percentile-score units
-(0-100), plus <code>days.&lt;date&gt;.composite</code>. Construction: the day's
-matched share (sum of sub-query group shares over <code>n</code> sampled
-documents; the sum-of-groups construction can count a document under
-two groups, so the effective count inherits that convention) gets a
-Wilson 95% interval, and both bounds pass through the same splice
-ratio (<code>ngram_calibration.json</code>) and the same trailing-percentile
-transform as the published point value. The composite band is the mean
-of channel bounds &mdash; an envelope, conservative because channel
-sampling errors are independent. Days before
-<code>_meta.first_banded_date</code> were computed over the full monitored
-corpus and carry no band; absence of a band is a statement about the
-estimation design, not missing data.</p>
-
-<h2>docs/data/robustness_series.json</h2>
-<p>The overlay behind the validation page's robustness correlations:
-weekly mean percentile scores of the primary index and its registered
-narrow/broad dictionary variants (<code>dictionaries_alt.json</code>), keyed
-<code>channels.&lt;ch&gt;.{primary,narrow,broad}</code> aligned to the shared
-<code>weeks</code> axis, over the window where all three exist
-(<code>_meta.window</code>; the variants begin 2022-01-01). <code>null</code> = the
-variant store has no data that week, shown as a gap, never
-interpolated.</p>
+historical archive): the exact <code>dictionaries.json</code> query, GDELT
+<code>mode=artlist</code> pulled up to 150 per query and published up to 75 per
+channel after syndication dedup, each article tagged with its source
+tier from <code>source_tiers.json</code> (<code>null</code> if the domain is not yet
+registered -- shown as "unranked", never assumed into a tier).
+Ordering is credibility (tier), then visible aptness (a title
+containing a channel phrase), then GDELT relevance.
+<code>spike_quality_tier12_share</code> is the tier 1-2 share of the retrieved
+sample. <code>_meta.caveat</code> states the sample-vs-census distinction that
+the site repeats wherever this payload is shown. Tiers order
+presentation only and never enter any score.</p>
 <h2>Conventions</h2>
 <ul>
 <li>Every percentile is computed against the series' own trailing 730 days,
