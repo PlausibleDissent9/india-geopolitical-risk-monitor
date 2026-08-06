@@ -50,3 +50,14 @@ lane is not a daily fetcher.
 The founder creates the free Media Cloud account and adds
 MEDIACLOUD_API_KEY to GitHub secrets (2 minutes; NOTES 0.23). The
 module is fail-closed until then: no key, no fetch, no guessed data.
+
+## V19 scoring note (2026-08-06, appended here pending its own page)
+
+Challenge entries live as GitHub issues (calibration-challenge
+template); timestamps are GitHub's, immutable and public, so
+commit-before-window is externally verifiable. The scorer (weekly CI,
+reads the public issues API unauthenticated, grades against
+forecast_questions outcomes with the identical Brier arithmetic)
+ships with the challenge page once the first V11 window has resolved
+-- scoring machinery before there is anything to score would be
+decoration. Announcing the challenge is the founder's send.
