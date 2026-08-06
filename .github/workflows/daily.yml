@@ -213,6 +213,7 @@ jobs:
         run: |
           pip install --quiet google-cloud-bigquery
           python -m src.fetch_tone
+          python -m src.fetch_themes
       - name: V11 forecast experiment (registration signed 2026-08-06)
         # Generates next Monday's questions (committed before the
         # window opens, or void by rule) and grades matured windows

@@ -45,17 +45,29 @@ PUBLISH_DAYS = 90
 
 
 def _day_urls(day: str) -> dict[str, list[str]]:
-    """Per-channel matched URLs from the committed day cache (extended
-    preferred -- deeper census, same construction)."""
+    """Per-CHANNEL matched URLs from the committed day cache (extended
+    preferred), using the identical union-plus-anchor arithmetic the
+    estimator and receipts assembly use -- not raw sub-query groups."""
+    from src import receipts_ngrams
+
     for suffix in ("-extended", ""):
         path = DAYS / f"{day}{suffix}.json"
         if path.exists():
             cache = json.loads(path.read_text(encoding="utf-8"))
             meta = cache.get("meta") or {}
+            corpus = {
+                "matched": {g: set(keys) for g, keys in
+                            (cache.get("matched") or {}).items()},
+                "india": set(cache.get("india") or []),
+            }
+            specs = receipts_ngrams.group_specs()
             out: dict[str, list[str]] = {}
-            for group, keys in (cache.get("matched") or {}).items():
-                urls = [meta[k]["url"] for k in keys if k in meta]
-                out.setdefault(group, []).extend(urls)
+            for ch in receipts_ngrams.CHANNELS:
+                keys = receipts_ngrams.channel_doc_keys(ch, specs, corpus)
+                urls = [meta[k]["url"] for k in keys
+                        if k in meta and meta[k].get("url")]
+                if urls:
+                    out[ch] = urls
             return out
     return {}
 

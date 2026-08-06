@@ -7,18 +7,24 @@ from src import fetch_tone
 
 
 def test_day_urls_reads_extended_cache_first(tmp_path, monkeypatch):
+    from src import receipts_ngrams
     monkeypatch.setattr(fetch_tone, "DAYS", tmp_path)
+    monkeypatch.setattr(receipts_ngrams, "CHANNELS", ["ch"])
+    monkeypatch.setattr(receipts_ngrams, "group_specs",
+                        lambda: {"ch/q1": {"channel": "ch", "anchor": None,
+                                           "phrases": []}})
     (tmp_path / "2026-08-05.json").write_text(json.dumps({
-        "matched": {"g": ["t1:1"]},
+        "matched": {"ch/q1": ["t1:1"]}, "india": [],
         "meta": {"t1:1": {"url": "https://plain.example/a"}},
     }), encoding="utf-8")
     (tmp_path / "2026-08-05-extended.json").write_text(json.dumps({
-        "matched": {"g": ["t1:1", "t2:9"]},
+        "matched": {"ch/q1": ["t1:1", "t2:9"]}, "india": [],
         "meta": {"t1:1": {"url": "https://ext.example/a"},
                  "t2:9": {"url": "https://ext.example/b"}},
     }), encoding="utf-8")
     urls = fetch_tone._day_urls("2026-08-05")
-    assert urls == {"g": ["https://ext.example/a", "https://ext.example/b"]}
+    assert sorted(urls["ch"]) == ["https://ext.example/a",
+                                  "https://ext.example/b"]
 
 
 def test_upsert_store_replaces_same_day_and_keeps_others(tmp_path, monkeypatch):
