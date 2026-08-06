@@ -359,6 +359,25 @@ def main() -> None:
         receipts.main()
         return
 
+    # Same-day artlist carry-forward: a supplement retrieved earlier
+    # today (say, by the VPS's clean address) is not forfeited to a
+    # later rerun's rate limit -- the retrieval already happened for
+    # this same measured day. Only the artlist lane carries forward;
+    # corpus lanes always rebuild from the scan.
+    prior_artlist: dict[str, list[dict[str, Any]]] = {}
+    prior_path = SITE_DATA / "receipts.json"
+    if prior_path.exists():
+        try:
+            prior = json.loads(prior_path.read_text(encoding="utf-8"))
+            if prior.get("date") == day.isoformat():
+                for pch, blk in (prior.get("channels") or {}).items():
+                    arts = [a for a in blk.get("articles", [])
+                            if a.get("lane") == "artlist"]
+                    if arts:
+                        prior_artlist[pch] = arts
+        except (json.JSONDecodeError, OSError):
+            pass
+
     channels: dict[str, Any] = {}
     for ch in CHANNELS:
         keys = channel_doc_keys(ch, specs, corpus)
@@ -370,6 +389,11 @@ def main() -> None:
                 ch, dictionaries[ch], day, tiers)["articles"]
         except Exception as e:  # noqa: BLE001 -- supplement is optional
             print(f"[receipts-ngrams] {ch} artlist supplement failed: {e}")
+            if ch in prior_artlist:
+                supplement = prior_artlist[ch]
+                print(f"[receipts-ngrams] {ch}: carrying forward "
+                      f"{len(supplement)} retrieved articles from today's "
+                      "earlier payload")
         channels[ch] = assemble_channel(
             ch, dictionaries[ch], keys, corpus, tiers, supplement)
         print(f"[receipts-ngrams] {ch}: {channels[ch]['n_matched_in_corpus']} "
