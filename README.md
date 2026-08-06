@@ -61,6 +61,12 @@ python -m src.validate placebo         # placebo channels (layer 4d)
 python -m src.validate robustness      # broad/narrow dictionary variants
 ```
 
+To verify the published numbers independently, see
+[REPLICATION.md](REPLICATION.md) (a cached check takes ~5 minutes).
+Decision rules, append-only surfaces, and the deprecation policy live
+in [GOVERNANCE.md](GOVERNANCE.md); adding a country monitor follows
+[countries/RECIPE.md](countries/RECIPE.md).
+
 ## Weekly rhythm
 
 Friday's Action run drops `notes-inbox/datapack_YYYY-Www.md` (numbers
