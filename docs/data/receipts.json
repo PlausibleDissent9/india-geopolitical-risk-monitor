@@ -6,7 +6,7 @@
   "n_docs_sampled": 28575,
   "n_samples": 39,
   "partial": false,
-  "generated": "2026-08-05T20:36:05Z"
+  "generated": "2026-08-06T05:45:53Z"
  },
  "date": "2026-08-05",
  "channels": {
@@ -178,11 +178,29 @@
     "India (\"Line of Actual Control\" OR \"India China border\" OR \"eastern Ladakh\" OR \"Aksai Chin\" OR \"Tawang\" OR \"People's Liberation Army\" OR \"border standoff\" OR \"India China relations\" OR \"disengagement\" OR \"McMahon Line\")"
    ],
    "n_matched_in_corpus": 7,
-   "n_artlist_supplement": 0,
-   "n_retrieved": 7,
-   "n_pool_unique": 7,
+   "n_artlist_supplement": 7,
+   "n_retrieved": 14,
+   "n_pool_unique": 14,
    "pool_exhausted": true,
    "articles": [
+    {
+     "title": "Perez Hilton seen cutting himself during disturbing TikTok live , prompting multiple emergency calls to the Miami - Dade Sheriff office - here what happened",
+     "domain": "timesofindia.indiatimes.com",
+     "date": "20260805",
+     "url": "https://timesofindia.indiatimes.com/etimes/trending/perez-hilton-seen-cutting-himself-during-disturbing-tiktok-live-prompting-multiple-emergency-calls-to-the-miami-dade-sheriffs-office-heres-what-happened/articleshow/132896812.cms",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "GK Questions and Answers on Indo - Pak Border",
+     "domain": "jagranjosh.com",
+     "date": "20260805",
+     "url": "https://www.jagranjosh.com/general-knowledge/gk-questions-and-answers-on-india-pakistan-border-1820011165-1",
+     "lane": "artlist",
+     "tier": 4,
+     "match": "full-text"
+    },
     {
      "title": "India, China Have Taken Steps To Improve People-To-People Ties: MEA",
      "domain": "idrw.org",
@@ -243,6 +261,51 @@
      "date": "20260805",
      "url": "https://indiatogether.org/youth-protests-education",
      "lane": "corpus",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "India , China Have Taken Steps To Improve People - to - people Ties : MEA \u00bb IndiaPost NewsPaper",
+     "domain": "indiapost.com",
+     "date": "20260805",
+     "url": "https://indiapost.com/india-china-have-taken-steps-to-improve-people-to-people-ties-mea/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "  \u5916\u56fd\u519b\u5b98\u9047\u89c1\u957f\u5f81  \u7cfb\u5217\u878d\u5a92\u4f53\u62a5\u9053 \uff1a \u957f\u5f81\u4e3a\u6865 \u8bfb\u61c2\u4e2d\u56fd",
+     "domain": "81.cn",
+     "date": "20260805",
+     "url": "http://www.81.cn/yw_208727/16477941.html",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "How to solve the problem of registered voters not voting",
+     "domain": "dailymaverick.co.za",
+     "date": "20260805",
+     "url": "https://www.dailymaverick.co.za/opinionista/2026-08-05-how-to-solve-the-problem-of-registered-voters-not-casting-their-ballots/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u519b\u62a5\u8bb0\u8005\u5bfb\u6839\u884c\uff5c\u63a2\u8bbf\u9769\u547d\u65e7\u5740\u548c\u82f1\u96c4\u6545\u5c45 \uff0c \u611f\u609f\u9769\u547d\u5148\u8f88\u65e0\u79c1\u5fd8\u6211\u7684\u5d07\u9ad8\u98ce\u8303",
+     "domain": "81.cn",
+     "date": "20260805",
+     "url": "http://www.81.cn/yw_208727/16477768.html",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "India Together : Meaningful restart of education is critical",
+     "domain": "indiatogether.org",
+     "date": "20260805",
+     "url": "https://indiatogether.org/edu-restart-education",
+     "lane": "artlist",
      "tier": null,
      "match": "full-text"
     }
@@ -974,9 +1037,9 @@
     "India (\"US tariffs\" OR \"reciprocal tariffs\" OR \"trade deal\" OR \"trade war\" OR \"trade restrictions\" OR \"export controls\" OR \"Section 301\" OR \"CAATSA\" OR \"H-1B visa\" OR \"WTO dispute\" OR \"secondary sanctions\" OR \"Russian oil\")"
    ],
    "n_matched_in_corpus": 44,
-   "n_artlist_supplement": 0,
-   "n_retrieved": 25,
-   "n_pool_unique": 25,
+   "n_artlist_supplement": 46,
+   "n_retrieved": 71,
+   "n_pool_unique": 71,
    "pool_exhausted": true,
    "articles": [
     {
@@ -998,6 +1061,33 @@
      "match": "full-text"
     },
     {
+     "title": "RBI plans to roll out polymer banknotes by FY28",
+     "domain": "livemint.com",
+     "date": "20260805",
+     "url": "https://www.livemint.com/news/india/rbi-polymer-banknotes-india-rollout-fy28-pilot-security-features-11785932489302.html",
+     "lane": "artlist",
+     "tier": 2,
+     "match": "full-text"
+    },
+    {
+     "title": "Stock Market Today Live , August 5 : Rate sensitive stocks in focus ahead of RBI monetary policy decision",
+     "domain": "thehindubusinessline.com",
+     "date": "20260805",
+     "url": "https://www.thehindubusinessline.com/markets/sensex-nifty50-today-stock-market-live-updates-5th-august-2026/article71306480.ece",
+     "lane": "artlist",
+     "tier": 2,
+     "match": "full-text"
+    },
+    {
+     "title": "Stock Market Today Highlights , August 5 : Sensex rises 152 points , Nifty ends above 24 , 620 after RBI keeps repo rate unchanged",
+     "domain": "thehindubusinessline.com",
+     "date": "20260805",
+     "url": "https://www.thehindubusinessline.com/markets/sensex-nifty50-today-stock-market-highlights-5th-august-2026/article71306480.ece",
+     "lane": "artlist",
+     "tier": 2,
+     "match": "full-text"
+    },
+    {
      "title": "Modi, UK PM commit to maximising trade deal potential",
      "domain": "orissapost.com",
      "date": "20260805",
@@ -1005,6 +1095,60 @@
      "lane": "corpus",
      "tier": 3,
      "match": "headline"
+    },
+    {
+     "title": "US student visas to Indian , Chinese nationals see sharp decline in 2025 , says CIS report",
+     "domain": "aninews.in",
+     "date": "20260805",
+     "url": "https://aninews.in/news/world/us/us-student-visas-to-indian-chinese-nationals-see-sharp-decline-in-2025-says-cis-report20260805111214/",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "RBI raises FY27 growth forecast , trims inflation outlook despite global headwinds ; Governor cites resilient domestic economy",
+     "domain": "aninews.in",
+     "date": "20260805",
+     "url": "https://aninews.in/news/business/rbi-raises-fy27-growth-forecast-trims-inflation-outlook-despite-global-headwinds-governor-cites-resilient-domestic-economy20260805111320/",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "H - 1B visa shock for Indians ? Trump new fee plan could cost IT firms millions , here what it means",
+     "domain": "moneycontrol.com",
+     "date": "20260805",
+     "url": "https://www.moneycontrol.com/world/h-1b-visa-shock-for-indians-trump-s-new-fee-plan-could-cost-it-firms-millions-here-s-what-it-means-explained-article-13995762.html",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "Gasoline , diesel exports from Belarus to Russia hit new record high in July , sources say",
+     "domain": "arabnews.com",
+     "date": "20260805",
+     "url": "https://www.arabnews.com/node/2653520/world",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "RBI Holds Repo Rate At 5 . 25 %, Experts See Growth Support But Warn Of Global Risks",
+     "domain": "freepressjournal.in",
+     "date": "20260805",
+     "url": "https://www.freepressjournal.in/business/rbi-holds-repo-rate-at-525-experts-see-growth-support-but-warn-of-global-risks",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "full-text"
+    },
+    {
+     "title": "Contained core inflation gives RBI room to stay on hold despite FY27 price risks , experts note",
+     "domain": "moneycontrol.com",
+     "date": "20260805",
+     "url": "https://www.moneycontrol.com/banking/contained-core-inflation-gives-rbi-room-to-stay-on-hold-despite-fy27-price-risks-experts-note-article-13995278.html",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "full-text"
     },
     {
      "title": "US Student Visas to India, China Decline 60% in 2025",
@@ -1023,6 +1167,24 @@
      "lane": "corpus",
      "tier": 4,
      "match": "full-text"
+    },
+    {
+     "title": "Southern Shrimp Alliance Applauds United States Imposing Section 301 Duties on Imported Seafood",
+     "domain": "perishablenews.com",
+     "date": "20260805",
+     "url": "https://perishablenews.com/seafood/southern-shrimp-alliance-applauds-united-states-imposing-section-301-duties-on-imported-seafood/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "headline"
+    },
+    {
+     "title": "Democratic States challenge in Court Trump new tariff under Section 301",
+     "domain": "thenorthlines.com",
+     "date": "20260805",
+     "url": "https://thenorthlines.com/democratic-states-challenge-in-court-trumps-new-tariff-under-section-301/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "headline"
     },
     {
      "title": "Conversation between India-US on interim bilateral trade agreement is ongoing: MEA",
@@ -1203,9 +1365,324 @@
      "lane": "corpus",
      "tier": null,
      "match": "full-text"
+    },
+    {
+     "title": "Russia sanctions bill : A new pressure tool aimed at India",
+     "domain": "asiabulletin.com",
+     "date": "20260805",
+     "url": "http://www.asiabulletin.com/news/279223250/russia-sanctions-bill-a-new-pressure-tool-aimed-at-india",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Revanth seeks simpler H - 1B visa process from US envoy",
+     "domain": "siasat.com",
+     "date": "20260805",
+     "url": "https://www.siasat.com/revanth-seeks-simpler-h-1b-visa-process-from-us-envoy-3519483/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u0412\u043b\u0438\u044f\u043d\u0438\u0435 \u0430\u043d\u0442\u0438\u0440\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u0438\u0445 \u0441\u0430\u043d\u043a\u0446\u0438\u0439 \u0421\u0428\u0410 2026 \u043d\u0430 \u0440\u044b\u043d\u043e\u043a \u0415\u0421 \u0438 \u0446\u0435\u043d\u044b",
+     "domain": "iz.ru",
+     "date": "20260805",
+     "url": "https://iz.ru/2144476/oksana-belkina/bei-svoikh-evropu-napugal-novyi-paket-adskikh-sanktcii-ssha",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "The Iran War : A New Shock to Global Trade",
+     "domain": "mondaq.com",
+     "date": "20260805",
+     "url": "https://www.mondaq.com:443/unitedstates/export-controls-trade-investment-sanctions/1826784/the-iran-war-a-new-shock-to-global-trade",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u0932\u0947\u0916 \u2013 \u0924\u0947\u0932 \u0930\u0936\u093f\u092f\u093e\u091a\u0947 , \u0921\u094b\u0933\u093e \u0905\u092e\u0947\u0930\u093f\u0915\u0947\u091a\u093e ! ",
+     "domain": "saamana.com",
+     "date": "20260805",
+     "url": "https://www.saamana.com/article-by-prasad-patil-on-russia-america-crude-oil/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Conversation between India - US on interim bilateral trade agreement is ongoing : MEA",
+     "domain": "phoenixherald.com",
+     "date": "20260805",
+     "url": "http://www.phoenixherald.com/news/279222589/conversation-between-india-us-on-interim-bilateral-trade-agreement-is-ongoing-mea",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Exclusive : Greer Blasts Democrat State Attorneys General For Choosing Foreign Sweatshops Over American Workers",
+     "domain": "breitbart.com",
+     "date": "20260805",
+     "url": "https://www.breitbart.com/economy/2026/08/05/exclusive-greer-blasts-democrat-state-attorneys-general-for-choosing-foreign-sweatshops-over-american-workers/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "RBI keeps repo rate unchanged at 5 . 25 per cent amid global uncertainties after concluding Monetary Policy Committee ( MPC ) ",
+     "domain": "mid-day.com",
+     "date": "20260805",
+     "url": "https://www.mid-day.com/business/business-news/article/rbi-keeps-repo-rate-unchanged-at-5-25-per-cent-amid-global-uncertainties-after-concluding-monetary-policy-committee-mpc-23643273",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Frisco Mayor Mark Hill Attends Bonalu Festival With Growing Telugu Community",
+     "domain": "klif.com",
+     "date": "20260805",
+     "url": "https://www.klif.com/2026/08/05/frisco-mayor-mark-hill-attends-bonalu-festival-with-growing-telugu-community/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "IG Defence Positions India Shahed - Class KAL Drone for Global Export Amid Rising Gulf Tensions",
+     "domain": "idrw.org",
+     "date": "20260805",
+     "url": "https://idrw.org/ig-defence-positions-indias-shahed-class-kal-drone-for-global-export-amid-rising-gulf-tensions/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u041b\u0438\u043d\u0434\u0441\u0438 \u0413\u0440\u044d\u043c \u0433\u0430\u0434\u0438\u0442 \u0410\u043c\u0435\u0440\u0438\u043a\u0435 \u0434\u0430\u0436\u0435 \u0438\u0437 \u043c\u043e\u0433\u0438\u043b\u044b",
+     "domain": "russian.rt.com",
+     "date": "20260805",
+     "url": "https://russian.rt.com/opinion/1665965-mirzayan-ssha-sankcii-rossiya",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u041c\u0438\u0440\u0430\u0436 \u0432 \u043d\u0435\u0431\u0435\u0441\u0430\u0445 : \u041f\u043e\u043f\u044b\u0442\u043a\u0430 \u041c\u043e\u0441\u043a\u0432\u044b \u043e\u0431\u043e\u0439\u0442\u0438 \u0441\u0430\u043d\u043a\u0446\u0438\u0438 \u0447\u0443\u0436\u0438\u043c\u0438 \u0440\u0443\u043a\u0430\u043c\u0438 \u043f\u0440\u043e\u0432\u0430\u043b\u0438\u043b\u0430\u0441\u044c \u0432 \u0418\u043d\u0434\u0438\u0438",
+     "domain": "zerkalo.az",
+     "date": "20260805",
+     "url": "https://zerkalo.az/mirazh-v-nebesah-popytka-moskvy-obojti-sanktsii-chuzhimi-rukami-provalilas-v-indii/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u00d6l - Gigant ohne Benzin : Treibstoffkrise eskaliert : Russland h\u00e4ngt pl\u00f6tzlich an Belarus | wallstreetONLINE",
+     "domain": "wallstreet-online.de",
+     "date": "20260805",
+     "url": "https://www.wallstreet-online.de/nachricht/21201417-oel-gigant-benzin-treibstoffkrise-eskaliert-russland-haengt-belarus",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u0412\u0421\u0423 \u0430\u0442\u0430\u043a\u043e\u0432\u0430\u043b\u0438 \u0440\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u0438\u0435 \u041d\u041f\u0417 : \u0432 \u0448\u0442\u0430\u0442\u0435 \u0421\u0428\u0410 \u043f\u0440\u043e\u0434\u043b\u0438\u043b\u0438 \u0440\u0435\u0436\u0438\u043c \u0427\u0421 \u0438\u0437 - \u0437\u0430 \u0443\u0434\u0430\u0440\u043e\u0432",
+     "domain": "ura.news",
+     "date": "20260805",
+     "url": "https://ura.news/news/1053115907",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "FCRA \u092c\u093f\u0932 \u092a\u0930 \u0905\u092e\u0947\u0930\u093f\u0915\u0940 \u0938\u093e\u0902\u0938\u0926 \u0930\u093e\u0907\u0932\u0940 \u092e\u0942\u0930 \u0915\u0947 \u092d\u0921\u093c\u0915\u0928\u0947 \u0915\u093e \u0916\u0941\u0932\u093e \u0930\u093e\u091c ! \u0916\u0924\u0930\u0928\u093e\u0915 \u0939\u0948 \u0935\u093f\u0926\u0947\u0936\u0940 \u090f\u091c\u0947\u0902\u0921\u093e ,  \u092d\u093e\u0930\u0924  \u0938\u0947 \u092e\u093f\u0932\u093e \u091f\u0915\u093e \u0938\u093e \u091c\u0935\u093e\u092c",
+     "domain": "navbharattimes.indiatimes.com",
+     "date": "20260805",
+     "url": "https://navbharattimes.indiatimes.com/india/fcra-bill-us-lawmaker-riley-moore-outburst-real-agenda-revealed-blunt-rebuff-from-indians/articleshow/132914451.cms",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "US Congressman Warns FCRA Bill Could Strain India - US Ties",
+     "domain": "siliconindia.com",
+     "date": "20260805",
+     "url": "https://www.siliconindia.com/news/general/us-congressman-warns-fcra-bill-could-strain-indiaus-ties-nid-241802-cid-1.html",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Budrys o restrykcjach Chin : Litwa musi ograniczy\u0107 zale\u017cno\u015b\u0107 od Pekinu",
+     "domain": "lrt.lt",
+     "date": "20260805",
+     "url": "https://www.lrt.lt/pl/wiadomosci/1261/3012168/budrys-o-restrykcjach-chin-litwa-musi-ograniczyc-zaleznosc-od-pekinu",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Build , Not Buy : The Semiconductor Lesson that Indian AI Experts Must Learn",
+     "domain": "carnegieendowment.org",
+     "date": "20260805",
+     "url": "https://carnegieendowment.org/india/research/2026/07/build-not-buy-the-semiconductor-lesson-that-indian-ai-experts-must-learn",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "The comprehensive economic agreement , which will give most goods moving between the two countries preferential duties , aims to boost bilateral trade . ",
+     "domain": "wwd.com",
+     "date": "20260805",
+     "url": "https://wwd.com/sourcing-journal/trade/bangladesh-south-korea-cepa-trade-deal-1239093782/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Asian economies face risks to food security",
+     "domain": "europe.chinadaily.com.cn",
+     "date": "20260805",
+     "url": "http://europe.chinadaily.com.cn/a/202608/05/WS6a726c80a310986e2b468f72.html",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "US senator blocks fast - tracking of hellish Russia sanctions bill",
+     "domain": "russiaherald.com",
+     "date": "20260805",
+     "url": "http://www.russiaherald.com/news/279223002/us-senator-blocks-fast-tracking-of-hellish-russia-sanctions-bill",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "US senator blocks fast - tracking of  hellish  Russia sanctions bill",
+     "domain": "russiaherald.com",
+     "date": "20260805",
+     "url": "http://www.russiaherald.com/news/279223022/us-senator-blocks-fast-tracking-of-hellish-russia-sanctions-bill",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Amazon . com vs . Dutch Bros : Which Stock Is a Better Buy in 2026 , the E - Commerce Giant or the Fast - Growing Beverage Company ? ",
+     "domain": "finance.yahoo.com",
+     "date": "20260805",
+     "url": "https://finance.yahoo.com/markets/stocks/articles/amazon-com-vs-dutch-bros-002201878.html",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u041f\u0440\u0438\u043d\u044f\u0442\u0438\u0435 \u0430\u043c\u0435\u0440\u0438\u043a\u0430\u043d\u0441\u043a\u0438\u0445 \u0441\u0430\u043d\u043a\u0446\u0438\u0439 \u043f\u0440\u043e\u0442\u0438\u0432 \u0420\u043e\u0441\u0441\u0438\u0438 \u0437\u0430\u0442\u044f\u0433\u0438\u0432\u0430\u0435\u0442\u0441\u044f",
+     "domain": "ng.ru",
+     "date": "20260805",
+     "url": "https://www.ng.ru/world/2026-08-05/1_9553_sanctions.html",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Russia restores banned gasoline sales to ease fuel crisis",
+     "domain": "news.az",
+     "date": "20260805",
+     "url": "https://news.az/news/russia-restores-banned-gasoline-sales-to-ease-fuel-crisis",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u65e5\u672c\u7684\u4e16\u754c\u7b2c\u4e00 \uff0c \u4e3a\u4f55\u6ca1\u6709\u6279\u91cf\u9635\u4ea1 \uff1f- \u864e\u55c5\u7f51",
+     "domain": "huxiu.com",
+     "date": "20260805",
+     "url": "https://www.huxiu.com/article/4880924.html",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "O choque que a\u00ed vem : China e Europa",
+     "domain": "sapo.pt",
+     "date": "20260805",
+     "url": "https://sapo.pt/artigo/o-choque-que-ai-vem-china-e-europa-6a7299783f3011d88f5c8521",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Se ir ao mercado j\u00e1 pesa no bolso , cen\u00e1rio deve piorar , prev\u00ea ONU",
+     "domain": "g1.globo.com",
+     "date": "20260805",
+     "url": "https://g1.globo.com/economia/noticia/2026/08/05/se-ir-ao-mercado-ja-pesa-no-bolso-cenario-deve-piorar-onu-preve-alta-dos-alimentos-ate-o-fim-de-2026.ghtml",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "U . S . Expands Sanctions on Global Networks Supporting Iran IRGC",
+     "domain": "english.globalarabnetwork.com",
+     "date": "20260805",
+     "url": "https://www.english.globalarabnetwork.com/2026/08/05/u-s-expands-sanctions-on-global-networks-supporting-irans-irgc/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Ram Charan : China Has the World by Its Throat",
+     "domain": "gfmag.com",
+     "date": "20260805",
+     "url": "https://gfmag.com/capital-raising-corporate-finance/ram-charan-china-has-world-by-throat/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u0397 \u03b1\u03bd\u03c4\u03b9\u03c0\u03b1\u03c1\u03ac\u03b8\u03b5\u03c3\u03b7 \u03c4\u03bf\u03c5 \u03a4\u03c1\u03b1\u03bc\u03c0 \u03bc\u03b5 \u03c4\u03bf \u0399\u03c1\u03ac\u03bd \u03c0\u03b1\u03c1\u03b1\u03b2\u03bb\u03ad\u03c0\u03b5\u03b9 \u03c4\u03b7 \u03b3\u03b5\u03bd\u03b9\u03ba\u03cc\u03c4\u03b5\u03c1\u03b7 \u03c0\u03c1\u03b1\u03b3\u03bc\u03b1\u03c4\u03b9\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1",
+     "domain": "skaikritis.gr",
+     "date": "20260805",
+     "url": "https://www.skaikritis.gr/i-antiparathesi-tou-trab-me-to-iran-paravlepei-ti-genikoteri-pragmatikotita/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "\u6797\u4fdd\u83ef | \u65e5\u5e38\u8a18\u9304\u5206\u4eab | \u75de\u5ba2\u90a6",
+     "domain": "lingfengcomment.pixnet.net",
+     "date": "20260805",
+     "url": "https://lingfengcomment.pixnet.net/blog?tagId=2565259",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Weitere Tote in Kiew : Moskau verst\u00e4rkt Angriffe",
+     "domain": "bbv-net.de",
+     "date": "20260805",
+     "url": "https://www.bbv-net.de/ueberregionales/ukraine-russland-krieg-newsblog-selenskyj-putin-trump-merz-verhandlungen-europa-5-august-w1220019-6000585579/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Itafos Reports Q2 2026 Financial Results and Operational Highlights",
+     "domain": "manilatimes.net",
+     "date": "20260805",
+     "url": "https://www.manilatimes.net/2026/08/06/tmt-newswire/globenewswire/itafos-reports-q2-2026-financial-results-and-operational-highlights/2399513",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
+    },
+    {
+     "title": "Ukraine Drones Reach Western Tonnage in the Black Sea as Saudi Diversions Around the Cape Widen",
+     "domain": "hellenicshippingnews.com",
+     "date": "20260805",
+     "url": "https://www.hellenicshippingnews.com/ukraines-drones-reach-western-tonnage-in-the-black-sea-as-saudi-diversions-around-the-cape-widen/",
+     "lane": "artlist",
+     "tier": null,
+     "match": "full-text"
     }
    ],
-   "spike_quality_tier12_share": 0.08
+   "spike_quality_tier12_share": 0.07
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
@@ -1226,9 +1703,9 @@
     "(\"Red Sea shipping\" OR \"Red Sea attacks\" OR \"Suez Canal\" OR \"Bab el-Mandeb\" OR \"Strait of Malacca\" OR \"Cape of Good Hope\" OR \"Houthi attacks\" OR \"Somali pirates\" OR \"Gulf of Aden\" OR \"merchant vessels\")"
    ],
    "n_matched_in_corpus": 120,
-   "n_artlist_supplement": 63,
+   "n_artlist_supplement": 66,
    "n_retrieved": 75,
-   "n_pool_unique": 133,
+   "n_pool_unique": 137,
    "pool_exhausted": false,
    "articles": [
     {
@@ -1237,6 +1714,15 @@
      "date": "20260805",
      "url": "https://www.aljazeera.com/news/2026/8/5/iran-oman-us-close-to-hormuz-deal-what-do-they-all-want",
      "lane": "corpus",
+     "tier": 2,
+     "match": "full-text"
+    },
+    {
+     "title": "Oil Holds Three - Day Drop as Iran , Oman Reach Hormuz Agreement",
+     "domain": "livemint.com",
+     "date": "20260805",
+     "url": "https://www.livemint.com/market/oil-holds-three-day-drop-as-iran-oman-reach-hormuz-agreement-11785969511394.html",
+     "lane": "artlist",
      "tier": 2,
      "match": "full-text"
     },
@@ -1257,6 +1743,24 @@
      "lane": "artlist",
      "tier": 2,
      "match": "full-text"
+    },
+    {
+     "title": "Yemen Houthis say they targeted Saudi oil vessel in Gulf of Aden",
+     "domain": "middleeasteye.net",
+     "date": "20260805",
+     "url": "https://www.middleeasteye.net/live-blog/live-blog-update/yemens-houthis-say-they-targeted-saudi-oil-vessel-gulf-aden",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "headline"
+    },
+    {
+     "title": "Yemen foreign minsiter , UN envoy discuss Houthi attacks on Red Sea shipping",
+     "domain": "middleeasteye.net",
+     "date": "20260805",
+     "url": "https://www.middleeasteye.net/live-blog/live-blog-update/yemen-foreign-minister-un-envoy-discuss-houthi-attacks-red-sea-shipping",
+     "lane": "artlist",
+     "tier": 3,
+     "match": "headline"
     },
     {
      "title": "Centre raises windfall tax on petrol, diesel and ATF exports from August 3",
@@ -1430,10 +1934,37 @@
      "match": "headline"
     },
     {
+     "title": "Attack on Tanker Reported in the Gulf of Aden",
+     "domain": "maritime-executive.com",
+     "date": "20260805",
+     "url": "https://maritime-executive.com/article/attack-on-tanker-reported-in-the-gulf-of-aden",
+     "lane": "artlist",
+     "tier": null,
+     "match": "headline"
+    },
+    {
      "title": "Houthis claim strike on Saudi oil vessel near Gulf of Aden",
      "domain": "news.az",
      "date": "20260805",
      "url": "https://news.az/news/houthis-claim-strike-on-saudi-oil-vessel-near-gulf-of-aden",
+     "lane": "artlist",
+     "tier": null,
+     "match": "headline"
+    },
+    {
+     "title": "1st LD Writethru : Houthis claim missile attack on Saudi oil tanker in Gulf of Aden",
+     "domain": "bignewsnetwork.com",
+     "date": "20260805",
+     "url": "http://www.bignewsnetwork.com/news/279224013/1st-ld-writethru-houthis-claim-missile-attack-on-saudi-oil-tanker-in-gulf-of-aden",
+     "lane": "artlist",
+     "tier": null,
+     "match": "headline"
+    },
+    {
+     "title": "Yemeni forces target Saudi oil tanker in Gulf of Aden in fresh retaliatory strike",
+     "domain": "presstv.co.uk",
+     "date": "20260805",
+     "url": "https://www.presstv.co.uk/Detail/2026/08/05/773804/Yemeni-forces-target-Saudi-oil-tanker-in-Gulf-of-Aden-in-fresh-retaliatory-strike",
      "lane": "artlist",
      "tier": null,
      "match": "headline"
@@ -1851,63 +2382,9 @@
      "lane": "corpus",
      "tier": null,
      "match": "full-text"
-    },
-    {
-     "title": "Who is Bahrain Shield aimed against?",
-     "domain": "news.az",
-     "date": "20260805",
-     "url": "https://news.az/news/who-is-bahrain-shield-aimed-against",
-     "lane": "corpus",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Houthis Claim Ballistic Missile Hit on Saudi Oil Tanker in Red Sea",
-     "domain": "oilprice.com",
-     "date": "20260805",
-     "url": "https://oilprice.com/Latest-Energy-News/World-News/Houthis-Claim-Ballistic-Missile-Hit-on-Saudi-Oil-Tanker-in-Red-Sea.html",
-     "lane": "corpus",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "President Donald Trump says deal to reopen the Strait of Hormuz could come as early as Wednesday",
-     "domain": "chicagotribune.com",
-     "date": "20260805",
-     "url": "https://www.chicagotribune.com/2026/08/05/trump-reopen-the-strait-of-hormuz/",
-     "lane": "corpus",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Latest Articles from Tom Kool  | OilPrice.com",
-     "domain": "oilprice.com",
-     "date": "20260805",
-     "url": "https://oilprice.com/contributors/Tom-Kool/",
-     "lane": "corpus",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Goldman Sachs Predicts Brent Crude To Trade Between $80-90 A Barrel",
-     "domain": "leadership.ng",
-     "date": "20260805",
-     "url": "https://leadership.ng/goldman-sachs-predicts-brent-crude-to-trade-between-80-90-a-barrel/",
-     "lane": "corpus",
-     "tier": null,
-     "match": "full-text"
-    },
-    {
-     "title": "Trump to Iran: Open Hormuz or get 'hit very hard'",
-     "domain": "manilatimes.net",
-     "date": "20260805",
-     "url": "https://www.manilatimes.net/2026/08/06/world/americas-emea/trump-to-iran-open-hormuz-or-get-hit-very-hard/2399077",
-     "lane": "corpus",
-     "tier": null,
-     "match": "full-text"
     }
    ],
-   "spike_quality_tier12_share": 0.04
+   "spike_quality_tier12_share": 0.053
   }
  }
 }
