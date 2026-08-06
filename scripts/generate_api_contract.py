@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.14.0"  # + forecasts.json (V11 experiment, signed registration)
+CONTRACT_VERSION = "1.15.0"  # + weekly headline fields (composite7/score7, additive)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.14.0",
+    "contract_version": "1.15.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -219,6 +219,8 @@
         "composite",
         "channels",
         "labels",
+        "composite7",
+        "channels7",
         "wikipedia"
       ],
       "stability": "stable"
@@ -226,12 +228,13 @@
     {
       "path": "data/latest.json",
       "format": "json",
-      "description": "Today's IGRM scores: per-channel press-salience percentiles and their unweighted mean.",
+      "description": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, robust to single-day news-cycle noise, verified to reach 99.5 the morning after a real onset (Pahalgam). The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
       "frozen_fields": [
         "_meta",
         "date",
         "definition",
         "composite",
+        "composite7",
         "channels"
       ],
       "stability": "stable"

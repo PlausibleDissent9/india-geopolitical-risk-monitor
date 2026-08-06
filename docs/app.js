@@ -10,7 +10,7 @@ const COLORS = {
   shipping: "#C39BFF",
 };
 
-const state = { history: null, range: 365, on: { composite: true } };
+const state = { history: null, range: 365, on: { composite: true, daily_tape: true } };
 let chart = null;
 
 function stateColor(score) {
@@ -64,20 +64,21 @@ function sparkline(series, color) {
 }
 
 function renderLatest(latest, history) {
-  const score = latest.composite;
+  // Headline is the 7-day (founder-signed 2026-08-06); daily is the tape.
+  const score = latest.composite7 != null ? latest.composite7 : latest.composite;
   if (score == null) return;
   document.documentElement.style.setProperty("--state", stateColor(score));
   document.getElementById("latest-date").textContent = latest.date;
   countUp(document.getElementById("composite-score"), score);
   document.getElementById("composite-delta").innerHTML =
-    `${fmtDelta(history ? delta1d(history.composite) : null)} <span class="flat">vs yesterday</span>`;
+    `${fmtDelta(history ? delta1d(history.composite7 || history.composite) : null)} <span class="flat">vs yesterday</span>`;
   document.getElementById("band-tick").style.left =
     `${Math.max(0, Math.min(100, score))}%`;
 
   const wrap = document.getElementById("components");
   wrap.innerHTML = "";
   for (const [key, c] of Object.entries(latest.channels || {})) {
-    const d = history && history.channels ? delta1d(history.channels[key]) : null;
+    const d = history && (history.channels7 || history.channels) ? delta1d((history.channels7 || history.channels)[key]) : null;
     const row = document.createElement("a");
     row.className = "component-row";
     row.href = `receipts.html?channel=${encodeURIComponent(key)}`;
@@ -86,7 +87,7 @@ function renderLatest(latest, history) {
     row.innerHTML =
       `<span class="component-name">${esc(c.label)}</span>` +
       sparkline(hist, COLORS[key] || "#888") +
-      `<span class="component-score">${c.score == null ? "–" : esc(c.score.toFixed(1))}</span>` +
+      `<span class="component-score">${(c.score7 != null ? esc(c.score7.toFixed(1)) : c.score == null ? "–" : esc(c.score.toFixed(1)))}</span>` +
       `<span class="component-delta">${fmtDelta(d)}</span>`;
     wrap.appendChild(row);
   }
@@ -141,7 +142,8 @@ function renderChart() {
       });
     }
   }
-  addSeries("composite", h.composite, "Composite");
+  addSeries("composite", h.composite7 || h.composite, "Composite (7-day)");
+  if (h.composite7) addSeries("daily_tape", h.composite, "Daily tape", true);
   for (const [key, data] of Object.entries(h.channels || {})) {
     addSeries(key, data, (h.labels && h.labels[key]) || key);
   }

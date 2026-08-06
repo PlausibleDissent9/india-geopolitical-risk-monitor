@@ -173,9 +173,9 @@ def render_home() -> None:
     s = re.sub(r'(<span id="latest-date">)[^<]*(</span>)',
                rf"\g<1>{latest['date']}\g<2>", s, count=1)
     s = re.sub(r'(<p class="big-number" id="composite-score"[^>]*>)[^<]*(</p>)',
-               rf"\g<1>{latest['composite']:.1f}\g<2>", s, count=1)
+               rf"\g<1>{(latest.get('composite7') if latest.get('composite7') is not None else latest['composite']):.1f}\g<2>", s, count=1)
     s = re.sub(r'(<p class="delta" id="composite-delta">).*?(</p>)',
-               rf"\g<1>{arrow(delta(hist['composite']))} vs yesterday\g<2>",
+               rf"\g<1>{arrow(delta(hist.get('composite7') or hist['composite']))} vs yesterday\g<2>",
                s, count=1)
     s = re.sub(r'(<p class="asof" id="asof">)[^<]*(</p>)',
                rf"\g<1>Showing {latest['date']}, the most recent completed news day. "

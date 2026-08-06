@@ -74,6 +74,30 @@ def build_scores(
     return scores
 
 
+def build_scores7(
+    volume: pd.DataFrame, window_days: int = PERCENTILE_WINDOW_DAYS
+) -> pd.DataFrame:
+    """The HEADLINE series (founder-signed 2026-08-06): trailing-7-day
+    mean of each channel's raw share, passed through the identical
+    percentile transform. Seven days is the minimal window that
+    cancels global press volume's weekly periodicity; the daily series
+    remains fully published as the tape (episodes, receipts, alerts
+    all stay daily). Verified on real onsets before signing: Pahalgam
+    read 99.5 on the 7-day the morning after the attack."""
+    v = volume.copy()
+    v.index = pd.to_datetime(v.index)
+    v = v.sort_index()
+    weekly = pd.DataFrame(
+        {ch: v[ch].rolling("7D", min_periods=4).mean() for ch in v.columns}
+    )
+    scores = pd.DataFrame(
+        {ch: _trailing_percentile(weekly[ch], window_days)
+         for ch in weekly.columns}
+    )
+    scores["composite"] = scores[v.columns].mean(axis=1, skipna=False)
+    return scores
+
+
 def detect_episodes(
     s: pd.Series, channel: str, sigma: float = EPISODE_SIGMA
 ) -> list[dict]:
@@ -144,26 +168,41 @@ def _file_meta(what: str, units: str) -> dict:
 
 
 def write_site_outputs(
-    scores: pd.DataFrame, episodes: list[dict], labels: dict[str, str]
+    scores: pd.DataFrame, episodes: list[dict], labels: dict[str, str],
+    scores7: pd.DataFrame | None = None,
 ) -> None:
     SITE_DATA.mkdir(parents=True, exist_ok=True)
     channels = [c for c in scores.columns if c != "composite"]
 
     valid = scores.dropna(subset=["composite"])
     latest_row = valid.iloc[-1] if not valid.empty else None
+    # Weekly headline fields are ADDITIVE (contract stays intact: the
+    # daily `score`/`composite` keep their frozen meaning forever).
+    row7 = None
+    if scores7 is not None and latest_row is not None:
+        v7 = scores7.dropna(subset=["composite"])
+        if not v7.empty:
+            row7 = v7.iloc[-1]
     latest = {
         "_meta": _file_meta(
-            "Today's IGRM scores: per-channel press-salience percentiles "
-            "and their unweighted mean.",
+            "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): "
+            "composite7/score7, the trailing-7-day mean share through "
+            "the identical percentile transform -- persistent salience, "
+            "robust to single-day news-cycle noise, verified to reach "
+            "99.5 the morning after a real onset (Pahalgam). The daily "
+            "composite/score fields are the tape: same construction on "
+            "single days, where episodes, receipts, and alerts live.",
             "percentile of the channel's own trailing 730 days, 0-100",
         ),
         "date": valid.index[-1].date().isoformat() if latest_row is not None else None,
         "definition": DEFINITION,
         "composite": _r1(latest_row["composite"]) if latest_row is not None else None,
+        "composite7": _r1(row7["composite"]) if row7 is not None else None,
         "channels": {
             ch: {
                 "label": labels.get(ch, ch),
                 "score": _r1(latest_row[ch]) if latest_row is not None else None,
+                "score7": _r1(row7[ch]) if row7 is not None else None,
             }
             for ch in channels
         },
@@ -183,6 +222,11 @@ def write_site_outputs(
         "channels": {ch: [_r1(x) for x in hist[ch]] for ch in channels},
         "labels": {ch: labels.get(ch, ch) for ch in channels},
     }
+    if scores7 is not None:
+        h7 = scores7.reindex(hist.index)
+        history["composite7"] = [_r1(x) for x in h7["composite"]]
+        history["channels7"] = {ch: [_r1(x) for x in h7[ch]]
+                                for ch in channels}
     # Second source rides along whenever its store exists, so no rebuild
     # can silently drop the site's source toggle again.
     wiki_store = ROOT / "data" / "raw" / "wiki_volume.csv"

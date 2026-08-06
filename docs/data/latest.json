@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "what": "Today's IGRM scores: per-channel press-salience percentiles and their unweighted mean.",
+  "what": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, robust to single-day news-cycle noise, verified to reach 99.5 the morning after a real onset (Pahalgam). The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
   "units": "percentile of the channel's own trailing 730 days, 0-100",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
@@ -10,26 +10,32 @@
  "date": "2026-08-05",
  "definition": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
  "composite": 58.4,
+ "composite7": 66.2,
  "channels": {
   "pakistan_west": {
    "label": "Pakistan / Western Border",
-   "score": 90.2
+   "score": 90.2,
+   "score7": 89.9
   },
   "china_east": {
    "label": "China / Eastern Border",
-   "score": 4.5
+   "score": 4.5,
+   "score7": 46.2
   },
   "gulf_energy": {
    "label": "Gulf & Energy Security",
-   "score": 78.5
+   "score": 78.5,
+   "score7": 78.0
   },
   "us_trade": {
    "label": "US & Trade Policy",
-   "score": 35.6
+   "score": 35.6,
+   "score7": 23.1
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 83.2
+   "score": 83.2,
+   "score7": 93.7
   }
  }
 }

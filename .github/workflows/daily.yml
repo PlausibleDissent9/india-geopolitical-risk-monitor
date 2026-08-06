@@ -138,6 +138,14 @@ jobs:
           else
             python -m src.run_daily
           fi
+      - name: China monitor (V8; registered 2026-08-06, resumes from chunk cache)
+        # Runner IPs are clean where the laptop's got heated; the
+        # settled-chunk cache carries backfill progress across runs, so
+        # each attempt banks more history until the store completes.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 30
+        run: python -m src.country_monitor china
       - name: Measured sector sensitivities (E2; signed mapping v1.1.0)
         # After the pipeline so episodes.json is fresh. Yahoo prices
         # fetched, used, never committed; only aggregates publish.

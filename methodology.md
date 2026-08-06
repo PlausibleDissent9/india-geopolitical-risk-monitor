@@ -346,6 +346,23 @@ a promise that rewrote itself every night would not be a promise.
 
 ## Changelog
 
+- **2026-08-06, v1.8.0 (the headline becomes the 7-day; founder-signed
+  in chat the same day).** The front page now leads with
+  `composite7`/`score7`: the trailing-7-day mean of each channel's raw
+  share passed through the **identical** percentile transform. Reasons,
+  in order: (1) a rank transform amplifies the dense middle of the
+  distribution, so ordinary news-cycle oscillation printed as 40–70
+  point daily swings on thin channels (china_east 33.5 → 74.3 → 4.5
+  across three days whose raw shares were 0.0134% → 0.0232% → 0.0070%
+  against a two-year median of 0.0165%); (2) seven days is the minimal
+  window that cancels global press volume's weekly periodicity; (3) the
+  construction was verified on real onsets before signing — the 7-day
+  read **99.5 the morning after the Pahalgam attack** and 96–98 through
+  Article 370, so nothing urgent is lost. The daily series is unchanged
+  and fully published as the tape (chart underlay, episodes, receipts,
+  sampling bands, and alerts all remain daily); `composite`/`score`
+  keep their frozen contract meaning forever, and the weekly fields are
+  additive. No historical value of any series changed.
 - **2026-08-06, v1.7.0 (tone as a second axis; G-track layer 1).**
   Each channel's matched articles — the same articles the registered
   dictionaries selected and the receipts pages enumerate — are

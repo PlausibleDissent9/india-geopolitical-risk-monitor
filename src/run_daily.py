@@ -126,7 +126,8 @@ def main() -> None:
     print("[5/5] Publish")
     labels = {ch: spec["label"] for ch, spec in dictionaries.items()
               if not ch.startswith("_")}
-    build_index.write_site_outputs(scores, episodes, labels)
+    build_index.write_site_outputs(scores, episodes, labels,
+                                   scores7=build_index.build_scores7(volume))
     publish_latest_note()
     render_site.main()
     print("[done] site data written to docs/data/")
