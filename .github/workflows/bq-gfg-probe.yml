@@ -1,0 +1,59 @@
+name: bq-gfg-probe
+# G2 feasibility probe (analysis/g2_g4_feasibility.md): measure the
+# REAL bytes for one day's Frontpage Graph join before designing any
+# lane. Dry-run first (costs nothing, reports bytes), then one capped
+# live query only if the dry-run fits the cap. Numbers before design.
+on:
+  push:
+    paths: [".github/workflows/bq-gfg-probe.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - run: pip install --quiet google-cloud-bigquery
+      - env:
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from google.cloud import bigquery
+          from google.oauth2 import service_account
+
+          info = json.loads(os.environ["GCP_SA_JSON"])
+          creds = service_account.Credentials.from_service_account_info(info)
+          client = bigquery.Client(project=os.environ["GCP_PROJECT_ID"],
+                                   credentials=creds)
+          # Representative shape: one recent full day, the two columns a
+          # G2 join would read, partition-scoped exactly as the lane would.
+          q = (
+              "SELECT COUNT(*) AS n_links, "
+              "  COUNT(DISTINCT FromFrontPageURL) AS n_frontpages "
+              "FROM `gdelt-bq.gdeltv2.gfg_partitioned` "
+              "WHERE _PARTITIONTIME >= TIMESTAMP('2026-08-04') "
+              "  AND _PARTITIONTIME < TIMESTAMP('2026-08-05')"
+          )
+          dry = client.query(q, job_config=bigquery.QueryJobConfig(dry_run=True))
+          gb = dry.total_bytes_processed / 1e9
+          print(f"[gfg-probe] DRY RUN: one day, two columns = {gb:.2f} GB")
+          CAP = 5 * 10**9
+          if dry.total_bytes_processed <= CAP:
+              job = client.query(q, job_config=bigquery.QueryJobConfig(
+                  maximum_bytes_billed=CAP))
+              row = list(job)[0]
+              print(f"[gfg-probe] LIVE: {row['n_links']:,} links from "
+                    f"{row['n_frontpages']:,} frontpages; "
+                    f"billed <= {job.total_bytes_billed or 0:,} bytes")
+              print("[gfg-probe] VERDICT: within cap -- G2 spike-days-only "
+                    "lane is affordable; record this number in "
+                    "analysis/g2_g4_feasibility.md")
+          else:
+              print(f"[gfg-probe] VERDICT: {gb:.1f} GB exceeds the 5 GB cap "
+                    "-- G2 publishes as measured-infeasible under the "
+                    "stated budget discipline (that is a finding); "
+                    "record in analysis/g2_g4_feasibility.md")
+          PY
