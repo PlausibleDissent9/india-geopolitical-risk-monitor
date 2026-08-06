@@ -709,3 +709,10 @@ outcome variable (events? deaths_best? binary violent-month?); (c) the
 comparison design (does a salience episode within ±k days of recorded
 violence count as corroboration?). Say "draft the V10 registration"
 and a signed-before-scored draft lands like tranche 2 did.
+
+## 0.17 China V8 monitor — registered; dictionaries will come for signature
+
+Your "add china to v8" is registered (monitor, not comparator — the
+control group stays clean). The V8 night will produce five draft China
+channel dictionaries with per-term rationales; nothing is fetched until
+you sign them, same as India's own registration discipline.
