@@ -33,6 +33,7 @@ from __future__ import annotations
 
 import csv
 import io
+import os
 import sys
 import time
 import urllib.error
@@ -103,12 +104,18 @@ def compute_day(day: date) -> tuple[dict, list[dict], list[dict]] | None:
     blob = _download(day)
     if blob is None:
         return None
-    # Polygons load once per day-file, not per row.
-    try:
-        geo_states = geo_split.load_states()
-    except (OSError, ValueError) as e:
-        print(f"[events] geometry unavailable ({e}); FIPS codes only")
-        geo_states = None
+    # Polygons load once per day-file, not per row. Cost MEASURED
+    # before enabling, because the morning contract is a promise:
+    # 0.09 ms per point with bounding-box rejection, ~0.5 s for a
+    # 5,000-event day-file, ~2.5 s for the daily --update 5 window.
+    # That is affordable, so it runs by default; IGRM_GEO_SPLIT=0 is
+    # the escape hatch if a server ever disagrees.
+    geo_states = None
+    if os.environ.get("IGRM_GEO_SPLIT", "1") != "0":
+        try:
+            geo_states = geo_split.load_states()
+        except (OSError, ValueError) as e:
+            print(f"[events] geometry unavailable ({e}); FIPS codes only")
     n_global = n_india = n_verbal = n_material = n_protest = 0
     goldstein_total = 0.0
     goldstein_n = 0
