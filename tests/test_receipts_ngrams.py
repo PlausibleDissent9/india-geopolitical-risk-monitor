@@ -69,6 +69,37 @@ def test_assemble_channel_dedupes_syndication_and_labels_aptness():
     assert block["spike_quality_tier12_share"] == 1.0
 
 
+def test_extended_scan_labels_lanes_by_scoring_membership():
+    corpus = _corpus()
+    # t1 is a scored stamp; t9 exists only in the extended scan.
+    corpus["scored_stamps"] = {"t1"}
+    corpus["matched"]["ch/q1"] = {"t1:1", "t9:5"}
+    corpus["india"] = {"t1:1", "t9:5"}
+    corpus["meta"]["t9:5"] = {"url": "https://extra.example/e",
+                              "title": "Border talks resume in extended file",
+                              "date": "20260805"}
+    spec = {"label": "Test channel", "anchor": "india",
+            "terms": ['"border talks"']}
+    block = receipts_ngrams.assemble_channel(
+        "ch", spec, {"t1:1", "t9:5"}, corpus, tiers={},
+    )
+    lanes = {a["url"]: a["lane"] for a in block["articles"]}
+    assert lanes["https://reuters.com/a"] == "corpus"
+    assert lanes["https://extra.example/e"] == "corpus-extended"
+    assert block["n_matched_in_corpus"] == 1
+    assert block["n_matched_extended"] == 1
+
+
+def test_scoring_stamps_derives_first_file_per_window():
+    from datetime import date as _date
+    from src.fetch_ngrams import scoring_stamps
+    stamps = ["20260805000100", "20260805000700", "20260805003200",
+              "20260805010500"]
+    scored = scoring_stamps(stamps, _date(2026, 8, 5))
+    # First file in each 30-minute window: 00:01 (not 00:07), 00:32, 01:05.
+    assert scored == {"20260805000100", "20260805003200", "20260805010500"}
+
+
 def test_artlist_supplement_merges_deduped_and_lane_labeled():
     spec = {"label": "Test channel", "anchor": "india",
             "terms": ['"border talks"', '"line of control"']}

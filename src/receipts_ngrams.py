@@ -37,7 +37,6 @@ import io
 import json
 import re
 import sys
-import time
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -45,20 +44,22 @@ from urllib.parse import urlparse
 
 from . import fetch_gdelt, receipts
 from .fetch_ngrams import (
-    BASE,
-    HEADERS,
     _day_minute_files,
-    _fetch,
     _norm_tokens,
     _subseq,
     group_specs,
     prefetch_pairs,
+    scoring_stamps,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 
-MAX_PUBLISHED = receipts.MAX_ARTICLES_PUBLISHED
+# 150, not the artlist lane's 75: with the extended scan a loud channel
+# has hundreds of genuine matches, and capping the page at 75 hid depth
+# that exists (founder order 2026-08-06, "articles galore"). The payload
+# stays a few hundred KB; n_pool_unique still tells the full count.
+MAX_PUBLISHED = 150
 UNRANKED = receipts.UNRANKED
 CHANNELS = receipts.CHANNELS
 
@@ -76,40 +77,57 @@ def _domain(url: str) -> str:
 CORPUS_CACHE = ROOT / "data" / "raw" / "receipt_days"
 
 
-def _cache_load(day: date) -> dict[str, Any] | None:
-    path = CORPUS_CACHE / f"{day.isoformat()}.json"
+def _cache_path(day: date, extended: bool) -> Path:
+    suffix = "-extended" if extended else ""
+    return CORPUS_CACHE / f"{day.isoformat()}{suffix}.json"
+
+
+def _cache_load(day: date, extended: bool) -> dict[str, Any] | None:
+    path = _cache_path(day, extended)
     if not path.exists():
         return None
     raw = json.loads(path.read_text(encoding="utf-8"))
     raw["india"] = set(raw["india"])
     raw["matched"] = {g: set(v) for g, v in raw["matched"].items()}
+    raw["scored_stamps"] = set(raw.get("scored_stamps") or [])
     return raw
 
 
-def _cache_save(day: date, corpus: dict[str, Any]) -> None:
+def _cache_save(day: date, corpus: dict[str, Any], extended: bool) -> None:
     CORPUS_CACHE.mkdir(parents=True, exist_ok=True)
     ser = dict(corpus)
     ser["india"] = sorted(corpus["india"])
     ser["matched"] = {g: sorted(v) for g, v in corpus["matched"].items()}
-    (CORPUS_CACHE / f"{day.isoformat()}.json").write_text(
-        json.dumps(ser), encoding="utf-8")
+    ser["scored_stamps"] = sorted(corpus.get("scored_stamps") or [])
+    _cache_path(day, extended).write_text(json.dumps(ser), encoding="utf-8")
 
 
-def collect_corpus(day: date, specs: dict[str, dict]) -> dict[str, Any] | None:
-    """One pass over the day's sampled minute-files. Returns matched
-    document metadata per sub-query group plus corpus totals, or None if
-    no files exist for the day (feed gap -> caller falls back). Cached
-    per day (data/raw/receipt_days) because a pass costs ~1GB of
-    downloads; delete the cache file to force a fresh scan."""
-    cached = _cache_load(day)
+def collect_corpus(day: date, specs: dict[str, dict],
+                   extended: bool = False) -> dict[str, Any] | None:
+    """One pass over the day's minute-files. Standard mode reads the
+    same half-hourly sample the score used; extended mode (founder
+    order 2026-08-06: "articles galore") reads EVERY existing file for
+    the day (~5x the data) and records which stamps belong to the
+    scoring sample, so each article can honestly say whether the
+    estimator counted it or it merely exists in the day's corpus.
+    Returns None if no files exist (feed gap -> caller falls back).
+    Cached per day and mode (data/raw/receipt_days); delete the cache
+    file to force a fresh scan."""
+    cached = _cache_load(day, extended)
     if cached is not None:
         # A cache written for a different registered dictionary version
         # would silently misattribute matches; the group keys must agree.
         if set(cached["matched"]) == set(specs):
-            print(f"[receipts-ngrams] corpus cache hit for {day}")
+            print(f"[receipts-ngrams] corpus cache hit for {day}"
+                  f"{' (extended)' if extended else ''}")
             return cached
-        print(f"[receipts-ngrams] corpus cache stale (dictionary change); rescanning")
-    stamps = _day_minute_files(day)
+        print("[receipts-ngrams] corpus cache stale (dictionary change); rescanning")
+    if extended:
+        stamps = _day_minute_files(day, samples=1440)
+        scored = scoring_stamps(stamps, day)
+    else:
+        stamps = _day_minute_files(day)
+        scored = set(stamps)  # the standard scan IS the scoring sample
     if not stamps:
         return None
 
@@ -171,8 +189,9 @@ def collect_corpus(day: date, specs: dict[str, dict]) -> dict[str, Any] | None:
     if total_en == 0:
         return None
     corpus = {"n_docs_sampled": total_en, "n_samples": len(stamps),
+              "extended": extended, "scored_stamps": scored,
               "india": india, "matched": matched, "meta": meta}
-    _cache_save(day, corpus)
+    _cache_save(day, corpus, extended)
     return corpus
 
 
@@ -222,16 +241,22 @@ def assemble_channel(
         if not url.startswith(("http://", "https://")):
             continue
         title_norm = " " + re.sub(r"[^a-z0-9 ]+", " ", rec["title"].lower()).strip() + " "
+        # "corpus" = the estimator counted this article; "corpus-extended"
+        # = it exists in the day's full corpus but fell outside the
+        # scoring sample. The distinction is the identity claim.
+        scored = corpus.get("scored_stamps") or set()
+        in_scored = key.split(":", 1)[0] in scored if scored else True
         pool.setdefault(url, {
             "title": rec["title"],
             "domain": _domain(url),
             "date": rec["date"],
             "url": url,
-            "lane": "corpus",
+            "lane": "corpus" if in_scored else "corpus-extended",
             "_rel": i,
             "_title_hit": any(p in title_norm for p in norm_phrases),
         })
-    n_matched = len(pool)
+    n_matched = sum(1 for a in pool.values() if a["lane"] == "corpus")
+    n_extended = sum(1 for a in pool.values() if a["lane"] == "corpus-extended")
     n_supplement = 0
     for i, a in enumerate(supplement or []):
         url = a.get("url") or ""
@@ -269,6 +294,7 @@ def assemble_channel(
         "terms": spec["terms"],
         "queries": fetch_gdelt.build_queries(spec["terms"], spec.get("anchor")),
         "n_matched_in_corpus": n_matched,
+        "n_matched_extended": n_extended,
         "n_artlist_supplement": n_supplement,
         "n_retrieved": len(articles),
         "n_pool_unique": n_pool_unique,
@@ -291,18 +317,18 @@ def _meta(corpus: dict[str, Any]) -> dict[str, Any]:
             "tier-sorted using source_tiers.json."
         ),
         "caveat": (
-            "The corpus is a stratified sample of the day's monitored "
-            "English web coverage ({n} half-hourly files, {d:,} "
-            "articles), so match counts are sample counts, not a "
-            "census of everything GDELT saw that day. An article "
-            "labeled 'in scored sample' is one the day's estimator "
-            "actually counted; articles labeled 'retrieved' come from "
-            "GDELT's bounded relevance search over the full day and "
-            "restore wire originals whose syndicated copies the sample "
-            "caught. Tiers order presentation and feed the tier 1-2 "
-            "share only; they never enter any score."
+            "Drawn from {n} minute-files covering {d:,} English "
+            "articles. An article labeled 'in scored sample' is one "
+            "the day's estimator actually counted; 'in day's corpus' "
+            "means it exists in the full day's monitored coverage but "
+            "fell outside the half-hourly scoring sample; 'retrieved' "
+            "comes from GDELT's bounded relevance search and restores "
+            "wire originals whose syndicated copies the corpus caught. "
+            "Tiers order presentation and feed the tier 1-2 share "
+            "only; they never enter any score."
         ).format(n=corpus["n_samples"], d=corpus["n_docs_sampled"]),
-        "method": "ngrams-corpus+artlist",
+        "method": ("ngrams-corpus-extended+artlist"
+                   if corpus.get("extended") else "ngrams-corpus+artlist"),
         "n_docs_sampled": corpus["n_docs_sampled"],
         "n_samples": corpus["n_samples"],
         "partial": False,
@@ -311,8 +337,10 @@ def _meta(corpus: dict[str, Any]) -> dict[str, Any]:
 
 
 def main() -> None:
-    if len(sys.argv) == 2:
-        day = date.fromisoformat(sys.argv[1])
+    args = [a for a in sys.argv[1:] if a != "--extended"]
+    extended = "--extended" in sys.argv[1:]
+    if len(args) == 1:
+        day = date.fromisoformat(args[0])
     else:
         latest = json.loads((SITE_DATA / "latest.json").read_text(encoding="utf-8"))
         day = date.fromisoformat(latest["date"])
@@ -322,8 +350,9 @@ def main() -> None:
         dictionaries = json.load(f)
 
     specs = group_specs()
-    print(f"[receipts-ngrams] scanning corpus for {day}")
-    corpus = collect_corpus(day, specs)
+    print(f"[receipts-ngrams] scanning corpus for {day}"
+          f"{' (extended: every file in the day)' if extended else ''}")
+    corpus = collect_corpus(day, specs, extended=extended)
     if corpus is None:
         print("[receipts-ngrams] no corpus files for the day; "
               "falling back to the artlist lane")
@@ -344,7 +373,8 @@ def main() -> None:
         channels[ch] = assemble_channel(
             ch, dictionaries[ch], keys, corpus, tiers, supplement)
         print(f"[receipts-ngrams] {ch}: {channels[ch]['n_matched_in_corpus']} "
-              f"in corpus + {channels[ch]['n_artlist_supplement']} artlist, "
+              f"scored + {channels[ch]['n_matched_extended']} extended + "
+              f"{channels[ch]['n_artlist_supplement']} artlist, "
               f"{channels[ch]['n_retrieved']} published")
 
     SITE_DATA.mkdir(parents=True, exist_ok=True)

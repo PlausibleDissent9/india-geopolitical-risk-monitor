@@ -123,9 +123,11 @@ function tierBadge(tier) {
     if (c.n_matched_in_corpus != null) {
       html += '<p class="kv">Provenance: <b>' + esc(c.n_matched_in_corpus) +
         "</b> articles matched inside the day's scored sample itself" +
+        (c.n_matched_extended ? ", <b>" + esc(c.n_matched_extended) +
+          "</b> more matched across the rest of the day's full corpus" : "") +
         (c.n_artlist_supplement ? ", plus <b>" + esc(c.n_artlist_supplement) +
-          "</b> retrieved from GDELT's relevance search over the full day " +
-          "(wire originals whose syndicated copies the sample caught)" : "") +
+          "</b> retrieved from GDELT's relevance search " +
+          "(wire originals whose syndicated copies the corpus caught)" : "") +
         ". Articles from the scored sample are ones the day's estimator actually counted.</p>";
     }
     if (c.articles.length) {
@@ -133,7 +135,8 @@ function tierBadge(tier) {
         "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) + '" rel="noopener" target="_blank">' +
         esc(a.title || a.url) + "</a> <span class='kv'>&middot; " + esc(a.domain) +
         (a.lane === "corpus" ? " &middot; in scored sample" :
-          (a.lane === "artlist" ? " &middot; retrieved" : "")) +
+          (a.lane === "corpus-extended" ? " &middot; in day's corpus" :
+            (a.lane === "artlist" ? " &middot; retrieved" : ""))) +
         (a.match === "full-text" ? " &middot; full-text match" : "") + "</span></li>"
       ).join("") + "</ul>";
     } else {

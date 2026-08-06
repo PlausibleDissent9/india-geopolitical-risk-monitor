@@ -155,8 +155,8 @@ jobs:
         # absent and _meta.method says which lane produced it.
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        timeout-minutes: 35
-        run: python -m src.receipts_ngrams
+        timeout-minutes: 60
+        run: python -m src.receipts_ngrams --extended
       - name: Machine-written daily brief (founder-approved 2026-08-04)
         # Runs after receipts so the brief can cite today's evidence.
         # Fail-closed: without the ANTHROPIC_API_KEY secret the module

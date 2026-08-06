@@ -287,15 +287,19 @@ was computed.
 ## docs/data/receipts.json
 
 Per-channel receipts for the latest published day only (not a
-historical archive). Two lanes, both labeled per article in `lane`:
+historical archive). Three lanes, labeled per article in `lane`:
 `"corpus"` articles were matched inside the same sampled ngrams corpus
 the day's scores are computed from (the estimator actually counted
-them; matcher, anchor, and tokenizer identical to the series), and
-`"artlist"` articles come from GDELT's bounded relevance search over
-the full day, restoring wire originals whose syndicated copies the
-sample caught. `n_matched_in_corpus` and `n_artlist_supplement` count
-the two lanes before URL dedup; `n_pool_unique` counts the merged pool
-after syndication dedup; up to 75 publish per channel. Each article
+them; matcher, anchor, and tokenizer identical to the series);
+`"corpus-extended"` articles matched under the identical matcher in
+the REST of the day's minute-files, outside the half-hourly scoring
+sample (they exist in the day's monitored coverage; the estimator did
+not count them); `"artlist"` articles come from GDELT's bounded
+relevance search, restoring wire originals whose syndicated copies the
+corpus caught. `n_matched_in_corpus`, `n_matched_extended`, and
+`n_artlist_supplement` count the lanes before URL dedup;
+`n_pool_unique` counts the merged pool after syndication dedup; up to
+150 publish per channel. Each article
 carries its source tier from `source_tiers.json` (`null` = "unranked",
 never assumed into a tier) and a `match` tag (`"headline"` when a
 channel phrase is in the title, else `"full-text"`). Ordering is

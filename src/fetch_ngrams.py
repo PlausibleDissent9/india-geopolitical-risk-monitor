@@ -130,16 +130,19 @@ def _probe_window(day: date, base_minute: int, window_min: int) -> str | None:
     return None
 
 
-def _day_minute_files(day: date, until_minute: int | None = None) -> list[str]:
-    """One existing timestamp per sampling window (SAMPLES_PER_DAY equal
-    windows across the day). Windows are independent, so they are probed
-    concurrently (founder-approved heal parallelization, 2026-08-06);
-    results keep window order, so the stamp list is identical to the
-    sequential scan's. until_minute stops early for partial-day sampling
-    (the nowcast)."""
-    window_min = 1440 // SAMPLES_PER_DAY
+def _day_minute_files(day: date, until_minute: int | None = None,
+                      samples: int = SAMPLES_PER_DAY) -> list[str]:
+    """One existing timestamp per sampling window (`samples` equal
+    windows across the day; the scoring default is SAMPLES_PER_DAY, and
+    samples=1440 degenerates to one-minute windows, i.e. every existing
+    file -- the receipts extended scan). Windows are independent, so
+    they are probed concurrently (founder-approved parallelization,
+    2026-08-06); results keep window order, so the stamp list is
+    identical to the sequential scan's. until_minute stops early for
+    partial-day sampling (the nowcast)."""
+    window_min = 1440 // samples
     bases = []
-    for w in range(SAMPLES_PER_DAY):
+    for w in range(samples):
         base_minute = w * window_min
         if until_minute is not None and base_minute >= until_minute:
             break
@@ -147,6 +150,23 @@ def _day_minute_files(day: date, until_minute: int | None = None) -> list[str]:
     with ThreadPoolExecutor(max_workers=8) as pool:
         found = pool.map(lambda b: _probe_window(day, b, window_min), bases)
     return [ts for ts in found if ts is not None]
+
+
+def scoring_stamps(all_stamps: list[str], day: date) -> set[str]:
+    """Which of a day's stamps the SCORING sample would have used: the
+    first existing file in each of the SAMPLES_PER_DAY windows. Derived
+    arithmetically from the full stamp list, no extra probing, so the
+    receipts extended scan can label 'in scored sample' exactly."""
+    window_min = 1440 // SAMPLES_PER_DAY
+    first_in_window: dict[int, str] = {}
+    prefix = f"{day:%Y%m%d}"
+    for ts in sorted(all_stamps):
+        if not ts.startswith(prefix):
+            continue
+        minute = int(ts[8:10]) * 60 + int(ts[10:12])
+        w = minute // window_min
+        first_in_window.setdefault(w, ts)
+    return set(first_in_window.values())
 
 
 def prefetch_pairs(stamps: list[str], workers: int = 4, ahead: int = 6):
