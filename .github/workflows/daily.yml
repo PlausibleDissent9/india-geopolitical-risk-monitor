@@ -171,6 +171,18 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python -m src.daily_brief
+      - name: Machine aptness pre-filter (founder-approved 2026-08-06)
+        # Labels receipts articles ON/OFF/ABSTAIN under the registered
+        # rubric; display-layer only (OFF collapses with a visible
+        # count, scores untouched); founder rulings audit the machine
+        # and the agreement rate publishes with the payload. Fail-closed
+        # without the key: the site shows unfiltered receipts.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m src.aptness
       - name: Self-heal stalled multilingual backfill (V5)
         # 2026-08-02: the chain's own two scheduled crons never fired even
         # once in their first ~17 hours live (only the original manual

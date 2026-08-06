@@ -8,7 +8,12 @@
 # verifies computation only (minutes). Without it, the full GDELT backfill
 # refetches (~30-60 min politely rate-limited) and the run additionally
 # verifies the fetch path; recent GDELT revisions of the last few days can
-# then produce small tail diffs -- the diff step ignores the final 7 days.
+# then produce small tail diffs -- the diff step ignores the final 35 days
+# (matching the heal window in daily.yml: heal revisions and opportunistic
+# chunk harvests propagate through trailing percentiles well past 7 days;
+# 2026-08-06: the first proof run failed at indices 6-13 days back for
+# exactly this reason -- committed history is a vintage record, a fresh
+# rebuild is a current-data recomputation, and both are correct).
 #
 # Expected runtime: ~5 min cached, ~45 min uncached.
 set -euo pipefail
@@ -54,7 +59,7 @@ from pathlib import Path
 
 src = Path(sys.argv[1]) / "docs" / "data"
 new = Path("docs") / "data"
-IGNORE_TAIL_DAYS = 7
+IGNORE_TAIL_DAYS = 35
 TOL = 1e-6
 # Market-dependent outputs (event_study, priced_risk) rest on Yahoo
 # inputs that are deliberately NOT committed (redistribution license),

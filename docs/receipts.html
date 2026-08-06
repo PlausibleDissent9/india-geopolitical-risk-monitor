@@ -45,12 +45,16 @@ function tierBadge(tier) {
   const q = new URLSearchParams(location.search);
   const channel = q.get("channel");
   const el = document.getElementById("body");
-  const [receipts, shelf, rel, cp, latest, sg, brief] = await Promise.all([
+  const [receipts, shelf, rel, cp, latest, sg, brief, apt] = await Promise.all([
     j("data/receipts.json"), j("data/expert_shelf.json"),
     j("data/map_relations.json"), j("data/chokepoints.json"),
     j("data/latest.json"), j("data/stress_gauge.json"),
-    j("data/daily_brief.json"),
+    j("data/daily_brief.json"), j("data/aptness.json"),
   ]);
+  // Stale-date guard: aptness labels apply only to the receipts payload
+  // they were computed from; a date mismatch shows unfiltered receipts.
+  const aptFresh = apt && receipts && apt._meta && apt._meta.date === receipts.date
+    ? apt : {channels: {}, _meta: null};
 
   // Evidence layers degrade INDEPENDENTLY: a missing articles sample
   // must not hide the expert shelf, the event record, or the physical
@@ -131,14 +135,31 @@ function tierBadge(tier) {
         ". Articles from the scored sample are ones the day's estimator actually counted.</p>";
     }
     if (c.articles.length) {
-      html += "<ul class='receipts-list'>" + c.articles.map(a =>
+      // Machine aptness pre-filter (registered rubric, display-layer
+      // only): OFF articles collapse behind a visible count with a
+      // toggle — never silently deleted, and the machine's error rate
+      // vs the founder's own rulings is shown beside the count.
+      const chApt = (aptFresh.channels && aptFresh.channels[channel]) || {};
+      const row = a =>
         "<li>" + tierBadge(a.tier) + ' <a href="' + esc(a.url) + '" rel="noopener" target="_blank">' +
         esc(a.title || a.url) + "</a> <span class='kv'>&middot; " + esc(a.domain) +
         (a.lane === "corpus" ? " &middot; in scored sample" :
           (a.lane === "corpus-extended" ? " &middot; in day's corpus" :
             (a.lane === "artlist" ? " &middot; retrieved" : ""))) +
-        (a.match === "full-text" ? " &middot; full-text match" : "") + "</span></li>"
-      ).join("") + "</ul>";
+        (a.match === "full-text" ? " &middot; full-text match" : "") + "</span></li>";
+      const shown = c.articles.filter(a => chApt[a.url] !== "OFF");
+      const hidden = c.articles.filter(a => chApt[a.url] === "OFF");
+      html += "<ul class='receipts-list'>" + shown.map(row).join("") + "</ul>";
+      if (hidden.length) {
+        const agr = aptFresh._meta && aptFresh._meta.founder_agreement;
+        html += "<details><summary>" + esc(hidden.length) +
+          " article(s) judged off-construct by the machine rubric (" +
+          esc((aptFresh._meta && aptFresh._meta.model) || "model") +
+          (agr && agr.rate != null ? "; agreement with the founder's rulings " +
+            esc(agr.rate) + " on " + esc(agr.n_overlap) + " overlaps" : "") +
+          ") &mdash; show them</summary><ul class='receipts-list'>" +
+          hidden.map(row).join("") + "</ul></details>";
+      }
     } else {
       html += '<p class="empty">No articles retrieved for this query on this day.</p>';
     }

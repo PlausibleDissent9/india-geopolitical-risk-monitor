@@ -456,3 +456,17 @@ reproducible from the repo alone. Headline attribution undercounts
 body-text phrases (stated), and the record starts at
 `_meta.first_day` — earlier episodes carry no attribution rather than
 a refetched guess.
+
+## docs/data/aptness.json
+
+Machine aptness labels for every article in the current
+`receipts.json`, keyed `channels.<ch>.<url> = "ON"|"OFF"|"ABSTAIN"`,
+produced by `claude-haiku-4-5` under the registered rubric
+(`auditor/RUBRIC.md`, version in `_meta.rubric_version`) from headline
+and domain only. **Display-layer only**: the receipts page collapses
+OFF articles behind a visible count with a toggle — nothing is
+deleted, and no score is touched anywhere. `_meta.founder_agreement`
+publishes the machine's measured agreement with the founder's own
+rulings (the human labels remain the calibration gold standard).
+`_meta.date` must match `receipts.json`'s date for labels to apply;
+on mismatch the site shows unfiltered receipts.

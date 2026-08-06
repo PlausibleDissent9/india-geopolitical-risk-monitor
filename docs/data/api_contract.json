@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.6.0",
+    "contract_version": "1.7.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -24,6 +24,16 @@
         "composite_weightings",
         "episode_thresholds_sigma",
         "percentile_windows_days"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/aptness.json",
+      "format": "json",
+      "description": "Machine aptness labels for every published receipts article, under the registered rubric (auditor/RUBRIC.md), from headline + domain only. Display-layer only: OFF articles are collapsed with a visible count, never deleted, and no score is touched. The founder's own rulings audit the machine; the agreement rate publishes here.",
+      "frozen_fields": [
+        "_meta",
+        "channels"
       ],
       "stability": "stable"
     },
@@ -296,8 +306,10 @@
       "frozen_fields": [
         "definition",
         "gap",
+        "gap_inr_realized_vol",
         "divergence_episodes",
-        "lead_lag"
+        "lead_lag",
+        "panel"
       ],
       "stability": "stable"
     },
