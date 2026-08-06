@@ -1,6 +1,14 @@
 # Construction and Validation of a Press-Salience Index for India-Related Geopolitical Risk
 
 **Ishan Krishna** · Working paper, v0.1 (July 2026) · Data and code: https://plausibledissent9.github.io/india-geopolitical-risk-monitor/
+> **SUPERSEDED 2026-08-06** by `paper/IGRM_paper_v1.md`, which carries
+> the full apparatus recomputed from live payloads (24/29 episodes, the
+> GPR external-validation table, the 1979-2016 historical proxy with its
+> registered refusals, the published sector-sensitivity null, and the
+> 7-day headline registration). This v0.1 scaffold is kept for the
+> record, per the project's own supersede-don't-delete rule.
+
+
 
 <!-- HOW TO USE THIS SCAFFOLD
 Sections marked [YOUR VOICE] carry the paper's judgment; write them
