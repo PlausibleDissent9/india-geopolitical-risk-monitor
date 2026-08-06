@@ -1,0 +1,43 @@
+name: bq-backext
+# M1 one-shot: build the 1979-2019 monthly store (capped bytes), then
+# grade the frozen anchors and run the overlap audit, committing both.
+# Fires when this file changes or on dispatch; the store commits once
+# and the module never re-queries an existing store.
+on:
+  push:
+    paths: [".github/workflows/bq-backext.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  backext:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt google-cloud-bigquery db-dtypes
+      - env:
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          if [ -f data/raw/back_extension_monthly.csv ]; then
+            echo "store exists; publish only"
+            python -m src.back_extension --publish
+          else
+            python -m src.back_extension --build --publish
+          fi
+      - name: Commit store + payload
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add data/raw/back_extension_monthly.csv docs/data/back_extension.json
+          git commit -m "back-extension: M1 store + graded anchors $(date -u +%F)" || exit 0
+          for i in 1 2 3; do
+            if git pull --rebase origin main; then git push && exit 0
+            else git rebase --abort || true; fi
+            sleep $((10 * i))
+          done
+          echo "push failed; rerun via dispatch"
