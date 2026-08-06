@@ -506,3 +506,22 @@ async function init() {
 }
 
 init();
+
+
+// Masthead shrink-on-scroll (founder request 2026-08-06): the sticky
+// description band yields once reading starts. Hysteresis avoids
+// flicker at the threshold; rAF keeps the listener cheap.
+(function () {
+  const mast = document.querySelector(".masthead");
+  if (!mast) return;
+  let ticking = false;
+  function update() {
+    ticking = false;
+    const y = window.scrollY;
+    if (y > 80) mast.classList.add("shrunk");
+    else if (y < 24) mast.classList.remove("shrunk");
+  }
+  window.addEventListener("scroll", () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+})();

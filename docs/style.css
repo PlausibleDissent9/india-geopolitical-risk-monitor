@@ -67,7 +67,18 @@ h2 { font-size: 1.2rem; letter-spacing: -0.01em; }
   background: color-mix(in srgb, var(--paper) 82%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   backdrop-filter: blur(14px) saturate(1.4);
+  transition: padding 220ms ease;
 }
+/* Shrink-on-scroll (founder request 2026-08-06): once the reader is
+   reading, the description yields the viewport -- tagline collapses,
+   title compacts, nav stays. Class toggled by app.js with hysteresis. */
+.masthead .tagline { overflow: hidden; max-height: 8em;
+  transition: max-height 240ms ease, opacity 180ms ease, margin 240ms ease; }
+.masthead h1 { transition: font-size 220ms ease; }
+.masthead.shrunk { padding: 10px 0 8px; }
+.masthead.shrunk .tagline { max-height: 0; opacity: 0; margin: 0; }
+.masthead.shrunk h1 { font-size: 1.05rem; }
+.masthead.shrunk .mono-eyebrow { display: none; }
 .masthead-row { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; flex-wrap: wrap; }
 .mast-links { display: flex; gap: 4px; font-size: 0.88rem; flex-wrap: wrap; }
 .mast-links a {
@@ -258,6 +269,7 @@ main > section:nth-child(5) { animation-delay: 240ms; }
 }
 @media (prefers-reduced-motion: reduce) {
   .big-number, .band-tick, main > section { transition: none; animation: none; }
+  .masthead, .masthead .tagline, .masthead h1 { transition: none; }
 }
 
 /* Scroll reveal (reveal.js) */
