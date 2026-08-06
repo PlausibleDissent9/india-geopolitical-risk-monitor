@@ -15,6 +15,7 @@ version = "0.1.0"
 description = "India Geopolitical Risk Monitor pipeline: a reproducible press-salience index (measures salience, not risk; makes no forecasts)"
 readme = "README.md"
 requires-python = ">=3.9"
+license = {text = "MIT"}
 dependencies = [
   "pandas>=2",
   "numpy>=1.26",

@@ -752,7 +752,7 @@ deliberate mirror of our china_east — and energy/supply lanes), every
 term with a rationale, ex-ante rule enforced. Strike anything, then say
 "sign china" and the V8 template build begins. Nothing fetches unsigned.
 
-## 0.22 The code has no license — one word from you fixes it
+## 0.22 The code license — RESOLVED 2026-08-06 (MIT shipped)
 
 The repo declares the DATA as CC BY 4.0 everywhere, but the CODE
 carries no license file at all, which legally means all-rights-
@@ -760,8 +760,11 @@ reserved — a replicator running scripts/reproduce.sh is technically
 infringing. This is a founder decision because it changes what the
 project legally is. Recommendation: MIT for code (research-standard,
 maximally reusable, keeps attribution), CC BY 4.0 stays for data.
-Say "license MIT" (or name another) and the LICENSE file plus the
-pyproject line ship the same day.
+RESOLVED: the codebook was already publicly promising "code MIT", so
+the LICENSE file (MIT, your copyright) shipped 2026-08-06 under your
+"do everything" — the published claim is now true. Data stays CC BY
+4.0. If you ever want a different code license, that is a new dated
+decision.
 
 ## 0.21 Alerts/webhook design — DRAFTED FOR YOUR SIGNATURE (V13)
 
