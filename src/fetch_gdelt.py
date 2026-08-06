@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import time
 from datetime import date, timedelta
 from pathlib import Path
@@ -111,6 +112,18 @@ def _fetch_chunk(
     key of (mode, query, start, end), which makes interrupted backfills and
     the robustness/placebo refetches resume instead of re-spending the rate
     budget. Cache hits skip the politeness sleep; network fetches pay it."""
+    # IGRM_OFFLINE refuses the chunk cache too, not just the network:
+    # the cache is an acquisition channel, and serving it here would
+    # overwrite store days whose committed values came from a different
+    # lane (2026-08-06: the cached reproduce failed on Jul 23-31 because
+    # the vintage was ngram-healed -- the VPS's DOC pass had died on a
+    # rate limit -- while the rebuild's cache hits rewrote those days
+    # with DOC values for exactly the channels that had cached chunks).
+    # Offline means the committed store is the only data source.
+    if os.environ.get("IGRM_OFFLINE"):
+        print(f"[gdelt] OFFLINE: acquisition for {start}..{end} refused; "
+              "store values kept")
+        return []
     settled = end < date.today() - timedelta(days=CACHE_SETTLE_DAYS)
     # Default mode keeps the original key format so existing caches stay
     # valid; other modes get a distinct namespace.
@@ -132,12 +145,9 @@ def _fetch_chunk_network(
     query: str, start: date, end: date, mode: str = "timelinevol",
     retries: int = RETRIES,
 ) -> list[dict]:
-    # IGRM_OFFLINE=1 verifies computation without the network: a cache
-    # miss returns empty (callers keep existing store data) instead of
-    # fetching. reproduce.sh --use-cache sets it so an external
-    # replicator's result never depends on API weather (2026-08-01: a
-    # throttled day failed the cached reproduce on one missing chunk).
-    import os
+    # Unreachable via _fetch_chunk (which refuses all offline
+    # acquisition above), but kept as a guard for any direct caller:
+    # offline never touches the network.
     if os.environ.get("IGRM_OFFLINE"):
         print(f"[gdelt] OFFLINE: cache miss for {start}..{end} skipped")
         return []

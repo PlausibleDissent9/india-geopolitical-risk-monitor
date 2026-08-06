@@ -33,9 +33,13 @@ if [[ "${1:-}" == "--use-cache" ]]; then
   echo "[reproduce] copying raw-data cache from source checkout"
   rm -rf data/raw
   cp -R "$SRC/data/raw" data/raw
-  # Cached mode verifies computation, strictly offline: a cache miss
-  # keeps store data instead of fetching, so the result never depends
-  # on API weather.
+  # Cached mode verifies computation, strictly offline: ALL acquisition
+  # is refused -- network and the settled-chunk cache alike -- so the
+  # committed store is the only data source and the rebuild is a pure
+  # recompute of the committed vintage. (2026-08-06: a cache hit used
+  # to overwrite ngram-healed store days with DOC-cache values, which
+  # made the diff depend on which lane happened to have produced the
+  # vintage that morning.)
   export IGRM_OFFLINE=1
 fi
 
