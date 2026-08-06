@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status — India Geopolitical Risk Monitor</title>
+<meta name="description" content="Live operational status: per-source data freshness against stated windows, the morning contract's measured record, and each pipeline lane's last evidence stamp.">
+<link rel="canonical" href="https://igrm.in/status.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260804b">
+<style>
+.status-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.status-table th, .status-table td { text-align: left; padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--rule); vertical-align: top; }
+.status-table th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--muted); }
+.status-table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ok-yes { color: var(--accent); font-weight: 600; }
+.ok-no { color: var(--warn, #c86); font-weight: 600; }
+.tblwrap { overflow-x: auto; }
+.contract-strip { display: flex; gap: 1.6rem; flex-wrap: wrap; margin: 0.8rem 0 0.4rem;
+  border: 1px solid var(--rule); border-radius: 10px; padding: 0.9rem 1.1rem; background: var(--card); }
+.contract-strip b { font-size: 1.5rem; font-variant-numeric: tabular-nums; display: block; }
+.contract-strip .kv { font-size: 0.8rem; color: var(--muted); }
+.role-note { color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="start.html">Start here</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+</header>
+
+<h2>Status</h2>
+<p class="prose">This page is the instrument watching itself: each data source's latest
+data day against a stated freshness window, the morning contract's measured record, and
+the last evidence stamp from every pipeline lane. Everything below derives from committed
+files — nothing is self-reported, and a stale source shows as stale by rule. The freshness
+windows are operational expectations (source publish cadence plus fetch cadence), stated
+in <a href="data/status.json">the payload itself</a>; the morning contract is the only
+promise, and <a href="data/reliability.json">its record keeps misses listed forever</a>.</p>
+
+<h3>Morning contract</h3>
+<p class="prose">Day <i>D</i> final by 06:00 IST on <i>D</i>+1, scored from git commit
+timestamps since 2026-08-02.</p>
+<div class="contract-strip" id="contract" hidden>
+  <div><b id="c-rate">–</b><span class="kv">on-time rate</span></div>
+  <div><b id="c-count">–</b><span class="kv">on time / scored days</span></div>
+  <div><b id="c-last">–</b><span class="kv">last scored day</span></div>
+</div>
+<div class="tblwrap"><table class="status-table" id="days-table" hidden>
+  <thead><tr><th>Measured day</th><th>Published (IST)</th><th>Deadline (IST)</th><th>On time</th></tr></thead>
+  <tbody id="days-body"></tbody>
+</table></div>
+
+<h3>Data sources</h3>
+<div class="tblwrap"><table class="status-table">
+  <thead><tr><th>Source</th><th>Latest data</th><th>Age (days)</th><th>Window (days)</th><th>Within window</th></tr></thead>
+  <tbody id="src-body"><tr><td colspan="5">Loading status.json…</td></tr></tbody>
+</table></div>
+
+<h3>Pipeline lanes</h3>
+<div class="tblwrap"><table class="status-table">
+  <thead><tr><th>Lane</th><th>Last evidence stamp</th><th>Evidence file</th></tr></thead>
+  <tbody id="lane-body"><tr><td colspan="3">Loading…</td></tr></tbody>
+</table></div>
+
+<p class="prose role-note" id="gen-note"></p>
+
+<script>
+(async function () {
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g,
+      c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  try {
+    const res = await fetch("data/status.json");
+    const d = await res.json();
+    const srcBody = document.getElementById("src-body");
+    srcBody.innerHTML = d.sources.map(s => {
+      const okCell = s.ok
+        ? '<span class="ok-yes">yes</span>'
+        : '<span class="ok-no">no</span>' + (s.note ? " — " + esc(s.note) : "");
+      return "<tr><td>" + esc(s.name) +
+        '<div class="role-note">' + esc(s.role) + "</div></td>" +
+        '<td class="num">' + esc(s.latest_data || "—") + "</td>" +
+        '<td class="num">' + esc(s.age_days != null ? s.age_days : "—") + "</td>" +
+        '<td class="num">' + esc(s.expect_within_days) + "</td>" +
+        "<td>" + okCell + "</td></tr>";
+    }).join("");
+    const laneBody = document.getElementById("lane-body");
+    laneBody.innerHTML = d.lanes.map(l =>
+      "<tr><td>" + esc(l.name) + "</td>" +
+      '<td class="num">' + esc(l.last || "—") + "</td>" +
+      "<td><a href=\"" + esc(l.evidence.replace("docs/", "")) + "\">" +
+      esc(l.evidence.replace("docs/data/", "")) + "</a></td></tr>"
+    ).join("");
+    const mc = d.morning_contract || {};
+    if (mc.scored_days != null) {
+      document.getElementById("contract").hidden = false;
+      document.getElementById("c-rate").textContent =
+        mc.rate == null ? "—" : (100 * mc.rate).toFixed(0) + "%";
+      document.getElementById("c-count").textContent =
+        mc.on_time + " / " + mc.scored_days;
+      document.getElementById("c-last").textContent = mc.last_scored_day || "—";
+    }
+    document.getElementById("gen-note").textContent =
+      "Payload generated " + (d._meta && d._meta.generated || "—") +
+      " (UTC), regenerated by the daily run.";
+    // The full per-day contract table comes from the reliability record.
+    const rel = await (await fetch("data/reliability.json")).json();
+    if (rel.days && rel.days.length) {
+      document.getElementById("days-table").hidden = false;
+      document.getElementById("days-body").innerHTML = rel.days.map(x =>
+        "<tr><td>" + esc(x.day) + (x.contract ? "" :
+          ' <span class="role-note">(pre-contract)</span>') + "</td>" +
+        '<td class="num">' + esc(x.published_ist) + "</td>" +
+        '<td class="num">' + esc(x.deadline_ist) + "</td>" +
+        "<td>" + (x.on_time == null ? "—" : x.on_time
+          ? '<span class="ok-yes">yes</span>'
+          : '<span class="ok-no">no</span>') + "</td></tr>"
+      ).join("");
+    }
+  } catch (e) {
+    document.getElementById("src-body").innerHTML =
+      "<tr><td colspan=\"5\">status.json unavailable — " + esc(e.message) + "</td></tr>";
+  }
+})();
+</script>
+</body>
+</html>

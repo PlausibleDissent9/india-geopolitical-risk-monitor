@@ -220,6 +220,13 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         run: python scripts/build_reliability.py
+      - name: Status payload (M4; derives from committed files only)
+        # After reliability so the contract summary is current. The
+        # module never fetches anything; a missing store shows as a
+        # rule-computed "no" with its note, not a crash.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        run: python -m src.status_data
       - name: Dual-computation audit (fail-loud; two derivations must agree)
         if: github.event.inputs.backfill != 'true'
         run: python -m src.audit
