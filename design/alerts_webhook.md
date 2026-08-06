@@ -1,8 +1,12 @@
-# Alerts and webhooks: design (unsigned — nothing here is live)
+# Alerts and webhooks: design — SIGNED 2026-08-06
 
-Status: DESIGN. No alert has ever been emitted. The founder signs the
-trigger thresholds before the first one is; until then this file is a
-proposal, and the site makes no alert promise anywhere.
+Status: SIGNED by the founder in chat 2026-08-06 ("sign alerts").
+The three trigger definitions and their parameters below are now
+REGISTERED; changing any of them is an append-only dated amendment in
+this file. Phase 0 (src/alerts.py, docs/data/alerts.json) implemented
+the same day; T2's percentile window is 730 days, the instrument's
+own convention. Phase-1 webhooks follow the four-week Phase-0
+observation per the implementation order below.
 
 ## Why alerts, and why carefully
 

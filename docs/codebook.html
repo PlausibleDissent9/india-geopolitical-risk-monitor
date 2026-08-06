@@ -830,6 +830,19 @@ per channel; <code>measured_sensitivity</code> appears only where a signed NSE
 mapping exists (see sector_sensitivity.json). Nothing is computed
 here that is not already published elsewhere; the salience-not-risk
 statement travels in every file's <code>_meta</code>.</p>
+<h2>docs/data/alerts.json</h2>
+<p>Registered alert events (design/alerts_webhook.md, founder-signed
+2026-08-06), Phase 0 poll model: <code>alerts[]</code> newest first, 90-day
+retention, stable <code>id</code>s for consumer dedupe. Types: T1
+<code>band_separated_move</code> (a channel's 95% sampling band does not overlap
+the previous day's — the arithmetic that separates real moves from
+sampling noise), T2 <code>composite_percentile_crossing</code> (trailing 90th
+percentile, 730-day window, and both band edges on the crossing's
+side), T3 <code>integrity_event</code> (the morning contract's own misses,
+because the instrument's failures alert the same channel its
+successes do). Every field is a number or the direction of a
+completed move; nothing forecasts. Webhook push (Phase 1) follows a
+four-week observation period per the signed design.</p>
 </div>
 <footer>
   <p><a href="./">&larr; back to the index</a> &middot; <a href="validation.html">validation results</a></p>

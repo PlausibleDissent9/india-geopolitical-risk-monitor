@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.12.0",
+    "contract_version": "1.13.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -15,6 +15,16 @@
     "deprecated": []
   },
   "endpoints": [
+    {
+      "path": "data/alerts.json",
+      "format": "json",
+      "description": "Registered alert events computed from published payloads after each daily publish (design/alerts_webhook.md, founder-signed 2026-08-06): T1 band-separated channel moves, T2 composite 90th-percentile crossings that survive their sampling band, T3 integrity events (the morning contract's own misses). Poll model, newest first, 90-day retention, stable ids. Every field is a number or the direction of a COMPLETED move; nothing here is a forecast.",
+      "frozen_fields": [
+        "_meta",
+        "alerts"
+      ],
+      "stability": "stable"
+    },
     {
       "path": "data/alt_specs.json",
       "format": "json",
