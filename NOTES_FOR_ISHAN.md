@@ -751,3 +751,25 @@ countries/china_DRAFT.json: five channels from China's own exposure
 deliberate mirror of our china_east — and energy/supply lanes), every
 term with a rationale, ex-ante rule enforced. Strike anything, then say
 "sign china" and the V8 template build begins. Nothing fetches unsigned.
+
+## 0.21 Alerts/webhook design — DRAFTED FOR YOUR SIGNATURE (V13)
+
+design/alerts_webhook.md: three trigger conditions computed only from
+already-published payloads — T1 band-separated daily move (the exact
+arithmetic that caught the china_east crash), T2 composite 90th-
+percentile crossing that survives its band, T3 integrity failures
+(missed morning contract, audit red) alerting the same channel as
+everything else. Delivery is phased: alerts.json static payload first
+(free, CSP-safe, triggers earn trust in production before anyone
+builds push), HMAC-signed webhooks from the VPS second, and NO email
+tier — that collides with "one email a week" and is left as an open
+question, not a design. Thresholds become registered parameters the
+moment you sign; after that, changing one is an append-only amendment
+like a dictionary edit. Say "sign alerts" and src/alerts.py ships with
+its trigger tests the same day. Beside it, countries/RECIPE.md now
+documents the full new-country process (the China playbook, written
+down: draft → rationales → exclusions → your signature → calibrate →
+identical transform → tests → publish with honesty surfaces on day
+one) — that plus the recipe closes V13's design surface; the
+pip-installable package restructure waits for a quiet slot because it
+moves module paths that live cron lanes are executing tonight.
