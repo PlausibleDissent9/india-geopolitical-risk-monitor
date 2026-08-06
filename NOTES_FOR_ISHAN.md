@@ -732,3 +732,14 @@ as a post-Aug-15 second instrument on the V8 monitors-as-config chassis:
 state-level configs with their own ex-ante dictionaries (policy,
 investment, FDI-attention channels), same validation discipline. Say
 "prioritize domestic" if you want it ahead of V15-V21.
+
+## 0.19 V11 forecast registration — YOUR SIGNATURE STARTS THE CLOCK
+
+validation/forecast_registration_DRAFT.json: weekly mechanical spike
+questions per channel, dumb-baseline vs salience-informed arms, Brier
+scoring, ex-ante V12 fork criterion (beat climatology by 5% relative,
+26+ weeks, or the negative result publishes prominently). The whole
+point is elapsed time — every unsigned day is a week of evidence the
+Aug 15 page cannot show accruing. Say "sign the forecast registration"
+and question generation ships the same day, clearly separated on a
+research page that presumes the null.

@@ -1,0 +1,23 @@
+{
+ "_meta": {
+  "status": "DRAFT-UNSIGNED. No probability may be generated, no question opened, and no score computed until the founder signs by renaming this file to forecast_registration.json in a dated commit. The monitor's no-forecast rule stands everywhere else on the site; this experiment lives only under a clearly separated research page whose header states it is an experiment about the index, not a product of it.",
+  "drafted_on": "2026-08-06",
+  "purpose": "V11: measure, in public and against a dumb baseline, whether salience contains any predictive information about its own future spikes. V12's fork is decided by this evidence and only by it: demonstrable calibration means an honestly repositioned probability product; anything less means the negative result publishes prominently and the monitor stays a monitor."
+ },
+ "design": {
+  "question_family": "For each channel C, each Monday 00:00 UTC: 'Will channel C record at least one spike day (raw share > trailing 90-day mean + 2 sigma, the registered episode rule, baseline lagged 1 day) within the next 14 calendar days?' Mechanical, ex-ante, zero editorial judgment; the outcome is computed by the same detector the site already runs.",
+  "cadence": "Weekly, all five channels, auto-generated and committed BEFORE the window opens; a question whose commit timestamp is not before its window start is void and recorded as void.",
+  "arms": {
+   "climatology": "P(spike in 14d) = trailing 104-week frequency of the same event for that channel. The dumb baseline every claim must beat.",
+   "salience_informed": "Logistic model on two registered inputs only: the channel's current percentile score and its 7-day score change. Coefficients fit once on pre-registration history, then FROZEN; refits are new registrations, never silent updates."
+  },
+  "scoring": {
+   "rule": "Brier score per question; cumulative and rolling-26-week means per arm; calibration curve (deciles) published once 50 questions have resolved.",
+   "grading": "Mechanical at horizon close, from the committed daily series; no human touches a grade.",
+   "void_rules": "A question is void if the underlying series has a data gap covering more than 4 of the 14 days; voids are counted and published, never dropped silently."
+  },
+  "fork_criterion_ex_ante": "After at least 26 resolved weeks per channel: the salience arm must beat climatology's cumulative Brier by at least 5 percent relatively, with a paired bootstrap p < 0.05 across questions. Meeting it triggers the V12 repositioning DISCUSSION (founder decision, public). Failing it triggers prominent publication of the negative result. There is no third outcome and no re-rolling the criterion.",
+  "separation": "Research page only (research/forecasts.html), never the front page, never latest.json, never the brief, never the newsletter. The page header carries: 'This is an experiment about the index, not advice, and until the registered criterion resolves it should be presumed to show that salience does not forecast.' The site-wide measurement-language lint gains a single scoped exemption for research/ paths whose pages carry that mandatory header, enforced by test."
+ },
+ "founder_signature": null
+}
