@@ -70,9 +70,9 @@ def fetch_day_themes(day: str,
     )
     themes_by_url: dict[str, set[str]] = {}
     for r in client.query(q, job_config=cfg):
-        codes = {seg.split(",")[0] for seg in (r["themes"] or "").split(";")
-                 if seg and seg.split(",")[0]}
-        themes_by_url[r["url"]] = codes
+        themes_by_url[r["url"]] = {
+            seg.split(",")[0] for seg in (r["themes"] or "").split(";")
+            if seg and seg.split(",")[0]}
 
     out: dict[str, Any] = {}
     for group, urls in sorted(urls_by_group.items()):
