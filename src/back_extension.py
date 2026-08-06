@@ -45,9 +45,9 @@ CHANNELS: dict[str, str] = {
     "us_trade": ("((Actor1CountryCode='IND' AND Actor2CountryCode='USA')"
                  " OR (Actor1CountryCode='USA' AND Actor2CountryCode='IND'))"
                  " AND SUBSTR(CAST(EventRootCode AS STRING),1,2) IN ('06','16')"),
-    "gulf_energy": ("((Actor1CountryCode='IND' AND Actor2CountryCode IN {g})"
-                    " OR (Actor1CountryCode IN {g} AND Actor2CountryCode='IND'))"
-                    ).format(g=str(GULF)),
+    "gulf_energy": (f"((Actor1CountryCode='IND' AND Actor2CountryCode IN {str(GULF)})"
+                    f" OR (Actor1CountryCode IN {str(GULF)} AND Actor2CountryCode='IND'))"
+                    ),
 }
 ANCHORS = [  # memo decision C, frozen; graded top-decile trailing-10y
     ("1984-06", "pakistan_west", "Operation Blue Star + aftermath"),
