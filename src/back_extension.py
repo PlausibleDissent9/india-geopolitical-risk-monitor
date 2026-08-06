@@ -106,7 +106,12 @@ def build() -> None:
 
 
 def _pct_10y(s: pd.Series) -> pd.Series:
-    return s.rolling(120, min_periods=60).apply(
+    """Trailing-10-year percentile; a segment shorter than the window
+    (generation 2.0 is 59 months) uses its own length with a 24-month
+    floor -- stated in the payload, because a 120-month window on a
+    59-month segment can only ever produce silence."""
+    window = min(120, len(s))
+    return s.rolling(window, min_periods=min(60, max(24, window // 2))).apply(
         lambda a: 100.0 * float((a[:-1] <= a[-1]).mean()) if len(a) > 1 else float("nan"),
         raw=True)
 
@@ -115,7 +120,12 @@ def publish() -> None:
     if not STORE.exists():
         raise SystemExit("[backext] no store; run --build in CI first")
     df = pd.read_csv(STORE)
-    df["month"] = pd.PeriodIndex(df["month"].astype(str), freq="M")
+    # BigQuery returns MonthYear as YYYYMM integers; the generation
+    # column round-trips CSV as float. Both bit the first publish.
+    df["month"] = pd.PeriodIndex(
+        pd.to_datetime(df["month"].astype(str), format="%Y%m"), freq="M")
+    df["generation"] = df["generation"].astype(str).str.replace(
+        ".0", "", regex=False).map({"1": "1.0", "2": "2.0"})
     df = df.set_index("month").sort_index()
     # Per-generation percentile normalization (memo decision A), seam
     # published, raw shares published beside percentiles.
@@ -133,14 +143,16 @@ def publish() -> None:
             "top_decile": None if p is None or pd.isna(p) else bool(p >= 90.0),
         })
     # Overlap audit vs the live instrument, monthly means, 2017-2019.
-    from src import build_index
     v = pd.read_csv(ROOT / "data" / "raw" / "gdelt_volume.csv",
                     parse_dates=["date"]).set_index("date")
-    live = build_index.build_scores(v).resample("MS").mean()
+    # Overlap on RAW monthly shares both sides: co-movement is the
+    # question, and raw shares carry no window artifacts across the
+    # short generation-2.0 segment.
+    live = v.resample("MS").mean()
     live.index = pd.PeriodIndex(live.index, freq="M")
     overlap = {}
     for ch in CHANNELS:
-        joint = pd.concat([pcts[ch], live[ch]], axis=1,
+        joint = pd.concat([df[ch], live[ch]], axis=1,
                           keys=["proxy", "live"]).dropna()
         joint = joint[(joint.index >= pd.Period("2017-01", freq="M"))
                       & (joint.index <= pd.Period("2019-12", freq="M"))]
