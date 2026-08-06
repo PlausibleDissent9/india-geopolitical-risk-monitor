@@ -1,9 +1,16 @@
 {
  "_meta": {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "REGISTERED 2026-08-05 on founder delegation in chat ('you do max level'); delegated-fill review per the circularity-audit precedent: the founder may amend with a dated changelog entry, never silently",
   "what": "Registered sector-to-channel exposure map for the exposure engine (NOTES 0.13). Qualitative mapping with per-sector corridor rationale; the MEASURED sensitivities (event-study betas vs NSE sectoral indices) are computed and published separately by E2 and never live in this registration. Same discipline as dictionaries.json: ex-ante, versioned, append-only changes with dated rationale.",
-  "hard_line": "This map feeds description and retrieval only. It makes no claim about future prices or risk, and no personalized surface built on it may forecast."
+  "hard_line": "This map feeds description and retrieval only. It makes no claim about future prices or risk, and no personalized surface built on it may forecast.",
+  "changelog": [
+   {
+    "date": "2026-08-06",
+    "version": "1.1.0",
+    "change": "nse_index filled for seven sectors per the founder-signed amendment ('sign nse mapping', in chat 2026-08-06; draft: sectors_nse_amendment_DRAFT.md): it_services ^CNXIT, pharma ^CNXPHARMA, auto_components ^CNXAUTO (OEM-weighted caveat stated), metals ^CNXMETAL, energy_manufacturing and petroleum_refining both ^CNXENERGY (double-mapping stated), fmcg ^CNXFMCG. Eight sectors stay null: no verified free daily NSE series; a null means no measured sensitivity shown, never a borrowed proxy."
+   }
+  ]
  },
  "sectors": {
   "textiles_apparel": {

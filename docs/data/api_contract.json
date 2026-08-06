@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.10.0",
+    "contract_version": "1.11.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -375,6 +375,16 @@
       "frozen_fields": [
         "note",
         "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/sector_sensitivity.json",
+      "format": "json",
+      "description": "Measured sector sensitivities (E2): each signed sector index's cumulative return RELATIVE to Nifty over 1/5/20 trading days from the start of episodes in the sector's registered channels, with seeded-bootstrap 95% CIs and two-sided p-values, n stated per cell. ASSOCIATED WITH, never caused by. Sensitivities live beside the exposure map and change no weight, score, or reading. Mapping: sectors.json v1.1.0, founder-signed 2026-08-06; sectors without a signed index publish nothing. Underlying prices are Yahoo's and are not redistributed; only these aggregates publish.",
+      "frozen_fields": [
+        "_meta",
+        "sectors"
       ],
       "stability": "stable"
     },

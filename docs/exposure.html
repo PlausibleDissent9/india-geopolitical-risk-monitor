@@ -69,6 +69,16 @@ with the articles to check; what that means for your business is your judgment, 
 (Worked example: <a href="exposure.html?s=textiles_apparel">textiles &amp; apparel</a>.)</p>
 <div id="readings"></div>
 
+<details id="sens-box" hidden>
+  <summary>Measured sensitivity (historical association)</summary>
+  <p class="prose" style="font-size:0.9rem" id="sens-intro"></p>
+  <div class="tblwrap"><table class="compute">
+    <thead><tr><th>Sector index</th><th>Channel</th><th>20-day mean vs Nifty</th>
+    <th>95% CI</th><th>n</th><th>Survives correction</th></tr></thead>
+    <tbody id="sens-body"></tbody>
+  </table></div>
+</details>
+
 <details id="compute-box" hidden>
   <summary>Show the computation</summary>
   <p class="prose compute-rule" id="rule-text"></p>
@@ -86,10 +96,12 @@ with the articles to check; what that means for your business is your judgment, 
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g,
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-  const [map, latest, unc] = await Promise.all([
+  const [map, latest, unc, sens] = await Promise.all([
     fetch("data/exposure_sectors.json").then(r => r.json()),
     fetch("data/latest.json").then(r => r.json()),
     fetch("data/uncertainty.json").then(r => r.json()).catch(() => null),
+    fetch("data/sector_sensitivity.json").then(r => r.ok ? r.json() : null)
+      .catch(() => null),
   ]);
   const CH_LABELS = {pakistan_west: "Pakistan / Western border",
     china_east: "China / Eastern border", gulf_energy: "Gulf & energy",
@@ -178,6 +190,41 @@ with the articles to check; what that means for your business is your judgment, 
         '<a href="receipts.html#' + esc(ch) + '">See the articles behind this number</a></p>' +
         "</div>";
     }).join("");
+
+    // Measured sensitivity (E2): renders only when the payload exists
+    // and a selected sector has measured cells; the negative finding
+    // is stated, never hidden.
+    const sensBox = document.getElementById("sens-box");
+    if (sens && sens.sectors) {
+      const rows = [];
+      for (const k of Object.keys(profile)) {
+        const s = sens.sectors[k];
+        if (!s) continue;
+        for (const [ch, pw] of Object.entries(s.channels)) {
+          const c = pw["20"];
+          if (!c) continue;
+          rows.push("<tr><td>" + esc(s.label) + " (" + esc(s.nse_index) + ")</td>" +
+            "<td>" + esc(CH_LABELS[ch] || ch) + "</td>" +
+            '<td class="num">' + (c.mean > 0 ? "+" : "") + esc(c.mean.toFixed(2)) + "%</td>" +
+            '<td class="num">[' + esc(c.ci95[0].toFixed(2)) + ", " + esc(c.ci95[1].toFixed(2)) + "]</td>" +
+            '<td class="num">' + esc(c.n) + "</td>" +
+            "<td>" + (c.bh_significant_10pct ? "yes" : "no") + "</td></tr>");
+        }
+      }
+      sensBox.hidden = rows.length === 0;
+      if (rows.length) {
+        document.getElementById("sens-body").innerHTML = rows.join("");
+        document.getElementById("sens-intro").textContent =
+          "Historical ASSOCIATION only, never a forecast: the sector index's " +
+          "cumulative 20-trading-day return relative to Nifty from the start " +
+          "of this channel's past coverage episodes, with bootstrap 95% CIs. " +
+          "“Survives correction” applies Benjamini-Hochberg at 10% " +
+          "across every measured cell — a “no” means the association " +
+          "is not distinguishable from zero once the search is paid for.";
+      }
+    } else {
+      sensBox.hidden = true;
+    }
 
     // Computation table
     document.getElementById("rule-text").textContent = map._meta.weight_rule;

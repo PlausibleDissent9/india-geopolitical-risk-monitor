@@ -138,6 +138,13 @@ jobs:
           else
             python -m src.run_daily
           fi
+      - name: Measured sector sensitivities (E2; signed mapping v1.1.0)
+        # After the pipeline so episodes.json is fresh. Yahoo prices
+        # fetched, used, never committed; only aggregates publish.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python -m src.sector_sensitivity
       - name: Sampling bands (MI3; offline, from the day caches)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true

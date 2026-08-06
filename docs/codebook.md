@@ -539,3 +539,18 @@ arithmetic the day's estimator uses — the registered dictionaries
 chose every article counted. Descriptive context beside
 spike-quality; breadth enters no score. Depth grows automatically as
 extended day-caches accrue.
+
+## docs/data/sector_sensitivity.json
+
+Measured sector sensitivities (E2, on the founder-signed sectors.json
+v1.1.0 mapping): for each sector with a signed NSE index, the index's
+cumulative return relative to Nifty over 1/5/20 trading days from the
+start of each episode in the sector's registered channels
+(`sectors.<key>.channels.<ch>.<window>`: `mean`, `ci95`, `p_boot`,
+`n`, `bh_significant_10pct`). Seeded bootstrap; Benjamini-Hochberg at
+10% across the full grid, same discipline as the event study — on
+first computation NO cell survived correction, and that negative
+result publishes in `_meta.multiple_comparisons`. Association, never
+causation; sensitivities change no weight, score, or exposure
+reading. Sectors without a signed index publish nothing. Yahoo prices
+are used but not redistributed.

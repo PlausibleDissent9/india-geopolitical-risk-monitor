@@ -1,4 +1,8 @@
-# DRAFT amendment: sectors.json nse_index fill (E2 groundwork) — UNSIGNED
+# Amendment: sectors.json nse_index fill (E2 groundwork) — SIGNED
+
+**Signed by the founder in chat, 2026-08-06 ("sign nse mapping").
+Applied as sectors.json v1.1.0 with the dated changelog entry its
+registration requires. The table below is the signed record.**
 
 Proposed values for the currently-null `nse_index` fields, drafted
 for the founder's signature. Feasibility verified 2026-08-05: each
