@@ -101,6 +101,7 @@ def build_relations(world: dict) -> dict:
 
 def build_states(india: dict) -> dict:
     cutoff = (date.today() - timedelta(days=RECENT_DAYS)).isoformat()
+    by_name = {v["name"].lower(): k for k, v in india.items()}
     agg: dict[str, dict] = defaultdict(lambda: {
         "n": 0, "conf": 0, "prot": 0, "r_n": 0, "r_conf": 0, "r_prot": 0})
     excluded: dict[str, int] = defaultdict(int)
@@ -109,7 +110,14 @@ def build_states(india: dict) -> dict:
             code = row["adm1"]
             if not code:
                 continue
-            key = FIPS_PATCH.get(code, code)
+            if code.startswith("NE:"):
+                # V20: the fetcher placed this event by its coordinates
+                # (src/geo_split), which is how Telangana and Ladakh get
+                # counted at all -- GDELT's FIPS codes predate them. Map
+                # the polygon's name back onto the drawing key.
+                key = by_name.get(code[3:].lower(), "")
+            else:
+                key = FIPS_PATCH.get(code, code)
             if code in EXCLUDED_ADM1 or key not in india:
                 excluded[code] += int(row["n"] or 0)
                 continue
