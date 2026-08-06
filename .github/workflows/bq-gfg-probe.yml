@@ -39,36 +39,48 @@ jobs:
           creds = service_account.Credentials.from_service_account_info(info)
           client = bigquery.Client(project=os.environ["GCP_PROJECT_ID"],
                                    credentials=creds)
-          # Representative shape: one recent full day, the two columns a
-          # G2 join would read, partition-scoped exactly as the lane would.
-          q = (
-              "SELECT COUNT(*) AS n_links, "
-              "  COUNT(DISTINCT FromFrontPageURL) AS n_frontpages "
-              "FROM `gdelt-bq.gdeltv2.gfg_partitioned` "
-              "WHERE _PARTITIONTIME >= TIMESTAMP('2026-08-04') "
-              "  AND _PARTITIONTIME < TIMESTAMP('2026-08-05')"
-          )
-          dry = client.query(q, job_config=bigquery.QueryJobConfig(dry_run=True))
-          gb = dry.total_bytes_processed / 1e9
-          lines = [f"- DRY RUN: one day (2026-08-04), two columns = {gb:.2f} GB"]
-          print(f"[gfg-probe] DRY RUN: one day, two columns = {gb:.2f} GB")
+          # First probe (2026-08-06) found a RECENT day nearly empty:
+          # 39,351 links from 230 frontpages, 0 bytes billed -- against
+          # GDELT's stated 50,000 homepages/hour that means the recent
+          # partition is a husk, not a bargain. Probe both a recent and
+          # a 2019 day to date the stall before any verdict.
+          def day_q(day, nxt):
+              return (
+                  "SELECT COUNT(*) AS n_links, "
+                  "  COUNT(DISTINCT FromFrontPageURL) AS n_frontpages "
+                  "FROM `gdelt-bq.gdeltv2.gfg_partitioned` "
+                  f"WHERE _PARTITIONTIME >= TIMESTAMP('{day}') "
+                  f"  AND _PARTITIONTIME < TIMESTAMP('{nxt}')"
+              )
+          q = day_q('2026-08-04', '2026-08-05')
+          q_hist = day_q('2019-05-15', '2019-05-16')
           CAP = 5 * 10**9
-          if dry.total_bytes_processed <= CAP:
-              job = client.query(q, job_config=bigquery.QueryJobConfig(
+          lines = []
+          for label, query in (("recent 2026-08-04", q),
+                               ("historical 2019-05-15", q_hist)):
+              dry = client.query(query,
+                                 job_config=bigquery.QueryJobConfig(dry_run=True))
+              gb = dry.total_bytes_processed / 1e9
+              if dry.total_bytes_processed > CAP:
+                  lines.append(f"- {label}: dry-run {gb:.1f} GB exceeds the "
+                               "5 GB cap; not queried live")
+                  print(f"[gfg-probe] {label}: {gb:.1f} GB exceeds cap")
+                  continue
+              job = client.query(query, job_config=bigquery.QueryJobConfig(
                   maximum_bytes_billed=CAP))
               row = list(job)[0]
-              lines.append(f"- LIVE: {row['n_links']:,} links from "
-                           f"{row['n_frontpages']:,} frontpages; billed "
-                           f"{job.total_bytes_billed or 0:,} bytes")
-              lines.append("- VERDICT: within the 5 GB cap; a spike-days-"
-                           "only G2 lane is affordable at ~{:.1f} GB per "
-                           "queried day".format(gb))
-              print("[gfg-probe] VERDICT: within cap")
-          else:
-              lines.append(f"- VERDICT: {gb:.1f} GB exceeds the 5 GB cap; "
-                           "G2 is measured-infeasible under the stated "
-                           "budget discipline (published as the finding)")
-              print(f"[gfg-probe] VERDICT: {gb:.1f} GB exceeds cap")
+              lines.append(f"- {label}: {row['n_links']:,} links from "
+                           f"{row['n_frontpages']:,} frontpages "
+                           f"(dry-run {gb:.2f} GB)")
+              print(f"[gfg-probe] {label}: {row['n_links']:,} links, "
+                    f"{row['n_frontpages']:,} frontpages")
+          lines.append(
+              "- INTERPRETATION RULE (ex-ante): if the historical day "
+              "shows orders of magnitude more frontpages than the recent "
+              "day, the GFG has stalled and G2 is infeasible for the "
+              "LIVE instrument (historical-study use only) -- an empty "
+              "recent partition priced at 0 bytes is a husk, not a "
+              "bargain.")
           record(lines)
           PY
       - name: Commit the measured result
