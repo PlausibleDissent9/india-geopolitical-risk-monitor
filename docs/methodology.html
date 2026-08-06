@@ -98,7 +98,7 @@ both sub-queries counts twice, making the series a slight upper bound on
 the union share. The partition is fixed and versioned with the
 dictionaries. From July 2026, during a DOC-API disruption, the recent
 tail is computed from GDELT's raw Web NGrams files at the maintainer's
-direction, the same share construct from hourly samples of the raw
+direction, the same share construct from half-hourly samples of the raw
 feed, and ratio-spliced to the API series on overlap days, with each
 channel's splice ratio and its dispersion published alongside the data
 (see changelog). The published score is the
@@ -400,7 +400,7 @@ a promise that rewrote itself every night would not be a promise.</p>
   scored as 0th percentile, deflating the composite when one channel's
   tail lagged. (2) During the July 2026 DOC-API disruption, and at the
   GDELT maintainer's direction, recent days are computed from the Web
-  NGrams v5 feed (hourly samples, per-document matching, English only)
+  NGrams v5 feed (half-hourly samples, per-document matching, English only)
   and ratio-spliced to the API series on overlap days. Splice ratios
   (log-sd, overlap days): pakistan_west 1.95 (0.38, n=5), china_east
   3.36 (0.46, n=5), gulf_energy 1.79 (0.15, n=5), us_trade 2.56 (n=1),

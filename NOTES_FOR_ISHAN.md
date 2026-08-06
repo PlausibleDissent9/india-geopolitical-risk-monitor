@@ -678,3 +678,21 @@ If any date or event looks wrong to you, strike it before signing —
 striking candidates before grading is exactly what the process is for.
 Also registered there: the out-of-sample rule (future episodes registered
 within 7 days of occurrence, graded mechanically at +3 days).
+
+## 0.15 Two decisions from the morning audit (2026-08-06)
+
+**A. The 06:00 morning contract is structurally unmeetable right now.**
+The measured day closes 05:30 IST; the heal then needs ~25-30 min. Your
+last three mornings published 07:03 / 10:27 / ~06:44 — honestly recorded
+as late on your own reliability page. Choose one (both are honest):
+  (a) restate the contract to 07:00 IST (one dated methodology line), or
+  (b) approve the heal parallelization (same files, same math, ~4-6x
+      faster download+parse; publish ~05:45) — specced for the crew.
+Recommendation: (b), and say "parallelize the heal". Cron overlap is
+already fixed (flock) either way.
+
+**B. china_east splice ratio predates the v1.2.0 amendment.** Detail in
+analysis/reviewer_audit_2026-08-06.md item 5. One sentence added to the
+methodology splice note would fully disclose it; say "disclose the
+china_east ratio" and it ships. Read Aug 5's china_east 4.5 with this
+in mind (the crash itself is real: Aug 4/Aug 5 bands do not overlap).
