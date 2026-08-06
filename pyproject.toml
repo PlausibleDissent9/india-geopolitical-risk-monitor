@@ -1,3 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "igrm"
+# Package version tracks CODE (methodology section 12: the contract,
+# the methodology document, and the package version independently).
+# 0.x on purpose: the import-name restructure (src -> igrm) waits for
+# a quiet slot because live cron lanes execute python -m src.* today;
+# until then `pip install .` provides the pipeline under its current
+# import package `src`, documented in README. No PyPI upload (hard
+# limit); install from a checkout.
+version = "0.1.0"
+description = "India Geopolitical Risk Monitor pipeline: a reproducible press-salience index (measures salience, not risk; makes no forecasts)"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "pandas>=2",
+  "numpy>=1.26",
+  "requests>=2.31",
+  "yfinance>=0.2",
+  "Markdown>=3.6",
+]
+
+[project.optional-dependencies]
+# Display-layer machine labeling only; every score computes without it.
+brief = ["anthropic>=0.116,<1"]
+
+[project.urls]
+Homepage = "https://igrm.in"
+Repository = "https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor"
+
+[tool.setuptools]
+packages = ["src"]
+
 [tool.ruff]
 target-version = "py39"
 line-length = 100

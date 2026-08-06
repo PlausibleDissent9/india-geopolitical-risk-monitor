@@ -50,6 +50,12 @@ NGrams feed at the maintainer's direction, ratio-spliced on overlap days
 
 ## Local run
 
+The pipeline is pip-installable from a checkout (`pip install .`,
+package name `igrm`; the import package stays `src` until the 1.0
+restructure, and there is deliberately no PyPI upload — data files
+live in the repository, so a checkout is the unit of reproduction).
+For development:
+
 ```
 pip install -r requirements.txt
 pytest -q

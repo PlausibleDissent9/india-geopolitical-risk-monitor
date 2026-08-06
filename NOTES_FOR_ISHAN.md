@@ -752,6 +752,17 @@ deliberate mirror of our china_east — and energy/supply lanes), every
 term with a rationale, ex-ante rule enforced. Strike anything, then say
 "sign china" and the V8 template build begins. Nothing fetches unsigned.
 
+## 0.22 The code has no license — one word from you fixes it
+
+The repo declares the DATA as CC BY 4.0 everywhere, but the CODE
+carries no license file at all, which legally means all-rights-
+reserved — a replicator running scripts/reproduce.sh is technically
+infringing. This is a founder decision because it changes what the
+project legally is. Recommendation: MIT for code (research-standard,
+maximally reusable, keeps attribution), CC BY 4.0 stays for data.
+Say "license MIT" (or name another) and the LICENSE file plus the
+pyproject line ship the same day.
+
 ## 0.21 Alerts/webhook design — DRAFTED FOR YOUR SIGNATURE (V13)
 
 design/alerts_webhook.md: three trigger conditions computed only from
