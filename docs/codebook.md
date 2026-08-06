@@ -496,3 +496,17 @@ blocks the pipeline. Captures are browsable at
 `web.archive.org/web/*/igrm.in`; the repository's archived history at
 `archive.softwareheritage.org`. Citability is designed to survive this
 project's own infrastructure.
+
+## docs/data/exposure_sectors.json
+
+The registered sector-to-channel exposure map (`sectors.json` v1.0.0)
+with the deterministic weighting rule the exposure page computes with
+(`_meta.weight_rule`): shares normalize to 1, each sector's share
+divides equally across its registered channels, channel weight sums
+across sectors. Per sector: `label`, `channels`, `rationale`,
+`nse_index` (null until the measured-sensitivity lane ships).
+Retrieval and description only — an exposure profile re-cuts published
+numbers by the reader's own frame and adds no new claim, no forecast,
+and no risk score. Rendered at `exposure.html`; profiles encode in the
+URL (`?s=sector:share,...`), no accounts, nothing stored. Amendments
+to the map are dated changelog entries by the founder, never silent.

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your exposure — India Geopolitical Risk Monitor</title>
+<meta name="description" content="Pick your sectors and see which of IGRM's five channels touch them, today's readings with sampling bands, and the receipts behind each number. Salience, not risk; no forecasts; computation shown.">
+<link rel="canonical" href="https://igrm.in/exposure.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260804b">
+<style>
+.hardline { border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+  border-radius: 8px; padding: 0.8rem 1rem; background: var(--card); margin: 1rem 0;
+  font-size: 0.95rem; }
+.sector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.55rem; margin: 1rem 0; }
+.sector-chip { border: 1px solid var(--rule); border-radius: 9px; padding: 0.6rem 0.8rem;
+  background: var(--card); cursor: pointer; user-select: none; }
+.sector-chip.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.sector-chip b { display: block; font-size: 0.95rem; }
+.sector-chip .why { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+.reading-card { border: 1px solid var(--rule); border-radius: 10px; padding: 0.9rem 1.1rem;
+  background: var(--card); margin: 0.6rem 0; }
+.reading-card h4 { margin: 0 0 0.3rem; display: flex; justify-content: space-between;
+  align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.reading-card .score { font-size: 1.5rem; font-variant-numeric: tabular-nums; color: var(--accent); }
+.reading-card .band, .reading-card .wt { font-size: 0.85rem; color: var(--muted);
+  font-variant-numeric: tabular-nums; }
+.compute { font-size: 0.88rem; }
+.compute td, .compute th { padding: 0.3rem 0.55rem; border-bottom: 1px solid var(--rule);
+  text-align: left; font-variant-numeric: tabular-nums; }
+.tblwrap { overflow-x: auto; }
+#profile-empty { color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="start.html">Start here</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+</header>
+
+<h2>Your exposure</h2>
+<p class="prose">Pick the sectors you operate in. This page re-cuts IGRM's published
+numbers by that frame: which of the five registered channels touch your sectors
+(per the registered <a href="data/exposure_sectors.json">sector map</a>), today's
+reading for each with its sampling band, and the receipts behind every number.
+Your profile lives in the page address — share the URL, no accounts, nothing stored.</p>
+
+<div class="hardline prose"><b>What this is not.</b> IGRM measures <b>press salience</b> —
+how loudly the world's press is talking — <b>not risk</b>. Nothing on this page is a
+forecast, a probability, or advice. A high reading means your channels are loud today,
+with the articles to check; what that means for your business is your judgment, not ours.</div>
+
+<h3>Sectors</h3>
+<div class="sector-grid" id="sectors">Loading sector map…</div>
+
+<h3>Today's readings for your channels</h3>
+<p id="profile-empty" class="prose">No sectors selected yet — tap any above.
+(Worked example: <a href="exposure.html?s=textiles_apparel">textiles &amp; apparel</a>.)</p>
+<div id="readings"></div>
+
+<details id="compute-box" hidden>
+  <summary>Show the computation</summary>
+  <p class="prose compute-rule" id="rule-text"></p>
+  <div class="tblwrap"><table class="compute">
+    <thead><tr><th>Sector</th><th>Share</th><th>Channels touched</th><th>Weight each receives</th></tr></thead>
+    <tbody id="compute-body"></tbody>
+  </table></div>
+  <p class="prose" id="weights-line"></p>
+</details>
+
+<p class="prose" id="gen-note"></p>
+
+<script>
+(async function () {
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g,
+    c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  const [map, latest, unc] = await Promise.all([
+    fetch("data/exposure_sectors.json").then(r => r.json()),
+    fetch("data/latest.json").then(r => r.json()),
+    fetch("data/uncertainty.json").then(r => r.json()).catch(() => null),
+  ]);
+  const CH_LABELS = {pakistan_west: "Pakistan / Western border",
+    china_east: "China / Eastern border", gulf_energy: "Gulf & energy",
+    us_trade: "US & trade policy", shipping: "Shipping & chokepoints"};
+
+  // Profile codec: ?s=key:share,key:share (share optional, default 1).
+  function readProfile() {
+    const p = new URLSearchParams(location.search).get("s");
+    const out = {};
+    if (!p) return out;
+    for (const part of p.split(",")) {
+      const [k, v] = part.split(":");
+      if (map.sectors[k]) out[k] = Math.max(0, parseFloat(v) || 1);
+    }
+    return out;
+  }
+  function writeProfile(profile) {
+    const keys = Object.keys(profile);
+    const s = keys.map(k => profile[k] === 1 ? k : k + ":" + profile[k]).join(",");
+    history.replaceState(null, "",
+      keys.length ? "exposure.html?s=" + s : "exposure.html");
+  }
+
+  // The registered weighting rule, mirrored from src/exposure.py:
+  // shares normalize to 1; each sector's share splits equally across
+  // its registered channels; channel weight sums across sectors.
+  function weights(profile) {
+    const total = Object.values(profile).reduce((a, b) => a + b, 0);
+    if (total <= 0) return {};
+    const w = {};
+    for (const [k, share] of Object.entries(profile)) {
+      const chs = map.sectors[k].channels;
+      for (const ch of chs)
+        w[ch] = (w[ch] || 0) + (share / total) / chs.length;
+    }
+    return w;
+  }
+
+  let profile = readProfile();
+
+  function bandFor(ch) {
+    try {
+      const b = unc.days[latest.date][ch];
+      return b ? "[" + b[0].toFixed(1) + ", " + b[1].toFixed(1) + "]" : null;
+    } catch (e) { return null; }
+  }
+
+  function render() {
+    // Sector chips
+    const grid = document.getElementById("sectors");
+    grid.innerHTML = Object.entries(map.sectors).map(([k, s]) =>
+      '<div class="sector-chip' + (profile[k] ? " on" : "") + '" data-k="' + esc(k) + '">' +
+      "<b>" + esc(s.label) + "</b>" +
+      '<div class="why">' + s.channels.map(c => esc(CH_LABELS[c] || c)).join(" · ") +
+      "</div></div>").join("");
+    grid.querySelectorAll(".sector-chip").forEach(el =>
+      el.addEventListener("click", () => {
+        const k = el.dataset.k;
+        if (profile[k]) delete profile[k]; else profile[k] = 1;
+        writeProfile(profile); render();
+      }));
+
+    const w = weights(profile);
+    const chans = Object.keys(w).sort((a, b) => w[b] - w[a]);
+    const empty = document.getElementById("profile-empty");
+    const readings = document.getElementById("readings");
+    const computeBox = document.getElementById("compute-box");
+    empty.hidden = chans.length > 0;
+    computeBox.hidden = chans.length === 0;
+    readings.innerHTML = chans.map(ch => {
+      const score = latest.channels && latest.channels[ch] != null
+        ? (latest.channels[ch].score != null ? latest.channels[ch].score
+           : latest.channels[ch]) : null;
+      const band = bandFor(ch);
+      const secs = Object.keys(profile)
+        .filter(k => map.sectors[k].channels.includes(ch))
+        .map(k => map.sectors[k].label);
+      return '<div class="reading-card"><h4><span>' + esc(CH_LABELS[ch] || ch) +
+        "</span><span><span class=\"score\">" +
+        (score == null ? "—" : esc(score)) + "</span>" +
+        (band ? ' <span class="band">95% band ' + esc(band) + "</span>" : "") +
+        "</span></h4>" +
+        '<div class="wt">weight in your profile: ' + w[ch].toFixed(3) +
+        " · via " + esc(secs.join(", ")) + "</div>" +
+        '<p class="prose" style="margin:0.4rem 0 0; font-size:0.9rem">' +
+        '<a href="receipts.html#' + esc(ch) + '">See the articles behind this number</a></p>' +
+        "</div>";
+    }).join("");
+
+    // Computation table
+    document.getElementById("rule-text").textContent = map._meta.weight_rule;
+    const total = Object.values(profile).reduce((a, b) => a + b, 0) || 1;
+    document.getElementById("compute-body").innerHTML =
+      Object.entries(profile).map(([k, share]) => {
+        const chs = map.sectors[k].channels;
+        return "<tr><td>" + esc(map.sectors[k].label) + "</td>" +
+          "<td>" + (share / total).toFixed(3) + "</td>" +
+          "<td>" + chs.map(c => esc(CH_LABELS[c] || c)).join(", ") + "</td>" +
+          "<td>" + ((share / total) / chs.length).toFixed(3) + "</td></tr>";
+      }).join("");
+    document.getElementById("weights-line").textContent =
+      chans.length ? "Resulting channel weights: " + chans.map(ch =>
+        (CH_LABELS[ch] || ch) + " " + w[ch].toFixed(3)).join(" · ") : "";
+  }
+
+  document.getElementById("gen-note").textContent =
+    "Sector map " + (map._meta.version ? "v" + map._meta.version : "") +
+    ", scores for " + (latest.date || "—") +
+    ". Sampling bands from uncertainty.json where published.";
+  render();
+})().catch(e => {
+  document.getElementById("sectors").textContent =
+    "Payloads unavailable — " + e.message;
+});
+</script>
+</body>
+</html>
