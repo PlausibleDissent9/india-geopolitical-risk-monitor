@@ -30,7 +30,10 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 STORE = ROOT / "data" / "raw" / "back_extension_monthly.csv"
 SITE_DATA = ROOT / "docs" / "data"
-MAX_BYTES = 20 * 10**9  # one-time backfill queries; results commit, never rerun
+MAX_BYTES = 25 * 10**9  # one-time backfill; first run self-reported
+# bytesBilledLimitExceeded at 22.25GB actual vs a 20GB guess -- the cap
+# is sized to the measured need (~2.2% of the monthly free tier, once);
+# the exact bytes-billed number publishes in the study's methods.
 
 # Frozen actor-pair filters (memo decision B). ECON_ROOTS implements
 # the memo's "economic cooperation/conflict roots" as CAMEO roots 06
