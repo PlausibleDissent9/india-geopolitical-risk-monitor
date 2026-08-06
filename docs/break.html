@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Break this index — India Geopolitical Risk Monitor</title>
+<meta name="description" content="A standing invitation to falsify IGRM: what would prove the instrument wrong, how to run the replication check yourself, and the promise that submissions publish unedited with responses.">
+<link rel="canonical" href="https://igrm.in/break.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=20260804b">
+<style>
+.falsify { border: 1px solid var(--rule); border-radius: 10px; padding: 1rem 1.2rem;
+  background: var(--card); margin: 0.8rem 0; }
+.falsify h3 { margin: 0 0 0.4rem; font-size: 1.02rem; }
+.falsify p { margin: 0.3rem 0; font-size: 0.93rem; }
+.falsify .how { color: var(--muted); font-size: 0.88rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="start.html">Start here</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+</header>
+
+<h2>Break this index</h2>
+<p class="prose">A measurement instrument that cannot state what would prove it wrong is
+an opinion with charts. This page is IGRM's standing invitation: here is exactly what
+would falsify it, here are the tools to try, and here is the promise — <b>serious
+submissions publish on this site unedited, with a response, whether or not we survive
+them.</b> Finding a real error earns a permanent entry in the
+<a href="corrections.html">corrections ledger</a>, which is the point of having one.</p>
+
+<h3>What would falsify it</h3>
+
+<div class="falsify">
+  <h3>1. Non-reproducibility</h3>
+  <p>Claim: every published number is a deterministic function of the committed raw data.</p>
+  <p class="how">Break it: clone the repo, run <code>scripts/reproduce.sh --use-cache</code>
+  (~5 minutes, no credentials), and produce a diff outside the documented tolerances.
+  The procedure and every tolerance's reason: <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/REPLICATION.md">REPLICATION.md</a>.</p>
+</div>
+
+<div class="falsify">
+  <h3>2. Post-hoc tuning</h3>
+  <p>Claim: every dictionary, threshold, weight, and episode list was registered before
+  the numbers it produces were seen; every change since is a dated, append-only amendment.</p>
+  <p class="how">Break it: the entire history is public git. Find one construct choice
+  whose registration postdates the result it favors, or one amendment that rewrote
+  rather than appended.</p>
+</div>
+
+<div class="falsify">
+  <h3>3. The validation record is cherry-picked</h3>
+  <p>Claim: the hit-rate is computed against a pre-registered episode list (n=21),
+  frozen before grading, misses counted forever.</p>
+  <p class="how">Break it: propose an episode set we should have detected and did not —
+  or show the frozen list was curated to flatter. The registered list, criteria, and
+  exclusions are in <code>validation/</code> with full history.</p>
+</div>
+
+<div class="falsify">
+  <h3>4. The numbers don't mean what the pages say</h3>
+  <p>Claim: every statistic named on any page exists in a published payload, and every
+  payload field is documented in the codebook.</p>
+  <p class="how">Break it: find one page-claimed number absent from its payload (CI
+  enforces this; beating our own test is a finding), or one receipts article whose
+  text does not match the registered phrase that claims it.</p>
+</div>
+
+<div class="falsify">
+  <h3>5. The uncertainty is theater</h3>
+  <p>Claim: the sampling bands are honest Wilson 95% intervals passed through the
+  identical transform as the point values, and moves inside overlapping bands are
+  called indistinguishable on the front page.</p>
+  <p class="how">Break it: recompute a band from the committed day-cache and get a
+  different interval, or catch the site narrating a within-band move as real.</p>
+</div>
+
+<div class="falsify">
+  <h3>6. It's a GDELT artifact</h3>
+  <p>Claim: the signal is not an artifact of one substrate's quirks; drift is measured
+  and published, and cross-source agreement is checked against an independent
+  demand-side series.</p>
+  <p class="how">Break it: replicate a channel on an independent corpus and show the
+  series disagree where ours claims signal (this is exactly the Media Cloud study on
+  our own roadmap — doing it first, and better, would be a genuine contribution).</p>
+</div>
+
+<h3>How to submit</h3>
+<p class="prose">Open a GitHub issue with the <b>adversarial-review</b> template:
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/issues/new?template=adversarial-review.md">start one here</a>.
+State the claim you are attacking, your method, and your result. Anonymous submissions
+are fine. What qualifies as "serious": anything with a runnable method — code, a diff,
+a dated episode list, a reproducible query. What doesn't: vibes.</p>
+
+<p class="prose">The promise, restated: submissions and their outcomes publish here
+unedited. A confirmed break goes in the corrections ledger permanently. Nothing on
+this page is ever softened after the fact — this paragraph included.</p>
+
+<footer>
+  <p><a href="status.html">Status</a> &middot; <a href="validation.html">Validation</a>
+  &middot; <a href="corrections.html">Corrections</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+</body>
+</html>
