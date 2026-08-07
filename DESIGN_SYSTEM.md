@@ -68,6 +68,24 @@ minimum luminance gap.
 State colour (`--calm` / `--elevated` / `--severe`) is the only place
 colour carries meaning about the world. Do not use it decoratively.
 
+## 3b. Spacing is NOT systematised, on purpose
+
+The brief asked for a "spacing rhythm" and this document briefly claimed
+one. It was not true: a `--sp-1..--sp-16` ramp shipped and was used
+**zero times**, which is the same promise-without-a-fact the rest of this
+project spent the day removing. The dead tokens are gone rather than
+left to look like rigour.
+
+Migrating ~50 padding and margin literals across two live stylesheets is
+a real regression risk, verified at only two viewports, for a modest
+gain: the values already cluster on a 2px grid, and spacing does not
+carry meaning the way size carries rank. When it is done it should be
+its own change, measured page by page — not a side effect of a token
+file.
+
+Use `--radius` / `--radius-lg` for corners. For spacing, match the
+values around you.
+
 ## 4. Motion: three durations, and an off switch that works
 
 `--dur-instant` 90ms · `--dur-quick` 160ms · `--dur-calm` 260ms, one

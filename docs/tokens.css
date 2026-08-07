@@ -92,21 +92,24 @@
   --lh-snug:  1.35;
   --lh-body:  1.6;
 
-  /* ---- Spacing: 4px rhythm ----------------------------------------- */
-  --sp-1:  0.25rem;
-  --sp-2:  0.5rem;
-  --sp-3:  0.75rem;
-  --sp-4:  1rem;
-  --sp-5:  1.25rem;
-  --sp-6:  1.5rem;
-  --sp-8:  2rem;
-  --sp-10: 2.5rem;
-  --sp-12: 3rem;
-  --sp-16: 4rem;
-
+  /* ---- Spacing -----------------------------------------------------
+   * NOT systematised, deliberately, and this note exists so nobody
+   * mistakes that for an oversight.
+   *
+   * A --sp-1..--sp-16 ramp shipped here on 2026-08-07 and was used
+   * exactly zero times, while DESIGN_SYSTEM.md claimed the system had a
+   * "spacing rhythm". That is the same promise-without-a-fact this
+   * project spent the day removing elsewhere, so the dead tokens are
+   * gone rather than left to look like rigour.
+   *
+   * Migrating ~50 padding/margin literals across two live stylesheets
+   * is a real regression risk, verified only at two viewports, for a
+   * modest gain: the existing values already cluster on a 2px grid and
+   * spacing does not carry meaning the way size carries rank. When it
+   * is done it should be done as its own change, measured page by page.
+   */
   --radius:      6px;
   --radius-lg:   10px;
-  --measure:     68ch;   /* prose line length */
 
   /* ---- Motion ------------------------------------------------------
    * Calm means short and linear-ish. Nothing bounces, nothing springs,
