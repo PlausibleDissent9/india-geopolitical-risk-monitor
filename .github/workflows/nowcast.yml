@@ -33,17 +33,32 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - name: Morning-contract guarantor (dispatch daily if stale past 00:30 UTC)
+      - name: Morning-contract guarantor (dispatch morning lane whenever the final is stale)
         # The daily workflow's own schedule crons have never fired on
         # time in this repo (2026-08-01 through 08-03: every on-time
         # morning publish was a push or self-heal, never the cron).
         # THIS workflow's 2-hourly cron demonstrably does fire, so it
-        # doubles as the heartbeat: any nowcast run after 00:30 UTC
-        # that finds yesterday's final unpublished dispatches the daily.
+        # doubles as the heartbeat: any nowcast run that finds
+        # yesterday's final unpublished dispatches the morning lane.
+        #
+        # 2026-08-07: this guarantor missed the contract BY ONE MINUTE.
+        # It carried an extra condition -- dispatch only after 00:30 UTC
+        # -- and that morning GitHub created zero morning-contract runs
+        # (all three cron shots dropped) while the one surviving nowcast
+        # run landed at 00:29 UTC. The guard said "before 00:30, no
+        # dispatch", the next nowcast was 2h14m later, and the site
+        # served the previous day past 07:00 IST.
+        #
+        # The condition is now gone. The measured UTC day closes at
+        # 00:00 UTC, so ANY run on a UTC day whose final is unpublished
+        # is entitled to dispatch, and morning.yml's own idempotence
+        # guard makes a redundant dispatch a ~40-second no-op. Trading a
+        # wasted runner-minute for a threshold that can eat the contract
+        # is not a trade; it was a bug wearing a rule's clothes.
         run: |
-          NOW_H=$(date -u +%H); NOW_M=$(date -u +%M); TODAY=$(date -u +%F)
+          TODAY=$(date -u +%F)
           GEN=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
-          if [ "$GEN" != "$TODAY" ] && { [ "$NOW_H" -gt 0 ] || [ "$NOW_M" -ge 30 ]; }; then
+          if [ "$GEN" != "$TODAY" ]; then
             echo "latest generated $GEN != $TODAY; dispatching morning-contract lane"
             # -f so an HTTP error fails this step LOUDLY. 2026-08-04: the
             # original `curl -s` returned exit 0 on any API rejection, so a
@@ -57,7 +72,7 @@ jobs:
             echo "dispatch HTTP $CODE"; cat /tmp/dispatch_body || true
             [ "$CODE" = "204" ]
           else
-            echo "final already published today ($GEN) or before 00:30 UTC; no dispatch"
+            echo "final already published today ($GEN); no dispatch"
           fi
       - name: Compute provisional today-so-far
         run: python -m src.nowcast

@@ -1,0 +1,126 @@
+name: morning-watchdog
+
+# The 06:00 IST contract has three independent publishers and, until
+# 2026-08-07, all three could fail at once without anything noticing in
+# time:
+#
+#   1. morning.yml's own three cron shots   -- GitHub created NONE of
+#      them on 2026-08-07. Not "they failed": no run object was ever
+#      made. That is a silent-drop, and a workflow that never starts
+#      emits no failure mail, no red X, nothing.
+#   2. daily.yml's early cron               -- same weather.
+#   3. nowcast.yml's guarantor              -- the one surviving nowcast
+#      run landed 00:29 UTC and the guarantor's "only after 00:30 UTC"
+#      condition rejected it by SIXTY SECONDS. Next nowcast: 02:43.
+#
+# Result: the site served the previous day past 07:00 IST while every
+# lane's status was green or absent. The contract was missed by the
+# absence of runs, which is the one failure mode a fail-loud gate inside
+# a run cannot catch.
+#
+# This workflow is the answer, and it is deliberately the cheapest thing
+# in the repo: checkout, read one JSON field, dispatch if stale, verify
+# a run appeared. No pip install, no pipeline, ~20 seconds. Because it
+# is cheap it can afford MANY shots, and many shots is the only defence
+# against silent drops. Measured survival rate of a single scheduled
+# event in this repo's congested 00:00-01:00 UTC window is roughly 40%
+# (nowcast: 5 of 12 daily shots landed on 2026-08-06/07, drift +-30
+# min). Eight shots at that rate leave a ~1.7% chance that none fires,
+# against ~60% for any single lane relying on one.
+#
+# It publishes nothing and touches no data file. Its only power is to
+# press the button that morning.yml already has, and morning.yml's
+# idempotence guard makes pressing it twice a no-op.
+
+on:
+  schedule:
+    # Dense through the contract window (00:00-00:30 UTC = 05:30-06:00
+    # IST), then thinning catch-ups so a totally lost window still
+    # publishes late rather than never. Odd minutes throughout: round
+    # minutes are the most congested and the most dropped.
+    - cron: "7 0 * * *"     # 05:37 IST
+    - cron: "19 0 * * *"    # 05:49 IST
+    - cron: "31 0 * * *"    # 06:01 IST -- first shot past the promise
+    - cron: "47 0 * * *"    # 06:17 IST
+    - cron: "9 1 * * *"     # 06:39 IST
+    - cron: "33 1 * * *"    # 07:03 IST
+    - cron: "21 2 * * *"    # 07:51 IST
+    - cron: "41 3 * * *"    # 09:11 IST -- last resort
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+# Deliberately NOT in igrm-pipeline-v3: this lane must never queue
+# behind the pipeline it exists to start. Its own group only stops two
+# watchdog shots from racing each other into a double dispatch.
+concurrency:
+  group: igrm-watchdog
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Is today's final published?
+        id: check
+        run: |
+          TODAY=$(date -u +%F)
+          GEN=$(python3 -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
+          echo "today=$TODAY generated=$GEN"
+          if [ "$GEN" = "$TODAY" ]; then
+            echo "stale=false" >> "$GITHUB_OUTPUT"
+            echo "final for $TODAY already published; watchdog stands down"
+          else
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "final is $GEN, expected $TODAY -- the morning lane has not published"
+          fi
+
+      - name: Dispatch the morning lane
+        if: steps.check.outputs.stale == 'true'
+        run: |
+          CODE=$(curl -s -o /tmp/body -w "%{http_code}" -X POST \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/morning.yml/dispatches" \
+            -d '{"ref":"main"}')
+          echo "dispatch HTTP $CODE"
+          cat /tmp/body || true
+          [ "$CODE" = "204" ]
+
+      - name: Verify a run actually appeared
+        if: steps.check.outputs.stale == 'true'
+        # HTTP 204 means the API accepted the request, NOT that a run
+        # exists. A disabled workflow, a deleted file on the target ref,
+        # or a scheduling outage all return 204 and produce nothing --
+        # which is precisely the silent-drop this lane was built to
+        # catch, so accepting 204 as proof would rebuild the bug one
+        # layer up. Poll until a run is genuinely there.
+        run: |
+          RUNS_URL="https://api.github.com/repos/${{ github.repository }}/actions/workflows/morning.yml/runs?event=workflow_dispatch&per_page=5"
+          PROBE='import json,datetime,sys
+          try: runs=json.load(open("/tmp/runs.json")).get("workflow_runs",[])
+          except Exception: print("no"); sys.exit(0)
+          now=datetime.datetime.now(datetime.timezone.utc)
+          for r in runs:
+              t=datetime.datetime.fromisoformat(r["created_at"].replace("Z","+00:00"))
+              if (now-t).total_seconds()<300: print("yes"); sys.exit(0)
+          print("no")'
+          for i in 1 2 3 4 5 6; do
+            sleep 10
+            curl -s -H "Authorization: Bearer ${{ github.token }}" \
+                 -H "Accept: application/vnd.github+json" \
+                 "$RUNS_URL" -o /tmp/runs.json
+            FOUND=$(python3 -c "$PROBE")
+            echo "attempt $i: run present = $FOUND"
+            if [ "$FOUND" = "yes" ]; then
+              echo "morning-contract run confirmed created"
+              exit 0
+            fi
+          done
+          echo "DISPATCH ACCEPTED BUT NO RUN WAS CREATED -- GitHub scheduling or the workflow itself is broken"
+          exit 1
