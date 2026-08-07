@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "2.0.0"
+CONTRACT_VERSION = "2.1.0"  # minor: monthly.json + receipts_archive.json gained additive fields
 FROZEN_DATE = "2026-08-07"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
@@ -98,6 +98,77 @@ def _description(name: str, data) -> str:
     return DESCRIPTIONS.get(name, "")
 
 
+
+# Hand-refined contract entries that the derivation must NOT regress.
+#
+# The generator's rule is "description = the payload's own _meta.what",
+# which keeps one source of truth. ai_gpr_benchmark.json broke the rule
+# honestly: it is a hash-pinned registered vintage, so its _meta cannot
+# be edited to carry the fuller description the contract should serve,
+# and the refined text was hand-placed in the committed contract instead.
+# Without this table, rerunning the generator silently rolled that text
+# back (caught 2026-08-07 by diffing generated against committed -- 34
+# lines of regression, including "append-only" and "static registered
+# vintage" stability labels collapsing to "stable").
+#
+# An entry here is the one sanctioned place for contract text that a
+# frozen payload cannot carry. test_api_contract_is_derived asserts
+# generated == committed, so drift in either direction now fails.
+OVERRIDES: dict = {
+ "data/ai_gpr_benchmark.json": {
+  "description": "Static, code-frozen comparison of monthly IGRM salience with Iacoviello-Tong AI-GPR India_all: registered primary and descriptive correlations, moving-block intervals, full eligible-month list, exploratory matrix, event-month ranks and largest rank divergences. Aggregates and ranks only; no raw AI-GPR values are redistributed.",
+  "stability": "static registered vintage",
+  "frozen_fields": [
+   "_meta",
+   "sample",
+   "primary",
+   "descriptive_primary",
+   "exploratory_correlations",
+   "episode_month_ranks",
+   "largest_rank_divergences"
+  ]
+ },
+ "data/divergence_register.json": {
+  "description": "Append-only register of large documented rank gaps between IGRM and independent comparators. Every row states its sample, receipt and claim limit; disagreement is an inspection target, not a superiority result.",
+  "stability": "append-only",
+  "frozen_fields": [
+   "_meta",
+   "entries"
+  ]
+ },
+ "data/event_study.json": {
+  "description": "Event study: mean cumulative India-specific relative returns after episode starts, with bootstrapped 95% CIs, plus raw per-episode window returns.",
+  "stability": "stable",
+  "frozen_fields": [
+   "_meta",
+   "generated",
+   "windows",
+   "units",
+   "language",
+   "descriptive_only",
+   "channels",
+   "per_episode"
+  ]
+ },
+ "data/event_study.csv": {
+  "description": "Event-study relative-return cells as CSV, one row per channel x window x market series.",
+  "stability": "stable",
+  "frozen_fields": [
+   "channel",
+   "outcome",
+   "window_trading_days",
+   "mean_cum_log_return_pct",
+   "ci95_lo",
+   "ci95_hi",
+   "p_boot",
+   "bh_significant_10pct",
+   "n_episodes",
+   "descriptive_only"
+  ]
+ }
+}
+
+
 def build() -> dict:
     endpoints = []
 
@@ -132,6 +203,10 @@ def build() -> dict:
         "frozen_fields": ["title", "link", "pubDate", "description", "guid"],
         "stability": "stable",
     })
+
+    for e in endpoints:
+        if e["path"] in OVERRIDES:
+            e.update(OVERRIDES[e["path"]])
 
     endpoints.sort(key=lambda e: e["path"])
     for e in endpoints:

@@ -65,3 +65,30 @@ def test_operational_author_queue_is_not_a_public_endpoint():
     assert "data/decisions.json" not in listed
     assert not (ROOT / "docs" / "decisions.html").exists()
     assert not (SITE_DATA / "decisions.json").exists()
+
+
+def test_the_contract_matches_its_generator():
+    """committed == generated, the sitemap discipline applied to the API.
+
+    Found drifted in BOTH directions on 2026-08-07: the generator would
+    have rolled back hand-refined text for the frozen AI-GPR vintage
+    (fixed with an explicit OVERRIDES table -- a frozen payload cannot
+    carry new _meta text, so the override is the sanctioned place), and
+    the committed file lacked additive fields monthly.json and
+    receipts_archive.json had already grown. Either direction of drift
+    now fails here instead of surfacing as a 34-line surprise diff.
+    """
+    import subprocess
+    import sys
+    before = (SITE_DATA / "api_contract.json").read_bytes()
+    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "generate_api_contract.py")],
+                       capture_output=True, text=True, cwd=ROOT)
+    after = (SITE_DATA / "api_contract.json").read_bytes()
+    if before != after:
+        (SITE_DATA / "api_contract.json").write_bytes(before)  # restore
+    assert r.returncode == 0, f"generator failed: {r.stderr[-300:]}"
+    assert before == after, (
+        "docs/data/api_contract.json differs from what its generator "
+        "produces. Update the payload/_meta, the OVERRIDES table, or "
+        "regenerate -- but do not let the served promise and its "
+        "generator disagree.")

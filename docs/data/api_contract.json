@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.0.0",
+  "contract_version": "2.1.0",
   "frozen_date": "2026-08-07",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -46,16 +46,6 @@
     "alerts"
    ],
    "stability": "stable"
-  },
-  {
-   "path": "data/divergence_register.json",
-   "format": "json",
-   "description": "Append-only register of large documented rank gaps between IGRM and independent comparators. Every row states its sample, receipt and claim limit; disagreement is an inspection target, not a superiority result.",
-   "frozen_fields": [
-    "_meta",
-    "entries"
-   ],
-   "stability": "append-only"
   },
   {
    "path": "data/alt_specs.json",
@@ -145,6 +135,16 @@
     "episodes"
    ],
    "stability": "stable"
+  },
+  {
+   "path": "data/divergence_register.json",
+   "format": "json",
+   "description": "Append-only register of large documented rank gaps between IGRM and independent comparators. Every row states its sample, receipt and claim limit; disagreement is an inspection target, not a superiority result.",
+   "frozen_fields": [
+    "_meta",
+    "entries"
+   ],
+   "stability": "append-only"
   },
   {
    "path": "data/energy_context.json",
@@ -387,7 +387,10 @@
     "share_gulf_energy",
     "share_us_trade",
     "share_shipping",
+    "n_days_composite_present",
+    "composite_coverage",
     "composite_mean_of_ranks",
+    "composite_refused_reason",
     "refused_reason"
    ],
    "stability": "stable"
@@ -516,7 +519,7 @@
   {
    "path": "data/receipts_archive.json",
    "format": "json",
-   "description": "Trailing-week receipts archive: per channel and day, the matched articles from that day's committed corpus cache, assembled identically to receipts.json (same matcher provenance, tier sort, syndication dedup, lane labels), capped per day. Today's full list lives in receipts.json; this file guarantees a week of enumerable, dated evidence per channel.",
+   "description": "Available recent receipts archive: per channel and day, the matched articles from that day's committed corpus cache, assembled identically to receipts.json (same matcher provenance, tier sort, syndication dedup, lane labels), capped per day. Today's full list lives in receipts.json. The cache may contain fewer than seven days; available_days and complete_window make that explicit.",
    "frozen_fields": [
     "_meta",
     "channels"
@@ -543,6 +546,7 @@
    "frozen_fields": [
     "_meta",
     "best",
+    "coverage",
     "all_conventions",
     "ambiguities_in_the_codebook"
    ],
