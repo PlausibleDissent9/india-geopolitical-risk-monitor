@@ -190,6 +190,15 @@ jobs:
         # silently rewritten history is not -- it invalidates every
         # result anyone has published from this series, so it stops the
         # build and says so.
+        #
+        # It lives HERE and not in morning.yml on purpose. load_or_update
+        # refetches a 14-day tail and lets fresh values win, so a GDELT
+        # revision of a recent day could legitimately trip this. That is
+        # information worth having -- adopting an upstream revision
+        # silently is exactly the thing being guarded against -- but it
+        # must not be able to block the 06:00 contract. Red enrichment
+        # lane, published morning: the failure lands where it can be
+        # read without costing the promise.
         if: github.event.inputs.backfill != 'true'
         timeout-minutes: 10
         run: python -m src.vintages
