@@ -34,6 +34,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from src import provenance
+
 ROOT = Path(__file__).resolve().parents[1]
 STORE = ROOT / "data" / "raw" / "gdelt_volume.csv"
 SITE_DATA = ROOT / "docs" / "data"
@@ -51,12 +53,21 @@ def main() -> None:
     if not src:
         raise SystemExit("[shares] empty store; refusing to publish")
 
+    # The series is not one instrument (referee finding #10). Most days
+    # are DOC API counts; a minority were measured by the Web NGrams
+    # bridge and divided by an estimated splice ratio to reach the API's
+    # scale. Publishing them in one column without saying which is which
+    # invites every user to compute a mean across a seam they cannot
+    # see, so the label ships in the data rather than in a footnote.
+    source_by_day = provenance.by_day()
+
     out_csv = SITE_DATA / "shares.csv"
     with out_csv.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["date"] + CHANNELS)
+        w.writerow(["date"] + CHANNELS + ["source"])
         for r in src:
-            w.writerow([r["date"]] + [r.get(c, "") for c in CHANNELS])
+            w.writerow([r["date"]] + [r.get(c, "") for c in CHANNELS]
+                       + [source_by_day.get(r["date"], "")])
 
     # Gap disclosure travels WITH the data, not in a footnote: a
     # missing day is a hole in the denominator of anything a user
@@ -90,6 +101,7 @@ def main() -> None:
                 "commensurable across channels and across years, which "
                 "percentiles are not: a rank is taken against each "
                 "channel's own trailing two years."),
+            "instrument_is_not_constant": provenance.summary(),
             "known_gaps": missing,
             "n_known_gaps": len(missing),
             "gap_note": ("Days absent from the store entirely -- fetch "

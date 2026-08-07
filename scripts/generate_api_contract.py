@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.20.0"  # + shares.csv/json (the quantity, referee finding)
+CONTRACT_VERSION = "1.21.0"  # + syndication.json (referee #23); shares.csv source column (referee #10)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to

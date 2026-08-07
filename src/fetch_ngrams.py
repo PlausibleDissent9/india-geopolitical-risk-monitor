@@ -51,6 +51,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 
+from . import provenance
 from .fetch_gdelt import build_queries
 
 BASE = ("https://storage.googleapis.com/data.gdeltproject.org/"
@@ -363,6 +364,12 @@ def heal(max_days: int) -> int:
             if ch not in calib:
                 continue
             store.loc[pd.Timestamp(day), ch] = v / calib[ch]["ratio"]
+        # A spliced day is a different instrument's measurement wearing
+        # the API's scale. Recording that at the moment it happens is
+        # the only way the published series can ever say so honestly;
+        # everything earlier than this line has to be RECONSTRUCTED
+        # (src/provenance.py) because nothing wrote it down.
+        provenance.record_bridged(day.isoformat())
         wrote += 1
 
     store.sort_index().to_csv(STORE, index_label="date")

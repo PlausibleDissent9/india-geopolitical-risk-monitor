@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.20.0",
+    "contract_version": "1.21.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -694,7 +694,8 @@
         "china_east",
         "gulf_energy",
         "us_trade",
-        "shipping"
+        "shipping",
+        "source"
       ],
       "stability": "stable"
     },
@@ -741,6 +742,17 @@
         "components",
         "validation",
         "history_365d"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/syndication.json",
+      "format": "json",
+      "description": "Articles per distinct story, per channel, per day, over the day's full scanned corpus. The index counts articles, so a wire story republished by 200 outlets moves a channel as far as 200 newsrooms independently reacting; this is the measurement of how often that happens.",
+      "frozen_fields": [
+        "_meta",
+        "channels",
+        "series"
       ],
       "stability": "stable"
     },

@@ -74,11 +74,34 @@ COL_ACTIONGEO_ADM1 = 52      # FIPS state code, e.g. "IN25"
 COL_ACTIONGEO_LAT = 53
 COL_ACTIONGEO_LON = 54
 
+# GDELT publishes, per event, both the number of ARTICLES mentioning it
+# and the number of distinct SOURCES those articles came from. Summed,
+# articles_sum/sources_sum is coverage concentration: how many articles
+# the average covering outlet contributed.
+#
+# This is a NEIGHBOUR of src/syndication.py's multiplier, not a
+# replication of it, and the distinction matters enough to state before
+# anyone treats agreement between them as corroboration. That module
+# divides articles by distinct HEADLINES and so measures republication
+# of one story; this divides articles by distinct SOURCES and so also
+# counts an outlet running three different pieces on one event. Both
+# bear on "was that spike more newsrooms or more copies" and neither
+# subsumes the other. They are reported separately, never averaged.
+#
+# Both columns sat unread in a file this fetcher already downloads.
+#
+# ADDED 2026-08-07: rows stored before this date carry empty values.
+# The series is inhomogeneous by construction and says so rather than
+# letting a user discover it in an aggregate.
+COL_SOURCES = 32
+COL_ARTICLES = 33
+
 FIELDS = ["date", "n_global", "n_india", "n_verbal_conflict",
           "n_material_conflict", "n_protest", "goldstein_mean",
-          "mentions_sum"]
+          "mentions_sum", "sources_sum", "articles_sum"]
 FIELDS_DYADS = ["date", "partner", "n", "n_coop", "n_conflict",
-                "goldstein_mean", "mentions_sum"]
+                "goldstein_mean", "mentions_sum", "sources_sum",
+                "articles_sum"]
 FIELDS_STATES = ["date", "adm1", "n", "n_conflict", "n_protest"]
 
 
@@ -120,7 +143,9 @@ def compute_day(day: date) -> tuple[dict, list[dict], list[dict]] | None:
     goldstein_total = 0.0
     goldstein_n = 0
     mentions = 0
-    # partner -> [n, n_coop, n_conflict, goldstein_sum, goldstein_n, mentions]
+    sources = articles = 0
+    # partner -> [n, n_coop, n_conflict, goldstein_sum, goldstein_n,
+    #             mentions, sources, articles]
     dyads: dict[str, list[float]] = {}
     # adm1 -> [n, n_conflict, n_protest]
     states: dict[str, list[int]] = {}
@@ -152,14 +177,21 @@ def compute_day(day: date) -> tuple[dict, list[dict], list[dict]] | None:
                     ment = int(cols[COL_MENTIONS])
                 except ValueError:
                     ment = 0
+                try:
+                    srcs = int(cols[COL_SOURCES])
+                    arts = int(cols[COL_ARTICLES])
+                except (ValueError, IndexError):
+                    srcs = arts = 0
                 if gold is not None:
                     goldstein_total += gold
                     goldstein_n += 1
                 mentions += ment
+                sources += srcs
+                articles += arts
                 # dyad layer: a real actor pair with India on one side
                 partner = a2 if a1 == "IND" else (a1 if a2 == "IND" else "")
                 if partner and partner != "IND":
-                    d = dyads.setdefault(partner, [0, 0, 0, 0.0, 0, 0])
+                    d = dyads.setdefault(partner, [0, 0, 0, 0.0, 0, 0, 0, 0])
                     d[0] += 1
                     if quad in ("1", "2"):
                         d[1] += 1
@@ -169,6 +201,8 @@ def compute_day(day: date) -> tuple[dict, list[dict], list[dict]] | None:
                         d[3] += gold
                         d[4] += 1
                     d[5] += ment
+                    d[6] += srcs
+                    d[7] += arts
                 # state layer: action geolocated to an Indian state.
                 # Placement prefers the POINT (V20): FIPS codes predate
                 # Telangana and Ladakh, coordinates do not. The FIPS code
@@ -203,12 +237,15 @@ def compute_day(day: date) -> tuple[dict, list[dict], list[dict]] | None:
         "n_protest": n_protest,
         "goldstein_mean": round(goldstein_total / goldstein_n, 3) if goldstein_n else "",
         "mentions_sum": mentions,
+        "sources_sum": sources,
+        "articles_sum": articles,
     }
     dyad_rows = [
         {"date": iso, "partner": p, "n": int(d[0]), "n_coop": int(d[1]),
          "n_conflict": int(d[2]),
          "goldstein_mean": round(d[3] / d[4], 3) if d[4] else "",
-         "mentions_sum": int(d[5])}
+         "mentions_sum": int(d[5]), "sources_sum": int(d[6]),
+         "articles_sum": int(d[7])}
         for p, d in sorted(dyads.items())
     ]
     state_rows = [
@@ -302,7 +339,8 @@ def run(days: list[date]) -> int:
         # empty layers still get a marker row so the day reads as done
         dyads[k] = dy or [{"date": k, "partner": "", "n": 0, "n_coop": 0,
                            "n_conflict": 0, "goldstein_mean": "",
-                           "mentions_sum": 0}]
+                           "mentions_sum": 0, "sources_sum": 0,
+                           "articles_sum": 0}]
         states[k] = st or [{"date": k, "adm1": "", "n": 0,
                             "n_conflict": 0, "n_protest": 0}]
         done += 1

@@ -649,6 +649,39 @@ are short. Shares are commensurable across channels and across years;
 percentiles are not (they are within-channel ranks against each
 channel's own trailing two years), and percentiles saturate during
 sustained crises where shares do not — see methodology v1.9.0.
+The `source` column names the instrument that measured each day:
+`doc_api` for GDELT DOC API counts (3,446 days) and `ngram_bridge` for
+days measured by the Web NGrams feed and divided by an estimated
+per-channel splice ratio to reach the API's scale (38 days, 2026-06-30
+onward). **These are two instruments, not one series.** Any statistic
+computed across the boundary inherits the linking constant's
+uncertainty, so the label travels in the data rather than in a
+footnote; `shares.json._meta.instrument_is_not_constant` carries the
+splice ratios, the recorded-versus-reconstructed basis of each label,
+and the bound on reconstruction impurity.
+
+## docs/data/syndication.json
+
+**Was that spike more newsrooms, or more copies?** Per channel per day,
+articles divided by distinct normalized headlines among them — the
+multiplier by which republication inflates a channel's article count.
+The index counts articles, so one wire story carried by two hundred
+outlets moves a channel exactly as far as two hundred newsrooms
+independently reacting; this is the measurement of how often that
+happens. On 2026-08-05, `pakistan_west` ran 160 articles across 46
+distinct stories (×3.478) while `china_east` ran 17 articles across 17
+stories (×1.000). **It corrects nothing** — republication is a real
+editorial decision, not noise, and no defensible deflation exists;
+nothing here enters a score. The estimator is biased downward at small
+samples, because a duplicate is visible only when both copies land in
+the scan: the same channel-day reads 1.923 at 28,575 documents sampled
+and 3.478 at 119,349, so only scans of at least 60,000 documents enter
+the history and `n_docs_sampled` travels with every row. A companion
+and deliberately non-identical measure, `articles_sum / sources_sum`,
+is computed over the whole GDELT event population in
+`data/raw/events_daily.csv`; the two are reported separately and never
+averaged, because dividing by sources also counts one outlet running
+several distinct pieces on the same event.
 
 ## docs/data/episode_themes.json
 

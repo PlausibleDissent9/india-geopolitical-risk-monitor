@@ -900,7 +900,38 @@ because a user computing monthly means deserves to know which months
 are short. Shares are commensurable across channels and across years;
 percentiles are not (they are within-channel ranks against each
 channel's own trailing two years), and percentiles saturate during
-sustained crises where shares do not — see methodology v1.9.0.</p>
+sustained crises where shares do not — see methodology v1.9.0.
+The <code>source</code> column names the instrument that measured each day:
+<code>doc_api</code> for GDELT DOC API counts (3,446 days) and <code>ngram_bridge</code> for
+days measured by the Web NGrams feed and divided by an estimated
+per-channel splice ratio to reach the API's scale (38 days, 2026-06-30
+onward). <strong>These are two instruments, not one series.</strong> Any statistic
+computed across the boundary inherits the linking constant's
+uncertainty, so the label travels in the data rather than in a
+footnote; <code>shares.json._meta.instrument_is_not_constant</code> carries the
+splice ratios, the recorded-versus-reconstructed basis of each label,
+and the bound on reconstruction impurity.</p>
+<h2>docs/data/syndication.json</h2>
+<p><strong>Was that spike more newsrooms, or more copies?</strong> Per channel per day,
+articles divided by distinct normalized headlines among them — the
+multiplier by which republication inflates a channel's article count.
+The index counts articles, so one wire story carried by two hundred
+outlets moves a channel exactly as far as two hundred newsrooms
+independently reacting; this is the measurement of how often that
+happens. On 2026-08-05, <code>pakistan_west</code> ran 160 articles across 46
+distinct stories (×3.478) while <code>china_east</code> ran 17 articles across 17
+stories (×1.000). <strong>It corrects nothing</strong> — republication is a real
+editorial decision, not noise, and no defensible deflation exists;
+nothing here enters a score. The estimator is biased downward at small
+samples, because a duplicate is visible only when both copies land in
+the scan: the same channel-day reads 1.923 at 28,575 documents sampled
+and 3.478 at 119,349, so only scans of at least 60,000 documents enter
+the history and <code>n_docs_sampled</code> travels with every row. A companion
+and deliberately non-identical measure, <code>articles_sum / sources_sum</code>,
+is computed over the whole GDELT event population in
+<code>data/raw/events_daily.csv</code>; the two are reported separately and never
+averaged, because dividing by sources also counts one outlet running
+several distinct pieces on the same event.</p>
 <h2>docs/data/episode_themes.json</h2>
 <p>Narrative composition (G4): per channel per day, the GKG theme codes
 carried by the day's MATCHED articles — the registered dictionaries

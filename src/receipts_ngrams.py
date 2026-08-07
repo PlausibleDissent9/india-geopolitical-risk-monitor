@@ -273,6 +273,19 @@ def assemble_channel(
         }
         n_supplement += 1
     articles = list(pool.values())
+    # The syndication multiplier, which this function has always
+    # computed and always discarded (referee finding, 2026-08-07). The
+    # index counts ARTICLES, so a single wire story republished by two
+    # hundred outlets moves a channel exactly as much as two hundred
+    # newsrooms independently deciding a thing mattered. Those are not
+    # the same event and the index cannot tell them apart.
+    #
+    # `pool` is keyed by URL, so its size is distinct articles; the
+    # title-collapse below turns that into distinct STORIES. The ratio
+    # is a direct measurement of republication inside the index's own
+    # retrieval path -- not an estimate from a side sample.
+    n_pool_urls = len(articles)
+    n_pool_domains = len({a["domain"] for a in articles})
     by_title: dict[str, dict[str, Any]] = {}
     for a in articles:
         a["tier"] = tiers.get(a["domain"])
@@ -298,6 +311,14 @@ def assemble_channel(
         "n_artlist_supplement": n_supplement,
         "n_retrieved": len(articles),
         "n_pool_unique": n_pool_unique,
+        "n_pool_urls": n_pool_urls,
+        "n_pool_domains": n_pool_domains,
+        # Articles per distinct story. 1.0 = every article is its own
+        # story; 3.0 = the average story appears three times. Rises when
+        # a channel's volume is wire copy rather than newsrooms.
+        "syndication_multiplier": (
+            round(n_pool_urls / n_pool_unique, 3) if n_pool_unique else None
+        ),
         "pool_exhausted": n_pool_unique <= MAX_PUBLISHED,
         "articles": articles,
         "spike_quality_tier12_share": (
