@@ -375,6 +375,13 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         run: python -m src.status_data
+      - name: Regenerate sitemap from the pages that exist
+        # It was hand-maintained and had drifted to 16 urls against 26
+        # pages -- start.html and the 41-year series among the missing.
+        # Derived now, so a new page is crawlable the day it ships.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.sitemap
       - name: Stamp universal _meta on every payload (licence, citation, codebook, source)
         # LAST payload writer in the lane, deliberately. This step was
         # first placed mid-workflow, then after the audits, and both
