@@ -649,3 +649,13 @@ are short. Shares are commensurable across channels and across years;
 percentiles are not (they are within-channel ranks against each
 channel's own trailing two years), and percentiles saturate during
 sustained crises where shares do not — see methodology v1.9.0.
+
+## docs/data/episode_themes.json
+
+Narrative composition (G4): per channel per day, the GKG theme codes
+carried by the day's MATCHED articles — the registered dictionaries
+choose every article and BigQuery only reads its `V2Themes`, so themes
+are an annotation, never a filter, and enter no score. `top_themes[]`
+gives each code with the share of themed matched articles carrying it;
+codes stay raw GDELT identifiers for auditability. `n_themed` vs
+`n_matched` discloses the join rate. Trailing 30 days.

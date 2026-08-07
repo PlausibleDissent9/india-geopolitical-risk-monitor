@@ -135,6 +135,16 @@
       "stability": "stable"
     },
     {
+      "path": "data/episode_themes.json",
+      "format": "json",
+      "description": "Narrative composition (G4): per channel per day, the GKG theme codes carried by the MATCHED articles -- the registered dictionaries choose every article, BigQuery only reads its V2Themes; an annotation, never a filter, entering no score. share = fraction of themed matched articles carrying the code; codes stay raw GDELT identifiers for auditability. n_themed vs n_matched discloses the join rate.",
+      "frozen_fields": [
+        "_meta",
+        "days"
+      ],
+      "stability": "stable"
+    },
+    {
       "path": "data/episodes.csv",
       "format": "csv",
       "description": "The same detected episodes as CSV, one row per episode.",
@@ -731,6 +741,16 @@
         "components",
         "validation",
         "history_365d"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/tone.json",
+      "format": "json",
+      "description": "Mean V2Tone of each channel's MATCHED articles -- the same articles the registered dictionaries selected and the receipts pages enumerate; tone is an annotation joined by URL in GDELT's GKG, never a filter. Context axis only: tone enters no score, no percentile, and no composite. n_tone_found vs n_matched discloses the join rate; GKG does not carry every URL. Negative tone is conventional GDELT scaling (roughly -10 very negative to +10 very positive).",
+      "frozen_fields": [
+        "_meta",
+        "days"
       ],
       "stability": "stable"
     },
