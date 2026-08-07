@@ -40,10 +40,18 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - name: Count chunk cache before
+      - name: Count stored series before
         id: before
-        run: echo "n=$(ls data/raw/gdelt_chunks 2>/dev/null | wc -l)" >> "$GITHUB_OUTPUT"
-      - name: Fetch batch (resumes from committed chunk cache)
+        # Progress means SERIES IN THE STORE, not files in the chunk
+        # cache. Counting chunks was the bug: the fetch cached every
+        # request it made and then died before writing the store, so the
+        # chain saw a growing cache, called it progress, and
+        # re-dispatched itself 70 times across 7 days without ever
+        # producing the artifact it existed to produce.
+        run: |
+          python -m src.multilingual --status || true
+          echo "n=$(python -c "from src import multilingual as m; print(len(m.expected_keys()) - len(m.missing_keys()))")" >> "$GITHUB_OUTPUT"
+      - name: Fetch batch (resumes from the store, series by series)
         continue-on-error: true
         timeout-minutes: 45
         run: python -m src.multilingual --backfill
@@ -61,13 +69,16 @@ jobs:
             sleep $((10 * i))
           done
           [ "$pushed" = "1" ]
-          echo "n=$(ls data/raw/gdelt_chunks 2>/dev/null | wc -l)" >> "$GITHUB_OUTPUT"
+          echo "n=$(python -c "from src import multilingual as m; print(len(m.expected_keys()) - len(m.missing_keys()))")" >> "$GITHUB_OUTPUT"
       - name: Re-trigger while incomplete and progressing
         run: |
           BEFORE="${{ steps.before.outputs.n }}"
           AFTER="${{ steps.commit.outputs.n }}"
-          DONE=$([ -f data/raw/multilingual_salience.csv ] && echo 1 || echo 0)
-          echo "chunks $BEFORE -> $AFTER; store done: $DONE"
+          # "Done" is every registered series present in the store, not
+          # the store file merely existing -- with incremental writes,
+          # one series in would otherwise read as finished.
+          if python -m src.multilingual --status; then DONE=1; else DONE=0; fi
+          echo "series stored $BEFORE -> $AFTER; complete: $DONE"
           if [ "$DONE" = "0" ] && [ "$AFTER" -gt "$BEFORE" ]; then
             curl -s -X POST \
               -H "Authorization: Bearer ${{ github.token }}" \

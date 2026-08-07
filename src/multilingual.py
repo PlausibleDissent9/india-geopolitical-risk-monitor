@@ -55,25 +55,97 @@ def _load_store() -> pd.DataFrame | None:
     return df.set_index("date").sort_index()
 
 
-def update(backfill: bool = False) -> pd.DataFrame:
+def expected_keys() -> list[str]:
     langs, dicts = _specs()
-    existing = _load_store()
+    return [f"{ch}_{lg}" for ch in dicts for lg in langs]
+
+
+def missing_keys() -> list[str]:
+    """Series the store still lacks. This, not the store's existence, is
+    what 'done' means -- see the note in update()."""
+    store = _load_store()
+    if store is None:
+        return expected_keys()
+    return [k for k in expected_keys()
+            if k not in store.columns or store[k].dropna().empty]
+
+
+def update(backfill: bool = False) -> pd.DataFrame | None:
+    """Fetch the registered per-language series, PERSISTING EACH ONE as
+    it lands.
+
+    This function used to build all fifteen series into a dict and write
+    the store once at the end. Fifteen series x seven years is a lot of
+    GDELT requests, and a single 429 anywhere in the loop raised past the
+    write -- so the store was never created, not once, while every
+    completed fetch still landed in the chunk cache.
+
+    The workflow around it then read that growing chunk cache as
+    progress, re-dispatched itself, and stayed green because the fetch
+    step is continue-on-error. Seventy runs across seven days,
+    twenty-six on 2026-08-06 alone, none of which could ever have
+    finished: a loop that cost real CI minutes to look busy.
+
+    Writing after each series makes the work cumulative. A batch that
+    dies on its ninth series keeps the first eight, and the next run
+    skips them and starts at the ninth -- so the store converges instead
+    of restarting.
+    """
+    langs, dicts = _specs()
+    store = _load_store()
     today = date.today()
-    start = START if (backfill or existing is None) else today - timedelta(days=14)
-    cols = {}
+    start = START if backfill else today - timedelta(days=14)
+
+    todo = missing_keys() if backfill else expected_keys()
+    if not todo:
+        print("[multilingual] every registered series is in the store")
+        return store
+
+    print(f"[multilingual] {len(todo)} series to fetch "
+          f"({len(expected_keys()) - len(todo)} already stored)")
+
+    landed = failed = 0
     for ch, spec in dicts.items():
         for lg in langs:
             key = f"{ch}_{lg}"
+            if key not in todo:
+                continue
             print(f"[multilingual] {key}: {start} -> {today}")
-            cols[key] = fetch_gdelt.fetch_channel(
-                spec["terms"], start, today, spec.get("anchor"),
-                query_suffix=f" sourcelang:{lg}")
-    fetched = pd.DataFrame(cols)
-    merged = (fetched.combine_first(existing)
-              if existing is not None and not backfill else fetched).sort_index()
-    STORE.parent.mkdir(parents=True, exist_ok=True)
-    merged.to_csv(STORE, index_label="date")
-    return merged
+            try:
+                series = fetch_gdelt.fetch_channel(
+                    spec["terms"], start, today, spec.get("anchor"),
+                    query_suffix=f" sourcelang:{lg}")
+            except Exception as e:  # noqa: BLE001 -- 429s are expected
+                print(f"[multilingual] {key}: FAILED ({type(e).__name__}: "
+                      f"{e}); keeping what already landed")
+                failed += 1
+                continue
+            if series.empty:
+                print(f"[multilingual] {key}: no data returned")
+                failed += 1
+                continue
+
+            frame = series.to_frame(name=key)
+            store = (frame.combine_first(store) if store is not None
+                     else frame).sort_index()
+            STORE.parent.mkdir(parents=True, exist_ok=True)
+            store.to_csv(STORE, index_label="date")
+            landed += 1
+            print(f"[multilingual] {key}: stored "
+                  f"({len(series.dropna())} days); store now "
+                  f"{len(store.columns)}/{len(expected_keys())} series")
+
+    still = missing_keys()
+    print(f"[multilingual] batch done: {landed} landed, {failed} failed, "
+          f"{len(still)} series still missing")
+    if landed == 0 and failed:
+        # Nothing gained and something broke: say so with a non-zero
+        # exit rather than letting the lane re-dispatch itself forever
+        # on the strength of a chunk cache that grew.
+        raise SystemExit(
+            f"[multilingual] no series landed and {failed} failed; "
+            "upstream is refusing us, so this batch made no progress")
+    return store
 
 
 def publish() -> None:
@@ -136,10 +208,29 @@ def main() -> None:
     ap.add_argument("--backfill", action="store_true")
     ap.add_argument("--update", action="store_true")
     ap.add_argument("--publish", action="store_true")
+    ap.add_argument("--status", action="store_true",
+                    help="exit 0 when every registered series is stored")
     args = ap.parse_args()
+    if args.status:
+        # The workflow's completeness test. It used to be "does the
+        # store file exist", which is wrong the moment the store is
+        # written incrementally -- one series in would read as finished.
+        still = missing_keys()
+        total = len(expected_keys())
+        print(f"[multilingual] {total - len(still)}/{total} series stored")
+        if still:
+            print(f"[multilingual] missing: {', '.join(still)}")
+        raise SystemExit(1 if still else 0)
     if args.backfill or args.update:
         update(backfill=args.backfill)
-        publish()
+        # Publishing is best-effort while the store is partial: publish()
+        # already skips any channel without 26 weeks across its
+        # languages, so a half-built store yields a smaller payload
+        # rather than a broken one.
+        try:
+            publish()
+        except SystemExit as e:
+            print(f"[multilingual] publish skipped: {e}")
     elif args.publish:
         publish()
     else:
