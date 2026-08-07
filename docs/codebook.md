@@ -71,6 +71,13 @@ Two payloads are bare JSON arrays with nowhere to carry `_meta`:
 files that are stamped (`history.json`, `note_latest.json`), so their
 provenance is one file away rather than absent.
 
+One dict-shaped exception is deliberate: `ai_gpr_benchmark.json` is served
+byte-for-byte as the hash-pinned output promised by its public registration.
+Its own `_meta` carries the analysis registration, script and source hashes,
+provider citation and raw-value redistribution limit. The generic metadata
+stamper skips it because changing even an innocuous envelope field would
+break the published result hash.
+
 *This was a promise before it was a fact.* Until 2026-08-07 the licence,
 citation and codebook link appeared in **three** payloads out of
 sixty-four, while this paragraph claimed all of them — so most downloads
@@ -250,6 +257,32 @@ weekly-mean salience and PortWatch `n_total` transits, each ranked as a
 percentile of its own full 2019-present weekly history, plus a weekly
 Spearman correlation on levels and the latest salience-minus-transits
 percentile gap.
+
+## docs/data/ai_gpr_benchmark.json
+
+Static output from the public, code-frozen AI-GPR India benchmark. The
+primary statistic is Spearman rho between month-over-month changes in the
+monthly mean IGRM daily composite and AI-GPR `India_all`. `sample` publishes
+every eligible month and the no-bridging rule; `primary` carries the point
+estimate, registered six- and twelve-month moving-block intervals, seed and
+mechanically selected decision sentence. `descriptive_primary` contains the
+registered level and Pearson checks plus lag-1 autocorrelations.
+`exploratory_correlations` is the labelled 6 by 4 matrix;
+`episode_month_ranks` is descriptive and deliberately has no AI-GPR hit
+rate; `largest_rank_divergences` republishes ranks and IGRM evidence links,
+never raw AI-GPR values. The source, IGRM inputs and analysis script are all
+SHA-256 pinned in `analysis/ai_gpr_benchmark_registration.json`.
+
+## docs/data/divergence_register.json
+
+Append-only rows documenting large disagreements between IGRM ranks and
+independent comparator ranks. Every entry has a stable `id`, publication and
+observation periods, register family, the two within-sample ranks, absolute
+gap, direction, sample definition, evidence URL, source payload and a claim
+limit. Samples differ by family and are never pooled. Rows identify where to
+inspect; they do not decide which measure is correct or assign a cause.
+Corrections retain the original id and add a dated note rather than silently
+removing history.
 
 ## docs/data/nowcast.json
 

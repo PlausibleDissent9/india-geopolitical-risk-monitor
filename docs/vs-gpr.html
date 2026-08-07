@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IGRM and the GPR indices, India Geopolitical Risk Monitor</title>
-<meta name="description" content="The standing comparison between IGRM and the Caldara-Iacoviello GPR family: exact series, results, design differences, and tests not yet run.">
+<meta name="description" content="The standing comparison between IGRM and the Caldara-Iacoviello GPR family, including a code-frozen 2026 AI-GPR India benchmark and complete replication receipts.">
 <link rel="canonical" href="https://igrm.in/vs-gpr.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=7a279efc">
+<link rel="stylesheet" href="site.css?v=79731829">
 </head>
 <body>
 <header>
@@ -23,8 +23,9 @@
     <a href="maps.html">Maps</a>
     <a href="data.html">Data</a>
     <a href="notes.html">Notes</a>
+    <a href="divergence.html">Divergence</a>
   </nav>
-  <p class="definition">Related instruments, different constructs. This page states what has actually been compared and what has not.</p>
+  <p class="definition">Related instruments, different constructs. Two exact India benchmarks, with the uncomfortable months preserved.</p>
 </header>
 
 <div class="prose">
@@ -34,17 +35,61 @@ monitored coverage matching five frozen India-relevant dictionaries. It does not
 the probability or severity of geopolitical events. It is distinct from the
 Caldara-Iacoviello Geopolitical Risk (GPR) family.</p>
 
-<h2>What has actually been tested</h2>
-<p>The published benchmark compares monthly mean IGRM percentile scores with
+<h2>The registered AI-GPR India benchmark</h2>
+<p class="prov">Registered before the first comparison statistic &middot; 7 August 2026</p>
+<p>The primary test compares month-over-month changes in IGRM's monthly mean daily
+composite with Iacoviello and Tong's monthly <code>India_all</code> series. The analysis
+script, exact source and IGRM inputs, missing-month rule, bootstrap, decision text and
+forbidden claims were frozen in a public commit before the result was calculated.</p>
+
+<div class="metric-grid" aria-label="AI-GPR benchmark results">
+  <div class="metric-card"><span class="metric-label">Primary Spearman rho</span><strong class="metric-value">0.256</strong><span class="metric-detail">n = 106 month-over-month changes</span></div>
+  <div class="metric-card"><span class="metric-label">Registered 95% interval</span><strong class="metric-value">0.050&ndash;0.407</strong><span class="metric-detail">10,000 six-month block draws</span></div>
+  <div class="metric-card"><span class="metric-label">Eligible levels sample</span><strong class="metric-value">108</strong><span class="metric-detail">months; one registered chain break</span></div>
+</div>
+
+<div class="verdict-panel">
+  <p class="prov">Frozen decision sentence</p>
+  <p><b>The two measures share a common component but are far from redundant.</b></p>
+</div>
+
+<div class="table-scroll"><table>
+  <thead><tr><th>Registered statistic</th><th class="num">Estimate</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td>Spearman, monthly changes</td><td class="num"><b>0.256</b></td><td>Inferential primary; 95% CI 0.050 to 0.407</td></tr>
+    <tr><td>Spearman, levels</td><td class="num">0.252</td><td>Descriptive only</td></tr>
+    <tr><td>Pearson, monthly changes</td><td class="num">0.298</td><td>Descriptive comparability check</td></tr>
+    <tr><td>Pearson, levels</td><td class="num">0.351</td><td>Descriptive comparability check</td></tr>
+    <tr><td>Spearman, changes; 12-month blocks</td><td class="num">0.256</td><td>Robustness 95% CI 0.082 to 0.364</td></tr>
+  </tbody>
+</table></div>
+
+<p>The sample runs from July 2017 through July 2026. A month enters mechanically if IGRM
+has at least 15 valid daily composite observations and <code>India_all</code> is present.
+Changes never bridge an excluded month. No logs, seasonal adjustment, detrending,
+smoothing, winsorising or outlier removal are permitted. Raw AI-GPR values are not
+redistributed. The 12-month interval rests on fewer than nine effective blocks; it is a
+registered robustness check, not a precision gain.</p>
+
+<p class="chart-note">Receipts:
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/commit/58ca6c007c477855cccdb207a48356019fc8a08a">public registration commit</a> &middot;
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/analysis/ai_gpr_benchmark_registration.json">protocol</a> &middot;
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/src/ai_gpr_benchmark.py">frozen script</a> &middot;
+<a href="data/ai_gpr_benchmark.json">verbatim aggregate output</a> &middot;
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/analysis/ai_gpr_benchmark_run_log.md">run log and disclosed environment failure</a> &middot;
+<a href="divergence.html">largest rank divergences</a>.</p>
+
+<h2>The earlier country-GPR benchmark</h2>
+<p>This separate benchmark compares monthly mean IGRM percentile scores with
 <code>GPRC_IND</code>, the Caldara-Iacoviello country-specific India series. The two
 pipelines share no corpus, dictionary or normalisation. Across 110 shared months, the
-composite correlation is 0.232 in monthly changes and 0.484 in levels. Changes are the
-sterner test because persistent series can correlate in levels through a shared trend.
+composite Pearson correlation is 0.232 in monthly changes and 0.484 in levels. Changes are
+the sterner test because persistent series can correlate in levels through a shared trend.
 The result shows limited co-movement between related measures. It is not proof that either
 instrument is superior.</p>
 
 <div class="table-scroll"><table>
-  <thead><tr><th>IGRM series</th><th class="num">Months</th><th class="num">r, monthly changes</th><th class="num">r, levels</th></tr></thead>
+  <thead><tr><th>IGRM series</th><th class="num">Months</th><th class="num">Pearson r, monthly changes</th><th class="num">Pearson r, levels</th></tr></thead>
   <tbody>
     <tr><td><b>Composite</b></td><td class="num">110</td><td class="num"><b>0.232</b></td><td class="num"><b>0.484</b></td></tr>
     <tr><td>US Trade</td><td class="num">110</td><td class="num">0.276</td><td class="num">0.315</td></tr>
@@ -57,31 +102,31 @@ instrument is superior.</p>
 <p class="chart-note">Live aggregate: <a href="data/gpr_comparison.json">gpr_comparison.json</a>.
 The GPR input is fetched for the calculation and is not redistributed by IGRM.</p>
 
-<h2>Why the numbers differ</h2>
+<h2>Why the instruments differ</h2>
+<p>The AI-GPR primary above is Spearman rho; the older country-GPR table is Pearson r.
+The like-for-like Pearson change correlations are 0.298 for AI-GPR and 0.232 for
+<code>GPRC_IND</code>, still across different samples and constructs. They are not scores
+on one contest.</p>
 <div class="table-scroll"><table>
-  <thead><tr><th></th><th>IGRM</th><th>Tested GPR benchmark</th></tr></thead>
+  <thead><tr><th></th><th>IGRM</th><th>Country GPR</th><th>AI-GPR India_all</th></tr></thead>
   <tbody>
-    <tr><td>Construct</td><td>Attention to five India-relevant geopolitical channels</td><td>Country-specific geopolitical risk coverage involving India</td></tr>
-    <tr><td>Frequency used here</td><td>Daily, aggregated to monthly means for this test</td><td>Monthly <code>GPRC_IND</code></td></tr>
-    <tr><td>Corpus</td><td>Worldwide English-language coverage monitored by GDELT</td><td>Independent newspaper-archive corpus</td></tr>
-    <tr><td>Output</td><td>Five channel percentiles plus a composite</td><td>One India country series</td></tr>
-    <tr><td>Interpretation</td><td>How much matching coverage appeared</td><td>Adverse geopolitical events and associated risks in news coverage</td></tr>
+    <tr><td>Construct</td><td>Attention to five India-relevant geopolitical channels</td><td>Country-specific geopolitical risk coverage involving India</td><td>Article-level geopolitical risk intensity involving India</td></tr>
+    <tr><td>Frequency used here</td><td>Daily, aggregated to monthly means</td><td>Monthly <code>GPRC_IND</code></td><td>Monthly <code>India_all</code></td></tr>
+    <tr><td>Corpus</td><td>Worldwide English-language coverage monitored by GDELT</td><td>Independent newspaper-archive corpus</td><td>New York Times, Washington Post and Chicago Tribune</td></tr>
+    <tr><td>Output</td><td>Five channel percentiles plus a composite</td><td>One India country series</td><td>India all, initiator, respondent and spillover series</td></tr>
+    <tr><td>Interpretation</td><td>How much matching coverage appeared</td><td>Adverse geopolitical events and associated risks in news coverage</td><td>Model-scored geopolitical-risk intensity</td></tr>
   </tbody>
 </table></div>
 
-<h2>The benchmark has moved</h2>
-<p>Iacoviello and Tong released AI-GPR in 2026. Its main index is daily and uses an LLM
-to score article-level risk intensity; its country decomposition is currently published
-monthly. IGRM has not yet been benchmarked against AI-GPR. Until that test is registered,
-run and published, this project will not use its daily frequency as a claimed advantage
-over the full GPR family.</p>
-
-<h2>What a superiority claim would require</h2>
-<p>IGRM does not currently claim to “beat” GPR. A defensible claim needs a frozen test,
-not a design comparison written after looking at the data. The next benchmark will specify
-the common dates, exact India series, named episodes, timing loss and missing-data rules
-before results are computed. A separate blind article audit needs at least one independent
-human coder. Failures will publish with the wins.</p>
+<h2>No leaderboard</h2>
+<p>IGRM does not claim to beat GPR or AI-GPR. The registered result is positive but modest,
+which is consistent with related instruments measuring different constructs in different
+corpora. The only permitted discussion frames were registered before calculation: corpus,
+construct and anchoring. Claims such as “outperforms”, “more accurate”, “validates” or
+“confirms IGRM measures risk” are forbidden under every outcome.</p>
+<p>The <a href="divergence.html">Divergence Register</a> keeps the five largest AI-GPR
+rank gaps and the sharpest physical-flow gaps permanently visible. That is the stronger
+test of the project's integrity: awkward disagreements publish with the aggregate result.</p>
 
 <h2>Primary sources</h2>
 <ul>

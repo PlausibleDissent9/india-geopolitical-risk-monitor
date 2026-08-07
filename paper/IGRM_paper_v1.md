@@ -6,7 +6,8 @@ Independent researcher · igrm.in
 *Draft v1, assembled 2026-08-06. Every number below is read from the
 published payloads named beside it and is reproducible from the public
 repository. Sections marked **[VOICE]** are the author's to write; the
-apparatus is complete.*
+apparatus is complete. Updated 2026-08-07 with the code-frozen AI-GPR
+benchmark and independent splice audit.*
 
 ---
 
@@ -15,11 +16,13 @@ apparatus is complete.*
 **[VOICE — 150–200 words.** Write this last, in your own voice. The
 factual spine, all verifiable below: a daily index of press salience
 for five registered channels of India-relevant geopolitics,
-2017-06-29 to present (3,304 days); construction registered before
-use; 24 of 29 pre-registered episodes detected; independent
-co-movement with the Caldara–Iacoviello GPR-India index at r = 0.484
-in monthly levels over 110 shared months despite no shared pipeline
-or dictionary; a 1979–2016 historical proxy on a different construct
+2017-06-29 to 2026-08-06 (3,305 days); construction registered before
+use; 24 of 29 pre-registered episodes detected; co-movement with the
+Caldara–Iacoviello GPR-India index at r = 0.484 in monthly levels over
+110 shared months; and a separate code-frozen test against AI-GPR
+India_all finding Spearman rho = 0.256 in 106 month-over-month changes
+(registered moving-block 95% CI 0.050–0.407), showing a common component
+but substantial non-redundancy; a 1979–2016 historical proxy on a different construct
 whose border channels replicate the live series at r ≈ 0.87 and whose
 two weaker channels are refused publication by a pre-registered
 threshold; full reproducibility from a clean checkout in about five
@@ -63,8 +66,8 @@ using, each defensible:
 **Substrate.** GDELT's global news monitoring: the DOC 2.0 API for
 daily matched-article shares and the Web NGrams v5 corpus for
 construction-identical article enumeration. Coverage is
-English-language, worldwide, 2017-06-29 onward (3,304 daily
-observations as of 2026-08-05).
+English-language, worldwide, 2017-06-29 onward (3,305 daily
+observations through 2026-08-06).
 
 **Corpus non-stationarity — measured, not assumed.** The monitored
 corpus has contracted materially over the sample
@@ -179,14 +182,52 @@ pipeline with this index. Over 110 shared months:
 | pakistan_west | 0.229 | 0.117 |
 | china_east | −0.085 | −0.020 |
 
-The composite's co-movement with an independently constructed index
-is external validation of the construct. The china_east near-zero is
-a construct difference, analysed rather than hidden: GPR keys on war
+The composite's co-movement shows that the instruments share a component;
+it does not validate one against the other because their constructs differ.
+The china_east near-zero is analysed rather than hidden: GPR keys on war
 and threat vocabulary, while this channel deliberately captures
 diplomatic and border-management coverage, which dominates its
 distribution in ordinary months.
 
-### 4.3 Historical proxy, 1979–2016, and its registered refusals
+### 4.3 Code-frozen AI-GPR India benchmark
+
+The newer Iacoviello–Tong AI-GPR series scores article-level geopolitical
+risk intensity in the New York Times, Washington Post and Chicago Tribune.
+Its country decomposition is monthly. Before calculating a joint statistic,
+the exact source bytes, IGRM history vintage, eligible-month rule,
+transformations, primary statistic, bootstrap, decision language and
+analysis-script hash were frozen in public commit `58ca6c0`.
+
+The inferential primary is Spearman rho between month-over-month changes in
+the monthly mean IGRM daily composite and AI-GPR `India_all`. A month enters
+if IGRM has at least 15 valid daily observations and `India_all` is present;
+changes never bridge the excluded June 2025 month. Across 108 levels and 106
+consecutive-month changes:
+
+| Statistic | Estimate | Registered role |
+|---|---:|---|
+| Spearman, monthly changes | **0.256** | Primary; 95% block-bootstrap CI **[0.050, 0.407]** |
+| Spearman, levels | 0.252 | Descriptive |
+| Pearson, monthly changes | 0.298 | Descriptive comparability check |
+| Pearson, levels | 0.351 | Descriptive comparability check |
+| Primary with 12-month blocks | 0.256 | Robustness CI **[0.082, 0.364]** |
+
+Under the frozen rule, **the two measures share a common component but are
+far from redundant**. This is not a test of which is more accurate. The
+permitted explanations for divergence were fixed before calculation:
+different corpora, different constructs, and different anchoring. The
+twelve-month interval rests on fewer than nine effective blocks and is
+reported as registered robustness, not as a precision gain. The older
+`GPRC_IND` comparison uses Pearson r; its 0.232 change correlation is therefore
+like-for-like with the AI-GPR Pearson change correlation of 0.298, not with the
+Spearman primary of 0.256. The five
+largest rank gaps are preserved with receipts in an append-only Divergence
+Register. Only ranks and aggregates are published; no raw AI-GPR value is
+redistributed. Two initial invocations failed before producing output because
+SciPy was missing. The unchanged script completed after the dependency was
+installed, and the public run log records the failure.
+
+### 4.4 Historical proxy, 1979–2016, and its registered refusals
 
 A separate historical study (registration frozen before first query;
 `analysis/back_extension_memo.md`) reconstructs a *different*
@@ -220,7 +261,7 @@ constructions. The two channels the registration had already flagged
 as weaker fail their own threshold and are withheld — the refusal is
 the finding.
 
-### 4.4 Dictionary robustness
+### 4.5 Dictionary robustness
 
 Broader and narrower dictionary variants (frozen in
 `dictionaries_alt.json`) are recomputed and correlated with the
@@ -240,7 +281,7 @@ prominently on the validation page rather than buried: that channel's
 level is term-dependent, and its rank movements should be trusted
 more than its level.
 
-### 4.5 Placebo and cross-source
+### 4.6 Placebo and cross-source
 
 Placebo channels (constructed on India-irrelevant vocabulary) produce
 115 detected episodes, of which 52 overlap geopolitical episode days
@@ -250,7 +291,7 @@ correlate weakly with the supply-side index per channel (−0.02 to
 0.188); this divergence is published as a finding, not resolved by
 adjustment.
 
-### 4.6 Measured sector sensitivities: a published null
+### 4.7 Measured sector sensitivities: a published null
 
 Signed sector-to-channel mappings (sectors.json v1.1.0) were used to
 compute NSE sectoral index returns relative to Nifty around episode

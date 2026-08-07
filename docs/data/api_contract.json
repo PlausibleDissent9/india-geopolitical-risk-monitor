@@ -23,6 +23,21 @@
  },
  "endpoints": [
   {
+   "path": "data/ai_gpr_benchmark.json",
+   "format": "json",
+   "description": "Static, code-frozen comparison of monthly IGRM salience with Iacoviello-Tong AI-GPR India_all: registered primary and descriptive correlations, moving-block intervals, full eligible-month list, exploratory matrix, event-month ranks and largest rank divergences. Aggregates and ranks only; no raw AI-GPR values are redistributed.",
+   "frozen_fields": [
+    "_meta",
+    "sample",
+    "primary",
+    "descriptive_primary",
+    "exploratory_correlations",
+    "episode_month_ranks",
+    "largest_rank_divergences"
+   ],
+   "stability": "static registered vintage"
+  },
+  {
    "path": "data/alerts.json",
    "format": "json",
    "description": "Registered alert events computed from published payloads after each daily publish (design/alerts_webhook.md, founder-signed 2026-08-06): T1 band-separated channel moves, T2 composite 90th-percentile crossings that survive their sampling band, T3 integrity events (the morning contract's own misses). Poll model, newest first, 90-day retention, stable ids. Every field is a number or the direction of a COMPLETED move; nothing here is a forecast.",
@@ -31,6 +46,16 @@
     "alerts"
    ],
    "stability": "stable"
+  },
+  {
+   "path": "data/divergence_register.json",
+   "format": "json",
+   "description": "Append-only register of large documented rank gaps between IGRM and independent comparators. Every row states its sample, receipt and claim limit; disagreement is an inspection target, not a superiority result.",
+   "frozen_fields": [
+    "_meta",
+    "entries"
+   ],
+   "stability": "append-only"
   },
   {
    "path": "data/alt_specs.json",

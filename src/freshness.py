@@ -68,6 +68,10 @@ MAX_AGE_DAYS: dict[str, int] = {
 
 # Exempt, each with the reason it is exempt. Short on purpose.
 EXEMPT: dict[str, str] = {
+    "ai_gpr_benchmark.json": (
+        "a hash-pinned, one-shot registered benchmark vintage; rewriting it "
+        "on a cadence would violate the public registration"
+    ),
     "api_contract.json": (
         "a frozen promise, not a readout -- it is regenerated only when a "
         "maintainer deliberately freezes a baseline, and a rolling "
@@ -86,6 +90,10 @@ EXEMPT: dict[str, str] = {
         "changes when a prediction is registered or graded, not on a "
         "cadence. Ships honest-empty by design, so an unchanged file is "
         "the correct state rather than a stalled lane"),
+    "divergence_register.json": (
+        "append-only and event-driven: it changes when a registered comparison "
+        "produces a qualifying row, not on a daily cadence"
+    ),
     "freshness.json": "this audit's own output",
 }
 

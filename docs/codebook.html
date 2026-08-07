@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=7a279efc">
+<link rel="stylesheet" href="site.css?v=79731829">
 </head>
 <body>
 <header>
@@ -23,6 +23,7 @@
     <a href="maps.html">Maps</a>
     <a href="data.html" class="current">Data</a>
     <a href="notes.html">Notes</a>
+    <a href="divergence.html">Divergence</a>
   </nav>
 </header>
 <div class="prose">
@@ -132,6 +133,12 @@ downloaded file explains itself without this website.</p>
 <code>episodes.json</code> and <code>notes.json</code>. Both are written in the same commit as
 files that are stamped (<code>history.json</code>, <code>note_latest.json</code>), so their
 provenance is one file away rather than absent.</p>
+<p>One dict-shaped exception is deliberate: <code>ai_gpr_benchmark.json</code> is served
+byte-for-byte as the hash-pinned output promised by its public registration.
+Its own <code>_meta</code> carries the analysis registration, script and source hashes,
+provider citation and raw-value redistribution limit. The generic metadata
+stamper skips it because changing even an innocuous envelope field would
+break the published result hash.</p>
 <p><em>This was a promise before it was a fact.</em> Until 2026-08-07 the licence,
 citation and codebook link appeared in <strong>three</strong> payloads out of
 sixty-four, while this paragraph claimed all of them — so most downloads
@@ -566,6 +573,28 @@ weekly-mean salience and PortWatch <code>n_total</code> transits, each ranked as
 percentile of its own full 2019-present weekly history, plus a weekly
 Spearman correlation on levels and the latest salience-minus-transits
 percentile gap.</p>
+<h2>docs/data/ai_gpr_benchmark.json</h2>
+<p>Static output from the public, code-frozen AI-GPR India benchmark. The
+primary statistic is Spearman rho between month-over-month changes in the
+monthly mean IGRM daily composite and AI-GPR <code>India_all</code>. <code>sample</code> publishes
+every eligible month and the no-bridging rule; <code>primary</code> carries the point
+estimate, registered six- and twelve-month moving-block intervals, seed and
+mechanically selected decision sentence. <code>descriptive_primary</code> contains the
+registered level and Pearson checks plus lag-1 autocorrelations.
+<code>exploratory_correlations</code> is the labelled 6 by 4 matrix;
+<code>episode_month_ranks</code> is descriptive and deliberately has no AI-GPR hit
+rate; <code>largest_rank_divergences</code> republishes ranks and IGRM evidence links,
+never raw AI-GPR values. The source, IGRM inputs and analysis script are all
+SHA-256 pinned in <code>analysis/ai_gpr_benchmark_registration.json</code>.</p>
+<h2>docs/data/divergence_register.json</h2>
+<p>Append-only rows documenting large disagreements between IGRM ranks and
+independent comparator ranks. Every entry has a stable <code>id</code>, publication and
+observation periods, register family, the two within-sample ranks, absolute
+gap, direction, sample definition, evidence URL, source payload and a claim
+limit. Samples differ by family and are never pooled. Rows identify where to
+inspect; they do not decide which measure is correct or assign a cause.
+Corrections retain the original id and add a dated note rather than silently
+removing history.</p>
 <h2>docs/data/nowcast.json</h2>
 <p>PROVISIONAL today-so-far scores, replaced roughly every two hours by
 the nowcast workflow. Computed from a partial-day sample of the GDELT

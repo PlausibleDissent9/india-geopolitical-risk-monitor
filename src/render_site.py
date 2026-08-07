@@ -52,6 +52,7 @@ PAGE_SHELL = """<!DOCTYPE html>
     <a href="maps.html">Maps</a>
     <a href="data.html"{cur_data}>Data</a>
     <a href="notes.html">Notes</a>
+    <a href="divergence.html">Divergence</a>
   </nav>
 </header>
 <div class="prose">

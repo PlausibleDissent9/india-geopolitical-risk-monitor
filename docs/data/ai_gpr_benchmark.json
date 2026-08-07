@@ -1,0 +1,596 @@
+{
+ "_meta": {
+  "what": "Pre-registered comparison of monthly IGRM salience with the Iacoviello-Tong AI-GPR India series. Aggregates and ranks only; no AI-GPR source values are redistributed.",
+  "registration": "analysis/ai_gpr_benchmark_registration.json",
+  "analysis_script_sha256": "9578f6ccdc01dd7ec6e8677548ffdf5376ae8e08bea2c8b242436c7d2e621de0",
+  "source_url": "https://www.matteoiacoviello.com/ai_gpr_files/ai_gpr_country_monthly.csv",
+  "source_sha256": "22750ad1e1bf0e3420f87a0810da3fbebf00d308d67d103ee5a236db3d9d17e3",
+  "source_data_through": "2026-07-01",
+  "igrm_history_sha256": "79885e7bf472a66faf48d8ee50e7fcc9a909171e4e2d8106a4f20ed46d24b32c",
+  "episode_list_sha256": "5730d7a8b611b466d94adffd004373bf7df25731abbde625fdd78082b44f8254",
+  "provider_citation": "Iacoviello, Matteo and Jonathan Tong (2026), 'The AI-GPR Index: Measuring Geopolitical Risk using Artificial Intelligence.'",
+  "raw_values_redistributed": false,
+  "deviations_from_registration": [],
+  "forbidden_claims": [
+   "beats",
+   "outperforms",
+   "more accurate",
+   "validates",
+   "confirms IGRM measures risk"
+  ],
+  "registered_discussion_frames": [
+   "corpus difference: three US newspapers versus global GDELT coverage",
+   "construct difference: geopolitical risk intensity versus press-salience share",
+   "anchoring difference: a global country score versus India-specific fault-line channels"
+  ]
+ },
+ "sample": {
+  "months": [
+   "2017-07-01",
+   "2017-08-01",
+   "2017-09-01",
+   "2017-10-01",
+   "2017-11-01",
+   "2017-12-01",
+   "2018-01-01",
+   "2018-02-01",
+   "2018-03-01",
+   "2018-04-01",
+   "2018-05-01",
+   "2018-06-01",
+   "2018-07-01",
+   "2018-08-01",
+   "2018-09-01",
+   "2018-10-01",
+   "2018-11-01",
+   "2018-12-01",
+   "2019-01-01",
+   "2019-02-01",
+   "2019-03-01",
+   "2019-04-01",
+   "2019-05-01",
+   "2019-06-01",
+   "2019-07-01",
+   "2019-08-01",
+   "2019-09-01",
+   "2019-10-01",
+   "2019-11-01",
+   "2019-12-01",
+   "2020-01-01",
+   "2020-02-01",
+   "2020-03-01",
+   "2020-04-01",
+   "2020-05-01",
+   "2020-06-01",
+   "2020-07-01",
+   "2020-08-01",
+   "2020-09-01",
+   "2020-10-01",
+   "2020-11-01",
+   "2020-12-01",
+   "2021-01-01",
+   "2021-02-01",
+   "2021-03-01",
+   "2021-04-01",
+   "2021-05-01",
+   "2021-06-01",
+   "2021-07-01",
+   "2021-08-01",
+   "2021-09-01",
+   "2021-10-01",
+   "2021-11-01",
+   "2021-12-01",
+   "2022-01-01",
+   "2022-02-01",
+   "2022-03-01",
+   "2022-04-01",
+   "2022-05-01",
+   "2022-06-01",
+   "2022-07-01",
+   "2022-08-01",
+   "2022-09-01",
+   "2022-10-01",
+   "2022-11-01",
+   "2022-12-01",
+   "2023-01-01",
+   "2023-02-01",
+   "2023-03-01",
+   "2023-04-01",
+   "2023-05-01",
+   "2023-06-01",
+   "2023-07-01",
+   "2023-08-01",
+   "2023-09-01",
+   "2023-10-01",
+   "2023-11-01",
+   "2023-12-01",
+   "2024-01-01",
+   "2024-02-01",
+   "2024-03-01",
+   "2024-04-01",
+   "2024-05-01",
+   "2024-06-01",
+   "2024-07-01",
+   "2024-08-01",
+   "2024-09-01",
+   "2024-10-01",
+   "2024-11-01",
+   "2024-12-01",
+   "2025-01-01",
+   "2025-02-01",
+   "2025-03-01",
+   "2025-04-01",
+   "2025-05-01",
+   "2025-07-01",
+   "2025-08-01",
+   "2025-09-01",
+   "2025-10-01",
+   "2025-11-01",
+   "2025-12-01",
+   "2026-01-01",
+   "2026-02-01",
+   "2026-03-01",
+   "2026-04-01",
+   "2026-05-01",
+   "2026-06-01",
+   "2026-07-01"
+  ],
+  "n_levels": 108,
+  "n_changes": 106,
+  "minimum_valid_igrm_days_per_month": 15,
+  "changes_bridge_missing_months": false
+ },
+ "primary": {
+  "statistic": "Spearman rho, month-over-month changes",
+  "rho": 0.256,
+  "moving_block_bootstrap_95_ci": {
+   "6": [
+    0.05,
+    0.407
+   ],
+   "12": [
+    0.082,
+    0.364
+   ]
+  },
+  "bootstrap_draws": 10000,
+  "random_seed": 20260807,
+  "decision_language": "The two measures share a common component but are far from redundant."
+ },
+ "descriptive_primary": {
+  "spearman_levels": 0.252,
+  "pearson_changes": 0.298,
+  "pearson_levels": 0.351,
+  "autocorrelation": {
+   "igrm_composite_levels_lag1": 0.753,
+   "ai_gpr_india_all_levels_lag1": 0.31,
+   "igrm_composite_changes_lag1": 0.008,
+   "ai_gpr_india_all_changes_lag1": -0.039
+  }
+ },
+ "exploratory_correlations": [
+  {
+   "igrm_series": "composite",
+   "ai_gpr_series": "India_all",
+   "spearman_levels": 0.252,
+   "n_levels": 108,
+   "spearman_changes": 0.256,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "composite",
+   "ai_gpr_series": "India_initiator",
+   "spearman_levels": -0.057,
+   "n_levels": 108,
+   "spearman_changes": 0.371,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "composite",
+   "ai_gpr_series": "India_respondent",
+   "spearman_levels": 0.178,
+   "n_levels": 108,
+   "spearman_changes": 0.186,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "composite",
+   "ai_gpr_series": "India_spillover",
+   "spearman_levels": 0.308,
+   "n_levels": 108,
+   "spearman_changes": -0.035,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "pakistan_west",
+   "ai_gpr_series": "India_all",
+   "spearman_levels": 0.23,
+   "n_levels": 108,
+   "spearman_changes": 0.196,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "pakistan_west",
+   "ai_gpr_series": "India_initiator",
+   "spearman_levels": 0.178,
+   "n_levels": 108,
+   "spearman_changes": 0.343,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "pakistan_west",
+   "ai_gpr_series": "India_respondent",
+   "spearman_levels": 0.143,
+   "n_levels": 108,
+   "spearman_changes": 0.056,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "pakistan_west",
+   "ai_gpr_series": "India_spillover",
+   "spearman_levels": 0.054,
+   "n_levels": 108,
+   "spearman_changes": -0.093,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "china_east",
+   "ai_gpr_series": "India_all",
+   "spearman_levels": 0.058,
+   "n_levels": 108,
+   "spearman_changes": 0.2,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "china_east",
+   "ai_gpr_series": "India_initiator",
+   "spearman_levels": 0.185,
+   "n_levels": 108,
+   "spearman_changes": 0.297,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "china_east",
+   "ai_gpr_series": "India_respondent",
+   "spearman_levels": 0.178,
+   "n_levels": 108,
+   "spearman_changes": 0.236,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "china_east",
+   "ai_gpr_series": "India_spillover",
+   "spearman_levels": -0.13,
+   "n_levels": 108,
+   "spearman_changes": -0.1,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "gulf_energy",
+   "ai_gpr_series": "India_all",
+   "spearman_levels": 0.121,
+   "n_levels": 108,
+   "spearman_changes": 0.112,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "gulf_energy",
+   "ai_gpr_series": "India_initiator",
+   "spearman_levels": -0.191,
+   "n_levels": 108,
+   "spearman_changes": 0.107,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "gulf_energy",
+   "ai_gpr_series": "India_respondent",
+   "spearman_levels": -0.05,
+   "n_levels": 108,
+   "spearman_changes": 0.057,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "gulf_energy",
+   "ai_gpr_series": "India_spillover",
+   "spearman_levels": 0.312,
+   "n_levels": 108,
+   "spearman_changes": 0.11,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "us_trade",
+   "ai_gpr_series": "India_all",
+   "spearman_levels": 0.117,
+   "n_levels": 108,
+   "spearman_changes": 0.1,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "us_trade",
+   "ai_gpr_series": "India_initiator",
+   "spearman_levels": -0.14,
+   "n_levels": 108,
+   "spearman_changes": 0.113,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "us_trade",
+   "ai_gpr_series": "India_respondent",
+   "spearman_levels": 0.132,
+   "n_levels": 108,
+   "spearman_changes": 0.236,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "us_trade",
+   "ai_gpr_series": "India_spillover",
+   "spearman_levels": 0.229,
+   "n_levels": 108,
+   "spearman_changes": 0.023,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "shipping",
+   "ai_gpr_series": "India_all",
+   "spearman_levels": 0.091,
+   "n_levels": 108,
+   "spearman_changes": -0.093,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "shipping",
+   "ai_gpr_series": "India_initiator",
+   "spearman_levels": -0.17,
+   "n_levels": 108,
+   "spearman_changes": -0.148,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "shipping",
+   "ai_gpr_series": "India_respondent",
+   "spearman_levels": 0.008,
+   "n_levels": 108,
+   "spearman_changes": -0.102,
+   "n_changes": 106
+  },
+  {
+   "igrm_series": "shipping",
+   "ai_gpr_series": "India_spillover",
+   "spearman_levels": 0.267,
+   "n_levels": 108,
+   "spearman_changes": 0.086,
+   "n_changes": 106
+  }
+ ],
+ "episode_month_ranks": {
+  "warning": "Descriptive only. The episode list was selected for IGRM's construct; no AI-GPR detection rate is computed.",
+  "rows": [
+   {
+    "name": "Pulwama attack",
+    "channel": "pakistan_west",
+    "event_date": "2019-02-14",
+    "month": "2019-02-01",
+    "ai_gpr_india_all_within_sample_rank": 94.4
+   },
+   {
+    "name": "Balakot airstrike and aerial engagement",
+    "channel": "pakistan_west",
+    "event_date": "2019-02-26",
+    "month": "2019-02-01",
+    "ai_gpr_india_all_within_sample_rank": 94.4
+   },
+   {
+    "name": "Abqaiq-Khurais drone attack on Saudi oil facilities",
+    "channel": "gulf_energy",
+    "event_date": "2019-09-14",
+    "month": "2019-09-01",
+    "ai_gpr_india_all_within_sample_rank": 86.1
+   },
+   {
+    "name": "OPEC+ collapse; oil price war begins",
+    "channel": "gulf_energy",
+    "event_date": "2020-03-08",
+    "month": "2020-03-01",
+    "ai_gpr_india_all_within_sample_rank": 53.7
+   },
+   {
+    "name": "Galwan Valley clash",
+    "channel": "china_east",
+    "event_date": "2020-06-15",
+    "month": "2020-06-01",
+    "ai_gpr_india_all_within_sample_rank": 85.2
+   },
+   {
+    "name": "India-Pakistan LoC ceasefire reaffirmation",
+    "channel": "pakistan_west",
+    "event_date": "2021-02-25",
+    "month": "2021-02-01",
+    "ai_gpr_india_all_within_sample_rank": 37.0
+   },
+   {
+    "name": "Ever Given grounds in the Suez Canal",
+    "channel": "shipping",
+    "event_date": "2021-03-23",
+    "month": "2021-03-01",
+    "ai_gpr_india_all_within_sample_rank": 39.8
+   },
+   {
+    "name": "Russia invades Ukraine (oil-supply shock; tests the energy-security half of the channel)",
+    "channel": "gulf_energy",
+    "event_date": "2022-02-24",
+    "month": "2022-02-01",
+    "ai_gpr_india_all_within_sample_rank": 7.4
+   },
+   {
+    "name": "Tawang sector clash, Arunachal Pradesh",
+    "channel": "china_east",
+    "event_date": "2022-12-09",
+    "month": "2022-12-01",
+    "ai_gpr_india_all_within_sample_rank": 46.3
+   },
+   {
+    "name": "Hamas attack on Israel",
+    "channel": "gulf_energy",
+    "event_date": "2023-10-07",
+    "month": "2023-10-01",
+    "ai_gpr_india_all_within_sample_rank": 77.8
+   },
+   {
+    "name": "Galaxy Leader seizure; start of Houthi Red Sea shipping attacks",
+    "channel": "shipping",
+    "event_date": "2023-11-19",
+    "month": "2023-11-01",
+    "ai_gpr_india_all_within_sample_rank": 67.6
+   },
+   {
+    "name": "First US-UK strikes on Houthi targets; peak Red Sea coverage",
+    "channel": "shipping",
+    "event_date": "2024-01-12",
+    "month": "2024-01-01",
+    "ai_gpr_india_all_within_sample_rank": 54.6
+   },
+   {
+    "name": "Iran direct drone/missile strike on Israel",
+    "channel": "gulf_energy",
+    "event_date": "2024-04-13",
+    "month": "2024-04-01",
+    "ai_gpr_india_all_within_sample_rank": 45.4
+   },
+   {
+    "name": "Iran ballistic-missile strike on Israel",
+    "channel": "gulf_energy",
+    "event_date": "2024-10-01",
+    "month": "2024-10-01",
+    "ai_gpr_india_all_within_sample_rank": 92.6
+   },
+   {
+    "name": "India-China patrolling agreement (Depsang/Demchok disengagement)",
+    "channel": "china_east",
+    "event_date": "2024-10-21",
+    "month": "2024-10-01",
+    "ai_gpr_india_all_within_sample_rank": 92.6
+   },
+   {
+    "name": "US reciprocal-tariff announcement",
+    "channel": "us_trade",
+    "event_date": "2025-04-02",
+    "month": "2025-04-01",
+    "ai_gpr_india_all_within_sample_rank": 97.2
+   },
+   {
+    "name": "Pahalgam terror attack",
+    "channel": "pakistan_west",
+    "event_date": "2025-04-22",
+    "month": "2025-04-01",
+    "ai_gpr_india_all_within_sample_rank": 97.2
+   },
+   {
+    "name": "India-Pakistan military exchange (to ceasefire of May 10)",
+    "channel": "pakistan_west",
+    "event_date": "2025-05-07",
+    "month": "2025-05-01",
+    "ai_gpr_india_all_within_sample_rank": 100.0
+   },
+   {
+    "name": "US doubles tariffs on India to 50% over Russian-oil purchases",
+    "channel": "us_trade",
+    "event_date": "2025-08-06",
+    "month": "2025-08-01",
+    "ai_gpr_india_all_within_sample_rank": 99.1
+   },
+   {
+    "name": "Article 370 abrogation; Jammu and Kashmir special status revoked",
+    "channel": "pakistan_west",
+    "event_date": "2019-08-05",
+    "month": "2019-08-01",
+    "ai_gpr_india_all_within_sample_rank": 98.1
+   },
+   {
+    "name": "Accidental BrahMos missile launch into Pakistan (disclosed by Pakistan March 10; an honest hard case for event-day timing)",
+    "channel": "pakistan_west",
+    "event_date": "2022-03-09",
+    "month": "2022-03-01",
+    "ai_gpr_india_all_within_sample_rank": 73.1
+   },
+   {
+    "name": "United States withdraws from the JCPOA (Iran nuclear deal)",
+    "channel": "gulf_energy",
+    "event_date": "2018-05-08",
+    "month": "2018-05-01",
+    "ai_gpr_india_all_within_sample_rank": 9.3
+   },
+   {
+    "name": "Gulf of Oman tanker attacks (Front Altair and Kokuka Courageous)",
+    "channel": "gulf_energy",
+    "event_date": "2019-06-13",
+    "month": "2019-06-01",
+    "ai_gpr_india_all_within_sample_rank": 15.7
+   },
+   {
+    "name": "US strike kills Qasem Soleimani in Baghdad",
+    "channel": "gulf_energy",
+    "event_date": "2020-01-03",
+    "month": "2020-01-01",
+    "ai_gpr_india_all_within_sample_rank": 16.7
+   },
+   {
+    "name": "OPEC+ announces 2 million bpd production cut",
+    "channel": "gulf_energy",
+    "event_date": "2022-10-05",
+    "month": "2022-10-01",
+    "ai_gpr_india_all_within_sample_rank": 27.8
+   },
+   {
+    "name": "US Section 232 steel and aluminium tariffs signed (global trade-war onset; India affected)",
+    "channel": "us_trade",
+    "event_date": "2018-03-08",
+    "month": "2018-03-01",
+    "ai_gpr_india_all_within_sample_rank": 6.5
+   },
+   {
+    "name": "US announces termination of India's GSP trade preference status",
+    "channel": "us_trade",
+    "event_date": "2019-05-31",
+    "month": "2019-05-01",
+    "ai_gpr_india_all_within_sample_rank": 64.8
+   }
+  ]
+ },
+ "largest_rank_divergences": [
+  {
+   "month": "2020-02-01",
+   "igrm_composite_rank": 2.8,
+   "ai_gpr_india_all_rank": 79.6,
+   "absolute_gap": 76.9,
+   "igrm_evidence_url": "https://igrm.in/explorer.html?from=2020-02-01&to=2020-02-29"
+  },
+  {
+   "month": "2019-06-01",
+   "igrm_composite_rank": 87.0,
+   "ai_gpr_india_all_rank": 15.7,
+   "absolute_gap": 71.3,
+   "igrm_evidence_url": "https://igrm.in/explorer.html?from=2019-06-01&to=2019-06-30"
+  },
+  {
+   "month": "2019-02-01",
+   "igrm_composite_rank": 23.1,
+   "ai_gpr_india_all_rank": 94.4,
+   "absolute_gap": 71.3,
+   "igrm_evidence_url": "https://igrm.in/explorer.html?from=2019-02-01&to=2019-02-28"
+  },
+  {
+   "month": "2021-05-01",
+   "igrm_composite_rank": 7.4,
+   "ai_gpr_india_all_rank": 74.1,
+   "absolute_gap": 66.7,
+   "igrm_evidence_url": "https://igrm.in/explorer.html?from=2021-05-01&to=2021-05-31"
+  },
+  {
+   "month": "2023-01-01",
+   "igrm_composite_rank": 86.1,
+   "ai_gpr_india_all_rank": 20.4,
+   "absolute_gap": 65.7,
+   "igrm_evidence_url": "https://igrm.in/explorer.html?from=2023-01-01&to=2023-01-31"
+  }
+ ]
+}

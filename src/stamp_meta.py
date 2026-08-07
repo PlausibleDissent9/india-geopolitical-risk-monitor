@@ -48,7 +48,14 @@ BASE_URL = "https://igrm.in/data/"
 # The contract file is a hand-frozen promise about field stability, not
 # a data payload; rewriting it here would let the "frozen" list drift by
 # a side effect, which is exactly what it exists to prevent.
-SKIP = {"api_contract.json"}
+SKIP = {
+    "api_contract.json",
+    # Registration commit 58ca6c0 promises the generated benchmark output
+    # verbatim. Its own _meta carries the source, hashes, registration,
+    # provider citation and redistribution limit; a generic post-run stamp
+    # would break the published output hash.
+    "ai_gpr_benchmark.json",
+}
 
 
 def universal_fields(name: str) -> dict[str, str]:

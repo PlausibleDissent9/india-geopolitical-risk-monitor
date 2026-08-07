@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=7a279efc">
+<link rel="stylesheet" href="site.css?v=79731829">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org", "@type": "Dataset",
@@ -39,6 +39,7 @@
     <a href="maps.html">Maps</a>
     <a href="data.html" class="current">Data</a>
     <a href="notes.html">Notes</a>
+    <a href="divergence.html">Divergence</a>
   </nav>
   <p class="definition">All series are open data under CC BY 4.0. Attribution required; no other restrictions. Not investment advice.</p>
 </header>
@@ -53,7 +54,8 @@ units, and construction: <a href="codebook.html"><b>the codebook</b></a>.</p>
 <p class="prose">IGRM keeps its established name, but its construct is geopolitical
 salience. It is distinct from the Caldara-Iacoviello GPR family. See the
 <a href="vs-gpr.html"><b>standing comparison</b></a>, including the exact benchmark
-series and the tests not yet run.</p>
+series, the registered AI-GPR result, and the permanent
+<a href="divergence.html">Divergence Register</a>.</p>
 
 <h2>Preview: the last ten days of history.csv</h2>
 <div class="table-scroll"><table id="preview">
@@ -74,6 +76,8 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
     <tr><td><a href="viewer.html?f=episodes.json">episodes.json</a> <span class="kv">(<a href="data/episodes.json">raw</a>)</span></td><td>Detected coverage episodes: channel, start, end, peak date, peak volume share, spike-day count.</td></tr>
     <tr><td><a href="viewer.html?f=event_study.json">event_study.json</a> <span class="kv">(<a href="data/event_study.json">raw</a>)</span></td><td>Mean cumulative relative returns after episode starts with bootstrapped 95% CIs, plus per-episode raw window returns.</td></tr>
     <tr><td><a href="viewer.html?f=validation.json">validation.json</a> <span class="kv">(<a href="data/validation.json">raw</a>)</span></td><td>Hit-rate against the pre-registered episode list, placebo-channel overlap, dictionary-robustness correlations, cross-source agreement, coverage-drift diagnostics.</td></tr>
+    <tr><td><a href="data/ai_gpr_benchmark.json">ai_gpr_benchmark.json</a></td><td><b>Code-frozen external benchmark:</b> aggregate and rank-only comparison with the Iacoviello-Tong AI-GPR India series, including the full eligible-month list, registered bootstrap intervals, exploratory matrix, event-month ranks and five largest divergences. No raw AI-GPR values are redistributed.</td></tr>
+    <tr><td><a href="data/divergence_register.json">divergence_register.json</a></td><td><b>Append-only inspection record:</b> dated, receipt-linked rank gaps against AI-GPR and IMF PortWatch, with a claim limit on every row. Disagreement is recorded, not explained away.</td></tr>
     <tr><td><a href="data/shares.csv" download>shares.csv</a> <span class="kv">(<a href="viewer.html?f=shares.json">metadata</a>)</span></td><td>The published quantity beneath the percentile transform: daily matched-article shares with the measuring instrument named on every row.</td></tr>
     <tr><td><a href="viewer.html?f=splice_sensitivity.json">splice_sensitivity.json</a> <span class="kv">(<a href="data/splice_sensitivity.json">raw</a>)</span></td><td><b>Calibration audit:</b> the frozen primary scores beside a recomputation under the independently estimated splice ratios, with daily and 7-day shifts. It is a sensitivity series, not a replacement.</td></tr>
     <tr><td><a href="viewer.html?f=alt_specs.json">alt_specs.json</a> <span class="kv">(<a href="data/alt_specs.json">raw</a>)</span></td><td>Secondary specifications: alternative composite weightings, episode thresholds (1.5&sigma;/2.5&sigma;), percentile windows (365/1095 days), each with its correlation to the primary.</td></tr>
