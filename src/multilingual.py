@@ -42,7 +42,21 @@ STORE = ROOT / "data" / "raw" / "multilingual_salience.csv"
 # leave room to finish cleanly inside it and are overridable so a
 # quieter window can do more without a code change.
 MAX_SERIES_PER_RUN = int(os.environ.get("IGRM_ML_MAX_SERIES", "4"))
-DEADLINE_SECONDS = int(os.environ.get("IGRM_ML_DEADLINE_S", str(30 * 60)))
+# The budget must leave room for the LAST series to finish after it
+# starts. A series that is throttled the whole way costs
+# RETRIES backoffs (30s, 60s ... 180s) plus RETRIES x SLEEP_S -- twelve
+# minutes today, per chunk. The CI step allows 45.
+#
+# At 30 minutes the arithmetic was 30 + 12 = 42 against 45: three minutes
+# of margin, and being killed mid-series is exactly the failure this
+# bound exists to prevent (2026-08-07, 09:44:14 to 10:29:27, killed at
+# the timeout with zero series completed). 25 leaves eight.
+#
+# test_multilingual_budget.py recomputes this from the real constants
+# rather than trusting the comment, and fails when the arithmetic stops
+# working -- including on the day the 2019-onward range grows past
+# CHUNK_DAYS and the worst case per series doubles.
+DEADLINE_SECONDS = int(os.environ.get("IGRM_ML_DEADLINE_S", str(25 * 60)))
 SITE_JSON = ROOT / "docs" / "data" / "multilingual.json"
 
 START = date(2019, 1, 1)  # three-language roster; extend range with roster
