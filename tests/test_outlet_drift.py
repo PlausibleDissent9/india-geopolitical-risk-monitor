@@ -116,6 +116,14 @@ def test_adjacent_day_summary_matches_matrix():
 
 
 def test_payload_equals_compute():
+    """Scoped to the payload's OWN day list. The staging boundary banks
+    a new raw day-cache while refusing the regenerated payload on a
+    failed run, so disk legitimately holds more days than the payload
+    between a failure and the next green run -- that lag belongs to
+    freshness.py. Unscoped, this test reddened every evidence commit
+    and all three morning shots (cross-review 2026-08-08, proven with
+    one extra cache day). Rewrites still fail loud: compute() refuses
+    a day list the archive no longer holds."""
     disk = _payload()
     disk["_meta"].pop("generated")
-    assert disk == outlet_drift.compute()
+    assert disk == outlet_drift.compute(only_days=disk["days"])

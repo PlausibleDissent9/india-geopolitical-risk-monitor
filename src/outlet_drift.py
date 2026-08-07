@@ -108,13 +108,32 @@ def _adjacent_summary(days: list[str],
     }
 
 
-def compute() -> dict[str, Any]:
+def compute(only_days: list[str] | None = None) -> dict[str, Any]:
     """The full payload minus the generation timestamp, so the test can
-    assert payload == compute() byte-for-value."""
+    assert payload == compute() byte-for-value.
+
+    `only_days` restricts the matrix to the named day-caches. The
+    equality test passes the payload's own day list: the staging
+    boundary (scripts/stage_daily_outputs.sh) legitimately banks a new
+    raw cache while refusing the regenerated payload on a failed run,
+    so disk can hold one more day than the payload without anything
+    being wrong -- that gap is freshness.py's business. An unrestricted
+    recompute here would have turned every such evidence commit into a
+    red CI and failed the morning gate (caught by cross-review
+    2026-08-08, proven with one extra cache day)."""
     from src import receipts_ngrams, stamp_meta
 
     standard = sorted(p for p in DAYS_DIR.glob("*.json")
                       if "-extended" not in p.stem)
+    if only_days is not None:
+        wanted = set(only_days)
+        standard = [p for p in standard if p.stem in wanted]
+        missing = wanted - {p.stem for p in standard}
+        if missing:
+            raise SystemExit(
+                f"[outlet_drift] requested day-caches are absent: "
+                f"{sorted(missing)}; the payload names days the archive "
+                "no longer holds, which is a rewrite, not a lag")
     extended = sorted(p for p in DAYS_DIR.glob("*-extended.json"))
     if len(standard) < 2:
         raise SystemExit(
