@@ -7,9 +7,27 @@ pages**. This is that note.
 
 Character: **dark, calm, technical.** Night is the committed default;
 light is a persisted choice and must stay equally legible. Reference
-points are FT data journalism, the Economist's data pages, and FRED.
-Nothing decorative — no gradients, no glass, no glow. The identity is
-not being rebranded: Fraunces over Archivo, terracotta accent, unchanged.
+points are FT data journalism, the Economist's data pages, and FRED. The
+identity is not being rebranded: Fraunces over Archivo, terracotta
+accent, unchanged.
+
+This line used to end "Nothing decorative — no gradients, no glass, no
+glow," which was **false about the site it describes**. There is a
+blurred gradient field behind everything, a glass masthead, a glow on
+the headline number and gradient-clipped eyebrow text: an "Elevation
+v1.2, the cinematic pass" shipped on 2026-08-04 and this document was
+written two days later without checking. A rule the code does not follow
+is worse than no rule, because it teaches the next reader that the rules
+here are decorative too. The real one:
+
+> **Atmosphere may sit behind the data or around it. Nothing that
+> carries a number may animate indefinitely, and no effect may change a
+> value's apparent magnitude.**
+
+Gradients that encode a scale — the calm→elevated→severe band track —
+are legends, not decoration. The background field may drift forever
+because it sits at `z-index: -1` and carries no information. The band
+tick may not, and used to: see §4.
 
 ---
 
@@ -86,26 +104,84 @@ file.
 Use `--radius` / `--radius-lg` for corners. For spacing, match the
 values around you.
 
-## 4. Motion: three durations, and an off switch that works
+## 4. Motion: five durations, one easing, and an off switch that works
 
 `--dur-instant` 90ms (press feedback, hover tint) · `--dur-quick` 160ms
 (colour, border) · `--dur-calm` 260ms (size, padding, layout settle) ·
-`--dur-slow` 420ms (deliberate reveals, the band tick). One easing.
+`--dur-slow` 420ms (deliberate reveals, the band tick arriving) ·
+`--dur-ambient` 32s (the one background loop).
 
 The sheets held **15 distinct durations across 46 literals** — 60, 80,
 120, 140, 150, 160, 180, 220, 240, 300, 400, 420, 500, 550, 600ms. The
 font-size problem in the time dimension: numbers that happened rather
-than numbers that were chosen. Now four, enforced by a test.
+than numbers that were chosen.
 
-**The easing must not overshoot.** The sheets used
+**This section previously said "Now four, enforced by a test", and the
+test could not see three of them.** Its regex matched `\d+ms`, so `36s`,
+`28s` and `3.2s` — sitting in `animation:` shorthands — were invisible
+to it. The test was cited as the evidence for a claim it was structurally
+incapable of checking. It matches seconds now.
+
+**One easing, and it must not overshoot.** The sheets used
 `cubic-bezier(0.22, 1, 0.36, 1)`, which rises past its target and
 settles back. On an instrument that reads as the number wobbling, which
-is the opposite of calm. A test rejects any curve with a control point
-above 1.
+is the opposite of calm.
 
-`prefers-reduced-motion` zeroes all three and kills smooth scroll —
-tested, because an interface that ignores that setting is not calm, it
-is quiet by accident.
+"One easing" was also **false when written**: there were four, across 33
+declarations — 27 bare `ease` (which is `cubic-bezier(0.25, 0.1, 0.25,
+1)`, a different curve applied to most of the site purely by default), 3
+`ease-in-out`, 2 `linear`. Two exceptions survive and are now *tokens*
+so they can be counted rather than assumed:
+
+- `--ease-linear` for the reading-progress bar. An eased progress
+  indicator reports a position the reader is not at; linear is the
+  honest curve for a measurement.
+- `--ease-loop` for the single infinite background drift. An asymmetric
+  curve reverses at full speed at each turnaround and visibly snaps.
+
+Any third exception has to be argued for in the test.
+
+**Nothing that carries a number animates forever.** `.band-tick` — the
+marker showing where today's value sits between calm and severe — ran
+`tickpulse 3.2s infinite`: a permanent glow on the data itself, the
+loudest element on a page whose stated character is calm, and on a phone
+a compositor job with no end. Motion attached to a number should report
+a finding, and "still here" is not one. It arrives once and stops.
+
+**Keyframes live in `tokens.css`, never in a sheet.** `igrm-drift` and
+`igrm-pagein` were each defined **twice**, once per stylesheet — the
+same two-copies-of-the-palette failure that broke the gap chart on
+2026-07-31, moved into the time dimension.
+
+`prefers-reduced-motion` zeroes **every** duration in the scale and both
+delay properties, and kills smooth scroll. `--dur-slow` was missing from
+that list for a day; the `*` catch-all hid it, which is exactly why
+nobody noticed — a rule that works by accident is indistinguishable from
+one that works on purpose until the accident stops. The test now compares
+the declared list against the zeroed list instead of trusting the
+comment. Zeroing a stagger's *duration* while leaving its *delay* also
+means the page assembles itself in silence rather than simply being
+present, so delays are zeroed too.
+
+## 4b. Cache versions are derived, not typed
+
+Every reference to a stylesheet or script carries `?v=<first 8 hex of
+its sha256>`, written by `python -m src.stamp_assets` and checked by
+`tests/test_asset_versions.py`.
+
+Before this, versions were hand-typed, and `@import url("tokens.css")`
+in **both** sheets had no version at all. That is not a stale-look bug.
+A returning visitor would get the new `style.css` asking for
+`var(--dur-ambient)` against a cached `tokens.css` that had never heard
+of it — and an undefined custom property does not fall back, the whole
+declaration is dropped. Three pages (corrections, codebook, methodology)
+linked `site.css` bare, and `reveal.js`/`labels.js` were pinned at a
+version eight days older than the files.
+
+`src/render_site.py` writes `href="site.css"` unversioned every night,
+so this cannot be fixed by hand once. The stamp step runs in `daily.yml`
+after everything that writes HTML, and the test checks that position
+against the workflow's real order.
 
 ## 5. Responsive rules go LAST in the sheet
 

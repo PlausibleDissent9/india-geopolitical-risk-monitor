@@ -1,7 +1,7 @@
 /* Subpage theme matched to the homepage's archival-paper palette
    (style.css): paper / ink / rule / muted, state colors as accents. */
-@import url("tokens.css"); /* palette, type scale, spacing, motion */
-@import url("fonts.css");  /* self-hosted; no third-party requests */
+@import url("tokens.css?v=c07df974"); /* palette, type scale, spacing, motion */
+@import url("fonts.css?v=991014f5");  /* self-hosted; no third-party requests */
 
 /* This sheet's historical variable names, now ALIASES onto the shared
    tokens rather than a second hand-maintained copy of the palette.
@@ -113,7 +113,7 @@ code { font: 0.85em/1.4 ui-monospace, Menlo, monospace; background: var(--card);
 footer { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1rem; color: var(--muted); font-size: var(--fs-small); }
 footer a { color: var(--accent); }
 
-/* Scroll reveal (reveal.js) */
+/* Scroll reveal (reveal.js?v=33b267c3) */
 .reveal { opacity: 0; transform: translateY(12px);
   transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
 .reveal.in { opacity: 1; transform: none; }
@@ -122,10 +122,10 @@ footer a { color: var(--accent); }
 .progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0;
   background: linear-gradient(90deg, var(--ok), var(--accent));
-  z-index: 60; transition: width var(--dur-instant) linear;
+  z-index: 60; transition: width var(--dur-instant) var(--ease-linear);
 }
-body { transition: background-color var(--dur-calm) ease, color var(--dur-calm) ease; }
-.pane { transition: transform var(--dur-calm) var(--ease), box-shadow var(--dur-calm) ease; }
+body { transition: background-color var(--dur-calm) var(--ease), color var(--dur-calm) var(--ease); }
+.pane { transition: transform var(--dur-calm) var(--ease), box-shadow var(--dur-calm) var(--ease); }
 .pane:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 
 
@@ -135,11 +135,7 @@ body::before {
   background:
     radial-gradient(60% 50% at 18% 12%, color-mix(in srgb, var(--calm, var(--ok)) 8%, transparent), transparent 70%),
     radial-gradient(50% 42% at 85% 88%, color-mix(in srgb, var(--severe, var(--accent)) 7%, transparent), transparent 70%);
-  animation: igrm-drift 36s ease-in-out infinite alternate;
-}
-@keyframes igrm-drift {
-  from { transform: translate3d(-2%, -1%, 0) scale(1); }
-  to   { transform: translate3d(2%, 2%, 0) scale(1.06); }
+  animation: igrm-drift var(--dur-ambient) var(--ease-loop) infinite alternate;
 }
 @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
 
@@ -148,8 +144,7 @@ body::before {
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--dur-calm); }
 
-/* Page entrance */
-@keyframes igrm-pagein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* Page entrance. Keyframe igrm-pagein lives in tokens.css. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }

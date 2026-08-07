@@ -7,7 +7,7 @@
 /* Palette, type scale, spacing and motion now live in tokens.css, which
    site.css imports too. This sheet used to declare the same colours
    independently; see the note in tokens.css for what that cost. */
-@import url("tokens.css");
+@import url("tokens.css?v=c07df974");
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
@@ -20,7 +20,7 @@ body {
   line-height: 1.55;
 }
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
-a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color var(--dur-quick) ease; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color var(--dur-quick) var(--ease); }
 a:hover { color: var(--state); }
 :focus-visible { outline: 2px solid var(--state); outline-offset: 2px; }
 ::selection { background: var(--state); color: var(--paper); }
@@ -45,14 +45,14 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
   background: color-mix(in srgb, var(--paper) 82%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   backdrop-filter: blur(14px) saturate(1.4);
-  transition: padding var(--dur-calm) ease;
+  transition: padding var(--dur-calm) var(--ease);
 }
 /* Shrink-on-scroll (founder request 2026-08-06): once the reader is
    reading, the description yields the viewport -- tagline collapses,
    title compacts, nav stays. Class toggled by app.js with hysteresis. */
 .masthead .tagline { overflow: hidden; max-height: 8em;
-  transition: max-height var(--dur-calm) ease, opacity var(--dur-quick) ease, margin var(--dur-calm) ease; }
-.masthead h1 { transition: font-size var(--dur-calm) ease; }
+  transition: max-height var(--dur-calm) var(--ease), opacity var(--dur-quick) var(--ease), margin var(--dur-calm) var(--ease); }
+.masthead h1 { transition: font-size var(--dur-calm) var(--ease); }
 .masthead.shrunk { padding: 10px 0 8px; }
 .masthead.shrunk .tagline { max-height: 0; opacity: 0; margin: 0; }
 .masthead.shrunk h1 { font-size: var(--fs-lead); }
@@ -62,14 +62,14 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
 .mast-links a {
   text-decoration: none; color: var(--muted);
   padding: 6px 12px; border-radius: 999px;
-  transition: color var(--dur-quick) ease, background var(--dur-quick) ease;
+  transition: color var(--dur-quick) var(--ease), background var(--dur-quick) var(--ease);
 }
 .mast-links a:hover { color: var(--ink); background: var(--rule-soft); }
 .theme-btn {
   font: inherit; font-size: var(--fs-small); color: var(--muted);
   background: transparent; border: 1px solid var(--rule);
   border-radius: 999px; padding: 5px 13px; cursor: pointer;
-  transition: color var(--dur-quick) ease, border-color var(--dur-quick) ease;
+  transition: color var(--dur-quick) var(--ease), border-color var(--dur-quick) var(--ease);
 }
 .theme-btn:hover { color: var(--ink); border-color: var(--muted); }
 
@@ -91,7 +91,7 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
   margin: 10px 0 6px;
   color: var(--state);
   font-variant-numeric: tabular-nums;
-  transition: color var(--dur-slow) ease;
+  transition: color var(--dur-slow) var(--ease);
 }
 .delta { font-size: var(--fs-body); color: var(--muted); margin: 0 0 20px; font-variant-numeric: tabular-nums; }
 .nowcast { font-size: var(--fs-small); color: var(--muted); margin-top: 10px; max-width: 46ch; }
@@ -128,7 +128,7 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
   padding: 11px 10px; margin: 0 -10px;
   border-bottom: 1px dashed var(--rule);
   border-radius: 8px;
-  transition: background var(--dur-quick) ease;
+  transition: background var(--dur-quick) var(--ease);
 }
 .component-row:hover { background: var(--rule-soft); }
 .component-row:last-child { border-bottom: none; }
@@ -153,7 +153,7 @@ a.component-row { text-decoration: none; color: inherit; cursor: pointer; }
   font: inherit; font-size: var(--fs-small); padding: 5px 13px;
   background: transparent; border: 1px solid var(--rule);
   border-radius: 999px; cursor: pointer; color: var(--muted);
-  transition: color var(--dur-quick) ease, border-color var(--dur-quick) ease, background var(--dur-quick) ease, transform var(--dur-instant) ease;
+  transition: color var(--dur-quick) var(--ease), border-color var(--dur-quick) var(--ease), background var(--dur-quick) var(--ease), transform var(--dur-instant) var(--ease);
 }
 .range-btn:hover, .toggle:hover { color: var(--ink); border-color: var(--muted); }
 .range-btn:active, .toggle:active { transform: scale(0.97); }
@@ -173,7 +173,7 @@ table { border-collapse: collapse; width: 100%; font-size: var(--fs-dense); }
 th, td { text-align: left; padding: 9px 14px 9px 10px; border-bottom: 1px solid var(--rule-soft); font-variant-numeric: tabular-nums; }
 td:first-child, th:first-child { padding-left: 10px; }
 th { font-size: var(--fs-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-tbody tr { transition: background var(--dur-quick) ease; }
+tbody tr { transition: background var(--dur-quick) var(--ease); }
 tbody tr:hover { background: var(--rule-soft); }
 td a { color: var(--state); }
 
@@ -203,7 +203,7 @@ td a { color: var(--state); }
   width: min(440px, 100%);
   background: var(--surface); border: 1px solid var(--rule);
   border-radius: 16px; padding: 26px 28px; box-shadow: var(--shadow);
-  animation: rise var(--dur-slow) var(--ease) both;
+  animation: igrm-rise var(--dur-slow) var(--ease) both;
   position: relative;
 }
 .subscribe-title { font-size: var(--fs-stat); margin: 4px 0 0; }
@@ -227,15 +227,14 @@ td a { color: var(--state); }
   font: inherit; font-size: var(--fs-small); font-weight: 500;
   padding: 8px 14px; border: none; border-radius: 8px;
   background: var(--state); color: var(--paper); cursor: pointer;
-  transition: filter var(--dur-quick) ease;
+  transition: filter var(--dur-quick) var(--ease);
 }
 .subscribe button[type="submit"]:hover { filter: brightness(1.12); }
 .subscribe-alt { font-size: var(--fs-fine); margin: 10px 0 0; }
 .subscribe-alt a { color: var(--muted); }
 
-/* Entrance */
-@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-main > section { animation: rise var(--dur-slow) var(--ease) both; }
+/* Entrance. Keyframe igrm-rise lives in tokens.css. */
+main > section { animation: igrm-rise var(--dur-slow) var(--ease) both; }
 main > section:nth-child(2) { animation-delay: var(--dur-instant); }
 main > section:nth-child(3) { animation-delay: var(--dur-instant); }
 main > section:nth-child(4) { animation-delay: var(--dur-quick); }
@@ -251,7 +250,7 @@ main > section:nth-child(5) { animation-delay: var(--dur-calm); }
   .masthead, .masthead .tagline, .masthead h1 { transition: none; }
 }
 
-/* Scroll reveal (reveal.js) */
+/* Scroll reveal (reveal.js?v=33b267c3) */
 .reveal { opacity: 0; transform: translateY(12px);
   transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
 .reveal.in { opacity: 1; transform: none; }
@@ -261,44 +260,37 @@ main > section.reveal { animation: none; }
 .progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0;
   background: linear-gradient(90deg, var(--calm), var(--state));
-  z-index: 60; transition: width var(--dur-instant) linear;
+  z-index: 60; transition: width var(--dur-instant) var(--ease-linear);
 }
 
 /* Card hover lift */
 .instrument, .glance {
-  transition: transform var(--dur-calm) var(--ease), box-shadow var(--dur-calm) ease,
-              background var(--dur-calm) ease, border-color var(--dur-calm) ease;
+  transition: transform var(--dur-calm) var(--ease), box-shadow var(--dur-calm) var(--ease),
+              background var(--dur-calm) var(--ease), border-color var(--dur-calm) var(--ease);
 }
 .instrument:hover { transform: translateY(-2px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.25), 0 16px 44px rgba(0,0,0,0.4); }
 
 /* Smooth theme crossfade */
 body, .masthead, .instrument, .glance, .subscribe {
-  transition: background-color var(--dur-calm) ease, color var(--dur-calm) ease, border-color var(--dur-calm) ease;
+  transition: background-color var(--dur-calm) var(--ease), color var(--dur-calm) var(--ease), border-color var(--dur-calm) var(--ease);
 }
 
 
-/* Ambient background drift, subtle life on the night paper */
-body::before {
-  content: ""; position: fixed; inset: -50%; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(60% 50% at 18% 12%, color-mix(in srgb, var(--calm, var(--ok)) 8%, transparent), transparent 70%),
-    radial-gradient(50% 42% at 85% 88%, color-mix(in srgb, var(--severe, var(--accent)) 7%, transparent), transparent 70%);
-  animation: igrm-drift 36s ease-in-out infinite alternate;
-}
-@keyframes igrm-drift {
-  from { transform: translate3d(-2%, -1%, 0) scale(1); }
-  to   { transform: translate3d(2%, 2%, 0) scale(1.06); }
-}
-@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
-
+/* An ambient-drift block stood here and was DEAD CODE. It declared
+ * body::before with its own gradients, its own 36s animation and its own
+ * @keyframes igrm-drift -- and forty lines below, the v1.2 pass declared
+ * body::before a second time. Later wins, so every property here was
+ * overridden: the gradients never painted, the keyframe never ran.
+ *
+ * The same duplicate-rule failure as .big-number (declared three times)
+ * and header h1 (twice), and it cost nothing visible, which is why it
+ * survived. Removed rather than merged; the surviving field is below and
+ * its keyframe now lives in tokens.css so both sheets share one copy. */
 
 /* Cross-page view transitions (Chromium/Safari; graceful elsewhere) */
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--dur-calm); }
-
-/* Page entrance */
-@keyframes igrm-pagein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
@@ -320,11 +312,9 @@ body::before {
     radial-gradient(40% 34% at 88% 15%, color-mix(in srgb, var(--severe) 8%, transparent), transparent 70%),
     radial-gradient(50% 45% at 75% 92%, color-mix(in srgb, var(--elevated) 6%, transparent), transparent 72%);
   filter: blur(34px) saturate(1.1);
-  animation: aurora 28s ease-in-out infinite alternate;
-}
-@keyframes aurora {
-  from { transform: translate3d(-3%, -2%, 0) rotate(-1deg) scale(1); }
-  to   { transform: translate3d(3%, 3%, 0) rotate(1.5deg) scale(1.08); }
+  /* The only infinite animation on the site, on a fixed field at
+   * z-index -1 that carries no information. Keyframe in tokens.css. */
+  animation: igrm-drift var(--dur-ambient) var(--ease-loop) infinite alternate;
 }
 @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
 :root[data-theme="light"] body::before { opacity: 0.55; filter: blur(30px); }
@@ -359,9 +349,18 @@ h2 { position: relative; }
 /* v1.3: sparklines in component rows; band tick breathes */
 .component-row { grid-template-columns: 1fr auto auto auto; }
 .spark { justify-self: end; opacity: 0.9 }
-@keyframes tickpulse { 0%,100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 8px color-mix(in srgb, var(--state) 28%, transparent);} 50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent), 0 0 16px color-mix(in srgb, var(--state) 45%, transparent);} }
-.band-tick { animation: tickpulse 3.2s ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .band-tick { animation: none; } }
+/* The tick arrives once and stops. It used to pulse forever (tickpulse,
+ * 3.2s, infinite) -- a permanent glow on the marker showing where today's
+ * value sits between calm and severe. That made the single loudest thing
+ * on a page whose stated character is "calm" an animation attached to the
+ * reading itself, and on a phone a compositor job with no end. Motion on
+ * data should report a finding; "still here" is not one. Keyframe in
+ * tokens.css; the reduced-motion catch-all zeroes it. */
+.band-tick {
+  animation: igrm-tick-arrive var(--dur-slow) var(--ease) both;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 70%, transparent),
+              0 0 8px color-mix(in srgb, var(--state) 28%, transparent);
+}
 ::-webkit-scrollbar { width: 10px; height: 10px }
 ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 6px }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted) }

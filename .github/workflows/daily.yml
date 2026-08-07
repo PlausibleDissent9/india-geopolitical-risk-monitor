@@ -372,6 +372,23 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         timeout-minutes: 5
         run: python -m src.stamp_meta
+      - name: Stamp asset cache-busting versions (content-derived)
+        # Same reason and same position as the step above, for the other
+        # kind of stamp. render_site.py emits `href="site.css"` with no
+        # version at all, so every page it regenerates nightly arrives
+        # unversioned -- and a returning reader keeps whatever CSS they
+        # first saw. Worse, tokens.css was @imported with no version by
+        # BOTH sheets, so a new stylesheet could land against a cached
+        # token file; an undefined custom property does not fall back,
+        # the whole declaration is dropped.
+        #
+        # Must run after every module that writes HTML (render_site,
+        # build_index, permanence, stamp_meta) and before the commit.
+        # test_asset_versions.py checks that position against the
+        # workflow's real order rather than trusting this comment.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.stamp_assets
       - name: Dual-computation audit (fail-loud; two derivations must agree)
         if: github.event.inputs.backfill != 'true'
         run: python -m src.audit

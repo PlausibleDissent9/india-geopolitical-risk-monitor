@@ -19,9 +19,29 @@
  * copy and both sheets import it.
  *
  * Character: dark, calm, technical. Night is the committed default;
- * light is a persisted choice and must stay equally legible. Nothing
- * here is decorative — no gradients, no glass, no glow. The reference
- * points are FT data journalism, the Economist's data pages, and FRED.
+ * light is a persisted choice and must stay equally legible. The
+ * reference points are FT data journalism, the Economist's data pages,
+ * and FRED.
+ *
+ * This header used to read "Nothing here is decorative — no gradients,
+ * no glass, no glow", and that was simply FALSE about the file it sits
+ * on top of. The site ships a blurred gradient field, a glass masthead,
+ * a glow on the headline number and gradient-clipped eyebrow text — an
+ * "Elevation v1.2, the cinematic pass" landed on 2026-08-04 and the
+ * sentence was never revisited. A rule the code does not follow is not
+ * a strict rule, it is a lie that makes the next reader distrust the
+ * rules that ARE real. The actual rule:
+ *
+ *   Atmosphere may sit BEHIND the data or AROUND it. Nothing that
+ *   carries a number may animate indefinitely, and no effect may change
+ *   a value's apparent magnitude.
+ *
+ * So the background field (z-index -1, no information) may drift
+ * forever; the band tick, which shows where today's value sits between
+ * calm and severe, may not — it used to pulse on a 3.2s loop and now
+ * arrives once. Gradients that encode a scale are legends, not
+ * decoration. `test_only_the_background_field_animates_forever` is the
+ * enforceable half of this.
  */
 
 :root {
@@ -113,7 +133,8 @@
   --dur-instant: 90ms;   /* press feedback, hover tint */
   --dur-quick:   160ms;  /* colour and border changes */
   --dur-calm:    260ms;  /* size, padding, layout settle */
-  --dur-slow:    420ms;  /* deliberate reveals, the band tick */
+  --dur-slow:    420ms;  /* deliberate reveals, the band tick arriving */
+  --dur-ambient: 32s;    /* the one background loop; see below */
 
   /* One easing, and it does NOT overshoot. The sheets used
    * cubic-bezier(0.22, 1, 0.36, 1), which rises past its target and
@@ -121,6 +142,24 @@
    * wobbling, which is the opposite of calm. This curve decelerates
    * into place and stops. */
   --ease:        cubic-bezier(0.2, 0, 0.2, 1);
+
+  /* TWO named exceptions, and they are exceptions because the default
+   * curve would be WRONG here, not because it was inconvenient.
+   *
+   * --ease-linear: the reading-progress bar. A progress indicator is a
+   *   position readout, so an eased one reports a position the reader
+   *   is not at. Linear is the honest curve for a measurement.
+   *
+   * --ease-loop: the ambient background drift, which alternates
+   *   forever. An asymmetric curve reverses at full speed at each
+   *   turnaround and visibly snaps; a symmetric one arrives at rest.
+   *   Only an infinite alternating animation may use this.
+   *
+   * Anything else must use --ease. `test_one_easing` enforces it and
+   * names these two, so a third exception has to be argued for in the
+   * test rather than added quietly to a rule. */
+  --ease-linear: linear;
+  --ease-loop:   ease-in-out;
 }
 
 :root[data-theme="light"] {
@@ -172,11 +211,60 @@
     --dur-instant: 0ms;
     --dur-quick:   0ms;
     --dur-calm:    0ms;
+    /* --dur-slow was missing here for a day. The catch-all below hid it,
+     * which is exactly why it went unnoticed: a rule that works by
+     * accident looks identical to one that works on purpose until the
+     * accident stops. Every duration in the scale is listed, and a test
+     * now compares the two lists rather than trusting this comment. */
+    --dur-slow:    0ms;
+    --dur-ambient: 0s;
   }
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    /* Delays too. Zeroing the duration of a staggered reveal still
+     * leaves the element waiting its turn to appear, so the page
+     * assembles itself in silence instead of being present. */
+    animation-delay: 0ms !important;
+    transition-delay: 0ms !important;
   }
+}
+
+/* ---- Motion primitives -----------------------------------------------
+ * These live here for the same reason the palette does. `igrm-drift` and
+ * `igrm-pagein` were each defined TWICE -- once in style.css and once in
+ * site.css -- under no comment at all. That is the failure that broke the
+ * gap chart on 2026-07-31 (two copies of the palette, one edited), moved
+ * one dimension over: edit the homepage's copy of a keyframe and the
+ * other nineteen pages keep the old one, silently, forever.
+ *
+ * Both sheets @import this file, so a keyframe defined here is available
+ * to every page and exists exactly once.
+ */
+
+/* Page and section entrance. 8px is deliberate: far enough to read as
+ * arrival, short enough that nothing appears to travel. */
+@keyframes igrm-pagein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes igrm-rise   { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* The one ambient loop, on the background field behind everything. */
+@keyframes igrm-drift {
+  from { transform: translate3d(-3%, -2%, 0) rotate(-1deg) scale(1); }
+  to   { transform: translate3d(3%, 3%, 0) rotate(1.5deg) scale(1.08); }
+}
+
+/* The band tick ARRIVES; it does not breathe.
+ *
+ * This was `tickpulse ... infinite`: a glow that pulsed forever on the
+ * marker showing where today's value sits on the calm-to-severe scale.
+ * The single loudest element on the page was a permanent animation
+ * attached to the reading itself -- on a phone, a compositor job that
+ * never ends. Motion on data has to MEAN something, and "still here"
+ * is not a finding. Now it settles into place once, on load, and stops.
+ */
+@keyframes igrm-tick-arrive {
+  from { transform: translateX(-6px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
 }

@@ -172,17 +172,146 @@ def test_no_stylesheet_or_script_holds_a_third_palette_copy():
         "tokens.css so they follow the theme and stay testable")
 
 
+def _strip_comments(css: str) -> str:
+    """Scan declarations, not prose. The first version of the duplicate-
+    keyframe check below reported `igrm-drift` twice -- once from the
+    real rule and once from a comment ABOUT the real rule."""
+    return re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+
+
 def test_motion_uses_the_scale_not_literals():
     """15 distinct durations across 46 literals (60, 80, 120, 140, 150,
     160, 180, 220, 240, 300, 400, 420, 500, 550, 600ms) is the
     font-size problem in the time dimension: a set of numbers that
-    happened rather than a set that was chosen."""
+    happened rather than a set that was chosen.
+
+    THE FIRST VERSION OF THIS TEST MATCHED ONLY `\\d+ms`, so it could not
+    see 36s, 28s or 3.2s -- three more durations, sitting in `animation:`
+    shorthands, while DESIGN_SYSTEM.md said "Now four, enforced by a
+    test." The test was the evidence for a claim it was not capable of
+    checking. Seconds are matched now.
+    """
     offenders = []
     for sheet in ("site.css", "style.css"):
-        text = (DOCS / sheet).read_text(encoding="utf-8")
-        for m in re.finditer(r"(?<![\w.-])(\d+)ms(?![\w-])", text):
+        text = _strip_comments((DOCS / sheet).read_text(encoding="utf-8"))
+        for m in re.finditer(r"(?<![\w.-])(\d+(?:\.\d+)?)(ms|s)(?![\w-])", text):
             offenders.append(f"{sheet}: {m.group(0)}")
-    assert not offenders, f"literal durations outside the scale: {offenders}"
+    assert not offenders, (
+        f"literal durations outside the scale: {offenders}. Name one of "
+        "--dur-instant/quick/calm/slow/ambient, or add a step to the ramp.")
+
+
+def test_one_easing_with_two_named_exceptions():
+    """DESIGN_SYSTEM.md said "One easing." The sheets held FOUR, across
+    33 declarations: 27 bare `ease`, 3 `ease-in-out`, 2 `linear`, and
+    var(--ease) in a handful of places. Bare `ease` is
+    cubic-bezier(0.25, 0.1, 0.25, 1) -- a different curve from the token,
+    applied to most of the site, entirely by default.
+
+    Two exceptions are legitimate and are TOKENS so they can be counted:
+    --ease-linear for the reading-progress bar (an eased progress
+    indicator reports a position the reader is not at) and --ease-loop
+    for the one infinite alternating background drift (an asymmetric
+    curve snaps at each turnaround). A third exception has to be argued
+    for here rather than added quietly to a rule.
+    """
+    allowed = {"var(--ease)", "var(--ease-linear)", "var(--ease-loop)"}
+    literal = re.compile(
+        r"(?<![\w-])(ease-in-out|ease-out|ease-in|ease|linear|"
+        r"cubic-bezier\([^)]*\)|step-(?:start|end)|steps\([^)]*\))(?![\w-])")
+    offenders = []
+    for sheet in ("site.css", "style.css"):
+        text = _strip_comments((DOCS / sheet).read_text(encoding="utf-8"))
+        # linear-gradient(...) is a paint function, not a timing function.
+        text = re.sub(r"(?:repeating-)?(?:linear|radial|conic)-gradient", "", text)
+        for m in literal.finditer(text):
+            if m.group(0) not in allowed:
+                offenders.append(f"{sheet}: {m.group(0)}")
+    assert not offenders, (
+        f"easing literals outside the token set: {offenders}. Use "
+        f"var(--ease); the only other options are {sorted(allowed)} and "
+        "each has a written reason in tokens.css.")
+
+
+def test_reduced_motion_zeroes_every_duration_in_the_scale():
+    """--dur-slow was declared in the ramp and NOT zeroed here for a day.
+
+    It went unnoticed because the `*` catch-all sets
+    transition-duration/animation-duration to 0.01ms !important, so the
+    visible behaviour was correct -- by accident. A rule that works by
+    accident is indistinguishable from one that works on purpose right
+    up until the accident stops. So this compares the two lists directly
+    instead of trusting that anyone remembered.
+    """
+    text = TOKENS.read_text(encoding="utf-8")
+    root = text.split(":root {", 1)[1].split("\n}", 1)[0]
+    declared = set(re.findall(r"(--dur-[\w-]+):", root))
+
+    idx = text.find("@media (prefers-reduced-motion: reduce)")
+    assert idx != -1, "the reduced-motion block is gone from tokens.css"
+    block = text[idx:]
+    zeroed = {name for name, val in
+              re.findall(r"(--dur-[\w-]+):\s*(0m?s)", block)}
+
+    missing = declared - zeroed
+    assert not missing, (
+        f"these durations are in the scale but are not zeroed for "
+        f"prefers-reduced-motion: {sorted(missing)}. The catch-all below "
+        "may hide it today; that is not the same as honouring the "
+        "setting.")
+
+    for prop in ("animation-delay", "transition-delay"):
+        assert prop in block, (
+            f"{prop} is not zeroed. A staggered reveal with its duration "
+            "zeroed still waits its turn, so the page assembles itself in "
+            "silence rather than simply being present.")
+
+
+def test_keyframes_are_defined_exactly_once():
+    """igrm-drift and igrm-pagein were each defined TWICE, once per
+    sheet, under no comment at all -- the two-copies-of-the-palette
+    failure that broke the gap chart on 2026-07-31, moved into the time
+    dimension. Edit the homepage's copy and the other nineteen pages
+    keep the old one, silently. Both sheets import tokens.css, so a
+    keyframe belongs there and nowhere else.
+    """
+    seen: dict[str, list[str]] = {}
+    for sheet in ("site.css", "style.css", "tokens.css"):
+        text = _strip_comments((DOCS / sheet).read_text(encoding="utf-8"))
+        for name in re.findall(r"@keyframes\s+([\w-]+)", text):
+            seen.setdefault(name, []).append(sheet)
+
+    dupes = {k: v for k, v in seen.items() if len(v) > 1}
+    assert not dupes, f"keyframes defined more than once: {dupes}"
+
+    stray = {k: v for k, v in seen.items() if v != ["tokens.css"]}
+    assert not stray, (
+        f"keyframes outside tokens.css: {stray}. Both sheets import "
+        "tokens.css; defining one in a sheet makes it available to half "
+        "the site and invites a second copy for the other half.")
+
+
+def test_only_the_background_field_animates_forever():
+    """An instrument whose reading pulses is not calm.
+
+    `.band-tick` -- the marker showing where today's value sits between
+    calm and severe -- carried `tickpulse 3.2s infinite`: a permanent
+    glow on the data itself, and on a phone a compositor job with no
+    end. Motion attached to a number should report a finding, and "still
+    here" is not one. It now arrives once and stops.
+
+    The one permitted infinite animation is the background field at
+    z-index -1, which carries no information at all.
+    """
+    offenders = []
+    for sheet in ("site.css", "style.css"):
+        text = _strip_comments((DOCS / sheet).read_text(encoding="utf-8"))
+        for m in re.finditer(r"[^;{}]*animation:[^;}]*infinite[^;}]*", text):
+            decl = " ".join(m.group(0).split())
+            if "igrm-drift" not in decl:
+                offenders.append(f"{sheet}: {decl}")
+    assert not offenders, (
+        f"infinite animations outside the background field: {offenders}")
 
 
 def test_no_easing_overshoots():
