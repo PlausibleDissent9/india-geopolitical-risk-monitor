@@ -386,9 +386,17 @@ def main() -> None:
         for a in payload["ambiguities_in_the_codebook"]:
             a["margin_over_next"] = margin
 
-    SITE_DATA.mkdir(parents=True, exist_ok=True)
-    (SITE_DATA / "replication.json").write_text(
-        json.dumps(payload, indent=1), encoding="utf-8")
+    # --check inspects without publishing. It used to write the payload
+    # anyway, which mutated a reproducer's checkout: the replication
+    # walkthrough agent ran Path 0 as documented and then could not
+    # `git checkout` other commits because a tracked file had changed
+    # under it -- a wall the document never warns about, hit by the one
+    # audience this module exists to serve. Same defect as decisions.py's
+    # --check, found the same day.
+    if not check:
+        SITE_DATA.mkdir(parents=True, exist_ok=True)
+        (SITE_DATA / "replication.json").write_text(
+            json.dumps(payload, indent=1), encoding="utf-8")
 
     print(f"[blind_replicator] best: {best['percentile_convention']} / "
           f"{best['window_convention']} -- "
