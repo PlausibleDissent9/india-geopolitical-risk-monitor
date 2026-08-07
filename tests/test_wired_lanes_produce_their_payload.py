@@ -29,13 +29,10 @@ DATA = ROOT / "docs" / "data"
 WORKFLOWS = ROOT / ".github" / "workflows"
 
 # Payload absent on purpose, with the reason and where it stands.
+# multilingual.json left this list 2026-08-08: after 71 empty runs the
+# V5 self-heal finally beat the GDELT throttle and the payload landed
+# (bot commit 7a04222). The entry's own rule: landed means delisted.
 NOT_YET: dict[str, str] = {
-    "multilingual.json": (
-        "V5 backfill has never completed a single one of its fifteen "
-        "series. The lane is wired and runs nightly; GDELT throttling is "
-        "the blocker, not the code. Made visible 2026-08-07 -- the lane "
-        "used to report success while landing nothing, and now goes red "
-        "when a batch fetches nothing and errors."),
     "media_cloud.json": (
         "S5 is wired into drift.yml but fail-closed on a credential the "
         "founder has not issued: without MEDIACLOUD_API_KEY the module "
