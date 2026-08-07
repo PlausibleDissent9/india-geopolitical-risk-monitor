@@ -10,6 +10,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css?v=7a279efc">
+<script src="motion.js?v=5f04349d"></script>
 <script src="vendor/chart.umd.min.js?v=81ffafe1"></script>
 <script src="labels.js?v=7ba70543"></script>
 </head>
@@ -146,17 +147,12 @@ const NAMES = (window.IGRM_LABELS) || {
 };
 const label = (k) => (NAMES && NAMES[k]) || k;
 
-// Motion comes from the same scale the stylesheets use, so the chart
-// settles at the same speed as everything else on the page and honours
-// prefers-reduced-motion. Chart.js takes a number, so the token is read
-// and parsed rather than hardcoded to a literal nobody chose.
-const durMs = (name, fallback) => {
-  const v = css(name);
-  if (!v) return fallback;
-  return v.endsWith("ms") ? parseFloat(v) : parseFloat(v) * 1000;
-};
-const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const ANIM = reduced ? false : { duration: durMs("--dur-slow", 420) };
+// Motion from the shared scale (motion.js), so this chart settles at the
+// same speed as every other one and honours prefers-reduced-motion. This
+// helper was written inline here first; it moved to motion.js the moment
+// a second chart needed it, rather than becoming the fifth hand-copied
+// thing in this codebase.
+const ANIM = IGRM_MOTION.chartAnimation();
 
 fetch("data/back_extension.json").then(r => r.json()).then(be => {
   const audit = be.overlap_audit || {};

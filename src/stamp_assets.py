@@ -73,6 +73,7 @@ ASSETS = [
     "site.css",
     "style.css",
     "vendor/chart.umd.min.js",
+    "motion.js",
     "labels.js",
     "reveal.js",
     "app.js",

@@ -291,6 +291,62 @@ def test_keyframes_are_defined_exactly_once():
         "the site and invites a second copy for the other half.")
 
 
+def test_the_charts_do_not_opt_out_of_the_motion_scale():
+    """The scale is enforced in CSS, and the charts were not in CSS.
+
+    app.js and analysis.html carried
+    `animation: { duration: 900, easing: "easeOutQuart" }` -- a sixth
+    duration, more than twice the longest one in the ramp, on the two
+    most prominent charts on the site. Every test written to enforce
+    "five durations, one easing" reads stylesheets, so none of them
+    could see it. A scale the charts opt out of is not a scale.
+
+    It also mattered more than the CSS did: a number handed to a canvas
+    library is the one piece of motion the reduced-motion catch-all
+    cannot reach, so those two charts animated regardless of the
+    setting. IGRM_MOTION.chartAnimation() returns `false` outright for
+    anyone who asked for less.
+    """
+    offenders = []
+    for name in ("app.js", "labels.js", "reveal.js", "motion.js"):
+        path = DOCS / name
+        if path.exists():
+            offenders += _chart_motion_literals(name, path.read_text(encoding="utf-8"))
+    for page in sorted(DOCS.glob("*.html")):
+        offenders += _chart_motion_literals(page.name,
+                                            page.read_text(encoding="utf-8"))
+    assert not offenders, (
+        f"chart motion set from literals instead of the scale: {offenders}. "
+        "Use IGRM_MOTION.chartAnimation(), which reads the duration token "
+        "and returns false under prefers-reduced-motion.")
+
+
+def _chart_motion_literals(where: str, text: str) -> list[str]:
+    out = []
+    # `duration: <number>` and `easing: "<name>"` inside a chart config.
+    # motion.js itself is where the one permitted mapping lives.
+    for m in re.finditer(r"duration:\s*(\d+)", text):
+        if where != "motion.js":
+            out.append(f"{where}: duration: {m.group(1)}")
+    for m in re.finditer(r'easing:\s*"(\w+)"', text):
+        if where != "motion.js":
+            out.append(f'{where}: easing: "{m.group(1)}"')
+    return out
+
+
+def test_the_one_named_chart_easing_does_not_overshoot():
+    """Chart.js takes a named easing, so --ease cannot be passed through
+    and a name has to be chosen. easeOutBack, easeOutElastic and
+    easeOutBounce all rise past their target -- the same bounce removed
+    from the stylesheets, which on an instrument reads as the number
+    wobbling."""
+    text = (DOCS / "motion.js").read_text(encoding="utf-8")
+    m = re.search(r'var EASING = "(\w+)"', text)
+    assert m, "motion.js no longer declares a single EASING"
+    assert not re.search(r"Back$|Elastic$|Bounce$", m.group(1)), (
+        f"chart easing {m.group(1)} overshoots")
+
+
 def test_only_the_background_field_animates_forever():
     """An instrument whose reading pulses is not calm.
 

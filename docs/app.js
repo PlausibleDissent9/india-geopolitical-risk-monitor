@@ -187,7 +187,7 @@ function renderChart() {
     type: "line",
     data: { labels, datasets },
     options: {
-      animation: { duration: 900, easing: "easeOutQuart" },
+      animation: IGRM_MOTION.chartAnimation(),
       animations: { y: { from: (ctx) => ctx.chart.scales.y.getPixelForValue(0) } },
       responsive: true,
       interaction: { mode: "index", intersect: false },
