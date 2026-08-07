@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -33,8 +34,53 @@ def test_registered_inputs_match_code_and_repository() -> None:
     assert source["data_through"] == ai_gpr_benchmark.AI_GPR_DATA_THROUGH
     assert inputs["history_sha256"] == ai_gpr_benchmark.IGRM_HISTORY_SHA256
     assert inputs["episodes_sha256"] == ai_gpr_benchmark.EPISODES_SHA256
-    assert _sha256(ROOT / inputs["history_path"]) == inputs["history_sha256"]
-    assert _sha256(ROOT / inputs["episodes_path"]) == inputs["episodes_sha256"]
+
+    # Verified against the registration's OWN base_commit, not the working
+    # tree.
+    #
+    # These two lines used to hash docs/data/history.csv on disk. That file
+    # gains a row every morning, so the assertion would have failed on the
+    # next daily publish and left CI red permanently -- confirmed by
+    # simulating one nightly append. The check was right in spirit and
+    # aimed at the wrong object: a registration RECORDS what was used, an
+    # immutable historical fact, while the working tree is mutable by
+    # design and the daily lane's whole job is to change it.
+    #
+    # Pinning to base_commit keeps the meaningful guarantee -- the
+    # registered hashes really are the bytes that were analysed -- and it
+    # stays true forever. Run-time protection is unchanged and lives where
+    # it belongs: ai_gpr_benchmark._verify_local_inputs() refuses to run on
+    # drifted inputs, which is what actually defends the registration.
+    base = registration["base_commit"]
+    for path_key, sha_key in (("history_path", "history_sha256"),
+                              ("episodes_path", "episodes_sha256")):
+        blob = subprocess.run(
+            ["git", "show", f"{base}:{inputs[path_key]}"],
+            cwd=ROOT, capture_output=True).stdout
+        assert blob, (
+            f"{inputs[path_key]} is not retrievable at base_commit {base[:12]}; "
+            "the registration cannot be independently verified")
+        assert hashlib.sha256(blob).hexdigest() == inputs[sha_key], (
+            f"{inputs[path_key]} at base_commit {base[:12]} does not hash to "
+            "the registered value; the registration misrecords what was analysed")
+
+
+def test_the_script_still_refuses_to_run_on_drifted_inputs():
+    """The protection the test above deliberately stopped duplicating.
+
+    Moving the on-disk check out of CI is only safe because the analysis
+    script enforces it at run time. If that enforcement is ever removed,
+    the registration becomes decorative -- the benchmark would happily
+    recompute against whatever history.csv happens to say today and still
+    call itself preregistered.
+    """
+    src = (ROOT / "src" / "ai_gpr_benchmark.py").read_text(encoding="utf-8")
+    assert "_verify_local_inputs" in src, "input verification is gone"
+    assert "_verify_registration" in src, "the code-freeze check is gone"
+    body = src.split("def _verify_local_inputs", 1)[1].split("\ndef ", 1)[0]
+    assert "SystemExit" in body, (
+        "_verify_local_inputs no longer refuses on a hash mismatch; the "
+        "registration would not survive a changed input")
 
 
 def test_registration_closes_analyst_degrees_of_freedom() -> None:
