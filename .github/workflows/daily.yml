@@ -150,9 +150,33 @@ jobs:
         # settled-chunk cache carries backfill progress across runs, so
         # each attempt banks more history until the store completes.
         if: github.event.inputs.backfill != 'true'
+        id: china
         continue-on-error: true
         timeout-minutes: 30
         run: python -m src.country_monitor china
+      - name: China lane has produced nothing at all, and that is not a success
+        # V8 is registered in countries/china.json, wired here, and has
+        # never written docs/data/country_china.json -- data/raw holds no
+        # china store either. Every failed collection has looked like a
+        # successful run, because continue-on-error above discards the
+        # outcome. Exactly the laundering that hid V5 for a week.
+        #
+        # continue-on-error stays: a throttled China collection must not
+        # stop the publish. But once the payload exists, a later failure
+        # is a partial-progress problem the store absorbs, so this only
+        # fires while the lane has produced NOTHING.
+        if: always()
+        run: |
+          if [ -f docs/data/country_china.json ]; then
+            echo "china payload exists; partial failures are absorbed by the store"
+            exit 0
+          fi
+          if [ "${{ steps.china.outcome }}" = "failure" ]; then
+            echo "::error::V8 China has never produced country_china.json and" \
+                 "this collection failed too. The lane is stalled, not slow."
+            exit 1
+          fi
+          echo "china payload still absent but the step did not error; not flagging"
       - name: Measured sector sensitivities (E2; signed mapping v1.1.0)
         # After the pipeline so episodes.json is fresh. Yahoo prices
         # fetched, used, never committed; only aggregates publish.

@@ -44,27 +44,62 @@ NOT_YET: dict[str, str] = {
         "check -- but the lane has been running and producing nothing "
         "since it was added, and nothing said so. Found 2026-08-07 by "
         "this test, on its first run."),
+    "country_china.json": (
+        "V8 China monitor: registered in countries/china.json and wired "
+        "into daily.yml, but data/raw holds no china store and the "
+        "payload has never been written. Same GDELT throttling as V5 and "
+        "the same silence -- the step is continue-on-error, so every "
+        "failed collection has looked like a successful run. Found "
+        "2026-08-07 only after widening this check: country_monitor "
+        "writes f\"country_{name}.json\", and the first version matched "
+        "literal strings only -- so the one module with a stalled lane "
+        "was precisely the one the test could not see."),
 }
 
 WRITES = re.compile(r'SITE_DATA\s*/\s*"([\w.]+\.json)"')
 
+# Payload names built from a variable, e.g.
+#     SITE_DATA / f"country_{name}.json"
+# The first version of this file matched only literal strings, so
+# country_monitor -- the China V8 lane -- was invisible to it, and
+# country_china.json had never been produced. A test with a blind spot
+# exactly where a lane is stalled is the failure this file exists to
+# prevent, so the dynamic form is resolved from the workflow's own
+# argument rather than skipped.
+WRITES_F = re.compile(r'SITE_DATA\s*/\s*f"([\w]*)\{\w+\}([\w.]*\.json)"')
+
+
+def _invocations() -> list[tuple[str, str]]:
+    """(module, first positional arg) for every `python -m src.X [arg]`."""
+    out = []
+    for wf in WORKFLOWS.glob("*.yml"):
+        for m in re.finditer(r"python -m src\.(\w+)([^\n|&;]*)",
+                             wf.read_text(encoding="utf-8")):
+            args = [a for a in m.group(2).split() if not a.startswith("-")]
+            out.append((m.group(1), args[0] if args else ""))
+    return out
+
 
 def _modules_run_by_workflows() -> set[str]:
-    seen: set[str] = set()
-    for wf in WORKFLOWS.glob("*.yml"):
-        seen.update(re.findall(r"python -m src\.(\w+)",
-                               wf.read_text(encoding="utf-8")))
-    return seen
+    return {mod for mod, _ in _invocations()}
 
 
 def test_every_wired_module_has_produced_its_payload():
-    run = _modules_run_by_workflows()
     missing: dict[str, str] = {}
-    for module in sorted(run):
+    for module, arg in sorted(set(_invocations())):
         path = SRC / f"{module}.py"
         if not path.exists():
             continue
-        for payload in set(WRITES.findall(path.read_text(encoding="utf-8"))):
+        src = path.read_text(encoding="utf-8")
+
+        expected = set(WRITES.findall(src))
+        # Resolve f-string payload names using the argument the workflow
+        # actually passes: `python -m src.country_monitor china` plus
+        # `f"country_{name}.json"` means country_china.json is owed.
+        if arg:
+            expected |= {f"{pre}{arg}{post}" for pre, post in WRITES_F.findall(src)}
+
+        for payload in expected:
             if payload in NOT_YET:
                 continue
             if not (DATA / payload).exists():
@@ -81,7 +116,7 @@ def test_every_wired_module_has_produced_its_payload():
 def test_the_not_yet_list_is_short_and_justified():
     """Same discipline as the freshness exemptions and the sitemap
     exclusions. 'Not built yet' is a claim with a date on it."""
-    assert len(NOT_YET) <= 3, (
+    assert len(NOT_YET) <= 4, (
         f"{len(NOT_YET)} payloads pending is no longer a shortlist; the "
         "absence has become the normal state")
     for name, why in NOT_YET.items():
