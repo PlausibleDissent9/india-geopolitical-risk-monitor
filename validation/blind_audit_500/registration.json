@@ -1,8 +1,8 @@
 {
  "status": "FROZEN V2 CURRENT-REGIME PILOT BEFORE FIRST EXTERNAL LABEL",
  "registered_at_utc": "2026-08-07T17:15:16Z",
- "base_commit": null,
- "base_commit_rule": "The next registration-only commit will replace null with the first freeze commit that contains these exact input, source, sample and instruction bytes. No sample or analysis field may change in that registration-only commit.",
+ "base_commit": "119edacc0d96ddd93e80af1cd99cecb6143c8871",
+ "base_commit_rule": "This is the first freeze commit containing the exact input, source, sample and instruction bytes registered below. Its registration-only child added this immutable locator and changed no sample or analysis field.",
  "supersedes": {
   "version": "v1",
   "status": "INVALID BEFORE ANY EXTERNAL OR PILOT LABEL",
