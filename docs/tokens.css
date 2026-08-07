@@ -115,9 +115,16 @@
    * Calm means short and linear-ish. Nothing bounces, nothing springs,
    * nothing announces itself. Durations are named by intent so a future
    * edit changes meaning rather than a magic number. */
-  --dur-instant: 90ms;
-  --dur-quick:   160ms;
-  --dur-calm:    260ms;
+  --dur-instant: 90ms;   /* press feedback, hover tint */
+  --dur-quick:   160ms;  /* colour and border changes */
+  --dur-calm:    260ms;  /* size, padding, layout settle */
+  --dur-slow:    420ms;  /* deliberate reveals, the band tick */
+
+  /* One easing, and it does NOT overshoot. The sheets used
+   * cubic-bezier(0.22, 1, 0.36, 1), which rises past its target and
+   * settles back — a bounce. On an instrument that reads as the number
+   * wobbling, which is the opposite of calm. This curve decelerates
+   * into place and stops. */
   --ease:        cubic-bezier(0.2, 0, 0.2, 1);
 }
 

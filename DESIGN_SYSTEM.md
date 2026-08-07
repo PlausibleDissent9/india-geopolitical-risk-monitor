@@ -88,8 +88,20 @@ values around you.
 
 ## 4. Motion: three durations, and an off switch that works
 
-`--dur-instant` 90ms · `--dur-quick` 160ms · `--dur-calm` 260ms, one
-easing. Nothing bounces, nothing springs, nothing announces itself.
+`--dur-instant` 90ms (press feedback, hover tint) · `--dur-quick` 160ms
+(colour, border) · `--dur-calm` 260ms (size, padding, layout settle) ·
+`--dur-slow` 420ms (deliberate reveals, the band tick). One easing.
+
+The sheets held **15 distinct durations across 46 literals** — 60, 80,
+120, 140, 150, 160, 180, 220, 240, 300, 400, 420, 500, 550, 600ms. The
+font-size problem in the time dimension: numbers that happened rather
+than numbers that were chosen. Now four, enforced by a test.
+
+**The easing must not overshoot.** The sheets used
+`cubic-bezier(0.22, 1, 0.36, 1)`, which rises past its target and
+settles back. On an instrument that reads as the number wobbling, which
+is the opposite of calm. A test rejects any curve with a control point
+above 1.
 
 `prefers-reduced-motion` zeroes all three and kills smooth scroll —
 tested, because an interface that ignores that setting is not calm, it

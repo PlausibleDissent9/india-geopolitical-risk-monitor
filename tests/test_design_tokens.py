@@ -168,3 +168,31 @@ def test_no_stylesheet_or_script_holds_a_third_palette_copy():
     assert not hexes, (
         f"app.js hardcodes colours ({hexes}); series colours belong in "
         "tokens.css so they follow the theme and stay testable")
+
+
+def test_motion_uses_the_scale_not_literals():
+    """15 distinct durations across 46 literals (60, 80, 120, 140, 150,
+    160, 180, 220, 240, 300, 400, 420, 500, 550, 600ms) is the
+    font-size problem in the time dimension: a set of numbers that
+    happened rather than a set that was chosen."""
+    offenders = []
+    for sheet in ("site.css", "style.css"):
+        text = (DOCS / sheet).read_text(encoding="utf-8")
+        for m in re.finditer(r"(?<![\w.-])(\d+)ms(?![\w-])", text):
+            offenders.append(f"{sheet}: {m.group(0)}")
+    assert not offenders, f"literal durations outside the scale: {offenders}"
+
+
+def test_no_easing_overshoots():
+    """cubic-bezier(0.22, 1, 0.36, 1) rises past its target and settles
+    back. On an instrument that reads as the number wobbling, which is
+    the opposite of the brief's 'calm'."""
+    bad = []
+    for sheet in ("site.css", "style.css", "tokens.css"):
+        text = (DOCS / sheet).read_text(encoding="utf-8")
+        for m in re.finditer(r"cubic-bezier\(([^)]*)\)", text):
+            pts = [float(x) for x in m.group(1).split(",")]
+            # y1 (index 1) or y2 (index 3) above 1 means overshoot.
+            if len(pts) == 4 and (pts[1] > 1.0 or pts[3] > 1.0):
+                bad.append(f"{sheet}: {m.group(0)}")
+    assert not bad, f"overshooting easings: {bad}"
