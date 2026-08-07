@@ -1,0 +1,64 @@
+{
+ "_meta": {
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/decisions.json",
+  "what": "Everything currently blocked on the founder, with the check that decided it. Each item carries a predicate over the repository -- CITATION.cff has no doi: field, precision.json says 16 of 100 -- so an item clears itself when the thing is done and nobody has to remember to delete it.",
+  "why_predicates": "A hand-maintained to-do list is a claim with nothing checking it. It rots the moment an item is completed elsewhere, and then it goes on asserting itself in the same confident tone as the parts that are still true.",
+  "n_blocked": 6,
+  "n_cleared": 0,
+  "generated": "2026-08-07T13:58:04Z"
+ },
+ "blocked": [
+  {
+   "id": "zenodo_doi",
+   "title": "Mint the Zenodo DOI",
+   "minutes": 10,
+   "why_it_matters": "It converts IGRM from a website into a citable dataset, which is the only asset here that compounds. Everything else built accrues to it. It is also the binding constraint on the paper: CITATION.cff is otherwise correct and complete.",
+   "why_only_you": "A Zenodo deposit is made from an account, by a person.",
+   "detail": "CITATION.cff has no doi: field"
+  },
+  {
+   "id": "orcid",
+   "title": "Get an ORCID and put it on the author record",
+   "minutes": 2,
+   "why_it_matters": "Free, and it should exist BEFORE the DOI so the two link from the start rather than being reconciled later.",
+   "why_only_you": "It is an identity record.",
+   "detail": "no ORCID on the author record"
+  },
+  {
+   "id": "calibration_labels",
+   "title": "Label the remaining calibration articles",
+   "minutes": null,
+   "why_it_matters": "Precision is the one statistic on the site that still reads UNCALIBRATED. Everything else in the honesty apparatus is automated and green; this is the only number waiting on a human.",
+   "why_only_you": "A machine labelling its own precision set is not a validation, it is a mirror. This one is not delegable even in principle.",
+   "detail": "16 of 100 labels; precision publishes as UNCALIBRATED until the threshold is reached"
+  },
+  {
+   "id": "founder_interview",
+   "title": "Correct the guessed answers in the founder interview",
+   "minutes": 20,
+   "why_it_matters": "It unblocks the working paper. The answers exist in draft with every number sourced; what is missing is the parts that have to be true about you rather than about the index.",
+   "why_only_you": "A paper whose 'what surprised me' was written by a model has a fabricated premise in it.",
+   "detail": "4 drafted answers are still marked as guesses; the paper's voice has to be the founder's"
+  },
+  {
+   "id": "subscribe_list",
+   "title": "Wire the newsletter to a real list",
+   "minutes": 5,
+   "why_it_matters": "The site promises one email a week and shows a signup modal. Addresses currently relay to your inbox, so the promise is being made and not kept by anything automatic.",
+   "why_only_you": "It needs an account and a sending identity.",
+   "detail": "BUTTONDOWN_USER is empty; addresses relay to the author's inbox instead of a real list, so nobody receives the weekly note the site promises"
+  },
+  {
+   "id": "notes_backlog",
+   "title": "Clear the decision backlog in NOTES_FOR_ISHAN.md",
+   "minutes": null,
+   "why_it_matters": "Several are registrations that cannot proceed without a signature, so the work behind them is built and parked.",
+   "why_only_you": "Each one is a methodology choice with your name on it.",
+   "detail": "32 of 35 sections in NOTES_FOR_ISHAN.md carry no RESOLVED marker"
+  }
+ ],
+ "cleared": []
+}

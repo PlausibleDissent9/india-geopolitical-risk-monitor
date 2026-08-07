@@ -374,6 +374,14 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         run: python -m src.status_data
+      - name: Founder decision queue (predicates, not a to-do list)
+        # Reads CITATION.cff, precision.json, app.js and the notes file and
+        # republishes what is actually still blocked. Not fail-loud: items
+        # being open is the normal state, not an error. Runs before
+        # stamp_meta because it writes a payload.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.decisions
       - name: Stamp universal _meta on every payload (licence, citation, codebook, source)
         # LAST payload writer in the lane, deliberately. This step was
         # first placed mid-workflow, then after the audits, and both
