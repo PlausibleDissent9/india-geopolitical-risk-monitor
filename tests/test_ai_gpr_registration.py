@@ -52,6 +52,23 @@ def test_registered_inputs_match_code_and_repository() -> None:
     # it belongs: ai_gpr_benchmark._verify_local_inputs() refuses to run on
     # drifted inputs, which is what actually defends the registration.
     base = registration["base_commit"]
+
+    # Enforceable only where history exists. Two environments legitimately
+    # cannot resolve base_commit: a shallow CI checkout (fixed by
+    # fetch-depth: 0 in ci.yml -- Codex's catch, after my first version of
+    # this test broke CI in exactly that way), and an external reproducer
+    # running pytest from the Zenodo tarball, which has no .git at all.
+    # Skipping there is honest -- the guarantee is enforced where the
+    # history is present (CI, any full clone) -- while a hard failure
+    # would punish the reproducer for a property of their download, not
+    # of the registration.
+    probe = subprocess.run(["git", "cat-file", "-t", base],
+                           cwd=ROOT, capture_output=True, text=True)
+    if probe.stdout.strip() != "commit":
+        import pytest
+        pytest.skip(f"base_commit {base[:12]} unreachable here (shallow "
+                    "clone or no git history); enforced on CI's full clone")
+
     for path_key, sha_key in (("history_path", "history_sha256"),
                               ("episodes_path", "episodes_sha256")):
         blob = subprocess.run(
