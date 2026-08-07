@@ -683,6 +683,31 @@ is computed over the whole GDELT event population in
 averaged, because dividing by sources also counts one outlet running
 several distinct pieces on the same event.
 
+## docs/data/freshness.json
+
+**Is every number on this site actually current?** The age of every
+published payload against the cadence its lane is supposed to run at.
+A lane that stops writing does not break — it keeps serving its last
+value, and a stale number is quoted exactly as confidently as a fresh
+one. `status.json` watches ten upstream *sources*; this watches all
+~66 *payloads*, which is where the silence actually lives.
+
+**A payload with no `_meta.generated` counts as a failure, not a pass.**
+Three payloads (`alt_specs`, `seasonality`, `priced_risk`) had no
+timestamp at all when this was built, and `validation.json` — the
+credibility payload — had none either, because it is assembled block by
+block and no block owned the file. All four now carry one. An auditor
+that silently skips what it cannot read is worse than no auditor,
+because it reports green.
+
+Exemptions are listed with a written reason each: the frozen API
+contract, the author-paced notes, the append-only Prediction Archive,
+`episodes.json` (a bare array with nowhere to put `_meta`, written in
+the same commit as `history.json`), and this file itself. The audit
+fails the enrichment run when anything is stale or undatable — never
+the 06:00 contract lane, because a staleness report must not be able to
+stop a publish.
+
 ## docs/data/vintages.json
 
 **What did the index say on the day it said it?** Every daily publish is

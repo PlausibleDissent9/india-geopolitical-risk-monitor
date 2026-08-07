@@ -202,6 +202,20 @@ jobs:
           python -m src.episode_actors
           python -m src.exposure
           python -m src.predictability
+      - name: Freshness audit (every payload, not just the ten tracked sources)
+        # Runs last among the enrichment lanes, so it audits what this
+        # run actually produced. Fail-loud for the same reason as the
+        # vintage tripwire and with the same containment: a stale
+        # payload does not break, it keeps serving its last value, and
+        # gets quoted as confidently as a fresh one. Two lanes (China,
+        # V5) failed silently for days before anything noticed, and both
+        # were caught by accident rather than by a check.
+        #
+        # In the enrichment lane, never the contract lane: a staleness
+        # report must not be able to stop the 06:00 publish.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.freshness
       - name: Vintage tripwire (published history must not be rewritten)
         # Deliberately NOT continue-on-error, and deliberately its own
         # step: this is the one check whose whole value is that it can

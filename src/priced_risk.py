@@ -32,6 +32,7 @@ Output: docs/data/priced_risk.json
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -212,6 +213,8 @@ def main() -> None:
         print(f"[priced_risk] INR realized vol unavailable: {e}")
 
     payload: dict = {
+        "_meta": {"generated": datetime.now(timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ")},
         "definition": ("gap = attention percentile minus India-VIX "
                        "percentile, shared trading days. Positive: press "
                        "louder than the market. Negative: the market is "

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.26.0",
+    "contract_version": "1.27.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -30,6 +30,7 @@
       "format": "json",
       "description": "Secondary specifications beside the primary; the primary never changes here. Correlations answer 'does the choice drive the result?'",
       "frozen_fields": [
+        "_meta",
         "note",
         "composite_weightings",
         "episode_thresholds_sigma",
@@ -251,6 +252,16 @@
       "stability": "stable"
     },
     {
+      "path": "data/freshness.json",
+      "format": "json",
+      "description": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
+      "frozen_fields": [
+        "_meta",
+        "payloads"
+      ],
+      "stability": "stable"
+    },
+    {
       "path": "data/gpr_comparison.json",
       "format": "json",
       "description": "V17 replication wedge: monthly-mean IGRM percentile scores vs Caldara-Iacoviello's GPRC_IND (a different corpus and construction entirely), 2017-present -- correlation in levels and in monthly changes, per channel and composite. Co-movement despite zero shared pipeline is external validation; divergence is analysis. Nothing in any IGRM series depends on GPR.",
@@ -448,6 +459,7 @@
       "format": "json",
       "description": "gap = attention percentile minus India-VIX percentile, shared trading days. Positive: press louder than the market. Negative: the market is pricing risk the coverage has not caught. Associational throughout.",
       "frozen_fields": [
+        "_meta",
         "definition",
         "gap",
         "gap_inr_realized_vol",
@@ -507,6 +519,7 @@
       "format": "json",
       "description": "Day-of-year effects on log volume share after removing a linear trend; 7-day circular smoothing. Deseasonalized index is a secondary specification only.",
       "frozen_fields": [
+        "_meta",
         "note",
         "channels"
       ],
@@ -850,7 +863,8 @@
         "cross_source",
         "placebo",
         "robustness",
-        "drift"
+        "drift",
+        "_meta"
       ],
       "stability": "stable"
     },

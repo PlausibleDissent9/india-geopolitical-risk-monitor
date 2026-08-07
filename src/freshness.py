@@ -1,0 +1,192 @@
+"""
+Every published payload, audited for staleness (2026-08-07).
+
+The China and V5 lanes each failed silently for days. Both were caught
+by accident. The generalisation of what caught them is this: a payload
+that stops being rewritten does not break, it keeps serving its last
+value, and a stale number is quoted exactly as confidently as a fresh
+one. status.json watches ten upstream SOURCES; the site serves seventy
+endpoints, and nothing was watching those.
+
+So: read every docs/data/*.json, take its `_meta.generated`, compare
+against the cadence its lane is supposed to run at, and fail loudly on
+anything past tolerance.
+
+Three rules keep this honest rather than decorative:
+
+  * A payload with NO timestamp is a failure, not a pass. Three
+    payloads (alt_specs, seasonality, priced_risk) had no `generated`
+    field at all, which meant no audit -- this one included -- could
+    ever have told whether they were current. They were stamped before
+    this module was written, because an auditor that silently skips
+    what it cannot read is worse than no auditor.
+  * Exemptions carry a written reason and are checked against a list
+    that is short by design. "It doesn't need checking" is a claim.
+  * It runs in the enrichment lane, never the 06:00 contract. A
+    staleness report must never be the thing that stops a publish.
+
+  python -m src.freshness            audit, publish, exit non-zero if stale
+  python -m src.freshness --report   audit and print, always exit 0
+"""
+from __future__ import annotations
+
+import json
+import sys
+from datetime import date, datetime, timezone
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+SITE_DATA = ROOT / "docs" / "data"
+
+# Daily lanes. Three days of slack absorbs a dropped cron plus a
+# weekend of GitHub weather without crying wolf.
+DEFAULT_MAX_AGE_DAYS = 3
+
+# Lanes that legitimately run less often than daily. Each number is the
+# cadence plus slack, not a wish.
+MAX_AGE_DAYS: dict[str, int] = {
+    "datapack.json": 10,           # weekly, Fridays
+    "back_extension.json": 40,     # BigQuery lane, monthly-ish
+    "gpr_comparison.json": 40,     # external index updates monthly
+    "cow_mids.json": 400,          # frozen historical release
+    "ucdp_context.json": 400,      # pinned annual release
+    "jodi_energy.json": 45,        # JODI reports with a 1-3 month lag
+    "retest.json": 45,             # founder-paced human labelling
+    "permanence.json": 10,         # archive snapshots, weekly-ish
+    "syndication.json": 5,
+    "wiki_hindi.json": 10,
+    "vintages.json": 5,
+    "detector_blindness.json": 5,
+    "monthly.json": 5,
+    "seasonality.json": 10,
+    "alt_specs.json": 10,
+    "priced_risk.json": 10,
+    "multilingual.json": 30,       # V5 still backfilling
+}
+
+# Exempt, each with the reason it is exempt. Short on purpose.
+EXEMPT: dict[str, str] = {
+    "api_contract.json": (
+        "a frozen promise, not a readout -- it is regenerated only when a "
+        "maintainer deliberately freezes a baseline, and a rolling "
+        "timestamp on it would defeat the point"),
+    "notes.json": "the author's weekly writing; cadence is human",
+    "note_latest.json": "the author's weekly writing; cadence is human",
+    "episodes.json": (
+        "a bare JSON array with nowhere to carry _meta; it is written by "
+        "the same lane and in the same commit as history.json and "
+        "latest.json, whose freshness is checked"),
+    "status.json": (
+        "the freshness surface itself; it is checked by its own lane "
+        "and auditing it here would be circular"),
+    "predictions.json": (
+        "the Prediction Archive is append-only and event-driven: it "
+        "changes when a prediction is registered or graded, not on a "
+        "cadence. Ships honest-empty by design, so an unchanged file is "
+        "the correct state rather than a stalled lane"),
+    "freshness.json": "this audit's own output",
+}
+
+TIMESTAMP_KEYS = ("generated", "generated_at", "resolved_at")
+
+
+def _generated(path: Path) -> str | None:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(data, dict):
+        return None
+    meta = data.get("_meta")
+    if not isinstance(meta, dict):
+        return None
+    for key in TIMESTAMP_KEYS:
+        v = meta.get(key)
+        if isinstance(v, str) and len(v) >= 10:
+            return v[:10]
+    return None
+
+
+def audit(today: date | None = None) -> list[dict[str, Any]]:
+    today = today or date.today()
+    rows: list[dict[str, Any]] = []
+    for path in sorted(SITE_DATA.glob("*.json")):
+        name = path.name
+        if name in EXEMPT:
+            rows.append({"payload": name, "status": "exempt",
+                         "reason": EXEMPT[name]})
+            continue
+        gen = _generated(path)
+        limit = MAX_AGE_DAYS.get(name, DEFAULT_MAX_AGE_DAYS)
+        if gen is None:
+            # Not a pass. A payload nobody can date is a payload nobody
+            # can trust, and it is the easiest possible thing to fix.
+            rows.append({"payload": name, "status": "undatable",
+                         "max_age_days": limit,
+                         "reason": "no _meta.generated; add one"})
+            continue
+        try:
+            age = (today - date.fromisoformat(gen)).days
+        except ValueError:
+            rows.append({"payload": name, "status": "undatable",
+                         "max_age_days": limit,
+                         "reason": f"unparseable timestamp {gen!r}"})
+            continue
+        rows.append({
+            "payload": name, "generated": gen, "age_days": age,
+            "max_age_days": limit,
+            "status": "fresh" if age <= limit else "STALE",
+        })
+    return rows
+
+
+def main() -> None:
+    rows = audit()
+    bad = [r for r in rows if r["status"] in ("STALE", "undatable")]
+    fresh = [r for r in rows if r["status"] == "fresh"]
+    exempt = [r for r in rows if r["status"] == "exempt"]
+
+    payload = {
+        "_meta": {
+            "what": (
+                "Age of every published payload against the cadence its "
+                "lane is supposed to run at. A lane that stops writing "
+                "does not break: it keeps serving its last value, and a "
+                "stale number is quoted as confidently as a fresh one. "
+                "This is the check that notices."),
+            "undatable_is_a_failure": (
+                "A payload with no _meta.generated cannot be audited by "
+                "anything, so it counts as a failure rather than a pass. "
+                "An auditor that skips what it cannot read is worse than "
+                "no auditor, because it reports green."),
+            "default_max_age_days": DEFAULT_MAX_AGE_DAYS,
+            "n_payloads": len(rows),
+            "n_fresh": len(fresh),
+            "n_stale_or_undatable": len(bad),
+            "n_exempt": len(exempt),
+            "generated": datetime.now(timezone.utc).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"),
+        },
+        "payloads": rows,
+    }
+    SITE_DATA.mkdir(parents=True, exist_ok=True)
+    (SITE_DATA / "freshness.json").write_text(json.dumps(payload, indent=1),
+                                              encoding="utf-8")
+
+    print(f"[freshness] {len(fresh)} fresh, {len(bad)} stale/undatable, "
+          f"{len(exempt)} exempt, {len(rows)} total")
+    for r in bad:
+        detail = r.get("reason") or (
+            f"{r.get('age_days')} days old, limit {r.get('max_age_days')}")
+        print(f"[freshness] {r['status']}: {r['payload']} ({detail})")
+
+    if bad and "--report" not in sys.argv:
+        raise SystemExit(
+            f"[freshness] {len(bad)} payload(s) stale or undatable. A lane "
+            "has stopped writing, or a payload needs a timestamp. The site "
+            "is still serving them either way.")
+
+
+if __name__ == "__main__":
+    main()

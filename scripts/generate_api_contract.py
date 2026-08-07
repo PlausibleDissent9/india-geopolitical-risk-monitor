@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.26.0"  # + permanence.json (M2 lane, first CI run); vintages (#13), detector_blindness (#26), wiki_hindi (#25), monthly (#33), syndication (#23)
+CONTRACT_VERSION = "1.27.0"  # + freshness.json (payload staleness audit); permanence, vintages (#13), detector_blindness (#26), wiki_hindi (#25), monthly (#33), syndication (#23)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to

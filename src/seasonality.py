@@ -23,6 +23,7 @@ Output: docs/data/seasonality.json
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -109,6 +110,8 @@ def main() -> None:
         )
 
     payload = {
+        "_meta": {"generated": datetime.now(timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ")},
         "note": ("Day-of-year effects on log volume share after removing a "
                  "linear trend; 7-day circular smoothing. Deseasonalized "
                  "index is a secondary specification only."),

@@ -18,6 +18,7 @@ Output: docs/data/alt_specs.json
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -106,6 +107,13 @@ def main() -> None:
 
     windows = window_block(vol, primary)
     payload: dict = {
+        # Without a generation stamp nothing downstream -- not the
+        # status page, not the freshness audit, not a reader -- can tell
+        # a payload that is current from one whose lane stopped writing
+        # months ago. A stale robustness table is worse than an absent
+        # one, because it is quoted.
+        "_meta": {"generated": datetime.now(timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ")},
         "note": ("Secondary specifications beside the primary; the primary "
                  "never changes here. Correlations answer 'does the choice "
                  "drive the result?'"),

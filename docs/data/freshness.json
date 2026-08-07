@@ -1,0 +1,462 @@
+{
+ "_meta": {
+  "what": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
+  "undatable_is_a_failure": "A payload with no _meta.generated cannot be audited by anything, so it counts as a failure rather than a pass. An auditor that skips what it cannot read is worse than no auditor, because it reports green.",
+  "default_max_age_days": 3,
+  "n_payloads": 66,
+  "n_fresh": 59,
+  "n_stale_or_undatable": 0,
+  "n_exempt": 7,
+  "generated": "2026-08-07T09:54:58Z"
+ },
+ "payloads": [
+  {
+   "payload": "alerts.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "alt_specs.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 10,
+   "status": "fresh"
+  },
+  {
+   "payload": "api_contract.json",
+   "status": "exempt",
+   "reason": "a frozen promise, not a readout -- it is regenerated only when a maintainer deliberately freezes a baseline, and a rolling timestamp on it would defeat the point"
+  },
+  {
+   "payload": "aptness.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "back_extension.json",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 40,
+   "status": "fresh"
+  },
+  {
+   "payload": "chokepoints.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "comparators.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "cow_mids.json",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 400,
+   "status": "fresh"
+  },
+  {
+   "payload": "daily_brief.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "detector_blindness.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 5,
+   "status": "fresh"
+  },
+  {
+   "payload": "energy_context.json",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "episode_actors.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "episode_terms.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "episode_themes.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "episodes.json",
+   "status": "exempt",
+   "reason": "a bare JSON array with nowhere to carry _meta; it is written by the same lane and in the same commit as history.json and latest.json, whose freshness is checked"
+  },
+  {
+   "payload": "event_study.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "expert_shelf.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "exposure_sectors.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "forecasts.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "freshness.json",
+   "status": "exempt",
+   "reason": "this audit's own output"
+  },
+  {
+   "payload": "gpr_comparison.json",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 40,
+   "status": "fresh"
+  },
+  {
+   "payload": "history.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "latest.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "map_relations.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "map_states.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "monthly.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 5,
+   "status": "fresh"
+  },
+  {
+   "payload": "note_latest.json",
+   "status": "exempt",
+   "reason": "the author's weekly writing; cadence is human"
+  },
+  {
+   "payload": "notes.json",
+   "status": "exempt",
+   "reason": "the author's weekly writing; cadence is human"
+  },
+  {
+   "payload": "nowcast.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "permanence.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 10,
+   "status": "fresh"
+  },
+  {
+   "payload": "precision.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "predictability.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "predictions.json",
+   "status": "exempt",
+   "reason": "the Prediction Archive is append-only and event-driven: it changes when a prediction is registered or graded, not on a cadence. Ships honest-empty by design, so an unchanged file is the correct state rather than a stalled lane"
+  },
+  {
+   "payload": "priced_risk.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 10,
+   "status": "fresh"
+  },
+  {
+   "payload": "receipts.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "receipts_archive.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "reliability.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "robustness_series.json",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "seasonality.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 10,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_agri_food.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_auto_components.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_chemicals.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_defence_aerospace.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_electronics.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_energy_manufacturing.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_engineering_goods.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_fmcg.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_gems_jewellery.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_it_services.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_marine_products.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_metals.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_petroleum_refining.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_pharma.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_sensitivity.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "sector_textiles_apparel.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "shares.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "spike_breadth.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "status.json",
+   "status": "exempt",
+   "reason": "the freshness surface itself; it is checked by its own lane and auditing it here would be circular"
+  },
+  {
+   "payload": "stress_gauge.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "syndication.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 5,
+   "status": "fresh"
+  },
+  {
+   "payload": "tone.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "ucdp_context.json",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 400,
+   "status": "fresh"
+  },
+  {
+   "payload": "uncertainty.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "validation.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "vintages.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 5,
+   "status": "fresh"
+  },
+  {
+   "payload": "wiki_hindi.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 10,
+   "status": "fresh"
+  }
+ ]
+}

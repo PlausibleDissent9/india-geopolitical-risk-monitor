@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -42,6 +42,19 @@ def _merge_results(key: str, payload) -> None:
     out = SITE_DATA / "validation.json"
     existing = _load_json(out) if out.exists() else {}
     existing[key] = payload
+    # validation.json is assembled by merging one block at a time, so it
+    # never had a top-level _meta and therefore carried no date. It is
+    # the credibility payload -- hit rate, placebo, robustness, drift --
+    # and until 2026-08-07 nothing could tell whether the numbers on the
+    # validation page were computed this morning or six months ago.
+    # Stamped on every merge; the last block to land dates the file.
+    existing["_meta"] = {
+        "generated": datetime.now(timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"),
+        "note": ("Assembled block by block; this stamp is the time of "
+                 "the most recent block written, not of every block."),
+        "blocks_present": sorted(k for k in existing if k != "_meta"),
+    }
     SITE_DATA.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(existing, indent=1), encoding="utf-8")
     print(f"[validate] merged '{key}' into {out}")
