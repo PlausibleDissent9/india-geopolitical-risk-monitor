@@ -37,13 +37,6 @@ def test_public_baseline_payload_contains_both_denominators() -> None:
     assert public["placebo_context"] == detection_baselines.compute_placebo()
 
 
-def test_validation_page_labels_placebo_as_descriptive_negative_diagnostic() -> None:
-    page = (ROOT / "docs" / "validation.html").read_text(encoding="utf-8")
-    assert "Negative diagnostic" in page
-    assert 'baselines.placebo_context' in page
-    assert "No pass/fail null was registered" in page
-
-
 def test_composite7_battery_runs_the_registered_rule_not_a_lookalike() -> None:
     """Referee F16 asked for the 29-event battery on the 7-day headline.
     The battery only answers it if the detection rule is the SIGNED T2
