@@ -1,909 +1,921 @@
 {
-  "_meta": {
-    "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.27.0",
-    "frozen_date": "2026-08-04",
-    "base_url": "https://igrm.in/",
-    "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
-    "deprecation_policy": "A field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the deprecation date recorded here, before removal in the next major version.",
-    "access": {
-      "auth": "none",
-      "cors": "Access-Control-Allow-Origin: *",
-      "rate_limit": "none stated; ordinary politeness (poll daily, not per-request)",
-      "refresh": "daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)"
-    },
-    "deprecated": []
+ "_meta": {
+  "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
+  "contract_version": "1.28.0",
+  "frozen_date": "2026-08-04",
+  "base_url": "https://igrm.in/",
+  "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
+  "deprecation_policy": "A field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the deprecation date recorded here, before removal in the next major version.",
+  "access": {
+   "auth": "none",
+   "cors": "Access-Control-Allow-Origin: *",
+   "rate_limit": "none stated; ordinary politeness (poll daily, not per-request)",
+   "refresh": "daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)"
   },
-  "endpoints": [
-    {
-      "path": "data/alerts.json",
-      "format": "json",
-      "description": "Registered alert events computed from published payloads after each daily publish (design/alerts_webhook.md, founder-signed 2026-08-06): T1 band-separated channel moves, T2 composite 90th-percentile crossings that survive their sampling band, T3 integrity events (the morning contract's own misses). Poll model, newest first, 90-day retention, stable ids. Every field is a number or the direction of a COMPLETED move; nothing here is a forecast.",
-      "frozen_fields": [
-        "_meta",
-        "alerts"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/alt_specs.json",
-      "format": "json",
-      "description": "Secondary specifications beside the primary; the primary never changes here. Correlations answer 'does the choice drive the result?'",
-      "frozen_fields": [
-        "_meta",
-        "note",
-        "composite_weightings",
-        "episode_thresholds_sigma",
-        "percentile_windows_days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/aptness.json",
-      "format": "json",
-      "description": "Machine aptness labels for every published receipts article, under the registered rubric (auditor/RUBRIC.md), from headline + domain only. Display-layer only: OFF articles are collapsed with a visible count, never deleted, and no score is touched. The founder's own rulings audit the machine; the agreement rate publishes here.",
-      "frozen_fields": [
-        "_meta",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/back_extension.json",
-      "format": "json",
-      "description": "Historical attention proxy 1979-2016 (M1; registration frozen before first computation, analysis/back_extension_memo.md). A DIFFERENT construct from the live instrument -- monthly event-mention shares by frozen actor-pair filters -- never spliced into or drawn with the 2017+ series. Four channels; shipping has no defensible event analog and is excluded. Channels whose 2017-2019 overlap correlation is under 0.4 do not publish a historical series; that negative is the finding.",
-      "frozen_fields": [
-        "_meta",
-        "anchor_grades",
-        "overlap_audit",
-        "series"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/chokepoints.json",
-      "format": "json",
-      "description": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history.",
-      "frozen_fields": [
-        "_meta",
-        "chokepoints"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/comparators.json",
-      "format": "json",
-      "description": "Comparator country salience: one shared risk vocabulary anchored per country (comparators.json v1.0.0), each series a percentile of its own trailing 730 days, then weekly means. Cross-country levels reflect Anglophone press attention; association, not risk.",
-      "frozen_fields": [
-        "_meta",
-        "countries"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/cow_mids.json",
-      "format": "json",
-      "description": "Correlates of War MID 5.0 aggregates (S12): distinct militarized interstate disputes involving India by start year and opponent, 1816-2014 -- historian-coded conflict as independent context beside the M1 historical attention proxy (research/history.html). Static dataset, fetched once; only aggregates publish. Context only; enters no score.",
-      "frozen_fields": [
-        "_meta",
-        "disputes_by_start_year",
-        "totals"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/daily_brief.json",
-      "format": "json",
-      "description": "Machine-written daily brief per channel plus a composite line, generated from the payloads this site already publishes. Written by a language model, not the author; measurement language enforced by prompt and lint.",
-      "frozen_fields": [
-        "_meta",
-        "date",
-        "composite",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/detector_blindness.json",
-      "format": "json",
-      "description": "How blind the episode detector goes after it fires. A crisis enters the trailing window its own future threshold is computed from, so the bar rises for 90 days and a second event has to rival the first to be seen.",
-      "frozen_fields": [
-        "_meta",
-        "largest_episodes_by_peak_share",
-        "episodes"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/energy_context.json",
-      "format": "json",
-      "description": "India's monthly crude-oil imports (thousand barrels per day, as reported to JODI) -- official energy statistics as context beside the gulf_energy channel. Context only; enters no score. Reporting lags one-to-three months and recent values revise; the latest month shown is the latest reported, not the latest that occurred.",
-      "frozen_fields": [
-        "_meta",
-        "months",
-        "crude_imports_kbd",
-        "latest"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/episode_actors.json",
-      "format": "json",
-      "description": "Per-episode driver decomposition from the GDELT Events dyad layer: partners whose India-pair event counts in the episode window most exceed their trailing 90-day baseline rate, with the window's cooperation-conflict split. Counts of press-recorded events; association, not causation.",
-      "frozen_fields": [
-        "_meta",
-        "episodes"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/episode_terms.json",
-      "format": "json",
-      "description": "Term-level attribution per channel-day: how many matched-article HEADLINES in the day's corpus cache contain each registered phrase. Derived from the same corpus the scores come from; reproducible from the repo alone. Headline attribution undercounts body-text phrases and the record starts at the first committed cache day -- earlier episodes carry no attribution rather than a refetched guess.",
-      "frozen_fields": [
-        "_meta",
-        "days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/episode_themes.json",
-      "format": "json",
-      "description": "Narrative composition (G4): per channel per day, the GKG theme codes carried by the MATCHED articles -- the registered dictionaries choose every article, BigQuery only reads its V2Themes; an annotation, never a filter, entering no score. share = fraction of themed matched articles carrying the code; codes stay raw GDELT identifiers for auditability. n_themed vs n_matched discloses the join rate.",
-      "frozen_fields": [
-        "_meta",
-        "days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/episodes.csv",
-      "format": "csv",
-      "description": "The same detected episodes as CSV, one row per episode.",
-      "frozen_fields": [
-        "channel",
-        "label",
-        "start",
-        "end",
-        "peak_date",
-        "peak_value",
-        "n_spike_days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/episodes.json",
-      "format": "json",
-      "description": "Detected coverage episodes (array): channel, start and end dates, and peak percentile, from the frozen 2sigma/90-day spike rule.",
-      "frozen_fields": [
-        "channel",
-        "start",
-        "end",
-        "peak_date",
-        "peak_value",
-        "n_spike_days",
-        "label"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/event_study.csv",
-      "format": "csv",
-      "description": "Event-study relative-return cells as CSV, one row per channel x window x market series.",
-      "frozen_fields": [
-        "channel",
-        "outcome",
-        "window_trading_days",
-        "mean_cum_log_return_pct",
-        "ci95_lo",
-        "ci95_hi",
-        "p_boot",
-        "bh_significant_10pct",
-        "n_episodes",
-        "descriptive_only"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/event_study.json",
-      "format": "json",
-      "description": "Event study: mean cumulative India-specific relative returns after episode starts, with bootstrapped 95% CIs, plus raw per-episode window returns.",
-      "frozen_fields": [
-        "_meta",
-        "generated",
-        "windows",
-        "units",
-        "language",
-        "descriptive_only",
-        "channels",
-        "per_episode"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/expert_shelf.json",
-      "format": "json",
-      "description": "Latest publications from the registered think-tank roster (think_tanks.json), tagged to channels by the frozen dictionaries. Titles and links only. Institutions without public feeds are listed in the registry with that status.",
-      "frozen_fields": [
-        "_meta",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/exposure_sectors.json",
-      "format": "json",
-      "description": "The registered sector-to-channel exposure map (sectors.json v1.1.0) with the deterministic weighting rule the exposure page computes with. Retrieval and description only: the instrument measures press salience, not risk, and makes no forecasts; an exposure profile re-cuts published numbers by the reader's own frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sectors"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/forecasts.json",
-      "format": "json",
-      "description": "V11 forecast experiment record (registration: validation/forecast_registration.json, signed 2026-08-06). RESEARCH PAGE ONLY: this is an experiment about the index, not advice, and until the registered criterion resolves it should be presumed to show that salience does not forecast. Questions are mechanical, committed before their windows, graded by the registered detector; the frozen-logit arm's coefficients are in validation/forecast_logit_frozen.json.",
-      "frozen_fields": [
-        "_meta",
-        "cumulative",
-        "questions"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/freshness.json",
-      "format": "json",
-      "description": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
-      "frozen_fields": [
-        "_meta",
-        "payloads"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/gpr_comparison.json",
-      "format": "json",
-      "description": "V17 replication wedge: monthly-mean IGRM percentile scores vs Caldara-Iacoviello's GPRC_IND (a different corpus and construction entirely), 2017-present -- correlation in levels and in monthly changes, per channel and composite. Co-movement despite zero shared pipeline is external validation; divergence is analysis. Nothing in any IGRM series depends on GPR.",
-      "frozen_fields": [
-        "_meta",
-        "series"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/history.csv",
-      "format": "csv",
-      "description": "The full daily series (composite and five channels) as CSV, one row per day, since 2017.",
-      "frozen_fields": [
-        "date",
-        "pakistan_west",
-        "china_east",
-        "gulf_energy",
-        "us_trade",
-        "shipping",
-        "composite"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/history.json",
-      "format": "json",
-      "description": "Full daily IGRM score history; parallel arrays share the dates index. Machine feed for the site chart -- researchers should prefer history.csv.",
-      "frozen_fields": [
-        "_meta",
-        "dates",
-        "composite",
-        "channels",
-        "labels",
-        "composite7",
-        "channels7",
-        "wikipedia"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/latest.json",
-      "format": "json",
-      "description": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, robust to single-day news-cycle noise, verified to reach 99.5 the morning after a real onset (Pahalgam). The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
-      "frozen_fields": [
-        "_meta",
-        "date",
-        "definition",
-        "composite",
-        "composite7",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/map_relations.json",
-      "format": "json",
-      "description": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
-      "frozen_fields": [
-        "_meta",
-        "partners",
-        "excluded_actor_codes"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/map_states.json",
-      "format": "json",
-      "description": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
-      "frozen_fields": [
-        "_meta",
-        "states",
-        "excluded_adm1"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/monthly.csv",
-      "format": "csv",
-      "description": "The daily series aggregated to calendar months, with the three traps handled in the open: months below 80% day coverage publish null values and a stated reason instead of a mean over the survivors, months spanning the DOC API/NGrams instrument boundary are flagged, and the mean-of-ranks composite is published beside the commensurable share means rather than instead of them.",
-      "frozen_fields": [
-        "month",
-        "n_days_present",
-        "n_days_expected",
-        "coverage",
-        "n_days_doc_api",
-        "n_days_ngram_bridge",
-        "mixed_instruments",
-        "share_pakistan_west",
-        "share_china_east",
-        "share_gulf_energy",
-        "share_us_trade",
-        "share_shipping",
-        "composite_mean_of_ranks",
-        "refused_reason"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/monthly.json",
-      "format": "json",
-      "description": "Monthly aggregation of the daily series, published so that every user is not silently making their own decisions about short months, mixed instruments and averaged ranks.",
-      "frozen_fields": [
-        "_meta",
-        "csv",
-        "months"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/note_latest.json",
-      "format": "json",
-      "description": "The most recent published weekly note: filename and raw markdown body.",
-      "frozen_fields": [
-        "filename",
-        "markdown",
-        "_meta"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/notes.json",
-      "format": "json",
-      "description": "Index of published weekly notes (array): ISO week label and the full markdown body of each note.",
-      "frozen_fields": [
-        "week",
-        "markdown"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/nowcast.json",
-      "format": "json",
-      "description": "PROVISIONAL today-so-far scores from a partial-day sample of the GDELT Web NGrams bridge. Superseded by the daily run's finalized number; never part of the historical series.",
-      "frozen_fields": [
-        "_meta",
-        "date",
-        "as_of_utc",
-        "provisional",
-        "n_samples",
-        "n_docs_sampled",
-        "composite",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/permanence.json",
-      "format": "json",
-      "description": "The permanence lane's own record: the result of the latest Internet Archive snapshot request per page and the latest Software Heritage save-code-now registration. Fail-soft \u2014 an archive outage is recorded here, never hidden, and never blocks the pipeline. Wayback captures are browsable at web.archive.org/web/*/igrm.in.",
-      "frozen_fields": [
-        "_meta",
-        "wayback",
-        "software_heritage"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/precision.json",
-      "format": "json",
-      "description": "Standing precision audit: machine labels applied under the versioned rubric (auditor/RUBRIC.md), published as found, never tuned to a target. UNCALIBRATED until the author's independent labels reach the registration threshold; the agreement statistic publishes with its n. Abstentions are counted, not guessed.",
-      "frozen_fields": [
-        "_meta",
-        "calibrated",
-        "author_labels_n",
-        "author_abstained_n",
-        "calibration_threshold",
-        "agreement",
-        "abstained",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/predictability.json",
-      "format": "json",
-      "description": "Directed lead-lag predictability on daily changes: R2 increment from adding five lags of the leading series to five own-lags, permutation p-values (time-shifted null, 300 draws). Predictability in this sense is an association across time, never causality, and none of this is a forecast or investment advice.",
-      "frozen_fields": [
-        "_meta",
-        "pairs"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/predictions.json",
-      "format": "json",
-      "description": "The Prediction Archive: every dated, falsifiable expectation this project publishes, graded in public when its horizon arrives, right or wrong, with why. Registrations are append-only and timestamped before outcomes are known; grading entries link the evidence. Empty rows are impossible: a prediction exists only once its registration commit exists.",
-      "frozen_fields": [
-        "_meta",
-        "predictions"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/priced_risk.json",
-      "format": "json",
-      "description": "gap = attention percentile minus India-VIX percentile, shared trading days. Positive: press louder than the market. Negative: the market is pricing risk the coverage has not caught. Associational throughout.",
-      "frozen_fields": [
-        "_meta",
-        "definition",
-        "gap",
-        "gap_inr_realized_vol",
-        "divergence_episodes",
-        "lead_lag",
-        "panel"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/receipts.json",
-      "format": "json",
-      "description": "Per-channel receipts for the latest published day, drawn from the same sampled ngrams corpus the day's scores are computed from: every English article in the sample whose text matched a registered channel phrase (channel anchor applied per document, identically to the series matcher), tier-sorted using source_tiers.json.",
-      "frozen_fields": [
-        "_meta",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/receipts_archive.json",
-      "format": "json",
-      "description": "Trailing-week receipts archive: per channel and day, the matched articles from that day's committed corpus cache, assembled identically to receipts.json (same matcher provenance, tier sort, syndication dedup, lane labels), capped per day. Today's full list lives in receipts.json; this file guarantees a week of enumerable, dated evidence per channel.",
-      "frozen_fields": [
-        "_meta",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/reliability.json",
-      "format": "json",
-      "description": "The morning contract's measured record, computed from git commit timestamps, nothing self-reported: day D final by 06:00 IST on D+1. Pre-contract days shown as context. Misses stay listed forever.",
-      "frozen_fields": [
-        "_meta",
-        "on_time",
-        "scored_days",
-        "rate",
-        "days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/robustness_series.json",
-      "format": "json",
-      "description": "Weekly mean percentile scores of the primary index and its narrow/broad dictionary variants, over the window where all three exist. The overlay behind validation.json's robustness correlations.",
-      "frozen_fields": [
-        "_meta",
-        "weeks",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/seasonality.json",
-      "format": "json",
-      "description": "Day-of-year effects on log volume share after removing a linear trend; 7-day circular smoothing. Deseasonalized index is a secondary specification only.",
-      "frozen_fields": [
-        "_meta",
-        "note",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_agri_food.json",
-      "format": "json",
-      "description": "Per-sector feed for Agriculture & Food Exports: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_auto_components.json",
-      "format": "json",
-      "description": "Per-sector feed for Auto & Components: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels",
-        "measured_sensitivity"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_chemicals.json",
-      "format": "json",
-      "description": "Per-sector feed for Chemicals & Petrochemicals: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_defence_aerospace.json",
-      "format": "json",
-      "description": "Per-sector feed for Defence & Aerospace: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_electronics.json",
-      "format": "json",
-      "description": "Per-sector feed for Electronics Manufacturing: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_energy_manufacturing.json",
-      "format": "json",
-      "description": "Per-sector feed for Energy-intensive Manufacturing: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels",
-        "measured_sensitivity"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_engineering_goods.json",
-      "format": "json",
-      "description": "Per-sector feed for Engineering Goods: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_fmcg.json",
-      "format": "json",
-      "description": "Per-sector feed for FMCG: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels",
-        "measured_sensitivity"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_gems_jewellery.json",
-      "format": "json",
-      "description": "Per-sector feed for Gems & Jewellery: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_it_services.json",
-      "format": "json",
-      "description": "Per-sector feed for IT Services: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels",
-        "measured_sensitivity"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_marine_products.json",
-      "format": "json",
-      "description": "Per-sector feed for Marine Products & Fisheries: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_metals.json",
-      "format": "json",
-      "description": "Per-sector feed for Metals & Mining: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels",
-        "measured_sensitivity"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_petroleum_refining.json",
-      "format": "json",
-      "description": "Per-sector feed for Petroleum Refining & Export: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels",
-        "measured_sensitivity"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_pharma.json",
-      "format": "json",
-      "description": "Per-sector feed for Pharmaceuticals: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels",
-        "measured_sensitivity"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_sensitivity.json",
-      "format": "json",
-      "description": "Measured sector sensitivities (E2): each signed sector index's cumulative return RELATIVE to Nifty over 1/5/20 trading days from the start of episodes in the sector's registered channels, with seeded-bootstrap 95% CIs and two-sided p-values, n stated per cell. ASSOCIATED WITH, never caused by. Sensitivities live beside the exposure map and change no weight, score, or reading. Mapping: sectors.json v1.1.0, founder-signed 2026-08-06; sectors without a signed index publish nothing. Underlying prices are Yahoo's and are not redistributed; only these aggregates publish.",
-      "frozen_fields": [
-        "_meta",
-        "sectors"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/sector_textiles_apparel.json",
-      "format": "json",
-      "description": "Per-sector feed for Textiles & Apparel: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
-      "frozen_fields": [
-        "_meta",
-        "sector",
-        "label",
-        "rationale",
-        "date",
-        "channels"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/shares.csv",
-      "format": "csv",
-      "description": "The QUANTITY the index is built from: each channel's daily share of the GDELT-monitored corpus, in percent. Published so any reader can apply their own normalization; commensurable across channels and years where percentiles are not. The source column names the instrument that measured each day, because the series mixes DOC API counts with splice-linked NGrams-bridge days and a mean across that boundary inherits the linking constant's uncertainty.",
-      "frozen_fields": [
-        "date",
-        "pakistan_west",
-        "china_east",
-        "gulf_energy",
-        "us_trade",
-        "shipping",
-        "source"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/shares.json",
-      "format": "json",
-      "description": "The QUANTITY the index is built from: each channel's daily share of GDELT-monitored articles, in percent of the day's monitored corpus. This is the input to the published percentile series, and it is published as a first-class artifact so any reader can apply their own normalization rather than accepting ours.",
-      "frozen_fields": [
-        "_meta",
-        "csv"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/spike_breadth.json",
-      "format": "json",
-      "description": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
-      "frozen_fields": [
-        "_meta",
-        "days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/status.json",
-      "format": "json",
-      "description": "Per-source data freshness against ex-ante windows, the morning contract's measured record, and each pipeline lane's last evidence stamp. Derived entirely from committed files; regenerated by the daily run. Windows are operational expectations stated in this payload, not promises \u2014 the morning contract is the only promise, and reliability.json is its record.",
-      "frozen_fields": [
-        "_meta",
-        "sources",
-        "lanes",
-        "morning_contract"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/stress_gauge.json",
-      "format": "json",
-      "description": "India Stress Gauge: four attention and stress sources fused per the pre-registered weights in validation/stress_gauge_weights.json. A salience and stress measurement, not a risk prediction.",
-      "frozen_fields": [
-        "_meta",
-        "date",
-        "gauge",
-        "components",
-        "validation",
-        "history_365d"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/syndication.json",
-      "format": "json",
-      "description": "Articles per distinct story, per channel, per day, over the day's full scanned corpus. The index counts articles, so a wire story republished by 200 outlets moves a channel as far as 200 newsrooms independently reacting; this is the measurement of how often that happens.",
-      "frozen_fields": [
-        "_meta",
-        "channels",
-        "series"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/tone.json",
-      "format": "json",
-      "description": "Mean V2Tone of each channel's MATCHED articles -- the same articles the registered dictionaries selected and the receipts pages enumerate; tone is an annotation joined by URL in GDELT's GKG, never a filter. Context axis only: tone enters no score, no percentile, and no composite. n_tone_found vs n_matched discloses the join rate; GKG does not carry every URL. Negative tone is conventional GDELT scaling (roughly -10 very negative to +10 very positive).",
-      "frozen_fields": [
-        "_meta",
-        "days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/ucdp_context.json",
-      "format": "json",
-      "description": "Monthly organized-violence event counts and best-estimate fatalities located in India, from UCDP GED (finalized annual release) extended by UCDP Candidate monthlies (flagged preliminary per month; replaced when finalized). Context BESIDE the salience index, never an input: divergence between recorded violence and press salience is a documented finding, not an error in either.",
-      "frozen_fields": [
-        "_meta",
-        "india"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/uncertainty.json",
-      "format": "json",
-      "description": "95% sampling bands for sample-estimated daily scores: Wilson interval on the day's matched share, passed through the same splice ratio and trailing-percentile transform as the published point value. The composite band is the mean of channel bounds -- an envelope, conservative because channel sampling errors are independent. Days before the first banded date were computed over the full monitored corpus (no sampling design of this kind), so they carry no band.",
-      "frozen_fields": [
-        "_meta",
-        "days"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/validation.json",
-      "format": "json",
-      "description": "The pre-registered validation record: hit rate against the 21-episode list, cross-source and placebo checks, robustness under alternate specifications.",
-      "frozen_fields": [
-        "hit_rate",
-        "cross_source",
-        "placebo",
-        "robustness",
-        "drift",
-        "_meta"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/vintages.json",
-      "format": "json",
-      "description": "Every published vintage of the daily series, diffed against what the site serves today. Answers whether a value read on day D is still the value shown for day D now -- the question that decides whether a backtest built on the current file has look-ahead bias in it.",
-      "frozen_fields": [
-        "_meta",
-        "vintages"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "data/wiki_hindi.json",
-      "format": "json",
-      "description": "Cross-language validity check. The index is built from an English-language corpus and was cross-validated against English Wikipedia, so every leg of the apparatus was Anglophone and none of it could distinguish 'Indian salience' from 'what the international English-language press covers'. Hindi Wikipedia pageviews are the same registered article set read by a different population, on infrastructure sharing no code or sampling with GDELT.",
-      "frozen_fields": [
-        "_meta",
-        "channels",
-        "english_wikipedia_same_statistic",
-        "language_gap",
-        "channels_where_english_leads_on_both"
-      ],
-      "stability": "stable"
-    },
-    {
-      "path": "feed.xml",
-      "format": "rss",
-      "description": "RSS 2.0 feed of the weekly analytical notes.",
-      "frozen_fields": [
-        "title",
-        "link",
-        "pubDate",
-        "description",
-        "guid"
-      ],
-      "stability": "stable"
-    }
-  ]
+  "deprecated": []
+ },
+ "endpoints": [
+  {
+   "path": "data/alerts.json",
+   "format": "json",
+   "description": "Registered alert events computed from published payloads after each daily publish (design/alerts_webhook.md, founder-signed 2026-08-06): T1 band-separated channel moves, T2 composite 90th-percentile crossings that survive their sampling band, T3 integrity events (the morning contract's own misses). Poll model, newest first, 90-day retention, stable ids. Every field is a number or the direction of a COMPLETED move; nothing here is a forecast.",
+   "frozen_fields": [
+    "_meta",
+    "alerts"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/alt_specs.json",
+   "format": "json",
+   "description": "Secondary specifications beside the primary; the primary never changes here. Correlations answer 'does the choice drive the result?'",
+   "frozen_fields": [
+    "_meta",
+    "note",
+    "composite_weightings",
+    "episode_thresholds_sigma",
+    "percentile_windows_days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/aptness.json",
+   "format": "json",
+   "description": "Machine aptness labels for every published receipts article, under the registered rubric (auditor/RUBRIC.md), from headline + domain only. Display-layer only: OFF articles are collapsed with a visible count, never deleted, and no score is touched. The founder's own rulings audit the machine; the agreement rate publishes here.",
+   "frozen_fields": [
+    "_meta",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/back_extension.json",
+   "format": "json",
+   "description": "Historical attention proxy 1979-2016 (M1; registration frozen before first computation, analysis/back_extension_memo.md). A DIFFERENT construct from the live instrument -- monthly event-mention shares by frozen actor-pair filters -- never spliced into or drawn with the 2017+ series. Four channels; shipping has no defensible event analog and is excluded. Channels whose 2017-2019 overlap correlation is under 0.4 do not publish a historical series; that negative is the finding.",
+   "frozen_fields": [
+    "_meta",
+    "anchor_grades",
+    "overlap_audit",
+    "series"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/chokepoints.json",
+   "format": "json",
+   "description": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history.",
+   "frozen_fields": [
+    "_meta",
+    "chokepoints"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/comparators.json",
+   "format": "json",
+   "description": "Comparator country salience: one shared risk vocabulary anchored per country (comparators.json v1.0.0), each series a percentile of its own trailing 730 days, then weekly means. Cross-country levels reflect Anglophone press attention; association, not risk.",
+   "frozen_fields": [
+    "_meta",
+    "countries"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/cow_mids.json",
+   "format": "json",
+   "description": "Correlates of War MID 5.0 aggregates (S12): distinct militarized interstate disputes involving India by start year and opponent, 1816-2014 -- historian-coded conflict as independent context beside the M1 historical attention proxy (research/history.html). Static dataset, fetched once; only aggregates publish. Context only; enters no score.",
+   "frozen_fields": [
+    "_meta",
+    "disputes_by_start_year",
+    "totals"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/daily_brief.json",
+   "format": "json",
+   "description": "Machine-written daily brief per channel plus a composite line, generated from the payloads this site already publishes. Written by a language model, not the author; measurement language enforced by prompt and lint.",
+   "frozen_fields": [
+    "_meta",
+    "date",
+    "composite",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/detector_blindness.json",
+   "format": "json",
+   "description": "How blind the episode detector goes after it fires. A crisis enters the trailing window its own future threshold is computed from, so the bar rises for 90 days and a second event has to rival the first to be seen.",
+   "frozen_fields": [
+    "_meta",
+    "largest_episodes_by_peak_share",
+    "episodes"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/energy_context.json",
+   "format": "json",
+   "description": "India's monthly crude-oil imports (thousand barrels per day, as reported to JODI) -- official energy statistics as context beside the gulf_energy channel. Context only; enters no score. Reporting lags one-to-three months and recent values revise; the latest month shown is the latest reported, not the latest that occurred.",
+   "frozen_fields": [
+    "_meta",
+    "months",
+    "crude_imports_kbd",
+    "latest"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/episode_actors.json",
+   "format": "json",
+   "description": "Per-episode driver decomposition from the GDELT Events dyad layer: partners whose India-pair event counts in the episode window most exceed their trailing 90-day baseline rate, with the window's cooperation-conflict split. Counts of press-recorded events; association, not causation.",
+   "frozen_fields": [
+    "_meta",
+    "episodes"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/episode_terms.json",
+   "format": "json",
+   "description": "Term-level attribution per channel-day: how many matched-article HEADLINES in the day's corpus cache contain each registered phrase. Derived from the same corpus the scores come from; reproducible from the repo alone. Headline attribution undercounts body-text phrases and the record starts at the first committed cache day -- earlier episodes carry no attribution rather than a refetched guess.",
+   "frozen_fields": [
+    "_meta",
+    "days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/episode_themes.json",
+   "format": "json",
+   "description": "Narrative composition (G4): per channel per day, the GKG theme codes carried by the MATCHED articles -- the registered dictionaries choose every article, BigQuery only reads its V2Themes; an annotation, never a filter, entering no score. share = fraction of themed matched articles carrying the code; codes stay raw GDELT identifiers for auditability. n_themed vs n_matched discloses the join rate.",
+   "frozen_fields": [
+    "_meta",
+    "days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/episodes.csv",
+   "format": "csv",
+   "description": "The same detected episodes as CSV, one row per episode.",
+   "frozen_fields": [
+    "channel",
+    "label",
+    "start",
+    "end",
+    "peak_date",
+    "peak_value",
+    "n_spike_days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/episodes.json",
+   "format": "json",
+   "description": "Detected coverage episodes (array): channel, start and end dates, and peak percentile, from the frozen 2sigma/90-day spike rule.",
+   "frozen_fields": [
+    "channel",
+    "start",
+    "end",
+    "peak_date",
+    "peak_value",
+    "n_spike_days",
+    "label"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/event_study.csv",
+   "format": "csv",
+   "description": "Event-study relative-return cells as CSV, one row per channel x window x market series.",
+   "frozen_fields": [
+    "channel",
+    "outcome",
+    "window_trading_days",
+    "mean_cum_log_return_pct",
+    "ci95_lo",
+    "ci95_hi",
+    "p_boot",
+    "bh_significant_10pct",
+    "n_episodes",
+    "descriptive_only"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/event_study.json",
+   "format": "json",
+   "description": "Event study: mean cumulative India-specific relative returns after episode starts, with bootstrapped 95% CIs, plus raw per-episode window returns.",
+   "frozen_fields": [
+    "_meta",
+    "generated",
+    "windows",
+    "units",
+    "language",
+    "descriptive_only",
+    "channels",
+    "per_episode"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/expert_shelf.json",
+   "format": "json",
+   "description": "Latest publications from the registered think-tank roster (think_tanks.json), tagged to channels by the frozen dictionaries. Titles and links only. Institutions without public feeds are listed in the registry with that status.",
+   "frozen_fields": [
+    "_meta",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/exposure_sectors.json",
+   "format": "json",
+   "description": "The registered sector-to-channel exposure map (sectors.json v1.1.0) with the deterministic weighting rule the exposure page computes with. Retrieval and description only: the instrument measures press salience, not risk, and makes no forecasts; an exposure profile re-cuts published numbers by the reader's own frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sectors"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/forecasts.json",
+   "format": "json",
+   "description": "V11 forecast experiment record (registration: validation/forecast_registration.json, signed 2026-08-06). RESEARCH PAGE ONLY: this is an experiment about the index, not advice, and until the registered criterion resolves it should be presumed to show that salience does not forecast. Questions are mechanical, committed before their windows, graded by the registered detector; the frozen-logit arm's coefficients are in validation/forecast_logit_frozen.json.",
+   "frozen_fields": [
+    "_meta",
+    "cumulative",
+    "questions"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/freshness.json",
+   "format": "json",
+   "description": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
+   "frozen_fields": [
+    "_meta",
+    "payloads"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/gpr_comparison.json",
+   "format": "json",
+   "description": "V17 replication wedge: monthly-mean IGRM percentile scores vs Caldara-Iacoviello's GPRC_IND (a different corpus and construction entirely), 2017-present -- correlation in levels and in monthly changes, per channel and composite. Co-movement despite zero shared pipeline is external validation; divergence is analysis. Nothing in any IGRM series depends on GPR.",
+   "frozen_fields": [
+    "_meta",
+    "series"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/history.csv",
+   "format": "csv",
+   "description": "The full daily series (composite and five channels) as CSV, one row per day, since 2017.",
+   "frozen_fields": [
+    "date",
+    "pakistan_west",
+    "china_east",
+    "gulf_energy",
+    "us_trade",
+    "shipping",
+    "composite"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/history.json",
+   "format": "json",
+   "description": "Full daily IGRM score history; parallel arrays share the dates index. Machine feed for the site chart -- researchers should prefer history.csv.",
+   "frozen_fields": [
+    "_meta",
+    "dates",
+    "composite",
+    "channels",
+    "labels",
+    "composite7",
+    "channels7",
+    "wikipedia"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/latest.json",
+   "format": "json",
+   "description": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, robust to single-day news-cycle noise, verified to reach 99.5 the morning after a real onset (Pahalgam). The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
+   "frozen_fields": [
+    "_meta",
+    "date",
+    "definition",
+    "composite",
+    "composite7",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/map_relations.json",
+   "format": "json",
+   "description": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
+   "frozen_fields": [
+    "_meta",
+    "partners",
+    "excluded_actor_codes"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/map_states.json",
+   "format": "json",
+   "description": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
+   "frozen_fields": [
+    "_meta",
+    "states",
+    "excluded_adm1"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/monthly.csv",
+   "format": "csv",
+   "description": "The daily series aggregated to calendar months, with the three traps handled in the open: months below 80% day coverage publish null values and a stated reason instead of a mean over the survivors, months spanning the DOC API/NGrams instrument boundary are flagged, and the mean-of-ranks composite is published beside the commensurable share means rather than instead of them.",
+   "frozen_fields": [
+    "month",
+    "n_days_present",
+    "n_days_expected",
+    "coverage",
+    "n_days_doc_api",
+    "n_days_ngram_bridge",
+    "mixed_instruments",
+    "share_pakistan_west",
+    "share_china_east",
+    "share_gulf_energy",
+    "share_us_trade",
+    "share_shipping",
+    "composite_mean_of_ranks",
+    "refused_reason"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/monthly.json",
+   "format": "json",
+   "description": "Monthly aggregation of the daily series, published so that every user is not silently making their own decisions about short months, mixed instruments and averaged ranks.",
+   "frozen_fields": [
+    "_meta",
+    "csv",
+    "months"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/note_latest.json",
+   "format": "json",
+   "description": "The most recent published weekly note: filename and raw markdown body.",
+   "frozen_fields": [
+    "filename",
+    "markdown",
+    "_meta"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/notes.json",
+   "format": "json",
+   "description": "Index of published weekly notes (array): ISO week label and the full markdown body of each note.",
+   "frozen_fields": [
+    "week",
+    "markdown"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/nowcast.json",
+   "format": "json",
+   "description": "PROVISIONAL today-so-far scores from a partial-day sample of the GDELT Web NGrams bridge. Superseded by the daily run's finalized number; never part of the historical series.",
+   "frozen_fields": [
+    "_meta",
+    "date",
+    "as_of_utc",
+    "provisional",
+    "n_samples",
+    "n_docs_sampled",
+    "composite",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/permanence.json",
+   "format": "json",
+   "description": "The permanence lane's own record: the result of the latest Internet Archive snapshot request per page and the latest Software Heritage save-code-now registration. Fail-soft \u2014 an archive outage is recorded here, never hidden, and never blocks the pipeline. Wayback captures are browsable at web.archive.org/web/*/igrm.in.",
+   "frozen_fields": [
+    "_meta",
+    "wayback",
+    "software_heritage"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/precision.json",
+   "format": "json",
+   "description": "Standing precision audit: machine labels applied under the versioned rubric (auditor/RUBRIC.md), published as found, never tuned to a target. UNCALIBRATED until the author's independent labels reach the registration threshold; the agreement statistic publishes with its n. Abstentions are counted, not guessed.",
+   "frozen_fields": [
+    "_meta",
+    "calibrated",
+    "author_labels_n",
+    "author_abstained_n",
+    "calibration_threshold",
+    "agreement",
+    "abstained",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/predictability.json",
+   "format": "json",
+   "description": "Directed lead-lag predictability on daily changes: R2 increment from adding five lags of the leading series to five own-lags, permutation p-values (time-shifted null, 300 draws). Predictability in this sense is an association across time, never causality, and none of this is a forecast or investment advice.",
+   "frozen_fields": [
+    "_meta",
+    "pairs"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/predictions.json",
+   "format": "json",
+   "description": "The Prediction Archive: every dated, falsifiable expectation this project publishes, graded in public when its horizon arrives, right or wrong, with why. Registrations are append-only and timestamped before outcomes are known; grading entries link the evidence. Empty rows are impossible: a prediction exists only once its registration commit exists.",
+   "frozen_fields": [
+    "_meta",
+    "predictions"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/priced_risk.json",
+   "format": "json",
+   "description": "gap = attention percentile minus India-VIX percentile, shared trading days. Positive: press louder than the market. Negative: the market is pricing risk the coverage has not caught. Associational throughout.",
+   "frozen_fields": [
+    "_meta",
+    "definition",
+    "gap",
+    "gap_inr_realized_vol",
+    "divergence_episodes",
+    "lead_lag",
+    "panel"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/receipts.json",
+   "format": "json",
+   "description": "Per-channel receipts for the latest published day, drawn from the same sampled ngrams corpus the day's scores are computed from: every English article in the sample whose text matched a registered channel phrase (channel anchor applied per document, identically to the series matcher), tier-sorted using source_tiers.json.",
+   "frozen_fields": [
+    "_meta",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/receipts_archive.json",
+   "format": "json",
+   "description": "Trailing-week receipts archive: per channel and day, the matched articles from that day's committed corpus cache, assembled identically to receipts.json (same matcher provenance, tier sort, syndication dedup, lane labels), capped per day. Today's full list lives in receipts.json; this file guarantees a week of enumerable, dated evidence per channel.",
+   "frozen_fields": [
+    "_meta",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/reliability.json",
+   "format": "json",
+   "description": "The morning contract's measured record, computed from git commit timestamps, nothing self-reported: day D final by 06:00 IST on D+1. Pre-contract days shown as context. Misses stay listed forever.",
+   "frozen_fields": [
+    "_meta",
+    "on_time",
+    "scored_days",
+    "rate",
+    "days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/robustness_series.json",
+   "format": "json",
+   "description": "Weekly mean percentile scores of the primary index and its narrow/broad dictionary variants, over the window where all three exist. The overlay behind validation.json's robustness correlations.",
+   "frozen_fields": [
+    "_meta",
+    "weeks",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/seasonality.json",
+   "format": "json",
+   "description": "Day-of-year effects on log volume share after removing a linear trend; 7-day circular smoothing. Deseasonalized index is a secondary specification only.",
+   "frozen_fields": [
+    "_meta",
+    "note",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_agri_food.json",
+   "format": "json",
+   "description": "Per-sector feed for Agriculture & Food Exports: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_auto_components.json",
+   "format": "json",
+   "description": "Per-sector feed for Auto & Components: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels",
+    "measured_sensitivity"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_chemicals.json",
+   "format": "json",
+   "description": "Per-sector feed for Chemicals & Petrochemicals: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_defence_aerospace.json",
+   "format": "json",
+   "description": "Per-sector feed for Defence & Aerospace: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_electronics.json",
+   "format": "json",
+   "description": "Per-sector feed for Electronics Manufacturing: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_energy_manufacturing.json",
+   "format": "json",
+   "description": "Per-sector feed for Energy-intensive Manufacturing: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels",
+    "measured_sensitivity"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_engineering_goods.json",
+   "format": "json",
+   "description": "Per-sector feed for Engineering Goods: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_fmcg.json",
+   "format": "json",
+   "description": "Per-sector feed for FMCG: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels",
+    "measured_sensitivity"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_gems_jewellery.json",
+   "format": "json",
+   "description": "Per-sector feed for Gems & Jewellery: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_it_services.json",
+   "format": "json",
+   "description": "Per-sector feed for IT Services: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels",
+    "measured_sensitivity"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_marine_products.json",
+   "format": "json",
+   "description": "Per-sector feed for Marine Products & Fisheries: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_metals.json",
+   "format": "json",
+   "description": "Per-sector feed for Metals & Mining: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels",
+    "measured_sensitivity"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_petroleum_refining.json",
+   "format": "json",
+   "description": "Per-sector feed for Petroleum Refining & Export: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels",
+    "measured_sensitivity"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_pharma.json",
+   "format": "json",
+   "description": "Per-sector feed for Pharmaceuticals: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels",
+    "measured_sensitivity"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_sensitivity.json",
+   "format": "json",
+   "description": "Measured sector sensitivities (E2): each signed sector index's cumulative return RELATIVE to Nifty over 1/5/20 trading days from the start of episodes in the sector's registered channels, with seeded-bootstrap 95% CIs and two-sided p-values, n stated per cell. ASSOCIATED WITH, never caused by. Sensitivities live beside the exposure map and change no weight, score, or reading. Mapping: sectors.json v1.1.0, founder-signed 2026-08-06; sectors without a signed index publish nothing. Underlying prices are Yahoo's and are not redistributed; only these aggregates publish.",
+   "frozen_fields": [
+    "_meta",
+    "sectors"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/sector_textiles_apparel.json",
+   "format": "json",
+   "description": "Per-sector feed for Textiles & Apparel: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "frozen_fields": [
+    "_meta",
+    "sector",
+    "label",
+    "rationale",
+    "date",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/shares.csv",
+   "format": "csv",
+   "description": "The QUANTITY the index is built from: each channel's daily share of the GDELT-monitored corpus, in percent. Published so any reader can apply their own normalization; commensurable across channels and years where percentiles are not. The source column names the instrument that measured each day, because the series mixes DOC API counts with splice-linked NGrams-bridge days and a mean across that boundary inherits the linking constant's uncertainty.",
+   "frozen_fields": [
+    "date",
+    "pakistan_west",
+    "china_east",
+    "gulf_energy",
+    "us_trade",
+    "shipping",
+    "source"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/shares.json",
+   "format": "json",
+   "description": "The QUANTITY the index is built from: each channel's daily share of GDELT-monitored articles, in percent of the day's monitored corpus. This is the input to the published percentile series, and it is published as a first-class artifact so any reader can apply their own normalization rather than accepting ours.",
+   "frozen_fields": [
+    "_meta",
+    "csv"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/spike_breadth.json",
+   "format": "json",
+   "description": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
+   "frozen_fields": [
+    "_meta",
+    "days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/status.json",
+   "format": "json",
+   "description": "Per-source data freshness against ex-ante windows, the morning contract's measured record, and each pipeline lane's last evidence stamp. Derived entirely from committed files; regenerated by the daily run. Windows are operational expectations stated in this payload, not promises \u2014 the morning contract is the only promise, and reliability.json is its record.",
+   "frozen_fields": [
+    "_meta",
+    "sources",
+    "lanes",
+    "morning_contract"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/stress_gauge.json",
+   "format": "json",
+   "description": "India Stress Gauge: four attention and stress sources fused per the pre-registered weights in validation/stress_gauge_weights.json. A salience and stress measurement, not a risk prediction.",
+   "frozen_fields": [
+    "_meta",
+    "date",
+    "gauge",
+    "components",
+    "validation",
+    "history_365d"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/syndication.json",
+   "format": "json",
+   "description": "Articles per distinct story, per channel, per day, over the day's full scanned corpus. The index counts articles, so a wire story republished by 200 outlets moves a channel as far as 200 newsrooms independently reacting; this is the measurement of how often that happens.",
+   "frozen_fields": [
+    "_meta",
+    "channels",
+    "series"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/tone.json",
+   "format": "json",
+   "description": "Mean V2Tone of each channel's MATCHED articles -- the same articles the registered dictionaries selected and the receipts pages enumerate; tone is an annotation joined by URL in GDELT's GKG, never a filter. Context axis only: tone enters no score, no percentile, and no composite. n_tone_found vs n_matched discloses the join rate; GKG does not carry every URL. Negative tone is conventional GDELT scaling (roughly -10 very negative to +10 very positive).",
+   "frozen_fields": [
+    "_meta",
+    "days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/ucdp_context.json",
+   "format": "json",
+   "description": "Monthly organized-violence event counts and best-estimate fatalities located in India, from UCDP GED (finalized annual release) extended by UCDP Candidate monthlies (flagged preliminary per month; replaced when finalized). Context BESIDE the salience index, never an input: divergence between recorded violence and press salience is a documented finding, not an error in either.",
+   "frozen_fields": [
+    "_meta",
+    "india"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/uncertainty.json",
+   "format": "json",
+   "description": "95% sampling bands for sample-estimated daily scores: Wilson interval on the day's matched share, passed through the same splice ratio and trailing-percentile transform as the published point value. The composite band is the mean of channel bounds -- an envelope, conservative because channel sampling errors are independent. Days before the first banded date were computed over the full monitored corpus (no sampling design of this kind), so they carry no band.",
+   "frozen_fields": [
+    "_meta",
+    "days"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/validation.json",
+   "format": "json",
+   "description": "The pre-registered validation record: hit rate against the 21-episode list, cross-source and placebo checks, robustness under alternate specifications.",
+   "frozen_fields": [
+    "hit_rate",
+    "cross_source",
+    "placebo",
+    "robustness",
+    "drift",
+    "_meta"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/vintages.json",
+   "format": "json",
+   "description": "Every published vintage of the daily series, diffed against what the site serves today. Answers whether a value read on day D is still the value shown for day D now -- the question that decides whether a backtest built on the current file has look-ahead bias in it.",
+   "frozen_fields": [
+    "_meta",
+    "vintages"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/wiki_hindi.json",
+   "format": "json",
+   "description": "Cross-language validity check. The index is built from an English-language corpus and was cross-validated against English Wikipedia, so every leg of the apparatus was Anglophone and none of it could distinguish 'Indian salience' from 'what the international English-language press covers'. Hindi Wikipedia pageviews are the same registered article set read by a different population, on infrastructure sharing no code or sampling with GDELT.",
+   "frozen_fields": [
+    "_meta",
+    "channels",
+    "english_wikipedia_same_statistic",
+    "language_gap",
+    "channels_where_english_leads_on_both"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "feed.xml",
+   "format": "rss",
+   "description": "RSS 2.0 feed of the weekly analytical notes.",
+   "frozen_fields": [
+    "title",
+    "link",
+    "pubDate",
+    "description",
+    "guid"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/replication.json",
+   "format": "json",
+   "description": "Nightly blind replication. src/blind_replicator.py rebuilds the published index from the published codebook and docs/data/shares.csv alone -- it may not import the pipeline, and a test reads its imports to enforce that -- then diffs the rebuild against history.csv at the published precision. Reports the agreement, the per-column detail, every reading of the codebook's ambiguous conventions with its score, and the list of sentences the codebook was missing. 19830/19830 exact as of 2026-08-07. If the pipeline ever changes without the codebook changing, this stops saying 100% and the daily lane goes red.",
+   "frozen_fields": [
+    "_meta",
+    "best",
+    "all_conventions",
+    "ambiguities_in_the_codebook"
+   ],
+   "stability": "stable"
+  }
+ ]
 }

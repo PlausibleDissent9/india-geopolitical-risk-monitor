@@ -212,6 +212,23 @@ jobs:
           python -m src.episode_actors
           python -m src.exposure
           python -m src.predictability
+      - name: Blind replication (fail-loud; the codebook must still be enough)
+        # NOT continue-on-error, and deliberately NOT in morning.yml --
+        # same placement as freshness and vintages. This rebuilds the
+        # published series from the published codebook and the published
+        # shares, with no access to src/, and requires an EXACT match.
+        #
+        # It goes red in exactly two situations, and both are things
+        # somebody has to hear about: the pipeline changed without the
+        # codebook changing, or the codebook was never sufficient. A
+        # replication that is allowed to degrade quietly is not a check,
+        # it is a badge.
+        #
+        # Must run after publish_shares (it reads shares.csv) and before
+        # stamp_meta (it writes replication.json).
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 10
+        run: python -m src.blind_replicator --check
       - name: Cross-language validity (V5-adjacent; Wikimedia API)
         # Its own step because it is the only remaining network call in
         # this group, and a Wikimedia outage must not cost the derived
