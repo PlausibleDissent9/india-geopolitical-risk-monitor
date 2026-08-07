@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=20260807b">
+<link rel="stylesheet" href="site.css?v=20260807c">
 </head>
 <body>
 <header>
@@ -87,8 +87,15 @@ function tierBadge(tier) {
   if (c) {
     const caveat = (receipts._meta && receipts._meta.caveat) || "";
     html += '<p class="kv">' + esc(caveat) + "</p>";
-    html += "<h2>The exact query</h2>";
+    // Collapsed for the same reason as the tier legend below: this is
+    // the page's transparency core and it is read once, not on every
+    // visit. Hiding it behind a summary would be wrong if it were hard
+    // to find — it is one tap, labelled, and open by keyboard. The
+    // articles are what the reader came for.
+    html += "<details class='kv tier-legend'><summary><strong>The exact query</strong> " +
+      "(the frozen dictionary terms this channel's score is computed from)</summary>";
     html += c.queries.map(qq => '<p class="kv"><code>' + esc(qq) + "</code></p>").join("");
+    html += "</details>";
     // An exhausted pool is "all N", never a "sample": calling the full
     // retrievable set a sample implies withheld depth that does not
     // exist. Payloads from before 2026-08-04 lack the flag and keep the
@@ -106,8 +113,15 @@ function tierBadge(tier) {
       html += '<p class="kv">Spike-quality: ' + esc((c.spike_quality_tier12_share * 100).toFixed(0)) +
         "% of this sample is tier 1-2 (wires, broadsheets, business press).</p>";
     }
-    html += "<div class='kv tier-legend'><p><strong>What the tiers mean</strong> " +
-      "(registered criteria, source_tiers.json, append-only with dated reasons):</p><ul class='receipts-list'>" +
+    // Collapsed by design. This legend is 523px tall on a 375px screen
+    // and sat directly between the reader and the articles, so the
+    // first receipt began at y=1258 — past one and a half phone
+    // screens, with zero articles visible on arrival. It is reference
+    // content: needed once, not on every visit. <details> keeps it one
+    // tap away, keyboard-reachable, and present for anyone reading the
+    // page without CSS.
+    html += "<details class='kv tier-legend'><summary><strong>What the tiers mean</strong> " +
+      "(registered criteria, source_tiers.json, append-only with dated reasons)</summary><ul class='receipts-list'>" +
       "<li>" + tierBadge(1) + " wire services and public-service international broadcasters " +
       "with formal correction processes (Reuters, AP, AFP, BBC)</li>" +
       "<li>" + tierBadge(2) + " national and international broadsheets and business press " +
@@ -123,7 +137,7 @@ function tierBadge(tier) {
       "retrievable for this exact query that day, not that wires were filtered out. " +
       "Stories whose headline carries a channel phrase sort first within each tier; " +
       "a <em>full-text match</em> tag means the phrase appears only in the article body, " +
-      "so the story may merely mention the channel rather than be about it.</p></div>";
+      "so the story may merely mention the channel rather than be about it.</p></details>";
     if (c.n_matched_in_corpus != null) {
       html += '<p class="kv">Provenance: <b>' + esc(c.n_matched_in_corpus) +
         "</b> articles matched inside the day's scored sample itself" +

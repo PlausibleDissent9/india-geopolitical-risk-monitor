@@ -242,3 +242,11 @@ header h1 a {
 }
 .headline .num { text-shadow: 0 0 44px color-mix(in srgb, var(--accent) 40%, transparent); }
 .prov { color: var(--elevated); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-micro); }
+
+/* Collapsed reference blocks (receipts tier legend). Native <details>
+   so it works without JS, is keyboard-reachable, and is announced as a
+   disclosure by screen readers. */
+details.tier-legend { border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.5rem 0.75rem; margin: 0.6rem 0; }
+details.tier-legend > summary { cursor: pointer; color: var(--muted); }
+details.tier-legend > summary:hover { color: var(--fg); }
+details.tier-legend[open] > summary { margin-bottom: 0.5rem; }
