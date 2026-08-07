@@ -178,30 +178,48 @@ jobs:
           python -m src.episode_attribution
           python -m src.spike_breadth
           python -m src.syndication
-          # ORDER IS LOAD-BEARING. provenance builds the instrument
-          # record from the store; publish_shares needs it for the
-          # source column; monthly reads the shares CSV that
-          # publish_shares writes. Run them out of order and each one
-          # quietly consumes yesterday's version of the previous.
-          #
-          # publish_shares was missing from every workflow until
-          # 2026-08-07: shares.csv shipped as a "first-class artifact"
-          # answering the referee, was written once by hand, and would
-          # have frozen on 2026-08-06 forever while the site advertised
-          # it as the daily quantity.
+      - name: Derived lanes (recompute from the committed stores)
+        # A SEPARATE STEP on purpose. GitHub runs `run:` blocks under
+        # bash -e, so the first failing command ends the block -- and
+        # these nine lanes were briefly appended to the receipts step
+        # above, where one network hiccup in receipts_ngrams would have
+        # skipped every one of them while continue-on-error kept the run
+        # green. Precisely the silent-failure shape this whole day has
+        # been about, introduced by me while fixing others.
+        #
+        # Nothing here touches the network: these read the committed
+        # stores, so they must not share a fate with the lane that does.
+        #
+        # ORDER IS LOAD-BEARING. provenance builds the instrument record
+        # from the store; publish_shares needs it for the source column;
+        # monthly reads the shares CSV publish_shares writes. Out of
+        # order, each quietly consumes yesterday's version of the last.
+        #
+        # publish_shares was in NO workflow until 2026-08-07: shares.csv
+        # shipped as the "first-class artifact" answering the referee,
+        # was written once by hand, and would have frozen on 2026-08-06
+        # while the site advertised it as the daily quantity.
+        # episode_actors, exposure and predictability were orphaned the
+        # same way.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 20
+        run: |
           python -m src.provenance
           python -m src.publish_shares
           python -m src.monthly
-          python -m src.wiki_hindi
           python -m src.blind_spot
-          # Also orphaned until 2026-08-07: each of these recomputes
-          # from data that changes every day (episodes, the history
-          # series, the published scores) and none was invoked by any
-          # workflow, so their payloads had been frozen at whatever
-          # value they last had while the site served them as current.
           python -m src.episode_actors
           python -m src.exposure
           python -m src.predictability
+      - name: Cross-language validity (V5-adjacent; Wikimedia API)
+        # Its own step because it is the only remaining network call in
+        # this group, and a Wikimedia outage must not cost the derived
+        # lanes above or the audits below.
+        if: github.event.inputs.backfill != 'true'
+        continue-on-error: true
+        timeout-minutes: 20
+        run: python -m src.wiki_hindi
       - name: Stamp universal _meta on every payload (licence, citation, codebook, source)
         # After every lane has written, so nothing lands unstamped. Never
         # overwrites a field a module set. The codebook has always
