@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1979&ndash;2019 historical proxy, India Geopolitical Risk Monitor</title>
+<meta name="description" content="A forty-one-year monthly attention proxy for India's Pakistan and China channels, built from GDELT event mentions under filters frozen before the first query ran. A different construct from the live index, never spliced into it.">
+<link rel="canonical" href="https://igrm.in/history.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=7a279efc">
+<script src="vendor/chart.umd.min.js?v=81ffafe1"></script>
+<script src="labels.js?v=7ba70543"></script>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="start.html">Start here</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="history.html" class="current">1979&ndash;2019</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">A monthly attention proxy reaching back to 1979, for the two channels
+  that earned it. Built from GDELT event mentions under actor-pair filters frozen in a signed memo
+  <em>before the first query ran</em>. This is a <strong>different construct</strong> from the daily
+  index on the front page &mdash; different source, different unit, different era of the news
+  business &mdash; and the two are never spliced, averaged, or drawn on one axis.</p>
+</header>
+
+<div class="prose">
+<h2>Why a second construct instead of a longer index</h2>
+<p>The live instrument measures the share of GDELT-monitored <em>articles</em> matching a channel's
+query. That corpus does not exist before 2017 in any comparable form, so extending the index
+backwards is not a matter of running the same code on older data &mdash; the data is not there. What
+does reach back is GDELT's event database, which codes actor pairs from news text starting in 1979.</p>
+
+<p>So this measures something adjacent and honestly different: <strong>the monthly share of global
+event mentions involving a registered actor pair</strong>. India&ndash;Pakistan. India&ndash;China.
+It is a proxy for how much of the world's coded news traffic concerned that relationship, month by
+month, for forty-one years.</p>
+
+<p>The filters, the anchor events, the overlap thresholds and the publication rule were all written
+down and signed in <code>analysis/back_extension_memo.md</code> before any query ran. That ordering is
+verifiable in the git history rather than asserted here: the commit that froze the filters predates
+the commit that first held BigQuery credentials.</p>
+
+<h2>Which channels earned a historical series</h2>
+<p>The memo set the rule in advance: a channel publishes a back-extension only if its historical
+proxy correlates with the live instrument at <strong>r &ge; 0.6</strong> over the 36 months where
+both exist (2017&ndash;2019). Below 0.4 it does not publish at all. Two channels cleared it and two
+did not, and the two that did not are shown here because a pre-registered test that fails is a
+result, not an embarrassment.</p>
+
+<table id="overlap">
+  <thead><tr><th>Channel</th><th>Overlap r</th><th>Months</th><th>Verdict</th></tr></thead>
+  <tbody></tbody>
+</table>
+<p class="chart-note">The border channels track because a border confrontation is an actor-pair event
+almost by definition &mdash; the thing the event coder sees and the thing the article counter sees
+are the same thing. <strong>US&nbsp;&amp; Trade Policy</strong> and <strong>Gulf&nbsp;&amp; Energy
+Security</strong> do not, and the reason is not a bug: a tariff schedule, a refinery contract or a
+shipping-lane premium is coverage that mostly does not resolve to a coded bilateral event. Those two
+have no historical series on this site, and it would be easy and wrong to publish them anyway.</p>
+
+<h2>Forty-one years, two channels</h2>
+<p class="chart-note">Monthly, ranked against each channel's own trailing ten years, so the vertical
+axis means the same thing in 1984 as in 2014. Marked points are the anchor events named in the memo
+before anything was computed &mdash; eight of the nine, because the ninth belongs to a channel that
+did not earn a series.</p>
+<p class="chart-note"><strong>Two breaks in the line, both structural.</strong> The series begins
+<strong>December 1983</strong>, not January 1979: a rank needs something to rank against, and the
+window requires sixty months of history before it will report. And there is a
+<strong>28-month hole from February 2015 to May 2017</strong>, which is the GDELT 1.0 &rarr; 2.0
+transition &mdash; the old event stream ends there and the new one is not comparable across the
+seam at monthly resolution. Both are drawn as gaps rather than bridged, because interpolating across
+a source change is how a chart starts asserting things nobody measured.</p>
+</div>
+
+<div class="chart-wrap"><canvas id="hist-chart" height="360"></canvas></div>
+
+<div class="prose">
+
+<h2>Anchor events: named first, graded after</h2>
+<p>Nine events were listed in the memo as things a working attention measure ought to notice, with a
+pass mark of <strong>top decile of the trailing ten years</strong>. Grading happened after the series
+existed. Six cleared it; three did not, and the three misses are the informative part.</p>
+
+<table id="anchors">
+  <thead><tr><th>Event</th><th>Month</th><th>Channel</th><th>Percentile</th><th>Top decile</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<details>
+  <summary>What the three misses mean</summary>
+  <p><strong>Operation Blue Star, June 1984 (52.3).</strong> The anchor was filed under the Pakistan
+  channel, and Blue Star was an internal Indian security operation. The India&ndash;Pakistan actor
+  pair is the wrong instrument for it. This is a mis-specified anchor rather than a missed event
+  &mdash; and it was mis-specified in advance, in writing, which is why it is still on the list.</p>
+  <p><strong>Sumdorong Chu, October 1986 (54.8).</strong> A months-long standoff that Western wire
+  coverage largely did not carry, in the era before either country's press had a global distribution
+  footprint. The honest reading is that the proxy is thin on early China-channel events, which is a
+  real limitation of the series and not a property of the standoff.</p>
+  <p><strong>Mumbai 26/11, November 2008 (89.1).</strong> Missed the top decile by roughly one
+  percentile point. Worth stating plainly rather than rounding into the pass column.</p>
+  <p>Six of nine is the number. It is reported as six of nine because the alternative &mdash;
+  dropping the mis-specified anchor and reporting six of eight &mdash; would be choosing the
+  denominator after seeing the result.</p>
+</details>
+
+<h2>What this series cannot do</h2>
+<ul>
+  <li><strong>It is not the index extended.</strong> Do not join it to <code>history.csv</code>, do
+  not compute a growth rate across 2017, do not put them on one axis. They are different measurements
+  that happen to share a name for the thing they point at.</li>
+  <li><strong>Levels are not comparable across the 1979/2015 GDELT boundary</strong> without care.
+  GDELT 1.0 runs to February 2015 and 2.0 begins there, with a much larger and differently sourced
+  corpus. Ranking against a trailing ten-year window absorbs most of that, which is exactly why the
+  published series is a rank and not a level.</li>
+  <li><strong>Shipping has no historical series at all</strong>, and never will from this source.
+  Chokepoint salience has no actor-pair coding &mdash; there is no country that the Strait of Hormuz
+  is in a bilateral relationship with.</li>
+  <li><strong>It says nothing about what comes next.</strong> Same as everything else here.</li>
+</ul>
+
+<footer>
+  <p>Data: <a href="data/back_extension.json">data/back_extension.json</a> &middot;
+  Registration: <code>analysis/back_extension_memo.md</code> &middot;
+  Method: <a href="codebook.html">codebook</a> &middot;
+  <a href="./">&larr; back to the index</a></p>
+</footer>
+</div>
+
+<script>
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const NAMES = (window.IGRM_LABELS) || {
+  pakistan_west: "Pakistan / Western Border",
+  china_east: "China / Eastern Border",
+  us_trade: "US & Trade Policy",
+  gulf_energy: "Gulf & Energy Security",
+};
+const label = (k) => (NAMES && NAMES[k]) || k;
+
+// Motion comes from the same scale the stylesheets use, so the chart
+// settles at the same speed as everything else on the page and honours
+// prefers-reduced-motion. Chart.js takes a number, so the token is read
+// and parsed rather than hardcoded to a literal nobody chose.
+const durMs = (name, fallback) => {
+  const v = css(name);
+  if (!v) return fallback;
+  return v.endsWith("ms") ? parseFloat(v) : parseFloat(v) * 1000;
+};
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ANIM = reduced ? false : { duration: durMs("--dur-slow", 420) };
+
+fetch("data/back_extension.json").then(r => r.json()).then(be => {
+  const audit = be.overlap_audit || {};
+  const grades = be.anchor_grades || [];
+  const series = be.series || {};
+
+  // ---- Overlap audit table -------------------------------------------
+  const otb = document.querySelector("#overlap tbody");
+  const order = Object.keys(audit).sort((a, b) => audit[b].r - audit[a].r);
+  for (const ch of order) {
+    const a = audit[ch];
+    const published = (series[ch] != null);
+    const tr = document.createElement("tr");
+    const cells = [
+      label(ch),
+      a.r.toFixed(3),
+      String(a.months),
+      published ? "publishes" : "withheld — negative finding",
+    ];
+    cells.forEach((text, i) => {
+      const td = document.createElement("td");
+      td.textContent = text;
+      if (i === 3) td.className = published ? "verdict-pass" : "verdict-fail";
+      tr.appendChild(td);
+    });
+    otb.appendChild(tr);
+  }
+
+  // ---- Anchor grades table -------------------------------------------
+  const atb = document.querySelector("#anchors tbody");
+  for (const g of grades) {
+    const tr = document.createElement("tr");
+    [g.anchor, g.month, label(g.channel), g.pctl_trailing_10y.toFixed(1),
+     g.top_decile ? "yes" : "no"].forEach((text, i) => {
+      const td = document.createElement("td");
+      td.textContent = text;
+      if (i === 4) td.className = g.top_decile ? "verdict-pass" : "verdict-fail";
+      tr.appendChild(td);
+    });
+    atb.appendChild(tr);
+  }
+
+  // ---- The forty-one-year chart --------------------------------------
+  const charted = Object.keys(series);
+  if (!charted.length) return;
+  const months = series[charted[0]].months;
+  const COLOR = { pakistan_west: css("--ch-pakistan-west"),
+                  china_east: css("--ch-china-east") };
+
+  const datasets = charted.map(ch => ({
+    label: label(ch),
+    data: series[ch].pctl_10y,
+    borderColor: COLOR[ch] || css("--ink"),
+    backgroundColor: COLOR[ch] || css("--ink"),
+    borderWidth: 1.3, pointRadius: 0, tension: 0.15, spanGaps: false,
+  }));
+
+  // Anchors as a marked overlay, on the same rank axis as the series
+  // they belong to, so a reader can see the event and the measurement
+  // in one glance instead of holding a table in their head.
+  const anchorPoints = grades
+    .filter(g => series[g.channel])
+    .map(g => ({ x: months.indexOf(g.month), y: g.pctl_trailing_10y, g }))
+    .filter(p => p.x >= 0);
+  datasets.push({
+    label: "Registered anchor events",
+    data: anchorPoints.map(p => ({ x: p.x, y: p.y })),
+    showLine: false, pointRadius: 4.5, pointHoverRadius: 6,
+    pointStyle: "rectRot",
+    borderColor: css("--ink"), backgroundColor: css("--paper"),
+    borderWidth: 1.5,
+  });
+
+  new Chart(document.getElementById("hist-chart"), {
+    type: "line",
+    data: { labels: months, datasets },
+    options: {
+      animation: ANIM, responsive: true, maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { labels: { color: css("--muted"), usePointStyle: true } },
+        tooltip: {
+          callbacks: {
+            afterBody: (items) => {
+              const i = items[0].dataIndex;
+              const hit = anchorPoints.find(p => p.x === i);
+              return hit ? hit.g.anchor : "";
+            },
+          },
+        },
+      },
+      scales: {
+        y: { min: 0, max: 100,
+             grid: { color: css("--rule-soft") },
+             ticks: { color: css("--muted") },
+             title: { display: true, color: css("--muted"),
+                      text: "percentile vs own trailing 10 years" } },
+        x: { grid: { display: false },
+             ticks: { color: css("--muted"), maxTicksLimit: 12,
+                      callback: function (v) {
+                        const m = this.getLabelForValue(v);
+                        return (m && m.endsWith("-01")) ? m.slice(0, 4) : "";
+                      } } },
+      },
+    },
+  });
+}).catch(e => {
+  console.error("back_extension:", e);
+  document.querySelector(".chart-box").textContent =
+    "The historical series could not be loaded. data/back_extension.json is the source.";
+});
+</script>
+</body>
+</html>

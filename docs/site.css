@@ -295,3 +295,10 @@ details.tier-legend[open] > summary { margin-bottom: 0.5rem; }
   }
   h2 { margin: 1.5rem 0 0.6rem; padding-top: 1rem; }
 }
+
+/* Verdict cells: a pre-registered test that failed is a result, and it
+   should not be styled as an error. --calm and --severe are the state
+   tokens, the only place colour carries meaning about the world; a
+   withheld channel is a finding in the series, so it earns one. */
+.verdict-pass { color: var(--calm); }
+.verdict-fail { color: var(--severe); }
