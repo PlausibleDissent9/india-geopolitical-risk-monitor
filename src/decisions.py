@@ -192,7 +192,8 @@ ITEMS: list[dict[str, Any]] = [
 
 
 def build() -> dict[str, Any]:
-    blocked, cleared = [], []
+    blocked: list[dict[str, Any]] = []
+    cleared: list[dict[str, Any]] = []
     for item in ITEMS:
         is_blocked, detail = item["predicate"]()
         row = {k: v for k, v in item.items() if k != "predicate"}

@@ -63,7 +63,17 @@ def build() -> dict:
             # ratio within store-rounding tolerance; independent rows do not.
             if abs(implied_ratio / frozen_ratio - 1) >= MATCH_TOLERANCE:
                 continue
-            independent_ratio = float(recovered[channel]["independent_ratio"])
+            # calibration_audit() builds a dict whose values span float,
+            # int and None -- the None belongs to relative_change_pct, not
+            # to this key, but the inferred value type is the union of all
+            # three and float() rejects it. Narrowed by an actual check
+            # rather than a cast: if a channel ever does arrive without an
+            # independent ratio, skipping it is right, and silently
+            # rescaling by None is not.
+            raw_ratio = recovered[channel]["independent_ratio"]
+            if raw_ratio is None:
+                continue
+            independent_ratio = float(raw_ratio)
             alternative.loc[ts, channel] = sums[channel] / independent_ratio
             adjusted_days.add(ts)
 
