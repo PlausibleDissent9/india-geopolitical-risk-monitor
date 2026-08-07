@@ -932,6 +932,32 @@ is computed over the whole GDELT event population in
 <code>data/raw/events_daily.csv</code>; the two are reported separately and never
 averaged, because dividing by sources also counts one outlet running
 several distinct pieces on the same event.</p>
+<h2>docs/data/wiki_hindi.json</h2>
+<p><strong>Does this measure Indian attention, or Anglophone attention about
+India?</strong> The index is built from an English corpus and was
+cross-validated against English Wikipedia, so every leg of the apparatus
+was Anglophone and none of it could tell those two apart. This file is
+the test that can: the same registered article set read on Hindi
+Wikipedia — titles resolved through Wikipedia's own interlanguage links,
+never chosen by hand — correlated against the same daily shares over
+3,394 overlapping days. <code>english_wikipedia_same_statistic</code> carries the
+identical computation in English, because the Hindi numbers are
+uninterpretable without it.</p>
+<p><strong>Finding: English leads on 5 of 5 channels, in both levels and
+changes, with no channel where Hindi leads.</strong> Day-to-day changes fall
+from 0.223/0.340/0.589/0.117/0.564 (English) to
+0.160/0.132/0.163/0.050/0.030 (Hindi). <code>us_trade</code> is the study's only
+negative level correlation (−0.136). The thin-traffic objection fails
+on the project's own data: <code>us_trade</code> has the highest median Hindi
+traffic and the worst agreement, <code>gulf_energy</code> the lowest and the best.</p>
+<p>Six registered articles have no Hindi counterpart (<code>missing_english_titles</code>)
+and are reported, never substituted; they are the
+foreign-policy-apparatus topics, while the two India-adjacent channels
+resolve completely. <code>changes_pearson</code> is the load-bearing figure — levels
+can correlate through a shared trend alone. Undefined correlations
+publish as null rather than NaN. <strong>Nothing here adjusts a score</strong>; it is
+evidence about what the index measures, and anyone citing this as a
+measure of <em>Indian public</em> salience should read it first.</p>
 <h2>docs/data/monthly.csv and monthly.json</h2>
 <p><strong>The series at the frequency economists actually work in.</strong> One row per
 calendar month: <code>share_&lt;channel&gt;</code> are means of the daily

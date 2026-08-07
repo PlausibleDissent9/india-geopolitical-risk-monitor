@@ -1,0 +1,190 @@
+{
+ "_meta": {
+  "what": "Cross-language validity check. The index is built from an English-language corpus and was cross-validated against English Wikipedia, so every leg of the apparatus was Anglophone and none of it could distinguish 'Indian salience' from 'what the international English-language press covers'. Hindi Wikipedia pageviews are the same registered article set read by a different population, on infrastructure sharing no code or sampling with GDELT.",
+  "title_selection": "Resolved from the registered English titles via the MediaWiki langlinks API. Hindi titles are never chosen by hand: picking them would let the analyst pick the ones that correlate.",
+  "the_misses_are_a_finding": "Articles with no Hindi counterpart are not random: they are the foreign-policy-apparatus topics (sanctions regimes, maritime security). Their absence is evidence about which parts of this construct live in Indian public attention at all, and is reported as a result rather than as a coverage caveat.",
+  "reading_the_numbers": "changes_pearson is the load-bearing figure; levels can correlate through a shared trend alone. Nothing here adjusts, weights or corrects the index -- it is evidence about what the index measures.",
+  "min_median_views_to_correlate": 20.0,
+  "n_registered_articles": 29,
+  "n_resolved_to_hindi": 23,
+  "finding": "English Wikipedia tracks this index more closely than Hindi Wikipedia does, on 5 of 5 channels, in BOTH levels and day-to-day changes. The gap is one-directional -- there is no channel where Hindi leads -- which is what an Anglophone construct looks like. The index is built from an English corpus and it appears to measure English-language attention to India better than it measures Indian-language attention. This is a limitation of the instrument, published as a result.",
+  "the_obvious_objection_and_why_it_fails": "Hindi Wikipedia carries less traffic, so one expects attenuation from noise alone. That cannot be the whole story here: us_trade has the HIGHEST median Hindi traffic of any channel and the WORST correlation (the only negative one), while gulf_energy has the lowest traffic and the strongest Hindi correlation. The ordering of traffic and the ordering of agreement do not match, so thinness does not explain the pattern.",
+  "what_this_does_not_say": "It does not say the index is wrong. Readers and editors are different populations attending to different things, and supply-side vs demand-side divergence is something this project already expects and publishes. It says the construct's reach into Indian-language attention is weaker than its reach into English-language attention, and that anyone citing this index as a measure of Indian public salience should read this file first. Nothing here adjusts a score.",
+  "generated": "2026-08-07T02:38:13Z"
+ },
+ "channels": {
+  "pakistan_west": {
+   "n_articles_resolved": 6,
+   "n_articles_registered": 6,
+   "hindi_titles": [
+    "नियंत्रण रेखा",
+    "कश्मीर विवाद",
+    "भारत-पाकिस्तान सम्बन्ध",
+    "इंटर-सर्विसेस इंटेलिजेंस",
+    "सिंधु जल समझौता",
+    "सियाचिन हिमनद"
+   ],
+   "missing_english_titles": [],
+   "median_daily_views": 527.0,
+   "n": 3394,
+   "levels_pearson": 0.2977,
+   "levels_spearman": 0.159,
+   "changes_pearson": 0.1596,
+   "refused": null
+  },
+  "china_east": {
+   "n_articles_resolved": 5,
+   "n_articles_registered": 5,
+   "hindi_titles": [
+    "वास्तविक नियंत्रण रेखा",
+    "भारत-चीन सम्बन्ध",
+    "अरुणाचल प्रदेश",
+    "अक्साई चिन",
+    "पीपल्स लिबरेशन आर्मी"
+   ],
+   "missing_english_titles": [],
+   "median_daily_views": 595.0,
+   "n": 3394,
+   "levels_pearson": 0.3178,
+   "levels_spearman": 0.0261,
+   "changes_pearson": 0.1315,
+   "refused": null
+  },
+  "gulf_energy": {
+   "n_articles_resolved": 4,
+   "n_articles_registered": 6,
+   "hindi_titles": [
+    "होरमुज़ जलसन्धि",
+    "फ़ारस की खाड़ी",
+    "ईरान-इजराइल सम्बन्ध",
+    "ओपेक"
+   ],
+   "missing_english_titles": [
+    "Sanctions against Iran",
+    "Energy policy of India"
+   ],
+   "median_daily_views": 161.0,
+   "n": 3394,
+   "levels_pearson": 0.5006,
+   "levels_spearman": -0.2946,
+   "changes_pearson": 0.1631,
+   "refused": null
+  },
+  "us_trade": {
+   "n_articles_resolved": 4,
+   "n_articles_registered": 6,
+   "hindi_titles": [
+    "भारत-संयुक्त राज्य सम्बन्ध",
+    "हेच -1बी वीज़ा",
+    "विश्व व्यापार संगठन",
+    "भारत का विदेश व्यापार"
+   ],
+   "missing_english_titles": [
+    "CAATSA",
+    "Trade policy of the United States"
+   ],
+   "median_daily_views": 602.0,
+   "n": 3394,
+   "levels_pearson": -0.1363,
+   "levels_spearman": -0.2062,
+   "changes_pearson": 0.05,
+   "refused": null
+  },
+  "shipping": {
+   "n_articles_resolved": 4,
+   "n_articles_registered": 6,
+   "hindi_titles": [
+    "स्वेज़ नहर",
+    "मलक्का जलडमरूमध्य",
+    "बाब अल-मन्देब जलसन्धि",
+    "केप ऑफ़ गुड होप"
+   ],
+   "missing_english_titles": [
+    "Houthi movement",
+    "Piracy off the coast of Somalia"
+   ],
+   "median_daily_views": 260.0,
+   "n": 3395,
+   "levels_pearson": 0.2781,
+   "levels_spearman": -0.0273,
+   "changes_pearson": 0.0296,
+   "refused": null
+  }
+ },
+ "english_wikipedia_same_statistic": {
+  "pakistan_west": {
+   "n": 3393,
+   "levels_pearson": 0.4576,
+   "levels_spearman": 0.1096,
+   "changes_pearson": 0.2233,
+   "refused": null
+  },
+  "china_east": {
+   "n": 3393,
+   "levels_pearson": 0.4185,
+   "levels_spearman": 0.1372,
+   "changes_pearson": 0.3403,
+   "refused": null
+  },
+  "gulf_energy": {
+   "n": 3393,
+   "levels_pearson": 0.6107,
+   "levels_spearman": -0.0856,
+   "changes_pearson": 0.5892,
+   "refused": null
+  },
+  "us_trade": {
+   "n": 3393,
+   "levels_pearson": 0.0796,
+   "levels_spearman": -0.1093,
+   "changes_pearson": 0.1169,
+   "refused": null
+  },
+  "shipping": {
+   "n": 3393,
+   "levels_pearson": 0.7066,
+   "levels_spearman": 0.0539,
+   "changes_pearson": 0.5644,
+   "refused": null
+  }
+ },
+ "language_gap": {
+  "pakistan_west": {
+   "english_changes": 0.2233,
+   "hindi_changes": 0.1596,
+   "english_levels": 0.4576,
+   "hindi_levels": 0.2977
+  },
+  "china_east": {
+   "english_changes": 0.3403,
+   "hindi_changes": 0.1315,
+   "english_levels": 0.4185,
+   "hindi_levels": 0.3178
+  },
+  "gulf_energy": {
+   "english_changes": 0.5892,
+   "hindi_changes": 0.1631,
+   "english_levels": 0.6107,
+   "hindi_levels": 0.5006
+  },
+  "us_trade": {
+   "english_changes": 0.1169,
+   "hindi_changes": 0.05,
+   "english_levels": 0.0796,
+   "hindi_levels": -0.1363
+  },
+  "shipping": {
+   "english_changes": 0.5644,
+   "hindi_changes": 0.0296,
+   "english_levels": 0.7066,
+   "hindi_levels": 0.2781
+  }
+ },
+ "channels_where_english_leads_on_both": [
+  "pakistan_west",
+  "china_east",
+  "gulf_energy",
+  "us_trade",
+  "shipping"
+ ]
+}

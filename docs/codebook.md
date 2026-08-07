@@ -683,6 +683,36 @@ is computed over the whole GDELT event population in
 averaged, because dividing by sources also counts one outlet running
 several distinct pieces on the same event.
 
+## docs/data/wiki_hindi.json
+
+**Does this measure Indian attention, or Anglophone attention about
+India?** The index is built from an English corpus and was
+cross-validated against English Wikipedia, so every leg of the apparatus
+was Anglophone and none of it could tell those two apart. This file is
+the test that can: the same registered article set read on Hindi
+Wikipedia — titles resolved through Wikipedia's own interlanguage links,
+never chosen by hand — correlated against the same daily shares over
+3,394 overlapping days. `english_wikipedia_same_statistic` carries the
+identical computation in English, because the Hindi numbers are
+uninterpretable without it.
+
+**Finding: English leads on 5 of 5 channels, in both levels and
+changes, with no channel where Hindi leads.** Day-to-day changes fall
+from 0.223/0.340/0.589/0.117/0.564 (English) to
+0.160/0.132/0.163/0.050/0.030 (Hindi). `us_trade` is the study's only
+negative level correlation (−0.136). The thin-traffic objection fails
+on the project's own data: `us_trade` has the highest median Hindi
+traffic and the worst agreement, `gulf_energy` the lowest and the best.
+
+Six registered articles have no Hindi counterpart (`missing_english_titles`)
+and are reported, never substituted; they are the
+foreign-policy-apparatus topics, while the two India-adjacent channels
+resolve completely. `changes_pearson` is the load-bearing figure — levels
+can correlate through a shared trend alone. Undefined correlations
+publish as null rather than NaN. **Nothing here adjusts a score**; it is
+evidence about what the index measures, and anyone citing this as a
+measure of *Indian public* salience should read it first.
+
 ## docs/data/monthly.csv and monthly.json
 
 **The series at the frequency economists actually work in.** One row per

@@ -363,6 +363,48 @@ a promise that rewrote itself every night would not be a promise.
 
 ## Changelog
 
+- **2026-08-07, v1.10.0 (the construct is partly Anglophone, measured).**
+  The index is built from an English-language corpus, read by an
+  English-language matcher, and was cross-validated against English
+  Wikipedia. Every leg of that apparatus was Anglophone, so nothing
+  published could distinguish "salience of India-relevant geopolitical
+  risk" from "what the international English-language press covers
+  about India". `src/wiki_hindi.py` runs the test that can: the same
+  registered article set read on Hindi Wikipedia, with Hindi titles
+  resolved through Wikipedia's own interlanguage links rather than
+  chosen by hand, correlated against the same daily shares over 3,394
+  overlapping days.
+
+  **The index tracks English-language attention more closely than
+  Indian-language attention, on five channels of five, in both levels
+  and day-to-day changes, with no channel where Hindi leads.** Changes
+  correlations fall from 0.223/0.340/0.589/0.117/0.564 (English) to
+  0.160/0.132/0.163/0.050/0.030 (Hindi) for pakistan_west, china_east,
+  gulf_energy, us_trade and shipping respectively; `us_trade` is the
+  only negative level correlation in the study at −0.136.
+
+  The obvious objection is that Hindi Wikipedia simply carries less
+  traffic, so the correlation attenuates through noise. That does not
+  survive the data: `us_trade` has the *highest* median Hindi traffic
+  of any channel (602 views/day) and the worst agreement, while
+  `gulf_energy` has the lowest (161) and the strongest. The ordering of
+  traffic and the ordering of agreement do not match.
+
+  Six of the twenty-nine registered articles have no Hindi counterpart
+  at all — CAATSA, Sanctions against Iran, Houthi movement, Piracy off
+  the coast of Somalia, Trade policy of the United States, Energy
+  policy of India — and their absence is reported as a result rather
+  than a coverage caveat: they are the foreign-policy-apparatus topics,
+  and the two India-adjacent channels (`pakistan_west` 6/6,
+  `china_east` 5/5) resolve completely while the other three lose a
+  third of their articles each.
+
+  This changes no score, weight or published value. It is a limitation
+  of the instrument, and anyone citing this index as a measure of
+  *Indian public* salience should read `docs/data/wiki_hindi.json`
+  first. Section 8c's supply-side/demand-side caveat stands; this is a
+  sharper and less flattering version of it.
+
 - **2026-08-07, v1.9.0 (the quantity publishes; referee findings).**
   Raw channel shares — the input the percentile series is computed
   from — are promoted to a first-class published artifact

@@ -1,0 +1,68 @@
+{
+ "_meta": {
+  "method": "Resolved from the registered English titles via the MediaWiki langlinks API. Hindi titles are never chosen by hand: picking them would let the analyst pick the ones that correlate.",
+  "n_registered": 29,
+  "n_resolved": 23,
+  "n_missing": 6,
+  "resolved_at": "2026-08-07T02:21:08Z"
+ },
+ "channels": {
+  "pakistan_west": {
+   "resolved": {
+    "Line of Control": "नियंत्रण रेखा",
+    "Kashmir conflict": "कश्मीर विवाद",
+    "India–Pakistan relations": "भारत-पाकिस्तान सम्बन्ध",
+    "Inter-Services Intelligence": "इंटर-सर्विसेस इंटेलिजेंस",
+    "Indus Waters Treaty": "सिंधु जल समझौता",
+    "Siachen Glacier": "सियाचिन हिमनद"
+   },
+   "missing": []
+  },
+  "china_east": {
+   "resolved": {
+    "Line of Actual Control": "वास्तविक नियंत्रण रेखा",
+    "China–India relations": "भारत-चीन सम्बन्ध",
+    "Arunachal Pradesh": "अरुणाचल प्रदेश",
+    "Aksai Chin": "अक्साई चिन",
+    "People's Liberation Army": "पीपल्स लिबरेशन आर्मी"
+   },
+   "missing": []
+  },
+  "gulf_energy": {
+   "resolved": {
+    "Strait of Hormuz": "होरमुज़ जलसन्धि",
+    "Persian Gulf": "फ़ारस की खाड़ी",
+    "Iran–Israel relations": "ईरान-इजराइल सम्बन्ध",
+    "OPEC": "ओपेक"
+   },
+   "missing": [
+    "Sanctions against Iran",
+    "Energy policy of India"
+   ]
+  },
+  "us_trade": {
+   "resolved": {
+    "India–United States relations": "भारत-संयुक्त राज्य सम्बन्ध",
+    "H-1B visa": "हेच -1बी वीज़ा",
+    "World Trade Organization": "विश्व व्यापार संगठन",
+    "Foreign trade of India": "भारत का विदेश व्यापार"
+   },
+   "missing": [
+    "CAATSA",
+    "Trade policy of the United States"
+   ]
+  },
+  "shipping": {
+   "resolved": {
+    "Suez Canal": "स्वेज़ नहर",
+    "Strait of Malacca": "मलक्का जलडमरूमध्य",
+    "Bab-el-Mandeb": "बाब अल-मन्देब जलसन्धि",
+    "Cape of Good Hope": "केप ऑफ़ गुड होप"
+   },
+   "missing": [
+    "Houthi movement",
+    "Piracy off the coast of Somalia"
+   ]
+  }
+ }
+}

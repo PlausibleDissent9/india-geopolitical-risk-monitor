@@ -4,79 +4,79 @@
   "definition": "multiplier = distinct article URLs matching the channel / distinct normalized headlines among them. 1.0 = every article is its own story.",
   "does_not_correct_the_index": "Nothing here feeds a score. Republication is not noise -- an editor running wire copy is a real editorial decision -- so there is no defensible deflation. The number exists so a reader can ask of any spike whether it was more newsrooms or more copies, and answer it from published data.",
   "known_bias": "Downward at small samples: a duplicate is only visible when both copies land in the scan. Measured on pakistan_west 2026-08-05, 28,575 docs gives 1.923 and 119,349 docs gives 3.478 -- the smaller sample understates by 45%. Only scans of at least 60,000 documents enter this history, and n_docs_sampled travels with every row so comparability can be checked rather than assumed.",
-  "n_days": 1,
+  "n_days": 2,
   "first_day": "2026-08-05",
-  "last_day": "2026-08-05",
+  "last_day": "2026-08-06",
   "min_docs_for_history": 60000,
-  "generated": "2026-08-07T02:13:38Z"
+  "generated": "2026-08-07T02:31:47Z"
  },
  "channels": {
   "pakistan_west": {
    "latest": {
-    "date": "2026-08-05",
-    "n_articles": 160,
-    "n_stories": 46,
-    "n_domains": 144,
-    "multiplier": 3.478,
-    "n_docs_sampled": 119349
+    "date": "2026-08-06",
+    "n_articles": 71,
+    "n_stories": 50,
+    "n_domains": 47,
+    "multiplier": 1.42,
+    "n_docs_sampled": 135644
    },
-   "n_days": 1,
+   "n_days": 2,
    "mean": null,
    "min": null,
    "max": null
   },
   "china_east": {
    "latest": {
-    "date": "2026-08-05",
-    "n_articles": 17,
-    "n_stories": 17,
-    "n_domains": 13,
-    "multiplier": 1.0,
-    "n_docs_sampled": 119349
+    "date": "2026-08-06",
+    "n_articles": 20,
+    "n_stories": 13,
+    "n_domains": 16,
+    "multiplier": 1.538,
+    "n_docs_sampled": 135644
    },
-   "n_days": 1,
+   "n_days": 2,
    "mean": null,
    "min": null,
    "max": null
   },
   "gulf_energy": {
    "latest": {
-    "date": "2026-08-05",
-    "n_articles": 2945,
-    "n_stories": 1627,
-    "n_domains": 1186,
-    "multiplier": 1.81,
-    "n_docs_sampled": 119349
+    "date": "2026-08-06",
+    "n_articles": 2915,
+    "n_stories": 1730,
+    "n_domains": 1216,
+    "multiplier": 1.685,
+    "n_docs_sampled": 135644
    },
-   "n_days": 1,
+   "n_days": 2,
    "mean": null,
    "min": null,
    "max": null
   },
   "us_trade": {
    "latest": {
-    "date": "2026-08-05",
-    "n_articles": 172,
-    "n_stories": 77,
-    "n_domains": 130,
-    "multiplier": 2.234,
-    "n_docs_sampled": 119349
+    "date": "2026-08-06",
+    "n_articles": 95,
+    "n_stories": 59,
+    "n_domains": 61,
+    "multiplier": 1.61,
+    "n_docs_sampled": 135644
    },
-   "n_days": 1,
+   "n_days": 2,
    "mean": null,
    "min": null,
    "max": null
   },
   "shipping": {
    "latest": {
-    "date": "2026-08-05",
-    "n_articles": 477,
-    "n_stories": 243,
-    "n_domains": 357,
-    "multiplier": 1.963,
-    "n_docs_sampled": 119349
+    "date": "2026-08-06",
+    "n_articles": 425,
+    "n_stories": 261,
+    "n_domains": 322,
+    "multiplier": 1.628,
+    "n_docs_sampled": 135644
    },
-   "n_days": 1,
+   "n_days": 2,
    "mean": null,
    "min": null,
    "max": null
@@ -91,6 +91,14 @@
     "n_domains": 144,
     "multiplier": 3.478,
     "n_docs_sampled": 119349
+   },
+   {
+    "date": "2026-08-06",
+    "n_articles": 71,
+    "n_stories": 50,
+    "n_domains": 47,
+    "multiplier": 1.42,
+    "n_docs_sampled": 135644
    }
   ],
   "china_east": [
@@ -101,6 +109,14 @@
     "n_domains": 13,
     "multiplier": 1.0,
     "n_docs_sampled": 119349
+   },
+   {
+    "date": "2026-08-06",
+    "n_articles": 20,
+    "n_stories": 13,
+    "n_domains": 16,
+    "multiplier": 1.538,
+    "n_docs_sampled": 135644
    }
   ],
   "gulf_energy": [
@@ -111,6 +127,14 @@
     "n_domains": 1186,
     "multiplier": 1.81,
     "n_docs_sampled": 119349
+   },
+   {
+    "date": "2026-08-06",
+    "n_articles": 2915,
+    "n_stories": 1730,
+    "n_domains": 1216,
+    "multiplier": 1.685,
+    "n_docs_sampled": 135644
    }
   ],
   "us_trade": [
@@ -121,6 +145,14 @@
     "n_domains": 130,
     "multiplier": 2.234,
     "n_docs_sampled": 119349
+   },
+   {
+    "date": "2026-08-06",
+    "n_articles": 95,
+    "n_stories": 59,
+    "n_domains": 61,
+    "multiplier": 1.61,
+    "n_docs_sampled": 135644
    }
   ],
   "shipping": [
@@ -131,6 +163,14 @@
     "n_domains": 357,
     "multiplier": 1.963,
     "n_docs_sampled": 119349
+   },
+   {
+    "date": "2026-08-06",
+    "n_articles": 425,
+    "n_stories": 261,
+    "n_domains": 322,
+    "multiplier": 1.628,
+    "n_docs_sampled": 135644
    }
   ]
  }

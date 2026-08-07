@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.22.0",
+    "contract_version": "1.23.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -829,6 +829,19 @@
         "placebo",
         "robustness",
         "drift"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/wiki_hindi.json",
+      "format": "json",
+      "description": "Cross-language validity check. The index is built from an English-language corpus and was cross-validated against English Wikipedia, so every leg of the apparatus was Anglophone and none of it could distinguish 'Indian salience' from 'what the international English-language press covers'. Hindi Wikipedia pageviews are the same registered article set read by a different population, on infrastructure sharing no code or sampling with GDELT.",
+      "frozen_fields": [
+        "_meta",
+        "channels",
+        "english_wikipedia_same_statistic",
+        "language_gap",
+        "channels_where_english_leads_on_both"
       ],
       "stability": "stable"
     },
