@@ -1,5 +1,9 @@
 {
  "_meta": {
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/freshness.json",
   "what": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
   "undatable_is_a_failure": "A payload with no _meta.generated cannot be audited by anything, so it counts as a failure rather than a pass. An auditor that skips what it cannot read is worse than no auditor, because it reports green.",
   "default_max_age_days": 3,
@@ -7,7 +11,7 @@
   "n_fresh": 59,
   "n_stale_or_undatable": 0,
   "n_exempt": 7,
-  "generated": "2026-08-07T09:54:58Z"
+  "generated": "2026-08-07T10:01:12Z"
  },
  "payloads": [
   {

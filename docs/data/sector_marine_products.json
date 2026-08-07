@@ -1,1 +1,37 @@
-{"_meta": {"what": "Per-sector feed for Marine Products & Fisheries: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.", "sector_registration": "sectors.json", "generated": "2026-08-07T05:15:33Z"}, "sector": "marine_products", "label": "Marine Products & Fisheries", "rationale": "Seafood exports move refrigerated by sea to the US and East Asia; corridor disruption and US import policy are the binding risks.", "date": "2026-08-06", "channels": {"shipping": {"label": "Shipping & Chokepoints", "score": 80.9, "band95": [74.1, 86.7], "weight": 0.5, "receipts": "https://igrm.in/receipts.html#shipping"}, "us_trade": {"label": "US & Trade Policy", "score": 15.6, "band95": [7.4, 26.2], "weight": 0.5, "receipts": "https://igrm.in/receipts.html#us_trade"}}}
+{
+ "_meta": {
+  "what": "Per-sector feed for Marine Products & Fisheries: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+  "sector_registration": "sectors.json",
+  "generated": "2026-08-07T05:15:33Z",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/sector_marine_products.json"
+ },
+ "sector": "marine_products",
+ "label": "Marine Products & Fisheries",
+ "rationale": "Seafood exports move refrigerated by sea to the US and East Asia; corridor disruption and US import policy are the binding risks.",
+ "date": "2026-08-06",
+ "channels": {
+  "shipping": {
+   "label": "Shipping & Chokepoints",
+   "score": 80.9,
+   "band95": [
+    74.1,
+    86.7
+   ],
+   "weight": 0.5,
+   "receipts": "https://igrm.in/receipts.html#shipping"
+  },
+  "us_trade": {
+   "label": "US & Trade Policy",
+   "score": 15.6,
+   "band95": [
+    7.4,
+    26.2
+   ],
+   "weight": 0.5,
+   "receipts": "https://igrm.in/receipts.html#us_trade"
+  }
+ }
+}

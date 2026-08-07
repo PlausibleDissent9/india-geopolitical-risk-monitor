@@ -1,1 +1,42 @@
-{"_meta": {"what": "Standing precision audit: machine labels applied under the versioned rubric (auditor/RUBRIC.md), published as found, never tuned to a target. UNCALIBRATED until the author's independent labels reach the registration threshold; the agreement statistic publishes with its n. Abstentions are counted, not guessed.", "rubric_version": "1.0.0", "generated": "2026-08-07"}, "calibrated": false, "author_labels_n": 16, "author_abstained_n": 4, "calibration_threshold": 100, "agreement": {"n_overlap": 16, "rate": 0.875}, "abstained": 8, "channels": {"china_east": {"n_labeled": 43, "precision": 0.209}, "pakistan_west": {"n_labeled": 35, "precision": 0.829}, "us_trade": {"n_labeled": 37, "precision": 0.243}, "shipping": {"n_labeled": 39, "precision": 0.538}, "gulf_energy": {"n_labeled": 16, "precision": 0.438}}}
+{
+ "_meta": {
+  "what": "Standing precision audit: machine labels applied under the versioned rubric (auditor/RUBRIC.md), published as found, never tuned to a target. UNCALIBRATED until the author's independent labels reach the registration threshold; the agreement statistic publishes with its n. Abstentions are counted, not guessed.",
+  "rubric_version": "1.0.0",
+  "generated": "2026-08-07",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/precision.json"
+ },
+ "calibrated": false,
+ "author_labels_n": 16,
+ "author_abstained_n": 4,
+ "calibration_threshold": 100,
+ "agreement": {
+  "n_overlap": 16,
+  "rate": 0.875
+ },
+ "abstained": 8,
+ "channels": {
+  "china_east": {
+   "n_labeled": 43,
+   "precision": 0.209
+  },
+  "pakistan_west": {
+   "n_labeled": 35,
+   "precision": 0.829
+  },
+  "us_trade": {
+   "n_labeled": 37,
+   "precision": 0.243
+  },
+  "shipping": {
+   "n_labeled": 39,
+   "precision": 0.538
+  },
+  "gulf_energy": {
+   "n_labeled": 16,
+   "precision": 0.438
+  }
+ }
+}

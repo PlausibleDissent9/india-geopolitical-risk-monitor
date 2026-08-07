@@ -377,7 +377,8 @@
       "description": "The most recent published weekly note: filename and raw markdown body.",
       "frozen_fields": [
         "filename",
-        "markdown"
+        "markdown",
+        "_meta"
       ],
       "stability": "stable"
     },

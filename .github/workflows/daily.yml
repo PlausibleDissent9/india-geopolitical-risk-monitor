@@ -202,6 +202,14 @@ jobs:
           python -m src.episode_actors
           python -m src.exposure
           python -m src.predictability
+      - name: Stamp universal _meta on every payload (licence, citation, codebook, source)
+        # After every lane has written, so nothing lands unstamped. Never
+        # overwrites a field a module set. The codebook has always
+        # promised each download explains itself; until 2026-08-07 that
+        # was true of three payloads out of sixty-four.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.stamp_meta
       - name: Freshness audit (every payload, not just the ten tracked sources)
         # Runs last among the enrichment lanes, so it audits what this
         # run actually produced. Fail-loud for the same reason as the

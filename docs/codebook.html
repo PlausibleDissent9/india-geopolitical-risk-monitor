@@ -124,8 +124,21 @@ episode starts; <code>ci95_lo</code>/<code>ci95_hi</code> bound the bootstrapped
 India-specific component. Association, not causation.</p>
 <h2>JSON <code>_meta</code> blocks</h2>
 <p>Every dict-shaped JSON published by the pipeline embeds a <code>_meta</code> object
-(what the file is, units, license, citation, codebook link, generation
-date) so a downloaded file explains itself without this website.</p>
+(what the file is, license, citation, codebook link, source URL,
+generation date — plus <code>units</code> where the payload has a single unit) so a
+downloaded file explains itself without this website.</p>
+<p>Two payloads are bare JSON arrays with nowhere to carry <code>_meta</code>:
+<code>episodes.json</code> and <code>notes.json</code>. Both are written in the same commit as
+files that are stamped (<code>history.json</code>, <code>note_latest.json</code>), so their
+provenance is one file away rather than absent.</p>
+<p><em>This was a promise before it was a fact.</em> Until 2026-08-07 the licence,
+citation and codebook link appeared in <strong>three</strong> payloads out of
+sixty-four, while this paragraph claimed all of them — so most downloads
+carried no way to know their own terms or how to cite them. <code>src/stamp_meta.py</code>
+now stamps the universal fields after every lane has run, without ever
+overwriting a field a module set for itself. A test checks the claim
+against what is actually served, so the sentence cannot drift from the
+files again.</p>
 <h2>docs/data/latest.json</h2>
 <table>
 <thead>

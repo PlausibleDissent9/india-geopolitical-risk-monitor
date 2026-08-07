@@ -1,1 +1,76 @@
-{"_meta": {"what": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.", "generated": "2026-08-07T05:14:22Z"}, "days": {"2026-08-05": {"pakistan_west": {"n_matched": 160, "n_domains": 144, "top_domain": "ianslive.in", "top_domain_share": 0.025}, "china_east": {"n_matched": 17, "n_domains": 13, "top_domain": "idrw.org", "top_domain_share": 0.176}, "gulf_energy": {"n_matched": 2945, "n_domains": 1186, "top_domain": "finance.yahoo.com", "top_domain_share": 0.015}, "us_trade": {"n_matched": 172, "n_domains": 130, "top_domain": "europesun.com", "top_domain_share": 0.035}, "shipping": {"n_matched": 477, "n_domains": 357, "top_domain": "oilprice.com", "top_domain_share": 0.017}}, "2026-08-06": {"pakistan_west": {"n_matched": 71, "n_domains": 47, "top_domain": "ianslive.in", "top_domain_share": 0.127}, "china_east": {"n_matched": 20, "n_domains": 16, "top_domain": "ianslive.in", "top_domain_share": 0.15}, "gulf_energy": {"n_matched": 2915, "n_domains": 1216, "top_domain": "finance.yahoo.com", "top_domain_share": 0.02}, "us_trade": {"n_matched": 95, "n_domains": 61, "top_domain": "economictimes.indiatimes.com", "top_domain_share": 0.063}, "shipping": {"n_matched": 425, "n_domains": 322, "top_domain": "newsnow.co.uk", "top_domain_share": 0.016}}}}
+{
+ "_meta": {
+  "what": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
+  "generated": "2026-08-07T05:14:22Z",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/spike_breadth.json"
+ },
+ "days": {
+  "2026-08-05": {
+   "pakistan_west": {
+    "n_matched": 160,
+    "n_domains": 144,
+    "top_domain": "ianslive.in",
+    "top_domain_share": 0.025
+   },
+   "china_east": {
+    "n_matched": 17,
+    "n_domains": 13,
+    "top_domain": "idrw.org",
+    "top_domain_share": 0.176
+   },
+   "gulf_energy": {
+    "n_matched": 2945,
+    "n_domains": 1186,
+    "top_domain": "finance.yahoo.com",
+    "top_domain_share": 0.015
+   },
+   "us_trade": {
+    "n_matched": 172,
+    "n_domains": 130,
+    "top_domain": "europesun.com",
+    "top_domain_share": 0.035
+   },
+   "shipping": {
+    "n_matched": 477,
+    "n_domains": 357,
+    "top_domain": "oilprice.com",
+    "top_domain_share": 0.017
+   }
+  },
+  "2026-08-06": {
+   "pakistan_west": {
+    "n_matched": 71,
+    "n_domains": 47,
+    "top_domain": "ianslive.in",
+    "top_domain_share": 0.127
+   },
+   "china_east": {
+    "n_matched": 20,
+    "n_domains": 16,
+    "top_domain": "ianslive.in",
+    "top_domain_share": 0.15
+   },
+   "gulf_energy": {
+    "n_matched": 2915,
+    "n_domains": 1216,
+    "top_domain": "finance.yahoo.com",
+    "top_domain_share": 0.02
+   },
+   "us_trade": {
+    "n_matched": 95,
+    "n_domains": 61,
+    "top_domain": "economictimes.indiatimes.com",
+    "top_domain_share": 0.063
+   },
+   "shipping": {
+    "n_matched": 425,
+    "n_domains": 322,
+    "top_domain": "newsnow.co.uk",
+    "top_domain_share": 0.016
+   }
+  }
+ }
+}

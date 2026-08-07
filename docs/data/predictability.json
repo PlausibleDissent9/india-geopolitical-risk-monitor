@@ -1,1 +1,44 @@
-{"_meta": {"what": "Directed lead-lag predictability on daily changes: R2 increment from adding five lags of the leading series to five own-lags, permutation p-values (time-shifted null, 300 draws). Predictability in this sense is an association across time, never causality, and none of this is a forecast or investment advice.", "lags": 5, "permutations": 300, "generated": "2026-08-07"}, "pairs": {"salience_leads_events": {"n": 3301, "r2_increment": 0.0015, "p_permutation": 0.661}, "salience_leads_vix": {"n": 2214, "r2_increment": 0.0023, "p_permutation": 0.399}, "salience_leads_inr_vol": {"n": 2262, "r2_increment": 0.001, "p_permutation": 0.817}, "events_leads_salience": {"n": 3301, "r2_increment": 0.0098, "p_permutation": 0.05}, "vix_leads_salience": {"n": 2214, "r2_increment": 0.0027, "p_permutation": 0.146}, "inr_vol_leads_salience": {"n": 2262, "r2_increment": 0.0018, "p_permutation": 0.352}}}
+{
+ "_meta": {
+  "what": "Directed lead-lag predictability on daily changes: R2 increment from adding five lags of the leading series to five own-lags, permutation p-values (time-shifted null, 300 draws). Predictability in this sense is an association across time, never causality, and none of this is a forecast or investment advice.",
+  "lags": 5,
+  "permutations": 300,
+  "generated": "2026-08-07",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/predictability.json"
+ },
+ "pairs": {
+  "salience_leads_events": {
+   "n": 3301,
+   "r2_increment": 0.0015,
+   "p_permutation": 0.661
+  },
+  "salience_leads_vix": {
+   "n": 2214,
+   "r2_increment": 0.0023,
+   "p_permutation": 0.399
+  },
+  "salience_leads_inr_vol": {
+   "n": 2262,
+   "r2_increment": 0.001,
+   "p_permutation": 0.817
+  },
+  "events_leads_salience": {
+   "n": 3301,
+   "r2_increment": 0.0098,
+   "p_permutation": 0.05
+  },
+  "vix_leads_salience": {
+   "n": 2214,
+   "r2_increment": 0.0027,
+   "p_permutation": 0.146
+  },
+  "inr_vol_leads_salience": {
+   "n": 2262,
+   "r2_increment": 0.0018,
+   "p_permutation": 0.352
+  }
+ }
+}

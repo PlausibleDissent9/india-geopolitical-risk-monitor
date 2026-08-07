@@ -1,1 +1,107 @@
-{"_meta": {"what": "Per-sector feed for Petroleum Refining & Export: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.", "sector_registration": "sectors.json", "generated": "2026-08-07T05:15:33Z"}, "sector": "petroleum_refining", "label": "Petroleum Refining & Export", "rationale": "India's largest export by value: crude in from the Gulf, refined products out by sea; doubly exposed to Hormuz and the western corridors.", "date": "2026-08-06", "channels": {"gulf_energy": {"label": "Gulf & Energy Security", "score": 77.7, "band95": [77.3, 78.3], "weight": 0.5, "receipts": "https://igrm.in/receipts.html#gulf_energy"}, "shipping": {"label": "Shipping & Chokepoints", "score": 80.9, "band95": [74.1, 86.7], "weight": 0.5, "receipts": "https://igrm.in/receipts.html#shipping"}}, "measured_sensitivity": {"nse_index": "^CNXENERGY", "channels": {"gulf_energy": {"1": {"mean": -0.058, "ci95": [-0.258, 0.125], "p_boot": 0.518, "n": 86, "bh_significant_10pct": false}, "5": {"mean": -0.052, "ci95": [-0.469, 0.359], "p_boot": 0.768, "n": 86, "bh_significant_10pct": false}, "20": {"mean": 0.081, "ci95": [-0.703, 0.941], "p_boot": 0.846, "n": 86, "bh_significant_10pct": false}}, "shipping": {"1": {"mean": 0.15, "ci95": [0.005, 0.307], "p_boot": 0.036, "n": 111, "bh_significant_10pct": false}, "5": {"mean": 0.22, "ci95": [-0.098, 0.543], "p_boot": 0.194, "n": 111, "bh_significant_10pct": false}, "20": {"mean": 0.931, "ci95": [0.202, 1.704], "p_boot": 0.012, "n": 110, "bh_significant_10pct": false}}}, "note": "Historical association only, Benjamini-Hochberg corrected across the full grid; see sector_sensitivity.json _meta for the discipline and the current negative result."}}
+{
+ "_meta": {
+  "what": "Per-sector feed for Petroleum Refining & Export: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+  "sector_registration": "sectors.json",
+  "generated": "2026-08-07T05:15:33Z",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/sector_petroleum_refining.json"
+ },
+ "sector": "petroleum_refining",
+ "label": "Petroleum Refining & Export",
+ "rationale": "India's largest export by value: crude in from the Gulf, refined products out by sea; doubly exposed to Hormuz and the western corridors.",
+ "date": "2026-08-06",
+ "channels": {
+  "gulf_energy": {
+   "label": "Gulf & Energy Security",
+   "score": 77.7,
+   "band95": [
+    77.3,
+    78.3
+   ],
+   "weight": 0.5,
+   "receipts": "https://igrm.in/receipts.html#gulf_energy"
+  },
+  "shipping": {
+   "label": "Shipping & Chokepoints",
+   "score": 80.9,
+   "band95": [
+    74.1,
+    86.7
+   ],
+   "weight": 0.5,
+   "receipts": "https://igrm.in/receipts.html#shipping"
+  }
+ },
+ "measured_sensitivity": {
+  "nse_index": "^CNXENERGY",
+  "channels": {
+   "gulf_energy": {
+    "1": {
+     "mean": -0.058,
+     "ci95": [
+      -0.258,
+      0.125
+     ],
+     "p_boot": 0.518,
+     "n": 86,
+     "bh_significant_10pct": false
+    },
+    "5": {
+     "mean": -0.052,
+     "ci95": [
+      -0.469,
+      0.359
+     ],
+     "p_boot": 0.768,
+     "n": 86,
+     "bh_significant_10pct": false
+    },
+    "20": {
+     "mean": 0.081,
+     "ci95": [
+      -0.703,
+      0.941
+     ],
+     "p_boot": 0.846,
+     "n": 86,
+     "bh_significant_10pct": false
+    }
+   },
+   "shipping": {
+    "1": {
+     "mean": 0.15,
+     "ci95": [
+      0.005,
+      0.307
+     ],
+     "p_boot": 0.036,
+     "n": 111,
+     "bh_significant_10pct": false
+    },
+    "5": {
+     "mean": 0.22,
+     "ci95": [
+      -0.098,
+      0.543
+     ],
+     "p_boot": 0.194,
+     "n": 111,
+     "bh_significant_10pct": false
+    },
+    "20": {
+     "mean": 0.931,
+     "ci95": [
+      0.202,
+      1.704
+     ],
+     "p_boot": 0.012,
+     "n": 110,
+     "bh_significant_10pct": false
+    }
+   }
+  },
+  "note": "Historical association only, Benjamini-Hochberg corrected across the full grid; see sector_sensitivity.json _meta for the discipline and the current negative result."
+ }
+}

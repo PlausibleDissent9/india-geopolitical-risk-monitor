@@ -10,19 +10,23 @@
   "finding": "English Wikipedia tracks this index more closely than Hindi Wikipedia does, on 5 of 5 channels, in BOTH levels and day-to-day changes. The gap is one-directional -- there is no channel where Hindi leads -- which is what an Anglophone construct looks like. The index is built from an English corpus and it appears to measure English-language attention to India better than it measures Indian-language attention. This is a limitation of the instrument, published as a result.",
   "the_obvious_objection_and_why_it_fails": "Hindi Wikipedia carries less traffic, so one expects attenuation from noise alone. That cannot be the whole story here: us_trade has the HIGHEST median Hindi traffic of any channel and the WORST correlation (the only negative one), while gulf_energy has the lowest traffic and the strongest Hindi correlation. The ordering of traffic and the ordering of agreement do not match, so thinness does not explain the pattern.",
   "what_this_does_not_say": "It does not say the index is wrong. Readers and editors are different populations attending to different things, and supply-side vs demand-side divergence is something this project already expects and publishes. It says the construct's reach into Indian-language attention is weaker than its reach into English-language attention, and that anyone citing this index as a measure of Indian public salience should read this file first. Nothing here adjusts a score.",
-  "generated": "2026-08-07T09:29:13Z"
+  "generated": "2026-08-07T09:29:13Z",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/wiki_hindi.json"
  },
  "channels": {
   "pakistan_west": {
    "n_articles_resolved": 6,
    "n_articles_registered": 6,
    "hindi_titles": [
-    "नियंत्रण रेखा",
-    "कश्मीर विवाद",
-    "भारत-पाकिस्तान सम्बन्ध",
-    "इंटर-सर्विसेस इंटेलिजेंस",
-    "सिंधु जल समझौता",
-    "सियाचिन हिमनद"
+    "\u0928\u093f\u092f\u0902\u0924\u094d\u0930\u0923 \u0930\u0947\u0916\u093e",
+    "\u0915\u0936\u094d\u092e\u0940\u0930 \u0935\u093f\u0935\u093e\u0926",
+    "\u092d\u093e\u0930\u0924-\u092a\u093e\u0915\u093f\u0938\u094d\u0924\u093e\u0928 \u0938\u092e\u094d\u092c\u0928\u094d\u0927",
+    "\u0907\u0902\u091f\u0930-\u0938\u0930\u094d\u0935\u093f\u0938\u0947\u0938 \u0907\u0902\u091f\u0947\u0932\u093f\u091c\u0947\u0902\u0938",
+    "\u0938\u093f\u0902\u0927\u0941 \u091c\u0932 \u0938\u092e\u091d\u094c\u0924\u093e",
+    "\u0938\u093f\u092f\u093e\u091a\u093f\u0928 \u0939\u093f\u092e\u0928\u0926"
    ],
    "missing_english_titles": [],
    "median_daily_views": 527.0,
@@ -36,11 +40,11 @@
    "n_articles_resolved": 5,
    "n_articles_registered": 5,
    "hindi_titles": [
-    "वास्तविक नियंत्रण रेखा",
-    "भारत-चीन सम्बन्ध",
-    "अरुणाचल प्रदेश",
-    "अक्साई चिन",
-    "पीपल्स लिबरेशन आर्मी"
+    "\u0935\u093e\u0938\u094d\u0924\u0935\u093f\u0915 \u0928\u093f\u092f\u0902\u0924\u094d\u0930\u0923 \u0930\u0947\u0916\u093e",
+    "\u092d\u093e\u0930\u0924-\u091a\u0940\u0928 \u0938\u092e\u094d\u092c\u0928\u094d\u0927",
+    "\u0905\u0930\u0941\u0923\u093e\u091a\u0932 \u092a\u094d\u0930\u0926\u0947\u0936",
+    "\u0905\u0915\u094d\u0938\u093e\u0908 \u091a\u093f\u0928",
+    "\u092a\u0940\u092a\u0932\u094d\u0938 \u0932\u093f\u092c\u0930\u0947\u0936\u0928 \u0906\u0930\u094d\u092e\u0940"
    ],
    "missing_english_titles": [],
    "median_daily_views": 595.0,
@@ -54,10 +58,10 @@
    "n_articles_resolved": 4,
    "n_articles_registered": 6,
    "hindi_titles": [
-    "होरमुज़ जलसन्धि",
-    "फ़ारस की खाड़ी",
-    "ईरान-इजराइल सम्बन्ध",
-    "ओपेक"
+    "\u0939\u094b\u0930\u092e\u0941\u091c\u093c \u091c\u0932\u0938\u0928\u094d\u0927\u093f",
+    "\u092b\u093c\u093e\u0930\u0938 \u0915\u0940 \u0916\u093e\u0921\u093c\u0940",
+    "\u0908\u0930\u093e\u0928-\u0907\u091c\u0930\u093e\u0907\u0932 \u0938\u092e\u094d\u092c\u0928\u094d\u0927",
+    "\u0913\u092a\u0947\u0915"
    ],
    "missing_english_titles": [
     "Sanctions against Iran",
@@ -74,10 +78,10 @@
    "n_articles_resolved": 4,
    "n_articles_registered": 6,
    "hindi_titles": [
-    "भारत-संयुक्त राज्य सम्बन्ध",
-    "हेच -1बी वीज़ा",
-    "विश्व व्यापार संगठन",
-    "भारत का विदेश व्यापार"
+    "\u092d\u093e\u0930\u0924-\u0938\u0902\u092f\u0941\u0915\u094d\u0924 \u0930\u093e\u091c\u094d\u092f \u0938\u092e\u094d\u092c\u0928\u094d\u0927",
+    "\u0939\u0947\u091a -1\u092c\u0940 \u0935\u0940\u091c\u093c\u093e",
+    "\u0935\u093f\u0936\u094d\u0935 \u0935\u094d\u092f\u093e\u092a\u093e\u0930 \u0938\u0902\u0917\u0920\u0928",
+    "\u092d\u093e\u0930\u0924 \u0915\u093e \u0935\u093f\u0926\u0947\u0936 \u0935\u094d\u092f\u093e\u092a\u093e\u0930"
    ],
    "missing_english_titles": [
     "CAATSA",
@@ -94,10 +98,10 @@
    "n_articles_resolved": 4,
    "n_articles_registered": 6,
    "hindi_titles": [
-    "स्वेज़ नहर",
-    "मलक्का जलडमरूमध्य",
-    "बाब अल-मन्देब जलसन्धि",
-    "केप ऑफ़ गुड होप"
+    "\u0938\u094d\u0935\u0947\u091c\u093c \u0928\u0939\u0930",
+    "\u092e\u0932\u0915\u094d\u0915\u093e \u091c\u0932\u0921\u092e\u0930\u0942\u092e\u0927\u094d\u092f",
+    "\u092c\u093e\u092c \u0905\u0932-\u092e\u0928\u094d\u0926\u0947\u092c \u091c\u0932\u0938\u0928\u094d\u0927\u093f",
+    "\u0915\u0947\u092a \u0911\u092b\u093c \u0917\u0941\u0921 \u0939\u094b\u092a"
    ],
    "missing_english_titles": [
     "Houthi movement",

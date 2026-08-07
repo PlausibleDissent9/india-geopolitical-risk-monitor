@@ -1,1 +1,299 @@
-{"_meta": {"what": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.", "generated": "2026-08-07", "days_missing": 0, "partial": false, "recent_window_days": 365}, "states": {"IN01": {"name": "Andaman and Nicobar", "n": 23374, "conflict_share": 0.234, "protest_share": 0.016, "recent_n": 1586, "recent_conflict_share": 0.206}, "IN02": {"name": "Andhra Pradesh", "n": 826760, "conflict_share": 0.26, "protest_share": 0.02, "recent_n": 92339, "recent_conflict_share": 0.236}, "IN03": {"name": "Assam", "n": 200246, "conflict_share": 0.264, "protest_share": 0.024, "recent_n": 20501, "recent_conflict_share": 0.22}, "IN52": {"name": "Dadra and Nagar Haveli and Daman and Diu", "n": 11168, "conflict_share": 0.171, "protest_share": 0.008, "recent_n": 1194, "recent_conflict_share": 0.147}, "IN07": {"name": "Delhi", "n": 3948954, "conflict_share": 0.273, "protest_share": 0.022, "recent_n": 441162, "recent_conflict_share": 0.245}, "IN35": {"name": "Madhya Pradesh", "n": 1273504, "conflict_share": 0.301, "protest_share": 0.019, "recent_n": 121394, "recent_conflict_share": 0.27}, "IN10": {"name": "Haryana", "n": 378856, "conflict_share": 0.343, "protest_share": 0.029, "recent_n": 34094, "recent_conflict_share": 0.315}, "IN11": {"name": "Himachal Pradesh", "n": 98185, "conflict_share": 0.242, "protest_share": 0.014, "recent_n": 9981, "recent_conflict_share": 0.233}, "IN12": {"name": "Jammu and Kashmir", "n": 1156844, "conflict_share": 0.361, "protest_share": 0.018, "recent_n": 74181, "recent_conflict_share": 0.323}, "IN13": {"name": "Kerala", "n": 510605, "conflict_share": 0.301, "protest_share": 0.023, "recent_n": 49363, "recent_conflict_share": 0.283}, "IN16": {"name": "Maharashtra", "n": 2252134, "conflict_share": 0.309, "protest_share": 0.016, "recent_n": 209716, "recent_conflict_share": 0.278}, "IN17": {"name": "Manipur", "n": 49289, "conflict_share": 0.33, "protest_share": 0.031, "recent_n": 4492, "recent_conflict_share": 0.299}, "IN19": {"name": "Karnataka", "n": 1216508, "conflict_share": 0.28, "protest_share": 0.021, "recent_n": 113657, "recent_conflict_share": 0.262}, "IN20": {"name": "Nagaland", "n": 82915, "conflict_share": 0.205, "protest_share": 0.013, "recent_n": 8468, "recent_conflict_share": 0.148}, "IN21": {"name": "Odisha", "n": 259638, "conflict_share": 0.24, "protest_share": 0.018, "recent_n": 32423, "recent_conflict_share": 0.221}, "IN22": {"name": "Tamil Nadu", "n": 1037835, "conflict_share": 0.278, "protest_share": 0.022, "recent_n": 116080, "recent_conflict_share": 0.252}, "IN23": {"name": "Punjab", "n": 358044, "conflict_share": 0.364, "protest_share": 0.029, "recent_n": 34515, "recent_conflict_share": 0.362}, "IN24": {"name": "Rajasthan", "n": 601509, "conflict_share": 0.289, "protest_share": 0.022, "recent_n": 57123, "recent_conflict_share": 0.26}, "IN26": {"name": "Tripura", "n": 86361, "conflict_share": 0.281, "protest_share": 0.028, "recent_n": 8484, "recent_conflict_share": 0.225}, "IN28": {"name": "West Bengal", "n": 739855, "conflict_share": 0.335, "protest_share": 0.03, "recent_n": 82485, "recent_conflict_share": 0.325}, "IN30": {"name": "Arunachal Pradesh", "n": 15504, "conflict_share": 0.234, "protest_share": 0.013, "recent_n": 1004, "recent_conflict_share": 0.187}, "IN36": {"name": "Uttar Pradesh", "n": 1664069, "conflict_share": 0.332, "protest_share": 0.024, "recent_n": 126501, "recent_conflict_share": 0.292}, "IN34": {"name": "Bihar", "n": 591126, "conflict_share": 0.313, "protest_share": 0.021, "recent_n": 76189, "recent_conflict_share": 0.303}, "IN37": {"name": "Chhattisgarh", "n": 151198, "conflict_share": 0.309, "protest_share": 0.016, "recent_n": 13610, "recent_conflict_share": 0.27}, "IN38": {"name": "Jharkhand", "n": 107698, "conflict_share": 0.291, "protest_share": 0.019, "recent_n": 9447, "recent_conflict_share": 0.255}, "IN39": {"name": "Uttarakhand", "n": 278670, "conflict_share": 0.225, "protest_share": 0.017, "recent_n": 30473, "recent_conflict_share": 0.223}, "IN18": {"name": "Meghalaya", "n": 12745, "conflict_share": 0.284, "protest_share": 0.013, "recent_n": 1377, "recent_conflict_share": 0.29}, "IN05": {"name": "Chandigarh", "n": 3066, "conflict_share": 0.335, "protest_share": 0.017, "recent_n": 405, "recent_conflict_share": 0.284}, "IN14": {"name": "Lakshadweep", "n": 15398, "conflict_share": 0.217, "protest_share": 0.012, "recent_n": 831, "recent_conflict_share": 0.161}, "IN31": {"name": "Mizoram", "n": 24054, "conflict_share": 0.242, "protest_share": 0.017, "recent_n": 1909, "recent_conflict_share": 0.179}, "IN32": {"name": "Gujarat", "n": 311, "conflict_share": 0.238, "protest_share": 0.0, "recent_n": 129, "recent_conflict_share": 0.186}, "IN29": {"name": "Sikkim", "n": 447, "conflict_share": 0.271, "protest_share": 0.002, "recent_n": 13, "recent_conflict_share": 0.077}, "IN08": {"name": "Goa", "n": 5, "conflict_share": 0.2, "protest_share": 0.2, "recent_n": 5, "recent_conflict_share": 0.2}, "IN42": {"name": "Ladakh", "n": 99, "conflict_share": 0.313, "protest_share": 0.091, "recent_n": 99, "recent_conflict_share": 0.313}, "IN40": {"name": "Telangana", "n": 184, "conflict_share": 0.212, "protest_share": 0.027, "recent_n": 184, "recent_conflict_share": 0.212}}, "excluded_adm1": {"IN00": 310162, "NE:Puducherry": 4}}
+{
+ "_meta": {
+  "what": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
+  "generated": "2026-08-07",
+  "days_missing": 0,
+  "partial": false,
+  "recent_window_days": 365,
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/map_states.json"
+ },
+ "states": {
+  "IN01": {
+   "name": "Andaman and Nicobar",
+   "n": 23374,
+   "conflict_share": 0.234,
+   "protest_share": 0.016,
+   "recent_n": 1586,
+   "recent_conflict_share": 0.206
+  },
+  "IN02": {
+   "name": "Andhra Pradesh",
+   "n": 826760,
+   "conflict_share": 0.26,
+   "protest_share": 0.02,
+   "recent_n": 92339,
+   "recent_conflict_share": 0.236
+  },
+  "IN03": {
+   "name": "Assam",
+   "n": 200246,
+   "conflict_share": 0.264,
+   "protest_share": 0.024,
+   "recent_n": 20501,
+   "recent_conflict_share": 0.22
+  },
+  "IN52": {
+   "name": "Dadra and Nagar Haveli and Daman and Diu",
+   "n": 11168,
+   "conflict_share": 0.171,
+   "protest_share": 0.008,
+   "recent_n": 1194,
+   "recent_conflict_share": 0.147
+  },
+  "IN07": {
+   "name": "Delhi",
+   "n": 3948954,
+   "conflict_share": 0.273,
+   "protest_share": 0.022,
+   "recent_n": 441162,
+   "recent_conflict_share": 0.245
+  },
+  "IN35": {
+   "name": "Madhya Pradesh",
+   "n": 1273504,
+   "conflict_share": 0.301,
+   "protest_share": 0.019,
+   "recent_n": 121394,
+   "recent_conflict_share": 0.27
+  },
+  "IN10": {
+   "name": "Haryana",
+   "n": 378856,
+   "conflict_share": 0.343,
+   "protest_share": 0.029,
+   "recent_n": 34094,
+   "recent_conflict_share": 0.315
+  },
+  "IN11": {
+   "name": "Himachal Pradesh",
+   "n": 98185,
+   "conflict_share": 0.242,
+   "protest_share": 0.014,
+   "recent_n": 9981,
+   "recent_conflict_share": 0.233
+  },
+  "IN12": {
+   "name": "Jammu and Kashmir",
+   "n": 1156844,
+   "conflict_share": 0.361,
+   "protest_share": 0.018,
+   "recent_n": 74181,
+   "recent_conflict_share": 0.323
+  },
+  "IN13": {
+   "name": "Kerala",
+   "n": 510605,
+   "conflict_share": 0.301,
+   "protest_share": 0.023,
+   "recent_n": 49363,
+   "recent_conflict_share": 0.283
+  },
+  "IN16": {
+   "name": "Maharashtra",
+   "n": 2252134,
+   "conflict_share": 0.309,
+   "protest_share": 0.016,
+   "recent_n": 209716,
+   "recent_conflict_share": 0.278
+  },
+  "IN17": {
+   "name": "Manipur",
+   "n": 49289,
+   "conflict_share": 0.33,
+   "protest_share": 0.031,
+   "recent_n": 4492,
+   "recent_conflict_share": 0.299
+  },
+  "IN19": {
+   "name": "Karnataka",
+   "n": 1216508,
+   "conflict_share": 0.28,
+   "protest_share": 0.021,
+   "recent_n": 113657,
+   "recent_conflict_share": 0.262
+  },
+  "IN20": {
+   "name": "Nagaland",
+   "n": 82915,
+   "conflict_share": 0.205,
+   "protest_share": 0.013,
+   "recent_n": 8468,
+   "recent_conflict_share": 0.148
+  },
+  "IN21": {
+   "name": "Odisha",
+   "n": 259638,
+   "conflict_share": 0.24,
+   "protest_share": 0.018,
+   "recent_n": 32423,
+   "recent_conflict_share": 0.221
+  },
+  "IN22": {
+   "name": "Tamil Nadu",
+   "n": 1037835,
+   "conflict_share": 0.278,
+   "protest_share": 0.022,
+   "recent_n": 116080,
+   "recent_conflict_share": 0.252
+  },
+  "IN23": {
+   "name": "Punjab",
+   "n": 358044,
+   "conflict_share": 0.364,
+   "protest_share": 0.029,
+   "recent_n": 34515,
+   "recent_conflict_share": 0.362
+  },
+  "IN24": {
+   "name": "Rajasthan",
+   "n": 601509,
+   "conflict_share": 0.289,
+   "protest_share": 0.022,
+   "recent_n": 57123,
+   "recent_conflict_share": 0.26
+  },
+  "IN26": {
+   "name": "Tripura",
+   "n": 86361,
+   "conflict_share": 0.281,
+   "protest_share": 0.028,
+   "recent_n": 8484,
+   "recent_conflict_share": 0.225
+  },
+  "IN28": {
+   "name": "West Bengal",
+   "n": 739855,
+   "conflict_share": 0.335,
+   "protest_share": 0.03,
+   "recent_n": 82485,
+   "recent_conflict_share": 0.325
+  },
+  "IN30": {
+   "name": "Arunachal Pradesh",
+   "n": 15504,
+   "conflict_share": 0.234,
+   "protest_share": 0.013,
+   "recent_n": 1004,
+   "recent_conflict_share": 0.187
+  },
+  "IN36": {
+   "name": "Uttar Pradesh",
+   "n": 1664069,
+   "conflict_share": 0.332,
+   "protest_share": 0.024,
+   "recent_n": 126501,
+   "recent_conflict_share": 0.292
+  },
+  "IN34": {
+   "name": "Bihar",
+   "n": 591126,
+   "conflict_share": 0.313,
+   "protest_share": 0.021,
+   "recent_n": 76189,
+   "recent_conflict_share": 0.303
+  },
+  "IN37": {
+   "name": "Chhattisgarh",
+   "n": 151198,
+   "conflict_share": 0.309,
+   "protest_share": 0.016,
+   "recent_n": 13610,
+   "recent_conflict_share": 0.27
+  },
+  "IN38": {
+   "name": "Jharkhand",
+   "n": 107698,
+   "conflict_share": 0.291,
+   "protest_share": 0.019,
+   "recent_n": 9447,
+   "recent_conflict_share": 0.255
+  },
+  "IN39": {
+   "name": "Uttarakhand",
+   "n": 278670,
+   "conflict_share": 0.225,
+   "protest_share": 0.017,
+   "recent_n": 30473,
+   "recent_conflict_share": 0.223
+  },
+  "IN18": {
+   "name": "Meghalaya",
+   "n": 12745,
+   "conflict_share": 0.284,
+   "protest_share": 0.013,
+   "recent_n": 1377,
+   "recent_conflict_share": 0.29
+  },
+  "IN05": {
+   "name": "Chandigarh",
+   "n": 3066,
+   "conflict_share": 0.335,
+   "protest_share": 0.017,
+   "recent_n": 405,
+   "recent_conflict_share": 0.284
+  },
+  "IN14": {
+   "name": "Lakshadweep",
+   "n": 15398,
+   "conflict_share": 0.217,
+   "protest_share": 0.012,
+   "recent_n": 831,
+   "recent_conflict_share": 0.161
+  },
+  "IN31": {
+   "name": "Mizoram",
+   "n": 24054,
+   "conflict_share": 0.242,
+   "protest_share": 0.017,
+   "recent_n": 1909,
+   "recent_conflict_share": 0.179
+  },
+  "IN32": {
+   "name": "Gujarat",
+   "n": 311,
+   "conflict_share": 0.238,
+   "protest_share": 0.0,
+   "recent_n": 129,
+   "recent_conflict_share": 0.186
+  },
+  "IN29": {
+   "name": "Sikkim",
+   "n": 447,
+   "conflict_share": 0.271,
+   "protest_share": 0.002,
+   "recent_n": 13,
+   "recent_conflict_share": 0.077
+  },
+  "IN08": {
+   "name": "Goa",
+   "n": 5,
+   "conflict_share": 0.2,
+   "protest_share": 0.2,
+   "recent_n": 5,
+   "recent_conflict_share": 0.2
+  },
+  "IN42": {
+   "name": "Ladakh",
+   "n": 99,
+   "conflict_share": 0.313,
+   "protest_share": 0.091,
+   "recent_n": 99,
+   "recent_conflict_share": 0.313
+  },
+  "IN40": {
+   "name": "Telangana",
+   "n": 184,
+   "conflict_share": 0.212,
+   "protest_share": 0.027,
+   "recent_n": 184,
+   "recent_conflict_share": 0.212
+  }
+ },
+ "excluded_adm1": {
+  "IN00": 310162,
+  "NE:Puducherry": 4
+ }
+}

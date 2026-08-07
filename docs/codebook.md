@@ -62,8 +62,23 @@ India-specific component. Association, not causation.
 ## JSON `_meta` blocks
 
 Every dict-shaped JSON published by the pipeline embeds a `_meta` object
-(what the file is, units, license, citation, codebook link, generation
-date) so a downloaded file explains itself without this website.
+(what the file is, license, citation, codebook link, source URL,
+generation date — plus `units` where the payload has a single unit) so a
+downloaded file explains itself without this website.
+
+Two payloads are bare JSON arrays with nowhere to carry `_meta`:
+`episodes.json` and `notes.json`. Both are written in the same commit as
+files that are stamped (`history.json`, `note_latest.json`), so their
+provenance is one file away rather than absent.
+
+*This was a promise before it was a fact.* Until 2026-08-07 the licence,
+citation and codebook link appeared in **three** payloads out of
+sixty-four, while this paragraph claimed all of them — so most downloads
+carried no way to know their own terms or how to cite them. `src/stamp_meta.py`
+now stamps the universal fields after every lane has run, without ever
+overwriting a field a module set for itself. A test checks the claim
+against what is actually served, so the sentence cannot drift from the
+files again.
 
 ## docs/data/latest.json
 

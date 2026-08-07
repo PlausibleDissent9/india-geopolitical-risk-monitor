@@ -147,8 +147,15 @@ def main() -> None:
     fresh = [r for r in rows if r["status"] == "fresh"]
     exempt = [r for r in rows if r["status"] == "exempt"]
 
+    # This module writes the LAST payload of the run, so a stamping step
+    # that ran before it would always miss this file -- and did, on the
+    # first attempt. Carrying the universal fields itself makes the
+    # result independent of step order rather than dependent on getting
+    # the order right forever.
+    from src import stamp_meta
     payload = {
         "_meta": {
+            **stamp_meta.universal_fields("freshness.json"),
             "what": (
                 "Age of every published payload against the cadence its "
                 "lane is supposed to run at. A lane that stops writing "

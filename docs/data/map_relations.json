@@ -1,1 +1,1577 @@
-{"_meta": {"what": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.", "generated": "2026-08-07", "days_missing": 0, "partial": false, "recent_window_days": 365}, "partners": {"AFG": {"name": "Afghanistan", "n": 22094, "conflict_share": 0.228, "goldstein_mean": 1.02, "recent_n": 3097, "recent_conflict_share": 0.136}, "AUS": {"name": "Australia", "n": 16006, "conflict_share": 0.143, "goldstein_mean": 1.9, "recent_n": 1703, "recent_conflict_share": 0.149}, "BGD": {"name": "Bangladesh", "n": 73989, "conflict_share": 0.299, "goldstein_mean": 0.47, "recent_n": 9101, "recent_conflict_share": 0.362}, "BRA": {"name": "Brazil", "n": 4985, "conflict_share": 0.104, "goldstein_mean": 2.62, "recent_n": 844, "recent_conflict_share": 0.032}, "CAN": {"name": "Canada", "n": 23721, "conflict_share": 0.244, "goldstein_mean": 0.8, "recent_n": 3200, "recent_conflict_share": 0.203}, "CHN": {"name": "China", "n": 95850, "conflict_share": 0.273, "goldstein_mean": 0.67, "recent_n": 6699, "recent_conflict_share": 0.184}, "CUB": {"name": "Cuba", "n": 569, "conflict_share": 0.079, "goldstein_mean": 2.55, "recent_n": 37, "recent_conflict_share": 0.243}, "GBR": {"name": "United Kingdom", "n": 71419, "conflict_share": 0.197, "goldstein_mean": 1.16, "recent_n": 6429, "recent_conflict_share": 0.162}, "IRN": {"name": "Iran", "n": 16260, "conflict_share": 0.176, "goldstein_mean": 1.49, "recent_n": 4712, "recent_conflict_share": 0.178}, "ISR": {"name": "Israel", "n": 21106, "conflict_share": 0.194, "goldstein_mean": 1.16, "recent_n": 2350, "recent_conflict_share": 0.223}, "ITA": {"name": "Italy", "n": 12019, "conflict_share": 0.209, "goldstein_mean": 1.03, "recent_n": 1166, "recent_conflict_share": 0.182}, "KEN": {"name": "Kenya", "n": 2501, "conflict_share": 0.216, "goldstein_mean": 1.02, "recent_n": 221, "recent_conflict_share": 0.131}, "KGZ": {"name": "Kyrgyzstan", "n": 1068, "conflict_share": 0.101, "goldstein_mean": 2.22, "recent_n": 76, "recent_conflict_share": 0.079}, "KHM": {"name": "Cambodia", "n": 1099, "conflict_share": 0.132, "goldstein_mean": 1.94, "recent_n": 125, "recent_conflict_share": 0.32}, "LBR": {"name": "Liberia", "n": 379, "conflict_share": 0.121, "goldstein_mean": 1.55, "recent_n": 138, "recent_conflict_share": 0.036}, "LKA": {"name": "Sri Lanka", "n": 26946, "conflict_share": 0.288, "goldstein_mean": 0.59, "recent_n": 2352, "recent_conflict_share": 0.176}, "MDV": {"name": "Maldives", "n": 11371, "conflict_share": 0.196, "goldstein_mean": 1.09, "recent_n": 426, "recent_conflict_share": 0.272}, "MYS": {"name": "Malaysia", "n": 7790, "conflict_share": 0.15, "goldstein_mean": 1.83, "recent_n": 689, "recent_conflict_share": 0.112}, "NOR": {"name": "Norway", "n": 1830, "conflict_share": 0.113, "goldstein_mean": 2.47, "recent_n": 206, "recent_conflict_share": 0.044}, "NPL": {"name": "Nepal", "n": 29058, "conflict_share": 0.239, "goldstein_mean": 0.9, "recent_n": 2880, "recent_conflict_share": 0.289}, "PAK": {"name": "Pakistan", "n": 156712, "conflict_share": 0.416, "goldstein_mean": -0.81, "recent_n": 9967, "recent_conflict_share": 0.472}, "RUS": {"name": "Russia", "n": 36798, "conflict_share": 0.152, "goldstein_mean": 1.92, "recent_n": 7065, "recent_conflict_share": 0.126}, "SAU": {"name": "Saudi Arabia", "n": 17193, "conflict_share": 0.176, "goldstein_mean": 1.54, "recent_n": 1409, "recent_conflict_share": 0.186}, "SDN": {"name": "Sudan", "n": 1547, "conflict_share": 0.29, "goldstein_mean": 0.29, "recent_n": 62, "recent_conflict_share": 0.323}, "TUR": {"name": "Turkey", "n": 5560, "conflict_share": 0.236, "goldstein_mean": 0.92, "recent_n": 369, "recent_conflict_share": 0.252}, "USA": {"name": "United States", "n": 219786, "conflict_share": 0.186, "goldstein_mean": 1.29, "recent_n": 22391, "recent_conflict_share": 0.189}, "YEM": {"name": "Yemen", "n": 2697, "conflict_share": 0.401, "goldstein_mean": -0.84, "recent_n": 102, "recent_conflict_share": 0.412}, "BTN": {"name": "Bhutan", "n": 7909, "conflict_share": 0.103, "goldstein_mean": 2.19, "recent_n": 913, "recent_conflict_share": 0.104}, "CHE": {"name": "Switzerland", "n": 7010, "conflict_share": 0.16, "goldstein_mean": 1.6, "recent_n": 886, "recent_conflict_share": 0.087}, "DEU": {"name": "Germany", "n": 14403, "conflict_share": 0.151, "goldstein_mean": 1.8, "recent_n": 1820, "recent_conflict_share": 0.055}, "ESP": {"name": "Spain", "n": 4052, "conflict_share": 0.186, "goldstein_mean": 1.19, "recent_n": 336, "recent_conflict_share": 0.14}, "FIN": {"name": "Finland", "n": 1837, "conflict_share": 0.134, "goldstein_mean": 2.21, "recent_n": 348, "recent_conflict_share": 0.052}, "IDN": {"name": "Indonesia", "n": 6760, "conflict_share": 0.118, "goldstein_mean": 1.96, "recent_n": 741, "recent_conflict_share": 0.07}, "IRQ": {"name": "Iraq", "n": 3842, "conflict_share": 0.292, "goldstein_mean": 0.25, "recent_n": 300, "recent_conflict_share": 0.253}, "JPN": {"name": "Japan", "n": 26039, "conflict_share": 0.116, "goldstein_mean": 2.27, "recent_n": 3613, "recent_conflict_share": 0.081}, "MCO": {"name": "Monaco", "n": 435, "conflict_share": 0.147, "goldstein_mean": 2.13, "recent_n": 30, "recent_conflict_share": 0.3}, "MEX": {"name": "Mexico", "n": 1398, "conflict_share": 0.22, "goldstein_mean": 1.03, "recent_n": 83, "recent_conflict_share": 0.133}, "MMR": {"name": "Myanmar", "n": 11478, "conflict_share": 0.296, "goldstein_mean": 0.72, "recent_n": 844, "recent_conflict_share": 0.299}, "NGA": {"name": "Nigeria", "n": 5345, "conflict_share": 0.55, "goldstein_mean": -1.73, "recent_n": 335, "recent_conflict_share": 0.561}, "NZL": {"name": "New Zealand", "n": 4027, "conflict_share": 0.126, "goldstein_mean": 1.85, "recent_n": 541, "recent_conflict_share": 0.072}, "PHL": {"name": "Philippines", "n": 2993, "conflict_share": 0.131, "goldstein_mean": 2.19, "recent_n": 280, "recent_conflict_share": 0.054}, "PRT": {"name": "Portugal", "n": 2173, "conflict_share": 0.195, "goldstein_mean": 1.12, "recent_n": 210, "recent_conflict_share": 0.238}, "SGP": {"name": "Singapore", "n": 11991, "conflict_share": 0.115, "goldstein_mean": 2.36, "recent_n": 1391, "recent_conflict_share": 0.114}, "THA": {"name": "Thailand", "n": 10157, "conflict_share": 0.182, "goldstein_mean": 1.37, "recent_n": 1601, "recent_conflict_share": 0.29}, "TWN": {"name": "Taiwan", "n": 2686, "conflict_share": 0.112, "goldstein_mean": 2.66, "recent_n": 179, "recent_conflict_share": 0.084}, "VNM": {"name": "Vietnam", "n": 5389, "conflict_share": 0.079, "goldstein_mean": 2.45, "recent_n": 749, "recent_conflict_share": 0.081}, "ARE": {"name": "United Arab Emirates", "n": 28299, "conflict_share": 0.168, "goldstein_mean": 1.53, "recent_n": 2856, "recent_conflict_share": 0.187}, "BHR": {"name": "Bahrain", "n": 1962, "conflict_share": 0.107, "goldstein_mean": 2.26, "recent_n": 244, "recent_conflict_share": 0.07}, "COL": {"name": "Colombia", "n": 457, "conflict_share": 0.252, "goldstein_mean": 0.81, "recent_n": 64, "recent_conflict_share": 0.188}, "FRA": {"name": "France", "n": 21722, "conflict_share": 0.125, "goldstein_mean": 2.05, "recent_n": 2587, "recent_conflict_share": 0.06}, "GRC": {"name": "Greece", "n": 3190, "conflict_share": 0.127, "goldstein_mean": 1.56, "recent_n": 328, "recent_conflict_share": 0.064}, "GUY": {"name": "Guyana", "n": 660, "conflict_share": 0.106, "goldstein_mean": 2.05, "recent_n": 45, "recent_conflict_share": 0.111}, "JOR": {"name": "Jordan", "n": 3527, "conflict_share": 0.265, "goldstein_mean": 0.24, "recent_n": 349, "recent_conflict_share": 0.175}, "KOR": {"name": "Republic of Korea", "n": 8284, "conflict_share": 0.131, "goldstein_mean": 2.41, "recent_n": 1221, "recent_conflict_share": 0.166}, "KWT": {"name": "Kuwait", "n": 3443, "conflict_share": 0.169, "goldstein_mean": 1.36, "recent_n": 312, "recent_conflict_share": 0.272}, "MLI": {"name": "Mali", "n": 701, "conflict_share": 0.317, "goldstein_mean": -0.13, "recent_n": 141, "recent_conflict_share": 0.277}, "NLD": {"name": "Netherlands", "n": 4824, "conflict_share": 0.109, "goldstein_mean": 2.31, "recent_n": 616, "recent_conflict_share": 0.067}, "QAT": {"name": "Qatar", "n": 6169, "conflict_share": 0.106, "goldstein_mean": 1.91, "recent_n": 550, "recent_conflict_share": 0.085}, "TJK": {"name": "Tajikistan", "n": 633, "conflict_share": 0.055, "goldstein_mean": 2.62, "recent_n": 45, "recent_conflict_share": 0.0}, "ZAF": {"name": "South Africa", "n": 3228, "conflict_share": 0.29, "goldstein_mean": 0.14, "recent_n": 310, "recent_conflict_share": 0.184}, "ZWE": {"name": "Zimbabwe", "n": 844, "conflict_share": 0.154, "goldstein_mean": 1.67, "recent_n": 68, "recent_conflict_share": 0.132}, "ARG": {"name": "Argentina", "n": 1117, "conflict_share": 0.084, "goldstein_mean": 2.46, "recent_n": 90, "recent_conflict_share": 0.111}, "EGY": {"name": "Egypt", "n": 3637, "conflict_share": 0.119, "goldstein_mean": 1.95, "recent_n": 280, "recent_conflict_share": 0.168}, "FJI": {"name": "Fiji", "n": 991, "conflict_share": 0.064, "goldstein_mean": 2.51, "recent_n": 249, "recent_conflict_share": 0.06}, "LBN": {"name": "Lebanon", "n": 1533, "conflict_share": 0.403, "goldstein_mean": -0.89, "recent_n": 173, "recent_conflict_share": 0.329}, "OMN": {"name": "Oman", "n": 4321, "conflict_share": 0.114, "goldstein_mean": 2.15, "recent_n": 701, "recent_conflict_share": 0.158}, "CHL": {"name": "Chile", "n": 896, "conflict_share": 0.123, "goldstein_mean": 2.02, "recent_n": 137, "recent_conflict_share": 0.168}, "IRL": {"name": "Ireland", "n": 2952, "conflict_share": 0.157, "goldstein_mean": 1.38, "recent_n": 356, "recent_conflict_share": 0.166}, "MKD": {"name": "North Macedonia", "n": 91, "conflict_share": 0.055, "goldstein_mean": 1.67, "recent_n": 15, "recent_conflict_share": 0.0}, "RWA": {"name": "Rwanda", "n": 649, "conflict_share": 0.096, "goldstein_mean": 2.4, "recent_n": 58, "recent_conflict_share": 0.0}, "SWE": {"name": "Sweden", "n": 2548, "conflict_share": 0.138, "goldstein_mean": 2.05, "recent_n": 218, "recent_conflict_share": 0.078}, "TZA": {"name": "Tanzania", "n": 1504, "conflict_share": 0.13, "goldstein_mean": 1.88, "recent_n": 131, "recent_conflict_share": 0.061}, "BEL": {"name": "Belgium", "n": 3353, "conflict_share": 0.212, "goldstein_mean": 1.07, "recent_n": 471, "recent_conflict_share": 0.282}, "KAZ": {"name": "Kazakhstan", "n": 1429, "conflict_share": 0.099, "goldstein_mean": 2.56, "recent_n": 80, "recent_conflict_share": 0.05}, "MUS": {"name": "Mauritius", "n": 3828, "conflict_share": 0.073, "goldstein_mean": 2.33, "recent_n": 544, "recent_conflict_share": 0.024}, "ETH": {"name": "Ethiopia", "n": 1027, "conflict_share": 0.164, "goldstein_mean": 1.7, "recent_n": 155, "recent_conflict_share": 0.174}, "SYR": {"name": "Syria", "n": 2033, "conflict_share": 0.284, "goldstein_mean": 0.13, "recent_n": 86, "recent_conflict_share": 0.174}, "HTI": {"name": "Haiti", "n": 128, "conflict_share": 0.227, "goldstein_mean": 0.71, "recent_n": 5, "recent_conflict_share": 0.2}, "SRB": {"name": "Serbia", "n": 452, "conflict_share": 0.113, "goldstein_mean": 1.78, "recent_n": 43, "recent_conflict_share": 0.0}, "CZE": {"name": "Czechia", "n": 813, "conflict_share": 0.146, "goldstein_mean": 2.17, "recent_n": 12, "recent_conflict_share": 0.0}, "LAO": {"name": "Laos", "n": 418, "conflict_share": 0.136, "goldstein_mean": 1.86, "recent_n": 31, "recent_conflict_share": 0.194}, "POL": {"name": "Poland", "n": 2610, "conflict_share": 0.211, "goldstein_mean": 0.74, "recent_n": 291, "recent_conflict_share": 0.21}, "PRY": {"name": "Paraguay", "n": 199, "conflict_share": 0.05, "goldstein_mean": 2.88, "recent_n": 0, "recent_conflict_share": null}, "DNK": {"name": "Denmark", "n": 3439, "conflict_share": 0.271, "goldstein_mean": 0.72, "recent_n": 442, "recent_conflict_share": 0.475}, "LVA": {"name": "Latvia", "n": 609, "conflict_share": 0.33, "goldstein_mean": -0.93, "recent_n": 24, "recent_conflict_share": 0.0}, "SUR": {"name": "Suriname", "n": 449, "conflict_share": 0.033, "goldstein_mean": 2.33, "recent_n": 11, "recent_conflict_share": 0.0}, "CAF": {"name": "Central African Rep.", "n": 31, "conflict_share": 0.258, "goldstein_mean": 1.45, "recent_n": 0, "recent_conflict_share": null}, "HKG": {"name": "Hong Kong", "n": 125, "conflict_share": 0.48, "goldstein_mean": -0.32, "recent_n": 10, "recent_conflict_share": 0.5}, "PNG": {"name": "Papua New Guinea", "n": 430, "conflict_share": 0.093, "goldstein_mean": 1.8, "recent_n": 29, "recent_conflict_share": 0.0}, "ARM": {"name": "Armenia", "n": 969, "conflict_share": 0.062, "goldstein_mean": 2.61, "recent_n": 145, "recent_conflict_share": 0.069}, "JAM": {"name": "Jamaica", "n": 239, "conflict_share": 0.192, "goldstein_mean": 0.82, "recent_n": 24, "recent_conflict_share": 0.0}, "PER": {"name": "Peru", "n": 558, "conflict_share": 0.138, "goldstein_mean": 1.56, "recent_n": 65, "recent_conflict_share": 0.138}, "LUX": {"name": "Luxembourg", "n": 379, "conflict_share": 0.055, "goldstein_mean": 3.03, "recent_n": 83, "recent_conflict_share": 0.024}, "UZB": {"name": "Uzbekistan", "n": 2130, "conflict_share": 0.182, "goldstein_mean": 1.48, "recent_n": 242, "recent_conflict_share": 0.194}, "ALB": {"name": "Albania", "n": 129, "conflict_share": 0.349, "goldstein_mean": 0.48, "recent_n": 13, "recent_conflict_share": 0.0}, "BOL": {"name": "Bolivia", "n": 322, "conflict_share": 0.28, "goldstein_mean": 0.34, "recent_n": 43, "recent_conflict_share": 0.163}, "GHA": {"name": "Ghana", "n": 742, "conflict_share": 0.159, "goldstein_mean": 1.72, "recent_n": 55, "recent_conflict_share": 0.291}, "SYC": {"name": "Seychelles", "n": 1185, "conflict_share": 0.058, "goldstein_mean": 2.71, "recent_n": 303, "recent_conflict_share": 0.01}, "TKM": {"name": "Turkmenistan", "n": 320, "conflict_share": 0.122, "goldstein_mean": 1.73, "recent_n": 6, "recent_conflict_share": 0.333}, "TTO": {"name": "Trinidad and Tobago", "n": 466, "conflict_share": 0.18, "goldstein_mean": 0.81, "recent_n": 40, "recent_conflict_share": 0.075}, "ECU": {"name": "Ecuador", "n": 284, "conflict_share": 0.116, "goldstein_mean": 1.74, "recent_n": 63, "recent_conflict_share": 0.016}, "MAR": {"name": "Morocco", "n": 555, "conflict_share": 0.159, "goldstein_mean": 1.63, "recent_n": 100, "recent_conflict_share": 0.09}, "NIC": {"name": "Nicaragua", "n": 87, "conflict_share": 0.069, "goldstein_mean": 2.09, "recent_n": 0, "recent_conflict_share": null}, "BGR": {"name": "Bulgaria", "n": 693, "conflict_share": 0.364, "goldstein_mean": -0.59, "recent_n": 35, "recent_conflict_share": 0.171}, "CRI": {"name": "Costa Rica", "n": 136, "conflict_share": 0.059, "goldstein_mean": 2.65, "recent_n": 8, "recent_conflict_share": 0.0}, "GMB": {"name": "Gambia", "n": 118, "conflict_share": 0.144, "goldstein_mean": 2.08, "recent_n": 0, "recent_conflict_share": null}, "MRT": {"name": "Mauritania", "n": 22, "conflict_share": 0.045, "goldstein_mean": 2.79, "recent_n": 2, "recent_conflict_share": 0.0}, "UKR": {"name": "Ukraine", "n": 8619, "conflict_share": 0.201, "goldstein_mean": 1.06, "recent_n": 877, "recent_conflict_share": 0.261}, "LBY": {"name": "Libya", "n": 383, "conflict_share": 0.316, "goldstein_mean": 0.23, "recent_n": 58, "recent_conflict_share": 0.293}, "TGO": {"name": "Togo", "n": 85, "conflict_share": 0.412, "goldstein_mean": 0.04, "recent_n": 12, "recent_conflict_share": 1.0}, "COG": {"name": "Republic of the Congo", "n": 171, "conflict_share": 0.222, "goldstein_mean": 0.35, "recent_n": 17, "recent_conflict_share": 0.0}, "PRK": {"name": "Dem. Rep. Korea", "n": 1107, "conflict_share": 0.352, "goldstein_mean": -0.1, "recent_n": 14, "recent_conflict_share": 0.357}, "SOM": {"name": "Somalia", "n": 540, "conflict_share": 0.333, "goldstein_mean": 0.76, "recent_n": 33, "recent_conflict_share": 0.667}, "TCD": {"name": "Chad", "n": 56, "conflict_share": 0.161, "goldstein_mean": 2.01, "recent_n": 1, "recent_conflict_share": 1.0}, "AUT": {"name": "Austria", "n": 1372, "conflict_share": 0.219, "goldstein_mean": 1.13, "recent_n": 183, "recent_conflict_share": 0.131}, "BLR": {"name": "Belarus", "n": 566, "conflict_share": 0.11, "goldstein_mean": 2.41, "recent_n": 38, "recent_conflict_share": 0.184}, "BRN": {"name": "Brunei", "n": 327, "conflict_share": 0.07, "goldstein_mean": 2.43, "recent_n": 12, "recent_conflict_share": 0.0}, "SVK": {"name": "Slovakia", "n": 334, "conflict_share": 0.072, "goldstein_mean": 2.47, "recent_n": 190, "recent_conflict_share": 0.053}, "MNG": {"name": "Mongolia", "n": 937, "conflict_share": 0.088, "goldstein_mean": 2.1, "recent_n": 287, "recent_conflict_share": 0.014}, "HUN": {"name": "Hungary", "n": 726, "conflict_share": 0.113, "goldstein_mean": 1.85, "recent_n": 35, "recent_conflict_share": 0.114}, "UGA": {"name": "Uganda", "n": 871, "conflict_share": 0.264, "goldstein_mean": 0.64, "recent_n": 69, "recent_conflict_share": 0.203}, "VEN": {"name": "Venezuela", "n": 947, "conflict_share": 0.171, "goldstein_mean": 1.71, "recent_n": 430, "recent_conflict_share": 0.135}, "KNA": {"name": "Saint Kitts and Nevis", "n": 177, "conflict_share": 0.266, "goldstein_mean": -0.35, "recent_n": 26, "recent_conflict_share": 0.154}, "PAN": {"name": "Panama", "n": 777, "conflict_share": 0.232, "goldstein_mean": 0.54, "recent_n": 52, "recent_conflict_share": 0.154}, "GAB": {"name": "Gabon", "n": 174, "conflict_share": 0.017, "goldstein_mean": 2.39, "recent_n": 0, "recent_conflict_share": null}, "GTM": {"name": "Guatemala", "n": 283, "conflict_share": 0.106, "goldstein_mean": 2.02, "recent_n": 17, "recent_conflict_share": 0.471}, "AZE": {"name": "Azerbaijan", "n": 944, "conflict_share": 0.141, "goldstein_mean": 1.67, "recent_n": 172, "recent_conflict_share": 0.174}, "NAM": {"name": "Namibia", "n": 994, "conflict_share": 0.129, "goldstein_mean": 2.07, "recent_n": 27, "recent_conflict_share": 0.111}, "DOM": {"name": "Dominican Rep.", "n": 219, "conflict_share": 0.082, "goldstein_mean": 2.64, "recent_n": 10, "recent_conflict_share": 0.3}, "COD": {"name": "Democratic Republic of the Congo", "n": 176, "conflict_share": 0.551, "goldstein_mean": -2.27, "recent_n": 22, "recent_conflict_share": 0.091}, "GRD": {"name": "Grenada", "n": 84, "conflict_share": 0.119, "goldstein_mean": 2.19, "recent_n": 8, "recent_conflict_share": 0.25}, "MOZ": {"name": "Mozambique", "n": 382, "conflict_share": 0.157, "goldstein_mean": 1.56, "recent_n": 16, "recent_conflict_share": 0.188}, "HRV": {"name": "Croatia", "n": 215, "conflict_share": 0.121, "goldstein_mean": 2.2, "recent_n": 54, "recent_conflict_share": 0.074}, "ISL": {"name": "Iceland", "n": 284, "conflict_share": 0.021, "goldstein_mean": 3.37, "recent_n": 38, "recent_conflict_share": 0.0}, "SLE": {"name": "Sierra Leone", "n": 184, "conflict_share": 0.043, "goldstein_mean": 2.51, "recent_n": 10, "recent_conflict_share": 0.1}, "CYP": {"name": "Cyprus", "n": 872, "conflict_share": 0.101, "goldstein_mean": 2.25, "recent_n": 339, "recent_conflict_share": 0.041}, "TUN": {"name": "Tunisia", "n": 149, "conflict_share": 0.134, "goldstein_mean": 2.06, "recent_n": 15, "recent_conflict_share": 0.0}, "TON": {"name": "Tonga", "n": 46, "conflict_share": 0.478, "goldstein_mean": -1.26, "recent_n": 0, "recent_conflict_share": null}, "ZMB": {"name": "Zambia", "n": 408, "conflict_share": 0.189, "goldstein_mean": 1.67, "recent_n": 29, "recent_conflict_share": 0.517}, "DZA": {"name": "Algeria", "n": 234, "conflict_share": 0.158, "goldstein_mean": 1.36, "recent_n": 45, "recent_conflict_share": 0.089}, "MLT": {"name": "Malta", "n": 789, "conflict_share": 0.313, "goldstein_mean": -0.72, "recent_n": 54, "recent_conflict_share": 0.056}, "SWZ": {"name": "eSwatini", "n": 23, "conflict_share": 0.0, "goldstein_mean": 2.9, "recent_n": 0, "recent_conflict_share": null}, "LSO": {"name": "Lesotho", "n": 72, "conflict_share": 0.125, "goldstein_mean": 2.23, "recent_n": 10, "recent_conflict_share": 0.0}, "VAT": {"name": "Vatican", "n": 694, "conflict_share": 0.206, "goldstein_mean": 0.66, "recent_n": 20, "recent_conflict_share": 0.15}, "GIN": {"name": "Guinea", "n": 157, "conflict_share": 0.191, "goldstein_mean": 1.72, "recent_n": 13, "recent_conflict_share": 0.154}, "LTU": {"name": "Lithuania", "n": 388, "conflict_share": 0.165, "goldstein_mean": 1.68, "recent_n": 22, "recent_conflict_share": 0.091}, "SEN": {"name": "Senegal", "n": 495, "conflict_share": 0.4, "goldstein_mean": -0.14, "recent_n": 18, "recent_conflict_share": 0.667}, "CIV": {"name": "C\u00f4te d'Ivoire", "n": 148, "conflict_share": 0.412, "goldstein_mean": -0.1, "recent_n": 13, "recent_conflict_share": 0.154}, "TUV": {"name": "Tuvalu", "n": 11, "conflict_share": 0.182, "goldstein_mean": 4.36, "recent_n": 0, "recent_conflict_share": null}, "AGO": {"name": "Angola", "n": 202, "conflict_share": 0.074, "goldstein_mean": 2.11, "recent_n": 56, "recent_conflict_share": 0.071}, "BWA": {"name": "Botswana", "n": 474, "conflict_share": 0.07, "goldstein_mean": 2.53, "recent_n": 159, "recent_conflict_share": 0.013}, "URY": {"name": "Uruguay", "n": 59, "conflict_share": 0.136, "goldstein_mean": 1.36, "recent_n": 16, "recent_conflict_share": 0.0}, "CMR": {"name": "Cameroon", "n": 129, "conflict_share": 0.442, "goldstein_mean": -0.56, "recent_n": 17, "recent_conflict_share": 0.235}, "SLV": {"name": "El Salvador", "n": 69, "conflict_share": 0.261, "goldstein_mean": 0.46, "recent_n": 2, "recent_conflict_share": 1.0}, "BMU": {"name": "Bermuda", "n": 114, "conflict_share": 0.684, "goldstein_mean": -0.58, "recent_n": 5, "recent_conflict_share": 0.6}, "LCA": {"name": "Saint Lucia", "n": 11, "conflict_share": 0.182, "goldstein_mean": 1.5, "recent_n": 0, "recent_conflict_share": null}, "DJI": {"name": "Djibouti", "n": 216, "conflict_share": 0.139, "goldstein_mean": 1.26, "recent_n": 29, "recent_conflict_share": 0.241}, "CYM": {"name": "Cayman Is.", "n": 74, "conflict_share": 0.203, "goldstein_mean": 1.77, "recent_n": 1, "recent_conflict_share": 1.0}, "MWI": {"name": "Malawi", "n": 267, "conflict_share": 0.15, "goldstein_mean": 1.53, "recent_n": 7, "recent_conflict_share": 0.714}, "VCT": {"name": "St. Vin. and Gren.", "n": 73, "conflict_share": 0.082, "goldstein_mean": 1.52, "recent_n": 14, "recent_conflict_share": 0.143}, "EST": {"name": "Estonia", "n": 419, "conflict_share": 0.153, "goldstein_mean": 1.86, "recent_n": 55, "recent_conflict_share": 0.055}, "WSM": {"name": "Samoa", "n": 13, "conflict_share": 0.077, "goldstein_mean": 1.23, "recent_n": 0, "recent_conflict_share": null}, "MDG": {"name": "Madagascar", "n": 301, "conflict_share": 0.056, "goldstein_mean": 2.55, "recent_n": 18, "recent_conflict_share": 0.0}, "MAC": {"name": "Macao", "n": 11, "conflict_share": 0.273, "goldstein_mean": 1.08, "recent_n": 0, "recent_conflict_share": null}, "KIR": {"name": "Kiribati", "n": 16, "conflict_share": 0.0, "goldstein_mean": 2.39, "recent_n": 14, "recent_conflict_share": 0.0}, "NER": {"name": "Niger", "n": 174, "conflict_share": 0.425, "goldstein_mean": -1.33, "recent_n": 7, "recent_conflict_share": 0.429}, "GNQ": {"name": "Eq. Guinea", "n": 65, "conflict_share": 0.2, "goldstein_mean": 1.87, "recent_n": 0, "recent_conflict_share": null}, "BHS": {"name": "Bahamas", "n": 74, "conflict_share": 0.135, "goldstein_mean": 1.7, "recent_n": 0, "recent_conflict_share": null}, "BLZ": {"name": "Belize", "n": 56, "conflict_share": 0.464, "goldstein_mean": -2.1, "recent_n": 12, "recent_conflict_share": 0.167}, "BEN": {"name": "Benin", "n": 123, "conflict_share": 0.065, "goldstein_mean": 2.33, "recent_n": 1, "recent_conflict_share": 1.0}, "VUT": {"name": "Vanuatu", "n": 24, "conflict_share": 0.292, "goldstein_mean": 0.62, "recent_n": 2, "recent_conflict_share": 0.0}, "NRU": {"name": "Nauru", "n": 6, "conflict_share": 0.667, "goldstein_mean": -1.7, "recent_n": 0, "recent_conflict_share": null}, "PLW": {"name": "Palau", "n": 22, "conflict_share": 0.227, "goldstein_mean": 0.79, "recent_n": 9, "recent_conflict_share": 0.333}, "ATG": {"name": "Antigua and Barb.", "n": 402, "conflict_share": 0.231, "goldstein_mean": 1.03, "recent_n": 8, "recent_conflict_share": 0.0}, "ERI": {"name": "Eritrea", "n": 44, "conflict_share": 0.045, "goldstein_mean": 3.21, "recent_n": 10, "recent_conflict_share": 0.0}, "LIE": {"name": "Liechtenstein", "n": 71, "conflict_share": 0.0, "goldstein_mean": 3.69, "recent_n": 27, "recent_conflict_share": 0.0}, "BFA": {"name": "Burkina Faso", "n": 34, "conflict_share": 0.118, "goldstein_mean": 1.44, "recent_n": 0, "recent_conflict_share": null}, "FSM": {"name": "Micronesia", "n": 6, "conflict_share": 0.0, "goldstein_mean": 3.67, "recent_n": 0, "recent_conflict_share": null}, "BDI": {"name": "Burundi", "n": 13, "conflict_share": 0.462, "goldstein_mean": -1.95, "recent_n": 0, "recent_conflict_share": null}, "MDA": {"name": "Moldova", "n": 156, "conflict_share": 0.115, "goldstein_mean": 2.43, "recent_n": 29, "recent_conflict_share": 0.138}, "GNB": {"name": "Guinea-Bissau", "n": 20, "conflict_share": 0.25, "goldstein_mean": 0.92, "recent_n": 4, "recent_conflict_share": 1.0}, "MHL": {"name": "Marshall Is.", "n": 38, "conflict_share": 0.132, "goldstein_mean": 1.96, "recent_n": 13, "recent_conflict_share": 0.077}, "COM": {"name": "Comoros", "n": 157, "conflict_share": 0.006, "goldstein_mean": 2.59, "recent_n": 12, "recent_conflict_share": 0.0}, "SLB": {"name": "Solomon Is.", "n": 22, "conflict_share": 0.0, "goldstein_mean": 2.08, "recent_n": 2, "recent_conflict_share": 0.0}, "AIA": {"name": "Anguilla", "n": 2, "conflict_share": 0.5, "goldstein_mean": 0.0, "recent_n": 0, "recent_conflict_share": null}, "HND": {"name": "Honduras", "n": 58, "conflict_share": 0.086, "goldstein_mean": 1.89, "recent_n": 1, "recent_conflict_share": 0.0}, "BRB": {"name": "Barbados", "n": 79, "conflict_share": 0.025, "goldstein_mean": 3.2, "recent_n": 31, "recent_conflict_share": 0.032}, "DMA": {"name": "Dominica", "n": 156, "conflict_share": 0.199, "goldstein_mean": 0.77, "recent_n": 1, "recent_conflict_share": 0.0}, "SMR": {"name": "San Marino", "n": 1, "conflict_share": 0.0, "goldstein_mean": 5.0, "recent_n": 0, "recent_conflict_share": null}, "AND": {"name": "Andorra", "n": 10, "conflict_share": 0.0, "goldstein_mean": 2.47, "recent_n": 0, "recent_conflict_share": null}, "COK": {"name": "Cook Is.", "n": 4, "conflict_share": 0.0, "goldstein_mean": 2.35, "recent_n": 0, "recent_conflict_share": null}, "STP": {"name": "Sao Tome and Principe", "n": 4, "conflict_share": 0.0, "goldstein_mean": 4.1, "recent_n": 0, "recent_conflict_share": null}, "SHN": {"name": "Saint Helena", "n": 3, "conflict_share": 0.0, "goldstein_mean": 1.57, "recent_n": 0, "recent_conflict_share": null}}, "excluded_actor_codes": {"EUR": 9144, "AFR": 8798, "SAS": 7417, "SEA": 5472, "PSE": 4413, "MEA": 2657, "ASA": 1185, "NMR": 508, "TMP": 293, "CAS": 214, "PGS": 208, "WST": 164, "SSD": 134, "CRB": 103, "WAF": 30, "EAF": 1}}
+{
+ "_meta": {
+  "what": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
+  "generated": "2026-08-07",
+  "days_missing": 0,
+  "partial": false,
+  "recent_window_days": 365,
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/map_relations.json"
+ },
+ "partners": {
+  "AFG": {
+   "name": "Afghanistan",
+   "n": 22094,
+   "conflict_share": 0.228,
+   "goldstein_mean": 1.02,
+   "recent_n": 3097,
+   "recent_conflict_share": 0.136
+  },
+  "AUS": {
+   "name": "Australia",
+   "n": 16006,
+   "conflict_share": 0.143,
+   "goldstein_mean": 1.9,
+   "recent_n": 1703,
+   "recent_conflict_share": 0.149
+  },
+  "BGD": {
+   "name": "Bangladesh",
+   "n": 73989,
+   "conflict_share": 0.299,
+   "goldstein_mean": 0.47,
+   "recent_n": 9101,
+   "recent_conflict_share": 0.362
+  },
+  "BRA": {
+   "name": "Brazil",
+   "n": 4985,
+   "conflict_share": 0.104,
+   "goldstein_mean": 2.62,
+   "recent_n": 844,
+   "recent_conflict_share": 0.032
+  },
+  "CAN": {
+   "name": "Canada",
+   "n": 23721,
+   "conflict_share": 0.244,
+   "goldstein_mean": 0.8,
+   "recent_n": 3200,
+   "recent_conflict_share": 0.203
+  },
+  "CHN": {
+   "name": "China",
+   "n": 95850,
+   "conflict_share": 0.273,
+   "goldstein_mean": 0.67,
+   "recent_n": 6699,
+   "recent_conflict_share": 0.184
+  },
+  "CUB": {
+   "name": "Cuba",
+   "n": 569,
+   "conflict_share": 0.079,
+   "goldstein_mean": 2.55,
+   "recent_n": 37,
+   "recent_conflict_share": 0.243
+  },
+  "GBR": {
+   "name": "United Kingdom",
+   "n": 71419,
+   "conflict_share": 0.197,
+   "goldstein_mean": 1.16,
+   "recent_n": 6429,
+   "recent_conflict_share": 0.162
+  },
+  "IRN": {
+   "name": "Iran",
+   "n": 16260,
+   "conflict_share": 0.176,
+   "goldstein_mean": 1.49,
+   "recent_n": 4712,
+   "recent_conflict_share": 0.178
+  },
+  "ISR": {
+   "name": "Israel",
+   "n": 21106,
+   "conflict_share": 0.194,
+   "goldstein_mean": 1.16,
+   "recent_n": 2350,
+   "recent_conflict_share": 0.223
+  },
+  "ITA": {
+   "name": "Italy",
+   "n": 12019,
+   "conflict_share": 0.209,
+   "goldstein_mean": 1.03,
+   "recent_n": 1166,
+   "recent_conflict_share": 0.182
+  },
+  "KEN": {
+   "name": "Kenya",
+   "n": 2501,
+   "conflict_share": 0.216,
+   "goldstein_mean": 1.02,
+   "recent_n": 221,
+   "recent_conflict_share": 0.131
+  },
+  "KGZ": {
+   "name": "Kyrgyzstan",
+   "n": 1068,
+   "conflict_share": 0.101,
+   "goldstein_mean": 2.22,
+   "recent_n": 76,
+   "recent_conflict_share": 0.079
+  },
+  "KHM": {
+   "name": "Cambodia",
+   "n": 1099,
+   "conflict_share": 0.132,
+   "goldstein_mean": 1.94,
+   "recent_n": 125,
+   "recent_conflict_share": 0.32
+  },
+  "LBR": {
+   "name": "Liberia",
+   "n": 379,
+   "conflict_share": 0.121,
+   "goldstein_mean": 1.55,
+   "recent_n": 138,
+   "recent_conflict_share": 0.036
+  },
+  "LKA": {
+   "name": "Sri Lanka",
+   "n": 26946,
+   "conflict_share": 0.288,
+   "goldstein_mean": 0.59,
+   "recent_n": 2352,
+   "recent_conflict_share": 0.176
+  },
+  "MDV": {
+   "name": "Maldives",
+   "n": 11371,
+   "conflict_share": 0.196,
+   "goldstein_mean": 1.09,
+   "recent_n": 426,
+   "recent_conflict_share": 0.272
+  },
+  "MYS": {
+   "name": "Malaysia",
+   "n": 7790,
+   "conflict_share": 0.15,
+   "goldstein_mean": 1.83,
+   "recent_n": 689,
+   "recent_conflict_share": 0.112
+  },
+  "NOR": {
+   "name": "Norway",
+   "n": 1830,
+   "conflict_share": 0.113,
+   "goldstein_mean": 2.47,
+   "recent_n": 206,
+   "recent_conflict_share": 0.044
+  },
+  "NPL": {
+   "name": "Nepal",
+   "n": 29058,
+   "conflict_share": 0.239,
+   "goldstein_mean": 0.9,
+   "recent_n": 2880,
+   "recent_conflict_share": 0.289
+  },
+  "PAK": {
+   "name": "Pakistan",
+   "n": 156712,
+   "conflict_share": 0.416,
+   "goldstein_mean": -0.81,
+   "recent_n": 9967,
+   "recent_conflict_share": 0.472
+  },
+  "RUS": {
+   "name": "Russia",
+   "n": 36798,
+   "conflict_share": 0.152,
+   "goldstein_mean": 1.92,
+   "recent_n": 7065,
+   "recent_conflict_share": 0.126
+  },
+  "SAU": {
+   "name": "Saudi Arabia",
+   "n": 17193,
+   "conflict_share": 0.176,
+   "goldstein_mean": 1.54,
+   "recent_n": 1409,
+   "recent_conflict_share": 0.186
+  },
+  "SDN": {
+   "name": "Sudan",
+   "n": 1547,
+   "conflict_share": 0.29,
+   "goldstein_mean": 0.29,
+   "recent_n": 62,
+   "recent_conflict_share": 0.323
+  },
+  "TUR": {
+   "name": "Turkey",
+   "n": 5560,
+   "conflict_share": 0.236,
+   "goldstein_mean": 0.92,
+   "recent_n": 369,
+   "recent_conflict_share": 0.252
+  },
+  "USA": {
+   "name": "United States",
+   "n": 219786,
+   "conflict_share": 0.186,
+   "goldstein_mean": 1.29,
+   "recent_n": 22391,
+   "recent_conflict_share": 0.189
+  },
+  "YEM": {
+   "name": "Yemen",
+   "n": 2697,
+   "conflict_share": 0.401,
+   "goldstein_mean": -0.84,
+   "recent_n": 102,
+   "recent_conflict_share": 0.412
+  },
+  "BTN": {
+   "name": "Bhutan",
+   "n": 7909,
+   "conflict_share": 0.103,
+   "goldstein_mean": 2.19,
+   "recent_n": 913,
+   "recent_conflict_share": 0.104
+  },
+  "CHE": {
+   "name": "Switzerland",
+   "n": 7010,
+   "conflict_share": 0.16,
+   "goldstein_mean": 1.6,
+   "recent_n": 886,
+   "recent_conflict_share": 0.087
+  },
+  "DEU": {
+   "name": "Germany",
+   "n": 14403,
+   "conflict_share": 0.151,
+   "goldstein_mean": 1.8,
+   "recent_n": 1820,
+   "recent_conflict_share": 0.055
+  },
+  "ESP": {
+   "name": "Spain",
+   "n": 4052,
+   "conflict_share": 0.186,
+   "goldstein_mean": 1.19,
+   "recent_n": 336,
+   "recent_conflict_share": 0.14
+  },
+  "FIN": {
+   "name": "Finland",
+   "n": 1837,
+   "conflict_share": 0.134,
+   "goldstein_mean": 2.21,
+   "recent_n": 348,
+   "recent_conflict_share": 0.052
+  },
+  "IDN": {
+   "name": "Indonesia",
+   "n": 6760,
+   "conflict_share": 0.118,
+   "goldstein_mean": 1.96,
+   "recent_n": 741,
+   "recent_conflict_share": 0.07
+  },
+  "IRQ": {
+   "name": "Iraq",
+   "n": 3842,
+   "conflict_share": 0.292,
+   "goldstein_mean": 0.25,
+   "recent_n": 300,
+   "recent_conflict_share": 0.253
+  },
+  "JPN": {
+   "name": "Japan",
+   "n": 26039,
+   "conflict_share": 0.116,
+   "goldstein_mean": 2.27,
+   "recent_n": 3613,
+   "recent_conflict_share": 0.081
+  },
+  "MCO": {
+   "name": "Monaco",
+   "n": 435,
+   "conflict_share": 0.147,
+   "goldstein_mean": 2.13,
+   "recent_n": 30,
+   "recent_conflict_share": 0.3
+  },
+  "MEX": {
+   "name": "Mexico",
+   "n": 1398,
+   "conflict_share": 0.22,
+   "goldstein_mean": 1.03,
+   "recent_n": 83,
+   "recent_conflict_share": 0.133
+  },
+  "MMR": {
+   "name": "Myanmar",
+   "n": 11478,
+   "conflict_share": 0.296,
+   "goldstein_mean": 0.72,
+   "recent_n": 844,
+   "recent_conflict_share": 0.299
+  },
+  "NGA": {
+   "name": "Nigeria",
+   "n": 5345,
+   "conflict_share": 0.55,
+   "goldstein_mean": -1.73,
+   "recent_n": 335,
+   "recent_conflict_share": 0.561
+  },
+  "NZL": {
+   "name": "New Zealand",
+   "n": 4027,
+   "conflict_share": 0.126,
+   "goldstein_mean": 1.85,
+   "recent_n": 541,
+   "recent_conflict_share": 0.072
+  },
+  "PHL": {
+   "name": "Philippines",
+   "n": 2993,
+   "conflict_share": 0.131,
+   "goldstein_mean": 2.19,
+   "recent_n": 280,
+   "recent_conflict_share": 0.054
+  },
+  "PRT": {
+   "name": "Portugal",
+   "n": 2173,
+   "conflict_share": 0.195,
+   "goldstein_mean": 1.12,
+   "recent_n": 210,
+   "recent_conflict_share": 0.238
+  },
+  "SGP": {
+   "name": "Singapore",
+   "n": 11991,
+   "conflict_share": 0.115,
+   "goldstein_mean": 2.36,
+   "recent_n": 1391,
+   "recent_conflict_share": 0.114
+  },
+  "THA": {
+   "name": "Thailand",
+   "n": 10157,
+   "conflict_share": 0.182,
+   "goldstein_mean": 1.37,
+   "recent_n": 1601,
+   "recent_conflict_share": 0.29
+  },
+  "TWN": {
+   "name": "Taiwan",
+   "n": 2686,
+   "conflict_share": 0.112,
+   "goldstein_mean": 2.66,
+   "recent_n": 179,
+   "recent_conflict_share": 0.084
+  },
+  "VNM": {
+   "name": "Vietnam",
+   "n": 5389,
+   "conflict_share": 0.079,
+   "goldstein_mean": 2.45,
+   "recent_n": 749,
+   "recent_conflict_share": 0.081
+  },
+  "ARE": {
+   "name": "United Arab Emirates",
+   "n": 28299,
+   "conflict_share": 0.168,
+   "goldstein_mean": 1.53,
+   "recent_n": 2856,
+   "recent_conflict_share": 0.187
+  },
+  "BHR": {
+   "name": "Bahrain",
+   "n": 1962,
+   "conflict_share": 0.107,
+   "goldstein_mean": 2.26,
+   "recent_n": 244,
+   "recent_conflict_share": 0.07
+  },
+  "COL": {
+   "name": "Colombia",
+   "n": 457,
+   "conflict_share": 0.252,
+   "goldstein_mean": 0.81,
+   "recent_n": 64,
+   "recent_conflict_share": 0.188
+  },
+  "FRA": {
+   "name": "France",
+   "n": 21722,
+   "conflict_share": 0.125,
+   "goldstein_mean": 2.05,
+   "recent_n": 2587,
+   "recent_conflict_share": 0.06
+  },
+  "GRC": {
+   "name": "Greece",
+   "n": 3190,
+   "conflict_share": 0.127,
+   "goldstein_mean": 1.56,
+   "recent_n": 328,
+   "recent_conflict_share": 0.064
+  },
+  "GUY": {
+   "name": "Guyana",
+   "n": 660,
+   "conflict_share": 0.106,
+   "goldstein_mean": 2.05,
+   "recent_n": 45,
+   "recent_conflict_share": 0.111
+  },
+  "JOR": {
+   "name": "Jordan",
+   "n": 3527,
+   "conflict_share": 0.265,
+   "goldstein_mean": 0.24,
+   "recent_n": 349,
+   "recent_conflict_share": 0.175
+  },
+  "KOR": {
+   "name": "Republic of Korea",
+   "n": 8284,
+   "conflict_share": 0.131,
+   "goldstein_mean": 2.41,
+   "recent_n": 1221,
+   "recent_conflict_share": 0.166
+  },
+  "KWT": {
+   "name": "Kuwait",
+   "n": 3443,
+   "conflict_share": 0.169,
+   "goldstein_mean": 1.36,
+   "recent_n": 312,
+   "recent_conflict_share": 0.272
+  },
+  "MLI": {
+   "name": "Mali",
+   "n": 701,
+   "conflict_share": 0.317,
+   "goldstein_mean": -0.13,
+   "recent_n": 141,
+   "recent_conflict_share": 0.277
+  },
+  "NLD": {
+   "name": "Netherlands",
+   "n": 4824,
+   "conflict_share": 0.109,
+   "goldstein_mean": 2.31,
+   "recent_n": 616,
+   "recent_conflict_share": 0.067
+  },
+  "QAT": {
+   "name": "Qatar",
+   "n": 6169,
+   "conflict_share": 0.106,
+   "goldstein_mean": 1.91,
+   "recent_n": 550,
+   "recent_conflict_share": 0.085
+  },
+  "TJK": {
+   "name": "Tajikistan",
+   "n": 633,
+   "conflict_share": 0.055,
+   "goldstein_mean": 2.62,
+   "recent_n": 45,
+   "recent_conflict_share": 0.0
+  },
+  "ZAF": {
+   "name": "South Africa",
+   "n": 3228,
+   "conflict_share": 0.29,
+   "goldstein_mean": 0.14,
+   "recent_n": 310,
+   "recent_conflict_share": 0.184
+  },
+  "ZWE": {
+   "name": "Zimbabwe",
+   "n": 844,
+   "conflict_share": 0.154,
+   "goldstein_mean": 1.67,
+   "recent_n": 68,
+   "recent_conflict_share": 0.132
+  },
+  "ARG": {
+   "name": "Argentina",
+   "n": 1117,
+   "conflict_share": 0.084,
+   "goldstein_mean": 2.46,
+   "recent_n": 90,
+   "recent_conflict_share": 0.111
+  },
+  "EGY": {
+   "name": "Egypt",
+   "n": 3637,
+   "conflict_share": 0.119,
+   "goldstein_mean": 1.95,
+   "recent_n": 280,
+   "recent_conflict_share": 0.168
+  },
+  "FJI": {
+   "name": "Fiji",
+   "n": 991,
+   "conflict_share": 0.064,
+   "goldstein_mean": 2.51,
+   "recent_n": 249,
+   "recent_conflict_share": 0.06
+  },
+  "LBN": {
+   "name": "Lebanon",
+   "n": 1533,
+   "conflict_share": 0.403,
+   "goldstein_mean": -0.89,
+   "recent_n": 173,
+   "recent_conflict_share": 0.329
+  },
+  "OMN": {
+   "name": "Oman",
+   "n": 4321,
+   "conflict_share": 0.114,
+   "goldstein_mean": 2.15,
+   "recent_n": 701,
+   "recent_conflict_share": 0.158
+  },
+  "CHL": {
+   "name": "Chile",
+   "n": 896,
+   "conflict_share": 0.123,
+   "goldstein_mean": 2.02,
+   "recent_n": 137,
+   "recent_conflict_share": 0.168
+  },
+  "IRL": {
+   "name": "Ireland",
+   "n": 2952,
+   "conflict_share": 0.157,
+   "goldstein_mean": 1.38,
+   "recent_n": 356,
+   "recent_conflict_share": 0.166
+  },
+  "MKD": {
+   "name": "North Macedonia",
+   "n": 91,
+   "conflict_share": 0.055,
+   "goldstein_mean": 1.67,
+   "recent_n": 15,
+   "recent_conflict_share": 0.0
+  },
+  "RWA": {
+   "name": "Rwanda",
+   "n": 649,
+   "conflict_share": 0.096,
+   "goldstein_mean": 2.4,
+   "recent_n": 58,
+   "recent_conflict_share": 0.0
+  },
+  "SWE": {
+   "name": "Sweden",
+   "n": 2548,
+   "conflict_share": 0.138,
+   "goldstein_mean": 2.05,
+   "recent_n": 218,
+   "recent_conflict_share": 0.078
+  },
+  "TZA": {
+   "name": "Tanzania",
+   "n": 1504,
+   "conflict_share": 0.13,
+   "goldstein_mean": 1.88,
+   "recent_n": 131,
+   "recent_conflict_share": 0.061
+  },
+  "BEL": {
+   "name": "Belgium",
+   "n": 3353,
+   "conflict_share": 0.212,
+   "goldstein_mean": 1.07,
+   "recent_n": 471,
+   "recent_conflict_share": 0.282
+  },
+  "KAZ": {
+   "name": "Kazakhstan",
+   "n": 1429,
+   "conflict_share": 0.099,
+   "goldstein_mean": 2.56,
+   "recent_n": 80,
+   "recent_conflict_share": 0.05
+  },
+  "MUS": {
+   "name": "Mauritius",
+   "n": 3828,
+   "conflict_share": 0.073,
+   "goldstein_mean": 2.33,
+   "recent_n": 544,
+   "recent_conflict_share": 0.024
+  },
+  "ETH": {
+   "name": "Ethiopia",
+   "n": 1027,
+   "conflict_share": 0.164,
+   "goldstein_mean": 1.7,
+   "recent_n": 155,
+   "recent_conflict_share": 0.174
+  },
+  "SYR": {
+   "name": "Syria",
+   "n": 2033,
+   "conflict_share": 0.284,
+   "goldstein_mean": 0.13,
+   "recent_n": 86,
+   "recent_conflict_share": 0.174
+  },
+  "HTI": {
+   "name": "Haiti",
+   "n": 128,
+   "conflict_share": 0.227,
+   "goldstein_mean": 0.71,
+   "recent_n": 5,
+   "recent_conflict_share": 0.2
+  },
+  "SRB": {
+   "name": "Serbia",
+   "n": 452,
+   "conflict_share": 0.113,
+   "goldstein_mean": 1.78,
+   "recent_n": 43,
+   "recent_conflict_share": 0.0
+  },
+  "CZE": {
+   "name": "Czechia",
+   "n": 813,
+   "conflict_share": 0.146,
+   "goldstein_mean": 2.17,
+   "recent_n": 12,
+   "recent_conflict_share": 0.0
+  },
+  "LAO": {
+   "name": "Laos",
+   "n": 418,
+   "conflict_share": 0.136,
+   "goldstein_mean": 1.86,
+   "recent_n": 31,
+   "recent_conflict_share": 0.194
+  },
+  "POL": {
+   "name": "Poland",
+   "n": 2610,
+   "conflict_share": 0.211,
+   "goldstein_mean": 0.74,
+   "recent_n": 291,
+   "recent_conflict_share": 0.21
+  },
+  "PRY": {
+   "name": "Paraguay",
+   "n": 199,
+   "conflict_share": 0.05,
+   "goldstein_mean": 2.88,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "DNK": {
+   "name": "Denmark",
+   "n": 3439,
+   "conflict_share": 0.271,
+   "goldstein_mean": 0.72,
+   "recent_n": 442,
+   "recent_conflict_share": 0.475
+  },
+  "LVA": {
+   "name": "Latvia",
+   "n": 609,
+   "conflict_share": 0.33,
+   "goldstein_mean": -0.93,
+   "recent_n": 24,
+   "recent_conflict_share": 0.0
+  },
+  "SUR": {
+   "name": "Suriname",
+   "n": 449,
+   "conflict_share": 0.033,
+   "goldstein_mean": 2.33,
+   "recent_n": 11,
+   "recent_conflict_share": 0.0
+  },
+  "CAF": {
+   "name": "Central African Rep.",
+   "n": 31,
+   "conflict_share": 0.258,
+   "goldstein_mean": 1.45,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "HKG": {
+   "name": "Hong Kong",
+   "n": 125,
+   "conflict_share": 0.48,
+   "goldstein_mean": -0.32,
+   "recent_n": 10,
+   "recent_conflict_share": 0.5
+  },
+  "PNG": {
+   "name": "Papua New Guinea",
+   "n": 430,
+   "conflict_share": 0.093,
+   "goldstein_mean": 1.8,
+   "recent_n": 29,
+   "recent_conflict_share": 0.0
+  },
+  "ARM": {
+   "name": "Armenia",
+   "n": 969,
+   "conflict_share": 0.062,
+   "goldstein_mean": 2.61,
+   "recent_n": 145,
+   "recent_conflict_share": 0.069
+  },
+  "JAM": {
+   "name": "Jamaica",
+   "n": 239,
+   "conflict_share": 0.192,
+   "goldstein_mean": 0.82,
+   "recent_n": 24,
+   "recent_conflict_share": 0.0
+  },
+  "PER": {
+   "name": "Peru",
+   "n": 558,
+   "conflict_share": 0.138,
+   "goldstein_mean": 1.56,
+   "recent_n": 65,
+   "recent_conflict_share": 0.138
+  },
+  "LUX": {
+   "name": "Luxembourg",
+   "n": 379,
+   "conflict_share": 0.055,
+   "goldstein_mean": 3.03,
+   "recent_n": 83,
+   "recent_conflict_share": 0.024
+  },
+  "UZB": {
+   "name": "Uzbekistan",
+   "n": 2130,
+   "conflict_share": 0.182,
+   "goldstein_mean": 1.48,
+   "recent_n": 242,
+   "recent_conflict_share": 0.194
+  },
+  "ALB": {
+   "name": "Albania",
+   "n": 129,
+   "conflict_share": 0.349,
+   "goldstein_mean": 0.48,
+   "recent_n": 13,
+   "recent_conflict_share": 0.0
+  },
+  "BOL": {
+   "name": "Bolivia",
+   "n": 322,
+   "conflict_share": 0.28,
+   "goldstein_mean": 0.34,
+   "recent_n": 43,
+   "recent_conflict_share": 0.163
+  },
+  "GHA": {
+   "name": "Ghana",
+   "n": 742,
+   "conflict_share": 0.159,
+   "goldstein_mean": 1.72,
+   "recent_n": 55,
+   "recent_conflict_share": 0.291
+  },
+  "SYC": {
+   "name": "Seychelles",
+   "n": 1185,
+   "conflict_share": 0.058,
+   "goldstein_mean": 2.71,
+   "recent_n": 303,
+   "recent_conflict_share": 0.01
+  },
+  "TKM": {
+   "name": "Turkmenistan",
+   "n": 320,
+   "conflict_share": 0.122,
+   "goldstein_mean": 1.73,
+   "recent_n": 6,
+   "recent_conflict_share": 0.333
+  },
+  "TTO": {
+   "name": "Trinidad and Tobago",
+   "n": 466,
+   "conflict_share": 0.18,
+   "goldstein_mean": 0.81,
+   "recent_n": 40,
+   "recent_conflict_share": 0.075
+  },
+  "ECU": {
+   "name": "Ecuador",
+   "n": 284,
+   "conflict_share": 0.116,
+   "goldstein_mean": 1.74,
+   "recent_n": 63,
+   "recent_conflict_share": 0.016
+  },
+  "MAR": {
+   "name": "Morocco",
+   "n": 555,
+   "conflict_share": 0.159,
+   "goldstein_mean": 1.63,
+   "recent_n": 100,
+   "recent_conflict_share": 0.09
+  },
+  "NIC": {
+   "name": "Nicaragua",
+   "n": 87,
+   "conflict_share": 0.069,
+   "goldstein_mean": 2.09,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "BGR": {
+   "name": "Bulgaria",
+   "n": 693,
+   "conflict_share": 0.364,
+   "goldstein_mean": -0.59,
+   "recent_n": 35,
+   "recent_conflict_share": 0.171
+  },
+  "CRI": {
+   "name": "Costa Rica",
+   "n": 136,
+   "conflict_share": 0.059,
+   "goldstein_mean": 2.65,
+   "recent_n": 8,
+   "recent_conflict_share": 0.0
+  },
+  "GMB": {
+   "name": "Gambia",
+   "n": 118,
+   "conflict_share": 0.144,
+   "goldstein_mean": 2.08,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "MRT": {
+   "name": "Mauritania",
+   "n": 22,
+   "conflict_share": 0.045,
+   "goldstein_mean": 2.79,
+   "recent_n": 2,
+   "recent_conflict_share": 0.0
+  },
+  "UKR": {
+   "name": "Ukraine",
+   "n": 8619,
+   "conflict_share": 0.201,
+   "goldstein_mean": 1.06,
+   "recent_n": 877,
+   "recent_conflict_share": 0.261
+  },
+  "LBY": {
+   "name": "Libya",
+   "n": 383,
+   "conflict_share": 0.316,
+   "goldstein_mean": 0.23,
+   "recent_n": 58,
+   "recent_conflict_share": 0.293
+  },
+  "TGO": {
+   "name": "Togo",
+   "n": 85,
+   "conflict_share": 0.412,
+   "goldstein_mean": 0.04,
+   "recent_n": 12,
+   "recent_conflict_share": 1.0
+  },
+  "COG": {
+   "name": "Republic of the Congo",
+   "n": 171,
+   "conflict_share": 0.222,
+   "goldstein_mean": 0.35,
+   "recent_n": 17,
+   "recent_conflict_share": 0.0
+  },
+  "PRK": {
+   "name": "Dem. Rep. Korea",
+   "n": 1107,
+   "conflict_share": 0.352,
+   "goldstein_mean": -0.1,
+   "recent_n": 14,
+   "recent_conflict_share": 0.357
+  },
+  "SOM": {
+   "name": "Somalia",
+   "n": 540,
+   "conflict_share": 0.333,
+   "goldstein_mean": 0.76,
+   "recent_n": 33,
+   "recent_conflict_share": 0.667
+  },
+  "TCD": {
+   "name": "Chad",
+   "n": 56,
+   "conflict_share": 0.161,
+   "goldstein_mean": 2.01,
+   "recent_n": 1,
+   "recent_conflict_share": 1.0
+  },
+  "AUT": {
+   "name": "Austria",
+   "n": 1372,
+   "conflict_share": 0.219,
+   "goldstein_mean": 1.13,
+   "recent_n": 183,
+   "recent_conflict_share": 0.131
+  },
+  "BLR": {
+   "name": "Belarus",
+   "n": 566,
+   "conflict_share": 0.11,
+   "goldstein_mean": 2.41,
+   "recent_n": 38,
+   "recent_conflict_share": 0.184
+  },
+  "BRN": {
+   "name": "Brunei",
+   "n": 327,
+   "conflict_share": 0.07,
+   "goldstein_mean": 2.43,
+   "recent_n": 12,
+   "recent_conflict_share": 0.0
+  },
+  "SVK": {
+   "name": "Slovakia",
+   "n": 334,
+   "conflict_share": 0.072,
+   "goldstein_mean": 2.47,
+   "recent_n": 190,
+   "recent_conflict_share": 0.053
+  },
+  "MNG": {
+   "name": "Mongolia",
+   "n": 937,
+   "conflict_share": 0.088,
+   "goldstein_mean": 2.1,
+   "recent_n": 287,
+   "recent_conflict_share": 0.014
+  },
+  "HUN": {
+   "name": "Hungary",
+   "n": 726,
+   "conflict_share": 0.113,
+   "goldstein_mean": 1.85,
+   "recent_n": 35,
+   "recent_conflict_share": 0.114
+  },
+  "UGA": {
+   "name": "Uganda",
+   "n": 871,
+   "conflict_share": 0.264,
+   "goldstein_mean": 0.64,
+   "recent_n": 69,
+   "recent_conflict_share": 0.203
+  },
+  "VEN": {
+   "name": "Venezuela",
+   "n": 947,
+   "conflict_share": 0.171,
+   "goldstein_mean": 1.71,
+   "recent_n": 430,
+   "recent_conflict_share": 0.135
+  },
+  "KNA": {
+   "name": "Saint Kitts and Nevis",
+   "n": 177,
+   "conflict_share": 0.266,
+   "goldstein_mean": -0.35,
+   "recent_n": 26,
+   "recent_conflict_share": 0.154
+  },
+  "PAN": {
+   "name": "Panama",
+   "n": 777,
+   "conflict_share": 0.232,
+   "goldstein_mean": 0.54,
+   "recent_n": 52,
+   "recent_conflict_share": 0.154
+  },
+  "GAB": {
+   "name": "Gabon",
+   "n": 174,
+   "conflict_share": 0.017,
+   "goldstein_mean": 2.39,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "GTM": {
+   "name": "Guatemala",
+   "n": 283,
+   "conflict_share": 0.106,
+   "goldstein_mean": 2.02,
+   "recent_n": 17,
+   "recent_conflict_share": 0.471
+  },
+  "AZE": {
+   "name": "Azerbaijan",
+   "n": 944,
+   "conflict_share": 0.141,
+   "goldstein_mean": 1.67,
+   "recent_n": 172,
+   "recent_conflict_share": 0.174
+  },
+  "NAM": {
+   "name": "Namibia",
+   "n": 994,
+   "conflict_share": 0.129,
+   "goldstein_mean": 2.07,
+   "recent_n": 27,
+   "recent_conflict_share": 0.111
+  },
+  "DOM": {
+   "name": "Dominican Rep.",
+   "n": 219,
+   "conflict_share": 0.082,
+   "goldstein_mean": 2.64,
+   "recent_n": 10,
+   "recent_conflict_share": 0.3
+  },
+  "COD": {
+   "name": "Democratic Republic of the Congo",
+   "n": 176,
+   "conflict_share": 0.551,
+   "goldstein_mean": -2.27,
+   "recent_n": 22,
+   "recent_conflict_share": 0.091
+  },
+  "GRD": {
+   "name": "Grenada",
+   "n": 84,
+   "conflict_share": 0.119,
+   "goldstein_mean": 2.19,
+   "recent_n": 8,
+   "recent_conflict_share": 0.25
+  },
+  "MOZ": {
+   "name": "Mozambique",
+   "n": 382,
+   "conflict_share": 0.157,
+   "goldstein_mean": 1.56,
+   "recent_n": 16,
+   "recent_conflict_share": 0.188
+  },
+  "HRV": {
+   "name": "Croatia",
+   "n": 215,
+   "conflict_share": 0.121,
+   "goldstein_mean": 2.2,
+   "recent_n": 54,
+   "recent_conflict_share": 0.074
+  },
+  "ISL": {
+   "name": "Iceland",
+   "n": 284,
+   "conflict_share": 0.021,
+   "goldstein_mean": 3.37,
+   "recent_n": 38,
+   "recent_conflict_share": 0.0
+  },
+  "SLE": {
+   "name": "Sierra Leone",
+   "n": 184,
+   "conflict_share": 0.043,
+   "goldstein_mean": 2.51,
+   "recent_n": 10,
+   "recent_conflict_share": 0.1
+  },
+  "CYP": {
+   "name": "Cyprus",
+   "n": 872,
+   "conflict_share": 0.101,
+   "goldstein_mean": 2.25,
+   "recent_n": 339,
+   "recent_conflict_share": 0.041
+  },
+  "TUN": {
+   "name": "Tunisia",
+   "n": 149,
+   "conflict_share": 0.134,
+   "goldstein_mean": 2.06,
+   "recent_n": 15,
+   "recent_conflict_share": 0.0
+  },
+  "TON": {
+   "name": "Tonga",
+   "n": 46,
+   "conflict_share": 0.478,
+   "goldstein_mean": -1.26,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "ZMB": {
+   "name": "Zambia",
+   "n": 408,
+   "conflict_share": 0.189,
+   "goldstein_mean": 1.67,
+   "recent_n": 29,
+   "recent_conflict_share": 0.517
+  },
+  "DZA": {
+   "name": "Algeria",
+   "n": 234,
+   "conflict_share": 0.158,
+   "goldstein_mean": 1.36,
+   "recent_n": 45,
+   "recent_conflict_share": 0.089
+  },
+  "MLT": {
+   "name": "Malta",
+   "n": 789,
+   "conflict_share": 0.313,
+   "goldstein_mean": -0.72,
+   "recent_n": 54,
+   "recent_conflict_share": 0.056
+  },
+  "SWZ": {
+   "name": "eSwatini",
+   "n": 23,
+   "conflict_share": 0.0,
+   "goldstein_mean": 2.9,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "LSO": {
+   "name": "Lesotho",
+   "n": 72,
+   "conflict_share": 0.125,
+   "goldstein_mean": 2.23,
+   "recent_n": 10,
+   "recent_conflict_share": 0.0
+  },
+  "VAT": {
+   "name": "Vatican",
+   "n": 694,
+   "conflict_share": 0.206,
+   "goldstein_mean": 0.66,
+   "recent_n": 20,
+   "recent_conflict_share": 0.15
+  },
+  "GIN": {
+   "name": "Guinea",
+   "n": 157,
+   "conflict_share": 0.191,
+   "goldstein_mean": 1.72,
+   "recent_n": 13,
+   "recent_conflict_share": 0.154
+  },
+  "LTU": {
+   "name": "Lithuania",
+   "n": 388,
+   "conflict_share": 0.165,
+   "goldstein_mean": 1.68,
+   "recent_n": 22,
+   "recent_conflict_share": 0.091
+  },
+  "SEN": {
+   "name": "Senegal",
+   "n": 495,
+   "conflict_share": 0.4,
+   "goldstein_mean": -0.14,
+   "recent_n": 18,
+   "recent_conflict_share": 0.667
+  },
+  "CIV": {
+   "name": "C\u00f4te d'Ivoire",
+   "n": 148,
+   "conflict_share": 0.412,
+   "goldstein_mean": -0.1,
+   "recent_n": 13,
+   "recent_conflict_share": 0.154
+  },
+  "TUV": {
+   "name": "Tuvalu",
+   "n": 11,
+   "conflict_share": 0.182,
+   "goldstein_mean": 4.36,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "AGO": {
+   "name": "Angola",
+   "n": 202,
+   "conflict_share": 0.074,
+   "goldstein_mean": 2.11,
+   "recent_n": 56,
+   "recent_conflict_share": 0.071
+  },
+  "BWA": {
+   "name": "Botswana",
+   "n": 474,
+   "conflict_share": 0.07,
+   "goldstein_mean": 2.53,
+   "recent_n": 159,
+   "recent_conflict_share": 0.013
+  },
+  "URY": {
+   "name": "Uruguay",
+   "n": 59,
+   "conflict_share": 0.136,
+   "goldstein_mean": 1.36,
+   "recent_n": 16,
+   "recent_conflict_share": 0.0
+  },
+  "CMR": {
+   "name": "Cameroon",
+   "n": 129,
+   "conflict_share": 0.442,
+   "goldstein_mean": -0.56,
+   "recent_n": 17,
+   "recent_conflict_share": 0.235
+  },
+  "SLV": {
+   "name": "El Salvador",
+   "n": 69,
+   "conflict_share": 0.261,
+   "goldstein_mean": 0.46,
+   "recent_n": 2,
+   "recent_conflict_share": 1.0
+  },
+  "BMU": {
+   "name": "Bermuda",
+   "n": 114,
+   "conflict_share": 0.684,
+   "goldstein_mean": -0.58,
+   "recent_n": 5,
+   "recent_conflict_share": 0.6
+  },
+  "LCA": {
+   "name": "Saint Lucia",
+   "n": 11,
+   "conflict_share": 0.182,
+   "goldstein_mean": 1.5,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "DJI": {
+   "name": "Djibouti",
+   "n": 216,
+   "conflict_share": 0.139,
+   "goldstein_mean": 1.26,
+   "recent_n": 29,
+   "recent_conflict_share": 0.241
+  },
+  "CYM": {
+   "name": "Cayman Is.",
+   "n": 74,
+   "conflict_share": 0.203,
+   "goldstein_mean": 1.77,
+   "recent_n": 1,
+   "recent_conflict_share": 1.0
+  },
+  "MWI": {
+   "name": "Malawi",
+   "n": 267,
+   "conflict_share": 0.15,
+   "goldstein_mean": 1.53,
+   "recent_n": 7,
+   "recent_conflict_share": 0.714
+  },
+  "VCT": {
+   "name": "St. Vin. and Gren.",
+   "n": 73,
+   "conflict_share": 0.082,
+   "goldstein_mean": 1.52,
+   "recent_n": 14,
+   "recent_conflict_share": 0.143
+  },
+  "EST": {
+   "name": "Estonia",
+   "n": 419,
+   "conflict_share": 0.153,
+   "goldstein_mean": 1.86,
+   "recent_n": 55,
+   "recent_conflict_share": 0.055
+  },
+  "WSM": {
+   "name": "Samoa",
+   "n": 13,
+   "conflict_share": 0.077,
+   "goldstein_mean": 1.23,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "MDG": {
+   "name": "Madagascar",
+   "n": 301,
+   "conflict_share": 0.056,
+   "goldstein_mean": 2.55,
+   "recent_n": 18,
+   "recent_conflict_share": 0.0
+  },
+  "MAC": {
+   "name": "Macao",
+   "n": 11,
+   "conflict_share": 0.273,
+   "goldstein_mean": 1.08,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "KIR": {
+   "name": "Kiribati",
+   "n": 16,
+   "conflict_share": 0.0,
+   "goldstein_mean": 2.39,
+   "recent_n": 14,
+   "recent_conflict_share": 0.0
+  },
+  "NER": {
+   "name": "Niger",
+   "n": 174,
+   "conflict_share": 0.425,
+   "goldstein_mean": -1.33,
+   "recent_n": 7,
+   "recent_conflict_share": 0.429
+  },
+  "GNQ": {
+   "name": "Eq. Guinea",
+   "n": 65,
+   "conflict_share": 0.2,
+   "goldstein_mean": 1.87,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "BHS": {
+   "name": "Bahamas",
+   "n": 74,
+   "conflict_share": 0.135,
+   "goldstein_mean": 1.7,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "BLZ": {
+   "name": "Belize",
+   "n": 56,
+   "conflict_share": 0.464,
+   "goldstein_mean": -2.1,
+   "recent_n": 12,
+   "recent_conflict_share": 0.167
+  },
+  "BEN": {
+   "name": "Benin",
+   "n": 123,
+   "conflict_share": 0.065,
+   "goldstein_mean": 2.33,
+   "recent_n": 1,
+   "recent_conflict_share": 1.0
+  },
+  "VUT": {
+   "name": "Vanuatu",
+   "n": 24,
+   "conflict_share": 0.292,
+   "goldstein_mean": 0.62,
+   "recent_n": 2,
+   "recent_conflict_share": 0.0
+  },
+  "NRU": {
+   "name": "Nauru",
+   "n": 6,
+   "conflict_share": 0.667,
+   "goldstein_mean": -1.7,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "PLW": {
+   "name": "Palau",
+   "n": 22,
+   "conflict_share": 0.227,
+   "goldstein_mean": 0.79,
+   "recent_n": 9,
+   "recent_conflict_share": 0.333
+  },
+  "ATG": {
+   "name": "Antigua and Barb.",
+   "n": 402,
+   "conflict_share": 0.231,
+   "goldstein_mean": 1.03,
+   "recent_n": 8,
+   "recent_conflict_share": 0.0
+  },
+  "ERI": {
+   "name": "Eritrea",
+   "n": 44,
+   "conflict_share": 0.045,
+   "goldstein_mean": 3.21,
+   "recent_n": 10,
+   "recent_conflict_share": 0.0
+  },
+  "LIE": {
+   "name": "Liechtenstein",
+   "n": 71,
+   "conflict_share": 0.0,
+   "goldstein_mean": 3.69,
+   "recent_n": 27,
+   "recent_conflict_share": 0.0
+  },
+  "BFA": {
+   "name": "Burkina Faso",
+   "n": 34,
+   "conflict_share": 0.118,
+   "goldstein_mean": 1.44,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "FSM": {
+   "name": "Micronesia",
+   "n": 6,
+   "conflict_share": 0.0,
+   "goldstein_mean": 3.67,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "BDI": {
+   "name": "Burundi",
+   "n": 13,
+   "conflict_share": 0.462,
+   "goldstein_mean": -1.95,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "MDA": {
+   "name": "Moldova",
+   "n": 156,
+   "conflict_share": 0.115,
+   "goldstein_mean": 2.43,
+   "recent_n": 29,
+   "recent_conflict_share": 0.138
+  },
+  "GNB": {
+   "name": "Guinea-Bissau",
+   "n": 20,
+   "conflict_share": 0.25,
+   "goldstein_mean": 0.92,
+   "recent_n": 4,
+   "recent_conflict_share": 1.0
+  },
+  "MHL": {
+   "name": "Marshall Is.",
+   "n": 38,
+   "conflict_share": 0.132,
+   "goldstein_mean": 1.96,
+   "recent_n": 13,
+   "recent_conflict_share": 0.077
+  },
+  "COM": {
+   "name": "Comoros",
+   "n": 157,
+   "conflict_share": 0.006,
+   "goldstein_mean": 2.59,
+   "recent_n": 12,
+   "recent_conflict_share": 0.0
+  },
+  "SLB": {
+   "name": "Solomon Is.",
+   "n": 22,
+   "conflict_share": 0.0,
+   "goldstein_mean": 2.08,
+   "recent_n": 2,
+   "recent_conflict_share": 0.0
+  },
+  "AIA": {
+   "name": "Anguilla",
+   "n": 2,
+   "conflict_share": 0.5,
+   "goldstein_mean": 0.0,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "HND": {
+   "name": "Honduras",
+   "n": 58,
+   "conflict_share": 0.086,
+   "goldstein_mean": 1.89,
+   "recent_n": 1,
+   "recent_conflict_share": 0.0
+  },
+  "BRB": {
+   "name": "Barbados",
+   "n": 79,
+   "conflict_share": 0.025,
+   "goldstein_mean": 3.2,
+   "recent_n": 31,
+   "recent_conflict_share": 0.032
+  },
+  "DMA": {
+   "name": "Dominica",
+   "n": 156,
+   "conflict_share": 0.199,
+   "goldstein_mean": 0.77,
+   "recent_n": 1,
+   "recent_conflict_share": 0.0
+  },
+  "SMR": {
+   "name": "San Marino",
+   "n": 1,
+   "conflict_share": 0.0,
+   "goldstein_mean": 5.0,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "AND": {
+   "name": "Andorra",
+   "n": 10,
+   "conflict_share": 0.0,
+   "goldstein_mean": 2.47,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "COK": {
+   "name": "Cook Is.",
+   "n": 4,
+   "conflict_share": 0.0,
+   "goldstein_mean": 2.35,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "STP": {
+   "name": "Sao Tome and Principe",
+   "n": 4,
+   "conflict_share": 0.0,
+   "goldstein_mean": 4.1,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  },
+  "SHN": {
+   "name": "Saint Helena",
+   "n": 3,
+   "conflict_share": 0.0,
+   "goldstein_mean": 1.57,
+   "recent_n": 0,
+   "recent_conflict_share": null
+  }
+ },
+ "excluded_actor_codes": {
+  "EUR": 9144,
+  "AFR": 8798,
+  "SAS": 7417,
+  "SEA": 5472,
+  "PSE": 4413,
+  "MEA": 2657,
+  "ASA": 1185,
+  "NMR": 508,
+  "TMP": 293,
+  "CAS": 214,
+  "PGS": 208,
+  "WST": 164,
+  "SSD": 134,
+  "CRB": 103,
+  "WAF": 30,
+  "EAF": 1
+ }
+}
