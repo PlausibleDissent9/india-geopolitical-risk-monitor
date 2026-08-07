@@ -47,6 +47,10 @@ SECTOR_BASKETS = {
 }
 
 
+class OfflineMarketDataUnavailable(RuntimeError):
+    """Raised when an offline run has no lawful frozen market cache."""
+
+
 def _download(tickers: list[str], start: str) -> pd.DataFrame:
     data = yf.download(
         tickers, start=start, auto_adjust=True, progress=False, group_by="column"
@@ -75,7 +79,10 @@ def load_or_update(start: str = "2022-01-01") -> tuple[pd.DataFrame, pd.DataFram
             prices = pd.read_csv(p_path, parse_dates=["date"]).set_index("date")
             derived = pd.read_csv(d_path, parse_dates=["date"]).set_index("date")
             return prices, derived
-        print("[markets] OFFLINE requested but no cache; fetching anyway")
+        raise OfflineMarketDataUnavailable(
+            "IGRM_OFFLINE is set but prices.csv/derived_returns.csv are absent; "
+            "refusing a live market fetch"
+        )
     all_members = sorted({t for members in SECTOR_BASKETS.values() for t in members})
     prices = _download(list(TICKERS.values()) + all_members, start)
     prices = prices.rename(columns={v: k for k, v in TICKERS.items()})
