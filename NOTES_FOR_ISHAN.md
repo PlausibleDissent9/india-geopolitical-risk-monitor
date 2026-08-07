@@ -933,3 +933,78 @@ published before being asked is worth more than the finding costs.
    recommendation remains (b).
 2. **#31, the name collision.** Still your call, still unchanged from
    when you first saw it.
+
+## 0.26 The hardening pass, 7 August — what was silently broken, and what now catches it
+
+You said keep hardening. Here is what that found. Nothing on this list
+needs you; it is here so you know what the machine was doing wrong.
+
+**Two lanes had been failing every night, in silence, while reporting
+success.**
+
+V5 multilingual had run **70 times across 7 days** — 26 on 6 August
+alone — and had never once written its store. `update()` fetched all
+fifteen language-channel series and only saved at the end, so a single
+GDELT rate-limit anywhere in the fifteen threw past the save. Every
+completed fetch still landed in the chunk cache, the workflow read that
+growing cache as progress and re-dispatched itself, and the fetch step's
+`continue-on-error` hid the errors. A loop burning real CI minutes and
+real GDELT quota, structurally incapable of finishing.
+
+China had the identical bug, which is why `country_china.json` never
+existed. Worse there: the store's *absence* is what selects the 2017
+backfill start, so every run restarted the same doomed job.
+
+Both now save after each item. A run that dies on the ninth series keeps
+eight, and the next one starts at nine.
+
+**Seven payloads were being served as current while nothing rewrote
+them.** The worst was yesterday's own referee fix: `publish_shares` was
+wired into no workflow at all. `shares.csv` shipped as "a first-class
+artifact", ran once from my terminal, and would have frozen on 6 August
+forever while the site advertised it as the daily quantity. Writing a
+test for that one found six more.
+
+**The status page said the right thing and still could not tell me.** It
+correctly published `multilingual: not ok` every day — underneath a
+hand-written note reading "backfill in progress on CI", which was
+literally true and identical on day one and day seven. It now computes:
+*"0 of 15 language-channel series stored."* That is the sentence I would
+have acted on a week ago.
+
+**The codebook promised something false about citability.** It said every
+downloaded file carries its licence, citation and codebook link "so a
+downloaded file explains itself without this website". Measured: three
+payloads out of sixty-four. For a project whose whole pitch is
+citability that was the worst claim to leave standing, so the code now
+keeps the promise rather than the document being weakened.
+
+**The replication check verified 9 payloads out of 66 and said "OK".**
+It compares the source's `docs/data` against a clean clone's — and for
+any file no module rebuilt, both sides are the same committed copy, so
+it matched itself. It now reports real coverage as a number, and the
+number was raised from 9 to 16 by running eleven more deterministic
+lanes inside it. That work also exposed that only **one of twelve**
+network modules honoured the offline flag the check depends on.
+
+**Things that now fail loudly instead of drifting:** any payload going
+stale (all 66 audited nightly), published history being rewritten
+without a registered cause, a dead internal link, an external
+script/font/CDN appearing anywhere, a payload that no strict JSON parser
+can read, a percentile outside 0–100, a subscriber address or credential
+reaching the repo, and a module that writes a payload but is invoked by
+nothing.
+
+**Three mistakes were mine, made today, caught today.** A test I wrote
+did `git fetch --unshallow` inside the 06:00 gate. A test meant to catch
+committed subscriber lists flagged itself, and passed locally only while
+it was untracked — a clean clone caught what my machine structurally
+could not. And I appended nine lanes to a step that starts with the
+heaviest network job, where one hiccup would have skipped all nine
+under `bash -e`. That last one is the same shape as China and V5,
+introduced while removing them, which is exactly why the checks matter
+more than the care.
+
+Test suite: 183, all green. The contract gate now runs only the 169 that
+test code behaviour — assertions about live payload state cannot block a
+morning publish.
