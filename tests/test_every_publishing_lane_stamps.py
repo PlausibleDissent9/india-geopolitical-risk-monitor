@@ -33,14 +33,32 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / ".github" / "workflows"
 
 
+# How a lane publishes. `git commit` was the only form until the eleven
+# hand-rolled push loops were replaced by one shared script -- at which
+# point this detector matched NOTHING and the tests below failed loudly
+# rather than passing on an empty set. That is the right failure for a
+# derived check, and the reason to keep both forms listed here.
+PUBLISH_MARKERS = ("publish_push.sh", "git commit")
+
+
 def _publishing_lanes() -> dict[str, str]:
     """Workflows that commit changes into docs/."""
     lanes = {}
     for path in sorted(WORKFLOWS.glob("*.yml")):
         text = path.read_text(encoding="utf-8")
-        if "git commit" in text and re.search(r"git add[^\n]*docs|docs/data", text):
+        publishes = any(m in text for m in PUBLISH_MARKERS)
+        if publishes and re.search(r"git add[^\n]*docs|docs/data", text):
             lanes[path.name] = text
     return lanes
+
+
+def _commit_position(text: str) -> int:
+    """Where the lane hands its work to git. The shared script both
+    commits and pushes, so its call site is the boundary; a lane still
+    using a bare `git commit` is measured at its LAST one (daily.yml
+    commits mid-run to bank the backfill chunk cache)."""
+    at = text.rfind("publish_push.sh")
+    return at if at != -1 else text.rfind("git commit")
 
 
 def test_there_is_more_than_one_publishing_lane():
@@ -78,13 +96,14 @@ def test_the_stamps_run_before_the_commit_in_each_lane():
     inside daily.yml twice, one scope up."""
     late = []
     for name, text in _publishing_lanes().items():
-        # The LAST commit, not the first. daily.yml commits mid-run inside
+        # The LAST handoff, not the first. daily.yml commits mid-run inside
         # the backfill retry loop -- `git commit -m "backfill chunk cache:
         # pass $i"` -- to bank progress against a job timeout. That one
         # writes data/raw, not docs, and anchoring on it reported daily.yml
         # as unstamped when it is the one lane that has always stamped
-        # correctly. The publishing commit is the final one.
-        commit_at = text.rfind("git commit")
+        # correctly.
+        commit_at = _commit_position(text)
+        assert commit_at != -1, f"{name} has no recognisable publish step"
         for module in ("src.stamp_meta", "src.stamp_assets"):
             at = text.find(module)
             if at == -1 or at > commit_at:

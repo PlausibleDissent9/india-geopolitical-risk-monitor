@@ -24,10 +24,37 @@
 #
 #   scripts/gate.sh          run every CI check, stop at the first failure
 #
+#   scripts/gate.sh --committed   run them against HEAD, not the worktree
+#
+# WHY --committed EXISTS
+# Another agent works in this same checkout, so the working tree contains
+# edits that are not mine and will not be committed. On 2026-08-07 that
+# made the local gate red for an unrelated reason (an asset hash pinned
+# to someone's uncommitted redesign), I REASONED that CI would be green
+# on the committed tree, pushed, and ci #351 went red on a different
+# failure the reasoning had not covered.
+#
+# The lesson is the one this repo keeps relearning: verify, do not
+# reason. --committed extracts HEAD with `git archive` and runs the same
+# checks against exactly what CI will check out.
 set -uo pipefail
 
 cd "$(dirname "$0")/.." || exit 1
 CI=".github/workflows/ci.yml"
+
+if [ "${1:-}" = "--committed" ]; then
+  TREE="$(mktemp -d)"
+  trap 'rm -rf "$TREE"' EXIT
+  echo "gate: extracting HEAD to $TREE (ignores the working tree)"
+  git archive HEAD | tar -x -C "$TREE" || { echo "gate: git archive failed"; exit 1; }
+  # The suite reads git history in two places (vintages, sitemap dates),
+  # so give the extract a usable .git rather than letting those fail for
+  # a reason that has nothing to do with the change under test.
+  cp -R .git "$TREE/.git" 2>/dev/null || true
+  VENV="$PWD/.venv"
+  cd "$TREE" || exit 1
+  export PATH="$VENV/bin:$PATH"
+fi
 [ -f "$CI" ] || { echo "gate: $CI not found"; exit 1; }
 
 # Prefer the project venv, as CI installs into a clean environment.
