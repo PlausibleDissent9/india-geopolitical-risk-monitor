@@ -28,25 +28,20 @@ Data through 2026-08-06. Numbers only -- the note is yours.
 
 ### Pakistan / Western Border (-16.4 pts)
 
-- [MEA Slams Pakistan Over PoJK Unrest , Says 90 Civilians Killed In  Brutality  By Forces](https://www.freepressjournal.in/world/mea-slams-pakistan-over-pojk-unrest-says-90-civilians-killed-in-brutality-by-forces) -- freepressjournal.in, 2026-08-04
-- [Pakistan ruling party leads in PoK vote despite boycott call by banned group](https://www.thehindu.com/news/international/pakistans-ruling-party-leads-in-pok-vote-despite-boycott-call-by-banned-group/article71314978.ece) -- thehindu.com, 2026-08-06
-- [The Sound of Silence : Why International Media Turns a Blind Eye to Bloodshed in PoK](https://idrw.org/the-sound-of-silence-why-international-media-turns-a-blind-eye-to-bloodshed-in-pok/) -- idrw.org, 2026-08-03
-- [India spotlights atrocities in PoJK , urges international community to hold Pakistan accountable](https://aninews.in/news/world/asia/india-spotlights-atrocities-in-pojk-urges-international-community-to-hold-pakistan-accountable20260804180000/) -- aninews.in, 2026-08-04
-- [Pak answered public discontent with bullets , blackouts , repression , says MEA ; calls PoK polls  complete farce  ](https://www.theweek.in/news/india/2026/08/04/pak-answered-public-discontent-with-bullets-blackouts-repression-says-mea-calls-pok-polls-complete-farce.html) -- theweek.in, 2026-08-04
-- [India will  do whatever is necessary  after reports of Pakistan deploying Chinese howitzers , says MEA](https://www.moneycontrol.com/world/india-will-do-whatever-is-necessary-after-reports-of-pakistan-deploying-chinese-howitzers-says-mea-article-13994236.html) -- moneycontrol.com, 2026-08-04
-- [India Urges World to Hold Pakistan Accountable for PoJK Killings](https://www.newkerala.com/news/a/india-spotlights-atrocities-pojk-urges-international-community-hold-723.htm) -- newkerala.com, 2026-08-04
-- [PoK Unrest : Over 50 Killed , Hundreds Injured In Crackdown By Pakistani Forces ; JAAC Demands Impartial Probe](https://www.newsx.com/world/pok-unrest-over-50-killed-hundreds-injured-in-crackdown-by-pakistani-forces-jaac-demands-impartial-probe-255401/) -- newsx.com, 2026-08-01
-- [  Will go to any extent to protect nation ; Centre responds to Pakistan miltary deployment along border](https://keralakaumudi.com/en/en/india/general/india-responds-to-pakistan-miltary-deployment-along-border-1787712) -- keralakaumudi.com, 2026-08-04
-- [India spotlights atrocities in PoJK , urges international community to hold Pakistan accountable](http://www.calcuttanews.net/news/279222423/india-spotlights-atrocities-in-pojk-urges-international-community-to-hold-pakistan-accountable) -- calcuttanews.net, 2026-08-04
-- [Pakistan envoy calls for adherence to international law to resolve Kashmir dispute](https://www.geo.tv/latest/676383-pakistan-envoy-calls-for-adherence-to-international-law-to-resolve-kashmir-dispute) -- geo.tv, 2026-08-06
-- [Pakistan UNSC Push on Indus Waters Treaty Faces Major Legal and Political Hurdles](https://idrw.org/pakistans-unsc-push-on-indus-waters-treaty-faces-major-legal-and-political-hurdles/) -- idrw.org, 2026-08-02
-- [Tarique Ahmed Abro - Author - Pakistan Today](https://www.pakistantoday.com.pk/author/tarique_ahmed_abro) -- pakistantoday.com.pk, 2026-07-31
-- [Satyanjal Pandey Assumes Charge in Islamabad](https://www.newkerala.com/news/a/satyanjal-pandey-assumes-charge-as-indias-new-charge-290.htm) -- newkerala.com, 2026-08-03
-- [India merely acknowledged what Pakistan conduct had already destroyed : Kwatra on Indus Water Treaty abeyance](https://news.webindia123.com/news/Articles/World/20260802/4482199.html) -- news.webindia123.com, 2026-08-02
+- article fetch failed: GDELT artlist failed after 6 attempts: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
 
 ### China / Eastern Border (-66.6 pts)
 
-- article fetch failed: GDELT artlist failed after 6 attempts: HTTP 429 rate limit: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngram
+- [Secret weapons at the border : Did China use DEWs in 2022 Yangtse clash ? ](https://www.theweek.in/theweek/specials/2026/08/01/secret-weapons-at-the-border-did-china-use-dews-in-2022-yangtse-clash.html) -- theweek.in, 2026-08-02
+- [GK Questions and Answers on Indo - Pak Border](https://www.jagranjosh.com/general-knowledge/gk-questions-and-answers-on-india-pakistan-border-1820011165-1) -- jagranjosh.com, 2026-08-05
+- [Unverified Border Visuals : PIB Advisory on Fake News](https://www.newkerala.com/news/a/unverified-border-visuals-circulating-online-trust-only-official-474.htm) -- newkerala.com, 2026-08-06
+- [Indian Army launches indigenous XWG diesel that works at minus 42°C for tanks , combat vehicles along LAC , LoC](https://economictimes.indiatimes.com/news/defence/indian-army-launches-indigenous-xwg-diesel-that-works-at-minus-42c-for-tanks-combat-vehicles-along-lac-loc/articleshow/132803817.cms) -- economictimes.indiatimes.com, 2026-08-02
+- [Army looks at drones to improve logistics in high - altitude battlefields such as Siachen](https://timesofindia.indiatimes.com/defence/news/army-looks-at-drones-to-improve-logistics-in-high-altitude-battlefields-such-as-siachen/articleshow/132982515.cms) -- timesofindia.indiatimes.com, 2026-08-06
+- [  India approach towards China is managed competition , limited cooperation , and not reconciliation  ](https://www.prokerala.com/news/articles/a1795591.html) -- prokerala.com, 2026-08-02
+- [India , China discuss LAC situation and border management during diplomatic talks : MEA](https://www.thehindu.com/news/national/india-china-discuss-lac-situation-and-border-management-during-diplomatic-talks-mea/article71316535.ece) -- thehindu.com, 2026-08-07
+- [India , China Reviewed Situation Along LAC During Diplomatic Talks : MEA](https://www.dailyexcelsior.com/india-china-reviewed-situation-along-lac-during-diplomatic-talks-mea/) -- dailyexcelsior.com, 2026-08-07
+- [India - China Ties : Managed Competition , Not Reconciliation](https://www.newkerala.com/news/a/indias-approach-towards-china-managed-competition-limited-cooperation-144.htm) -- newkerala.com, 2026-08-02
+- [India asks China to restart Brahmaputra data sharing , seeks details on Tibet dam](https://www.moneycontrol.com/news/india/india-asks-china-to-restart-brahmaputra-data-sharing-seeks-details-on-tibet-dam-13998175.html) -- moneycontrol.com, 2026-08-07
 
 ### Shipping & Chokepoints (-17.7 pts)
 

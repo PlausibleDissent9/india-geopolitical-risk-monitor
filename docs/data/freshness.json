@@ -7,13 +7,18 @@
   "what": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
   "undatable_is_a_failure": "A payload with no _meta.generated cannot be audited by anything, so it counts as a failure rather than a pass. An auditor that skips what it cannot read is worse than no auditor, because it reports green.",
   "default_max_age_days": 3,
-  "n_payloads": 73,
-  "n_fresh": 65,
+  "n_payloads": 76,
+  "n_fresh": 66,
   "n_stale_or_undatable": 0,
-  "n_exempt": 8,
-  "generated": "2026-08-07T14:33:46Z"
+  "n_exempt": 10,
+  "generated": "2026-08-07T18:02:24Z"
  },
  "payloads": [
+  {
+   "payload": "ai_gpr_benchmark.json",
+   "status": "exempt",
+   "reason": "a hash-pinned, one-shot registered benchmark vintage; rewriting it on a cadence would violate the public registration"
+  },
   {
    "payload": "alerts.json",
    "generated": "2026-08-07",
@@ -42,8 +47,8 @@
   },
   {
    "payload": "back_extension.json",
-   "generated": "2026-08-06",
-   "age_days": 1,
+   "generated": "2026-08-07",
+   "age_days": 0,
    "max_age_days": 40,
    "status": "fresh"
   },
@@ -56,6 +61,13 @@
   },
   {
    "payload": "comparators.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "country_china.json",
    "generated": "2026-08-07",
    "age_days": 0,
    "max_age_days": 3,
@@ -81,6 +93,11 @@
    "age_days": 0,
    "max_age_days": 5,
    "status": "fresh"
+  },
+  {
+   "payload": "divergence_register.json",
+   "status": "exempt",
+   "reason": "append-only and event-driven: it changes when a registered comparison produces a qualifying row, not on a daily cadence"
   },
   {
    "payload": "energy_context.json",

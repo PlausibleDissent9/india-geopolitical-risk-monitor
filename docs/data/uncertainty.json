@@ -3,7 +3,7 @@
   "what": "95% sampling bands for sample-estimated daily scores: Wilson interval on the day's matched share, passed through the same splice ratio and trailing-percentile transform as the published point value. The composite band is the mean of channel bounds -- an envelope, conservative because channel sampling errors are independent. Days before the first banded date were computed over the full monitored corpus (no sampling design of this kind), so they carry no band.",
   "units": "percentile score bounds [lo, hi], 0-100",
   "first_banded_date": "2026-06-30",
-  "generated": "2026-08-07T04:34:03Z",
+  "generated": "2026-08-07T17:23:42Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",

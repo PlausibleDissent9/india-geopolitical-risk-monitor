@@ -1,15 +1,12 @@
 {
  "_meta": {
-  "what": "Available recent receipts archive: per channel and day, the matched articles from that day's committed corpus cache, assembled identically to receipts.json (same matcher provenance, tier sort, syndication dedup, lane labels), capped per day. Today's full list lives in receipts.json. The cache may contain fewer than seven days; available_days and complete_window make that explicit.",
+  "what": "Trailing-week receipts archive: per channel and day, the matched articles from that day's committed corpus cache, assembled identically to receipts.json (same matcher provenance, tier sort, syndication dedup, lane labels), capped per day. Today's full list lives in receipts.json; this file guarantees a week of enumerable, dated evidence per channel.",
   "days": [
    "2026-08-06",
    "2026-08-05"
   ],
-  "target_days": 7,
-  "available_days": 2,
-  "complete_window": false,
   "per_day_cap": 40,
-  "generated": "2026-08-07T16:08:18Z",
+  "generated": "2026-08-07T18:02:09Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",

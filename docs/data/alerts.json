@@ -6,13 +6,21 @@
    "T2": "composite_percentile_crossing (90th pctl, 730d window)",
    "T3": "integrity_event"
   },
-  "generated": "2026-08-07T05:15:26Z",
+  "generated": "2026-08-07T18:03:20Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/alerts.json"
  },
  "alerts": [
+  {
+   "id": "2026-08-06-contract-T3",
+   "date": "2026-08-06",
+   "type": "integrity_event",
+   "event": "morning_contract_miss",
+   "published_ist": "2026-08-07 07:16",
+   "deadline_ist": "2026-08-07 06:00"
+  },
   {
    "id": "2026-08-06-pakistan_west-T1",
    "date": "2026-08-06",
