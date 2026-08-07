@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Point-in-time vintages, India Geopolitical Risk Monitor</title>
+<meta name="description" content="Reconstruct the daily index exactly as it stood on any morning it was published. Each vintage ships as an exact recipe against the current file, verified value-exact against the public git record before anything publishes.">
+<link rel="canonical" href="https://igrm.in/vintages.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=79731829">
+<script src="labels.js?v=7ba70543"></script>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="start.html">Start here</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="history.html">1979&ndash;2019</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+    <a href="divergence.html">Divergence</a>
+  </nav>
+  <p class="definition">The daily series exactly as it stood on any morning it was ever
+  published &mdash; reconstructable from a recipe that is verified value-exact against the
+  public git record before it ships. Every count and date in the text below is read out of
+  <a href="data/vintages_panel.json"><code>data/vintages_panel.json</code></a> by this page's
+  own script as it renders; the HTML source carries no numbers to go stale.</p>
+</header>
+
+<div class="prose">
+<p id="load-error" class="verdict-fail" hidden></p>
+<noscript><p>This page computes every number it states from
+<a href="data/vintages_panel.json"><code>data/vintages_panel.json</code></a> in your browser,
+so that no figure here can drift from the file it describes. Without scripts, read the payload
+directly &mdash; it is small, self-describing, and states its own reconstruction rule in its
+<code>_meta</code>.</p></noscript>
+
+<h2>The numbers as they stood, not as they stand</h2>
+<p>A backtest is honest only if, for every morning it simulates, it reads the numbers a reader
+could actually have seen that morning &mdash; not the numbers as they stand today. Archival
+economics databases call that a <strong>vintage</strong>: the series as of a publish date, kept
+alongside the series as it is now. ALFRED, the St.&nbsp;Louis Fed's archival counterpart to
+FRED, is the reference implementation of the idea, and this panel is the same move applied to
+this index.</p>
+<p>Every daily publish here is a git commit, so the archive has existed since the first
+morning; what the panel adds is the product. There are
+<strong><span data-fill="n_vintages">&mdash;</span> vintages on record</strong>, published from
+<span data-fill="earliest_published">&mdash;</span> to
+<span data-fill="latest_published">&mdash;</span>, and each one can be rebuilt exactly &mdash;
+every value, every day &mdash; from the current file plus the few lines this payload records
+about it. Until now that took a dozen <code>git show</code> invocations and trust in your own
+plumbing; now it is one small file and a rule you can check.</p>
+
+<h2>The recipe, quoted rather than paraphrased</h2>
+<p>The payload states its own reconstruction rule. This page quotes it &mdash; a paraphrase
+would be a second copy of a fact, and second copies drift:</p>
+<blockquote><code data-fill="recipe">&mdash;</code></blockquote>
+<p>In words: <strong>truncate</strong> the current series at the vintage's last observation;
+<strong>drop</strong> the days the vintage never had (gaps that were healed after it
+published); <strong>overwrite</strong> the values its diffs record. For a clean vintage the
+diff is empty and the whole recipe is one truncation. The builder executes this exact recipe
+against <code>git show</code> for every vintage on every build, and refuses to publish a panel
+that does not reproduce git truth &mdash; a panel that is only mostly right would be a
+look-ahead-bias generator with a trustworthy name, which is worse than nothing.</p>
+
+<h2>Every vintage on record</h2>
+<table id="vintages">
+  <thead><tr><th>Published</th><th>Commit</th><th>Rows</th><th>Last observation</th>
+  <th>Revised days</th><th>Recipe</th></tr></thead>
+  <tbody></tbody>
+</table>
+<p class="chart-note">Rendered from <a href="data/vintages_panel.json">the payload</a> at load
+time. The commit is the public check: <code>git show SHA:docs/data/history.csv</code> in a
+clone of this repository returns the file as served that morning, with no tooling and no
+cooperation from this project.</p>
+
+<h2>What the diffs admit</h2>
+<p><strong><span data-fill="n_clean">&mdash;</span> of
+<span data-fill="n_vintages">&mdash;</span> vintages are byte-identical to today's series over
+their span</strong> &mdash; for each of them the recipe is a single truncation, and the diff
+carries nothing at all. The remaining <span data-fill="n_revised">&mdash;</span> carry their
+revisions inline rather than as a footnote:
+<span data-fill="n_changed_cells">&mdash;</span> cell-level differences across
+<span data-fill="n_diff_days_union">&mdash;</span> distinct days, all belonging to the
+publishes of <span data-fill="revised_published">&mdash;</span>. That episode is registered
+&mdash; it sits on a dated methodology change recorded in the changelog, and
+<a href="data/vintages.json"><code>data/vintages.json</code></a> re-proves every night that no
+unregistered revision has joined it. A revision with a dated published cause is a version; a
+revision without one is a defect.</p>
+
+<h2>The refusal that proves the recipe</h2>
+<p>Truncation alone is not enough, and the panel's own verifier demonstrated that on its first
+build. The earliest vintage stops at <span data-fill="eg_last_obs">&mdash;</span>. Today's file
+carries <strong><span data-fill="eg_naive">&mdash;</span> days</strong> on or before that date;
+the vintage itself carried <strong><span data-fill="eg_rows">&mdash;</span></strong>. The
+difference is <span data-fill="eg_absent_n">&mdash;</span> days
+(<span data-fill="eg_absent_list">&mdash;</span>) that were missing that morning and were
+healed afterwards. A reconstruction that keeps them hands the backtester rows that did not
+exist on the morning being simulated &mdash; exactly the look-ahead this product exists to
+prevent. The verifier caught the mismatch by counting rather than reasoning, and the recipe
+has dropped those days by name ever since.</p>
+
+<h2>A worked example, reconstructed as you read</h2>
+<p>Take the earliest vintage: published <span data-fill="eg_published">&mdash;</span>, commit
+<code data-fill="eg_sha">&mdash;</code>. Your browser has just fetched today's
+<code>history.csv</code> and run the recipe on it:</p>
+<ol>
+  <li><strong>Truncate</strong> at <span data-fill="eg_last_obs">&mdash;</span>:
+  <span data-fill="eg_naive">&mdash;</span> rows of the current file survive.</li>
+  <li><strong>Drop</strong> the <span data-fill="eg_absent_n">&mdash;</span> absent days:
+  <span data-fill="eg_after_drop">&mdash;</span> rows remain.</li>
+  <li><strong>Overwrite</strong> the <span data-fill="eg_diff_days">&mdash;</span> diff days
+  with the values the vintage actually showed. For example, on
+  <span data-fill="eg_sample_date">&mdash;</span> the vintage recorded
+  <span data-fill="eg_sample_channel">&mdash;</span> at
+  <strong><span data-fill="eg_sample_old">&mdash;</span></strong>, where today's file says
+  <strong><span data-fill="eg_sample_new">&mdash;</span></strong>. A backtest run as of that
+  morning must be given the former.</li>
+</ol>
+<p><span class="verdict-pass" data-fill="eg_verdict">&mdash;</span> The row count above is
+compared against the vintage's registered count, not asserted; if the two ever disagree, this
+page says so in red instead of showing you arithmetic that no longer holds.</p>
+
+<h2>Why a later entrant cannot backfill this</h2>
+<p>Every other artifact on this site could, in principle, be rebuilt by a well-funded newcomer
+after the fact: the pipeline is public, the sources are public, the parameters are frozen in
+writing. A vintage archive is the exception. It exists only if someone was saving the series
+while it was current &mdash; the past state of a file is not recoverable from its present
+state unless the record was kept as it happened. A competitor who launches an index tonight
+can reproduce a current series; what they cannot produce is what their index said last month,
+because last month their index said nothing. Their vintage record starts the day they start
+keeping one, and the gap between their first vintage and this one grows by one day, every day,
+for as long as this file exists. This panel currently spans
+<span data-fill="n_vintages">&mdash;</span> publishes across
+<span data-fill="span_days">&mdash;</span> days, and tomorrow it spans one more.</p>
+
+<footer>
+  <p>Payload: <a href="data/vintages_panel.json">data/vintages_panel.json</a> &middot;
+  Nightly append-only proof: <a href="data/vintages.json">data/vintages.json</a> &middot;
+  Method: <a href="codebook.html">codebook</a> &middot;
+  <a href="./">&larr; back to the index</a></p>
+</footer>
+</div>
+
+<script>
+// Every number on this page is read from the payload (and, for the worked
+// example, today's history.csv) at render time. Nothing numeric is typed
+// here: analysis/prose_number_audit_2026-08-08.md is the record of what
+// happens to pages that bake their figures into the HTML.
+const NAMES = window.IGRM_LABELS || {};
+const label = (k) => NAMES[k] || k;
+
+const fill = (values) => {
+  for (const key of Object.keys(values)) {
+    for (const el of document.querySelectorAll('[data-fill="' + key + '"]')) {
+      el.textContent = String(values[key]);
+    }
+  }
+};
+
+const parseCsv = (text) => {
+  const lines = text.trim().split("\n");
+  const cols = lines[0].split(",");
+  const rows = {};
+  for (const line of lines.slice(1)) {
+    const parts = line.split(",");
+    const row = {};
+    cols.forEach((c, i) => { row[c] = parts[i] === undefined ? "" : parts[i]; });
+    rows[row.date] = row;
+  }
+  return rows;
+};
+
+Promise.all([
+  fetch("data/vintages_panel.json").then((r) => {
+    if (!r.ok) throw new Error("vintages_panel.json HTTP " + r.status);
+    return r.json();
+  }),
+  fetch("data/history.csv").then((r) => {
+    if (!r.ok) throw new Error("history.csv HTTP " + r.status);
+    return r.text();
+  }),
+]).then(([panel, csvText]) => {
+  const vs = panel.vintages;
+  if (!vs || !vs.length) throw new Error("the panel lists no vintages");
+  const current = parseCsv(csvText);
+
+  // ---- Honest counts, derived rather than remembered -----------------
+  const isClean = (v) => v.n_diff_days === 0 && v.absent_days.length === 0;
+  const clean = vs.filter(isClean);
+  const revised = vs.filter((v) => !isClean(v));
+  let changedCells = 0;
+  const diffDayUnion = new Set();
+  const revisedPublished = new Set();
+  for (const v of revised) {
+    revisedPublished.add(v.published);
+    for (const d of Object.keys(v.diffs)) {
+      diffDayUnion.add(d);
+      changedCells += Object.keys(v.diffs[d]).length;
+    }
+  }
+  const publishedDates = vs.map((v) => v.published);
+  const earliestPub = publishedDates.reduce((a, b) => (b < a ? b : a));
+  const latestPub = publishedDates.reduce((a, b) => (b > a ? b : a));
+  // Ties on published date go to the LAST array entry: vintage_shas()
+  // emits newest-first, so the last entry is the older commit of a
+  // same-day pair -- the one a reader on that morning saw first.
+  let eg = vs[0];
+  for (const v of vs) { if (v.published <= eg.published) eg = v; }
+
+  // ---- The worked example: actually run the recipe -------------------
+  const absent = new Set(eg.absent_days);
+  const rec = {};
+  let naive = 0;
+  for (const d of Object.keys(current)) {
+    if (d <= eg.last_observation) {
+      naive += 1;
+      if (!absent.has(d)) rec[d] = Object.assign({}, current[d]);
+    }
+  }
+  const afterDrop = Object.keys(rec).length;
+  const diffDays = Object.keys(eg.diffs).sort();
+  for (const d of diffDays) {
+    if (!rec[d]) rec[d] = { date: d };
+    Object.assign(rec[d], eg.diffs[d]);
+  }
+  const rebuilt = Object.keys(rec).length;
+  if (rebuilt !== eg.n_rows) {
+    throw new Error("reconstruction produced " + rebuilt + " rows against a registered " +
+      eg.n_rows + " -- the recipe and the payload disagree, so no number on this page " +
+      "can be trusted");
+  }
+
+  // A concrete revised cell: first diff day, first differing channel in
+  // the payload's own column order.
+  let sample = null;
+  for (const d of diffDays) {
+    for (const c of panel.current_columns) {
+      if (c in eg.diffs[d]) {
+        const now = (current[d] || {})[c];
+        sample = {
+          date: d, channel: label(c),
+          old: eg.diffs[d][c] === "" ? "no value" : eg.diffs[d][c],
+          niu: now === undefined || now === "" ? "no value" : now,
+        };
+        break;
+      }
+    }
+    if (sample) break;
+  }
+
+  // ---- The table -----------------------------------------------------
+  const tbody = document.querySelector("#vintages tbody");
+  for (const v of vs) {
+    const recipe = isClean(v) ? "one truncation"
+      : "truncate · drop " + v.absent_days.length + " · overwrite " +
+        v.n_diff_days + " days";
+    const tr = document.createElement("tr");
+    [v.published, v.sha.slice(0, 8), String(v.n_rows), v.last_observation,
+     String(v.n_diff_days), recipe].forEach((text, i) => {
+      const td = document.createElement("td");
+      if (i === 1) {
+        const code = document.createElement("code");
+        code.textContent = text;
+        code.title = v.sha;
+        td.appendChild(code);
+      } else {
+        td.textContent = text;
+      }
+      if (i === 5) td.className = isClean(v) ? "verdict-pass" : "verdict-fail";
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+
+  // ---- Fill every placeholder in one pass ----------------------------
+  const spanDays = Math.round((Date.parse(latestPub) - Date.parse(earliestPub)) / 864e5);
+  fill({
+    n_vintages: vs.length,
+    earliest_published: earliestPub,
+    latest_published: latestPub,
+    span_days: spanDays,
+    recipe: panel._meta.reconstruction,
+    n_clean: clean.length,
+    n_revised: revised.length,
+    n_changed_cells: changedCells,
+    n_diff_days_union: diffDayUnion.size,
+    revised_published: Array.from(revisedPublished).sort().join(", "),
+    eg_published: eg.published,
+    eg_sha: eg.sha.slice(0, 8),
+    eg_last_obs: eg.last_observation,
+    eg_naive: naive,
+    eg_rows: eg.n_rows,
+    eg_absent_n: eg.absent_days.length,
+    eg_absent_list: eg.absent_days.length ? eg.absent_days.join(", ") : "none",
+    eg_after_drop: afterDrop,
+    eg_diff_days: diffDays.length,
+    eg_sample_date: sample ? sample.date : "no revised day",
+    eg_sample_channel: sample ? sample.channel : "—",
+    eg_sample_old: sample ? sample.old : "—",
+    eg_sample_new: sample ? sample.niu : "—",
+    eg_verdict: "Reconstructed " + rebuilt + " rows against the vintage's registered " +
+      eg.n_rows + " — exact.",
+  });
+}).catch((e) => {
+  console.error("vintages_panel:", e);
+  const err = document.getElementById("load-error");
+  err.hidden = false;
+  err.textContent = "The panel could not be loaded or did not reconstruct: " + e.message +
+    ". data/vintages_panel.json is the source of truth; this page states nothing without it.";
+});
+</script>
+</body>
+</html>
