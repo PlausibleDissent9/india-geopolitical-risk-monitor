@@ -321,7 +321,16 @@ def test_the_charts_do_not_opt_out_of_the_motion_scale():
         "and returns false under prefers-reduced-motion.")
 
 
+def _strip_js_comments(text: str) -> str:
+    """// and /* */ comments out before scanning: the audit found the
+    motion scan would fire on `// was duration: 900` -- a comment about
+    the fixed bug re-breaking the test for the fix."""
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+    return re.sub(r"(?m)//[^\n]*$", "", text)
+
+
 def _chart_motion_literals(where: str, text: str) -> list[str]:
+    text = _strip_js_comments(text)
     out = []
     # `duration: <number>` and `easing: "<name>"` inside a chart config.
     # motion.js itself is where the one permitted mapping lives.

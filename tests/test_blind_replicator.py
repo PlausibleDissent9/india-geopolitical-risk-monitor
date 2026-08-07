@@ -48,6 +48,10 @@ def test_it_reads_only_published_files():
     text = MODULE.read_text(encoding="utf-8")
     body = re.sub(r'""".*?"""', "", text, flags=re.S)  # docstrings are prose
     reads = re.findall(r"SITE_DATA\s*/\s*\"([\w.]+)\"", body)
+    assert reads, (
+        "the read-detection regex matched nothing; a refactor of how the "
+        "module opens files would let the blindness check pass on an "
+        "empty set -- the vacuous-truth failure the audit flagged")
     assert set(reads) <= {"shares.csv", "history.csv", "replication.json"}, (
         f"reads something a stranger could not download: {sorted(set(reads))}")
     assert "data/raw" not in body, "reaches into the private store"

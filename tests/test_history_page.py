@@ -134,7 +134,13 @@ def test_the_page_never_invites_splicing():
         "the page does not state that this series must not be joined to "
         "the live index")
     # No forecast language, same rule as everywhere else.
-    for banned in ("we forecast", "will rise", "will fall", "predicts that"):
+    # "will rise"/"will fall" were in this list and are ordinary English:
+    # a DISCLAIMER ("does not say the index will rise") would trip them.
+    # The audit found this file already contains a five-line comment about
+    # exactly that failure, on the function directly above -- the lesson
+    # was applied to one function and not its neighbour. Only phrases that
+    # cannot appear in honest prose stay banned.
+    for banned in ("we forecast", "predicts that"):
         assert banned not in page, f"forecast language on history.html: {banned}"
 
 

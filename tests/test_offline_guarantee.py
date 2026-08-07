@@ -21,6 +21,9 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import pytest
+from src import fetch_markets
+
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 REPRODUCE = ROOT / "scripts" / "reproduce.sh"
@@ -52,6 +55,14 @@ def _reachable(module: str, seen: set[str] | None = None) -> set[str]:
     for m in re.findall(r"from \.(\w+) import", text):
         _reachable(m, seen)
     return seen
+
+
+def test_the_module_set_is_not_empty():
+    """The extraction keys on `python -m src.`; a launcher rename would
+    empty the set and pass the offline guarantee on nothing."""
+    assert len(_modules_reproduce_runs()) >= 10, (
+        f"only {len(_modules_reproduce_runs())} modules extracted from "
+        "reproduce.sh; ~15 existed when this was written")
 
 
 def test_reproduce_only_runs_modules_that_can_be_forced_offline():
@@ -91,3 +102,17 @@ def test_reproduce_declares_its_coverage():
     assert "COVERAGE" in text, (
         "reproduce.sh must report how many payloads it genuinely "
         "regenerated, not just that the diff passed")
+
+
+def test_market_fetch_fails_closed_when_offline_cache_is_absent(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("IGRM_OFFLINE", "1")
+    monkeypatch.setattr(fetch_markets, "RAW_DIR", tmp_path)
+
+    def forbidden_download(*_args, **_kwargs):
+        raise AssertionError("offline mode attempted a market download")
+
+    monkeypatch.setattr(fetch_markets, "_download", forbidden_download)
+    with pytest.raises(fetch_markets.OfflineMarketDataUnavailable):
+        fetch_markets.load_or_update()
