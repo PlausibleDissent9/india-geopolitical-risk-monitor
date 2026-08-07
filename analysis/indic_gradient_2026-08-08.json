@@ -1,0 +1,1183 @@
+{
+ "_meta": {
+  "what": "Indic-language gradient extension of the wiki_hindi cross-language comparison: the same registered article set, resolution logic, pageviews source and correlation code, run per language, to ask whether Hindi's 5/5 English-lead pattern is the ceiling of the gradient or its middle.",
+  "analysis_artifact_only": "Written to analysis/, not docs/data: this is a study about the instrument, not a published payload, and no workflow serves it.",
+  "correlation_code": "_corr and english_comparison imported from src.wiki_hindi; the statistic cannot drift from the published Hindi comparison because it is the same function object.",
+  "floors": {
+   "min_overlapping_days": 180,
+   "min_median_daily_views": 20.0,
+   "min_resolved_articles_per_language": 15
+  },
+  "store_end": "2026-08-06",
+  "store_rows": 3484,
+  "n_registered_articles": 29,
+  "n_languages_with_resolution_data": 6,
+  "the_misses_finding": "wiki_hindi found its six Hindi misses were the foreign-policy-apparatus topics (sanctions regimes, maritime security). The table above shows how far that pattern extends: titles missing from most or all of the six languages are evidence about which parts of the construct exist in Indian-language public attention at all.",
+  "verdict": "Hindi ranks 4 of 5 measurable languages by mean changes margin (0.2601); Tamil, Urdu, Marathi track the index more closely than Hindi does. Hindi is MIDDLE of the gradient, not its ceiling: the wiki_hindi comparison under-stated the best-case Indic agreement, and the single-language reading of the Anglophone gap needs the per-language table above rather than the Hindi row alone.",
+  "construct_reading": "Across every language-channel pair that cleared the floors (14 pairs over 5 languages), English leads on both levels and changes in 14, and a language beats English on changes in 0. 4 of 29 registered articles have no counterpart in ANY of the six languages (CAATSA, Houthi movement, Sanctions against Iran, Trade policy of the United States), and the widest misses are the foreign-policy-apparatus titles, extending wiki_hindi's misses finding across the gradient. These are measurements of the instrument, not adjustments to it: the index tracks English-language attention to India better than Indian-language attention in every language measured here, which is the pattern the name 'Anglophone press salience' describes and the name 'Indian salience' does not. Nothing here changes a score.",
+  "request_pacing": "sequential requests, 0.12s courtesy gap, 8s-per-attempt backoff on 429, byte-identical cache-key format to src.wiki_hindi so the committed Hindi cache is reused rather than refetched",
+  "generated": "2026-08-07T20:25:30Z"
+ },
+ "languages": {
+  "hi": {
+   "language": "Hindi",
+   "n_registered": 29,
+   "n_resolved": 23,
+   "refused": null,
+   "resolution": {
+    "pakistan_west": {
+     "n_resolved": 6,
+     "n_registered": 6,
+     "missing_english_titles": []
+    },
+    "china_east": {
+     "n_resolved": 5,
+     "n_registered": 5,
+     "missing_english_titles": []
+    },
+    "gulf_energy": {
+     "n_resolved": 4,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Sanctions against Iran",
+      "Energy policy of India"
+     ]
+    },
+    "us_trade": {
+     "n_resolved": 4,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "CAATSA",
+      "Trade policy of the United States"
+     ]
+    },
+    "shipping": {
+     "n_resolved": 4,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Houthi movement",
+      "Piracy off the coast of Somalia"
+     ]
+    }
+   },
+   "channels": {
+    "pakistan_west": {
+     "n_articles_resolved": 6,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "नियंत्रण रेखा",
+      "कश्मीर विवाद",
+      "भारत-पाकिस्तान सम्बन्ध",
+      "इंटर-सर्विसेस इंटेलिजेंस",
+      "सिंधु जल समझौता",
+      "सियाचिन हिमनद"
+     ],
+     "missing_english_titles": [],
+     "median_daily_views": 527.0,
+     "n": 3394,
+     "levels_pearson": 0.2977,
+     "levels_spearman": 0.159,
+     "changes_pearson": 0.1596,
+     "refused": null
+    },
+    "china_east": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 5,
+     "local_titles": [
+      "वास्तविक नियंत्रण रेखा",
+      "भारत-चीन सम्बन्ध",
+      "अरुणाचल प्रदेश",
+      "अक्साई चिन",
+      "पीपल्स लिबरेशन आर्मी"
+     ],
+     "missing_english_titles": [],
+     "median_daily_views": 595.0,
+     "n": 3394,
+     "levels_pearson": 0.3178,
+     "levels_spearman": 0.0261,
+     "changes_pearson": 0.1315,
+     "refused": null
+    },
+    "gulf_energy": {
+     "n_articles_resolved": 4,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "होरमुज़ जलसन्धि",
+      "फ़ारस की खाड़ी",
+      "ईरान-इजराइल सम्बन्ध",
+      "ओपेक"
+     ],
+     "missing_english_titles": [
+      "Sanctions against Iran",
+      "Energy policy of India"
+     ],
+     "median_daily_views": 161.0,
+     "n": 3394,
+     "levels_pearson": 0.5006,
+     "levels_spearman": -0.2946,
+     "changes_pearson": 0.1631,
+     "refused": null
+    },
+    "us_trade": {
+     "n_articles_resolved": 4,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "भारत-संयुक्त राज्य सम्बन्ध",
+      "हेच -1बी वीज़ा",
+      "विश्व व्यापार संगठन",
+      "भारत का विदेश व्यापार"
+     ],
+     "missing_english_titles": [
+      "CAATSA",
+      "Trade policy of the United States"
+     ],
+     "median_daily_views": 602.0,
+     "n": 3394,
+     "levels_pearson": -0.1363,
+     "levels_spearman": -0.2062,
+     "changes_pearson": 0.05,
+     "refused": null
+    },
+    "shipping": {
+     "n_articles_resolved": 4,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "स्वेज़ नहर",
+      "मलक्का जलडमरूमध्य",
+      "बाब अल-मन्देब जलसन्धि",
+      "केप ऑफ़ गुड होप"
+     ],
+     "missing_english_titles": [
+      "Houthi movement",
+      "Piracy off the coast of Somalia"
+     ],
+     "median_daily_views": 260.0,
+     "n": 3395,
+     "levels_pearson": 0.2781,
+     "levels_spearman": -0.0273,
+     "changes_pearson": 0.0296,
+     "refused": null
+    }
+   }
+  },
+  "bn": {
+   "language": "Bengali",
+   "n_registered": 29,
+   "n_resolved": 22,
+   "refused": null,
+   "resolution": {
+    "pakistan_west": {
+     "n_resolved": 5,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "India–Pakistan relations"
+     ]
+    },
+    "china_east": {
+     "n_resolved": 5,
+     "n_registered": 5,
+     "missing_english_titles": []
+    },
+    "gulf_energy": {
+     "n_resolved": 5,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Sanctions against Iran"
+     ]
+    },
+    "us_trade": {
+     "n_resolved": 2,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "H-1B visa",
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ]
+    },
+    "shipping": {
+     "n_resolved": 5,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Houthi movement"
+     ]
+    }
+   },
+   "channels": {
+    "pakistan_west": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "নিয়ন্ত্রণ রেখা",
+      "কাশ্মীর সমস্যা",
+      "ইন্টার-সার্ভিসেস ইন্টেলিজেন্স",
+      "সিন্ধু জল চুক্তি",
+      "সিয়াচেন হিমবাহ"
+     ],
+     "missing_english_titles": [
+      "India–Pakistan relations"
+     ],
+     "median_daily_views": 47.0,
+     "n": 3395,
+     "levels_pearson": 0.2842,
+     "levels_spearman": 0.085,
+     "changes_pearson": 0.1061,
+     "refused": null
+    },
+    "china_east": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 5,
+     "local_titles": [
+      "প্রকৃত নিয়ন্ত্রণ রেখা",
+      "চীন–ভারত সম্পর্ক",
+      "অরুণাচল প্রদেশ",
+      "আকসাই চীন",
+      "গণমুক্তিফৌজ"
+     ],
+     "missing_english_titles": [],
+     "median_daily_views": 52.0,
+     "n": 3395,
+     "levels_pearson": 0.2733,
+     "levels_spearman": 0.0031,
+     "changes_pearson": 0.1488,
+     "refused": null
+    },
+    "gulf_energy": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "হরমুজ প্রণালী",
+      "পারস্য উপসাগর",
+      "ইরান–ইসরায়েল সম্পর্ক",
+      "ওপেক",
+      "ভারতের শক্তি নীতি"
+     ],
+     "missing_english_titles": [
+      "Sanctions against Iran"
+     ],
+     "median_daily_views": 64.0,
+     "n": 3395,
+     "levels_pearson": 0.2153,
+     "levels_spearman": -0.1652,
+     "changes_pearson": 0.0735,
+     "refused": null
+    },
+    "us_trade": {
+     "n_articles_resolved": 2,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "ভারত–মার্কিন যুক্তরাষ্ট্র সম্পর্ক",
+      "বিশ্ব বাণিজ্য সংস্থা"
+     ],
+     "missing_english_titles": [
+      "H-1B visa",
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ],
+     "median_daily_views": 47.0,
+     "n": 3395,
+     "levels_pearson": -0.1661,
+     "levels_spearman": -0.256,
+     "changes_pearson": -0.0083,
+     "refused": null
+    },
+    "shipping": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "সুয়েজ খাল",
+      "মালাক্কা প্রণালি",
+      "বাব এল মান্দেব",
+      "সোমালিয়ায় জলদস্যুতা",
+      "উত্তমাশা অন্তরীপ"
+     ],
+     "missing_english_titles": [
+      "Houthi movement"
+     ],
+     "median_daily_views": 76.0,
+     "n": 3395,
+     "levels_pearson": 0.3792,
+     "levels_spearman": -0.0041,
+     "changes_pearson": 0.1975,
+     "refused": null
+    }
+   }
+  },
+  "ta": {
+   "language": "Tamil",
+   "n_registered": 29,
+   "n_resolved": 21,
+   "refused": null,
+   "resolution": {
+    "pakistan_west": {
+     "n_resolved": 5,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "India–Pakistan relations"
+     ]
+    },
+    "china_east": {
+     "n_resolved": 5,
+     "n_registered": 5,
+     "missing_english_titles": []
+    },
+    "gulf_energy": {
+     "n_resolved": 4,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Iran–Israel relations",
+      "Sanctions against Iran"
+     ]
+    },
+    "us_trade": {
+     "n_resolved": 3,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ]
+    },
+    "shipping": {
+     "n_resolved": 4,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Houthi movement",
+      "Piracy off the coast of Somalia"
+     ]
+    }
+   },
+   "channels": {
+    "pakistan_west": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "கட்டுப்பாட்டு கோடு",
+      "காசுமீர் பிரச்சினை",
+      "சேவைகளிடை உளவுத்துறை",
+      "சிந்து நீர் ஒப்பந்தம்",
+      "சியாச்சின் பனியாறு"
+     ],
+     "missing_english_titles": [
+      "India–Pakistan relations"
+     ],
+     "median_daily_views": 7.0,
+     "refused": "median 7 daily views across the channel's Tamil articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "china_east": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 5,
+     "local_titles": [
+      "உண்மையான கட்டுப்பாட்டுக் கோடு",
+      "இந்திய-சீன உறவுகள்",
+      "அருணாசலப் பிரதேசம்",
+      "அக்சாய் சின்",
+      "மக்கள் விடுதலை இராணுவம்"
+     ],
+     "missing_english_titles": [],
+     "median_daily_views": 19.0,
+     "refused": "median 19 daily views across the channel's Tamil articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "gulf_energy": {
+     "n_articles_resolved": 4,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "ஓர்முசு நீரிணை",
+      "பாரசீக வளைகுடா",
+      "ஓப்பெக்",
+      "இந்திய ஆற்றல் கொள்கை"
+     ],
+     "missing_english_titles": [
+      "Iran–Israel relations",
+      "Sanctions against Iran"
+     ],
+     "median_daily_views": 12.0,
+     "refused": "median 12 daily views across the channel's Tamil articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "us_trade": {
+     "n_articles_resolved": 3,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "இந்திய-அமெரிக்க உறவுகள்",
+      "எச்1பி நுழைவிசைவு",
+      "உலக வணிக அமைப்பு"
+     ],
+     "missing_english_titles": [
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ],
+     "median_daily_views": 30.0,
+     "n": 3395,
+     "levels_pearson": -0.0462,
+     "levels_spearman": -0.1224,
+     "changes_pearson": 0.0523,
+     "refused": null
+    },
+    "shipping": {
+     "n_articles_resolved": 4,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "சுயஸ் கால்வாய்",
+      "மலாக்கா நீரிணை",
+      "பாபுல் மந்தபு",
+      "நன்னம்பிக்கை முனை"
+     ],
+     "missing_english_titles": [
+      "Houthi movement",
+      "Piracy off the coast of Somalia"
+     ],
+     "median_daily_views": 19.0,
+     "refused": "median 19 daily views across the channel's Tamil articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    }
+   }
+  },
+  "ur": {
+   "language": "Urdu",
+   "n_registered": 29,
+   "n_resolved": 22,
+   "refused": null,
+   "resolution": {
+    "pakistan_west": {
+     "n_resolved": 6,
+     "n_registered": 6,
+     "missing_english_titles": []
+    },
+    "china_east": {
+     "n_resolved": 5,
+     "n_registered": 5,
+     "missing_english_titles": []
+    },
+    "gulf_energy": {
+     "n_resolved": 4,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Sanctions against Iran",
+      "Energy policy of India"
+     ]
+    },
+    "us_trade": {
+     "n_resolved": 2,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "H-1B visa",
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ]
+    },
+    "shipping": {
+     "n_resolved": 5,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Houthi movement"
+     ]
+    }
+   },
+   "channels": {
+    "pakistan_west": {
+     "n_articles_resolved": 6,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "لائن آف کنٹرول",
+      "مسئلہ کشمیر",
+      "پاک بھارت تعلقات",
+      "انٹر سروسز انٹلیجنس",
+      "سندھ طاس معاہدہ",
+      "سیاچن گلیشیر"
+     ],
+     "missing_english_titles": [],
+     "median_daily_views": 58.0,
+     "n": 3395,
+     "levels_pearson": 0.2903,
+     "levels_spearman": 0.123,
+     "changes_pearson": 0.1454,
+     "refused": null
+    },
+    "china_east": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 5,
+     "local_titles": [
+      "بھارت چین سرحد",
+      "بھارت چین تعلقات",
+      "اروناچل پردیش",
+      "اکسائی چن",
+      "پیپلز لبریشن آرمی"
+     ],
+     "missing_english_titles": [],
+     "median_daily_views": 6.0,
+     "refused": "median 6 daily views across the channel's Urdu articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "gulf_energy": {
+     "n_articles_resolved": 4,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "آبنائے ہرمز",
+      "خلیج فارس",
+      "اسرائیل-ایران تعلقات",
+      "اوپیک"
+     ],
+     "missing_english_titles": [
+      "Sanctions against Iran",
+      "Energy policy of India"
+     ],
+     "median_daily_views": 11.0,
+     "refused": "median 11 daily views across the channel's Urdu articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "us_trade": {
+     "n_articles_resolved": 2,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "بھارت امریکا تعلقات",
+      "عالمی تجارتی ادارہ"
+     ],
+     "missing_english_titles": [
+      "H-1B visa",
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ],
+     "median_daily_views": 2.0,
+     "refused": "median 2 daily views across the channel's Urdu articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "shipping": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "نہر سوئز",
+      "آبنائے ملاکا",
+      "آبنائے باب المندب",
+      "صومالیہ میں بحری قزاقی",
+      "راس امید"
+     ],
+     "missing_english_titles": [
+      "Houthi movement"
+     ],
+     "median_daily_views": 9.0,
+     "refused": "median 9 daily views across the channel's Urdu articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    }
+   }
+  },
+  "te": {
+   "language": "Telugu",
+   "n_registered": 29,
+   "n_resolved": 14,
+   "refused": "only 14 of 29 registered articles have a Telugu counterpart, below the 15-article floor; a correlation computed on that sliver would be a statement about the sliver, not about the construct, so the language publishes as a negative",
+   "resolution": {
+    "pakistan_west": {
+     "n_resolved": 4,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "India–Pakistan relations",
+      "Inter-Services Intelligence"
+     ]
+    },
+    "china_east": {
+     "n_resolved": 3,
+     "n_registered": 5,
+     "missing_english_titles": [
+      "China–India relations",
+      "People's Liberation Army"
+     ]
+    },
+    "gulf_energy": {
+     "n_resolved": 2,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Iran–Israel relations",
+      "Sanctions against Iran",
+      "OPEC",
+      "Energy policy of India"
+     ]
+    },
+    "us_trade": {
+     "n_resolved": 2,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "H-1B visa",
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ]
+    },
+    "shipping": {
+     "n_resolved": 3,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Houthi movement",
+      "Piracy off the coast of Somalia",
+      "Cape of Good Hope"
+     ]
+    }
+   },
+   "channels": {}
+  },
+  "mr": {
+   "language": "Marathi",
+   "n_registered": 29,
+   "n_resolved": 18,
+   "refused": null,
+   "resolution": {
+    "pakistan_west": {
+     "n_resolved": 5,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Kashmir conflict"
+     ]
+    },
+    "china_east": {
+     "n_resolved": 5,
+     "n_registered": 5,
+     "missing_english_titles": []
+    },
+    "gulf_energy": {
+     "n_resolved": 3,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Iran–Israel relations",
+      "Sanctions against Iran",
+      "Energy policy of India"
+     ]
+    },
+    "us_trade": {
+     "n_resolved": 2,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "India–United States relations",
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ]
+    },
+    "shipping": {
+     "n_resolved": 3,
+     "n_registered": 6,
+     "missing_english_titles": [
+      "Bab-el-Mandeb",
+      "Houthi movement",
+      "Piracy off the coast of Somalia"
+     ]
+    }
+   },
+   "channels": {
+    "pakistan_west": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "नियंत्रण रेषा",
+      "भारत-पाकिस्तान संबंध",
+      "इंटर-सर्व्हिसेस इंटेलिजन्स",
+      "सिंधू पाणी करार",
+      "सियाचीन हिमनदी"
+     ],
+     "missing_english_titles": [
+      "Kashmir conflict"
+     ],
+     "median_daily_views": 10.0,
+     "refused": "median 10 daily views across the channel's Marathi articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "china_east": {
+     "n_articles_resolved": 5,
+     "n_articles_registered": 5,
+     "local_titles": [
+      "वास्तविक नियंत्रण रेषा",
+      "चीन-भारत संबंध",
+      "अरुणाचल प्रदेश",
+      "अक्साई चिन",
+      "जनतेची मुक्तिसेना"
+     ],
+     "missing_english_titles": [],
+     "median_daily_views": 26.0,
+     "n": 3395,
+     "levels_pearson": 0.0504,
+     "levels_spearman": -0.0539,
+     "changes_pearson": 0.0113,
+     "refused": null
+    },
+    "gulf_energy": {
+     "n_articles_resolved": 3,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "होर्मुझची सामुद्रधुनी",
+      "इराणचे आखात",
+      "ओपेक"
+     ],
+     "missing_english_titles": [
+      "Iran–Israel relations",
+      "Sanctions against Iran",
+      "Energy policy of India"
+     ],
+     "median_daily_views": 15.0,
+     "refused": "median 15 daily views across the channel's Marathi articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    },
+    "us_trade": {
+     "n_articles_resolved": 2,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "एच-१ बी व्हिसा",
+      "जागतिक व्यापार संघटना"
+     ],
+     "missing_english_titles": [
+      "India–United States relations",
+      "CAATSA",
+      "Foreign trade of India",
+      "Trade policy of the United States"
+     ],
+     "median_daily_views": 77.0,
+     "n": 3395,
+     "levels_pearson": -0.1382,
+     "levels_spearman": -0.2253,
+     "changes_pearson": 0.022,
+     "refused": null
+    },
+    "shipping": {
+     "n_articles_resolved": 3,
+     "n_articles_registered": 6,
+     "local_titles": [
+      "सुएझ कालवा",
+      "मलाक्काची सामुद्रधुनी",
+      "केप ऑफ गुड होप"
+     ],
+     "missing_english_titles": [
+      "Bab-el-Mandeb",
+      "Houthi movement",
+      "Piracy off the coast of Somalia"
+     ],
+     "median_daily_views": 13.0,
+     "refused": "median 13 daily views across the channel's Marathi articles is below the 20 floor; a correlation here would be a statement about Poisson noise, not about attention"
+    }
+   }
+  }
+ },
+ "english_wikipedia_same_statistic": {
+  "pakistan_west": {
+   "n": 3393,
+   "levels_pearson": 0.4576,
+   "levels_spearman": 0.1096,
+   "changes_pearson": 0.2233,
+   "refused": null
+  },
+  "china_east": {
+   "n": 3393,
+   "levels_pearson": 0.4185,
+   "levels_spearman": 0.1372,
+   "changes_pearson": 0.3403,
+   "refused": null
+  },
+  "gulf_energy": {
+   "n": 3393,
+   "levels_pearson": 0.6107,
+   "levels_spearman": -0.0856,
+   "changes_pearson": 0.5892,
+   "refused": null
+  },
+  "us_trade": {
+   "n": 3393,
+   "levels_pearson": 0.0796,
+   "levels_spearman": -0.1093,
+   "changes_pearson": 0.1169,
+   "refused": null
+  },
+  "shipping": {
+   "n": 3393,
+   "levels_pearson": 0.7066,
+   "levels_spearman": 0.0539,
+   "changes_pearson": 0.5644,
+   "refused": null
+  }
+ },
+ "margins_by_language": {
+  "hi": {
+   "pakistan_west": {
+    "english_changes": 0.2233,
+    "language_changes": 0.1596,
+    "changes_margin": 0.0637,
+    "english_levels": 0.4576,
+    "language_levels": 0.2977,
+    "levels_margin": 0.1599,
+    "english_leads_both": true
+   },
+   "china_east": {
+    "english_changes": 0.3403,
+    "language_changes": 0.1315,
+    "changes_margin": 0.2088,
+    "english_levels": 0.4185,
+    "language_levels": 0.3178,
+    "levels_margin": 0.1007,
+    "english_leads_both": true
+   },
+   "gulf_energy": {
+    "english_changes": 0.5892,
+    "language_changes": 0.1631,
+    "changes_margin": 0.4261,
+    "english_levels": 0.6107,
+    "language_levels": 0.5006,
+    "levels_margin": 0.1101,
+    "english_leads_both": true
+   },
+   "us_trade": {
+    "english_changes": 0.1169,
+    "language_changes": 0.05,
+    "changes_margin": 0.0669,
+    "english_levels": 0.0796,
+    "language_levels": -0.1363,
+    "levels_margin": 0.2159,
+    "english_leads_both": true
+   },
+   "shipping": {
+    "english_changes": 0.5644,
+    "language_changes": 0.0296,
+    "changes_margin": 0.5348,
+    "english_levels": 0.7066,
+    "language_levels": 0.2781,
+    "levels_margin": 0.4285,
+    "english_leads_both": true
+   }
+  },
+  "bn": {
+   "pakistan_west": {
+    "english_changes": 0.2233,
+    "language_changes": 0.1061,
+    "changes_margin": 0.1172,
+    "english_levels": 0.4576,
+    "language_levels": 0.2842,
+    "levels_margin": 0.1734,
+    "english_leads_both": true
+   },
+   "china_east": {
+    "english_changes": 0.3403,
+    "language_changes": 0.1488,
+    "changes_margin": 0.1915,
+    "english_levels": 0.4185,
+    "language_levels": 0.2733,
+    "levels_margin": 0.1452,
+    "english_leads_both": true
+   },
+   "gulf_energy": {
+    "english_changes": 0.5892,
+    "language_changes": 0.0735,
+    "changes_margin": 0.5157,
+    "english_levels": 0.6107,
+    "language_levels": 0.2153,
+    "levels_margin": 0.3954,
+    "english_leads_both": true
+   },
+   "us_trade": {
+    "english_changes": 0.1169,
+    "language_changes": -0.0083,
+    "changes_margin": 0.1252,
+    "english_levels": 0.0796,
+    "language_levels": -0.1661,
+    "levels_margin": 0.2457,
+    "english_leads_both": true
+   },
+   "shipping": {
+    "english_changes": 0.5644,
+    "language_changes": 0.1975,
+    "changes_margin": 0.3669,
+    "english_levels": 0.7066,
+    "language_levels": 0.3792,
+    "levels_margin": 0.3274,
+    "english_leads_both": true
+   }
+  },
+  "ta": {
+   "us_trade": {
+    "english_changes": 0.1169,
+    "language_changes": 0.0523,
+    "changes_margin": 0.0646,
+    "english_levels": 0.0796,
+    "language_levels": -0.0462,
+    "levels_margin": 0.1258,
+    "english_leads_both": true
+   }
+  },
+  "ur": {
+   "pakistan_west": {
+    "english_changes": 0.2233,
+    "language_changes": 0.1454,
+    "changes_margin": 0.0779,
+    "english_levels": 0.4576,
+    "language_levels": 0.2903,
+    "levels_margin": 0.1673,
+    "english_leads_both": true
+   }
+  },
+  "te": {},
+  "mr": {
+   "china_east": {
+    "english_changes": 0.3403,
+    "language_changes": 0.0113,
+    "changes_margin": 0.329,
+    "english_levels": 0.4185,
+    "language_levels": 0.0504,
+    "levels_margin": 0.3681,
+    "english_leads_both": true
+   },
+   "us_trade": {
+    "english_changes": 0.1169,
+    "language_changes": 0.022,
+    "changes_margin": 0.0949,
+    "english_levels": 0.0796,
+    "language_levels": -0.1382,
+    "levels_margin": 0.2178,
+    "english_leads_both": true
+   }
+  }
+ },
+ "summary_by_language": {
+  "hi": {
+   "language": "Hindi",
+   "n_resolved_of_registered": 23,
+   "n_channels_reported": 5,
+   "n_channels_english_leads_both": 5,
+   "n_channels_language_leads_changes": 0,
+   "mean_changes_margin": 0.2601,
+   "mean_levels_margin": 0.203,
+   "median_daily_views_by_channel_median": 527.0,
+   "refused": null
+  },
+  "bn": {
+   "language": "Bengali",
+   "n_resolved_of_registered": 22,
+   "n_channels_reported": 5,
+   "n_channels_english_leads_both": 5,
+   "n_channels_language_leads_changes": 0,
+   "mean_changes_margin": 0.2633,
+   "mean_levels_margin": 0.2574,
+   "median_daily_views_by_channel_median": 52.0,
+   "refused": null
+  },
+  "ta": {
+   "language": "Tamil",
+   "n_resolved_of_registered": 21,
+   "n_channels_reported": 1,
+   "n_channels_english_leads_both": 1,
+   "n_channels_language_leads_changes": 0,
+   "mean_changes_margin": 0.0646,
+   "mean_levels_margin": 0.1258,
+   "median_daily_views_by_channel_median": 19.0,
+   "refused": null
+  },
+  "ur": {
+   "language": "Urdu",
+   "n_resolved_of_registered": 22,
+   "n_channels_reported": 1,
+   "n_channels_english_leads_both": 1,
+   "n_channels_language_leads_changes": 0,
+   "mean_changes_margin": 0.0779,
+   "mean_levels_margin": 0.1673,
+   "median_daily_views_by_channel_median": 9.0,
+   "refused": null
+  },
+  "te": {
+   "language": "Telugu",
+   "n_resolved_of_registered": 14,
+   "n_channels_reported": 0,
+   "n_channels_english_leads_both": 0,
+   "n_channels_language_leads_changes": 0,
+   "mean_changes_margin": null,
+   "mean_levels_margin": null,
+   "median_daily_views_by_channel_median": null,
+   "refused": "only 14 of 29 registered articles have a Telugu counterpart, below the 15-article floor; a correlation computed on that sliver would be a statement about the sliver, not about the construct, so the language publishes as a negative"
+  },
+  "mr": {
+   "language": "Marathi",
+   "n_resolved_of_registered": 18,
+   "n_channels_reported": 2,
+   "n_channels_english_leads_both": 2,
+   "n_channels_language_leads_changes": 0,
+   "mean_changes_margin": 0.2119,
+   "mean_levels_margin": 0.2929,
+   "median_daily_views_by_channel_median": 15.0,
+   "refused": null
+  }
+ },
+ "gradient_ranking_by_mean_changes_margin": [
+  "ta",
+  "ur",
+  "mr",
+  "hi",
+  "bn"
+ ],
+ "coverage_ranking": [
+  "hi",
+  "bn",
+  "ur",
+  "ta",
+  "mr",
+  "te"
+ ],
+ "registered_titles_missing_somewhere": [
+  {
+   "title": "CAATSA",
+   "n_languages_missing": 6,
+   "languages": [
+    "Hindi",
+    "Bengali",
+    "Tamil",
+    "Urdu",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Houthi movement",
+   "n_languages_missing": 6,
+   "languages": [
+    "Hindi",
+    "Bengali",
+    "Tamil",
+    "Urdu",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Sanctions against Iran",
+   "n_languages_missing": 6,
+   "languages": [
+    "Hindi",
+    "Bengali",
+    "Tamil",
+    "Urdu",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Trade policy of the United States",
+   "n_languages_missing": 6,
+   "languages": [
+    "Hindi",
+    "Bengali",
+    "Tamil",
+    "Urdu",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Foreign trade of India",
+   "n_languages_missing": 5,
+   "languages": [
+    "Bengali",
+    "Tamil",
+    "Urdu",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Energy policy of India",
+   "n_languages_missing": 4,
+   "languages": [
+    "Hindi",
+    "Urdu",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Piracy off the coast of Somalia",
+   "n_languages_missing": 4,
+   "languages": [
+    "Hindi",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "H-1B visa",
+   "n_languages_missing": 3,
+   "languages": [
+    "Bengali",
+    "Urdu",
+    "Telugu"
+   ]
+  },
+  {
+   "title": "India–Pakistan relations",
+   "n_languages_missing": 3,
+   "languages": [
+    "Bengali",
+    "Tamil",
+    "Telugu"
+   ]
+  },
+  {
+   "title": "Iran–Israel relations",
+   "n_languages_missing": 3,
+   "languages": [
+    "Tamil",
+    "Telugu",
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Bab-el-Mandeb",
+   "n_languages_missing": 1,
+   "languages": [
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Cape of Good Hope",
+   "n_languages_missing": 1,
+   "languages": [
+    "Telugu"
+   ]
+  },
+  {
+   "title": "China–India relations",
+   "n_languages_missing": 1,
+   "languages": [
+    "Telugu"
+   ]
+  },
+  {
+   "title": "India–United States relations",
+   "n_languages_missing": 1,
+   "languages": [
+    "Marathi"
+   ]
+  },
+  {
+   "title": "Inter-Services Intelligence",
+   "n_languages_missing": 1,
+   "languages": [
+    "Telugu"
+   ]
+  },
+  {
+   "title": "Kashmir conflict",
+   "n_languages_missing": 1,
+   "languages": [
+    "Marathi"
+   ]
+  },
+  {
+   "title": "OPEC",
+   "n_languages_missing": 1,
+   "languages": [
+    "Telugu"
+   ]
+  },
+  {
+   "title": "People's Liberation Army",
+   "n_languages_missing": 1,
+   "languages": [
+    "Telugu"
+   ]
+  }
+ ],
+ "registered_titles_missing_in_all_languages": [
+  "CAATSA",
+  "Houthi movement",
+  "Sanctions against Iran",
+  "Trade policy of the United States"
+ ],
+ "hindi_rank_by_mean_changes_margin": 4
+}
