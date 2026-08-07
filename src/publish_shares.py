@@ -104,10 +104,20 @@ def main() -> None:
             "instrument_is_not_constant": provenance.summary(),
             "known_gaps": missing,
             "n_known_gaps": len(missing),
-            "gap_note": ("Days absent from the store entirely -- fetch "
-                         "failures never backfilled. Listed here rather "
-                         "than interpolated; a user computing monthly "
-                         "means should know which months are short."),
+            "gap_note": (
+                "Days absent from the store entirely, listed rather "
+                "than interpolated; a user computing monthly means "
+                "should know which months are short. CAUSE, TESTED "
+                "2026-08-07: these are an upstream absence, not "
+                "un-backfilled fetch failures. A refetch of "
+                "2025-06-13..2025-07-03 returns 06-13, 06-14, 07-02 and "
+                "07-03 -- the days bracketing the gap -- and nothing for "
+                "the seventeen between, which are 17 of the 21 missing "
+                "days. GDELT has no data there. The remaining four "
+                "(2017-12-01, 2017-12-02, 2020-10-20, 2023-03-23) could "
+                "not be tested: the probes were rate-limited into "
+                "failure, so their cause is unverified rather than "
+                "assumed to match."),
             "first_day": src[0]["date"],
             "last_day": src[-1]["date"],
             "generated": datetime.now(timezone.utc).strftime(

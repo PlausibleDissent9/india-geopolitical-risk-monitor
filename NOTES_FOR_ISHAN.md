@@ -871,9 +871,27 @@ items at the bottom.
   revision episode sits exactly on methodology v1.0.1. It now runs
   nightly as a **tripwire that fails the build** if history is ever
   rewritten without a registered cause.
-- **#8 the 21 gaps.** Not a limitation — our fetch failures. GDELT still
-  has those days (a probe returned all eight of a test window in 28
-  seconds), so they are being backfilled rather than merely disclosed.
+- **#8 the 21 gaps — and I got this wrong first, so read the whole
+  entry.** I told you these were our fetch failures and therefore
+  fixable, on the strength of a probe that returned all eight days of a
+  test window. That probe was worthless: the June gaps are 15 June to 1
+  July and the window I tested was 5–12 June, which contains none of
+  them. I had confirmed GDELT holds days we already had.
+
+  The backfill script then ran and recovered nothing, which is what sent
+  me back to check. The real test on 13 June–3 July returns 13 June, 14
+  June, 2 July and 3 July — the days on either side — and **nothing** for
+  the seventeen days between, which are 17 of the 21 missing days. The
+  outage is GDELT's, not ours, and it is not repairable by us.
+
+  The other four days (2017-12-01/02, 2020-10-20, 2023-03-23) are
+  **unverified** — those probes hit GDELT's rate limiter and failed. I
+  have recorded them as inconclusive rather than assuming they match.
+
+  So the gaps stay disclosed rather than fixed, which is what
+  `known_gaps` and the monthly coverage refusal were already doing. The
+  payload now states the tested cause instead of calling them "fetch
+  failures never backfilled", which was my assumption presented as fact.
 
 **The finding you should know about before anyone else asks you:**
 
