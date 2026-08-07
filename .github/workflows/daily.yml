@@ -220,14 +220,6 @@ jobs:
         continue-on-error: true
         timeout-minutes: 20
         run: python -m src.wiki_hindi
-      - name: Stamp universal _meta on every payload (licence, citation, codebook, source)
-        # After every lane has written, so nothing lands unstamped. Never
-        # overwrites a field a module set. The codebook has always
-        # promised each download explains itself; until 2026-08-07 that
-        # was true of three payloads out of sixty-four.
-        if: github.event.inputs.backfill != 'true'
-        timeout-minutes: 5
-        run: python -m src.stamp_meta
       - name: Freshness audit (every payload, not just the ten tracked sources)
         # Runs last among the enrichment lanes, so it audits what this
         # run actually produced. Fail-loud for the same reason as the
@@ -365,6 +357,21 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         run: python -m src.status_data
+      - name: Stamp universal _meta on every payload (licence, citation, codebook, source)
+        # LAST payload writer in the lane, deliberately. This step was
+        # first placed mid-workflow, then after the audits, and both
+        # times a later lane rewrote a payload without the stamp --
+        # nowcast, then vintages, then the twelve lanes that run after
+        # the tripwire. Stamping is only meaningful after everything
+        # that writes has written, so it sits immediately before the
+        # dual-computation audit and the commit.
+        #
+        # Modules that write after their own last chance (freshness,
+        # vintages, nowcast) also carry the fields themselves, so the
+        # guarantee does not rest on this step's position alone.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.stamp_meta
       - name: Dual-computation audit (fail-loud; two derivations must agree)
         if: github.event.inputs.backfill != 'true'
         run: python -m src.audit

@@ -1,5 +1,9 @@
 {
  "_meta": {
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/vintages.json",
   "what": "Every published vintage of the daily series, diffed against what the site serves today. Answers whether a value read on day D is still the value shown for day D now -- the question that decides whether a backtest built on the current file has look-ahead bias in it.",
   "how": "Each daily publish is a commit, so history.csv at a given SHA is exactly what was served that morning. This compares every such vintage to the current file on their overlapping dates, across composite and all five channels.",
   "finding": "10 of 12 vintages show zero changed values. The series is append-only in practice: days are added, not rewritten.",
@@ -18,11 +22,7 @@
    "us_trade",
    "shipping"
   ],
-  "generated": "2026-08-07T09:29:03Z",
-  "license": "CC BY 4.0",
-  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
-  "codebook": "https://igrm.in/codebook.html",
-  "source": "https://igrm.in/data/vintages.json"
+  "generated": "2026-08-07T12:25:37Z"
  },
  "vintages": [
   {

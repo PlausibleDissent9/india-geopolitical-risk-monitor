@@ -155,8 +155,14 @@ def main() -> None:
     clean = [r for r in rows if r["n_changed_values"] == 0]
     latest_revision = max((r["published"] for r in revised), default=None)
 
+    # Fourth module to need this. stamp_meta cannot reach a payload
+    # written after it runs, and this one is written by the last step in
+    # the lane. Carrying the fields here removes the ordering dependency
+    # instead of relying on step order staying correct forever.
+    from src import stamp_meta
     payload = {
         "_meta": {
+            **stamp_meta.universal_fields("vintages.json"),
             "what": (
                 "Every published vintage of the daily series, diffed "
                 "against what the site serves today. Answers whether a "

@@ -41,7 +41,7 @@
      "n_days": 1
     }
    },
-   "generated": "2026-08-07T09:29:00Z"
+   "generated": "2026-08-07T12:24:46Z"
   },
   "known_gaps": [
    "2017-12-01",
@@ -70,7 +70,7 @@
   "gap_note": "Days absent from the store entirely, listed rather than interpolated; a user computing monthly means should know which months are short. CAUSE, TESTED 2026-08-07: these are an upstream absence, not un-backfilled fetch failures. A refetch of 2025-06-13..2025-07-03 returns 06-13, 06-14, 07-02 and 07-03 -- the days bracketing the gap -- and nothing for the seventeen between, which are 17 of the 21 missing days. GDELT has no data there. The remaining four (2017-12-01, 2017-12-02, 2020-10-20, 2023-03-23) could not be tested: the probes were rate-limited into failure, so their cause is unverified rather than assumed to match.",
   "first_day": "2017-01-01",
   "last_day": "2026-08-06",
-  "generated": "2026-08-07T09:29:00Z",
+  "generated": "2026-08-07T12:24:46Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
