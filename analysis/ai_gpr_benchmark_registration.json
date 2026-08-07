@@ -1,0 +1,147 @@
+{
+ "status": "REGISTERED BEFORE FIRST COMPARISON STATISTIC",
+ "registered_at_utc": "2026-08-07T14:43:30Z",
+ "registration_kind": "Public, code-frozen analysis preregistration after data acquisition and before comparison analysis; not third-party escrow",
+ "base_commit": "e075a24f7c4c1305e0d48561e56693192af343d1",
+ "analysis_script": "src/ai_gpr_benchmark.py",
+ "analysis_script_sha256": "9578f6ccdc01dd7ec6e8677548ffdf5376ae8e08bea2c8b242436c7d2e621de0",
+ "authorship_and_authorisation": {
+  "protocol_drafted_by": "Codex, red-teamed in a live Claude Fable 5 Max session, then mechanically encoded and tested by Codex",
+  "founder_authorisation": "The IGRM founder instructed the agents in chat to execute the maximum defensible IGRM release.",
+  "founder_review_limit": "The founder did not line-edit or separately sign this protocol before its public freeze.",
+  "ai_assistance_disclosed": true
+ },
+ "attestation": {
+  "ai_gpr_file_was_already_in_hand": true,
+  "public_provider_charts_could_have_been_seen": true,
+  "blindness_to_either_series_shape_claimed": false,
+  "comparison_statistic_computed_before_freeze": false,
+  "scope": "No joint statistic between any IGRM series and any AI-GPR series was computed in this execution session before this protocol and script were frozen.",
+  "limits": "This is an execution-session attestation enforced by a public code freeze, not proof of blindness or a claim about unobserved activity outside this session."
+ },
+ "source": {
+  "name": "Iacoviello-Tong AI-GPR country-monthly file",
+  "provider_page": "https://www.matteoiacoviello.com/ai_gpr.html",
+  "url": "https://www.matteoiacoviello.com/ai_gpr_files/ai_gpr_country_monthly.csv",
+  "accessed_at_utc": "2026-08-07T14:34:25Z",
+  "sha256": "22750ad1e1bf0e3420f87a0810da3fbebf00d308d67d103ee5a236db3d9d17e3",
+  "data_through": "2026-07-01",
+  "last_month_rule": "The 2026-07-01 row is treated as July 2026, the last complete month available in the pinned bytes. The pin governs regardless of later provider revisions.",
+  "revision_note": "The provider series can be revised. The exact file hash is therefore load-bearing.",
+  "citation": "Iacoviello, Matteo and Jonathan Tong (2026), The AI-GPR Index: Measuring Geopolitical Risk using Artificial Intelligence."
+ },
+ "igrm_inputs": {
+  "history_path": "docs/data/history.csv",
+  "history_sha256": "79885e7bf472a66faf48d8ee50e7fcc9a909171e4e2d8106a4f20ed46d24b32c",
+  "episodes_path": "validation/validation_episodes.json",
+  "episodes_sha256": "5730d7a8b611b466d94adffd004373bf7df25731abbde625fdd78082b44f8254",
+  "series": [
+   "composite",
+   "pakistan_west",
+   "china_east",
+   "gulf_energy",
+   "us_trade",
+   "shipping"
+  ],
+  "series_definition": "The inputs are the daily composite and five daily channel percentile columns in history.csv, never a 7-day or other smoothed series."
+ },
+ "sample": {
+  "month_enters_if": [
+   "IGRM composite has at least 15 non-missing daily observations in the calendar month.",
+   "AI-GPR India_all is non-missing in that calendar month.",
+   "The month is no later than 2026-07-01, the last complete month in the pinned bytes."
+  ],
+  "other_series_missingness": "Each descriptive or exploratory pair is analysed on its pairwise non-missing eligible months and reports its own n.",
+  "month_list": "Generated mechanically and published in full with the result; no hand edits are permitted.",
+  "changes": "Simple first differences only when both included observations are consecutive calendar months.",
+  "changes_bridge_excluded_months": false
+ },
+ "transformations": {
+  "igrm_monthly": "Arithmetic mean of the included daily percentile observations, separately for composite and each of the five channels.",
+  "ai_gpr": "Used exactly as published in the four registered India columns.",
+  "ai_gpr_series": [
+   "India_all",
+   "India_initiator",
+   "India_respondent",
+   "India_spillover"
+  ],
+  "changes": "Simple first differences.",
+  "prohibited": [
+   "logs",
+   "seasonal adjustment",
+   "detrending",
+   "smoothing",
+   "winsorising",
+   "outlier removal"
+  ]
+ },
+ "statistics": {
+  "P1_inferential_primary": "Spearman rho between month-over-month changes of IGRM composite and AI-GPR India_all.",
+  "P2_descriptive_primary": "Spearman rho in levels for IGRM composite and AI-GPR India_all. No decision language attaches because persistent levels may correlate mechanically.",
+  "S1_descriptive": "Pearson equivalents of P1 and P2, for comparability with the standing GPRC_IND page.",
+  "S2_exploratory": "A 6 by 4 Spearman table for IGRM composite plus five channels against India_all, India_initiator, India_respondent, and India_spillover, in levels and changes. Each cell reports n. No decision language attaches.",
+  "S3_descriptive": "For each already registered IGRM episode in sample, publish the within-sample percentile rank of AI-GPR India_all in that event month. No AI-GPR hit rate is computed because the episode list was selected for IGRM's construct.",
+  "S4_divergence": "Publish five level months selected greedily in descending absolute within-sample percentile-rank gap. After choosing a month, skip any immediately adjacent calendar month, then continue until five are selected. Ties retain chronological input order. Publish ranks and IGRM evidence links, never raw AI-GPR values.",
+  "qualitative_limit": "Divergence rows may be described but not given causal interpretations."
+ },
+ "inference": {
+  "interval": "Percentile 95% moving-block bootstrap interval for P1.",
+  "bootstrap_draws": 10000,
+  "primary_block_length_months": 6,
+  "robustness_block_length_months": 12,
+  "random_seed": 20260807,
+  "runtime_seed_rule": "The implementation initialises the generator with random_seed plus the block length.",
+  "pairing": "The two change series are resampled jointly; identical sampled time positions apply to both series in every draw.",
+  "chain_breaks": "Blocks never cross a non-consecutive calendar gap. Every full-length moving window in a segment is a candidate block. A segment shorter than the target block length is one whole candidate block.",
+  "draw_rule": "Candidate blocks are sampled uniformly with replacement, concatenated, and truncated to the original paired n. An undefined resampled rho is discarded and redrawn, leaving 10,000 defined draws.",
+  "reported_diagnostics": "Lag-1 autocorrelations for both primary level series and both primary change series.",
+  "p_value_stars": false
+ },
+ "decision_language": {
+  "threshold_note": "The 0.5 boundary is a registered descriptive convention, not a universal validation threshold.",
+  "rules_in_order": [
+   {
+    "condition": "rho < 0 and the 95% interval upper bound is below 0",
+    "text": "The measures diverge systematically; published as found, investigation registered separately."
+   },
+   {
+    "condition": "the 95% interval lower bound is above 0 and rho >= 0.5",
+    "text": "Month-over-month movements in the two measures co-move substantially."
+   },
+   {
+    "condition": "the 95% interval lower bound is above 0 and 0 < rho < 0.5",
+    "text": "The two measures share a common component but are far from redundant."
+   },
+   {
+    "condition": "all other outcomes, including an interval containing 0",
+    "text": "At monthly frequency the two measures are largely distinct; divergence months are listed for inspection."
+   }
+  ],
+  "forbidden_under_every_outcome": [
+   "beats",
+   "outperforms",
+   "more accurate",
+   "validates",
+   "confirms IGRM measures risk"
+  ],
+  "only_registered_discussion_frames": [
+   "Corpus difference: the AI-GPR source uses three US newspapers while IGRM uses global GDELT coverage.",
+   "Construct difference: geopolitical risk intensity versus press-salience share.",
+   "Anchoring difference: a global country score versus India-specific fault-line channels."
+  ]
+ },
+ "robustness": {
+  "R1_splice_sensitivity": "When a complete splice-sensitivity history is published, rerun this identical frozen protocol on that series and report it beside the primary result.",
+  "R2_block_length": "Repeat the P1 interval at a 12-month block length."
+ },
+ "publication": {
+  "commit_sequence": [
+   "Commit A publishes this registration, the frozen script, and enforcement tests, with no benchmark result.",
+   "Only after Commit A is public is the frozen script run against the pinned bytes.",
+   "Commit B publishes the verbatim generated aggregate/rank output, the complete month list, and a deviations log, without altering the script."
+  ],
+  "raw_ai_gpr_values_redistributed": false,
+  "result_fields": "Aggregate correlations, intervals, sample metadata, ranks, IGRM links, and an explicit deviations list only.",
+  "external_timestamp": "Commit A should be anchored with an independent timestamp where operationally available; lack of one must be disclosed rather than silently implied."
+ }
+}

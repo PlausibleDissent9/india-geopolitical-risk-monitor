@@ -51,6 +51,12 @@ INVOKED_BY_ANOTHER_MODULE = {
     "retest": ("founder-paced: writes a blind labelling sheet for a "
                "human to fill, so regenerating it nightly would "
                "reissue the draw before anyone answered it"),
+    "ai_gpr_benchmark": (
+        "one-shot registered benchmark: the source, IGRM input, analysis-code "
+        "hashes, and output sequence are frozen in "
+        "analysis/ai_gpr_benchmark_registration.json; a recurring lane would "
+        "either fail its vintage checks or violate the registration"
+    ),
 }
 
 WRITES_PAYLOAD = re.compile(
