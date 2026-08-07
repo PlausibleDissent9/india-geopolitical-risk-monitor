@@ -131,7 +131,9 @@
    "description": "Base rates for the registered episode-detection hit rate and the placebo overlap. The registered statistics are unchanged; this publishes the denominators that make them interpretable, because a hit rate quoted without its chance rate is a number wearing a costume.",
    "frozen_fields": [
     "_meta",
-    "hit_rate_context"
+    "hit_rate_context",
+    "placebo_context",
+    "composite7_battery"
    ],
    "stability": "stable"
   },
