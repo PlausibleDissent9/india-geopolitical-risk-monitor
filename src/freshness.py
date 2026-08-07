@@ -30,6 +30,7 @@ Three rules keep this honest rather than decorative:
 """
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from datetime import date, datetime, timezone
@@ -88,6 +89,21 @@ EXEMPT: dict[str, str] = {
     "freshness.json": "this audit's own output",
 }
 
+# CSV exemptions, same discipline as the JSON ones: a written reason,
+# and the list stays short.
+EXEMPT_CSV: dict[str, str] = {
+    "event_study.csv": (
+        "not a series -- one row per channel x outcome x window, with no "
+        "date column to age. It is recomputed from episodes.json in the "
+        "same lane, and episodes' own freshness is checked"),
+}
+
+# Cadence for the dated CSVs, where it differs from daily.
+MAX_AGE_DAYS.update({
+    "monthly.csv": 70,   # monthly series; a new month lands once a month
+    "episodes.csv": 90,  # event-driven -- a quiet quarter is not a stall
+})
+
 TIMESTAMP_KEYS = ("generated", "generated_at", "resolved_at")
 
 
@@ -106,6 +122,81 @@ def _generated(path: Path) -> str | None:
         if isinstance(v, str) and len(v) >= 10:
             return v[:10]
     return None
+
+
+# A published CSV has nowhere to carry _meta, so its freshness is the
+# latest value in whichever column dates its rows. Checked in order; the
+# first present wins.
+#
+# The first version looked only for "date" and reported three of the five
+# as undatable -- which this module treats as a failure, correctly, but
+# the failure would have been mine rather than the lane's. episodes.csv
+# dates rows by `end`, monthly.csv by `month`.
+CSV_DATE_COLUMNS = ("date", "end", "month")
+
+
+def _csv_last_date(path: Path) -> str | None:
+    try:
+        with path.open(encoding="utf-8") as fh:
+            reader = csv.DictReader(fh)
+            cols = reader.fieldnames or []
+            col = next((c for c in CSV_DATE_COLUMNS if c in cols), None)
+            if col is None:
+                return None
+            last = None
+            for row in reader:
+                v = (row.get(col) or "").strip()
+                if v and (last is None or v > last):
+                    last = v
+        if not last:
+            return None
+        # "2026-08" is a month, not a day. Age it from the month's start:
+        # a monthly series is current if its newest month is recent, and
+        # padding to the 1st is the conservative reading.
+        return f"{last}-01" if len(last) == 7 else last[:10]
+    except Exception:  # noqa: BLE001 -- an unreadable payload is undatable
+        return None
+
+
+def audit_csvs(today: date | None = None) -> list[dict[str, Any]]:
+    """The five CSVs published alongside the JSON.
+
+    They were outside this audit entirely, because the loop globbed
+    "*.json". Two of them -- shares.csv and monthly.csv -- are written by
+    steps marked continue-on-error, so their lane can fail without
+    turning anything red, and nothing was checking that the file still
+    moved. shares.csv is the one referee finding #N promoted to "a
+    first-class published artifact"; a frozen copy of it serves plausible
+    numbers indefinitely.
+    """
+    today = today or date.today()
+    rows: list[dict[str, Any]] = []
+    for path in sorted(SITE_DATA.glob("*.csv")):
+        name = path.name
+        if name in EXEMPT_CSV:
+            rows.append({"payload": name, "status": "exempt",
+                         "reason": EXEMPT_CSV[name]})
+            continue
+        limit = MAX_AGE_DAYS.get(name, DEFAULT_MAX_AGE_DAYS)
+        last = _csv_last_date(path)
+        if last is None:
+            rows.append({"payload": name, "status": "undatable",
+                         "max_age_days": limit,
+                         "reason": "no date column; cannot be aged"})
+            continue
+        try:
+            age = (today - date.fromisoformat(last)).days
+        except ValueError:
+            rows.append({"payload": name, "status": "undatable",
+                         "max_age_days": limit,
+                         "reason": f"unparseable last date {last!r}"})
+            continue
+        rows.append({
+            "payload": name, "generated": last, "age_days": age,
+            "max_age_days": limit,
+            "status": "fresh" if age <= limit else "STALE",
+        })
+    return rows
 
 
 def audit(today: date | None = None) -> list[dict[str, Any]]:
@@ -142,7 +233,10 @@ def audit(today: date | None = None) -> list[dict[str, Any]]:
 
 
 def main() -> None:
-    rows = audit()
+    # The CSVs were outside this audit until 2026-08-07, because the loop
+    # globbed "*.json". Five published files, two of them written by
+    # continue-on-error steps, none of them checked for having moved.
+    rows = audit() + audit_csvs()
     bad = [r for r in rows if r["status"] in ("STALE", "undatable")]
     fresh = [r for r in rows if r["status"] == "fresh"]
     exempt = [r for r in rows if r["status"] == "exempt"]

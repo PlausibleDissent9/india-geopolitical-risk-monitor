@@ -7,11 +7,11 @@
   "what": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
   "undatable_is_a_failure": "A payload with no _meta.generated cannot be audited by anything, so it counts as a failure rather than a pass. An auditor that skips what it cannot read is worse than no auditor, because it reports green.",
   "default_max_age_days": 3,
-  "n_payloads": 66,
-  "n_fresh": 59,
+  "n_payloads": 73,
+  "n_fresh": 65,
   "n_stale_or_undatable": 0,
-  "n_exempt": 7,
-  "generated": "2026-08-07T12:24:48Z"
+  "n_exempt": 8,
+  "generated": "2026-08-07T14:33:46Z"
  },
  "payloads": [
   {
@@ -262,6 +262,13 @@
    "status": "fresh"
   },
   {
+   "payload": "replication.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
    "payload": "robustness_series.json",
    "generated": "2026-08-06",
    "age_days": 1,
@@ -402,6 +409,13 @@
    "status": "fresh"
   },
   {
+   "payload": "splice_sensitivity.json",
+   "generated": "2026-08-07",
+   "age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
    "payload": "status.json",
    "status": "exempt",
    "reason": "the freshness surface itself; it is checked by its own lane and auditing it here would be circular"
@@ -460,6 +474,39 @@
    "generated": "2026-08-07",
    "age_days": 0,
    "max_age_days": 10,
+   "status": "fresh"
+  },
+  {
+   "payload": "episodes.csv",
+   "generated": "2026-08-04",
+   "age_days": 3,
+   "max_age_days": 90,
+   "status": "fresh"
+  },
+  {
+   "payload": "event_study.csv",
+   "status": "exempt",
+   "reason": "not a series -- one row per channel x outcome x window, with no date column to age. It is recomputed from episodes.json in the same lane, and episodes' own freshness is checked"
+  },
+  {
+   "payload": "history.csv",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "monthly.csv",
+   "generated": "2026-08-01",
+   "age_days": 6,
+   "max_age_days": 70,
+   "status": "fresh"
+  },
+  {
+   "payload": "shares.csv",
+   "generated": "2026-08-06",
+   "age_days": 1,
+   "max_age_days": 3,
    "status": "fresh"
   }
  ]

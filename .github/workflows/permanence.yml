@@ -28,6 +28,21 @@ jobs:
       - run: pip install requests
       - name: Snapshot site + register repo (fail-soft by design)
         run: python -m src.permanence
+      - name: Stamp payload metadata and asset versions
+        # Nine workflows commit into docs/. Until 2026-08-07 exactly ONE
+        # of them stamped, so the codebook's promise that every download
+        # carries its licence and citation held only for whatever
+        # daily.yml happened to write last. The notes lane proved it at
+        # 14:31Z: it republished note_latest.json without _meta at all,
+        # and regenerated three pages with unversioned stylesheet links.
+        #
+        # Both stamps are idempotent and offline, so running them in
+        # every publishing lane costs nothing and removes the assumption
+        # that some other lane will tidy up afterwards.
+        continue-on-error: true
+        run: |
+          python -m src.stamp_meta || true
+          python -m src.stamp_assets || true
       - name: Commit the permanence record
         run: |
           git config user.name "igrm-bot"

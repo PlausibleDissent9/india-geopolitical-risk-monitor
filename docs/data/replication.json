@@ -14,7 +14,7 @@
   "precision": 1,
   "precision_note": "history.csv publishes one decimal place, so the rebuild is rounded the same way and equality is required. An earlier version compared an unrounded rebuild against a rounded file and reported three 0.05 disagreements that were entirely an artifact of comparing different precisions.",
   "finding": "19830 of 19830 published values are reproduced exactly, by code that has never read the pipeline, from the codebook and the shares file alone.",
-  "generated": "2026-08-07T14:25:52Z"
+  "generated": "2026-08-07T14:32:05Z"
  },
  "best": {
   "n_compared": 19830,
@@ -62,6 +62,11 @@
   },
   "percentile_convention": "weak",
   "window_convention": "calendar"
+ },
+ "coverage": {
+  "n_published_days_without_a_shares_row": 0,
+  "days": [],
+  "why": "The agreement rate is computed over days both files cover. If shares.csv froze while history.csv advanced, the overlap would shrink, the remaining days would still match, and the percentage would stay at 100 while the newest scores had no published input behind them. This counts that directly."
  },
  "all_conventions": [
   {

@@ -260,10 +260,34 @@ def run_all() -> list[dict[str, Any]]:
     return results
 
 
+def coverage_gap() -> list[str]:
+    """Days the site publishes a score for but cannot explain from the
+    published quantity.
+
+    This is the hole the agreement percentage cannot see. `compare()`
+    only looks at days BOTH sides produced, so if shares.csv froze while
+    history.csv kept advancing, the overlap would shrink, every remaining
+    day would still match, and this module would go on reporting 100%
+    while the newest scores had no published input behind them at all.
+
+    publish_shares runs under continue-on-error, so exactly that failure
+    is silent by construction. An agreement rate over a shrinking
+    denominator is the reassuring-number trap, and this is the check that
+    does not fall for it.
+    """
+    shares = read_shares()
+    have = set()
+    for series in shares.values():
+        have |= set(series)
+    published = set(read_published())
+    return sorted(str(d) for d in (published - have))
+
+
 def main() -> None:
     check = "--check" in sys.argv
     results = run_all()
     best = results[0]
+    gap = coverage_gap()
     runner_up = results[1] if len(results) > 1 else None
 
     from src import stamp_meta
@@ -309,6 +333,16 @@ def main() -> None:
                 "%Y-%m-%dT%H:%M:%SZ"),
         },
         "best": best,
+        "coverage": {
+            "n_published_days_without_a_shares_row": len(gap),
+            "days": gap[:25],
+            "why": (
+                "The agreement rate is computed over days both files cover. "
+                "If shares.csv froze while history.csv advanced, the overlap "
+                "would shrink, the remaining days would still match, and the "
+                "percentage would stay at 100 while the newest scores had no "
+                "published input behind them. This counts that directly."),
+        },
         "all_conventions": results,
         "ambiguities_in_the_codebook": [
             {
@@ -365,6 +399,18 @@ def main() -> None:
         print(f"[blind_replicator]   {r['percentile_convention']:>8} / "
               f"{r['window_convention']:<12} {r['agreement']:.4%} "
               f"max {r['max_abs_diff']}")
+
+    if gap:
+        print(f"[blind_replicator] COVERAGE GAP: {len(gap)} published days "
+              f"have no row in shares.csv, first {gap[:3]}")
+    if check and gap:
+        raise SystemExit(
+            f"[blind_replicator] the site publishes scores for {len(gap)} "
+            f"days that shares.csv cannot explain (first {gap[:3]}). The "
+            "agreement rate above is computed over the days both files "
+            "cover, so it stays reassuring while the newest scores lose "
+            "their published input entirely. publish_shares runs under "
+            "continue-on-error, which is exactly how this happens quietly.")
 
     if check and best["agreement"] < MIN_AGREEMENT:
         raise SystemExit(
