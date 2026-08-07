@@ -99,8 +99,15 @@ def main() -> None:
     # channel means no composite, not a shifted mean.
     composite = (round(float(np.mean(valid)), 1)
                  if valid and len(valid) == len(scores) else None)
+    # nowcast.yml is its own workflow and never runs stamp_meta, so a
+    # payload stamped by the daily lane gets overwritten unstamped a few
+    # hours later -- which is exactly what happened at 11:34 today.
+    # Carrying the universal fields here makes it independent of which
+    # lane wrote last, the same fix freshness.py needed.
+    from src import stamp_meta
     payload = {
         "_meta": {
+            **stamp_meta.universal_fields("nowcast.json"),
             "what": ("PROVISIONAL today-so-far scores from a partial-day "
                      "sample of the GDELT Web NGrams bridge. Superseded by "
                      "the daily run's finalized number; never part of the "

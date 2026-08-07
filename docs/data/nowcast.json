@@ -1,1 +1,39 @@
-{"_meta": {"what": "PROVISIONAL today-so-far scores from a partial-day sample of the GDELT Web NGrams bridge. Superseded by the daily run's finalized number; never part of the historical series.", "definition": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.", "generated": "2026-08-07T11:29:55Z"}, "date": "2026-08-07", "as_of_utc": "11:29", "provisional": true, "n_samples": 23, "n_docs_sampled": 12566, "composite": 46.0, "channels": {"pakistan_west": {"label": "Pakistan / Western Border", "score": 4.6}, "china_east": {"label": "China / Eastern Border", "score": 69.1}, "gulf_energy": {"label": "Gulf & Energy Security", "score": 76.9}, "us_trade": {"label": "US & Trade Policy", "score": 9.1}, "shipping": {"label": "Shipping & Chokepoints", "score": 70.1}}}
+{
+ "_meta": {
+  "what": "PROVISIONAL today-so-far scores from a partial-day sample of the GDELT Web NGrams bridge. Superseded by the daily run's finalized number; never part of the historical series.",
+  "definition": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+  "generated": "2026-08-07T11:29:55Z",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/nowcast.json"
+ },
+ "date": "2026-08-07",
+ "as_of_utc": "11:29",
+ "provisional": true,
+ "n_samples": 23,
+ "n_docs_sampled": 12566,
+ "composite": 46.0,
+ "channels": {
+  "pakistan_west": {
+   "label": "Pakistan / Western Border",
+   "score": 4.6
+  },
+  "china_east": {
+   "label": "China / Eastern Border",
+   "score": 69.1
+  },
+  "gulf_energy": {
+   "label": "Gulf & Energy Security",
+   "score": 76.9
+  },
+  "us_trade": {
+   "label": "US & Trade Policy",
+   "score": 9.1
+  },
+  "shipping": {
+   "label": "Shipping & Chokepoints",
+   "score": 70.1
+  }
+ }
+}
