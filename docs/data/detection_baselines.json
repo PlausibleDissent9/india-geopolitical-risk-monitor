@@ -1,0 +1,28 @@
+{
+ "_meta": {
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/detection_baselines.json",
+  "what": "Base rates for the registered episode-detection hit rate and the placebo overlap. The registered statistics are unchanged; this publishes the denominators that make them interpretable, because a hit rate quoted without its chance rate is a number wearing a costume.",
+  "prompted_by": "a simulated hostile referee (analysis/referee_report_2026-08-07.md, findings 3-4), whose recomputations of the published statistics all reproduced and whose criticism was aimed at what was NOT published beside them",
+  "registered_criterion": "a detected same-channel episode day within +/-3 days of the event (the lenient reading; the strict start-based reading is published here alongside)",
+  "how_to_read": "The apparatus earns exactly the gap between the registered hits and the chance/naive rows. A registered rate far above chance but close to the naive any-channel detector means the CHANNEL ATTRIBUTION carries the value, not the detection itself.",
+  "generated": "2026-08-07T17:08:19Z"
+ },
+ "hit_rate_context": {
+  "n_events": 29,
+  "registered_criterion_hits": 24,
+  "strict_start_hits": 19,
+  "criterion_sensitive_events": [
+   "Balakot airstrike and aerial engagement",
+   "India-Pakistan military exchange (to ceasefire of May 10)",
+   "US doubles tariffs on India to 50% over Russian-oil purchases",
+   "US strike kills Qasem Soleimani in Baghdad",
+   "US Section 232 steel and aluminium tariffs signed (global trade-war onset; India affected)"
+  ],
+  "naive_any_channel_hits": 26,
+  "chance_expected_hits": 6.8,
+  "n_episodes": 524
+ }
+}

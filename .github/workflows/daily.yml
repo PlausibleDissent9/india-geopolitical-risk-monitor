@@ -240,6 +240,7 @@ jobs:
           python -m src.splice_sensitivity
           python -m src.monthly
           python -m src.blind_spot
+          python -m src.detection_baselines
           python -m src.episode_actors
           python -m src.exposure
           python -m src.predictability
@@ -455,11 +456,9 @@ jobs:
         run: |
           if [ "$(date -u +%u)" = "5" ]; then python -m src.make_datapack; fi
       - name: Commit data
-        # always(): a pipeline crash mid-backfill must still commit the
-        # chunk cache, so the next run resumes instead of refetching --
-        # GDELT's rate limiter makes uncached retries expensive. The
-        # fail-loud gate keeps docs/data untouched on crashes, so a
-        # partial run can never publish partial site data.
+        # always(): a crash must still bank acquisition caches and byte-exact
+        # source evidence. Derived docs are staged only if every required step
+        # succeeded; a late failure therefore cannot publish a mixed vintage.
         if: always()
         run: |
           git config user.name "igrm-bot"
@@ -474,7 +473,5 @@ jobs:
           # the exclusion had begun publishing map aggregates that the
           # committed store could not reproduce (caught by the first
           # run of src.audit; corrections ledger entry the same day).
-          git add docs notes-inbox || true
-          git add data/raw || true
-          git add .trigger || true
+          bash scripts/stage_daily_outputs.sh "${{ job.status }}"
           bash scripts/publish_push.sh "data: update $(date -u +%F)"

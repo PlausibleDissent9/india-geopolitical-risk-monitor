@@ -41,6 +41,15 @@
 
 <section id="blind-section" hidden>
 <h3>What the detector cannot see</h3>
+<p class="chart-note"><strong>Base rates, published beside the headline because a hit rate
+without its chance rate is a number wearing a costume</strong> (added 2026-08-07 after an
+adversarial review): under the registered &plusmn;3-day, any-episode-day criterion the rate is
+24&nbsp;of&nbsp;29; requiring the episode <em>start</em> within &plusmn;3 days gives 19&nbsp;of&nbsp;29;
+randomly-dated events would expect &asymp;6.8&nbsp;of&nbsp;29 by chance; and a naive detector that
+counts an episode in <em>any</em> channel scores 26&nbsp;of&nbsp;29 &mdash; so the channel
+<em>attribution</em>, not the detection alone, is where the five-dictionary apparatus earns its
+keep. All four numbers recompute nightly from the published files:
+<a href="data/detection_baselines.json">data/detection_baselines.json</a>.</p>
 <p class="chart-note">The hit-rate above is measured against episodes chosen in advance. This is
 the other half: what the detector <em>structurally</em> misses. Detection fires when a channel's
 share clears its trailing 90-day mean + 2&sigma;, so a crisis enters the very window its own
