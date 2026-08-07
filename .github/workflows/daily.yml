@@ -130,7 +130,13 @@ jobs:
                 > data/raw/last_backfill_failure.log || true
               git add data/raw || true
               git commit -m "backfill chunk cache: pass $i" || true
-              git pull --rebase origin main || true
+              # Best-effort: this is the intermediate chunk-cache commit
+              # banking progress against a job timeout, not the publish,
+              # so a failure here must not kill the pass loop. But a
+              # FAILED rebase must still be aborted -- left in place it
+              # stops the repo mid-rebase and the next pass's commit and
+              # push behave unpredictably against a half-applied tree.
+              git pull --rebase origin main || git rebase --abort || true
               git push || true
               echo "pass $i died; cooling down 240s"
               sleep 240
@@ -447,55 +453,4 @@ jobs:
           git add docs notes-inbox || true
           git add data/raw || true
           git add .trigger || true
-          git commit -m "data: update $(date -u +%F)" || echo "no changes"
-          # Retry the push, and never push from a broken rebase: a failed
-          # rebase is aborted and retried whole, because git push inside
-          # an interrupted rebase reports vacuous success.
-          pushed=0
-          for i in 1 2 3 4 5; do
-            if git pull --rebase origin main; then
-              if git push; then pushed=1; break; fi
-            else
-              # CONFLICTS HERE ARE ALWAYS IN DERIVED FILES, and this
-              # aborting-and-retrying straight into the same conflict is
-              # why 13 of the last 20 daily runs failed at this step. The
-              # lane rewrites docs/data/*.json every run; main moves under
-              # it (nowcast every two hours, permanence, notes, and now
-              # more than one agent), so the replayed commit collides on
-              # regenerated values and timestamps. Five identical retries
-              # cannot resolve a conflict that is deterministic.
-              #
-              # Keep the version THIS run computed: it is derived from a
-              # store that is a superset of upstream's, so regenerating is
-              # always the correct resolution for these paths.
-              #
-              # --theirs, not --ours. During a rebase the sides invert:
-              # "ours" is the upstream branch being replayed ONTO, and
-              # "theirs" is the commit being replayed -- this run's work.
-              # Verified in a scratch repo before shipping, because this
-              # is exactly the kind of thing that is easy to get backwards
-              # and impossible to notice once it is wrong.
-              if git diff --name-only --diff-filter=U | grep -qE '^(docs/|data/raw/)'; then
-                git diff --name-only --diff-filter=U \
-                  | grep -E '^(docs/|data/raw/)' \
-                  | xargs -r git checkout --theirs -- || true
-                git diff --name-only --diff-filter=U \
-                  | grep -E '^(docs/|data/raw/)' | xargs -r git add || true
-              fi
-              # Anything still unresolved is NOT a derived file, so it is
-              # a real conflict a human must see: abort rather than guess.
-              if git diff --name-only --diff-filter=U | grep -q .; then
-                echo "unresolved non-derived conflict; aborting rebase"
-                git rebase --abort || true
-              elif ! GIT_EDITOR=true git rebase --continue; then
-                git rebase --abort || true
-              elif git push; then
-                pushed=1; break
-              fi
-            fi
-            echo "push attempt $i failed; retrying"
-            sleep $((10 * i))
-          done
-          # Five failures in a row means the computed day dies with the
-          # runner; fail loudly instead of passing with unpushed data.
-          [ "$pushed" = "1" ]
+          bash scripts/publish_push.sh "data: update $(date -u +%F)"

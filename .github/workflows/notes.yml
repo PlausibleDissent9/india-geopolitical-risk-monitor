@@ -74,15 +74,4 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           git add docs || true
-          git commit -m "notes: publish $(date -u +%F)" || echo "no changes"
-          pushed=0
-          for i in 1 2 3 4 5; do
-            if git pull --rebase origin main; then
-              if git push; then pushed=1; break; fi
-            else
-              git rebase --abort || true
-            fi
-            echo "push attempt $i failed; retrying"
-            sleep $((10 * i))
-          done
-          [ "$pushed" = "1" ]
+          bash scripts/publish_push.sh "notes: publish $(date -u +%F)"

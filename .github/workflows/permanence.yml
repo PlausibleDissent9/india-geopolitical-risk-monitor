@@ -48,13 +48,4 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           git add docs/data/permanence.json
-          git commit -m "permanence: archive snapshot record $(date -u +%F)" || exit 0
-          for i in 1 2 3; do
-            if git pull --rebase origin main; then
-              git push && exit 0
-            else
-              git rebase --abort || true
-            fi
-            sleep $((10 * i))
-          done
-          echo "push failed; record will be retaken next run"
+          bash scripts/publish_push.sh "permanence: archive snapshot record $(date -u +%F)"

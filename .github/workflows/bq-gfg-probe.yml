@@ -89,10 +89,4 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           git add analysis/gfg_probe_results.md
-          git commit -m "gfg probe: measured result $(date -u +%F)" || exit 0
-          for i in 1 2 3; do
-            if git pull --rebase origin main; then git push && exit 0
-            else git rebase --abort || true; fi
-            sleep $((10 * i))
-          done
-          echo "push failed; result remains in run log"
+          bash scripts/publish_push.sh "gfg probe: measured result $(date -u +%F)"

@@ -57,11 +57,5 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           git add data/raw/back_extension_monthly.csv docs/data/back_extension.json analysis/backext_run_log.md 2>/dev/null || git add analysis/backext_run_log.md
-          git commit -m "back-extension: M1 store + graded anchors $(date -u +%F)" || exit 0
-          for i in 1 2 3; do
-            if git pull --rebase origin main; then git push && exit 0
-            else git rebase --abort || true; fi
-            sleep $((10 * i))
-          done
-          echo "push failed; rerun via dispatch"
+          bash scripts/publish_push.sh "back-extension: M1 store + graded anchors $(date -u +%F)"
 # run-stamp: 2026-08-06T11:37:27Z cap sized to measured 22.25GB need

@@ -96,13 +96,4 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           git add docs/data/nowcast.json || true
-          git commit -m "nowcast: $(date -u +%FT%TZ)" || echo "no changes"
-          pushed=0
-          for i in 1 2 3 4 5; do
-            git pull --rebase origin main || true
-            if git push; then pushed=1; break; fi
-            echo "push race, attempt $i; retrying"
-            sleep $((10 * i))
-          done
-          # Fail loudly if every attempt lost (same armor as daily.yml).
-          [ "$pushed" = "1" ]
+          bash scripts/publish_push.sh "nowcast: $(date -u +%FT%TZ)"

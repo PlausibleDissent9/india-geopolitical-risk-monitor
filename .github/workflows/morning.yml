@@ -108,12 +108,4 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           git add docs/data data/raw || true
-          git commit -m "data: final $(date -u -d 'yesterday' +%F) via morning-contract lane" || echo "no changes"
-          pushed=0
-          for i in 1 2 3 4 5; do
-            git pull --rebase origin main || true
-            if git push; then pushed=1; break; fi
-            echo "push race, attempt $i; retrying"
-            sleep $((10 * i))
-          done
-          [ "$pushed" = "1" ]
+          bash scripts/publish_push.sh "data: final $(date -u -d 'yesterday' +%F) via morning-contract lane"
