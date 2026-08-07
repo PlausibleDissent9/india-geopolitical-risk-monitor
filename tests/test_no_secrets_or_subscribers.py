@@ -104,8 +104,20 @@ def test_no_credential_is_committed():
 
 
 def test_the_subscriber_list_is_not_tracked():
-    tracked = [f for f in _tracked()
-               if "subscriber" in f.lower() or f.endswith("subscribers.csv")]
+    """Match the DATA FILE, not any path containing the word.
+
+    The first version matched `"subscriber" in path`, which passed here
+    and failed the moment it was committed -- because this test file's
+    own name contains "subscriber" and it flagged itself. It passed
+    locally only while it was still untracked, so `git ls-files` could
+    not see it. reproduce.sh caught it in a clean clone, which is
+    exactly the difference a clean clone exists to expose.
+    """
+    tracked = [
+        f for f in _tracked()
+        if Path(f).name.lower() in ("subscribers.csv", "subscribers.json")
+        or "igrm-private" in f.lower()
+    ]
     assert not tracked, f"the subscriber list is in the repo: {tracked}"
 
 

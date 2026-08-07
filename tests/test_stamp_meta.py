@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 
+import pytest
 from src import stamp_meta
 
 
@@ -65,6 +66,7 @@ def test_the_frozen_contract_is_never_rewritten():
     assert "api_contract.json" in stamp_meta.SKIP
 
 
+@pytest.mark.live
 def test_the_live_site_keeps_the_codebook_promise():
     """The claim, checked against what is actually served."""
     gaps = stamp_meta.audit()

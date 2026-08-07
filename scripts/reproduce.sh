@@ -56,6 +56,28 @@ else
   .venv/bin/python -m src.run_daily --backfill
 fi
 
+# Derived lanes that are PURE COMPUTATION over the committed stores:
+# no network, no caches beyond what is in the repo, deterministic given
+# the same inputs. Until 2026-08-07 reproduce.sh ran only run_daily, so
+# every payload these produce was reported "not rebuilt (module not
+# run) -- skipped" and the replication promise silently did not cover
+# them. A dataset nobody can rebuild is not reproducible just because
+# the rest of the repo is.
+#
+# Deliberately NOT here: syndication (needs the receipt corpus cache and
+# will reach for the network on an uncached day), wiki_hindi (Wikimedia
+# API), and the fetch lanes. Those are verified by their own tests, not
+# by this diff, and adding them would make the monthly reproduce run
+# fail for reasons that are not reproducibility.
+.venv/bin/python -m src.provenance
+.venv/bin/python -m src.publish_shares
+.venv/bin/python -m src.monthly
+.venv/bin/python -m src.blind_spot
+# Stamp last, or the rebuilt payloads lack the universal _meta fields
+# the committed ones carry and every file diffs as "present in one side
+# only" -- a reproducibility failure that is really a paperwork one.
+.venv/bin/python -m src.stamp_meta
+
 echo "[reproduce] diffing docs/data against committed versions"
 .venv/bin/python - "$SRC" <<'EOF'
 import json, sys

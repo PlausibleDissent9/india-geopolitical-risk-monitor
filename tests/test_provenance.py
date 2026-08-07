@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import json
 
+import pytest
 from src import provenance
 
 
@@ -68,6 +69,7 @@ def test_summary_counts_the_mixture(tmp_path, monkeypatch):
     assert s["bridge_last_day"] == "2026-07-01"
 
 
+@pytest.mark.live
 def test_every_published_share_row_carries_a_source():
     """The label has to reach the CSV, not stop at the record."""
     from pathlib import Path

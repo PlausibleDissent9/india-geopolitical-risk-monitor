@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 from datetime import date
 
+import pytest
 from src import monthly
 
 
@@ -92,6 +93,7 @@ def test_the_current_month_is_judged_against_days_elapsed(
     assert row["refused_reason"] == ""
 
 
+@pytest.mark.live
 def test_published_monthly_csv_never_carries_a_mean_it_refused():
     """Belt and braces on the real artifact: no row may have both a
     refusal and a value."""

@@ -70,6 +70,7 @@ def test_every_exemption_carries_a_reason():
             f"{name} is exempt without a real reason")
 
 
+@pytest.mark.live
 def test_the_real_site_has_no_stale_or_undatable_payloads():
     """Belt and braces against the live tree, so this cannot pass in
     isolation while the actual site serves a frozen payload."""

@@ -62,3 +62,16 @@ check_untyped_defs = true
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
+# "live" marks tests that assert on the CURRENT state of published
+# payloads rather than on code behaviour: freshness, the _meta stamp
+# promise, served-data invariants.
+#
+# They are real checks and they run in CI and in the daily enrichment
+# lane. They must NOT run in morning.yml, whose first gate is the test
+# suite and whose job is to publish by 06:00 IST. A weekly lane running
+# one day late would make a freshness assertion fail and block a publish
+# that is itself perfectly correct -- the gate would be enforcing
+# something that has nothing to do with whether today's index is right.
+markers = [
+    "live: asserts on current published-payload state, not code behaviour",
+]

@@ -59,7 +59,21 @@ jobs:
           fi
       - name: Enforce dictionary rules (ex-ante rule)
         if: steps.guard.outputs.skip != 'true'
-        run: python -m pytest -q
+        # -m "not live" excludes assertions about the CURRENT state of
+        # published payloads (freshness, the _meta stamp promise, served
+        # -data invariants). Those are real checks and they run in ci.yml
+        # and in the daily enrichment lane.
+        #
+        # They must not run HERE. This step is the first gate on the
+        # 06:00 contract, so any test it runs can block a publish -- and
+        # a weekly lane landing one day late would fail a freshness
+        # assertion and stop an index that is itself perfectly correct.
+        # The gate would be enforcing something with nothing to do with
+        # whether today's number is right.
+        #
+        # Same mistake, third time today: a test that reaches outside
+        # the code it tests does not belong in the contract's gate.
+        run: python -m pytest -q -m "not live"
       - name: Heal recent days (fresh runner IP)
         if: steps.guard.outputs.skip != 'true'
         run: python -m src.fetch_ngrams --heal 5

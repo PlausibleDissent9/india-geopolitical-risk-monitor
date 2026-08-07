@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+import pytest
 from src import wiki_hindi
 
 
@@ -89,6 +90,7 @@ def test_english_leads_requires_both_levels_and_changes():
     assert leads == ["both"]
 
 
+@pytest.mark.live
 def test_published_payload_never_substitutes_a_missing_hindi_article():
     """Unresolved titles must be reported, never quietly replaced."""
     import json
