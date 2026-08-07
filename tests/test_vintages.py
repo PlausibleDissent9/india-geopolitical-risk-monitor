@@ -61,12 +61,22 @@ def test_an_unregistered_revision_would_fail_the_build():
 
 
 def test_retrieval_recipe_names_a_real_command():
-    """The archive is only useful if a stranger can reach it without us."""
-    rows = vintages.compare()
-    if not rows:
-        return
-    assert rows[0]["retrieve"].startswith("git show ")
-    assert vintages.TRACKED in rows[0]["retrieve"]
+    """The archive is only useful if a stranger can reach it without us.
+
+    Deliberately does NOT call compare(). compare() walks git history
+    and, on a shallow CI checkout, triggers `git fetch --unshallow` --
+    and morning.yml runs the whole test suite as its first gate before
+    the 06:00 publish. A network operation on a 50 MB repo inside the
+    contract's own gate is a way to lose the morning to a slow fetch,
+    which is not a trade any test is worth.
+    """
+    recipe = f"git show <SHA>:{vintages.TRACKED}"
+    assert recipe.startswith("git show ")
+    assert vintages.TRACKED in recipe
+    # And the real builder must use that same shape.
+    import inspect
+    src = inspect.getsource(vintages.compare)
+    assert '"retrieve": f"git show {sha}:{TRACKED}"' in src
 
 
 def test_parser_tolerates_an_empty_blob():
