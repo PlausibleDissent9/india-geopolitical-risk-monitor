@@ -82,7 +82,7 @@ ASSETS = [
 # Files that may contain a reference: every page, plus the two sheets
 # that @import tokens.css and fonts.css.
 def _referrers() -> list[Path]:
-    return sorted(DOCS.glob("*.html")) + [DOCS / "site.css", DOCS / "style.css"]
+    return sorted(DOCS.rglob("*.html")) + [DOCS / "site.css", DOCS / "style.css"]
 
 
 def version_of(asset: str) -> str:
@@ -102,7 +102,7 @@ def _pattern(asset: str) -> re.Pattern[str]:
     nowhere else. Prose that happens to name a file is prose.
     """
     return re.compile(
-        r"(?P<lead>(?:href|src)\s*=\s*[\"']|url\(\s*[\"']?)"
+        r"(?P<lead>(?:href|src)\s*=\s*[\"'](?:\.\./)*|url\(\s*[\"']?(?:\.\./)*)"
         + re.escape(asset)
         + r"(?:\?v=[^\"')\s]*)?(?P<close>[\"']|(?=\s*\)))")
 

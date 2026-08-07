@@ -5,7 +5,10 @@
    both token sets (style.css homepage, site.css subpages). State colors
    (calm/elevated/severe) are data semantics, not brand, and stay.
    Nocturne is single-theme, so the light toggle becomes a no-op here. */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* External @import removed 2026-08-07: the sheet is parked, but a parked
+ * file with a live Google Fonts fetch becomes a CSP violation and a
+ * third-party request the moment anyone wires it. Self-host the font
+ * first if this theme is ever adopted. */
 
 :root,
 :root[data-theme="light"],

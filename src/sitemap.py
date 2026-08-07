@@ -69,7 +69,13 @@ def _last_commit_date(path: Path) -> str:
 
 
 def pages() -> list[Path]:
-    return sorted(p for p in DOCS.glob("*.html") if p.name not in EXCLUDE)
+    # rglob, not glob: docs/research/*.html shipped invisible to this
+    # generator (and to stamp_assets, and to three tests) because every
+    # one of them looked only at the top level. Indexable, canonical,
+    # absent from the sitemap, and orphaned -- found by the site audit
+    # on 2026-08-07. One directory of depth defeated five checks.
+    return sorted(p for p in DOCS.rglob("*.html")
+                  if str(p.relative_to(DOCS)) not in EXCLUDE)
 
 
 def build() -> str:
@@ -78,9 +84,10 @@ def build() -> str:
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ]
     for p in pages():
-        loc = BASE if p.name == "index.html" else BASE + p.name
+        rel = str(p.relative_to(DOCS))
+        loc = BASE if rel == "index.html" else BASE + rel
         lastmod = _last_commit_date(p)
-        prio = PRIORITY.get(p.name, "0.5")
+        prio = PRIORITY.get(rel, "0.5")
         lines.append(
             f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod><priority>{prio}</priority></url>"
         )

@@ -67,7 +67,7 @@ def test_no_reference_is_left_unversioned():
     check that only compared version strings to each other: they had no
     version to compare."""
     unversioned = []
-    for page in sorted(DOCS.glob("*.html")):
+    for page in sorted(DOCS.rglob("*.html")):
         text = page.read_text(encoding="utf-8")
         for m in re.finditer(r"(?:href|src)\s*=\s*[\"']([\w./-]+\.(?:css|js))[\"']",
                              text):

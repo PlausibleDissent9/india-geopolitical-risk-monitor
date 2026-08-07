@@ -30,13 +30,13 @@ def _listed() -> set[str]:
     text = SITEMAP.read_text(encoding="utf-8")
     out = set()
     for loc in re.findall(r"<loc>([^<]+)</loc>", text):
-        name = loc.rstrip("/").rsplit("/", 1)[-1]
-        out.add(name if name.endswith(".html") else "index.html")
+        rel = loc.replace("https://igrm.in/", "").rstrip("/")
+        out.add(rel if rel.endswith(".html") else "index.html")
     return out
 
 
 def test_every_page_is_listed_or_excluded_with_a_reason():
-    pages = {p.name for p in DOCS.glob("*.html")}
+    pages = {str(p.relative_to(DOCS)) for p in DOCS.rglob("*.html")}
     missing = pages - _listed() - set(sitemap.EXCLUDE)
     assert not missing, (
         f"pages absent from sitemap.xml and not excluded: {sorted(missing)}. "
@@ -45,7 +45,7 @@ def test_every_page_is_listed_or_excluded_with_a_reason():
 
 
 def test_nothing_is_listed_that_does_not_exist():
-    pages = {p.name for p in DOCS.glob("*.html")}
+    pages = {str(p.relative_to(DOCS)) for p in DOCS.rglob("*.html")}
     ghosts = _listed() - pages
     assert not ghosts, f"sitemap lists pages that do not exist: {sorted(ghosts)}"
 

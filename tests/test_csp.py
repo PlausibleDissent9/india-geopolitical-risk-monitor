@@ -36,7 +36,7 @@ ALLOWED_CONNECT: dict[str, dict[str, str]] = {
 
 
 def _pages() -> list[Path]:
-    return sorted(DOCS.glob("*.html"))
+    return sorted(DOCS.rglob("*.html"))
 
 
 def test_every_page_declares_a_csp():
