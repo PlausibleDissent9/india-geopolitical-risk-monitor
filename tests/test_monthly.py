@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import csv
-from datetime import date
 
 import pytest
 from src import monthly
@@ -21,6 +20,7 @@ def _shares(tmp_path, days):
 def _setup(tmp_path, monkeypatch, days, sources=None):
     monkeypatch.setattr(monthly, "SHARES", _shares(tmp_path, days))
     monkeypatch.setattr(monthly, "HISTORY", tmp_path / "history.csv")
+    monkeypatch.setattr(monthly, "LATEST", tmp_path / "latest.json")
     monkeypatch.setattr(monthly, "provenance", type("P", (), {
         "by_day": staticmethod(lambda: sources or {d: s for d, s in days}),
         "DOC_API": "doc_api",
@@ -91,23 +91,28 @@ def test_a_single_instrument_month_is_not_flagged(tmp_path, monkeypatch):
     assert row["n_days_ngram_bridge"] == 31
 
 
-def test_the_current_month_is_judged_against_days_elapsed(
+def test_latest_month_is_judged_through_latest_completed_news_day(
         tmp_path, monkeypatch):
-    """Otherwise every month in progress refuses itself for the whole
-    month, and the series is permanently one month stale."""
-    days = [(f"2026-08-{d:02d}", "ngram_bridge") for d in range(1, 8)]
+    """The D+1 wall clock must not count a not-yet-final score day missing."""
+    days = [(f"2026-08-{d:02d}", "ngram_bridge") for d in range(1, 7)]
     _setup(tmp_path, monkeypatch, days)
+    monthly.LATEST.write_text('{"date":"2026-08-06"}', encoding="utf-8")
 
-    class _D(date):
-        @classmethod
-        def today(cls):
-            return date(2026, 8, 7)
-    monkeypatch.setattr(monthly, "date", _D)
+    row = next(r for r in monthly.build() if r["month"] == "2026-08")
+    assert row["n_days_expected"] == 6
+    assert row["coverage"] == 1.0
+    assert row["refused_reason"] == ""
+
+
+def test_latest_payload_exposes_a_missing_completed_day(tmp_path, monkeypatch):
+    days = [(f"2026-08-{d:02d}", "ngram_bridge") for d in range(1, 7)]
+    _setup(tmp_path, monkeypatch, days)
+    monthly.LATEST.write_text('{"date":"2026-08-07"}', encoding="utf-8")
 
     row = next(r for r in monthly.build() if r["month"] == "2026-08")
     assert row["n_days_expected"] == 7
-    assert row["coverage"] == 1.0
-    assert row["refused_reason"] == ""
+    assert row["n_days_present"] == 6
+    assert row["coverage"] == 0.8571
 
 
 @pytest.mark.live

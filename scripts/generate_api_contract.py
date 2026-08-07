@@ -21,8 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "2.1.0"  # minor: monthly.json + receipts_archive.json gained additive fields
-FROZEN_DATE = "2026-08-07"
+CONTRACT_VERSION = "2.2.0"  # minor: country_china.json endpoint added; event_study.json and detector_blindness.json gained additive disclosure fields
+FROZEN_DATE = "2026-08-08"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
 # borrow from. Kept short; the full construction lives in codebook.md.
@@ -35,8 +35,9 @@ DESCRIPTIONS = {
         "spike rule.",
     "episodes.csv": "The same detected episodes as CSV, one row per "
         "episode.",
-    "event_study.csv": "Event-study relative-return cells as CSV, one row "
-        "per channel x window x market series.",
+    "event_study.csv": "Event-study outcome cells as CSV: India-specific "
+        "relative outcomes plus labelled descriptive commodity returns, one "
+        "row per channel x window x market series.",
     "history.csv": "The full daily series (composite and five channels) "
         "as CSV, one row per day, since 2017.",
     "feed.xml": "RSS 2.0 feed of the weekly analytical notes.",
@@ -137,7 +138,7 @@ OVERRIDES: dict = {
   ]
  },
  "data/event_study.json": {
-  "description": "Event study: mean cumulative India-specific relative returns after episode starts, with bootstrapped 95% CIs, plus raw per-episode window returns.",
+  "description": "Event study: mean cumulative India-specific relative outcomes plus separately labelled descriptive commodity returns after episode starts, with bootstrapped 95% CIs and raw per-episode windows.",
   "stability": "stable",
   "frozen_fields": [
    "_meta",
@@ -151,7 +152,7 @@ OVERRIDES: dict = {
   ]
  },
  "data/event_study.csv": {
-  "description": "Event-study relative-return cells as CSV, one row per channel x window x market series.",
+  "description": "Event-study outcome cells as CSV: India-specific relative outcomes plus labelled descriptive commodity-return rows, one row per channel x window x market series.",
   "stability": "stable",
   "frozen_fields": [
    "channel",

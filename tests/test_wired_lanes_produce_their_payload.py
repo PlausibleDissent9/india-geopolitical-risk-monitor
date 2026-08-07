@@ -44,16 +44,6 @@ NOT_YET: dict[str, str] = {
         "check -- but the lane has been running and producing nothing "
         "since it was added, and nothing said so. Found 2026-08-07 by "
         "this test, on its first run."),
-    "country_china.json": (
-        "V8 China monitor: registered in countries/china.json and wired "
-        "into daily.yml, but data/raw holds no china store and the "
-        "payload has never been written. Same GDELT throttling as V5 and "
-        "the same silence -- the step is continue-on-error, so every "
-        "failed collection has looked like a successful run. Found "
-        "2026-08-07 only after widening this check: country_monitor "
-        "writes f\"country_{name}.json\", and the first version matched "
-        "literal strings only -- so the one module with a stalled lane "
-        "was precisely the one the test could not see."),
 }
 
 WRITES = re.compile(r'SITE_DATA\s*/\s*"([\w.]+\.json)"')

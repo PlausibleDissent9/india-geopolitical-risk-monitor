@@ -150,10 +150,11 @@ def write_output(results: dict) -> None:
     from .build_index import _file_meta
 
     results = {"_meta": _file_meta(
-        "Event study: mean cumulative India-specific relative returns "
-        "after episode starts, with bootstrapped 95% CIs, plus raw "
-        "per-episode window returns. available_outcomes and "
-        "unavailable_outcomes disclose the current data surface.",
+        "Event study: mean cumulative India-specific relative outcomes "
+        "plus separately labelled descriptive commodity returns after "
+        "episode starts, with bootstrapped 95% CIs and raw per-episode "
+        "windows. available_outcomes and unavailable_outcomes disclose "
+        "the current data surface.",
         "cumulative log return, percent, over trading-day windows",
     ), **results}
     (SITE_DATA / "event_study.json").write_text(

@@ -54,6 +54,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 SHARES = SITE_DATA / "shares.csv"
 HISTORY = SITE_DATA / "history.csv"
+LATEST = SITE_DATA / "latest.json"
 CHANNELS = ["pakistan_west", "china_east", "gulf_energy", "us_trade",
             "shipping"]
 
@@ -81,6 +82,28 @@ def _days_in(month: str) -> int:
     return calendar.monthrange(y, m)[1]
 
 
+def _published_cutoff(shares: list[dict[str, str]]) -> date | None:
+    """Latest completed news day the monthly denominator may expect.
+
+    Wall-clock ``today`` is one day ahead of the final series during the normal
+    D+1 publication window.  Using it marks a not-yet-final news day missing.
+    ``latest.json`` is the publication authority. Without that authority the
+    safe denominator is a full calendar month; treating the last observed row
+    as the cutoff would disguise a truncated historical terminal month.
+    """
+    observed = max(date.fromisoformat(row["date"]) for row in shares)
+    try:
+        payload = json.loads(LATEST.read_text(encoding="utf-8"))
+        published = date.fromisoformat(payload["date"])
+    except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+        return None
+    if published < observed:
+        raise ValueError(
+            f"latest.json ends {published} before shares.csv ends {observed}"
+        )
+    return published
+
+
 def build() -> list[dict[str, Any]]:
     shares = _read(SHARES)
     hist = {r["date"]: r for r in _read(HISTORY)}
@@ -91,17 +114,19 @@ def build() -> list[dict[str, Any]]:
         by_month[r["date"][:7]].append(r)
     if not by_month:
         return []
+    published_cutoff = _published_cutoff(shares)
 
     rows: list[dict[str, Any]] = []
     for month in sorted(by_month):
         days = by_month[month]
         expected = _days_in(month)
-        # The final month of the series is partial by construction, not
-        # by failure; judging it against a full month would refuse every
-        # current month forever.
-        today = date.today()
-        if month == f"{today.year:04d}-{today.month:02d}":
-            expected = today.day
+        # The final published month is partial by construction, not by
+        # failure. Judge it through the latest completed news day, not the
+        # wall clock (normally already D+1 when the final is published).
+        if published_cutoff is not None and month == (
+            f"{published_cutoff.year:04d}-{published_cutoff.month:02d}"
+        ):
+            expected = published_cutoff.day
         present = len(days)
         coverage = present / expected if expected else 0.0
 
@@ -210,8 +235,9 @@ def main() -> None:
                 f"A month with less than {MIN_COVERAGE:.0%} of its days "
                 "in the store publishes its row with null values and a "
                 "stated reason, never a mean over the survivors. The "
-                "current month is judged against days elapsed, not "
-                "against its full length."),
+                "latest published month is judged through the latest "
+                "completed news day recorded by latest.json, not the "
+                "D+1 wall clock or the full month."),
             "composite_coverage_rule": (
                 "n_days_composite_present and composite_coverage count "
                 "only days with a ranked daily composite. A monthly "
