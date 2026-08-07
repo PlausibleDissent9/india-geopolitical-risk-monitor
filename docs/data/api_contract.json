@@ -126,6 +126,16 @@
    "stability": "stable"
   },
   {
+   "path": "data/detection_baselines.json",
+   "format": "json",
+   "description": "Base rates for the registered episode-detection hit rate and the placebo overlap. The registered statistics are unchanged; this publishes the denominators that make them interpretable, because a hit rate quoted without its chance rate is a number wearing a costume.",
+   "frozen_fields": [
+    "_meta",
+    "hit_rate_context"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/detector_blindness.json",
    "format": "json",
    "description": "How blind the episode detector goes after it fires. A crisis enters the trailing window its own future threshold is computed from, so the bar rises for 90 days and a second event has to rival the first to be seen.",
