@@ -23,6 +23,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -35,6 +37,12 @@ ROOT = Path(__file__).resolve().parents[1]
 LANGS = ROOT / "languages.json"
 DICTS = ROOT / "dictionaries.json"
 STORE = ROOT / "data" / "raw" / "multilingual_salience.csv"
+
+# How much one run may attempt. The CI step allows 45 minutes; these
+# leave room to finish cleanly inside it and are overridable so a
+# quieter window can do more without a code change.
+MAX_SERIES_PER_RUN = int(os.environ.get("IGRM_ML_MAX_SERIES", "4"))
+DEADLINE_SECONDS = int(os.environ.get("IGRM_ML_DEADLINE_S", str(30 * 60)))
 SITE_JSON = ROOT / "docs" / "data" / "multilingual.json"
 
 START = date(2019, 1, 1)  # three-language roster; extend range with roster
@@ -104,12 +112,40 @@ def update(backfill: bool = False) -> pd.DataFrame | None:
     print(f"[multilingual] {len(todo)} series to fetch "
           f"({len(expected_keys()) - len(todo)} already stored)")
 
+    # BOUNDED WORK PER RUN. The first version of this fix made progress
+    # cumulative but not achievable: the CI step allows 45 minutes and
+    # attempting all fifteen series took longer than that whenever GDELT
+    # throttled, so the run was KILLED mid-series (measured 2026-08-07:
+    # 09:44:14 to 10:29:27, exactly the timeout) and not one series ever
+    # completed. Per-series persistence cannot help if no series
+    # finishes.
+    #
+    # Each request can burn six attempts at SLEEP_S=15 plus backoff, so
+    # a throttled series costs minutes. A run now attempts a handful,
+    # stops starting new ones well before the axe falls, saves what it
+    # got, and lets the chain come back for the rest.
+    deadline = time.monotonic() + DEADLINE_SECONDS
+    todo = todo[:MAX_SERIES_PER_RUN]
+    print(f"[multilingual] this run attempts {len(todo)}: "
+          f"{', '.join(todo)} (budget {DEADLINE_SECONDS // 60} min)")
+
     landed = failed = 0
+    out_of_time = False
     for ch, spec in dicts.items():
+        if out_of_time:
+            break
         for lg in langs:
             key = f"{ch}_{lg}"
             if key not in todo:
                 continue
+            if time.monotonic() > deadline:
+                # Both loops, not just this one: a bare break here would
+                # exit the language loop and cheerfully start the next
+                # channel, past the deadline it just refused to cross.
+                print(f"[multilingual] budget spent; stopping before {key} "
+                      "rather than being killed mid-fetch")
+                out_of_time = True
+                break
             print(f"[multilingual] {key}: {start} -> {today}")
             try:
                 series = fetch_gdelt.fetch_channel(

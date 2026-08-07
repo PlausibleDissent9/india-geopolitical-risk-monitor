@@ -108,3 +108,55 @@ def test_an_empty_series_counts_as_missing_not_stored(wired, monkeypatch):
     with pytest.raises(SystemExit):
         multilingual.update(backfill=True)
     assert len(multilingual.missing_keys()) == 4
+
+
+def test_a_run_attempts_only_a_bounded_number_of_series(wired, monkeypatch):
+    """Cumulative progress is useless if no single unit ever completes.
+
+    Measured 2026-08-07: the CI step allows 45 minutes, attempting all
+    fifteen series took longer whenever GDELT throttled, and the run was
+    killed at exactly 45m13s having finished none. Per-series
+    persistence cannot save work that never finishes.
+    """
+    monkeypatch.setattr(multilingual, "MAX_SERIES_PER_RUN", 2)
+    attempted = []
+
+    def spy(*a, **k):
+        attempted.append(1)
+        return _series()
+
+    monkeypatch.setattr(multilingual.fetch_gdelt, "fetch_channel", spy)
+    multilingual.update(backfill=True)
+    assert len(attempted) == 2, "a run must not attempt more than its cap"
+    assert len(multilingual.missing_keys()) == 2, "the rest wait for next run"
+
+
+def test_the_deadline_stops_starting_new_series(wired, monkeypatch):
+    """It must stop CLEANLY before the workflow kills it, so whatever
+    landed is committed and the chain can continue."""
+    monkeypatch.setattr(multilingual, "MAX_SERIES_PER_RUN", 99)
+    monkeypatch.setattr(multilingual, "DEADLINE_SECONDS", 0)
+    calls = []
+    monkeypatch.setattr(multilingual.fetch_gdelt, "fetch_channel",
+                        lambda *a, **k: (calls.append(1), _series())[1])
+    multilingual.update(backfill=True)
+    assert not calls, "an expired budget must not start a single fetch"
+
+
+def test_the_deadline_breaks_out_of_both_loops(wired, monkeypatch):
+    """A bare break would leave the language loop and start the next
+    CHANNEL, crossing the deadline it had just refused to cross."""
+    monkeypatch.setattr(multilingual, "MAX_SERIES_PER_RUN", 99)
+    calls = []
+
+    class Clock:
+        def __init__(self): self.t = 0.0
+        def __call__(self):
+            self.t += 10_000  # every check is past any deadline
+            return self.t
+
+    monkeypatch.setattr(multilingual.time, "monotonic", Clock())
+    monkeypatch.setattr(multilingual.fetch_gdelt, "fetch_channel",
+                        lambda *a, **k: (calls.append(1), _series())[1])
+    multilingual.update(backfill=True)
+    assert not calls, "the deadline leaked into a second channel"
