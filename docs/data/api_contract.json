@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.25.0",
+    "contract_version": "1.26.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -232,7 +232,7 @@
     {
       "path": "data/exposure_sectors.json",
       "format": "json",
-      "description": "The registered sector-to-channel exposure map (sectors.json v1.0.0) with the deterministic weighting rule the exposure page computes with. Retrieval and description only: the instrument measures press salience, not risk, and makes no forecasts; an exposure profile re-cuts published numbers by the reader's own frame and adds no new claim.",
+      "description": "The registered sector-to-channel exposure map (sectors.json v1.1.0) with the deterministic weighting rule the exposure page computes with. Retrieval and description only: the instrument measures press salience, not risk, and makes no forecasts; an exposure profile re-cuts published numbers by the reader's own frame and adds no new claim.",
       "frozen_fields": [
         "_meta",
         "sectors"
@@ -393,6 +393,17 @@
         "n_docs_sampled",
         "composite",
         "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/permanence.json",
+      "format": "json",
+      "description": "The permanence lane's own record: the result of the latest Internet Archive snapshot request per page and the latest Software Heritage save-code-now registration. Fail-soft \u2014 an archive outage is recorded here, never hidden, and never blocks the pipeline. Wayback captures are browsable at web.archive.org/web/*/igrm.in.",
+      "frozen_fields": [
+        "_meta",
+        "wayback",
+        "software_heritage"
       ],
       "stability": "stable"
     },
