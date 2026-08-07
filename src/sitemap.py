@@ -19,6 +19,7 @@ EXCLUSIONS carry a reason, and the list is short by design.
   python -m src.sitemap            write docs/sitemap.xml
   python -m src.sitemap --check    exit 1 if it is out of date
 """
+
 from __future__ import annotations
 
 import subprocess
@@ -35,8 +36,10 @@ BASE = "https://igrm.in/"
 EXCLUDE: dict[str, str] = {
     "404.html": "the not-found page; indexing it puts an error in results",
     "embed.html": (
-        "an iframe widget meant to be embedded in someone else's page, "
-        "not landed on directly"),
+        "an iframe widget meant to be embedded in someone else's page, not landed on directly"
+    ),
+    "portal.html": "a private operational portal marked noindex and blocked in robots.txt",
+    "write.html": "an authenticated author console marked noindex",
 }
 
 # Rough priority: the instrument first, then the documents that explain
@@ -57,9 +60,11 @@ def _last_commit_date(path: Path) -> str:
     shallow checkout, which is honest -- a wrong-but-recent date is
     better than every page claiming the same stale day."""
     out = subprocess.run(
-        ["git", "log", "-1", "--format=%ad", "--date=short", "--",
-         str(path.relative_to(ROOT))],
-        cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        ["git", "log", "-1", "--format=%ad", "--date=short", "--", str(path.relative_to(ROOT))],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
     return out or date.today().isoformat()
 
 
@@ -68,15 +73,17 @@ def pages() -> list[Path]:
 
 
 def build() -> str:
-    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
-             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
     for p in pages():
         loc = BASE if p.name == "index.html" else BASE + p.name
         lastmod = _last_commit_date(p)
         prio = PRIORITY.get(p.name, "0.5")
-        lines.append(f"  <url><loc>{loc}</loc>"
-                     f"<lastmod>{lastmod}</lastmod>"
-                     f"<priority>{prio}</priority></url>")
+        lines.append(
+            f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod><priority>{prio}</priority></url>"
+        )
     lines.append("</urlset>")
     return "\n".join(lines) + "\n"
 
@@ -89,14 +96,16 @@ def main() -> None:
     if check:
         if want != have:
             raise SystemExit(
-                "[sitemap] docs/sitemap.xml is out of date. Regenerate with: "
-                "python -m src.sitemap")
+                "[sitemap] docs/sitemap.xml is out of date. Regenerate with: python -m src.sitemap"
+            )
         print(f"[sitemap] current ({len(pages())} pages)")
         return
 
     SITEMAP.write_text(want, encoding="utf-8")
-    print(f"[sitemap] wrote {len(pages())} urls "
-          f"({len(EXCLUDE)} excluded: {', '.join(sorted(EXCLUDE))})")
+    print(
+        f"[sitemap] wrote {len(pages())} urls "
+        f"({len(EXCLUDE)} excluded: {', '.join(sorted(EXCLUDE))})"
+    )
 
 
 if __name__ == "__main__":
