@@ -29,6 +29,24 @@ SITE_DATA = ROOT / "docs" / "data"
 #  date extraction, expected-freshness window in days)
 # Windows are ex-ante: source publish cadence + our fetch cadence,
 # with slack for weekends/holidays where the source has them.
+def _multilingual_progress() -> str:
+    """Computed absent-note: how much of V5 actually exists.
+
+    Kept deliberately failure-tolerant. This runs inside the status
+    payload build, which must not be the thing that breaks the morning.
+    """
+    try:
+        from src import multilingual
+        total = len(multilingual.expected_keys())
+        missing = len(multilingual.missing_keys())
+        if not missing:
+            return "complete"
+        return (f"{total - missing} of {total} language-channel series "
+                "stored; backfill resumes each run")
+    except Exception:  # noqa: BLE001 -- a note must never break status
+        return "backfill state unavailable"
+
+
 SOURCES: list[dict[str, Any]] = [
     {"key": "gdelt_salience", "name": "GDELT salience store",
      "role": "daily channel volumes — every score derives from this",
@@ -65,7 +83,21 @@ SOURCES: list[dict[str, Any]] = [
     {"key": "multilingual", "name": "Multilingual salience (V5)",
      "role": "Anglophone-lens bias audit",
      "file": "data/raw/multilingual_salience.csv", "kind": "csv_last_date",
-     "expect_days": 14, "absent_note": "backfill in progress on CI"},
+     # The note used to be the fixed string "backfill in progress on
+     # CI". It was true in the sense that runs were happening, and it
+     # said exactly that for seven days while seventy of them completed
+     # without ever writing a single series -- a hand-written note
+     # cannot notice that the thing it describes has stalled. It is now
+     # computed, so "0 of 15 series stored" says the quiet part.
+     "expect_days": 14, "absent_note": _multilingual_progress},
+    {"key": "country_china", "name": "China country monitor (V8)",
+     "role": "comparator instrument; enters no India score",
+     # Untracked until 2026-08-07, which is why its lane could fail
+     # every night for days in complete silence. A monitor nobody
+     # monitors is not a monitor.
+     "file": "data/raw/country_china_volume.csv", "kind": "csv_last_date",
+     "expect_days": 3,
+     "absent_note": "registered and signed; store not yet collected"},
 ]
 
 # Pipeline lanes: the last evidence stamp each one committed.
@@ -132,7 +164,12 @@ def check_sources(today: date) -> list[dict[str, Any]]:
         }
         if latest is None:
             rec["ok"] = False
-            rec["note"] = s.get("absent_note", "no data present")
+            note = s.get("absent_note", "no data present")
+            # A note may be a callable so it can report live state. A
+            # fixed string cannot notice that what it describes has
+            # stalled, which is how "backfill in progress on CI" stayed
+            # on this page for seven days of futile runs.
+            rec["note"] = note() if callable(note) else note
         else:
             age = (today - date.fromisoformat(latest)).days
             rec["age_days"] = age
