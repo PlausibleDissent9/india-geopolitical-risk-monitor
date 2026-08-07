@@ -245,6 +245,7 @@ jobs:
           python -m src.episode_actors
           python -m src.exposure
           python -m src.predictability
+          python -m src.outlet_drift
       - name: Blind replication (fail-loud; the codebook must still be enough)
         # NOT continue-on-error, and deliberately NOT in morning.yml --
         # same placement as freshness and vintages. This rebuilds the
