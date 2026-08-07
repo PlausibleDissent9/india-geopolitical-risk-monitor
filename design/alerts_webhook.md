@@ -123,3 +123,27 @@ one-a-week promise. This file records only that the question exists.
 - [ ] Confirm 90-day retention for `alerts.json`
 - [ ] Decide whether Phase 0 ships alone first (recommended) or waits
       for Phase 1
+
+## Amendments (append-only, dated)
+
+This section exists because this document's own rule requires parameter
+changes to appear here as dated entries, and the 2026-08-08 registration
+audit found two implemented behaviors that had never been entered.
+
+**A1 (drafted 2026-08-08, machine; AWAITING FOUNDER SIGNATURE).**
+T3 as signed covers two events: a missed morning contract window, or a
+dual-computation audit failure. The implementation (src/alerts.py)
+emits only `morning_contract_miss`, on the reasoning that an audit
+failure blocks publication entirely and therefore surfaces as the
+missed morning it causes; a dead pipeline cannot emit its own alert.
+The narrowing has been in production since Phase 0 shipped. This entry
+puts the register back in agreement with the implementation; the
+founder may instead direct that a distinct audit-failure alert be
+emitted after the fact, in which case this entry is superseded by a
+later one saying so.
+
+**A2 (drafted 2026-08-08, machine; AWAITING FOUNDER SIGNATURE).**
+T2 in production refuses to fire until 180 trailing observations exist
+inside its 730-day window (src/alerts.py, MIN_TRAILING_OBS). This
+suppresses triggers early in the series' life and after long gaps. The
+constant predates this entry but was never registered here.

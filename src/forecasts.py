@@ -116,7 +116,13 @@ def fit_frozen_logit(scores: pd.DataFrame,
         beta += step
         if float(np.max(np.abs(step))) < 1e-8:
             break
-    return {"fit_date": "2026-08-06",
+    # The fit stamps its TRUE date. Hardcoding the registered date here
+    # meant a regenerated fit (frozen file deleted, module rerun) would
+    # wear the original registration's date over post-registration data
+    # -- forged provenance by accident. With the real date, a regenerated
+    # file no longer matches the registered fit_date and the freeze pin
+    # in tests/test_registration_freezes.py goes red, which is the point.
+    return {"fit_date": date.today().isoformat(),
             "train_mondays": ["2018-01-07", "2026-08-03"],
             "n_obs": int(len(y)), "base_rate": round(float(y.mean()), 4),
             "inputs": ["intercept", "score_pctl", "score_change_7d"],
