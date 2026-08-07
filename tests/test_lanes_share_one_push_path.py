@@ -42,6 +42,17 @@ def _pushing_lanes() -> dict[str, str]:
             or "publish_push.sh" in p.read_text(encoding="utf-8")}
 
 
+def test_the_lane_set_is_not_empty():
+    """The audit's finding: _pushing_lanes() keys on strings a refactor
+    could remove, and every downstream test would then pass on zero
+    lanes. Its sibling file has this guard; this one did not."""
+    lanes = _pushing_lanes()
+    assert len(lanes) >= 8, (
+        f"only {len(lanes)} pushing lanes detected; eleven existed when "
+        "this was written. Either lanes were really removed, or the "
+        "detector's markers no longer match how lanes push.")
+
+
 def test_the_shared_push_script_exists_and_is_executable():
     assert SCRIPT.exists(), "scripts/publish_push.sh is gone"
     assert SCRIPT.stat().st_mode & 0o111, "publish_push.sh is not executable"

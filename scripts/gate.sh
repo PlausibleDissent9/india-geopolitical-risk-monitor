@@ -76,6 +76,13 @@ grep -E "^[[:space:]]+run: " "$CI" \
   | grep -v '^pip install' > "$CMDS_FILE"
 
 N=$(wc -l < "$CMDS_FILE" | tr -d ' ')
+
+# --print: emit the extracted commands and exit, so the test that checks
+# the extraction can run THIS extraction rather than re-typing it. The
+# test audit found test_gate_matches_ci comparing a Python regex against
+# a shell regex over the same file -- two derivations of one source,
+# never touching the script under test.
+if [ "${1:-}" = "--print" ]; then cat "$CMDS_FILE"; exit 0; fi
 [ "$N" -gt 0 ] || { echo "gate: no commands extracted from $CI"; exit 1; }
 
 echo "gate: running $N checks from $CI"

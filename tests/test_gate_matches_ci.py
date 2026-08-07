@@ -43,13 +43,14 @@ def _ci_commands() -> list[str]:
 
 
 def _gate_extracted() -> list[str]:
-    """Run the script's own extraction, so the test checks the real
-    pipeline rather than a reimplementation of it."""
-    out = subprocess.run(
-        ["bash", "-c",
-         f"grep -E '^[[:space:]]+run: ' {CI} | sed -E 's/^[[:space:]]+run: //' "
-         "| grep -v '^pip install'"],
-        capture_output=True, text=True, check=True).stdout
+    """gate.sh --print IS the script's extraction. The first version of
+    this helper re-typed the grep|sed pipeline inside the test -- two
+    derivations of ci.yml that would agree forever while the script's
+    real extraction drifted. The test audit caught it: the file whose
+    purpose is 'a check that cannot fail the way the real one does'
+    contained one."""
+    out = subprocess.run(["bash", str(GATE), "--print"],
+                         capture_output=True, text=True, check=True).stdout
     return [line.strip() for line in out.splitlines() if line.strip()]
 
 

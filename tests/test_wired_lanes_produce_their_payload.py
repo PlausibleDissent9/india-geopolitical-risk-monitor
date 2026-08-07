@@ -80,8 +80,14 @@ def _invocations() -> list[tuple[str, str]]:
     return out
 
 
-def _modules_run_by_workflows() -> set[str]:
-    return {mod for mod, _ in _invocations()}
+def test_invocations_are_detected_at_all():
+    """Guard for the detector itself: the regex keys on `python -m src.`,
+    and a launcher change (e.g. $PY -m src.X) would empty the set and
+    pass every test below on nothing."""
+    assert len(set(_invocations())) >= 30, (
+        f"only {len(set(_invocations()))} workflow invocations detected; "
+        "~40 existed when this was written -- the detector has probably "
+        "stopped matching how workflows invoke modules.")
 
 
 def test_every_wired_module_has_produced_its_payload():
