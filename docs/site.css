@@ -250,3 +250,29 @@ details.tier-legend { border: 1px solid var(--rule); border-radius: var(--radius
 details.tier-legend > summary { cursor: pointer; color: var(--muted); }
 details.tier-legend > summary:hover { color: var(--fg); }
 details.tier-legend[open] > summary { margin-bottom: 0.5rem; }
+
+/* ---- Tables on phones ------------------------------------------------
+ * Measured 2026-08-07 at 375px: validation.html scrolled the whole PAGE
+ * sideways by 108px. The tables are not oversized by choice — their
+ * min-content width is 364px against 335px of available space, and a
+ * table cannot shrink below its content. Wrapping the two I authored in
+ * .table-scroll fixed those two; every older table, and every table the
+ * markdown converter generates on the codebook and methodology pages,
+ * was still pushing the page.
+ *
+ * So the rule is global and mobile-only: the TABLE scrolls inside its
+ * own box, and the page never does. Horizontal scrolling of a data
+ * table is a normal, expected gesture; horizontal scrolling of an
+ * entire article is a bug that makes every line of prose unreadable.
+ *
+ * The tradeoff, stated: display:block drops the element's implicit
+ * table semantics in some assistive technology. It applies only below
+ * 640px, the markup is unchanged, and a table nobody can read because
+ * the page is 108px too wide is not accessible either.
+ */
+@media (max-width: 640px) {
+  table { display: block; overflow-x: auto; max-width: 100%; }
+  /* Cells keep wrapping; only the row set scrolls. Without this the
+     first long headline would force a single enormous line. */
+  table th, table td { white-space: normal; }
+}
