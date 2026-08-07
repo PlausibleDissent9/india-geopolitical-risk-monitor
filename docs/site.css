@@ -276,3 +276,27 @@ details.tier-legend[open] > summary { margin-bottom: 0.5rem; }
      first long headline would force a single enormous line. */
   table th, table td { white-space: normal; }
 }
+
+/* ---- Subpage phone header --------------------------------------------
+ * The same treatment the homepage masthead got, for the nineteen pages
+ * that use this sheet. Seven nav links wrap onto three lines at 375px
+ * and cost ~110px before any content; one scrolling row costs ~34px.
+ * The .definition standfirst clamps to three lines, which keeps the
+ * page's own sentence and drops the tail that repeats below.
+ * Placed at the end of the sheet on purpose: see DESIGN_SYSTEM.md #5.
+ */
+@media (max-width: 640px) {
+  body { padding: 1.25rem 1rem 3rem; }
+  nav.masthead {
+    display: flex; flex-wrap: nowrap; gap: 0.35rem;
+    overflow-x: auto; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  nav.masthead::-webkit-scrollbar { display: none; }
+  nav.masthead a { white-space: nowrap; margin-right: 0; padding: 3px 2px; }
+  .definition {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  h2 { margin: 1.5rem 0 0.6rem; padding-top: 1rem; }
+}
