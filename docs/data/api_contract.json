@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.23.0",
+    "contract_version": "1.24.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -99,6 +99,17 @@
         "date",
         "composite",
         "channels"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/detector_blindness.json",
+      "format": "json",
+      "description": "How blind the episode detector goes after it fires. A crisis enters the trailing window its own future threshold is computed from, so the bar rises for 90 days and a second event has to rival the first to be seen.",
+      "frozen_fields": [
+        "_meta",
+        "largest_episodes_by_peak_share",
+        "episodes"
       ],
       "stability": "stable"
     },

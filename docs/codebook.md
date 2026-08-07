@@ -683,6 +683,40 @@ is computed over the whole GDELT event population in
 averaged, because dividing by sources also counts one outlet running
 several distinct pieces on the same event.
 
+## docs/data/detector_blindness.json
+
+**The detector cannot see a second crisis for about three months.**
+Episode detection fires when a channel's share exceeds its trailing
+90-day mean plus 2σ. A crisis therefore enters the very window its own
+future threshold is computed from: the mean rises, the standard
+deviation rises faster, and the bar climbs for ninety days — peaking
+*after* the crisis is over in 521 of 523 detected episodes.
+
+Worked example, `pakistan_west` through Pahalgam and Sindoor: the
+threshold was 0.0244 on 2025-04-21, and 0.6912 on 2025-07-20 — a **28×**
+higher bar. On 2025-05-20 the channel's share was 0.1340, five and a
+half times the pre-crisis threshold and an unambiguous spike by the
+standard that applied three weeks earlier, and the detector stayed
+silent.
+
+`n_days_suppressed` counts days after an episode whose share cleared the
+threshold in force the day *before* that episode began but not the live
+one — days a pre-crisis detector would have flagged and this one did
+not. Across the whole series that is **2,158 distinct channel-days,
+12.4% of all channel-days**, deduplicated because episode windows
+overlap (summing per-episode counts would exceed the length of the
+series). Read `largest_episodes_by_peak_share`, not the median: small
+blips barely move the bar, so the median multiple is ~1.4, and the
+damage is entirely in the tail — the detector is least able to see a
+second event exactly when the first was most serious.
+
+**The registered rule is not changed**, because every obvious fix is
+worse: excluding spike days from the baseline makes the analyst define
+spikes before measuring them, a fixed threshold abandons the
+per-channel adaptivity that makes five channels comparable, and a longer
+window delays first detection, which is what the detector is for. The
+cost is now measured rather than inferred.
+
 ## docs/data/wiki_hindi.json
 
 **Does this measure Indian attention, or Anglophone attention about

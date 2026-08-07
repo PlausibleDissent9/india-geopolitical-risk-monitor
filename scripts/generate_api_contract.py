@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.23.0"  # + wiki_hindi.json (referee #25), monthly (#33), syndication (#23)
+CONTRACT_VERSION = "1.24.0"  # + detector_blindness.json (referee #26), wiki_hindi (#25), monthly (#33), syndication (#23)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
