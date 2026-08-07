@@ -52,6 +52,18 @@ jobs:
           python -m src.multilingual --status || true
           echo "n=$(python -c "from src import multilingual as m; print(len(m.expected_keys()) - len(m.missing_keys()))")" >> "$GITHUB_OUTPUT"
       - name: Fetch batch (resumes from the store, series by series)
+        id: fetch
+        # continue-on-error so the commit step below still banks whatever
+        # landed -- a throttled batch that got two series must not lose
+        # them. But the outcome is CHECKED at the end of the job rather
+        # than discarded: src/multilingual.py raises SystemExit when zero
+        # series land, specifically so a fruitless batch is visible, and
+        # laundering that into a green run threw away the one signal the
+        # module goes out of its way to produce.
+        #
+        # Runs #70 and #71 on 2026-08-07 both reported success with the
+        # store still absent. V5 has been stalled for days behind a green
+        # tick.
         continue-on-error: true
         timeout-minutes: 45
         run: python -m src.multilingual --backfill
@@ -104,3 +116,30 @@ jobs:
           else
             echo "chain ends: done=$DONE progressed=$([ "$AFTER" -gt "$BEFORE" ] && echo yes || echo no)"
           fi
+      - name: A batch that landed nothing is a failure, not a quiet success
+        # Last, so the commit above has already banked any partial
+        # progress. The job's conclusion now means what it says: green
+        # when the store grew or the backfill is complete, red when a
+        # batch fetched nothing and the artifact still does not exist.
+        #
+        # Deliberately not red merely for being incomplete -- V5 is a long
+        # backfill and "not finished yet" is the normal state. This fires
+        # only when a run made NO progress AND the fetch itself failed,
+        # which is upstream refusing us rather than the work being large.
+        if: always()
+        run: |
+          BEFORE="${{ steps.before.outputs.n }}"
+          AFTER="${{ steps.commit.outputs.n }}"
+          if python -m src.multilingual --status; then
+            echo "backfill complete"; exit 0
+          fi
+          if [ "${AFTER:-0}" -gt "${BEFORE:-0}" ]; then
+            echo "progress: $BEFORE -> $AFTER series"; exit 0
+          fi
+          if [ "${{ steps.fetch.outcome }}" = "failure" ]; then
+            echo "::error::batch landed no series and the fetch failed" \
+                 "($BEFORE -> $AFTER). Upstream is refusing us; V5 is" \
+                 "stalled rather than merely unfinished."
+            exit 1
+          fi
+          echo "no progress but the fetch did not error; not flagging"
