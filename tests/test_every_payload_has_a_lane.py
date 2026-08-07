@@ -110,3 +110,32 @@ def test_shares_dependencies_run_in_the_right_order():
              if m in ("provenance", "publish_shares", "monthly")]
     assert order == ["provenance", "publish_shares", "monthly"], (
         f"dependency order broken in daily.yml: {order}")
+
+
+def test_stamp_meta_runs_after_every_payload_writer():
+    """Placement, not intent, is what makes 'stamp everything' true.
+
+    This step was placed mid-workflow, then after the audits. Both times
+    later lanes rewrote payloads without the stamp -- the second time,
+    TWELVE of them (daily_brief, aptness, tone, themes, forecasts,
+    alerts, expert_attention, precision_auditor, reliability,
+    sector_feeds, status_data). Found by rehearsing the whole sequence,
+    not by reasoning about it.
+    """
+    daily = (WORKFLOWS / "daily.yml").read_text(encoding="utf-8")
+    order = re.findall(r"python -m src\.(\w+)", daily)
+    assert "stamp_meta" in order, "the stamp step is gone from daily.yml"
+    idx = order.index("stamp_meta")
+    # Modules that write into docs/data and therefore must precede it.
+    writers = set()
+    for path in SRC.glob("*.py"):
+        text = path.read_text(encoding="utf-8")
+        if WRITES_PAYLOAD.search(text):
+            writers.add(path.stem)
+    after = [m for m in order[idx + 1:] if m in writers]
+    # audit and make_datapack read/verify rather than publish payloads.
+    after = [m for m in after if m not in ("audit", "make_datapack")]
+    assert not after, (
+        f"these payload writers run AFTER stamp_meta: {after}. Their "
+        "output ships without the licence and citation the codebook "
+        "promises every download carries.")
