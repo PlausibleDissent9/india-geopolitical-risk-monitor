@@ -21,7 +21,7 @@ goes false on the next run and the item disappears without anyone
 editing this file. An item that cannot be checked does not belong here.
 
   python -m src.decisions            write docs/data/decisions.json
-  python -m src.decisions --check    print the queue, exit 0 always
+  python -m src.decisions --check    print the queue without publishing
 """
 from __future__ import annotations
 
@@ -226,10 +226,16 @@ def build() -> dict[str, Any]:
 
 
 def main() -> None:
+    # --check inspects without publishing. The first version accepted the
+    # flag and then did exactly the same thing either way, which is a flag
+    # that documents a behaviour it does not have -- the same shape as
+    # every other claim this project has spent two days deleting.
+    check = "--check" in sys.argv
     payload = build()
-    SITE_DATA.mkdir(parents=True, exist_ok=True)
-    (SITE_DATA / "decisions.json").write_text(
-        json.dumps(payload, indent=1), encoding="utf-8")
+    if not check:
+        SITE_DATA.mkdir(parents=True, exist_ok=True)
+        (SITE_DATA / "decisions.json").write_text(
+            json.dumps(payload, indent=1), encoding="utf-8")
 
     b = payload["blocked"]
     print(f"[decisions] {len(b)} blocked on the founder, "
@@ -238,8 +244,6 @@ def main() -> None:
         mins = f"~{row['minutes']}m" if row["minutes"] else "ongoing"
         print(f"[decisions]   {mins:>8}  {row['title']}")
         print(f"[decisions]             {row['detail']}")
-    if "--check" in sys.argv:
-        return
 
 
 if __name__ == "__main__":
