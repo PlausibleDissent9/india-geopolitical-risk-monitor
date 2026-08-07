@@ -829,3 +829,89 @@ better-estimated ones, so revising buys almost nothing and costs a
 vintage change; publishing the table answers the referee completely
 while leaving every historical value untouched. Say "adopt n=38" or
 "publish the stability table" and it ships either way.
+
+## 0.25 The referee report — what got answered on 7 August, and the two things still needing you
+
+You gave me a 38-item referee report and said fix every fault. Here is
+where it stands. Nothing on this list needs your reply except the two
+items at the bottom.
+
+**Answered by building the thing (new, live, documented):**
+
+- **#23 syndication.** The pipeline had been measuring this since the
+  receipts lane existed and throwing it away on the next line: it
+  builds a pool keyed by URL, collapses it by headline, and published
+  only the second number. The ratio is the syndication multiplier.
+  `pakistan_west` on 5 Aug: 160 articles, 46 distinct stories, x3.478 —
+  71% of that channel's volume was republication, in the channel that
+  carries Pahalgam. Live at `/data/syndication.json`.
+- **#10 the series is two instruments.** This one was a defect in what I
+  shipped the day before. 3,446 days are DOC API counts and 38 are
+  NGrams-bridge days divided by an estimated splice ratio, and
+  `shares.csv` published them in one column with no way to tell them
+  apart — anyone computing a mean was crossing an instrument boundary
+  invisibly. There is now a `source` column, and the healer records
+  provenance at the moment it splices.
+- **#33 the monthly series.** `/data/monthly.csv`, 116 months. Short
+  months publish null with a stated reason instead of a mean over the
+  survivors (2025-06 has 14 of 30 days); months straddling the
+  instrument seam are flagged; mean-of-ranks sits beside the
+  commensurable share means so the difference stays visible.
+- **#25 Hindi Wikipedia.** See below — this is the big one.
+- **#26 detector blindness.** The episode detector uses a trailing 90-day
+  mean + 2 sigma, so a crisis raises its own future bar. Through
+  Sindoor that bar went from 0.0244 to 0.6912 — 28x — peaking three
+  months *after* the ceasefire. On 20 May a share of 0.1340, five and a
+  half times the pre-crisis threshold, did not register. 12.4% of all
+  channel-days are suppressed this way. The registered rule stands;
+  its cost is now measured.
+- **#13 point-in-time archive.** Every daily publish is a commit, so the
+  vintages always existed — nobody had ever diffed them. 10 of 12 show
+  zero changed values: the series is append-only in practice. The one
+  revision episode sits exactly on methodology v1.0.1. It now runs
+  nightly as a **tripwire that fails the build** if history is ever
+  rewritten without a registered cause.
+- **#8 the 21 gaps.** Not a limitation — our fetch failures. GDELT still
+  has those days (a probe returned all eight of a test window in 28
+  seconds), so they are being backfilled rather than merely disclosed.
+
+**The finding you should know about before anyone else asks you:**
+
+#25 asked whether this measures *Indian* attention or Anglophone
+attention about India. Everything in the apparatus was English — the
+corpus, the matcher, and the Wikipedia cross-check — so nothing
+published could tell those apart. Hindi Wikipedia can.
+
+Same registered articles, Hindi titles resolved through Wikipedia's own
+interlanguage links (never hand-picked, because picking them would let
+me pick the ones that correlate), 3,394 overlapping days:
+
+**English tracks the index better than Hindi on five channels of five,
+in both levels and changes, and there is no channel where Hindi leads.**
+
+The obvious escape — Hindi Wikipedia is thinner, so it is noise — does
+not work, and I checked before writing it up: `us_trade` has the
+*highest* median Hindi traffic and the *worst* agreement (the only
+negative correlation in the study), while `gulf_energy` has the lowest
+traffic and the strongest. Traffic and agreement do not order together.
+
+Six of 29 articles have no Hindi counterpart at all, and they are not
+random: CAATSA, Iran sanctions, the Houthi movement, Somali piracy, US
+trade policy, India energy policy — the foreign-policy-apparatus
+vocabulary. The two India-adjacent channels resolve completely.
+
+This changes no number on the site. It is a limitation of the
+instrument, it is now in the methodology, the codebook, the validation
+page and the paper, and it means **anyone citing IGRM as a measure of
+Indian public salience should be pointed at
+`/data/wiki_hindi.json` first.** If NEF or the PM's office asks what
+this index does not do, this is the honest answer, and having it
+published before being asked is worth more than the finding costs.
+
+**Two things that need you, and only these two:**
+
+1. **NOTES 0.24 is still open** — the splice recalibration. Say "adopt
+   n=38" or "publish the stability table" and it ships either way. My
+   recommendation remains (b).
+2. **#31, the name collision.** Still your call, still unchanged from
+   when you first saw it.
