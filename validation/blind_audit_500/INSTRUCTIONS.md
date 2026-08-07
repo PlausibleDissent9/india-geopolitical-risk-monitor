@@ -1,5 +1,10 @@
 # IGRM blind 500-article audit: coder instructions
 
+> **Package identity:** use only the v2 sheet whose SHA-256 appears in
+> `registration.json`. The earlier v1 draw was invalidated before any external
+> label existed because its sampler omitted the production India-anchor step.
+> Never label, merge or score a v1 copy; see `V1_INVALID.md`.
+
 ## What you are judging
 
 For each row, decide whether the linked article is substantively about the named IGRM
@@ -25,23 +30,31 @@ sampling stratum, IGRM score and prior human labels.
 
 ## Scored audit
 
-Make one private copy of `coder_sheet.csv` per coder. Work independently. Do not discuss
-individual rows after opening the scored sheet and do not inspect the IGRM repository,
-website, queries, machine labels or another coder's answers until both copies are locked.
-Use a normal browser for linked evidence. Do not use an LLM, automated classifier,
-bulk-label tool or another person to decide or draft any scored label.
+The coordinator sends `coder_sheet_c1.csv` to coder 1 and
+`coder_sheet_c2.csv` to coder 2. They contain the same registered rows in two
+different frozen random orders; do not reorder either sheet. Work
+independently. Do not discuss individual rows after opening the scored sheet
+and do not inspect the IGRM repository, website, queries, machine labels or
+another coder's answers until both copies are locked. Use a normal browser for
+linked evidence. Do not use an LLM, automated classifier, bulk-label tool or
+another person to decide or draft any scored label.
 
 For every row:
 
-1. Read the title.
-2. Open the URL when the title alone is not enough. Use the visible article or summary;
-   do not infer unseen content.
+1. Read the frozen title in the sheet; that title is the immutable primary
+   evidence captured with the source corpus.
+2. Open the URL when the title alone is not enough. Use only the visible
+   summary/lead; do not infer unseen content. Because a live page can change,
+   record `LIVE YYYY-MM-DDThh:mmZ`, `PAYWALL`, or `DEAD` in `coder_note` whenever
+   you consult it. A dead or changed URL is never replaced with another item.
 3. Enter `ON`, `OFF` or `ABSTAIN` in `coder_label`.
 4. Enter `HIGH`, `MEDIUM` or `LOW` in `coder_confidence`.
 5. Use `coder_note` for an abstention, low-confidence ruling or genuinely ambiguous edge.
 
-Do not delete, reorder or deduplicate rows. Repeated stories are intentional because part
-of the design estimates the precision of article instances, which is what IGRM counts.
+Do not delete, reorder or deduplicate rows. Repeated URLs or stories can be
+intentional because the primary stratum samples the exact production document
+instances that IGRM counts; the separate story stratum samples normalized-title
+clusters. The strata may overlap and are never pooled.
 Do not use automated translation. If a non-English item cannot be judged from accessible
 English evidence, label `ABSTAIN`.
 

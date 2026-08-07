@@ -1,121 +1,129 @@
 {
- "status": "FROZEN BEFORE FIRST EXTERNAL LABEL",
- "registered_at_utc": "2026-08-07T15:19:34Z",
- "base_commit": "fce2ac7e492897911c05a4e0eeab6db6414700ad",
- "objective": "Estimate current matched-item precision for each of IGRM's five channels under an external, blinded application of the frozen rubric; separately describe article-instance and normalized-story precision.",
- "scope_limit": "This audit does not estimate population recall, event detection, risk accuracy, historical precision before the sampled source days, or causal validity.",
+ "status": "FROZEN V2 CURRENT-REGIME PILOT BEFORE FIRST EXTERNAL LABEL",
+ "registered_at_utc": "2026-08-07T17:15:16Z",
+ "base_commit": null,
+ "base_commit_rule": "The next registration-only commit will replace null with the first freeze commit that contains these exact input, source, sample and instruction bytes. No sample or analysis field may change in that registration-only commit.",
+ "supersedes": {
+  "version": "v1",
+  "status": "INVALID BEFORE ANY EXTERNAL OR PILOT LABEL",
+  "reason": "The v1 sampler omitted the production per-document India anchor for Pakistan, China and US Trade and therefore sampled outside the counted numerator.",
+  "ledger": "validation/blind_audit_500/V1_INVALID.md",
+  "reuse_rule": "No v1 row, label or result may be reused, merged or scored."
+ },
+ "objective": "Estimate matched-item precision within the mechanically selected current production scoring-corpus frame for each of IGRM's five channels under external, blinded application of the frozen rubric; separately describe production-document-instance and normalized-story precision.",
+ "study_role": "Retrospective current-regime pilot. It exercises and can falsify the audit system; it is not the prospective confirmatory study.",
+ "scope_limit": "This pilot does not estimate population recall, historical precision, event detection, risk accuracy, causal validity, or precision outside the 11 frozen production-corpus days. It licenses no claim that IGRM is better than CI, AI-GPR or any other index.",
+ "confirmatory_plan": "validation/blind_audit_500/CONFIRMATORY_PLAN.md",
  "inputs": {
+  "frame_selection_rule": "The 11 most recent consecutive complete UTC production score-days ending 2026-08-06, selected mechanically before any label: 2026-07-27 through 2026-08-06 inclusive. No day was selected, removed or extended because of its channel count, score, headline, event status or anticipated label.",
+  "frame_interpretation": "Each file is the standard production scoring corpus with 48 sampled Web NGrams snapshots. The frame is the exact matched production document-key set in those sampled corpora, not every article published worldwide on those dates.",
+  "rubric_timing_limit": "The frame partly predates the 2026-08-03 rubric lock. That makes this a retrospective current-regime pilot, not a prospective/generalization test.",
   "receipt_sources": [
-   {
-    "path": "data/raw/receipt_days/2026-08-05-extended.json",
-    "sha256": "71a681b3e98357b627e73c2de43d390acbe51b469292174a3e7afe2731bf1536",
-    "role": "Full-depth matched-article universe for 2026-08-05"
-   },
-   {
-    "path": "data/raw/receipt_days/2026-08-06-extended.json",
-    "sha256": "5145b919d51d2dc30c15a355d37092d60ef3f4a1181b92b4692ae29411226257",
-    "role": "Full-depth matched-article universe for 2026-08-06"
-   }
+   {"path": "data/raw/receipt_days/2026-07-27.json", "sha256": "402a2d6697033dbcf56bf2794ba83fd54f9336da1b40aec1e4ba53dfd18bf3d1", "role": "scored production frame day 1 of 11"},
+   {"path": "data/raw/receipt_days/2026-07-28.json", "sha256": "d3a0603c1c3378e539d41fde66b396970177aea9c8968614269a88bad5c15b98", "role": "scored production frame day 2 of 11"},
+   {"path": "data/raw/receipt_days/2026-07-29.json", "sha256": "cd4405f0f857a4acf612cd1a6554ea539ea28b648f64bb8a4a7d0d72655d0340", "role": "scored production frame day 3 of 11"},
+   {"path": "data/raw/receipt_days/2026-07-30.json", "sha256": "ca8bdf23269e661d9930b28e5568519f1ef36ed975bbc23861686eaa9ff60993", "role": "scored production frame day 4 of 11"},
+   {"path": "data/raw/receipt_days/2026-07-31.json", "sha256": "247ac7ccc6fa55485cfb7cd12d5f698ac7023da82f1f82df018aaf507cfd4ab5", "role": "scored production frame day 5 of 11"},
+   {"path": "data/raw/receipt_days/2026-08-01.json", "sha256": "ef3c5a2a6a67da83734729c04712e4eb974b67eef612faca72f0987b45bde62a", "role": "scored production frame day 6 of 11"},
+   {"path": "data/raw/receipt_days/2026-08-02.json", "sha256": "2bf959eee8330b911b380ae1bd86acf66e0f187b2f1b8d1c24196ff2a6bda203", "role": "scored production frame day 7 of 11"},
+   {"path": "data/raw/receipt_days/2026-08-03.json", "sha256": "631d1a994a951a80b0cf8fe7d0afe42ffb7063081aca7f6006676cc2fb7c188b", "role": "scored production frame day 8 of 11"},
+   {"path": "data/raw/receipt_days/2026-08-04.json", "sha256": "5121c82e703af51a33562271f09fc15f94b55a412dbfd6ab6358e96605607fb2", "role": "scored production frame day 9 of 11"},
+   {"path": "data/raw/receipt_days/2026-08-05.json", "sha256": "e78aeb3bc47b1980b6f05577a87487c72cd53fb1eaa055d28ddb26bd747abd55", "role": "scored production frame day 10 of 11"},
+   {"path": "data/raw/receipt_days/2026-08-06.json", "sha256": "a62ea4343598e3f25efcdf7275a703d5d212bf80bb5705329e96357f4e4d61a8", "role": "scored production frame day 11 of 11"}
+  ],
+  "pilot_sources": [
+   {"path": "data/raw/receipt_days/2026-08-05-extended.json", "sha256": "71a681b3e98357b627e73c2de43d390acbe51b469292174a3e7afe2731bf1536", "role": "separate unscored pilot frame"},
+   {"path": "data/raw/receipt_days/2026-08-06-extended.json", "sha256": "5145b919d51d2dc30c15a355d37092d60ef3f4a1181b92b4692ae29411226257", "role": "separate unscored pilot frame"}
   ],
   "rubric_path": "auditor/RUBRIC.md",
   "rubric_sha256": "2f285c9ffbc96d43946dbf9b53cd9fa688c2353be2c05e9df02ab5be8db38d17",
+  "dictionaries_path": "dictionaries.json",
+  "dictionaries_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
+  "production_matcher_files": [
+   {"path": "src/fetch_ngrams.py", "sha256": "cb9cded6d957f8e31a70c0bd9a7edd99c2ace3e621fdf141da80877e57fd871d"},
+   {"path": "src/receipts_ngrams.py", "sha256": "9c77cf9b90a226e94a18acece1ddfaefe2a064bbdb6d143e2a236b43b9f61d45"}
+  ],
   "builder_and_scorer": "src/blind_audit_500.py",
-  "builder_and_scorer_sha256": "f3b89bb3c72e43c2092a865b82d1a9d5622d450412538bf594e74a24e35e264d",
+  "builder_and_scorer_sha256": "a73b1622747e0e23fec6b5ec04c00f6a8af7afb4b83132fcbbd6400ea55c8288",
   "coder_instructions_path": "validation/blind_audit_500/INSTRUCTIONS.md",
-  "coder_instructions_sha256": "b5524e86ff2140fd6f2bd5b18f0be97f5a5be32e46acf3604ca73715753ba7a3"
+  "coder_instructions_sha256": "dd0f48b55f30713795a77029b1a769a55f9fe5e6858ecbe13e8219a37a3ca561"
  },
  "sample": {
-  "seed": "igrm-blind-audit-500-v1-2026-08-07",
-  "channels": [
-   "pakistan_west",
-   "china_east",
-   "gulf_energy",
-   "us_trade",
-   "shipping"
-  ],
+  "seed": "igrm-blind-audit-500-v2-2026-08-07",
+  "channels": ["pakistan_west", "china_east", "gulf_energy", "us_trade", "shipping"],
   "per_channel": 100,
-  "total": 500,
-  "article_instance_stratum": "75 URLs per channel, sampled uniformly without replacement from the union of exact matched article URLs across the two pinned full-depth source days. URL is the unit; syndicated copies remain separate because IGRM counts articles.",
-  "story_cluster_stratum": "25 normalized-headline clusters per channel, sampled uniformly without replacement after excluding every normalized title represented in that channel's article-instance draw. One deterministic representative URL per cluster.",
-  "matched_url_universe_by_channel": {
-   "pakistan_west": 335,
-   "china_east": 193,
-   "gulf_energy": 5812,
-   "us_trade": 1147,
-   "shipping": 891
-  },
+  "total_rows": 500,
+  "article_instance_stratum": "For each channel, 75 production document keys sampled uniformly without replacement from the exact anchored matched-key frame. A repeated URL under distinct production document keys remains repeated because document instances are the counted unit.",
+  "story_cluster_stratum": "For each channel, 25 normalized-title clusters sampled independently without replacement from the full frame; one source-key-sorted representative is used per cluster. It may overlap the article-instance stratum and is never pooled with it.",
+  "matched_document_instance_frame_by_channel": {"pakistan_west": 264, "china_east": 101, "gulf_energy": 8156, "us_trade": 446, "shipping": 1625},
+  "unique_evidence_items_in_draw": 458,
+  "repeated_evidence_rows_in_draw": 42,
+  "reliability_deduplication_rule": "Precision preserves all sampled production instances. Inter-coder reliability counts each exact title-plus-URL evidence identity once and is inconclusive if either coder gives contradictory firm labels to repeated evidence.",
   "coder_sheet_path": "validation/blind_audit_500/coder_sheet.csv",
-  "coder_sheet_sha256": "35fd63744ef106a0a60e6836b6f300cdd462dc3075c4f74fc9686b7a53fb6290",
+  "coder_sheet_sha256": "993bcab4ad94716c489372152b4054921608530b3935799a26efd2ee657e9b62",
+  "coder_1_sheet_path": "validation/blind_audit_500/coder_sheet_c1.csv",
+  "coder_1_sheet_sha256": "72ae2505c1f89b4cca69555c45a85150dc220a7afe7dfdb07fabd0a635080f7c",
+  "coder_2_sheet_path": "validation/blind_audit_500/coder_sheet_c2.csv",
+  "coder_2_sheet_sha256": "1d2dfc3c35e7acd8f19da3e61f80f591f9ff3e0cefc6724376f5391d7aca13b1",
   "sample_key_path": "validation/blind_audit_500/sample_key.json",
-  "sample_key_sha256": "04b8b8a249dac198a139e77c7c71649a8d5d44ec76677fe3057b4078c8dc083c",
+  "sample_key_sha256": "b47570c4484f86d180a633b3cdf450f38643c815885f8b6180c0a77e6df27d1c",
   "pilot_sheet_path": "validation/blind_audit_500/pilot_sheet.csv",
-  "pilot_sheet_sha256": "c5e9898c1c9d3a479dd7b5eb5ad0e19558aefe7dc1d64809bfbd6c47705e2869",
-  "pilot_rule": "Four unscored items per channel, disjoint from the scored sheet by URL and normalized headline. Coders may discuss only the pilot before beginning independent scored work."
+  "pilot_sheet_sha256": "d240ade82c43929860817e794872cc54ba8ba06659e10e355efe3f09cc2ef8c5",
+  "pilot_rule": "Four unscored items per channel from the separate two-day extended frame, disjoint from all scored rows by URL and normalized title. Coders may discuss only the pilot before independent scoring."
  },
  "blindness": {
-  "visible_to_coder": [
-   "audit id",
-   "target channel",
-   "article date",
-   "title",
-   "domain",
-   "URL"
-  ],
-  "hidden_from_coder": [
-   "sampling stratum",
-   "query group",
-   "matched phrase",
-   "machine label",
-   "source tier",
-   "IGRM score",
-   "prior human label",
-   "another coder's ruling"
-  ],
+  "visible_to_coder": ["audit id", "target channel", "article date", "frozen title", "domain", "URL"],
+  "hidden_from_coder": ["sampling stratum", "production document key", "query group", "matched phrase", "machine label", "source tier", "IGRM score", "prior human label", "another coder's ruling"],
   "meaning": "Blind to system decisions and sampling stratum, not blind to the target channel or to the fact that this is an IGRM matched-item audit.",
   "repository_access": "External coders must not inspect the IGRM repository or website between opening the scored sheet and locking their completed copy."
+ },
+ "evidence_policy": {
+  "primary": "The frozen title in the sheet is immutable evidence captured in the source corpus.",
+  "live_page": "A live URL is auxiliary evidence and may drift. A coder records LIVE plus UTC access time, PAYWALL or DEAD whenever consulting it; no unavailable row is replaced.",
+  "copyright": "The package does not copy article bodies. Coders inspect ordinary linked pages and quote no article text in the returned sheet beyond a minimal ambiguity note."
  },
  "labels": {
   "ON": "Substantively about the named channel under auditor/RUBRIC.md.",
   "OFF": "Not substantively about the named channel under auditor/RUBRIC.md.",
-  "ABSTAIN": "Insufficient accessible evidence for a defensible ruling; reported and excluded from the precision denominator.",
-  "confidence": [
-   "HIGH",
-   "MEDIUM",
-   "LOW"
-  ],
+  "ABSTAIN": "Insufficient accessible evidence for a defensible ruling; always reported and excluded from the precision denominator.",
+  "confidence": ["HIGH", "MEDIUM", "LOW"],
   "translation": "No automated translation. Non-English items without accessible English evidence are ABSTAIN."
  },
  "estimands": {
-  "five_primary_estimates": "For each coder and channel separately in the article-instance stratum: ON / (ON + OFF), with a Wilson 95% interval. ABSTAIN is excluded from the denominator and its count is always reported. With two coders, both coder-specific estimates publish separately; there is no consensus or adjudicated primary estimate.",
-  "secondary_story_estimates": "The same quantity for each channel in the normalized-headline stratum, labelled descriptive story-level precision.",
-  "secondary_macro": "Equal-channel mean of the five article-instance precision estimates. It is not an overall volume-weighted precision estimate.",
-  "recall": "Not estimated.",
-  "hypothesis_tests": "None. No p-values or multiple-testing-adjusted claims."
+  "five_primary_pilot_estimates": "For each coder and channel separately in the production-document-instance stratum: ON / (ON + OFF), with a Wilson 95% interval. ABSTAIN is excluded from the denominator and always counted. These estimate only the frozen 11-day scoring-corpus frame.",
+  "secondary_story_estimates": "The same quantity for each coder and channel in the normalized-title-cluster stratum, labelled descriptive story-level precision.",
+  "secondary_macro": "Equal-channel mean of the five article-instance estimates. It is not an overall volume-weighted precision estimate.",
+  "recall": "Not estimated. The independent recall protocol uses a different frame and fresh labels.",
+  "hypothesis_tests": "None. No p-values, historical extrapolation or multiple-testing-adjusted superiority claim."
  },
  "quality_gates": {
-  "per_channel_precision_pass": "Pass only if at least 60 of 75 article-instance rows receive firm labels and the Wilson 95% lower bound is at least 0.80.",
+  "per_channel_precision_pass": "Pilot diagnostic pass only if at least 60 of 75 article-instance rows receive firm labels and the Wilson 95% lower bound is at least 0.80.",
   "per_channel_inconclusive": "Fewer than 60 firm article-instance labels is inconclusive, never a pass.",
-  "inter_coder_evaluable_if_two_coders": "Evaluable with at least 400 firm-overlap rows and a non-constant pooled firm-label set. Fewer overlaps is INCONCLUSIVE. An exactly all-ON or all-OFF overlap is reported as NOT IDENTIFIABLE FROM CONSTANT LABELS, not a pass or failure, even if raw agreement or AC1 is numerically high. No minimum OFF prevalence is imposed.",
-  "inter_coder_pass_if_evaluable": "On all firm-overlap rows, raw agreement at least 0.90 and Gwet's AC1 at least 0.70. Cohen's kappa publishes descriptively with a prevalence caveat and is not gated.",
+  "inter_coder_evaluable_if_two_coders": "Evaluate on unique title-plus-URL evidence identities. Require at least 400 firm-overlap identities, no contradictory within-coder firm labels on repeated evidence, and a non-constant pooled firm-label set.",
+  "inter_coder_pass_if_evaluable": "Raw agreement at least 0.90 and Gwet's AC1 at least 0.70. Cohen's kappa is descriptive only because of prevalence sensitivity.",
+  "constant_label_rule": "An exactly all-ON or all-OFF unique-evidence overlap is NOT IDENTIFIABLE, not a pass or failure.",
   "one_coder_rule": "With one coder, no inter-coder statistic or reliability claim is permitted.",
-  "publication": "Every per-channel result, abstention count, interval, gate failure and disagreement publishes regardless of direction. Payment and publication are not conditional on passing."
+  "publication": "Every channel, abstention count, interval, disagreement, failure and deviation publishes regardless of direction. Payment and publication are not conditional on passing."
  },
  "coder_independence": {
   "minimum": "No role in designing IGRM, its dictionaries, sample, rubric or machine auditor; disclose any relationship with the project or founder.",
   "work_rule": "After the pilot, coders work independently and do not discuss scored rows until both files are locked.",
-  "tool_rule": "Coders may use a normal browser to inspect linked evidence but may not use an LLM, automated classifier, bulk-label tool or another person to decide or draft scored labels.",
-  "payment_rule": "Fixed compensation agreed before labelling, never contingent on agreement or outcome. Recruitment source, coder count, qualifications and compensation band are disclosed with results."
+  "tool_rule": "Coders may use a normal browser for linked evidence but not an LLM, automated classifier, bulk-label tool or another person to decide or draft scored labels.",
+  "payment_rule": "Fixed compensation agreed before labelling, never contingent on agreement, outcome or pass/fail. Recruitment source, coder count, qualifications and compensation band publish with results."
  },
  "analysis": {
   "scorer": "python -m src.blind_audit_500 --score coder_1.csv [coder_2.csv] --output results.json",
-  "inter_coder": "With exactly two coders, report raw agreement and Gwet's AC1 on firm-label overlap, applying the frozen evaluability and pass rules. Publish Cohen's kappa descriptively with a prevalence caveat. Primary Wilson estimates remain separate for each coder; no consensus or adjudicated estimate exists in the primary.",
-  "missing_urls": "Use accessible title/page evidence or ABSTAIN. Do not replace an unavailable sampled URL.",
-  "deviations": "Any source substitution, sample replacement, rubric change after scored work begins, label recoding or adjudication is a deviation and must publish before the affected result."
+  "primary_rule": "With two coders, publish both coder-specific precision results. No consensus or adjudicated primary exists.",
+  "missing_urls": "Use frozen title and accessible page evidence or ABSTAIN. Never replace a sampled item.",
+  "deviations": "Any source substitution, sample replacement, rubric change after scored work begins, label recoding or adjudication is a dated public deviation before the affected result."
  },
  "attestation": {
   "external_labels_seen_before_freeze": false,
   "pilot_labels_seen_before_freeze": false,
   "sample_generated_mechanically": true,
-  "limits": "The project maintainer has seen some source-day headlines during ordinary operations. That does not alter the frozen random draw but means the maintainer is not an eligible external coder."
+  "source_days_selected_before_labels": true,
+  "invalid_v1_labels_reused": false,
+  "maintainer_limit": "The project maintainer saw some source-day headlines during ordinary operations and found the v1 frame defect. The maintainer is not an eligible external coder and made no v2 label decision.",
+  "comparison_claim_authorized": false
  }
 }
