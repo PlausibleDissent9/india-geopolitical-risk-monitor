@@ -434,6 +434,16 @@
    "stability": "stable"
   },
   {
+   "path": "data/multilingual.json",
+   "format": "json",
+   "description": "English-bias audit: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Measures the instrument's bias; association, not risk.",
+   "frozen_fields": [
+    "_meta",
+    "channels"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/negative_results.json",
    "format": "json",
    "description": "Every number that did not go this project's way, compiled from the payloads where each lives. Read live from those payloads at build time, never hand-typed, so a row that stops being true stops being published.",
