@@ -89,6 +89,13 @@ fi
 .venv/bin/python -m src.exposure
 .venv/bin/python -m src.vintages
 .venv/bin/python -m src.status_data
+# blind_replicator and decisions write payloads too, and leaving them out
+# made the diff below PASS on two files it had never regenerated -- the
+# same false-pass shape as a test that cannot fail. blind_replicator is
+# also the single most valuable thing an external reproducer can run:
+# it needs no raw store at all, only the published codebook and shares.
+.venv/bin/python -m src.blind_replicator
+.venv/bin/python -m src.decisions
 # Stamp last, or the rebuilt payloads lack the universal _meta fields
 # the committed ones carry and every file diffs as "present in one side
 # only" -- a reproducibility failure that is really a paperwork one.

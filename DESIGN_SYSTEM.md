@@ -148,6 +148,22 @@ loudest element on a page whose stated character is calm, and on a phone
 a compositor job with no end. Motion attached to a number should report
 a finding, and "still here" is not one. It arrives once and stops.
 
+**The scale covers the charts too, and did not.** `app.js` and
+`analysis.html` carried `animation: { duration: 900, easing:
+"easeOutQuart" }` — a sixth duration, more than twice the longest in the
+ramp, on the two most prominent charts on the site. Every test written to
+enforce this section reads CSS, so none of them could see it, and this
+document said "enforced by a test" anyway.
+
+It mattered more than the CSS did: `!important` does not reach a number
+passed to a canvas library, so those two charts were the **only** motion
+on the site that ignored `prefers-reduced-motion` outright. Chart motion
+now comes from `docs/motion.js` — one shared helper, not six lines pasted
+per page — which reads the duration token and returns `false` under
+reduced motion. Chart.js takes a named easing rather than a curve, so
+`easeOutCubic` is used as the nearest non-overshooting equivalent to
+`--ease`; a test rejects `Back`, `Elastic` and `Bounce`.
+
 **Keyframes live in `tokens.css`, never in a sheet.** `igrm-drift` and
 `igrm-pagein` were each defined **twice**, once per stylesheet — the
 same two-copies-of-the-palette failure that broke the gap chart on

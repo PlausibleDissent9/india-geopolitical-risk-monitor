@@ -17,6 +17,56 @@ NOT part of replication — without it the pipeline skips two
 display-layer modules (daily brief, aptness labels) and no number
 changes.
 
+## Path 0 — check the index against its own documentation (~3 seconds)
+
+```
+.venv/bin/python -m src.blind_replicator
+```
+
+Start here. This is the fastest and, for most readers, the most
+informative check on the site, and it does not touch the raw store at
+all.
+
+`src/blind_replicator.py` rebuilds the entire published series from two
+public files — the transform as stated in `docs/codebook.html`, applied
+to `docs/data/shares.csv` — and diffs the result against
+`docs/data/history.csv`. It is **forbidden from importing the
+pipeline**, and `tests/test_blind_replicator.py` parses its imports to
+enforce that. A replicator that can see `src/scores.py` reproduces it by
+construction and measures nothing.
+
+**Expected result:**
+
+```
+[blind_replicator] best: weak / calendar -- 19830/19830 values agree (100.0000%)
+```
+
+**What it proves:** the published index is exactly reproducible from its
+own published documentation, by code with no access to the code that
+produced it. If you disagree with the number, either the codebook does
+not say enough for a stranger to reproduce it, or the pipeline does
+something the codebook does not describe — both are defects, and the
+tool reports which conventions were in play so you can say which.
+
+It also prints how every *other* reading of the codebook scored. Those
+numbers are the argument for why the conventions are stated as precisely
+as they are:
+
+| reading | reproduces |
+|---|---|
+| at-or-below ties, calendar window | **100.00%** |
+| at-or-below, observation window | 65.28% |
+| midrank ties | 11.6–14.9% |
+| strictly-below ties | 0.00% |
+
+Same inputs, same paragraph, everything from exact to nothing. Three
+sentences were added to the codebook's Conventions list on 2026-08-07
+because this tool found them missing.
+
+This check runs every night in `daily.yml` and is **fail-loud**: it
+requires an exact match, so a future methodology change breaks the lane
+until the codebook is updated to match. That is deliberate.
+
 ## Path 1 — cached verification (~5 minutes)
 
 ```
