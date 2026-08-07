@@ -5,16 +5,16 @@
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/negative_results.json",
   "what": "Every number that did not go this project's way, compiled from the payloads where each lives. Read live from those payloads at build time, never hand-typed, so a row that stops being true stops being published.",
-  "why": "Anyone can publish good numbers. The reason to believe the flattering ones is that the unflattering ones are computed by the same pipeline on the same schedule -- and this file is where they stand together instead of being scattered across seven payloads.",
+  "why": "Anyone can publish good numbers. The reason to believe the flattering ones is that the unflattering ones are computed by the same pipeline on the same schedule -- and this file is where they stand together instead of being scattered across 8 payloads.",
   "n_findings": 10,
-  "generated": "2026-08-07T18:42:48Z"
+  "generated": "2026-08-07T19:19:01Z"
  },
  "findings": [
   {
    "finding": "Fusing four sources made detection worse, not better",
    "number": "2 of 29 episodes detected (hit rate 0.069) vs 24 of 29 for the corresponding-channel press criterion across five channels",
    "source": "data/stress_gauge.json",
-   "reading": "the pre-registered four-source gauge detects a twelfth of what the channel-level press detector does; adding modalities did not improve this registered diagnostic"
+   "reading": "the pre-registered four-source gauge detects a fraction of what the channel-level press detector does; adding modalities did not improve this registered diagnostic"
   },
   {
    "finding": "Placebo channels overlap real episodes far above zero",
@@ -41,8 +41,8 @@
    "reading": "the construct is Anglophone press salience of India; the name understates the qualifier"
   },
   {
-   "finding": "Two of four historical channels failed their own pre-registered test and were withheld",
-   "number": "gulf_energy r=0.153, us_trade r=0.216 against a registered floor of 0.6",
+   "finding": "2 of 4 historical channels failed their own pre-registered test and were withheld",
+   "number": "gulf_energy r=0.153, us_trade r=0.216 against the registered floors: below 0.6 a series is not published clean, below 0.4 not at all",
    "source": "data/back_extension.json",
    "reading": "the withholding rule is the contribution; publishing them anyway would have retracted it"
   },

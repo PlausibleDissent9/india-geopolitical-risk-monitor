@@ -1,10 +1,14 @@
 """The negative-results register: every unflattering number, one payload.
 
-The project's best evidence of honesty is scattered across seven payloads
-where only a determined reader assembles it. This register compiles the
-numbers that did NOT go the project's way, each read live from its source
-payload -- never hand-typed, so an entry that stops being true stops
-being published (the hand-typed-number failure, class of 2026-08-07).
+The project's best evidence of honesty is scattered across the source
+payloads where only a determined reader assembles it (the register counts
+them itself rather than naming a number that goes stale). This register
+compiles the numbers that did NOT go the project's way, each read live
+from its source payload -- never hand-typed, so an entry that stops being
+true stops being published (the hand-typed-number failure, class of
+2026-08-07; the 2026-08-08 prose audit caught this file itself carrying
+three hand-typed constants, one of them wrong, under a docstring claiming
+it never does).
 
 Prompted by ideation item A4 and by the referee report's closing line:
 the honesty must live where the reader is, not in JSON nobody opens.
@@ -34,20 +38,24 @@ def compute() -> list[dict[str, Any]]:
     rather than publish a register with silently missing rows."""
     rows: list[dict[str, Any]] = []
 
+    baselines = _load("detection_baselines.json")
+    hb = baselines["hit_rate_context"]
+
     g = _load("stress_gauge.json")["validation"]
     rows.append({
         "finding": "Fusing four sources made detection worse, not better",
         "number": f"{g['n_detected']} of {g['n_episodes']} episodes detected "
-                  f"(hit rate {g['hit_rate']}) vs 24 of 29 for the "
-                  "corresponding-channel press criterion across five channels",
+                  f"(hit rate {g['hit_rate']}) vs "
+                  f"{hb['registered_criterion_hits']} of {hb['n_events']} for "
+                  "the corresponding-channel press criterion across five "
+                  "channels",
         "source": "data/stress_gauge.json",
-        "reading": "the pre-registered four-source gauge detects a twelfth "
+        "reading": "the pre-registered four-source gauge detects a fraction "
                    "of what the channel-level press detector does; adding "
                    "modalities did not improve this registered diagnostic"})
 
     v = _load("validation.json")
     p = v["placebo"]
-    baselines = _load("detection_baselines.json")
     placebo_baseline = baselines["placebo_context"]
     rows.append({
         "finding": "Placebo channels overlap real episodes far above zero",
@@ -96,13 +104,21 @@ def compute() -> list[dict[str, Any]]:
         "reading": "the construct is Anglophone press salience of India; "
                    "the name understates the qualifier"})
 
+    # Thresholds come from the registration's own constants, because this
+    # row shipped saying "floor of 0.6" when the registered withholding
+    # floor is 0.4 (0.6 is the 'tracks' threshold) -- a wrong number in
+    # the honesty register, caught by the 2026-08-08 prose audit.
+    from src.back_extension import OVERLAP_THRESHOLDS
     be = _load("back_extension.json")["overlap_audit"]
     withheld = sorted(ch for ch, a in be.items() if "DOES NOT" in a["verdict"])
     rows.append({
-        "finding": "Two of four historical channels failed their own "
-                   "pre-registered test and were withheld",
+        "finding": f"{len(withheld)} of {len(be)} historical channels "
+                   "failed their own pre-registered test and were withheld",
         "number": ", ".join(f"{ch} r={be[ch]['r']}" for ch in withheld)
-                  + " against a registered floor of 0.6",
+                  + f" against the registered floors: below "
+                    f"{OVERLAP_THRESHOLDS['tracks']} a series is not "
+                    f"published clean, below {OVERLAP_THRESHOLDS['partial']} "
+                    "not at all",
         "source": "data/back_extension.json",
         "reading": "the withholding rule is the contribution; publishing "
                    "them anyway would have retracted it"})
@@ -159,6 +175,7 @@ def compute() -> list[dict[str, Any]]:
 def main() -> None:
     check = "--check" in sys.argv
     rows = compute()
+    n_sources = len({r["source"] for r in rows})
 
     from src import stamp_meta
     payload = {
@@ -174,7 +191,7 @@ def main() -> None:
                 "the flattering ones is that the unflattering ones are "
                 "computed by the same pipeline on the same schedule -- and "
                 "this file is where they stand together instead of being "
-                "scattered across seven payloads."),
+                f"scattered across {n_sources} payloads."),
             "n_findings": len(rows),
             "generated": datetime.now(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"),
