@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGRM and the GPR indices, India Geopolitical Risk Monitor</title>
+<meta name="description" content="The standing comparison between IGRM and the Caldara-Iacoviello GPR family: exact series, results, design differences, and tests not yet run.">
+<link rel="canonical" href="https://igrm.in/vs-gpr.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=7a279efc">
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="start.html">Start here</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="history.html">1979&ndash;2019</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+  </nav>
+  <p class="definition">Related instruments, different constructs. This page states what has actually been compared and what has not.</p>
+</header>
+
+<div class="prose">
+<h2>IGRM is a salience index</h2>
+<p>IGRM retains its established name, but it measures press salience: the share of
+monitored coverage matching five frozen India-relevant dictionaries. It does not measure
+the probability or severity of geopolitical events. It is distinct from the
+Caldara-Iacoviello Geopolitical Risk (GPR) family.</p>
+
+<h2>What has actually been tested</h2>
+<p>The published benchmark compares monthly mean IGRM percentile scores with
+<code>GPRC_IND</code>, the Caldara-Iacoviello country-specific India series. The two
+pipelines share no corpus, dictionary or normalisation. Across 110 shared months, the
+composite correlation is 0.232 in monthly changes and 0.484 in levels. Changes are the
+sterner test because persistent series can correlate in levels through a shared trend.
+The result shows limited co-movement between related measures. It is not proof that either
+instrument is superior.</p>
+
+<div class="table-scroll"><table>
+  <thead><tr><th>IGRM series</th><th class="num">Months</th><th class="num">r, monthly changes</th><th class="num">r, levels</th></tr></thead>
+  <tbody>
+    <tr><td><b>Composite</b></td><td class="num">110</td><td class="num"><b>0.232</b></td><td class="num"><b>0.484</b></td></tr>
+    <tr><td>US Trade</td><td class="num">110</td><td class="num">0.276</td><td class="num">0.315</td></tr>
+    <tr><td>Gulf &amp; Energy</td><td class="num">110</td><td class="num">0.060</td><td class="num">0.304</td></tr>
+    <tr><td>Shipping &amp; Chokepoints</td><td class="num">110</td><td class="num">0.098</td><td class="num">0.272</td></tr>
+    <tr><td>Pakistan / Western Border</td><td class="num">110</td><td class="num">0.117</td><td class="num">0.229</td></tr>
+    <tr><td>China / Eastern Border</td><td class="num">110</td><td class="num">-0.020</td><td class="num">-0.085</td></tr>
+  </tbody>
+</table></div>
+<p class="chart-note">Live aggregate: <a href="data/gpr_comparison.json">gpr_comparison.json</a>.
+The GPR input is fetched for the calculation and is not redistributed by IGRM.</p>
+
+<h2>Why the numbers differ</h2>
+<div class="table-scroll"><table>
+  <thead><tr><th></th><th>IGRM</th><th>Tested GPR benchmark</th></tr></thead>
+  <tbody>
+    <tr><td>Construct</td><td>Attention to five India-relevant geopolitical channels</td><td>Country-specific geopolitical risk coverage involving India</td></tr>
+    <tr><td>Frequency used here</td><td>Daily, aggregated to monthly means for this test</td><td>Monthly <code>GPRC_IND</code></td></tr>
+    <tr><td>Corpus</td><td>Worldwide English-language coverage monitored by GDELT</td><td>Independent newspaper-archive corpus</td></tr>
+    <tr><td>Output</td><td>Five channel percentiles plus a composite</td><td>One India country series</td></tr>
+    <tr><td>Interpretation</td><td>How much matching coverage appeared</td><td>Adverse geopolitical events and associated risks in news coverage</td></tr>
+  </tbody>
+</table></div>
+
+<h2>The benchmark has moved</h2>
+<p>Iacoviello and Tong released AI-GPR in 2026. Its main index is daily and uses an LLM
+to score article-level risk intensity; its country decomposition is currently published
+monthly. IGRM has not yet been benchmarked against AI-GPR. Until that test is registered,
+run and published, this project will not use its daily frequency as a claimed advantage
+over the full GPR family.</p>
+
+<h2>What a superiority claim would require</h2>
+<p>IGRM does not currently claim to “beat” GPR. A defensible claim needs a frozen test,
+not a design comparison written after looking at the data. The next benchmark will specify
+the common dates, exact India series, named episodes, timing loss and missing-data rules
+before results are computed. A separate blind article audit needs at least one independent
+human coder. Failures will publish with the wins.</p>
+
+<h2>Primary sources</h2>
+<ul>
+  <li><a href="https://www.aeaweb.org/articles?id=10.1257/aer.20191823">Caldara and Iacoviello (2022), <i>Measuring Geopolitical Risk</i>, American Economic Review</a></li>
+  <li><a href="https://www.matteoiacoviello.com/gpr_country.htm">Country-specific GPR data and construction</a></li>
+  <li><a href="https://www.matteoiacoviello.com/ai_gpr.html">Iacoviello and Tong (2026), AI-GPR data and paper</a></li>
+</ul>
+
+<footer>
+  <p><a href="methodology.html">Methodology</a> &middot; <a href="validation.html">Validation</a> &middot; <a href="data.html">Data</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+</footer>
+</div>
+<script src="reveal.js?v=33b267c3"></script>
+</body>
+</html>

@@ -1,18 +1,25 @@
 {
  "_meta": {
-  "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "1.29.0",
-  "frozen_date": "2026-08-04",
+  "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
+  "contract_version": "2.0.0",
+  "frozen_date": "2026-08-07",
   "base_url": "https://igrm.in/",
-  "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
-  "deprecation_policy": "A field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the deprecation date recorded here, before removal in the next major version.",
+  "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
+  "deprecation_policy": "An analytical field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the date recorded here, before removal in the next major version. Operational or personal material served by mistake may be withdrawn immediately, with the removal recorded here.",
   "access": {
    "auth": "none",
    "cors": "Access-Control-Allow-Origin: *",
    "rate_limit": "none stated; ordinary politeness (poll daily, not per-request)",
    "refresh": "daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)"
   },
-  "deprecated": []
+  "deprecated": [],
+  "removed": [
+   {
+    "path": "data/decisions.json",
+    "removed": "2026-08-07",
+    "reason": "The founder's operational queue was outside the scope of the analytical API. It was removed on the day it was introduced; no research data were affected."
+   }
+  ]
  },
  "endpoints": [
   {
@@ -505,6 +512,18 @@
    "stability": "stable"
   },
   {
+   "path": "data/replication.json",
+   "format": "json",
+   "description": "An independent rebuild of the published index from the published codebook and the published shares, diffed against the published series. Written without reading the pipeline: if it disagrees, either the codebook does not say enough for a stranger to reproduce the number, or the pipeline does something the codebook does not describe. Both are defects, and neither can be argued away.",
+   "frozen_fields": [
+    "_meta",
+    "best",
+    "all_conventions",
+    "ambiguities_in_the_codebook"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/robustness_series.json",
    "format": "json",
    "description": "Weekly mean percentile scores of the primary index and its narrow/broad dictionary variants, over the window where all three exist. The overlay behind validation.json's robustness correlations.",
@@ -779,9 +798,19 @@
    "stability": "stable"
   },
   {
+   "path": "data/spike_breadth.json",
+   "format": "json",
+   "description": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
+   "frozen_fields": [
+    "_meta",
+    "days"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/splice_sensitivity.json",
    "format": "json",
-   "description": "Score-level sensitivity to the independently audited NGrams splice ratios. The frozen primary series is unchanged. Pakistan, China and Gulf are recomputed only on mechanically identified bridge rows; US Trade and Shipping remain at their production ratios because no additional independent overlap exists. Publishes daily and trailing-7-day primary, sensitivity and delta arrays plus median, maximum and latest shifts.",
+   "description": "Score-level sensitivity to the independently audited splice ratios. The primary series is frozen and unchanged. This alternative rescales only mechanically identified NGrams-bridge rows for Pakistan, China and Gulf; US Trade and Shipping have no additional independent overlap and are therefore left at production values.",
    "frozen_fields": [
     "_meta",
     "calibration_audit",
@@ -789,16 +818,6 @@
     "daily",
     "trailing_7_day",
     "summary"
-   ],
-   "stability": "stable"
-  },
-  {
-   "path": "data/spike_breadth.json",
-   "format": "json",
-   "description": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
-   "frozen_fields": [
-    "_meta",
-    "days"
    ],
    "stability": "stable"
   },
@@ -916,29 +935,6 @@
     "pubDate",
     "description",
     "guid"
-   ],
-   "stability": "stable"
-  },
-  {
-   "path": "data/replication.json",
-   "format": "json",
-   "description": "Nightly blind replication. src/blind_replicator.py rebuilds the published index from the published codebook and docs/data/shares.csv alone -- it may not import the pipeline, and a test reads its imports to enforce that -- then diffs the rebuild against history.csv at the published precision. Reports the agreement, the per-column detail, every reading of the codebook's ambiguous conventions with its score, and the list of sentences the codebook was missing. 19830/19830 exact as of 2026-08-07. If the pipeline ever changes without the codebook changing, this stops saying 100% and the daily lane goes red.",
-   "frozen_fields": [
-    "_meta",
-    "best",
-    "all_conventions",
-    "ambiguities_in_the_codebook"
-   ],
-   "stability": "stable"
-  },
-  {
-   "path": "data/decisions.json",
-   "format": "json",
-   "description": "The founder decision queue: everything blocked on the author, each item carrying the predicate over the repository that decided it (CITATION.cff has no doi: field; precision.json reports 16 of 100 labels). Items clear themselves when the underlying fact changes, so the list cannot go stale the way a hand-maintained one does. Published for the same reason the failed tests are.",
-   "frozen_fields": [
-    "_meta",
-    "blocked",
-    "cleared"
    ],
    "stability": "stable"
   }

@@ -6,19 +6,20 @@ authors:
   - family-names: Krishna
     given-names: Ishan
     email: ishankrishna9@gmail.com
-version: 1.10.1
+version: 1.10.2
 date-released: "2026-08-07"
 url: "https://igrm.in/"
 repository-code: "https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor"
 license: CC-BY-4.0
 abstract: >-
-  A daily, category-decomposed index of press salience for India-relevant
-  geopolitical topics, in the Caldara-Iacoviello article-share tradition:
+  A daily, category-decomposed index of geopolitical press salience for
+  India-relevant topics, distinct from the Caldara-Iacoviello GPR family:
   five channels built from frozen, ex-ante term dictionaries over GDELT
   coverage shares, normalized to trailing 730-day percentiles, with
   episode detection, pre-registered validation, placebo channels,
   dictionary-robustness checks, and an event-study layer on
-  India-specific relative returns. Measures attention, not risk; reports
+  India-specific relative returns. Measures attention, not event
+  probability or severity; reports
   associations, not causes.
 keywords:
   - geopolitical risk

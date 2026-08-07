@@ -1,7 +1,7 @@
-# Measuring Press Salience of India-Relevant Geopolitical Risk: A Registered, Reproducible Daily Index
+# Measuring Geopolitical Salience: A Daily, Channel-Decomposed Press Index for India (IGRM)
 
 **Ishan Krishna**
-Independent researcher · igrm.in · [ORCID / affiliation line — yours]
+Independent researcher · igrm.in
 
 *Draft v1, assembled 2026-08-06. Every number below is read from the
 published payloads named beside it and is reproducible from the public

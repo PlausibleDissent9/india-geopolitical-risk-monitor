@@ -1,4 +1,4 @@
-"""Regression locks for the 2026-08-04 frozen v1 API contract (V7)."""
+"""Regression locks for the frozen v2 API contract."""
 import json
 import re
 from pathlib import Path
@@ -21,7 +21,7 @@ def test_every_served_payload_is_in_the_contract():
     contract = _contract()
     listed = {e["path"] for e in contract["endpoints"]}
     for path in sorted(SITE_DATA.glob("*.json")):
-        if path.name in ("api_contract.json",):
+        if path.name in ("api_contract.json", "decisions.json"):
             continue
         assert f"data/{path.name}" in listed, (
             f"{path.name} is served but missing from api_contract.json")
@@ -56,4 +56,12 @@ def test_frozen_fields_are_still_present_in_live_payloads():
         missing = set(e["frozen_fields"]) - live_keys
         assert not missing, (
             f"{e['path']} dropped frozen field(s) {missing}; "
-            "a frozen v1 field cannot be removed without a major version bump")
+            "a frozen field cannot be removed without a major version bump")
+
+
+def test_operational_author_queue_is_not_a_public_endpoint():
+    contract = _contract()
+    listed = {e["path"] for e in contract["endpoints"]}
+    assert "data/decisions.json" not in listed
+    assert not (ROOT / "docs" / "decisions.html").exists()
+    assert not (SITE_DATA / "decisions.json").exists()

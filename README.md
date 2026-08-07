@@ -3,10 +3,11 @@
 [![ci](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/ci.yml)
 [![daily-update](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/daily.yml/badge.svg)](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/workflows/daily.yml)
 
-A daily, category-decomposed index of geopolitical risk salience for India,
-in the Caldara-Iacoviello article-share tradition, with open data, a
-public methodology, and an event-study layer on India-specific relative
-returns. Live since July 2026.
+A daily, category-decomposed index of geopolitical press salience for
+India, with open data, a public methodology, and an event-study layer on
+India-specific relative returns. IGRM measures attention, not the
+probability or severity of geopolitical events, and is distinct from the
+Caldara-Iacoviello GPR family. Live since July 2026.
 
 **Built with AI assistance (Claude)**, pipeline, site, dictionaries, and
 methodology. Weekly commentary is the author's. See `methodology.md`.

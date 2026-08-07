@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API contract, India Geopolitical Risk Monitor</title>
-<meta name="description" content="The frozen v1 IGRM API contract: every machine-readable endpoint, the fields promised stable, and the versioning and deprecation policy.">
+<meta name="description" content="The frozen IGRM API contract: every machine-readable endpoint, the fields promised stable, and the versioning and deprecation policy.">
 <link rel="canonical" href="https://igrm.in/api.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
@@ -23,12 +23,11 @@
     <a href="maps.html">Maps</a>
     <a href="data.html" class="current">Data</a>
     <a href="notes.html">Notes</a>
-    <a href="decisions.html">Open decisions</a>
   </nav>
   <p class="definition">Every endpoint below is served open, no key, no signup. Not investment advice.</p>
 </header>
 
-<h2>The frozen v1 API contract</h2>
+<h2>The frozen API contract</h2>
 <p class="prose">IGRM's endpoints are not a moving target. This page is the machine-readable
 promise behind them: <b id="contract-version">loading…</b>, frozen <b id="frozen-date"></b>.
 The full record is <a href="data/api_contract.json">data/api_contract.json</a>, generated once
@@ -56,8 +55,9 @@ codebook</a>; for a plain-language description of each file, see
 <p class="prose">This contract versions independently of <code>methodology.md</code> (which
 tracks construct changes) and the <code>igrm</code> Python package (which tracks code). A
 breaking change to any frozen field bumps the contract's major version and is announced here,
-in the methodology changelog, and in the deprecated list above before it ships. Nothing has
-been deprecated yet.</p>
+in the methodology changelog, and in the contract record. Contract v2 removed an operational
+author queue that had been served outside the analytical API's scope; no research endpoint or
+research data changed.</p>
 
 <footer>
   <p><a href="methodology.html">Methodology</a> &middot; <a href="data.html">Data</a> &middot;

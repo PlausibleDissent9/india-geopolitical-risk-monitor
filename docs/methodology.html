@@ -23,12 +23,11 @@
     <a href="maps.html">Maps</a>
     <a href="data.html">Data</a>
     <a href="notes.html">Notes</a>
-    <a href="decisions.html">Open decisions</a>
   </nav>
 </header>
 <div class="prose">
 <h1>IGRM Methodology</h1>
-<p>Version 1.10.1 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability 2026-08-01, receipts drill-down 2026-08-02, API contract frozen 2026-08-04, corpus receipts and sampling bands 2026-08-06, 7-day headline 2026-08-06, raw shares and the independent splice audit published 2026-08-07 · <a href="#changelog">changelog</a> at the end.</p>
+<p>Version 1.10.2 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability 2026-08-01, receipts drill-down 2026-08-02, API contract frozen 2026-08-04, corpus receipts and sampling bands 2026-08-06, 7-day headline 2026-08-06, raw shares and the independent splice audit published 2026-08-07, construct naming locked 2026-08-07 · <a href="#changelog">changelog</a> at the end.</p>
 <h2>1. What the index measures (and what it does not)</h2>
 <p>The index measures <strong>press salience</strong>: for each of five channels, the share
 of all articles GDELT monitors globally that match the channel's term set,
@@ -36,14 +35,17 @@ expressed as a percentile against that channel's own trailing 730 days. A
 composite score of 79 means exactly this: <em>today's matching-coverage share,
 averaged across the five channels' percentiles, is higher than it has been
 on 79% of days over roughly the past two years.</em> Nothing more.</p>
-<p>It is built in the Caldara-Iacoviello article-share tradition, whose index
-is also named "Geopolitical Risk" and also measures newspaper shares. The
-name is a convention of the genre, not a claim: <strong>salience is not risk.</strong>
-The two diverge in known, unavoidable ways, an under-covered crisis scores
-low; anniversary retrospectives score high (§7); editorial fashion moves
-the series with no change in the world. The index answers "how much is the
-press writing about this?", never "how dangerous is this?". It is not a
-forecast and not investment advice.</p>
+<p>IGRM keeps its established name, but the construct is <strong>geopolitical
+salience</strong>, not the probability or severity of geopolitical events. It is
+distinct from the Caldara-Iacoviello GPR family. The standing comparison
+uses their monthly India series, <code>GPRC_IND</code>, over the 110 months shared by
+the two instruments; their newer AI-GPR products have not yet been tested
+here. The two constructs can diverge for ordinary reasons: an under-covered
+crisis scores low in IGRM, an anniversary retrospective scores high (§7),
+and editorial fashion can move the series with no change in the world. The
+index answers "how much is the press writing about this?", never "how
+dangerous is this?". It is not a forecast and not investment advice. See
+the <a href="vs-gpr.html">standing comparison</a>.</p>
 <h2>2. Term selection and the ex-ante rule</h2>
 <p>Each channel's dictionary draws from four categories, geography where
 tension physically manifests, institutions and standing mechanisms,
@@ -104,7 +106,7 @@ direction, the same share construct from half-hourly samples of the raw
 feed, and ratio-spliced to the API series on overlap days, with each
 channel's splice ratio and its dispersion published alongside the data
 (see changelog).</p>
-<h3 id="splice-audit">3.1 Independent audit of the splice calibration</h3>
+<h3>3.1 Independent audit of the splice calibration</h3>
 <p>The production ratios remain frozen, but they are not described as
 validated. A proposed 38-day stability check was rejected before
 publication because it was circular: on 37 of the 38 cached days, the
@@ -116,44 +118,145 @@ last pre-bridge DOC-API store preserved in git commit <code>091c25e</code>, pair
 with the retained NGrams day caches. The recovered window is 2026-06-30
 to 2026-07-21. It supplies 18 independent days for the first three
 channels, but only the original single day for US Trade and Shipping.</p>
-<div class="table-scroll"><table>
-<thead><tr><th>Channel</th><th class="num">Frozen ratio (original n)</th>
-<th class="num">Independent audit ratio (n)</th><th class="num">Change</th>
-<th class="num">Audit log-SD</th></tr></thead>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th style="text-align: right;">Frozen ratio (original n)</th>
+<th style="text-align: right;">Independent audit ratio (n)</th>
+<th style="text-align: right;">Change</th>
+<th style="text-align: right;">Audit log-SD</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>Pakistan / Western Border</td><td class="num">1.9547 (5)</td><td class="num">2.4634 (18)</td><td class="num">+26.0%</td><td class="num">0.3296</td></tr>
-<tr><td>China / Eastern Border</td><td class="num">3.3612 (5)</td><td class="num">2.6998 (18)</td><td class="num">-19.7%</td><td class="num">0.3954</td></tr>
-<tr><td>Gulf &amp; Energy</td><td class="num">1.7910 (5)</td><td class="num">1.8098 (18)</td><td class="num">+1.0%</td><td class="num">0.0976</td></tr>
-<tr><td>US &amp; Trade</td><td class="num">2.5616 (1)</td><td>not independently re-estimable (1)</td><td>not estimated</td><td class="num">0.0000</td></tr>
-<tr><td>Shipping &amp; Chokepoints</td><td class="num">2.9747 (1)</td><td>not independently re-estimable (1)</td><td>not estimated</td><td class="num">0.0000</td></tr>
-</tbody></table></div>
+<tr>
+<td>Pakistan / Western Border</td>
+<td style="text-align: right;">1.9547 (5)</td>
+<td style="text-align: right;">2.4634 (18)</td>
+<td style="text-align: right;">+26.0%</td>
+<td style="text-align: right;">0.3296</td>
+</tr>
+<tr>
+<td>China / Eastern Border</td>
+<td style="text-align: right;">3.3612 (5)</td>
+<td style="text-align: right;">2.6998 (18)</td>
+<td style="text-align: right;">-19.7%</td>
+<td style="text-align: right;">0.3954</td>
+</tr>
+<tr>
+<td>Gulf &amp; Energy</td>
+<td style="text-align: right;">1.7910 (5)</td>
+<td style="text-align: right;">1.8098 (18)</td>
+<td style="text-align: right;">+1.0%</td>
+<td style="text-align: right;">0.0976</td>
+</tr>
+<tr>
+<td>US &amp; Trade</td>
+<td style="text-align: right;">2.5616 (1)</td>
+<td style="text-align: right;">not independently re-estimable (1)</td>
+<td style="text-align: right;">not estimated</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td>Shipping &amp; Chokepoints</td>
+<td style="text-align: right;">2.9747 (1)</td>
+<td style="text-align: right;">not independently re-estimable (1)</td>
+<td style="text-align: right;">not estimated</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+</tbody>
+</table>
+<p>Bridge shares equal the NGrams share divided by the ratio. Relative to the
+independent audit, the frozen Pakistan ratio is smaller, so primary
+post-bridge Pakistan shares are higher; the frozen China ratio is larger,
+so primary post-bridge China shares are lower. Under the audited alternative,
+the latest Pakistan score therefore moves down 8.0 points and China moves up
+5.1. That is the direction of this sensitivity, not a claim that either
+independent ratio is known without uncertainty.</p>
 <p>This is a sensitivity finding, not a replacement calibration. It shows
 material uncertainty in the Pakistan and China links and leaves the two
 one-day links untested. Production values and published history remain
 unchanged to preserve the v1 vintage. The score-level effect is material,
 so it is published rather than summarized away:</p>
-<div class="table-scroll"><table>
-<thead><tr><th>Series</th><th>Channel</th><th class="num">Median absolute shift</th>
-<th class="num">Maximum absolute shift</th><th class="num">Shift on 2026-08-06</th></tr></thead>
+<table>
+<thead>
+<tr>
+<th>Series</th>
+<th>Channel</th>
+<th style="text-align: right;">Median absolute shift</th>
+<th style="text-align: right;">Maximum absolute shift</th>
+<th style="text-align: right;">Shift on 2026-08-06</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>Daily</td><td>Pakistan / Western Border</td><td class="num">6.6</td><td class="num">10.9</td><td class="num">-8.0</td></tr>
-<tr><td>Daily</td><td>China / Eastern Border</td><td class="num">13.0</td><td class="num">18.7</td><td class="num">+5.1</td></tr>
-<tr><td>Daily</td><td>Gulf &amp; Energy</td><td class="num">0.0</td><td class="num">0.4</td><td class="num">0.0</td></tr>
-<tr><td>Daily</td><td>Composite</td><td class="num">1.3</td><td class="num">3.0</td><td class="num">-0.6</td></tr>
-<tr><td>Trailing 7-day</td><td>Pakistan / Western Border</td><td class="num">9.4</td><td class="num">11.4</td><td class="num">-4.5</td></tr>
-<tr><td>Trailing 7-day</td><td>China / Eastern Border</td><td class="num">21.7</td><td class="num">25.6</td><td class="num">+23.5</td></tr>
-<tr><td>Trailing 7-day</td><td>Gulf &amp; Energy</td><td class="num">0.0</td><td class="num">0.4</td><td class="num">0.0</td></tr>
-<tr><td>Trailing 7-day</td><td>Composite</td><td class="num">2.6</td><td class="num">4.1</td><td class="num">+3.8</td></tr>
-</tbody></table></div>
+<tr>
+<td>Daily</td>
+<td>Pakistan / Western Border</td>
+<td style="text-align: right;">6.6</td>
+<td style="text-align: right;">10.9</td>
+<td style="text-align: right;">-8.0</td>
+</tr>
+<tr>
+<td>Daily</td>
+<td>China / Eastern Border</td>
+<td style="text-align: right;">13.0</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;">+5.1</td>
+</tr>
+<tr>
+<td>Daily</td>
+<td>Gulf &amp; Energy</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr>
+<td>Daily</td>
+<td>Composite</td>
+<td style="text-align: right;">1.3</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">-0.6</td>
+</tr>
+<tr>
+<td>Trailing 7-day</td>
+<td>Pakistan / Western Border</td>
+<td style="text-align: right;">9.4</td>
+<td style="text-align: right;">11.4</td>
+<td style="text-align: right;">-4.5</td>
+</tr>
+<tr>
+<td>Trailing 7-day</td>
+<td>China / Eastern Border</td>
+<td style="text-align: right;">21.7</td>
+<td style="text-align: right;">25.6</td>
+<td style="text-align: right;">+23.5</td>
+</tr>
+<tr>
+<td>Trailing 7-day</td>
+<td>Gulf &amp; Energy</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr>
+<td>Trailing 7-day</td>
+<td>Composite</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">+3.8</td>
+</tr>
+</tbody>
+</table>
 <p>Shifts are sensitivity score minus frozen production score over the 37
-mechanically bridged days from 2026-07-01 to 2026-08-06. The <a href="data/splice_sensitivity.json">full daily
-sensitivity series</a> is published with the data. It is not a corrected
-history and must not be substituted silently for the primary.</p>
+mechanically bridged days from 2026-07-01 to 2026-08-06. The full daily
+series is published at <code>docs/data/splice_sensitivity.json</code>. It is not a
+corrected history and must not be substituted silently for the primary.</p>
 <p>A future measurement version may
 adopt new ratios only after at least 14 independently observed overlap
 days exist for every channel, the score-level impact is published, and
-the old vintage remains downloadable. Reproduction code and the recovered
-API snapshot are in the public repository under <code>analysis/</code>.</p>
+the old vintage remains downloadable. Code and the recovered API snapshot
+are in <code>analysis/splice_overlap_audit.py</code> and
+<code>analysis/splice_overlap_api_091c25e.csv</code>.</p>
 <p>The published score is the
 percentile rank of today's share within the channel's trailing 730 days
 (inclusive of today; the window never contains future data). Days with
@@ -385,11 +488,11 @@ share of that day's retrieved sample) -- <strong>tiers never enter any
 channel score or the composite</strong>, stated here and in the payload's
 <code>_meta</code>.</p>
 <h2>12. API contract</h2>
-<p><code>docs/data/api_contract.json</code> freezes, as of 2026-08-04, every endpoint
+<p><code>docs/data/api_contract.json</code> freezes, as of 2026-08-07, every endpoint
 IGRM serves for machine consumption: the file's format, a plain-language
 description, and its top-level "frozen fields" (JSON keys or CSV
 columns) promised not to be removed, renamed, or repurposed within
-major version 1. New fields may be added to any payload at any time
+major version 2. New fields may be added to any payload at any time
 without notice; only a removal, rename, or type change requires a
 major version bump, which would be announced in the contract's
 <code>deprecated</code> list and in this changelog before it ships. The contract
@@ -400,7 +503,21 @@ is committed and hand-frozen, not regenerated by the daily pipeline:
 a promise that rewrote itself every night would not be a promise.</p>
 <h2>Changelog</h2>
 <ul>
-<li><strong>2026-08-07, v1.10.1 (independent splice audit; primary unchanged).</strong>
+<li>
+<p><strong>2026-08-07, v1.10.2 (construct name locked; public/private boundary).</strong>
+  IGRM retains its established name, while the paper title and construct
+  line use the scientifically accurate term <em>geopolitical salience</em>. A
+  dedicated comparison page identifies the exact Caldara-Iacoviello India
+  series already tested and states that the newer AI-GPR products remain
+  untested. An operational author queue, accidentally served as a public
+  page and endpoint earlier the same day, was removed because it is not
+  research data. The analytical record remains public: registrations,
+  amendments, corrections, validation misses and sensitivity results.
+  Removing the out-of-scope endpoint triggers API contract v2.0.0; the
+  removal is recorded in the contract itself.</p>
+</li>
+<li>
+<p><strong>2026-08-07, v1.10.1 (independent splice audit; primary unchanged).</strong>
   A proposed 38-day calibration-stability result was rejected before
   publication because 37 comparison values had been constructed from
   the same numerator and production ratio. The independent replacement
@@ -411,7 +528,8 @@ a promise that rewrote itself every night would not be a promise.</p>
   shifts are material; the homepage carries a notice. Production ratios
   and every primary history value remain unchanged to preserve the v1
   vintage. The rejected result and correction mechanism are recorded in
-  the append-only corrections ledger.</li>
+  the append-only corrections ledger.</p>
+</li>
 <li><strong>2026-08-07, v1.10.0 (the construct is partly Anglophone, measured).</strong>
   The index is built from an English-language corpus, read by an
   English-language matcher, and was cross-validated against English

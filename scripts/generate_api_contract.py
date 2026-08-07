@@ -1,6 +1,6 @@
 """
 One-time (and re-run-on-purpose) generator for docs/data/api_contract.json,
-the frozen v1 API contract (V7).
+the frozen API contract.
 
 This is NOT part of the daily pipeline. The contract is a committed,
 hand-reviewed snapshot: fields recorded here are a promise, not a live
@@ -21,8 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.27.0"  # + freshness.json (payload staleness audit); permanence, vintages (#13), detector_blindness (#26), wiki_hindi (#25), monthly (#33), syndication (#23)
-FROZEN_DATE = "2026-08-04"
+CONTRACT_VERSION = "2.0.0"
+FROZEN_DATE = "2026-08-07"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
 # borrow from. Kept short; the full construction lives in codebook.md.
@@ -72,7 +72,7 @@ DESCRIPTIONS = {
 # Endpoints intentionally excluded from the data-API contract because they
 # are not analytical payloads: igrm.bib (citation download), sitemap.xml
 # and robots.txt (crawler infrastructure).
-EXCLUDE = {"api_contract.json"}
+EXCLUDE = {"api_contract.json", "decisions.json"}
 
 
 def _fields(data) -> list[str] | str:
@@ -141,7 +141,7 @@ def build() -> dict:
 
     return {
         "_meta": {
-            "what": "The frozen v1 API contract: every endpoint IGRM "
+            "what": "The frozen v2 API contract: every endpoint IGRM "
                 "serves for machine consumption, the fields promised "
                 "stable within this major version, and the policy "
                 "governing changes.",
@@ -150,14 +150,16 @@ def build() -> dict:
             "base_url": "https://igrm.in/",
             "promise": "Frozen fields are never removed, renamed, or "
                 "repurposed to a different meaning within major version "
-                "1. New fields may be added to any payload at any time "
+                "2. New fields may be added to any payload at any time "
                 "without a version bump. Any removal, rename, or type "
                 "change requires a major version bump, announced here "
                 "and in methodology.md's changelog before it ships.",
-            "deprecation_policy": "A field or endpoint marked deprecated "
-                "stays live and unchanged in meaning for at least 90 "
-                "days after the deprecation date recorded here, before "
-                "removal in the next major version.",
+            "deprecation_policy": "An analytical field or endpoint marked "
+                "deprecated stays live and unchanged in meaning for at "
+                "least 90 days after the date recorded here, before "
+                "removal in the next major version. Operational or "
+                "personal material served by mistake may be withdrawn "
+                "immediately, with the removal recorded here.",
             "access": {
                 "auth": "none",
                 "cors": "Access-Control-Allow-Origin: *",
@@ -170,6 +172,15 @@ def build() -> dict:
                     "_meta)",
             },
             "deprecated": [],
+            "removed": [{
+                "path": "data/decisions.json",
+                "removed": "2026-08-07",
+                "reason": (
+                    "The founder's operational queue was outside the scope "
+                    "of the analytical API. It was removed on the day it "
+                    "was introduced; no research data were affected."
+                ),
+            }],
         },
         "endpoints": endpoints,
     }
@@ -178,7 +189,7 @@ def build() -> dict:
 def main() -> None:
     contract = build()
     out = SITE_DATA / "api_contract.json"
-    out.write_text(json.dumps(contract, indent=2) + "\n")
+    out.write_text(json.dumps(contract, indent=1) + "\n")
     print(f"[api_contract] wrote {out} ({len(contract['endpoints'])} "
           "endpoints, contract v" + CONTRACT_VERSION + ")")
 

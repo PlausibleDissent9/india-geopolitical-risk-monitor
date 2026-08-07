@@ -48,6 +48,7 @@ PAGE_SHELL = """<!DOCTYPE html>
     <a href="methodology.html"{cur_meth}>Methodology</a>
     <a href="validation.html">Validation</a>
     <a href="analysis.html">Analysis</a>
+    <a href="history.html">1979&ndash;2019</a>
     <a href="maps.html">Maps</a>
     <a href="data.html"{cur_data}>Data</a>
     <a href="notes.html">Notes</a>
