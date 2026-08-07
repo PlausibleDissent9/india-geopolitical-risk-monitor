@@ -697,6 +697,27 @@ methodology splice note would fully disclose it; say "disclose the
 china_east ratio" and it ships. Read Aug 5's china_east 4.5 with this
 in mind (the crash itself is real: Aug 4/Aug 5 bands do not overlap).
 
+**B addendum, 2026-08-07 — the sensitivity is now MEASURED, and it is
+large for exactly this channel.** Codex's independent splice audit
+(docs/data/splice_sensitivity.json, verified against its own arrays)
+rescales only the bridged rows under independently recovered ratios and
+reports how far each published score would move:
+
+    channel        daily max shift   7-day max shift
+    china_east          18.7              25.6
+    pakistan_west       10.9              11.4
+    gulf_energy          0.4               0.4
+    composite            3.0               3.5 (approx)
+
+Read plainly: the china_east headline you publish each morning can move
+by up to ~26 points depending on which defensible splice ratio is used.
+The primary series stays frozen (nothing was adopted; your gate held),
+but this number belongs in front of you when you make the 0.24 splice
+call — it converts "the ratio choice matters" from a caution into a
+measurement, and it is the strongest argument yet for deciding that
+item soon rather than letting the sensitivity sit unacknowledged
+beside the headline.
+
 ## 0.16 UCDP V10 — context live; the construct decision is yours
 
 UCDP monthly context is published (ucdp_context.json, 2017-present,
