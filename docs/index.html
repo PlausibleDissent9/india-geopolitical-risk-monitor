@@ -43,29 +43,76 @@
 </head>
 <body>
 <header class="masthead">
-  <div class="wrap masthead-row">
-    <div>
-      <p class="mono-eyebrow">IGRM</p>
-      <h1>India Geopolitical Risk Monitor</h1>
-      <p class="tagline" id="tagline">Daily press-salience of geopolitical risk for India, decomposed by channel. Not a measure of risk itself, and not investment advice. Final numbers by 6:00 AM IST; provisional nowcast every two hours.</p>
-    </div>
-    <nav class="mast-links">
+  <div class="wrap nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
       <a href="start.html">Start here</a>
       <a href="methodology.html">Methodology</a>
       <a href="validation.html">Validation</a>
-      <a href="analysis.html">Analysis</a>
-      <a href="history.html">1979&ndash;2019</a>
-      <a href="maps.html">Maps</a>
-      <a href="data.html">Data</a>
+      <a href="analysis.html">Research</a>
       <a href="notes.html">Notes</a>
-      <a href="divergence.html">Divergence</a>
-      <a href="data/history.csv" download>Download CSV</a>
-      <button id="theme-toggle" class="theme-btn" aria-label="Switch color theme">Light</button>
     </nav>
+    <div class="nav-actions">
+      <a class="data-cta" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" aria-label="Switch color theme">Light</button>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
+  <section class="hero-stage" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="hero-kicker"><span class="status-dot" aria-hidden="true"></span> India-specific · daily · open</p>
+      <h1 id="hero-title">Geopolitical attention,<br><span>measured for India.</span></h1>
+      <p class="tagline" id="tagline">Measures press salience across five India-relevant channels, ranked against each channel's own trailing two years. Not a measure of event probability or severity.</p>
+      <div class="hero-actions">
+        <a class="hero-btn hero-btn-primary" href="start.html">Understand the index <span aria-hidden="true">→</span></a>
+        <a class="hero-btn" href="methodology.html">Read the methodology</a>
+      </div>
+      <dl class="hero-facts" aria-label="Instrument facts">
+        <div><dt>Series</dt><dd>2017&ndash;present</dd></div>
+        <div><dt>Channels</dt><dd>Five</dd></div>
+        <div><dt>Reference</dt><dd>730 days</dd></div>
+        <div><dt>Licence</dt><dd>CC BY 4.0</dd></div>
+      </dl>
+    </div>
+
+    <section class="instrument" aria-labelledby="composite-label">
+      <div class="instrument-meta">
+        <span><i class="status-dot" aria-hidden="true"></i> Latest final measure</span>
+        <a href="status.html">Pipeline status <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="composite">
+        <p class="mono-eyebrow" id="composite-label">Composite (7-day) · <span id="latest-date">2026-08-06</span></p>
+        <p class="big-number" id="composite-score" aria-live="polite">61.5</p>
+        <p class="delta" id="composite-delta">▼ -4.7 vs yesterday</p>
+        <div class="band" role="img" aria-label="Risk band scale from calm to severe">
+          <div class="band-track"></div>
+          <div class="band-tick" id="band-tick"></div>
+          <div class="band-labels"><span>calm</span><span>elevated</span><span>severe</span></div>
+        </div>
+        <p class="nowcast" id="nowcast" hidden></p>
+      </div>
+      <div class="components" id="components"><!--ssr:components-->
+        <a class="component-row" href="receipts.html?channel=pakistan_west"><span class="component-name">Pakistan / Western Border</span><span class="component-score">65.1</span><span class="component-delta">▼ -25.1</span></a>
+        <a class="component-row" href="receipts.html?channel=china_east"><span class="component-name">China / Eastern Border</span><span class="component-score">5.3</span><span class="component-delta">▲ +0.8</span></a>
+        <a class="component-row" href="receipts.html?channel=gulf_energy"><span class="component-name">Gulf &amp; Energy Security</span><span class="component-score">77.7</span><span class="component-delta">▼ -0.8</span></a>
+        <a class="component-row" href="receipts.html?channel=us_trade"><span class="component-name">US &amp; Trade Policy</span><span class="component-score">15.6</span><span class="component-delta">▼ -20.0</span></a>
+        <a class="component-row" href="receipts.html?channel=shipping"><span class="component-name">Shipping &amp; Chokepoints</span><span class="component-score">80.9</span><span class="component-delta">▼ -2.3</span></a>
+      <!--/ssr:components--></div>
+    </section>
+  </section>
+
+  <nav class="evidence-rail" aria-label="Research evidence">
+    <a href="vs-gpr.html"><span>Preregistered benchmark</span><strong>AI-GPR India · ρ 0.256</strong></a>
+    <a href="divergence.html"><span>Comparator discipline</span><strong>Seven published divergences</strong></a>
+    <a href="history.html"><span>Historical context</span><strong>1979&ndash;2019 proxy</strong></a>
+    <a href="data.html"><span>Open infrastructure</span><strong>Data, codebook and citation</strong></a>
+  </nav>
+
   <noscript><p class="glance">Charts on this page need JavaScript; the headline numbers
   above are baked in at publish time, and every series is downloadable as CSV from the
   Data page.</p></noscript>
@@ -75,26 +122,6 @@
   primary is unchanged. Read the <a href="methodology.html#splice-audit">audit table</a>
   and <a href="data/splice_sensitivity.json">full sensitivity series</a> before using
   bridge-period channel levels.</p>
-  <section class="instrument" aria-labelledby="composite-label">
-    <div class="composite">
-      <p class="mono-eyebrow" id="composite-label">Composite (7-day) · <span id="latest-date">2026-08-06</span></p>
-      <p class="big-number" id="composite-score" aria-live="polite">61.5</p>
-      <p class="delta" id="composite-delta">▼ -4.7 vs yesterday</p>
-      <div class="band" role="img" aria-label="Risk band scale from calm to severe">
-        <div class="band-track"></div>
-        <div class="band-tick" id="band-tick"></div>
-        <div class="band-labels"><span>calm</span><span>elevated</span><span>severe</span></div>
-      </div>
-      <p class="nowcast" id="nowcast" hidden></p>
-    </div>
-    <div class="components" id="components"><!--ssr:components-->
-      <a class="component-row" href="receipts.html?channel=pakistan_west"><span class="component-name">Pakistan / Western Border</span><span class="component-score">65.1</span><span class="component-delta">▼ -25.1</span></a>
-      <a class="component-row" href="receipts.html?channel=china_east"><span class="component-name">China / Eastern Border</span><span class="component-score">5.3</span><span class="component-delta">▲ +0.8</span></a>
-      <a class="component-row" href="receipts.html?channel=gulf_energy"><span class="component-name">Gulf & Energy Security</span><span class="component-score">77.7</span><span class="component-delta">▼ -0.8</span></a>
-      <a class="component-row" href="receipts.html?channel=us_trade"><span class="component-name">US & Trade Policy</span><span class="component-score">15.6</span><span class="component-delta">▼ -20.0</span></a>
-      <a class="component-row" href="receipts.html?channel=shipping"><span class="component-name">Shipping & Chokepoints</span><span class="component-score">80.9</span><span class="component-delta">▼ -2.3</span></a>
-    <!--/ssr:components--></div>
-  </section>
 
   <section class="chart-section">
     <div class="chart-head">
@@ -171,7 +198,7 @@
   </aside>
 </div>
 
-<script src="app.js?v=e3ea6951"></script>
+<script src="app.js?v=0b19ac81"></script>
 <script src="reveal.js?v=33b267c3"></script>
 </body>
 </html>

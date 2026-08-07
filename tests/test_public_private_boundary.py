@@ -24,4 +24,12 @@ def test_published_weekly_note_contains_no_editorial_workflow():
     note = (ROOT / "notes" / "2026-W32.md").read_text(encoding="utf-8")
     forbidden = ("Status:", "Founder check", "final editorial draft")
     assert not any(term in note for term in forbidden)
-    assert note.startswith("# The 95-point gap at Hormuz")
+    assert note.startswith("# IGRM Weekly Assessment: Week ending 6 August 2026")
+    for section in (
+        "## Executive assessment",
+        "## Channel positioning",
+        "## External comparator: Strait of Hormuz",
+        "## Calibration sensitivity",
+        "## Monitoring statement",
+    ):
+        assert section in note

@@ -402,6 +402,7 @@ function miniMarkdown(md) {
     .map((block) => {
       const b = block.trim();
       if (!b) return "";
+      if (b.startsWith("# ")) return `<h2>${b.slice(2)}</h2>`;
       if (b.startsWith("## ")) return `<h3>${b.slice(3)}</h3>`;
       if (b.split("\n").every((l) => l.trim().startsWith("- "))) {
         const items = b.split("\n")
