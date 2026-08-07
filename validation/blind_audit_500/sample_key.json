@@ -1,0 +1,3517 @@
+{
+ "_meta": {
+  "what": "Sampling-stratum key for the frozen blind 500-article audit; contains no labels.",
+  "seed": "igrm-blind-audit-500-v1-2026-08-07",
+  "article_instances_per_channel": 75,
+  "story_clusters_per_channel": 25,
+  "matched_url_universe_by_channel": {
+   "pakistan_west": 335,
+   "china_east": 193,
+   "gulf_energy": 5812,
+   "us_trade": 1147,
+   "shipping": 891
+  }
+ },
+ "items": [
+  {
+   "audit_id": "A398593EFFEF80DC",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "15d6495307daff6bd37ccec905c5f680dd7213864705e8fd3ce79857af7259e8"
+  },
+  {
+   "audit_id": "A94EF5DFDA6FA34F",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "82f7bb3cbee318ebeae79db3c1870cdc80bd75c558bf16d1d7ffb91759863c37"
+  },
+  {
+   "audit_id": "A1087D670B5DD5A7",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "03afa202ba5c57f451fd2a055abdb06dfe0d82fe77761f051219df4d3445d8d0"
+  },
+  {
+   "audit_id": "A80BD26C2E23D302",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "15d6495307daff6bd37ccec905c5f680dd7213864705e8fd3ce79857af7259e8"
+  },
+  {
+   "audit_id": "A4DAC9F58BC4783E",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "bcbb963c0ed47d3b9b83d4e761fa3f3119b290098309aef38d108d4423b884c4"
+  },
+  {
+   "audit_id": "A56FA355CCD1A91C",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "442dc4a78fab56c7904d9ccb965cf996034ece6febe589e550048bba8fafffa2"
+  },
+  {
+   "audit_id": "AED50AC3BA5E7F80",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e1c1143242ffb233a6f2753d0fd5dfc0e0a5f81544315cd63dfa86860af731ea"
+  },
+  {
+   "audit_id": "A579B05DDB179E23",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "83c2e0e559f83574955c576b56abe9c4b5c3e1ad8a9a2df36bc7dfbe37f0d444"
+  },
+  {
+   "audit_id": "A86081263F9D57E6",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "763aea994f1ac52699d12f15f2bd99cd86a8d8456929f03faf44854684ec2b40"
+  },
+  {
+   "audit_id": "AA6149ED1F59250E",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "347c5e6dd38fd8717a4258ba2e516b52ce7f89933f1095baeea0eed07ea235c1"
+  },
+  {
+   "audit_id": "AB0C74B151C342E0",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d200d502123cae52563473b94832130cebda4e34d3d4e179fbc458cfb4d9ba7c"
+  },
+  {
+   "audit_id": "A47C6DAEB3871A94",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "1dbff0a1380baf1f28e6020e84f9a28691e1c1f20b5d1540915053fdb82300c9"
+  },
+  {
+   "audit_id": "A8F69435500F4DA6",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e4716f7bc6e01b7c7987eca4f2bf74f07b911afa78b78d5aba061f104c8e7ec4"
+  },
+  {
+   "audit_id": "A5EA670DD07F75F5",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a58a608ffd63a461e12408a6ba46911e9ae96efe0b1a7c98f4a073e3797221a3"
+  },
+  {
+   "audit_id": "A9FAEDEFF831E298",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c775f10b921375f6403749bf90cbeecd7cfddbbc794c5079fb40e85d6b547cfc"
+  },
+  {
+   "audit_id": "ACD7F161AEFF79B9",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cc534da8ed5c8e4c911296d3ff1149323f4cf72fcba3d6ef5d27ae2120d0bc90"
+  },
+  {
+   "audit_id": "A07014352E5ADC3C",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2645f82c6a2005d315753e6a4c715afae023d2b68b2d271d087dac95090d1567"
+  },
+  {
+   "audit_id": "A90F23387C92BD19",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e846cdfb15b48dbbb5a08d95abf8f30a0e3ecbf4dda79144c670deb1a65463c4"
+  },
+  {
+   "audit_id": "A07F4C22537927E8",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "9d68f1aa7ec14bcbdea67f39dce1f44429c8529ff6e64d4eaf6fcf0f44f6ac88"
+  },
+  {
+   "audit_id": "A850864D0A0871AB",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cdf0c364dfe38e482c43a76aaaf2371d490ff62295116bec384093afb2e86920"
+  },
+  {
+   "audit_id": "A46D2B3A871D7BB8",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5fa4db07856f9efaa69bbd53c0aabffa0f95d2c9fa85ed1c5d8e355345cce5bf"
+  },
+  {
+   "audit_id": "A6001EDAB1A8388B",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5a7d5f6793d87ce80e770d03d20509ffc2730c3354ec3df890a328cf38d917da"
+  },
+  {
+   "audit_id": "AD774962BDD620A3",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "15d6495307daff6bd37ccec905c5f680dd7213864705e8fd3ce79857af7259e8"
+  },
+  {
+   "audit_id": "AC758AD5AAF0B03F",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6ef6b4995534d285ebb4f00ed8d8bffa617ade5a5cb375397698f822f98850a0"
+  },
+  {
+   "audit_id": "ADF412AFACA0F260",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "843073d563751d1edb3b5e58cf5607f7dce7d9e6def0763026f9562724cb63d1"
+  },
+  {
+   "audit_id": "A251C028FBED5821",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "A14EDF577025BE54",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "d5c426bf87aedb57072d0c26bf476152f9d381b6e9ff4c5f4f81a2f6fd8e60e4"
+  },
+  {
+   "audit_id": "A24BD4209972631D",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "67048011d3c4ae8dbe71f6cbd716fb1ccf1d91e1b8219de32d4fd3f44b3d83cf"
+  },
+  {
+   "audit_id": "ADDC98D7DECCF0A9",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e4e9a0960e9021cb554c11f935ef1e6f8b3c19659d96fc62153c3742e6a774c3"
+  },
+  {
+   "audit_id": "AA14C0A633E31128",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "768a5f6c448b6fcf062cb9c38392825285a61b22b5a65a59b6fd7aba47b43269"
+  },
+  {
+   "audit_id": "A5FD9C3D08B89BC7",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "00b38d1bba29964a576d6ce84dca637737a410d64f3b0324c6bffcf377573e9f"
+  },
+  {
+   "audit_id": "AD016157AC877C0D",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "AF9877657C5C6F5C",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "12c711280f82ff2c796d5d8fd59567dcd2bcf0d790885460220b1aa5b0cd0999"
+  },
+  {
+   "audit_id": "A3E47BD4911E9ED3",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "54e5abd5021a53594acb07bdf87e19df00c5326ada8898970a289f2c0233a40c"
+  },
+  {
+   "audit_id": "A49D7601346F6012",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "14dfc8d97d191e7f5bf843874a0d4a9abf5a28a4eea8beba011a6761271f8d1e"
+  },
+  {
+   "audit_id": "ADB64784574F76BA",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "33188a0ed2b8d03be377abc7f1b64bb5f4937944c9dd3c7ab1331a3695f01e5e"
+  },
+  {
+   "audit_id": "AF4EF018D4241D45",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "A83B7E41915031C6",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "a9089e0f482656e84b8607d743c4943abecb87ed6e0819808a5b6ad5fc4a1a2c"
+  },
+  {
+   "audit_id": "A58B6BA25BCA028E",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "56025ec6e4f0a450b06fd46a5735f2495a8d1e6c3e71f48734360313a940299f"
+  },
+  {
+   "audit_id": "AD70A8FC3A78A56F",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "735f297678a34b7d1523bb07f0957d710504fc760c1455137f032d6d830c6b23"
+  },
+  {
+   "audit_id": "A91863669F15944F",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1ecb60c4a9d1ac2b38d0c21408aa2f388cf1804bc03adb4cc27804a96fa8ffdb"
+  },
+  {
+   "audit_id": "A5D0597A8A1DEAD4",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1be8e45d5ed1ad09ad6345c785935f372cbfcc3a3431f454bad653b7285ca7bc"
+  },
+  {
+   "audit_id": "A1A9E5C0508DF2B2",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a28031a68eb8571bdafa3be9457cd58a14aaf2eef6a127674dbff668187f98a7"
+  },
+  {
+   "audit_id": "AACCAD9B1C2B0E0E",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "06d94e8dd874aff7272c225a6067028e26c4c03aff70a222b07391ee3043627d"
+  },
+  {
+   "audit_id": "A98A67CB4E2A8F93",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2671c466e3624135c14a6502d15222e080010be39eb58a4e7b89c0a87f8cb243"
+  },
+  {
+   "audit_id": "AE2BE296CF695D23",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "30948e37b4dcd1a2448188018f25b4ac349e1cfc8d17e65fb995b3041f4d905f"
+  },
+  {
+   "audit_id": "AC6979FF3E494EE3",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "869d3a25adc3b0536afecbc937370d8edab3715dfc050ef82b36898e55bb03d6"
+  },
+  {
+   "audit_id": "A531B35648C1F2A0",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2b83b4f63675f3986b9ba8e264dd5d5ac33377bbca615909c17998ce27d0d406"
+  },
+  {
+   "audit_id": "A953DA035C936B8A",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a440a8c4ad28628540cce171c69300868010ac3e02b1fb8c525fc1b21fd84b8c"
+  },
+  {
+   "audit_id": "A74B91FB1952E2DD",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "dfef72e61613b92a4916ea6f721366f6c10417619a2eff56fae57ef3ef91d334"
+  },
+  {
+   "audit_id": "A8CCA1C0FF147C93",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2f6436857cd66b027eeeb4918c2f0695b99ebdb9b047bfce288b680ea641f0ba"
+  },
+  {
+   "audit_id": "AAFA7A1A97FC882D",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "68a26eb739a79ed9219d3c2d544053c54c33315ba6d1a364b2cbcaad85e4fc2b"
+  },
+  {
+   "audit_id": "A8DF8AB143A4CB15",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e495707dd9c8184779f97a41eddb8785265935804e5cad1ae31b2114edda600e"
+  },
+  {
+   "audit_id": "A6F15C6BFC4B59F0",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b13ca4cbf33028b334f5d26a2ba696705f4e11c41a8468a4c3837955fc6b2587"
+  },
+  {
+   "audit_id": "AE6EA612F1F8AC8C",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "de9d28a14904aef13f93c9907650ce812e7fb47602d0a0fbd28d7e736d5bc2b4"
+  },
+  {
+   "audit_id": "AEAC94201DDBD634",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "5435b22e68abd0bf6efd2715a7ae44b2cd627fb76bd606fc1c5456746774d99e"
+  },
+  {
+   "audit_id": "ABCB380EDA6C60D7",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f5c296fb8114936909b23e7893ef4a184dded0757f6f3096afcbe8e10a63e2dc"
+  },
+  {
+   "audit_id": "A569FA1D05BE11A5",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2228e2c679408658eed0fb83823a8422bec9c18f1d38c0d526a8f4b8ebd2ff46"
+  },
+  {
+   "audit_id": "AF852ABE56799489",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6b9afc0596e2ce35097ddedf9debd6b4ab63faf9dfb935c20954e4524abc8343"
+  },
+  {
+   "audit_id": "A8FEB9D44E050694",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "746b04f7728232d80795fa53295d0e48e1286022d46af24eb55d3099a929c2d8"
+  },
+  {
+   "audit_id": "ADC9A03A09D50EA6",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "fa7e73e0cdf1823468cde24da187bd2984379db3f9f478cc6f4890ef19ff5bb1"
+  },
+  {
+   "audit_id": "A7BBE1787FF09A99",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "5a55535ee2d96cf7da7960b6c2057f603750e2e10040b185bc1730c4803009c9"
+  },
+  {
+   "audit_id": "A823E0D48523BCF6",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "25339840c06560ef994f9de890ddb93130c0d820001ff08e02f0f227b7d32612"
+  },
+  {
+   "audit_id": "A594DFAB7DF1F061",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6cd1fd3676e7ef9179b26deb85b584ae1780de2c181a9f7b11c775998911848a"
+  },
+  {
+   "audit_id": "A2503D85278805E4",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "07dae48ac7a7bd1203dc8b2b044416df092fcda4bcf82fed6daca832737b2d87"
+  },
+  {
+   "audit_id": "AC7007F3D728F002",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2455c2a021a431c022a3deda2a9451dbe22d4b88ceeefe6abfa34bb66e226864"
+  },
+  {
+   "audit_id": "A964225B194FC380",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c60062dd84f02731374b198f2d0e9e2088059c4bef18fe8209786868c85e9271"
+  },
+  {
+   "audit_id": "AA2BD4C2519EE718",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "bf3fc249c0385ecb22776c6cf2057a20a70ed63db4f8c04666696270f43fffe7"
+  },
+  {
+   "audit_id": "A2156D1AD7BCE42D",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "0f75121ac12b3659fcb6f949a4b24ec0e80c72953703fc5db6a54194b50dbae1"
+  },
+  {
+   "audit_id": "A9635C5D697D72A3",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AD8F5E67836CD37A",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "593c709e34a3b566fa7dc27fa4af0aa61f8f9b1b0a44d3d9f12b95fdcd6bc897"
+  },
+  {
+   "audit_id": "A0E3247CB44A48CF",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "64d57f809ad1516c65e280bfb2958a5113fb1868eeecb9d1d973127285b32fc2"
+  },
+  {
+   "audit_id": "AFF967C689EE2317",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a075608cc09045e07418a1cb4fe1616d01329e1f4d0d6baa1a7e8673885e82ea"
+  },
+  {
+   "audit_id": "A54BC7F80F1F0B86",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "bdabaa6a4da95b014188d6e25a8149fc0b797c00bd07b7352a81cba8d3f6727c"
+  },
+  {
+   "audit_id": "A4FEA325377BCF8E",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a177fdabd8cff7863391e56a799774c8e25cf536dca3da0dda6478319d43d478"
+  },
+  {
+   "audit_id": "A3B1D90A2B25FDA8",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5efd1ad9ac7a08f98076585f05d517e8ce68eddff241741dac1c4c9f57976aad"
+  },
+  {
+   "audit_id": "A61D32ECB0176742",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "ebe5ae33707cc7265ce8b81ea8a5d004069813145d905f5d63e982fae0ab5bc6"
+  },
+  {
+   "audit_id": "A5B577804B708039",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e5d57b928bffdf4ab35a4c2c4fb734c4aa5a0c10583d30308769035328d79e99"
+  },
+  {
+   "audit_id": "AFC98BEB4BF69436",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c749defd578654990c02382d05cdf141ac66b1fc662d74feff496e612100e4ad"
+  },
+  {
+   "audit_id": "AA665CC7DE3811E3",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "7928de6353f454ed3042aac14b8191c0cbf1d6f9a999e786c41e52e6e1e4421f"
+  },
+  {
+   "audit_id": "ABF5B8CB395F1653",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "13f6139ad9337d4a5981f00c52b761745189db37e6703f83f6e7c489bf430319"
+  },
+  {
+   "audit_id": "AC0A72492552D960",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b33bc991077f7d3c8a084950c27302a78b897ef74de354e4537cb41e0bd0960e"
+  },
+  {
+   "audit_id": "AF1CC18A81F61CBA",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "029e6cabe74c9e0de6644097d66238ca6af00cbd3a6bbea99a38e755047f480e"
+  },
+  {
+   "audit_id": "AFFA9DFBEB5F69DD",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "beeddf44d681db18dd48c25c57f6adf1732a7a52b24b4b3cd71785c74470eda1"
+  },
+  {
+   "audit_id": "A45DC7650BFF2378",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4375bc0a2f6f21ccdd43b156c274fac4828af8e1cb8f1be62515c69721bc05dd"
+  },
+  {
+   "audit_id": "A6141FD9D80DA157",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "9f300b71d722322837fee86a72a070df1315ced90e8f71e6dd9820ec1793618f"
+  },
+  {
+   "audit_id": "AF85F0C1E9BC9600",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "8735bb1ce6b622c463994e569044d9a09cdb462c2ae1823ce9f165ec0d7af09f"
+  },
+  {
+   "audit_id": "A74A42B47BDB2F6B",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "873166c51e2ff422be2ab2e56a395e12c9450f35042a518e9d58b2a9a3b28eff"
+  },
+  {
+   "audit_id": "A15BB3FAFAAA63B4",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2e557bf94e55a96863dee83a73708f0007fd770237be5861f9c11d73258edd14"
+  },
+  {
+   "audit_id": "A86B5635DB45CA6A",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "bb9f5ba5b5561990e4ee9de49b9fb2b8f3f940c7f362d86a2855dcf724b689b6"
+  },
+  {
+   "audit_id": "A053DCCEEF62799E",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cde60126ed5830c724b59c00e4eb8cc80598014babf2db529a0926f58022730f"
+  },
+  {
+   "audit_id": "AC8FAD4F64B8E2D8",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d3a45081266fc9ad7653722fbac092f76067c85932fe00f2fefbb067bbd50500"
+  },
+  {
+   "audit_id": "A7C4EDF461A13C85",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "8684fc97d2fe8c47f3d7c861467448c95ef1235955452c2f3b16329d0b70b650"
+  },
+  {
+   "audit_id": "A0BE632F83F358A3",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "9a205943233096d14657c02069c6d2207fed0b8e60dea6a753fbafde06660c0d"
+  },
+  {
+   "audit_id": "AC1EEBA7ADAF6AD0",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "b59398e384230c7ecfa2adc90b9d70ebb1b7e9d9f9b4b3d19b9c0e36a774947a"
+  },
+  {
+   "audit_id": "AF9D3F27F2EA402D",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "ad58450a517b2b38d1dec36bc5c97289a0c6bd3f9cd4a85eba2c6c846b060836"
+  },
+  {
+   "audit_id": "A6186776A4028D2A",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "59791c7fbc364a23c3ccbbffa96caed378e59893037868cb41d2a2275fcc1173"
+  },
+  {
+   "audit_id": "A7113A4E7939EB9D",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "28d20721a3ee97c1a5692d78cb7b386c341e62f24078d60d5553c874f9521e58"
+  },
+  {
+   "audit_id": "A14EFA23AF209850",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "01e7b603a85c2cfb7f445171eb658c0d192bde1d3d46e46d909f882dba12fca0"
+  },
+  {
+   "audit_id": "AE5A06940B9B0BD2",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cde60126ed5830c724b59c00e4eb8cc80598014babf2db529a0926f58022730f"
+  },
+  {
+   "audit_id": "A46E462DDC05772E",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "5d9386b43c3d78e6fdbc9c2d84d01448e878ed742a416e274100a17821754c25"
+  },
+  {
+   "audit_id": "A96B0834E3FB1984",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "080155499f17cfb82514a0e3c708935a02bf660ea833760629186acf56bdb794"
+  },
+  {
+   "audit_id": "AA48062BF9C38C69",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "3b533b7fca335022d6ca64f216f4e768117e9ee3a0e91e02fd39df5a8074b9a6"
+  },
+  {
+   "audit_id": "A6157B4BC5960039",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4074a535b62b0b73ae377fc6a7ef3166da8dca1ff0236b9bbcc27fd0943d89e7"
+  },
+  {
+   "audit_id": "A67262A2E40AB286",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "093a50b02983a49d422a13f2f6581b3a58183ecb12554c0c5fd4e6922f910df1"
+  },
+  {
+   "audit_id": "AA372D1E88D3491C",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "4dbe37e9ce9789ea9382dbce720e313cd95942fb33a7c4bf919a5512706776da"
+  },
+  {
+   "audit_id": "AE5FDC1EB53EAFBB",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "85bc7e199e4c793dc4c452fcbb4b86bf34e6c0ccf53887552987c069cbf1165e"
+  },
+  {
+   "audit_id": "ACBEBFE4ADD255BA",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8795f3f3f533dbba3c5252e89e9acbcb5d98df02d0e247bfa6978442a9a63d60"
+  },
+  {
+   "audit_id": "A81A6FDE8AA56C9A",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "ADDDCC175CDB35E7",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "bb734bba13b3ef91c9eeb4cf7c567cb170885668f75449048b8903063aacf5d0"
+  },
+  {
+   "audit_id": "ABCBDB0EC84D8DE1",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "af55c20587fb038d338cc5a8b5a9f097b1e0a147552cdee0fb8f0d68c318bec9"
+  },
+  {
+   "audit_id": "AD5A9428FFB5C458",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "15f9c963f13fdb5f764b6c3712bca33d41aee3ddb33d93350247d978768d74ab"
+  },
+  {
+   "audit_id": "A0A4DB37867F746D",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "4d250892e34fe7424a9b564e8d544406c8ce2266880cb8294fdde8c8907395e8"
+  },
+  {
+   "audit_id": "AAEA7C924DB6A550",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "7f00c2b143a8e0d3cf0bb3584d79452dad70c64fe1a4fc16d8383ee353c3e6c6"
+  },
+  {
+   "audit_id": "A3927283B7E17DEE",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "3a598a960213fd286931682d293583d882547f1f03ef7b9af2c59c19e876604c"
+  },
+  {
+   "audit_id": "AAC0623DEC86A0B3",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4009178687ac5585dadd63f487951897e3a5449144c1dc09e6e68043b66ef31f"
+  },
+  {
+   "audit_id": "AD8814B264368F3C",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e80e96ab404098474fe02b521094df4636d896cef0177145aece87d91ab52d98"
+  },
+  {
+   "audit_id": "AF94E69E3C019224",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "46812edf2eed961870d08627ef8fbaa1fc442b96a1276457052af872c678b8a2"
+  },
+  {
+   "audit_id": "A5BE4D7C9668D8A6",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "56fc26a030adcb5625d7cc2b584b107b64a2576bb71f55409f7714bfda177dd4"
+  },
+  {
+   "audit_id": "A693074BA8BFF8B8",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "3ab5626871e07cfcc6dacfcfa70e2cce42adf6d0fabe9f7373a461808b211b97"
+  },
+  {
+   "audit_id": "A4F94087E5255D39",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6b0869f42be17fa9fef64cc2e2730d743f7f9320b10f77696546afdc5eda1ab3"
+  },
+  {
+   "audit_id": "ADB02FC32C1D92CE",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "4857a4fc5f2e94da9adbd947709448bb083a6094593e75d134ca9b722f6b30a5"
+  },
+  {
+   "audit_id": "A9FD191B6D220C13",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A31C1EA9F0C3B741",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e6952044c712f760502ac294048c5e239d443961713c5a687189b508e38b07bf"
+  },
+  {
+   "audit_id": "A93CB90722A25A44",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "50f7bd03e6ce6004514a12c8ff1b2b7640a1e7f9bc29fbb69c3761ddeec04dc0"
+  },
+  {
+   "audit_id": "A0A36CE526C8A2D0",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "ac7703c916fd3348ce76ec884f263096c62c84e63ad80dd9682fb9d325cdbb05"
+  },
+  {
+   "audit_id": "AB40A1DC5A285398",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "593c709e34a3b566fa7dc27fa4af0aa61f8f9b1b0a44d3d9f12b95fdcd6bc897"
+  },
+  {
+   "audit_id": "A649C25057025DBB",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "edca1b70512c16be4f2873b9a14c1ce3eccf888e52288c5ba6a21487b389bae0"
+  },
+  {
+   "audit_id": "A198266AC6FAABF5",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "7cb5406b9ebe1a8512d07e8bd3ec592cc43d917cfe8d0b8d4df2aa2f673aa13a"
+  },
+  {
+   "audit_id": "A48D6665A900191B",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "139cabbad1c045bb649f9674e5724f9e9dea66a41f92d1d2199dba1ec7ca4e1d"
+  },
+  {
+   "audit_id": "AADF89FB1F04AEB4",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "453ce4d8955137c61ad7a3fc3efcc1b8bb844c3e1dd56da213aa3988ea357d76"
+  },
+  {
+   "audit_id": "AD2D83676E58E5CA",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "ABCA5268FC81C1D2",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "88d050ddf70c1eb84958b635b9433dc0a582316d205f6be997a82619f746bda6"
+  },
+  {
+   "audit_id": "A7D235AF3EC1CD9B",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "4ebf3902d18119b60efbbae0d280cea30c04469a3c5d36e3a95194c92709bc99"
+  },
+  {
+   "audit_id": "AC77FB5D7598C463",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "3069ebf69510d59067d900e8c93606d40ebe158dc8f9899b6e88b8cfb860f7e9"
+  },
+  {
+   "audit_id": "AED8228DEB821D9A",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "b7faf5d038f95d9050602d345a36214f3a2a1e809d9b371ed63146b4db58b18a"
+  },
+  {
+   "audit_id": "AF0AFC84B4C05BB6",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "130250926b47a932de4a7bdd5582a5a6cab5de390d6f21ca49630adf3ea7c676"
+  },
+  {
+   "audit_id": "A5B684B7FFF52CC8",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "6fe75d90b7f7a9ff45daaf6399aef3da2503749dd798bc4b7ee8351e75611605"
+  },
+  {
+   "audit_id": "AA81A4CC519B4868",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "fa0830a47d0d828f42b061b408689fe7ae3bc1a3be640dffc29d838b3f2b36e3"
+  },
+  {
+   "audit_id": "A99600FE42D4EC0B",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "50f7bd03e6ce6004514a12c8ff1b2b7640a1e7f9bc29fbb69c3761ddeec04dc0"
+  },
+  {
+   "audit_id": "A349DCB05EEF3625",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "3f46f4ee5000caa6ea173358aa8812d81656d75acbdd202d7cf5119280898fce"
+  },
+  {
+   "audit_id": "A06E0CC5CE7F3DA2",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d9addf7e6995b9e4ac6aa2a151f7bac7aff87e01ef2b4831449b51105cc3439c"
+  },
+  {
+   "audit_id": "A1CE8A55BB450507",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2e5c12e580c67d23475630317f69fdae94b3518112cc04e8554e038107de3e93"
+  },
+  {
+   "audit_id": "AC9A44CF71D185D0",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "A32D4A7090918DDD",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "6bf752cb41bc6f21b260e15850ec4707b43b9828f208a6e844b001d431fa51e5"
+  },
+  {
+   "audit_id": "AA3D02509F5C49A2",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cc534da8ed5c8e4c911296d3ff1149323f4cf72fcba3d6ef5d27ae2120d0bc90"
+  },
+  {
+   "audit_id": "A9D7B830FAD2231D",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "323637fd249674ebf03ada8df93b720a1463155b5f54335b74ac17ac55cb052c"
+  },
+  {
+   "audit_id": "A6C7275BEF29885F",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "9ebdb6e1f935d704881de4c9ab3717a0bece9922a0d5fbf5694f88224b47edce"
+  },
+  {
+   "audit_id": "A56E4291BBDBC8C0",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6658c1c11923749c41cfbd711776c4d2ff3ee99aa9db51186939f16eb13793fe"
+  },
+  {
+   "audit_id": "A244A88CA0313205",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "b4ba72203e22f680e1d25e2fdbef3ce49f0d8d9ffe0659eb13bbcba6b7dfb027"
+  },
+  {
+   "audit_id": "A2F45C937773E758",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "A495CB5842F15E8E",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e4706d3226bfcde1fd75d06e70111fe3a4de4194a7c4b79fcaa9bf4ca77ccb01"
+  },
+  {
+   "audit_id": "AAC0D8C4124CF667",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "49ed2408b92b76968e5fa99b90659cfe4c1a67be7bd4b3ef1fab08aabe700470"
+  },
+  {
+   "audit_id": "A4AF24141DCA5D01",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f5ea291965c2435b68e2d264e81bccfd7e2ae85979a14b760a2a42c86ed74422"
+  },
+  {
+   "audit_id": "A75CCAFD4E445024",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "11c4a857323d10b3eb457d2109b6d0a75b262e2ca1e09dd004a0ecab173fcff8"
+  },
+  {
+   "audit_id": "A09B3147999637AB",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "130250926b47a932de4a7bdd5582a5a6cab5de390d6f21ca49630adf3ea7c676"
+  },
+  {
+   "audit_id": "AF27FE080A5E64E7",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "5653c2485bee4a649282343749e6ccc12942f3e8c33dccf35759332ac699ad5b"
+  },
+  {
+   "audit_id": "A62A30AF4F74F5E8",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "8027d14fa3ef1fbb33b3f5c0598a90d20e0a6fb9093cfd214ba64496c3405c7f"
+  },
+  {
+   "audit_id": "AA86D85E4C02B0EC",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "725dd688627bd9e4d1d770369d4380ffb39a5b413890915c2f4eb22fe7a8503b"
+  },
+  {
+   "audit_id": "A513721EF8C244D0",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "13d7c9c097d7a09ef7227e1c4def35aa758bd2fd7c60abfd2de8189fc5ab6ace"
+  },
+  {
+   "audit_id": "AF7E949329E39E07",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "A219FAD0611D27A9",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cf26f92a547fd4d0df99e60d2a16475fb551177285f3339516fd607e89d018f7"
+  },
+  {
+   "audit_id": "ABE2C2342FC88033",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "1225e341ccd5a08638bb66be56761491376997a54e0f9955b958e68961a7cd1b"
+  },
+  {
+   "audit_id": "A64C7FA55798ACF3",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c32e2ce0c63f1e9a7206e9c9acdf32f3d45e5c1256a15e2278044342bdbba48a"
+  },
+  {
+   "audit_id": "A5D08A7BE3BA66F8",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "0f75121ac12b3659fcb6f949a4b24ec0e80c72953703fc5db6a54194b50dbae1"
+  },
+  {
+   "audit_id": "A27EB9EC3F48316B",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4830560686d3fff783d3e9068bd2fea3e9bc6a5ee43c740a66384c0031500b28"
+  },
+  {
+   "audit_id": "A6364B18D9A61930",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "20fce9722f1c368f1adf1b59290c1d4ee49a566c990ec045a48e62ef03433946"
+  },
+  {
+   "audit_id": "A9573B33A01CFCB0",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c346858281b6e51a6fc5947974c8fc7814e6e60c6da281251a0ade4609f9e295"
+  },
+  {
+   "audit_id": "A34CF13A4734E22F",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5da1446f7df2a8f0bb0c11de6f609405bd6f9f66393166ba42638104b5cf4904"
+  },
+  {
+   "audit_id": "A45BB9EF983D85E6",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c29f4a3a707283b744625057bbdddce389a99b6f13a4dc7a5fd8310060bf3ac8"
+  },
+  {
+   "audit_id": "A6C668E8F2E45E60",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "a676c484a56231fa331db20746457d4cd333fcbc4503f53908d2dec81d14a284"
+  },
+  {
+   "audit_id": "A562BEE3BBFFF240",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "03621295a2216bf0fc0e460894681f7d96ce42233b19365d424bf1c52e85e3b4"
+  },
+  {
+   "audit_id": "A40F2E9A13DBEC77",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0d89bdeecc806e2f3331df4644042defc8e56a4ea3b59ae2722f8425c3f8d574"
+  },
+  {
+   "audit_id": "AB5624732E21E56B",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "63adfb25f764563036bebb777dd43045896d9740b0cbdb340336a3c490c2659f"
+  },
+  {
+   "audit_id": "ABAEB1A57ECF6237",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A3FE29DC7545E3B5",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "bb1f24530a55e593984da3defa9559375987323888a3f8fc8e1487cc525b6adc"
+  },
+  {
+   "audit_id": "A098B966CB1134E1",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6cf562d058ddf0d4bc90a67b196cc26ce035adaeef06d43f020a9ec4931fa4dd"
+  },
+  {
+   "audit_id": "A47A8826B29CCF8D",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A89472685D19213B",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "A8B5CA407EC111FF",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "81add766393782a291311aafc1e12bca8c9430f800fb44ad02d590742aaa53be"
+  },
+  {
+   "audit_id": "AD693784F8B53C11",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "ae08a9436889c0c617a9c0323b204a7749b7d13a34f0b94b36ad668601b42187"
+  },
+  {
+   "audit_id": "AEBC3EAB1EC93377",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0fcd6d90e4328acf99aa9ef33d4ef6bece99e86c67e92a28ad5bf2b99c2f902f"
+  },
+  {
+   "audit_id": "AE89F04C167BC151",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2b8000e2539c1fac0f7f40d8713e6e01566082b36c4bb23709c75118787ca4d9"
+  },
+  {
+   "audit_id": "A5CA4004F241BE0A",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "bfd085299597dbe6093890898120c343a57217b1728d3f9aed09d24b815658fc"
+  },
+  {
+   "audit_id": "AD85E2A1DA5657BD",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "5ac7f1db59dc5d98647140cdb7e072b5f2dc5aa5201e4cf957214244f55213df"
+  },
+  {
+   "audit_id": "A7A7C1240198F011",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "A189C8C9BEEA1071",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "992a0f186e8d04958820199ebd941c6765f817902bf9cdc7f26dfe1e1a3b01a1"
+  },
+  {
+   "audit_id": "ABBD22E45FBBBAA1",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AE5D3D9CC584AB4C",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A5140C4DFCA62C32",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "A0BC07B71CACAC2C",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "130250926b47a932de4a7bdd5582a5a6cab5de390d6f21ca49630adf3ea7c676"
+  },
+  {
+   "audit_id": "AE429B55E8A11804",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "ab5cf66b8deecd47855028f8cb41547ff3ee79fbadc441306d4e77ccac4f9ab4"
+  },
+  {
+   "audit_id": "AEBE80D23DCABC51",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2654ea0a8ecdaa63ae5906f5f144fd492a510486bd5d35f27d3f91e1000599bc"
+  },
+  {
+   "audit_id": "A5EC71B553CDDB4F",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "be84408240d9be1123e89a4364cdc45cb4d13a941055a277926b2a9ac935a796"
+  },
+  {
+   "audit_id": "A7B1C17719C14864",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d129deadfac481c790ba491fa4fdb4271782ff5688cdbdd4757a3f97f5422af6"
+  },
+  {
+   "audit_id": "A0672CF73DB605FC",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "06d94e8dd874aff7272c225a6067028e26c4c03aff70a222b07391ee3043627d"
+  },
+  {
+   "audit_id": "A1C4D902CF4B410F",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "b85d8f1996c24440c9b667173baf94e25f4880f8179bc3f61f32a73ab53416b1"
+  },
+  {
+   "audit_id": "A9B517EF9A1CC654",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "568fba79fffbddef1dcba6938c33786a26ee6acc2c039718dbfb4a52da4f4949"
+  },
+  {
+   "audit_id": "A026523A7CA2AD09",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e183a930f33f2b10099408bce1ae79906b4ca3f6354cae1a578d3bdc48b75ba0"
+  },
+  {
+   "audit_id": "AD4045623225890C",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8a692edbbb5fa830190d57a162f8bf6d8c9141ffebf8f762d051973284fb0537"
+  },
+  {
+   "audit_id": "AC2CCC9399F6D3AF",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AFF80D8CB0A7BCD4",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "6faa9643874e82e6c952b02e9b63714cb98e3cb1ac3ba7f88dc2608596aa9a4b"
+  },
+  {
+   "audit_id": "AD04CA00DEA80D31",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "6a60ca708605ffead900fe6333e0c0980d7f2968b93cf387b2f28c98db52df8d"
+  },
+  {
+   "audit_id": "A57646653C1490F7",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "94290aeb29b7170ff6e4d25319c8109541b6748962ffc21f56f882c705db8c6f"
+  },
+  {
+   "audit_id": "AB31669067EAC251",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e1628fc0a00d33d2788a5af9002c32758ac02ecd07111b87f01dd7406d853a0f"
+  },
+  {
+   "audit_id": "A43F887214DBDB1A",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "184d1218efba5c190dbd829329562dc686a9e75dbfdba679c99f5a9ad506bc14"
+  },
+  {
+   "audit_id": "A908B01EA02985FE",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "723ed9e8d2ab88ab4e2ec7ed1d43d844bf1dc9e98da407d5eb31374a74561654"
+  },
+  {
+   "audit_id": "A14A9CC600004E95",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "8e0919ca7994b8ae69cac037b07b987062c388bcf8952c5699ff0c3cc6d1204e"
+  },
+  {
+   "audit_id": "A878A791CC8C190B",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "33204f2936f25517ddaa16502b0040b76b694d70e0c7ad3a37557a2abbed94e5"
+  },
+  {
+   "audit_id": "A89E1BA75F8AA55D",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d51f1f80ebe54fa1093670518f1630aa63d9be075dd2cf9b7ca8fbdd7cb7ba41"
+  },
+  {
+   "audit_id": "A5E7ECDB5F839939",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "07c7947b876d52212d82eb73be58aa6920f880bacea9477670d0e34c193dc00d"
+  },
+  {
+   "audit_id": "A68EC3FBF77E67DD",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5292807ceb77c3bd7121179415bb87a8602498f183921ef8926b129f26582c3e"
+  },
+  {
+   "audit_id": "A57F66122746A8CB",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "9a205943233096d14657c02069c6d2207fed0b8e60dea6a753fbafde06660c0d"
+  },
+  {
+   "audit_id": "AAF8CBCAAE70127E",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "768a5f6c448b6fcf062cb9c38392825285a61b22b5a65a59b6fd7aba47b43269"
+  },
+  {
+   "audit_id": "AE87905D0AE2DA1B",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6b9ab05dde6f29373c559c2483a6546025ecbbbe1253739b16892cf68df7bd2a"
+  },
+  {
+   "audit_id": "A3CCD93A31AECD9D",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "39b1004a5d0d7d5c382aec209b810ffa9bc1c6c3519878f7af56ef083e8da04b"
+  },
+  {
+   "audit_id": "AFAA28E6F2225026",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "ACEEDF6D7F88E974",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "352ac01e8573fd55ccb600be51caf1a999ed3324285f977abed88663ea0df119"
+  },
+  {
+   "audit_id": "A1B362104B38F151",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1e8f56fc2d3c4633b4b44ac9a82ee55b822dd2a7c15df0d5d1c813867962985a"
+  },
+  {
+   "audit_id": "ACCC02092FD1B37B",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A077A984A2AEFD5D",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "dab26857ab170fde72575494641d4d21153e2d3721ec2fe1e8bff0ad3507fe9a"
+  },
+  {
+   "audit_id": "A89B4E74F2ADE743",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8b74534b0b186038a33927f2aca6ef68865534854c30fd321f7e46c6aa8171ca"
+  },
+  {
+   "audit_id": "A8A3C0267B1194B0",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a28031a68eb8571bdafa3be9457cd58a14aaf2eef6a127674dbff668187f98a7"
+  },
+  {
+   "audit_id": "AB9DE430391BADCF",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "248a670ac27de3a8eb5c1c523816b2dba2cb5381dea9c3ec402249b8519458be"
+  },
+  {
+   "audit_id": "A37AC47A673C39AC",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e52db918394c0788321cd914f6775b098baf834f4e3561ba1578e721c2e523b2"
+  },
+  {
+   "audit_id": "ACE13E6CE66DF207",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "0cc1ae79a75239eb00c547cca3c8d4e733fdd22c63d3ffa038604c17ae4d0d18"
+  },
+  {
+   "audit_id": "A4293E5D6D324A77",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "8e14dc341195e46d509591656be40c2baa8d11f06be0e75b9377da01f02d000a"
+  },
+  {
+   "audit_id": "A741B920A881A67B",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A2726057EB4EA7A3",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b575e20836e7a3657bf2723e5eb5ba8db540d6ef89a86488ecafb56102bf0d87"
+  },
+  {
+   "audit_id": "AE0A3C94105A43D1",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "7ba7bf62f7139119ce33674b43d384441dde51285deb665b23cf98b0bbae108b"
+  },
+  {
+   "audit_id": "A9F987636536FD29",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "0d403031c4c7076e8bcb0404fd24624d685d6b7eee0af0f31c6e66c76f54a747"
+  },
+  {
+   "audit_id": "A61785A5F2951403",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A478F9F9D223D05C",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "91535903b0dcdcbc3582cf235c7e948257473f3cb2d219245d254a03007be288"
+  },
+  {
+   "audit_id": "AD829AFA9022B98C",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "3501b5cdd3dfdd172dc96e72b2abf27fa27e4159c55ee3cc8382512aa0035830"
+  },
+  {
+   "audit_id": "A437A3C5C3EAE75F",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AFBCD0D9080317F2",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "78554c025509bc3d1d82efa273fd8faf4991ed2a7103d67cba756ee0078fdf46"
+  },
+  {
+   "audit_id": "A8682AE26AFAADAE",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5a7d5f6793d87ce80e770d03d20509ffc2730c3354ec3df890a328cf38d917da"
+  },
+  {
+   "audit_id": "AC9AC56D8FBC50F9",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d200d502123cae52563473b94832130cebda4e34d3d4e179fbc458cfb4d9ba7c"
+  },
+  {
+   "audit_id": "A8094A29A9CC84C1",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "6d99f27c62cea6457c4a2f32d06661d7cfe3f62ea436fba54ed5bc26c7d8e208"
+  },
+  {
+   "audit_id": "A3D0CE8F267CD24E",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "806a9d2d79eea739e824dbee88db5c2915261a4b8be8662a01c83b615e25a3d6"
+  },
+  {
+   "audit_id": "A794A18B5F089D9E",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "15b892dfb298019fcd9e40d29ca686fa0810f00e13f5cd95587de3b534fa9f27"
+  },
+  {
+   "audit_id": "A2526AE74E55E510",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8ac096ce286df49634dae80f17d7240e644bd7405950d552f2a2553190e379af"
+  },
+  {
+   "audit_id": "A457769210E7933F",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8d8cc37c0f7e4d34592b3dfb014fd2c14292b2f136f17d2015c19b6bcceb7e86"
+  },
+  {
+   "audit_id": "A7F2D3C6102C2AA9",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "18a147e12f432596a31bde1254817c64e4c341762c9cde3d7cf51efaa71863bd"
+  },
+  {
+   "audit_id": "A1C33E70B30BCF34",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "cc15bdc82e7775de1989721444a5f67e3fbf5706353ef7e0707d7519f3670382"
+  },
+  {
+   "audit_id": "AFA791CB058CC846",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "3e60aff0212fbc5f2455be0ec8474c564596a437e564c5a12c19773db3e8f23c"
+  },
+  {
+   "audit_id": "A22DCD52E96963F1",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "323637fd249674ebf03ada8df93b720a1463155b5f54335b74ac17ac55cb052c"
+  },
+  {
+   "audit_id": "A737489C2430D262",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c4abb2884a36476b7c130bdbaef7f14c445e86a7009c1dde68c405e61b546960"
+  },
+  {
+   "audit_id": "A5F37ECF1779F575",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a28031a68eb8571bdafa3be9457cd58a14aaf2eef6a127674dbff668187f98a7"
+  },
+  {
+   "audit_id": "A35468A98DDFC983",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "004bee33f6cc18dc9c6b29f16d5a6e516c5a16a0f584261fa7675e23b8bc4815"
+  },
+  {
+   "audit_id": "AEA526F084A643D0",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5db85e839b53df524609d955723a35262a6a0f39ef7c8eac380f6c1fad045e47"
+  },
+  {
+   "audit_id": "AEBD469E96BE88B0",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "cd63a154c6f9b6d132bb3b97aa489ce71ce4ba74605ea0356b0561cad864d0a0"
+  },
+  {
+   "audit_id": "A796C68466CF9DBE",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "20c9795feaf3ba189625a2772ba87c2495ff23f0ba186f59b6f9790c914d0337"
+  },
+  {
+   "audit_id": "A252C76B434BB801",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c96999ae2df1e0c448f386d665652d9e336ea39abaf6cd1391d21261d2055cb0"
+  },
+  {
+   "audit_id": "AA3E952C4EDF53FE",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c6f75290a8f91819230e9dc38ca3aa5a6a4d1c140cd9606704d9e77414146140"
+  },
+  {
+   "audit_id": "A7C973DAD305C8E4",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1c63b27f36cff3d61581dc0c978b4edf73e3f8e7809a965b1360750e39167bb7"
+  },
+  {
+   "audit_id": "AA93D3BF1A1142DA",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "917c2eac61449234134c1c2d4a2e3f5969e5320a62aae02337eae948d088606f"
+  },
+  {
+   "audit_id": "AE981AD96E85A562",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "dc4a81bf9b73fa9c9bbf46ed47c6a033ba2c973772ca887f06a7d813263c8864"
+  },
+  {
+   "audit_id": "A15E0E6022BE9B36",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "874b52df91895d1ba011781df9aac183df0f4ad0f46884c16fcd218fe7622391"
+  },
+  {
+   "audit_id": "AA07CEE7240457BE",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A32FF78039426D66",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "ef9dbb6f6649ee5ee89ceca39b061ddb02d33ec2e0ca3cfc1fa17cda653117b9"
+  },
+  {
+   "audit_id": "ADA1C0018A162FFC",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "99b6eaf2929b1d07c9fde034d317f7aba34db41bae2c7f7f51de161d3016cd6f"
+  },
+  {
+   "audit_id": "A5BB33E64DDAEAEB",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "9ac722d1dec6a9ac834bc1dc8102315ffb6b693058ddf14799f2762e98b7eef6"
+  },
+  {
+   "audit_id": "ADA9E845F079CCC6",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "633a194acbc245f6240d22f41d34ad194861fab97fb919c88556ac6a025dfbb9"
+  },
+  {
+   "audit_id": "A1BF4611F2EBE81C",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2557a2c9a546bc5ec73a75ae44c2fd9f44de493d5186a49fddec54f58c7e7b9e"
+  },
+  {
+   "audit_id": "AD5B32727B421E0A",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "062a723025cad4a7299041b68286d2f4c1b66f51a34c124a35f2148c73edcdc0"
+  },
+  {
+   "audit_id": "A4694D8AD0CE5B52",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "81b33ca851df9ecddd359ca28eac222219dd5f9c0997cb832c674dceb32f67f0"
+  },
+  {
+   "audit_id": "A383B8B149268EAC",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "54c8a199b9ad1cd75f48fa11b20701afd192e05a809efbd1a947e8dc67db354e"
+  },
+  {
+   "audit_id": "AE7BE5992B1BFDB9",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5f9282125a562f40bdb1b2056387fc6bdf7e577f936abc48fa192649a87c1804"
+  },
+  {
+   "audit_id": "A5760D44AFC01884",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e32d7d3745cdab85cf99a41603a9cd9942b88abe0a91a3aae65222aa4c0a5122"
+  },
+  {
+   "audit_id": "AF1DB14E95518D33",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A3A399F7F8D05E9F",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cf55a8290cd7998552ea0e20ab353412af0053f06faa98e8710194c69adf2e98"
+  },
+  {
+   "audit_id": "A1E1F32424A2DFE7",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "9a205943233096d14657c02069c6d2207fed0b8e60dea6a753fbafde06660c0d"
+  },
+  {
+   "audit_id": "A6781232237908BD",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8861e484d1c5decec208aeee36d647ddd6f2b2d64a9349fe95b7cf8f28d4f5d6"
+  },
+  {
+   "audit_id": "A31D9C032686533B",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "ec848c574b8e4f71033f6a1d79d3f3ae178872e7966029cfcc200426a243a0f2"
+  },
+  {
+   "audit_id": "A10E2B9498829FE7",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "be5630a6b5696f90a8e52072aaa3e14e164f3428c95a6cc89e163193e3a50081"
+  },
+  {
+   "audit_id": "ADA675026184FE65",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "82ef51368994d5f66594eb2b82ba60ca712840622d341c07aa7edd22c8a83475"
+  },
+  {
+   "audit_id": "A6042FAA3A432AEC",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b2496e6adac318c215d59fe5e24c01f8f5118befc916acf97c8367efc6a7669d"
+  },
+  {
+   "audit_id": "AA4A4CCCE432B59A",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "fb63eb2e8f18c8064bbe60f3825f4e3619ba5c1e76e2d1dceb6c5ba724274aeb"
+  },
+  {
+   "audit_id": "A8D0AC692E0F4AD5",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6b4a7daad3cb5c26ed786579f1827d28b6617f56120d5afb18eb95a6a409eeb5"
+  },
+  {
+   "audit_id": "A7E26E984C35E7FA",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "55da36f86b11d9932a5818e4c1fc6ccd6d3b83964faa766fc74f5e5beb5ea272"
+  },
+  {
+   "audit_id": "A08C0FC8F10200EF",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e77b03a5a55e8172872f4652ff1d3405dcb140f107544c9970514b74687b3729"
+  },
+  {
+   "audit_id": "A6815AE2B6558F53",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1643ff21e51797142610e436982c5cd3a7b7d88ee76af3fc68709154f1695f04"
+  },
+  {
+   "audit_id": "A7E5893D8C1D6DDD",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f4fa5871d339d2c268de36a9946dcde1fdbae965324efef0782ac98a80c09489"
+  },
+  {
+   "audit_id": "A8CF8C58A2D3F4D5",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "323637fd249674ebf03ada8df93b720a1463155b5f54335b74ac17ac55cb052c"
+  },
+  {
+   "audit_id": "A13607A5DE4D82C6",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "efa901435049a6482de807e76869377c24d9d70e9d0e29d27441ddc60f6be35c"
+  },
+  {
+   "audit_id": "A63691BC962CFED2",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "99af236f51d64ea247ff5f48921d7c13c6e032ec5b811f61a6878576d2d05add"
+  },
+  {
+   "audit_id": "A41CBC0C62B7A25B",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4b2cc27cd0645cee20fa4b7b8e41f807e63ad68b449c0c0b6273a291d07edbb2"
+  },
+  {
+   "audit_id": "A3CD91A2A1BD008C",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "7b0203193188721323a1c0c8f78793bb77a4e3f20c082a9ef971e9c3a180ce27"
+  },
+  {
+   "audit_id": "ADC428D6AFFEFCFC",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6f913793313b73970ce743c1cdf023d3efcf56fdbf803b131cef4904f82d4849"
+  },
+  {
+   "audit_id": "A68677090CF50CF4",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "602d41d418c90441bb0f1a82aacf130eb3b6fbbabf7a7642c59870e0dd75a2de"
+  },
+  {
+   "audit_id": "AD77218E736563FD",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d200d502123cae52563473b94832130cebda4e34d3d4e179fbc458cfb4d9ba7c"
+  },
+  {
+   "audit_id": "A8CD33A10D61B8AE",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "f449f7ecbbe95e400e0f4f5ac07fa3bb9b9a50ff52c6afbc23933949033890a4"
+  },
+  {
+   "audit_id": "AF897F8A20A21FAE",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "94f8a601be915e69c432714f71414616e4d0981fcabb31ecb9e00da12a884f82"
+  },
+  {
+   "audit_id": "A2138655BBB0E2B0",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "f0ee1e85a175e762dcbe8756d93dc95f05869978089482357347e06a06f3d6af"
+  },
+  {
+   "audit_id": "AA1E24701EDE35DC",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "95dee772666a31fcda691375e33ff24a64a68d3c2030d0acc06449bc8dd82960"
+  },
+  {
+   "audit_id": "A670D5DC35BAF497",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "15d6495307daff6bd37ccec905c5f680dd7213864705e8fd3ce79857af7259e8"
+  },
+  {
+   "audit_id": "A8E1BCBF3A7EFB18",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5fe002165d23769accb002f4a489dfde22896ac7d3f91d49077acdfdff2ba599"
+  },
+  {
+   "audit_id": "A083E02D6472FF28",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "421201ea6f04c818e91dd3a3a460bd8772e104e52491efb59f9550e1e87aca8e"
+  },
+  {
+   "audit_id": "A24922FEC6EFE402",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c73a4d5d5de851d8f9d894d116c956ce18aa28a5323fcd88072cccd38db2628d"
+  },
+  {
+   "audit_id": "A9BA210A2EAF654B",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1ffc2b7ad63e569da66dea5ec9340369d7efe97b77f1851d8dce26098c4debac"
+  },
+  {
+   "audit_id": "A3897A88D979104A",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "6012fe4c9e1465aae1ba9902a3774da971b1667168c30069eef9e63c9c3c2d1b"
+  },
+  {
+   "audit_id": "A2975369C0803854",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1ac2317f229884c1d71e8516c17a3155abab2ccea612c3d6b8bd393ba7d1fdc4"
+  },
+  {
+   "audit_id": "A3C06AF59A4AFA2E",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f0b1712a484c9736ba5627654acc7f451884eb761c6d3f22724cacb1f606a792"
+  },
+  {
+   "audit_id": "AC110828D52B8E20",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "81929d88e443e4ee6a8123db44c99879db478d294545c907cf964251837dd739"
+  },
+  {
+   "audit_id": "A38DB9EA504CB87A",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "ef4586047e59cf9725c71a96e30fc2df663771ec305b6343b7e1e2de122f69e4"
+  },
+  {
+   "audit_id": "ACBA433D9E82879D",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "87f4ef297e947e45b1de568d93236ebfa958757eb53dc7df6492ec6419ef03ed"
+  },
+  {
+   "audit_id": "A2A639248455BDEE",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "1fa6b102ff98938baf42bef021137a6d731e874bb512396dcf0d7d8e9d1572e5"
+  },
+  {
+   "audit_id": "A19052E1444F4F8F",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "305cc9e683532b518f1f5761f233b80bb945733258a84506c77463b650acb875"
+  },
+  {
+   "audit_id": "AE333BD2109BA802",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "A9A7F9CF65A5945D",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "a64942ccef6cd1fdeafb54532bf87a4e80ddcc31aaf0add1b8c123d83077e31f"
+  },
+  {
+   "audit_id": "ADF84630C087B3CD",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "76e2db8c3c8f9e53ec769df373d1ae535ce55a395ae9c1619573c4ac7cfcfaa5"
+  },
+  {
+   "audit_id": "AD68819DF2A3CDA5",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5cc3937ee41ba1c9ab35868d960593f0c43386b898ec01fedefaad4e78c964b0"
+  },
+  {
+   "audit_id": "A5BC5A98C5C26E77",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "f70ac5e48fe12b29451f62dba17757c189f3ee73f78234a13b7ba15f9aace68b"
+  },
+  {
+   "audit_id": "A486DDE04D9DD2EF",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e150ce39e7bbee88c716d3224d5b57dafbdecfe1416d943f06095fb95bcbeea5"
+  },
+  {
+   "audit_id": "A6A5A67B3FDC6832",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "768a5f6c448b6fcf062cb9c38392825285a61b22b5a65a59b6fd7aba47b43269"
+  },
+  {
+   "audit_id": "A2E0FC21F400E3D4",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "88d705268eeabcd262305fa9b2cb223dcf13e2737fc52cdba4365eef2cf802b2"
+  },
+  {
+   "audit_id": "AD30070128F27C32",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "982cfc7244db4e7b241aebc075ac4a489cd677e7820f19b935654ca046b2bb5d"
+  },
+  {
+   "audit_id": "AAE4E9D4E08A552D",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "fe0fe68da167c06610d72880e76d0bbdf94ca603bbd937276394b3349465a69a"
+  },
+  {
+   "audit_id": "A1F3F3552D648D26",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A509699383D4B1CB",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "680ddbfce0a2d73a4fb3e1b387d33b60879ddde4959480c784b8468da31ce5e7"
+  },
+  {
+   "audit_id": "A337E60B69CF487F",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "568fba79fffbddef1dcba6938c33786a26ee6acc2c039718dbfb4a52da4f4949"
+  },
+  {
+   "audit_id": "A628346FE7A8D331",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b1ba93db4ff4e8502336cc34ae242e8656850ee535bf281cccce54e2e91d55be"
+  },
+  {
+   "audit_id": "A727218805EF8A0B",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "a5ec24e068ad4377538ac9f2b23ff88fa1258bd7921cc999fa2898e5070ad9fc"
+  },
+  {
+   "audit_id": "ADCD4552A8C494B0",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4a369ea120db015f58c065f8fc28bd3309be2f2ccc4f3fde431a450d810ae8f3"
+  },
+  {
+   "audit_id": "A70B84D4C2393055",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "8149c2a19e9c9f7278e7abef2673fdd2f2bb4e5e8869686bfe74458174c66e6c"
+  },
+  {
+   "audit_id": "A67FA27356766A0D",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "85f87c2ec03c8850f45e04adcf04372be6941e342fe2a773df096b42fde3f677"
+  },
+  {
+   "audit_id": "A6115F2178C9F37F",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "bfdf0e948d0ffc8aa06686ddde48613acabe8e117e7d5925c0f8ed589711d8f3"
+  },
+  {
+   "audit_id": "AFD292CF7CC34B58",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "de68132d94b9de5018cb3968db84362c6621adbf749be0edbf8c27cc99ecb48f"
+  },
+  {
+   "audit_id": "AAA0A00B816E0AE3",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6e796c495b003e64549bf3cefc24f32559306ed2174269596ed67e819ac33acd"
+  },
+  {
+   "audit_id": "ADC385B7FF9EDF7E",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1a3d116ef89514a029c69f4984b71da5328410b86ae0463868aec7733c31c370"
+  },
+  {
+   "audit_id": "ADDF8C38BDE60455",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "85bc7e199e4c793dc4c452fcbb4b86bf34e6c0ccf53887552987c069cbf1165e"
+  },
+  {
+   "audit_id": "A0855B5E940C441A",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "f4ca5af9923b4df6c146cfff86cf3322db8474934ef6a161b5898fbd718c4429"
+  },
+  {
+   "audit_id": "A74E16A8BFC4F6FE",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "03a60ce3cdb92805b40b3782ec77f33d53749a79f84918933fb0fb940c3f720b"
+  },
+  {
+   "audit_id": "A013F210CAC300FF",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e28848d1b6d9c6e61831edcc4366732aee91b0b8db03f3c94f67e96f119ebd0f"
+  },
+  {
+   "audit_id": "AEB912DACE62D108",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "aea6e5932e2b6f465eb7eac4f4006b437c3bcfb29158e1b9bfda12f48287e155"
+  },
+  {
+   "audit_id": "A5855449B86AE04C",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "b73c7b58d00b20d76549cc4969334a03d539d3230151a1ff96d56a49c175ceab"
+  },
+  {
+   "audit_id": "A938C10CF57D85BA",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "abaaca712c6a9213bb01ffe35cfa62471d9227ca7d7f55331419abcc931ef04e"
+  },
+  {
+   "audit_id": "A6C620D90D4FFFB4",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8c3b144942eb91f9d8000187b5c0c804df76029dce9e336dc3dd9ac94d636c84"
+  },
+  {
+   "audit_id": "A7F77DD695DE827B",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "9169c0878c54680c9248e62f660f658924c1bae6319e2fbba131b8191caeccb0"
+  },
+  {
+   "audit_id": "A52C342E54F5C354",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "030ec2ab958613bd8c127f6d7a9ad22ee27ded32f6727f02bf7325d40560be6e"
+  },
+  {
+   "audit_id": "A1FD691F249B6323",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6263102bde83c1bad4c61340fbfcf0c335f224c61f1fae331fbc49922b83f47c"
+  },
+  {
+   "audit_id": "A8A5624246F1E1BB",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "7c024330ef8f98546dd96a3b5955b2d3e8e7634e4994085d0721b0cdb3f0266f"
+  },
+  {
+   "audit_id": "AB33DA4E9E9AC22D",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "94c515509db5c0fc1e8ff2eab480ecb78f4490ab3cf53eab82749796eea0ba56"
+  },
+  {
+   "audit_id": "AB8F3BB4E49EA822",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "fb4c4c096e1da70fb68b22473d48f696aa88af3bd3360f97f5e4a7d1d7668870"
+  },
+  {
+   "audit_id": "AE633D48B0094A4C",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "602ed5edfb6b86c4098e0d50a3f88c7d06ef36f4549f15b1f6a7b52716dcace3"
+  },
+  {
+   "audit_id": "AC6FDF7DC33DE1C0",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "92e84caeb09b26b9733d4884b7979d4919813c26d5cd80501a710826104c0958"
+  },
+  {
+   "audit_id": "A4E27065E571C8DD",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f0c7e08127b77ba68c887eede548cbfe9abecd100cdcad58c8e10b61ab217e34"
+  },
+  {
+   "audit_id": "AB3967B604663D8C",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "746b04f7728232d80795fa53295d0e48e1286022d46af24eb55d3099a929c2d8"
+  },
+  {
+   "audit_id": "A46CCB34ABAFCE84",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "47838e7cedf94b9ae2c0851f444a97e59ed810ae633da45164049893feb1a767"
+  },
+  {
+   "audit_id": "A3C455ED728F5EC4",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "AC6F560DBFF32FD8",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d5b295b3ebf4074acd8ea2056b44c61ab8fa4e5551a9f86a0805094d3d88dcb1"
+  },
+  {
+   "audit_id": "A6EEF9DAA1995BE7",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d200d502123cae52563473b94832130cebda4e34d3d4e179fbc458cfb4d9ba7c"
+  },
+  {
+   "audit_id": "AA93C111A7D87239",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "4112fe483e06e6160a5d2cadc48b8af24198a2026edf18fc6dc5e40ff95e6705"
+  },
+  {
+   "audit_id": "AF882DBD62F3CBF8",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "91811b17a752bef5a7200d9a582875303df482a5355369a312f5b375f9ae3a9d"
+  },
+  {
+   "audit_id": "A3BD98D6134DD178",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "513bc1a115c527c12c3e21d861e584a52cbdd69e067736d87462054ea53fb2e6"
+  },
+  {
+   "audit_id": "A5CFCD9702012036",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "857dceef24f00bb4b37f2c33a11050b8a67929df827c3216639a150dabb1fb87"
+  },
+  {
+   "audit_id": "AB0C2389FB01BF41",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "090561221e04ffa9ab8c56cf69cb263014cf46e1cb9e1a17edd5e69d3b1d0f21"
+  },
+  {
+   "audit_id": "A7BFF69F0749C45F",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5a7d5f6793d87ce80e770d03d20509ffc2730c3354ec3df890a328cf38d917da"
+  },
+  {
+   "audit_id": "A7008B1786581DA8",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "7e2b4d7bfb032e52d84fa58e4efe2513c5501f67cd290c66bd25576bc03751bb"
+  },
+  {
+   "audit_id": "AEAC5D3901CA2BC5",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "15c1e8de2d69282a3fe96e1adb33327b252eb69e519ea750ee6ec1026b6d5363"
+  },
+  {
+   "audit_id": "AA72A1D2040334D6",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cc534da8ed5c8e4c911296d3ff1149323f4cf72fcba3d6ef5d27ae2120d0bc90"
+  },
+  {
+   "audit_id": "A25CB056142D5B50",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "cb9d1918fd810be4b4cecbbea098d300d1682ff6974b657e47b27a8a8819e1c4"
+  },
+  {
+   "audit_id": "A1E53ABC35B44C4C",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f643402c9f2735727c524fe862b08db866c31845ba198409644e15882c5cad6a"
+  },
+  {
+   "audit_id": "AA2B8A7A2A0ED1BE",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1c12b57e42d9e6cc5b114f3e6af9eb0c37d733868ccd45d4f61fa85640e94da0"
+  },
+  {
+   "audit_id": "A78EAB679AE2C416",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "01a08a83bb46890d25805ee83b0dc4750396a493e15a5b8d7865b3f6f2b6a524"
+  },
+  {
+   "audit_id": "AAED0C887F39EEE3",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "b3b3e024145290f9424755d7c951b74715e82c1639cb2b27bbf9d812aa9b977a"
+  },
+  {
+   "audit_id": "AB6CDC61923BEBA3",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "159aa8ee9d39824c16282b514b6e590e1937fc9928315d18097a45de2ed28e94"
+  },
+  {
+   "audit_id": "A20CBD11BD86E278",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "898dd17694eb989f73ab09c6e2472f63db971c8779e747938f777dd4c2f716b3"
+  },
+  {
+   "audit_id": "A94D8BA8E46DC72A",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "701ba646564e4d633c5290648b3d2599a5cb43a8305fd8ee62e36f9287aa9e12"
+  },
+  {
+   "audit_id": "A2352899F9C6961A",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2239f8e5539975d3316904be8e4336a8b2ee5bbd4a5cc1c3c266d13a2d4e538b"
+  },
+  {
+   "audit_id": "A6A90951BE4940D2",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "473388a2279a726d0d8bfcad3e0401249a98703a007b02d6cce657fe2b96cd34"
+  },
+  {
+   "audit_id": "AA74BAE7F660F218",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "593c709e34a3b566fa7dc27fa4af0aa61f8f9b1b0a44d3d9f12b95fdcd6bc897"
+  },
+  {
+   "audit_id": "AF23658F1BBDB94F",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AC41380FC590D677",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6a4847a58cf3fdcf6c0d02b95fb38da23bd0366666f0aec337999772218affb5"
+  },
+  {
+   "audit_id": "ACBD03DE3245E766",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a8f5b2a8f93a184d1cd11bf405a90e442d73f3d3dd8ece9001a7496deb085db6"
+  },
+  {
+   "audit_id": "A5603B9F02B85412",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c48f61250caf4da51f8b5d86036fed00be2b8b4fbcf4d040853bf8dda1ffb0cd"
+  },
+  {
+   "audit_id": "AB680334DC2FB29A",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "1624a9ba84cf317d051b717ce817876aaf7f4802b83cfb5bca9b1963c73a0673"
+  },
+  {
+   "audit_id": "AE71AB61700EDB5A",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "016902866430436861942ef4da174a5a4e09af13baf1bf44a586c48de9447014"
+  },
+  {
+   "audit_id": "AA151812E084B340",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b942b77256aa4e5e8950722a62c82b4b2d145c3e5aad524b93f378257491af67"
+  },
+  {
+   "audit_id": "AA11A7D43C9B7A59",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8e8925e1f318c6f6b2f18e11fd206ebb3c41f349314cf48d8436fa2528779b03"
+  },
+  {
+   "audit_id": "AD426F9CD4A26332",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "75caba17eb2564f38eb63cfa0947464819aec213df98e18f04b1bd532fb3377d"
+  },
+  {
+   "audit_id": "A5B1686FAEA5F66F",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c19c9edc8d729c43628a14c6795148f4f4d8244abd67c6445d983d86bffafd83"
+  },
+  {
+   "audit_id": "A82D1DE4ED6AE2E6",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "94e98010221bdb05c14fbc5c441cd9933cea2b6763b4b7cb9f7af214d6226513"
+  },
+  {
+   "audit_id": "A2A674DD0903748B",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "336757128dbd1cdd744e10da46b6a947661147c5d6d0794b57eed9d0850a2a6c"
+  },
+  {
+   "audit_id": "A3EA6C730B373C98",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "539a5159d200ecf4267badb63c70692e9ee8e3a8a22a8524ed1eaa07036cdce4"
+  },
+  {
+   "audit_id": "AD41BEFF6595EA85",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "3f0d5f80908b34ba35d0e8c6a7ec485274476d10d523a310c1493987c695f246"
+  },
+  {
+   "audit_id": "A4A133C465431C7A",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "95d2a52b05f1ae88420fb0277c0143ff7b732f83d222bbc1a34ba84a17aa2aed"
+  },
+  {
+   "audit_id": "AE4E903750D7C3C0",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5a7d5f6793d87ce80e770d03d20509ffc2730c3354ec3df890a328cf38d917da"
+  },
+  {
+   "audit_id": "ABC80C5CD2364F49",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "74771914be27591e2d413bacc844a53235402055de8050421340e5331fbcd32e"
+  },
+  {
+   "audit_id": "ADC026CA59F3430F",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c2b3b3c4d57d917a3cb3cfd8710c7c1cc7bfe401195b1d2e50fd6a8eaead0fec"
+  },
+  {
+   "audit_id": "A4FC00F4576BF9DC",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cc534da8ed5c8e4c911296d3ff1149323f4cf72fcba3d6ef5d27ae2120d0bc90"
+  },
+  {
+   "audit_id": "AB1B097DDDBB2B43",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f9b5d8fc75daaa472146c6fd562bbbe1544c2b3e3b514a079cd68268430a8c"
+  },
+  {
+   "audit_id": "A0D142AD34CE44A0",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1b485f43ee2053e0f4f325c53b90daa5eccba48a7857cd1ebd590d6b910a349a"
+  },
+  {
+   "audit_id": "A8105567D1D221DD",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "fd68dc1f3af5c93c681a3998596957538f97e5a6fa3639e172f898472c2247f0"
+  },
+  {
+   "audit_id": "A9E46BACFDA04BC9",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "f610b45236d64a9b569f3be3ff534372777bce21d954ded23e68a69c9af3e2ff"
+  },
+  {
+   "audit_id": "A75C4C27C2C61F98",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "A26B752EC80E327B",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "68f48dded0bd1e3a080e6de1e7e04766c6d7d7ee95e05b78b87ace7980b5e375"
+  },
+  {
+   "audit_id": "A8A0908BD2397F09",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "bc8fea08c2269e30d042004dbbb71e55e4cdbc1da7a70a532f941d3a29ed3598"
+  },
+  {
+   "audit_id": "AFD6F0A7D0E956D0",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d70f11703d6ace750670d20c639df6486f31d8c6fad1fe38151f258902877185"
+  },
+  {
+   "audit_id": "AE0A4A499FFA9DE9",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "818b024dd04cf66510ccfe1e6e57c85685c92685bc4d62aaebd2c52aec2aab2b"
+  },
+  {
+   "audit_id": "ABE38AE26ED2FA74",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A9BA0C5520FD55E6",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "67c702ad773c264285eb7e25f2844acf220582e3fb32c39a3d8c6f71a8187522"
+  },
+  {
+   "audit_id": "A82A84911B8AFE92",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "882120de1deab4db6079699de4e0888633dc0b2743677fb00009df558e59e1e2"
+  },
+  {
+   "audit_id": "A8D0DC5976126E2B",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "A72B5AF93AFBBB57",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "29740249979c3f1d15491c45ba15916584ab82d3a1e70f5895c79f588fdec3b9"
+  },
+  {
+   "audit_id": "A609C217823A84BE",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "d61842534c916ce0f42df6b6d3f5ed25a6e6df34f963e6c28f401b26657b472f"
+  },
+  {
+   "audit_id": "ABF041AE95996EE0",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "086db64270d05f1a7f93893002e910d1fe76848c178335d7dd71fbc3cd418843"
+  },
+  {
+   "audit_id": "A38604BE61BD79B1",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2ed7f10a9614ce014f377d888130098e53bf89a82b5d4e8cc5c59e70f6bdd9eb"
+  },
+  {
+   "audit_id": "A1DF2C2721DB7D2E",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "323637fd249674ebf03ada8df93b720a1463155b5f54335b74ac17ac55cb052c"
+  },
+  {
+   "audit_id": "A27F5553D3ED66A6",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "58e86214cb375bda0e0712321676847c5523dad67bcc71c80d1474eb370396b1"
+  },
+  {
+   "audit_id": "AB064FA8E75F084B",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b580d6eb522cb07b6cb83446e1fdf47afa67785b6736c1eb7b1520a524369ce2"
+  },
+  {
+   "audit_id": "A654561F59650CAA",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8a38cb9d1939784ec294d81465e696d306dd1b8a2cfa287715388828b9bedb78"
+  },
+  {
+   "audit_id": "A1758DDA7F200E2D",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "0038569846952d361f19fc851074b219f3e2dbaaff4cd27ac259bc02ec1c53a6"
+  },
+  {
+   "audit_id": "A822EB97E92CFFAE",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "8a0c0af392c9a614965ffade75a39fb093469d2dabb702128970bd88df2f8553"
+  },
+  {
+   "audit_id": "AEED66BB352EAE3D",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AB8B540B0068E0F6",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "4eef4209274f9db7ed11c5d46b0879b5ef70b6d000eb82d6b764b8d6fbc68c35"
+  },
+  {
+   "audit_id": "A295F28EA4764618",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "0e66c79c80f2a893dadd3a6c16ad6b02223b589905578a8e436e1e8bdd7869c1"
+  },
+  {
+   "audit_id": "A8EC0E894C7936A9",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cc534da8ed5c8e4c911296d3ff1149323f4cf72fcba3d6ef5d27ae2120d0bc90"
+  },
+  {
+   "audit_id": "AB739ADEF1E76C0D",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4abb0bf0aae6c722ee78148f13e9a43d63a926c80a9409c68494eb2f0c8090e0"
+  },
+  {
+   "audit_id": "A85E357952CF686F",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "A13DA27018C98AFD",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "1bf3afcdf737d7689b3303956c98eec8bba2b5a3a8bf4cd362f717cfdd9cc122"
+  },
+  {
+   "audit_id": "A06BD283E0769B01",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f7c02c27f72b963e082648d288bb8b7dbcc601934c886a31c2b077a17d9bdcca"
+  },
+  {
+   "audit_id": "A00872F1CECBC50F",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "ae909de09e6e70c1443513c0a7175a0b9b6cfef19cf29c8363ab9352dfdc69c5"
+  },
+  {
+   "audit_id": "AB789D0A48998853",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "9ec80a95c073b53a11bfa9dad2970905b7a5ee385dd9d6569a29146993526ad4"
+  },
+  {
+   "audit_id": "AB0A2EECABFDE591",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c6ca1ec429f6346b7938d2c537a27dc3e029fde8016f995ea5bbea51e3e34f4d"
+  },
+  {
+   "audit_id": "AE0C0F0EF7BEDFFF",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "a5f4456a82f6e61475cef874ab6a531794bed3dea9550ef0a3e82087e5d9708c"
+  },
+  {
+   "audit_id": "A8E3D41C9C5B4119",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AF887B911D2225C8",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "04bac449cfaa4c0ad6329da7f42fe35b3218528931e1c423e1d54312b43f9ef8"
+  },
+  {
+   "audit_id": "A2A2F7E1A75AA0CC",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "5a7d5f6793d87ce80e770d03d20509ffc2730c3354ec3df890a328cf38d917da"
+  },
+  {
+   "audit_id": "ADEDF74D8DAC586F",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "16f3ec2a6748257dfb9cca6e8f7e0a2901083d4fdb6aaa9cc64c15e58f371dd6"
+  },
+  {
+   "audit_id": "A500F31F1CCCDB28",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e2bb8e8c7e518da0f4b8098a1af02df3c56f72a3dee457dc31e3bad4cc43db7f"
+  },
+  {
+   "audit_id": "A1740DDA93CBB3FE",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "ee7d920429b79261d0cd7d3e6c87963d160b991b73d2e9f9ff50d2203b2aaf42"
+  },
+  {
+   "audit_id": "A3AD4D15C77229F4",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "5739222d7506dd7e7bc9adef28e31af865044b7839d5fd386bd6c08c57ee8010"
+  },
+  {
+   "audit_id": "AC9423AE04A6B903",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "0f75121ac12b3659fcb6f949a4b24ec0e80c72953703fc5db6a54194b50dbae1"
+  },
+  {
+   "audit_id": "A55343E20172E9A5",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2356319ee165088343b0d1c8d3973c6a63c3ef73b2be443bdfcbec1329cfa735"
+  },
+  {
+   "audit_id": "A18013CC248841D2",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c8ff8d2e429942f2c7b6a5ad0a39316dc8c7d2da621434488c80591b551ca608"
+  },
+  {
+   "audit_id": "A97356979D6627FE",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2790b86970e3b1dd96cc593cb2b06531a57812c4948f62fe01f2584f27b26447"
+  },
+  {
+   "audit_id": "A5E3FB9709D931B3",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1ab388e35d80a63c5fba4045f66fb7a53d1648188b571f332717211d853fa038"
+  },
+  {
+   "audit_id": "A5AA36A3C4D71621",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "732045a622f0b0c5b495c44f7843e02122b8e4dbdd739fc5ba75539bacb9d265"
+  },
+  {
+   "audit_id": "AFEA6F86ADEADCB3",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4ddec3efe041055ff8d41a22dd4cc64c8f592cf7f29bfbff57f806c027037343"
+  },
+  {
+   "audit_id": "A986696A0657D19D",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "ecd29171f073b2372493ebbedca97e67cab697763d6d14af432cd98ab4f67809"
+  },
+  {
+   "audit_id": "AEC25E330FB3D28C",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "6f6deb14c57efb257f94965e58d402b695610bc46cfd7b2644c148bf859d2225"
+  },
+  {
+   "audit_id": "A5D5500A273C4DB9",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "c32e2ce0c63f1e9a7206e9c9acdf32f3d45e5c1256a15e2278044342bdbba48a"
+  },
+  {
+   "audit_id": "AA67752235E3B5CB",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "27e61c5807871dce36825f3a62589b86b8fb7a79430055da2c73ffe1cfc92b34"
+  },
+  {
+   "audit_id": "A35388FD9EC58DFE",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "768a5f6c448b6fcf062cb9c38392825285a61b22b5a65a59b6fd7aba47b43269"
+  },
+  {
+   "audit_id": "A8A905632935414E",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2ad6ad8d806125fa0944fec649c7c01e094503bcb648acfb472040fb27e2447d"
+  },
+  {
+   "audit_id": "A0F775E414A229D3",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "3a8524dc73827ddc1006951557aecd0a5588d2efbaf88f4c3a145f02e3bc6561"
+  },
+  {
+   "audit_id": "AAF8F8914FB01A42",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "71db2b006781c0f147520ecbb81347379fd08330f887bf21876ac9045acd563e"
+  },
+  {
+   "audit_id": "AB64B0C6DD8B7C75",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "395c27231e83f1d12b7a6dd306a61da30055ed456c998e6541651558bb62333e"
+  },
+  {
+   "audit_id": "AB1056F43864DF30",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "7d2e010afe88493cdc16676aaff200e6ae4b89318369b328a24ac3fbbc2e77e9"
+  },
+  {
+   "audit_id": "A606668D933619AC",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "1fbcac931a5261061d04f4da0663fe38a041a6a0e51a8304b049223ceb7e135e"
+  },
+  {
+   "audit_id": "AB8F7630C78C0C6B",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "AA90C167C0A3ABAD",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "3009334f9ec53c1cc7867cc4f236f1bb91afedb82d86fa9145ec4749d417c422"
+  },
+  {
+   "audit_id": "A23AFD9EE5C702E3",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "207f1f7dfefbcb47ffeaade3f27eb4c629743626a687ab0e30088a9f75343c74"
+  },
+  {
+   "audit_id": "ACA191EC49B6513E",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e2e00b7f0491bfdb21797cdb83ace12ef7336f5c67ed39abf5bada24e3624e27"
+  },
+  {
+   "audit_id": "A60CC505263AA2FD",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "ba8ffdca99a95faf6f9a44f78bfcc9df451dc6df25dfd1cfcefe6607d6d1b273"
+  },
+  {
+   "audit_id": "AE5EDCB21481979C",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b0f3212499609aa0bee0cf642d15632caf6bbfdb13c4afda4ec7df4fadcd2b77"
+  },
+  {
+   "audit_id": "AD310D13DBBB62BE",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "2a8d87b2c3c6b61cc1ce2a852ec4c7ebd238954e7b62cade3bdf8338c2507f61"
+  },
+  {
+   "audit_id": "A16A4682A471E7F4",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "842b5db527f38f992644aaa45d72600b3357d570dc6dc642552ee40b9a7d968d"
+  },
+  {
+   "audit_id": "A9EED5301CCF0F26",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "86d0caa3dcd775b566d1549169794c3f43bedd25a7993967142b03d6468adca3"
+  },
+  {
+   "audit_id": "A3B934B3B5C670D7",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "f1c17af2e2c22957a0ca02da76f1aafccb75dbd1e0c61407de2b6582b0fc1d40"
+  },
+  {
+   "audit_id": "ACDBA50E1924EECF",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "ae33572d28ff36c27fbcfa5780eec21fcf063323eba48a96154099fdeb7fe660"
+  },
+  {
+   "audit_id": "A203CCBF70068FCF",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "09046b8e57778216d9552ad615d9ebb144f2e28c6723681b6575499146c47d58"
+  },
+  {
+   "audit_id": "AEE1603BDFB11BA5",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "A683E1C37860D562",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "03621295a2216bf0fc0e460894681f7d96ce42233b19365d424bf1c52e85e3b4"
+  },
+  {
+   "audit_id": "A8E179F084237A11",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "a52ccb71910c16a006ab0afd05152de1498d575c0bf7d03d4f597f4c8cd42ca3"
+  },
+  {
+   "audit_id": "AFDEFCE68E7CF130",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cd2927b844993bc1bfebeef8aff383c73cd08f900260ff9101d68b81324daecc"
+  },
+  {
+   "audit_id": "A85961E5F79577CC",
+   "channel": "shipping",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "b62e50a4aa5b0a4240b22163383bbbd62ee4d545f872b11d3258cf0bd847e020"
+  },
+  {
+   "audit_id": "ADD775F5E1D40FF2",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "bc5521f6b65da1563ab3984a66f446bc02ecb2ff6c3dca09f1bff0955a91404e"
+  },
+  {
+   "audit_id": "AC3B07C533D49EFB",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "8f749857f51590255f193c862a9828cb5af0400dae1d47b260d834c6ee8c734c"
+  },
+  {
+   "audit_id": "A0AD45E03D1B82CB",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2e19b3dde55ec1f698bf2315c4629c17351f90dbaae17218f29a4964c2694aef"
+  },
+  {
+   "audit_id": "A20A6D54EA8536CF",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "91d66f3cf3dcba2378981ce179e9ff18637f9199bf2b0148efc2adadca7a7321"
+  },
+  {
+   "audit_id": "A983C5DDA84DABD8",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "017e89f6950933666615f14f37a89ea7872bd6a07db1d5e97f64d8364e84d38d"
+  },
+  {
+   "audit_id": "A5E0C29BCD0B95BB",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "643a9764fae238b7486575225194d2f8c5b3f5809bb21bd67cc39eae2e77f4ee"
+  },
+  {
+   "audit_id": "A4132723644D3FEE",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "cd4467f588f103bf33a67cc6534233f168c13f6ba4938eaa86ab923335445cc8"
+  },
+  {
+   "audit_id": "ADBA1FAF15E27481",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "22a28c6150bc045e9bfff9be3289ca46dc9224c8bb9aa19664826542572e21a7"
+  },
+  {
+   "audit_id": "AEBEBA95C91005AF",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "46e4d99b35e214e8321ef1d70dc29d41534e394b7800568e4baade401e4f3be8"
+  },
+  {
+   "audit_id": "AA48BECBBC2250C0",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "1e61a53257be4fee7a0ea70192bd86994878cc2779c0dce79c3b1d54caec8b7a"
+  },
+  {
+   "audit_id": "A0BCBF7A9358DA09",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "6546e0c6ceeb93ae6ca59a91e28dc0abb19ea7718a438d7a94a7729a39323872"
+  },
+  {
+   "audit_id": "AB171F549FDA52CD",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "b942dc2475afaa9cde58cba61ae14df6535b11d47e33146f5192ddb21dc012c7"
+  },
+  {
+   "audit_id": "AE618B531FBABA6F",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e285bf5c29293fc6d07b8db72317b08ea80d4b26e32150051283b5e2b169a0f8"
+  },
+  {
+   "audit_id": "AD79B6D406E782C5",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "a4ae62f44fe029f71e6abe7dd8dcc45b09433cc45d2da90c6d35bdd67a1509c6"
+  },
+  {
+   "audit_id": "A10C606ABBCE7213",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "d64a05e51e612c7e3f9dd0b749978e7a6c445f37a1010864733e8774e779fd34"
+  },
+  {
+   "audit_id": "ACA4C29A5CB1B10A",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "fc0c54e895d3df3a5a440017257f34f0058d08321f05421caf66724d87b0b3a6"
+  },
+  {
+   "audit_id": "A27F296ED74E0B71",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "c3aef67c5d753ad517644cde47f9648fc735016c311b798a5796886616030487"
+  },
+  {
+   "audit_id": "A16AED58FCC0EB40",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "2a0a938f2291701cd8d211d447deb271e47e41c9314bc26d3095589e6cf36603"
+  },
+  {
+   "audit_id": "A9804C67F776C3EB",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "9657ec959f9236d4810d722b2cfbfcc5e1a89069b7d31234e453f08ab74568cb"
+  },
+  {
+   "audit_id": "A43A5245DBBCBE39",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "db2e2d1589fa3b93b5cacadd88576712c7646df7890eeefb6f8a23d89985654d"
+  },
+  {
+   "audit_id": "AA1ADCFF2FB94A9A",
+   "channel": "china_east",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "e53c0ee83858fdfd9346dc9f66e770bdc31c7222e1850f6e14f00be403b6e466"
+  },
+  {
+   "audit_id": "AF1559EA9085B5CB",
+   "channel": "shipping",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "220453691c70630b84bcac9fc3f96bcc291c015311c725af7818e93fa46d3e51"
+  },
+  {
+   "audit_id": "A5A32CEBC6C3410E",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "4cbe256af007e69d18394d8a458539b29a90ebb61f671e8fae2639699d285dbb"
+  },
+  {
+   "audit_id": "AB4FFA5F1BF0C67E",
+   "channel": "china_east",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "d1e4e91c56980aca3e5816476d8d505e7d63b4ad32c1f0dab12a1ef01c5af1b2"
+  },
+  {
+   "audit_id": "A137920931442E13",
+   "channel": "us_trade",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "41287278c12b46b76035afb840eca746145b18ff41892d801294452014cd8c25"
+  },
+  {
+   "audit_id": "A5F0E99FBCEA640E",
+   "channel": "pakistan_west",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "fbdfb3c5a9483954b5f8abab7716a33a51a38abbdf92097ca1e399c6cc028e98"
+  },
+  {
+   "audit_id": "A0382BA0C43C9EBC",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "9e193d035eb9e5ff70d948549152b069373479796f3a21a8976faa75375b6fcf"
+  },
+  {
+   "audit_id": "A060381B61897E72",
+   "channel": "us_trade",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "e47f82866a1b3227781ca9ee7786e98de326e478b2c9b77f2cde79f6e3a54e92"
+  },
+  {
+   "audit_id": "A84870E6FF06EC9D",
+   "channel": "gulf_energy",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "845552e8c94efe69f5039c6aa5e76d0dc42de7f53e8bc0d60f0b81758103bc5a"
+  },
+  {
+   "audit_id": "AA7B51DDDD41AF7B",
+   "channel": "pakistan_west",
+   "stratum": "article_instance",
+   "source_path": "data/raw/receipt_days/2026-08-06-extended.json",
+   "normalized_title_sha256": "eec7ea79796af608f78d19c05a572eb81096090e90c9ad403c7a80226c4e99f4"
+  },
+  {
+   "audit_id": "AD1A16098C1CED75",
+   "channel": "gulf_energy",
+   "stratum": "story_cluster",
+   "source_path": "data/raw/receipt_days/2026-08-05-extended.json",
+   "normalized_title_sha256": "cf0df923c5124b410c6f8294d38cf276585b7f29cecd95254a30e3f626d41cfe"
+  }
+ ]
+}

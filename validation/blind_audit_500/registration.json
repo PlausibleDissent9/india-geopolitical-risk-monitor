@@ -1,0 +1,121 @@
+{
+ "status": "FROZEN BEFORE FIRST EXTERNAL LABEL",
+ "registered_at_utc": "2026-08-07T15:19:34Z",
+ "base_commit": "fce2ac7e492897911c05a4e0eeab6db6414700ad",
+ "objective": "Estimate current matched-item precision for each of IGRM's five channels under an external, blinded application of the frozen rubric; separately describe article-instance and normalized-story precision.",
+ "scope_limit": "This audit does not estimate population recall, event detection, risk accuracy, historical precision before the sampled source days, or causal validity.",
+ "inputs": {
+  "receipt_sources": [
+   {
+    "path": "data/raw/receipt_days/2026-08-05-extended.json",
+    "sha256": "71a681b3e98357b627e73c2de43d390acbe51b469292174a3e7afe2731bf1536",
+    "role": "Full-depth matched-article universe for 2026-08-05"
+   },
+   {
+    "path": "data/raw/receipt_days/2026-08-06-extended.json",
+    "sha256": "5145b919d51d2dc30c15a355d37092d60ef3f4a1181b92b4692ae29411226257",
+    "role": "Full-depth matched-article universe for 2026-08-06"
+   }
+  ],
+  "rubric_path": "auditor/RUBRIC.md",
+  "rubric_sha256": "2f285c9ffbc96d43946dbf9b53cd9fa688c2353be2c05e9df02ab5be8db38d17",
+  "builder_and_scorer": "src/blind_audit_500.py",
+  "builder_and_scorer_sha256": "f3b89bb3c72e43c2092a865b82d1a9d5622d450412538bf594e74a24e35e264d",
+  "coder_instructions_path": "validation/blind_audit_500/INSTRUCTIONS.md",
+  "coder_instructions_sha256": "b5524e86ff2140fd6f2bd5b18f0be97f5a5be32e46acf3604ca73715753ba7a3"
+ },
+ "sample": {
+  "seed": "igrm-blind-audit-500-v1-2026-08-07",
+  "channels": [
+   "pakistan_west",
+   "china_east",
+   "gulf_energy",
+   "us_trade",
+   "shipping"
+  ],
+  "per_channel": 100,
+  "total": 500,
+  "article_instance_stratum": "75 URLs per channel, sampled uniformly without replacement from the union of exact matched article URLs across the two pinned full-depth source days. URL is the unit; syndicated copies remain separate because IGRM counts articles.",
+  "story_cluster_stratum": "25 normalized-headline clusters per channel, sampled uniformly without replacement after excluding every normalized title represented in that channel's article-instance draw. One deterministic representative URL per cluster.",
+  "matched_url_universe_by_channel": {
+   "pakistan_west": 335,
+   "china_east": 193,
+   "gulf_energy": 5812,
+   "us_trade": 1147,
+   "shipping": 891
+  },
+  "coder_sheet_path": "validation/blind_audit_500/coder_sheet.csv",
+  "coder_sheet_sha256": "35fd63744ef106a0a60e6836b6f300cdd462dc3075c4f74fc9686b7a53fb6290",
+  "sample_key_path": "validation/blind_audit_500/sample_key.json",
+  "sample_key_sha256": "04b8b8a249dac198a139e77c7c71649a8d5d44ec76677fe3057b4078c8dc083c",
+  "pilot_sheet_path": "validation/blind_audit_500/pilot_sheet.csv",
+  "pilot_sheet_sha256": "c5e9898c1c9d3a479dd7b5eb5ad0e19558aefe7dc1d64809bfbd6c47705e2869",
+  "pilot_rule": "Four unscored items per channel, disjoint from the scored sheet by URL and normalized headline. Coders may discuss only the pilot before beginning independent scored work."
+ },
+ "blindness": {
+  "visible_to_coder": [
+   "audit id",
+   "target channel",
+   "article date",
+   "title",
+   "domain",
+   "URL"
+  ],
+  "hidden_from_coder": [
+   "sampling stratum",
+   "query group",
+   "matched phrase",
+   "machine label",
+   "source tier",
+   "IGRM score",
+   "prior human label",
+   "another coder's ruling"
+  ],
+  "meaning": "Blind to system decisions and sampling stratum, not blind to the target channel or to the fact that this is an IGRM matched-item audit.",
+  "repository_access": "External coders must not inspect the IGRM repository or website between opening the scored sheet and locking their completed copy."
+ },
+ "labels": {
+  "ON": "Substantively about the named channel under auditor/RUBRIC.md.",
+  "OFF": "Not substantively about the named channel under auditor/RUBRIC.md.",
+  "ABSTAIN": "Insufficient accessible evidence for a defensible ruling; reported and excluded from the precision denominator.",
+  "confidence": [
+   "HIGH",
+   "MEDIUM",
+   "LOW"
+  ],
+  "translation": "No automated translation. Non-English items without accessible English evidence are ABSTAIN."
+ },
+ "estimands": {
+  "five_primary_estimates": "For each coder and channel separately in the article-instance stratum: ON / (ON + OFF), with a Wilson 95% interval. ABSTAIN is excluded from the denominator and its count is always reported. With two coders, both coder-specific estimates publish separately; there is no consensus or adjudicated primary estimate.",
+  "secondary_story_estimates": "The same quantity for each channel in the normalized-headline stratum, labelled descriptive story-level precision.",
+  "secondary_macro": "Equal-channel mean of the five article-instance precision estimates. It is not an overall volume-weighted precision estimate.",
+  "recall": "Not estimated.",
+  "hypothesis_tests": "None. No p-values or multiple-testing-adjusted claims."
+ },
+ "quality_gates": {
+  "per_channel_precision_pass": "Pass only if at least 60 of 75 article-instance rows receive firm labels and the Wilson 95% lower bound is at least 0.80.",
+  "per_channel_inconclusive": "Fewer than 60 firm article-instance labels is inconclusive, never a pass.",
+  "inter_coder_evaluable_if_two_coders": "Evaluable with at least 400 firm-overlap rows and a non-constant pooled firm-label set. Fewer overlaps is INCONCLUSIVE. An exactly all-ON or all-OFF overlap is reported as NOT IDENTIFIABLE FROM CONSTANT LABELS, not a pass or failure, even if raw agreement or AC1 is numerically high. No minimum OFF prevalence is imposed.",
+  "inter_coder_pass_if_evaluable": "On all firm-overlap rows, raw agreement at least 0.90 and Gwet's AC1 at least 0.70. Cohen's kappa publishes descriptively with a prevalence caveat and is not gated.",
+  "one_coder_rule": "With one coder, no inter-coder statistic or reliability claim is permitted.",
+  "publication": "Every per-channel result, abstention count, interval, gate failure and disagreement publishes regardless of direction. Payment and publication are not conditional on passing."
+ },
+ "coder_independence": {
+  "minimum": "No role in designing IGRM, its dictionaries, sample, rubric or machine auditor; disclose any relationship with the project or founder.",
+  "work_rule": "After the pilot, coders work independently and do not discuss scored rows until both files are locked.",
+  "tool_rule": "Coders may use a normal browser to inspect linked evidence but may not use an LLM, automated classifier, bulk-label tool or another person to decide or draft scored labels.",
+  "payment_rule": "Fixed compensation agreed before labelling, never contingent on agreement or outcome. Recruitment source, coder count, qualifications and compensation band are disclosed with results."
+ },
+ "analysis": {
+  "scorer": "python -m src.blind_audit_500 --score coder_1.csv [coder_2.csv] --output results.json",
+  "inter_coder": "With exactly two coders, report raw agreement and Gwet's AC1 on firm-label overlap, applying the frozen evaluability and pass rules. Publish Cohen's kappa descriptively with a prevalence caveat. Primary Wilson estimates remain separate for each coder; no consensus or adjudicated estimate exists in the primary.",
+  "missing_urls": "Use accessible title/page evidence or ABSTAIN. Do not replace an unavailable sampled URL.",
+  "deviations": "Any source substitution, sample replacement, rubric change after scored work begins, label recoding or adjudication is a deviation and must publish before the affected result."
+ },
+ "attestation": {
+  "external_labels_seen_before_freeze": false,
+  "pilot_labels_seen_before_freeze": false,
+  "sample_generated_mechanically": true,
+  "limits": "The project maintainer has seen some source-day headlines during ordinary operations. That does not alter the frozen random draw but means the maintainer is not an eligible external coder."
+ }
+}
