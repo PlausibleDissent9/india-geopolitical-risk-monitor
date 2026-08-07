@@ -417,6 +417,16 @@
    "stability": "stable"
   },
   {
+   "path": "data/negative_results.json",
+   "format": "json",
+   "description": "Every number that did not go this project's way, compiled from the payloads where each lives. Read live from those payloads at build time, never hand-typed, so a row that stops being true stops being published.",
+   "frozen_fields": [
+    "_meta",
+    "findings"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/note_latest.json",
    "format": "json",
    "description": "The most recent published weekly note: filename and raw markdown body.",
