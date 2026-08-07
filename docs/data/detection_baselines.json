@@ -8,7 +8,7 @@
   "prompted_by": "a simulated hostile referee (analysis/referee_report_2026-08-07.md, findings 3-4), whose recomputations of the published statistics all reproduced and whose criticism was aimed at what was NOT published beside them",
   "registered_criterion": "a detected same-channel episode day within +/-3 days of the event (the lenient reading; the strict start-based reading is published here alongside)",
   "how_to_read": "The apparatus earns exactly the gap between the registered hits and the chance/naive rows. A registered rate far above chance but close to the naive any-channel detector means the CHANNEL ATTRIBUTION carries the value, not the detection itself.",
-  "generated": "2026-08-07T17:08:19Z"
+  "generated": "2026-08-07T18:41:40Z"
  },
  "hit_rate_context": {
   "n_events": 29,
@@ -24,5 +24,53 @@
   "naive_any_channel_hits": 26,
   "chance_expected_hits": 6.8,
   "n_episodes": 524
+ },
+ "placebo_context": {
+  "study_start": "2022-05-15",
+  "study_end": "2026-06-20",
+  "n_study_days": 1498,
+  "n_placebo_episodes": 115,
+  "observed_overlaps": 52,
+  "observed_overlap_fraction": 0.4522,
+  "geopolitical_episode_day_fraction": 0.2784,
+  "random_placement_expected_overlaps": 40.9,
+  "random_placement_overlap_fraction": 0.3558,
+  "excess_over_random_fraction": 0.0964,
+  "method": "For each observed placebo episode, preserve its inclusive duration; enumerate every possible interval start inside the placebo study window; measure overlap with any published geopolitical episode day; average the resulting episode-specific probabilities.",
+  "registered_null": false
+ },
+ "composite7_battery": {
+  "rule": "the registered T2 convention applied descriptively: composite7 above its trailing 90th percentile (730-day window, >= 180 trailing observations). T2's alert-time band-survival clause is omitted because published sampling bands do not span the full history.",
+  "n_days_evaluable": 3119,
+  "first_evaluable_day": "2017-12-31",
+  "n_days_elevated": 445,
+  "elevated_day_fraction": 0.1427,
+  "n_elevated_runs": 58,
+  "n_events": 29,
+  "n_events_evaluable": 28,
+  "hits": 8,
+  "chance_expected_hits": 6.4,
+  "events_missed": [
+   "Accidental BrahMos missile launch into Pakistan (disclosed by Pakistan March 10; an honest hard case for event-day timing)",
+   "Balakot airstrike and aerial engagement",
+   "Ever Given grounds in the Suez Canal",
+   "First US-UK strikes on Houthi targets; peak Red Sea coverage",
+   "Galaxy Leader seizure; start of Houthi Red Sea shipping attacks",
+   "Galwan Valley clash",
+   "Hamas attack on Israel",
+   "India-Pakistan LoC ceasefire reaffirmation",
+   "Iran ballistic-missile strike on Israel",
+   "Iran direct drone/missile strike on Israel",
+   "Israel strikes Iran; 12-day war, Hormuz closure fears",
+   "OPEC+ announces 2 million bpd production cut",
+   "OPEC+ collapse; oil price war begins",
+   "Pulwama attack",
+   "Russia invades Ukraine (oil-supply shock; tests the energy-security half of the channel)",
+   "Tawang sector clash, Arunachal Pradesh",
+   "US Section 232 steel and aluminium tariffs signed (global trade-war onset; India affected)",
+   "US announces termination of India's GSP trade preference status",
+   "US reciprocal-tariff announcement",
+   "United States withdraws from the JCPOA (Iran nuclear deal)"
+  ]
  }
 }

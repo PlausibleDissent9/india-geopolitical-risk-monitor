@@ -40,6 +40,10 @@ SITE_DATA = ROOT / "docs" / "data"
 RETENTION_DAYS = 90
 PCTL_THRESHOLD = 0.90
 PCTL_WINDOW_DAYS = 730
+# T2 refuses to fire until this many trailing observations exist. Named
+# so the descriptive battery in src/detection_baselines.py runs the SAME
+# registered convention rather than a lookalike that can drift.
+MIN_TRAILING_OBS = 180
 
 
 def _overlap(a: list[float], b: list[float]) -> bool:
@@ -90,7 +94,7 @@ def t2_composite_crossing(latest: dict, unc_days: dict,
                     - timedelta(days=PCTL_WINDOW_DAYS)).isoformat()
     trailing = [c for d, c in zip(dates[:i], comp[:i])
                 if c is not None and d >= window_start]
-    if len(trailing) < 180:
+    if len(trailing) < MIN_TRAILING_OBS:
         return []
     threshold = sorted(trailing)[int(PCTL_THRESHOLD * (len(trailing) - 1))]
     today, prev = comp[i], comp[i - 1]

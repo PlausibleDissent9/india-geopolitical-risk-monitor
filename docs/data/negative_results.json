@@ -6,27 +6,33 @@
   "source": "https://igrm.in/data/negative_results.json",
   "what": "Every number that did not go this project's way, compiled from the payloads where each lives. Read live from those payloads at build time, never hand-typed, so a row that stops being true stops being published.",
   "why": "Anyone can publish good numbers. The reason to believe the flattering ones is that the unflattering ones are computed by the same pipeline on the same schedule -- and this file is where they stand together instead of being scattered across seven payloads.",
-  "n_findings": 9,
-  "generated": "2026-08-07T17:16:43Z"
+  "n_findings": 10,
+  "generated": "2026-08-07T18:42:48Z"
  },
  "findings": [
   {
    "finding": "Fusing four sources made detection worse, not better",
-   "number": "2 of 29 episodes detected (hit rate 0.069) vs 24 of 29 for the press channel alone",
+   "number": "2 of 29 episodes detected (hit rate 0.069) vs 24 of 29 for the corresponding-channel press criterion across five channels",
    "source": "data/stress_gauge.json",
-   "reading": "the pre-registered four-source gauge detects a twelfth of what the single press channel does; sophistication is not accuracy"
+   "reading": "the pre-registered four-source gauge detects a twelfth of what the channel-level press detector does; adding modalities did not improve this registered diagnostic"
   },
   {
    "finding": "Placebo channels overlap real episodes far above zero",
-   "number": "52 of 115 placebo episodes (45.2%) overlap real ones; chance under random placement is ~35.6%",
-   "source": "data/validation.json",
-   "reading": "part of every channel's signal is general news volume, and the excess over chance is ~10 points, not 45"
+   "number": "52 of 115 placebo episodes (45.2%) overlap real ones; duration-preserving random placement expects 35.6%",
+   "source": "data/detection_baselines.json",
+   "reading": "part of every channel's signal is general news volume, and the excess over chance is 9.6 points, not the full observed rate"
   },
   {
    "finding": "A naive any-channel detector nearly matches the registered hit rate",
    "number": "naive 26 of 29 vs registered 24 of 29; chance 6.8",
    "source": "data/detection_baselines.json",
    "reading": "detection alone is cheap; the channel attribution is what the apparatus actually contributes"
+  },
+  {
+   "finding": "The 7-day headline barely beats chance as a detector",
+   "number": "composite7 detects 8 of 28 evaluable events on the registered threshold rule; chance is 6.4",
+   "source": "data/detection_baselines.json",
+   "reading": "the headline is a summary statistic, not the detector; detection lives in the per-channel series, and the two famous headline anecdotes were anecdotes"
   },
   {
    "finding": "The index tracks English-language attention, not Indian-language attention",
@@ -47,13 +53,13 @@
    "reading": "with this episode set, sector sensitivity to salience episodes is indistinguishable from zero once the search is paid for"
   },
   {
-   "finding": "The market moves before the press does",
+   "finding": "The largest lead-lag association places the market first",
    "number": "largest association at lag -8: VIX-percentile changes tend to precede attention changes (association, not causation)",
    "source": "data/priced_risk.json",
    "reading": "this index is not an early-warning system for anything priced; whatever it is for, it is not that"
   },
   {
-   "finding": "Measured precision is uncalibrated and low on two channels",
+   "finding": "Machine-labelled on-topic shares are uncalibrated and low on two channels",
    "number": "author labels 16 of 100; machine agreement 0.875 on n=16",
    "source": "data/precision.json",
    "reading": "precision claims wait for the human calibration to reach its registered threshold"

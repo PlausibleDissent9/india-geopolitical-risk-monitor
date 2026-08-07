@@ -38,25 +38,30 @@ def compute() -> list[dict[str, Any]]:
     rows.append({
         "finding": "Fusing four sources made detection worse, not better",
         "number": f"{g['n_detected']} of {g['n_episodes']} episodes detected "
-                  f"(hit rate {g['hit_rate']}) vs 24 of 29 for the press "
-                  "channel alone",
+                  f"(hit rate {g['hit_rate']}) vs 24 of 29 for the "
+                  "corresponding-channel press criterion across five channels",
         "source": "data/stress_gauge.json",
         "reading": "the pre-registered four-source gauge detects a twelfth "
-                   "of what the single press channel does; sophistication "
-                   "is not accuracy"})
+                   "of what the channel-level press detector does; adding "
+                   "modalities did not improve this registered diagnostic"})
 
     v = _load("validation.json")
     p = v["placebo"]
+    baselines = _load("detection_baselines.json")
+    placebo_baseline = baselines["placebo_context"]
     rows.append({
         "finding": "Placebo channels overlap real episodes far above zero",
         "number": f"{p['n_overlapping']} of {p['n_placebo_episodes']} placebo "
                   f"episodes ({round(100*p['overlap_fraction'],1)}%) overlap "
-                  "real ones; chance under random placement is ~35.6%",
-        "source": "data/validation.json",
+                  "real ones; duration-preserving random placement expects "
+                  f"{100*placebo_baseline['random_placement_overlap_fraction']:.1f}%",
+        "source": "data/detection_baselines.json",
         "reading": "part of every channel's signal is general news volume, "
-                   "and the excess over chance is ~10 points, not 45"})
+                   f"and the excess over chance is "
+                   f"{100*placebo_baseline['excess_over_random_fraction']:.1f} "
+                   "points, not the full observed rate"})
 
-    b = _load("detection_baselines.json")["hit_rate_context"]
+    b = baselines["hit_rate_context"]
     rows.append({
         "finding": "A naive any-channel detector nearly matches the "
                    "registered hit rate",
@@ -66,6 +71,18 @@ def compute() -> list[dict[str, Any]]:
         "source": "data/detection_baselines.json",
         "reading": "detection alone is cheap; the channel attribution is "
                    "what the apparatus actually contributes"})
+
+    cb = baselines["composite7_battery"]
+    rows.append({
+        "finding": "The 7-day headline barely beats chance as a detector",
+        "number": f"composite7 detects {cb['hits']} of "
+                  f"{cb['n_events_evaluable']} evaluable events on the "
+                  f"registered threshold rule; chance is "
+                  f"{cb['chance_expected_hits']}",
+        "source": "data/detection_baselines.json",
+        "reading": "the headline is a summary statistic, not the detector; "
+                   "detection lives in the per-channel series, and the two "
+                   "famous headline anecdotes were anecdotes"})
 
     w = _load("wiki_hindi.json")
     n_lead = len(w["channels_where_english_leads_on_both"])
@@ -107,7 +124,7 @@ def compute() -> list[dict[str, Any]]:
 
     pr = _load("priced_risk.json")["lead_lag"]
     rows.append({
-        "finding": "The market moves before the press does",
+        "finding": "The largest lead-lag association places the market first",
         "number": pr["reading"],
         "source": "data/priced_risk.json",
         "reading": "this index is not an early-warning system for anything "
@@ -115,8 +132,8 @@ def compute() -> list[dict[str, Any]]:
 
     prec = _load("precision.json")
     rows.append({
-        "finding": "Measured precision is uncalibrated and low on two "
-                   "channels",
+        "finding": "Machine-labelled on-topic shares are uncalibrated and "
+                   "low on two channels",
         "number": f"author labels {prec['author_labels_n']} of "
                   f"{prec['calibration_threshold']}; machine agreement "
                   f"{prec['agreement']['rate']} on n={prec['agreement']['n_overlap']}",
