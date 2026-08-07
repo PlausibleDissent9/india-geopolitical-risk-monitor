@@ -70,29 +70,70 @@ def _store_path(name: str) -> Path:
     return RAW / f"country_{name}_volume.csv"
 
 
-def update(name: str, spec: dict[str, Any]) -> pd.DataFrame:
-    """Incremental store update, same pattern as the India lane:
-    refetch a trailing revision window, keep settled history."""
+def update(name: str, spec: dict[str, Any]) -> pd.DataFrame | None:
+    """Incremental store update, PERSISTING EACH CHANNEL as it lands.
+
+    This used to call fetch_gdelt.fetch_all() for every channel and
+    write the store once afterwards. A backfill from 2017 is thousands
+    of GDELT requests, GDELT rate-limits hard, and fetch_all raises on a
+    429 -- so the write was never reached, the store was never created,
+    and because the store's absence is what selects BACKFILL_START, the
+    next run began the whole doomed backfill again. China ran nightly
+    for days and produced nothing while the workflow step, wrapped in
+    continue-on-error, reported success every time.
+
+    Exactly the defect src/multilingual.py had. Same fix: write after
+    each channel, so a run that dies on the fourth keeps three, and the
+    next run only needs the rest.
+    """
     dicts = _fetch_dicts(spec)
     store = _store_path(name)
     today = date.today()
+    vol: pd.DataFrame | None = None
     if store.exists():
         vol = pd.read_csv(store, parse_dates=["date"]).set_index("date")
-        start = today - timedelta(days=UPDATE_WINDOW_DAYS)
-    else:
-        vol = None
-        start = BACKFILL_START
-    fresh = fetch_gdelt.fetch_all(dicts, start, today)
-    if vol is not None and not fresh.empty:
-        fresh.index = pd.to_datetime(fresh.index)
-        vol = fresh.combine_first(vol)
-        # Fresh values win inside the window; combine_first prefers the
-        # caller, so this is fresh-over-stored by construction.
-    elif vol is None:
-        vol = fresh
-    vol = vol.sort_index()
-    store.parent.mkdir(parents=True, exist_ok=True)
-    vol.to_csv(store, index_label="date")
+
+    landed = failed = 0
+    for ch, chspec in dicts.items():
+        # A channel already in the store only needs its revision window;
+        # one that is missing needs the whole history.
+        have = (vol is not None and ch in vol.columns
+                and not vol[ch].dropna().empty)
+        start = (today - timedelta(days=UPDATE_WINDOW_DAYS) if have
+                 else BACKFILL_START)
+        print(f"[country] {name}/{ch}: {start} -> {today}"
+              f"{' (revision window)' if have else ' (backfill)'}")
+        try:
+            series = fetch_gdelt.fetch_channel(
+                chspec["terms"], start, today, chspec.get("anchor"))
+        except Exception as e:  # noqa: BLE001 -- 429s are expected here
+            print(f"[country] {name}/{ch}: FAILED ({type(e).__name__}: {e}); "
+                  "keeping what already landed")
+            failed += 1
+            continue
+        if series.empty:
+            print(f"[country] {name}/{ch}: no data returned")
+            failed += 1
+            continue
+
+        frame = series.to_frame(name=ch)
+        frame.index = pd.to_datetime(frame.index)
+        if vol is not None:
+            vol.index = pd.to_datetime(vol.index)
+        # Fresh wins inside the window; combine_first prefers the caller.
+        vol = frame.combine_first(vol) if vol is not None else frame
+        vol = vol.sort_index()
+        store.parent.mkdir(parents=True, exist_ok=True)
+        vol.to_csv(store, index_label="date")
+        landed += 1
+        print(f"[country] {name}/{ch}: stored "
+              f"({len(series.dropna())} days); {len(vol.columns)}/"
+              f"{len(dicts)} channels")
+
+    print(f"[country] {name}: {landed} channel(s) landed, {failed} failed")
+    if vol is None:
+        raise SystemExit(
+            f"[country] {name}: no channel landed; nothing to publish")
     return vol
 
 
@@ -115,18 +156,33 @@ def publish(name: str, spec: dict[str, Any], vol: pd.DataFrame) -> None:
                 "%Y-%m-%dT%H:%M:%SZ"),
         },
         "date": last.date().isoformat(),
+        # A channel the store has not collected yet publishes as
+        # score null with collected=false, rather than crashing the lane
+        # or, worse, being silently omitted so the payload looks
+        # complete. Backfills land channel by channel now, so a partial
+        # monitor is a normal intermediate state and has to be legible
+        # as one.
         "channels": {
-            ch: {"label": spec["channels"][ch]["label"],
-                 "score": round(float(day[ch]), 1)
-                 if pd.notna(day[ch]) else None}
+            ch: {
+                "label": spec["channels"][ch]["label"],
+                "collected": ch in scores.columns,
+                "score": (round(float(day[ch]), 1)
+                          if ch in scores.columns and pd.notna(day[ch])
+                          else None),
+            }
             for ch in spec["channels"]
         },
-        "composite": round(float(day["composite"]), 1)
-        if pd.notna(day["composite"]) else None,
+        "n_channels_collected": sum(1 for ch in spec["channels"]
+                                    if ch in scores.columns),
+        "n_channels_registered": len(spec["channels"]),
+        "composite": (round(float(day["composite"]), 1)
+                      if "composite" in scores.columns
+                      and pd.notna(day["composite"]) else None),
         "history": {
             "dates": [d.date().isoformat() for d in scores.index],
             **{ch: [None if pd.isna(x) else round(float(x), 1)
-                    for x in scores[ch]] for ch in spec["channels"]},
+                    for x in scores[ch]]
+               for ch in spec["channels"] if ch in scores.columns},
         },
     }
     (SITE_DATA / f"country_{name}.json").write_text(
