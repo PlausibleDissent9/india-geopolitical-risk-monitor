@@ -8,7 +8,13 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script src="vendor/chart.umd.min.js"></script>
 <style>
-  :root { --bg:#0E141E; --fg:#EAE8E0; --muted:#97A0B0; --rule:#1C2532; --accent:#D96548; }
+  /* Deliberately self-contained: this widget is iframed into other
+     people's pages, so it carries its own minimal palette rather than
+     importing tokens.css and inheriting a host's cascade. The VALUES
+     must still track the site — until 2026-08-07 they were the old
+     #0E141E/#1C2532/#97A0B0 set, so the embed looked like a different
+     product from the site it represents. Mirrors tokens.css :root. */
+  :root { --bg:#0B1017; --fg:#E6E4DC; --muted:#8C95A4; --rule:#1F2833; --accent:#D96548; }
   * { box-sizing:border-box; margin:0 }
   body { background:var(--bg); color:var(--fg); font:13px/1.4 system-ui,sans-serif; padding:10px 12px }
   .head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px }
@@ -32,14 +38,19 @@ const NAMES = { composite: "Composite", pakistan_west: "Pakistan / Western Borde
 function draw(labels, values, label, latest) {
   document.getElementById("t").innerHTML =
     `${label}: <span class="num">${latest == null ? "-" : latest}</span> <span style="color:var(--muted)">(percentile of trailing 2y; salience, not risk)</span>`;
+  // Chart.js needs literal colours, so read them from the one place
+  // that defines them rather than repeating the hexes a second time in
+  // the same file — that duplication is how the palette drifted.
+  const cssVar = (n) =>
+    getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   new Chart(document.getElementById("c"), {
     type: "line",
-    data: { labels, datasets: [{ data: values, borderColor: "#D96548", borderWidth: 1.2,
+    data: { labels, datasets: [{ data: values, borderColor: cssVar("--accent"), borderWidth: 1.2,
       pointRadius: 0, tension: 0.15, spanGaps: true }] },
     options: { animation: false, responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: { y: { min: 0, max: 100, grid: { color: "#1C2532" }, ticks: { color: "#97A0B0" } },
-                x: { grid: { display: false }, ticks: { color: "#97A0B0", maxTicksLimit: 6 } } } },
+      scales: { y: { min: 0, max: 100, grid: { color: cssVar("--rule") }, ticks: { color: cssVar("--muted") } },
+                x: { grid: { display: false }, ticks: { color: cssVar("--muted"), maxTicksLimit: 6 } } } },
   });
 }
 (async () => {
