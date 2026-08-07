@@ -35,3 +35,20 @@ def test_schema_requires_every_channel():
     props = daily_brief.SCHEMA["properties"]["channels"]
     assert set(props["required"]) == set(daily_brief.CHANNELS)
     assert props["additionalProperties"] is False
+
+
+def test_experimental_gauge_is_not_a_brief_ingredient(monkeypatch, tmp_path):
+    """A 2/29 experimental secondary gauge must not be elevated by the
+    daily language model into the day's headline narrative."""
+    data = tmp_path / "data"
+    data.mkdir()
+    (data / "latest.json").write_text(
+        '{"date":"2026-08-06","composite":50,"channels":{}}',
+        encoding="utf-8")
+    (data / "receipts.json").write_text(
+        '{"date":"2026-08-06","channels":{}}', encoding="utf-8")
+    (data / "stress_gauge.json").write_text(
+        '{"gauge":99,"_meta":{"headline_eligible":false}}',
+        encoding="utf-8")
+    monkeypatch.setattr(daily_brief, "SITE_DATA", data)
+    assert "stress_gauge" not in daily_brief.build_context()

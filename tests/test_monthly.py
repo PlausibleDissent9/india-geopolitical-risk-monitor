@@ -53,6 +53,23 @@ def test_a_full_month_gets_its_mean(tmp_path, monkeypatch):
     assert row["refused_reason"] == ""
 
 
+def test_share_coverage_does_not_masquerade_as_composite_coverage(
+        tmp_path, monkeypatch):
+    days = [(f"2017-06-{d:02d}", "doc_api") for d in range(1, 31)]
+    _setup(tmp_path, monkeypatch, days)
+    # Only two ranked observations exist even though all thirty share
+    # observations are present.
+    monthly.HISTORY.write_text(
+        "date,composite\n2017-06-29,60\n2017-06-30,64\n",
+        encoding="utf-8")
+    row = next(r for r in monthly.build() if r["month"] == "2017-06")
+    assert row["coverage"] == 1.0
+    assert row["n_days_composite_present"] == 2
+    assert row["composite_coverage"] == 0.0667
+    assert row["composite_mean_of_ranks"] == ""
+    assert "below the 80% floor" in row["composite_refused_reason"]
+
+
 def test_months_spanning_the_instrument_boundary_are_flagged(
         tmp_path, monkeypatch):
     """A user must be able to drop mixed months rather than discover

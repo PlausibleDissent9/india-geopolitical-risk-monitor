@@ -139,6 +139,16 @@ def main() -> None:
     last_date = df.dropna(subset=["gauge"]).index[-1]
     comp_cols = [c for c in ("press", "events", "market", "wikipedia")
                  if c in df.columns]
+    registered_weights = reg["weights"]
+    available_latest = [c for c in registered_weights
+                        if c in df.columns and not pd.isna(last.get(c))]
+    missing_latest = [c for c in registered_weights
+                      if c not in available_latest]
+    weight_sum = sum(registered_weights[c] for c in available_latest)
+    effective_weights = {
+        c: round(registered_weights[c] / weight_sum, 6)
+        for c in available_latest
+    }
     tail = df.dropna(subset=["gauge"]).tail(365)
     payload = {
         "_meta": {
@@ -147,8 +157,17 @@ def main() -> None:
                      "validation/stress_gauge_weights.json. A salience and "
                      "stress measurement, not a risk prediction."),
             "generated": date.today().isoformat(),
-            "partial": bool(missing),
-            "weights": reg["weights"],
+            "partial": bool(missing or missing_latest),
+            "events_history_partial": bool(missing),
+            # `weights` is kept as a backwards-compatible alias for
+            # existing consumers; registered_weights names the semantics.
+            "weights": registered_weights,
+            "registered_weights": registered_weights,
+            "latest_available_components": available_latest,
+            "latest_missing_components": missing_latest,
+            "latest_effective_weights": effective_weights,
+            "validation_status": "experimental_not_validated",
+            "headline_eligible": False,
         },
         "date": str(last_date.date()),
         "gauge": float(last["gauge"]),

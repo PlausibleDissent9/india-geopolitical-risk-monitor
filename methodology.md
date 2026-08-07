@@ -228,11 +228,16 @@ starts, never outright returns:
   border salience means anything to markets, it should appear in defence
   names relative to the broad index. (Basket: HAL, BEL, BDL, Mazagon Dock,
   Cochin Shipyard; equal-weight, daily-rebalanced.)
+- **Energy OMC, IT services and ports/logistics baskets − Nifty**, the
+  three registered sector-transmission hypotheses, each using its frozen
+  equal-weight basket.
 - **USDINR − DXY**, strips broad dollar moves from the rupee.
 
-Brent and gold are reported **descriptively only**: no India-specific
+Brent and gold are configured **descriptive-only** outcomes: no India-specific
 component of a globally-priced commodity is separable, so they carry no
-interpretation beyond context. Windows are 1, 5, and 20 **trading** days,
+interpretation beyond context. A configured outcome appears only when its
+current source cache contains observations; the JSON explicitly lists
+available and unavailable outcomes. Windows are 1, 5, and 20 **trading** days,
 inclusive of the first trading day on or after the episode start. Every
 estimate carries a bootstrapped 95% interval (1,000 resamples over
 episodes). The language rule is absolute: episode starts are *associated
@@ -253,11 +258,12 @@ its residual.
    review. Residual: total, at any level of statistical sophistication.
 3. **Thin sample.** India has had tens of geopolitical episodes since 2022,
    not thousands. Mitigation: bootstrapped intervals reported everywhere;
-   backfill extension to 2017 planned. Residual: intervals stay wide
+   the series and event backfill now extend to 2017. Residual: intervals stay wide
    forever; findings stay descriptive.
-4. **Single-source dependency.** Everything currently rests on GDELT's
-   corpus and its English-language, Western-outlet skew. Mitigation
-   (planned): Wikipedia-pageview cross-validation. Residual: agreement
+4. **Single-source dependency.** The score rests on GDELT's
+   corpus and its English-language, Western-outlet skew. Mitigation:
+   Wikipedia-pageview cross-validation now publishes beside it but never
+   enters the score. Residual: agreement
    between two biased attention measures is not unbiasedness.
 5. **Hindsight in dictionary construction.** The dictionaries were written
    in 2026 by people who know 2022-26 history. Mitigation: the ex-ante
@@ -335,6 +341,12 @@ detects what it claims to detect and is not an artifact of one term list.
 It does not, and cannot, convert salience into risk (§7.1).
 
 ## 9. The India Stress Gauge
+
+**Experimental secondary object; not a validated headline measure.** As of
+7 August 2026 the registered detection rule succeeds on 2 of 29 episodes.
+That negative result is published rather than tuned away. Each release also
+lists the latest available and missing components and the effective weights
+after any registered renormalization.
 
 The gauge fuses four sources into one daily 0-100 line: the composite
 press-salience percentile, a conflict-event intensity percentile from

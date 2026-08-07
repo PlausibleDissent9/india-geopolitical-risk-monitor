@@ -48,11 +48,10 @@ function tierBadge(tier) {
   const q = new URLSearchParams(location.search);
   const channel = q.get("channel");
   const el = document.getElementById("body");
-  const [receipts, shelf, rel, cp, latest, sg, brief, apt] = await Promise.all([
+  const [receipts, shelf, rel, cp, latest, brief, apt] = await Promise.all([
     j("data/receipts.json"), j("data/expert_shelf.json"),
     j("data/map_relations.json"), j("data/chokepoints.json"),
-    j("data/latest.json"), j("data/stress_gauge.json"),
-    j("data/daily_brief.json"), j("data/aptness.json"),
+    j("data/latest.json"), j("data/daily_brief.json"), j("data/aptness.json"),
   ]);
   // Stale-date guard: aptness labels apply only to the receipts payload
   // they were computed from; a date mismatch shows unfiltered receipts.
@@ -230,20 +229,10 @@ function tierBadge(tier) {
     html += "</ul><p class='kv'>Attention high while transits are normal reads as a media wave; both moving together reads as a real disruption.</p>";
   }
 
-  if (sg && sg.components) {
-    html += "<h2>Cross-source context, today</h2><p class='kv'>" +
-      "Market stress component (India VIX + INR realized vol): <strong>" +
-      (sg.components.market == null ? "-" : esc(sg.components.market)) + "</strong> pct &middot; " +
-      "Wikipedia demand-side attention (composite): <strong>" +
-      (sg.components.wikipedia == null ? "-" : esc(sg.components.wikipedia)) + "</strong> pct &middot; " +
-      "Stress gauge: <strong>" + (sg.gauge == null ? "-" : esc(sg.gauge)) + "</strong>. " +
-      "Composite-level context, not channel-specific; the gauge page documents the registered weights.</p>";
-  }
-
   el.innerHTML = html;
 
-  // Trailing-week archive (founder floor: 100+ visible articles per
-  // channel, guaranteed by depth of days, never by padding). Loaded
+  // Available recent archive (up to seven committed cache days, never
+  // padded and never described as complete when cache days are absent). Loaded
   // after the main render so today's evidence paints first.
   const slot = document.getElementById("archive-slot");
   if (slot) {
@@ -272,7 +261,7 @@ function tierBadge(tier) {
       if (ahtml) {
         slot.innerHTML = "<h2>Earlier this week</h2>" +
           '<p class="kv">' + esc(total) + " more matched articles across " +
-          "the trailing days, from the same committed corpus scans, " +
+          "available earlier days, from the same committed corpus scans, " +
           "assembled and tier-sorted identically. Every article is dated; " +
           "depth comes from days, never from padding.</p>" + ahtml;
       }

@@ -122,8 +122,11 @@ is at <a href="igrm.bib">igrm.bib</a>.</p>
 mean cumulative log return (percent) over <code>window_trading_days</code> after
 episode starts; <code>ci95_lo</code>/<code>ci95_hi</code> bound the bootstrapped 95% interval;
 <code>n_episodes</code> is the number of episodes with sufficient data;
-<code>descriptive_only</code> marks outcomes (Brent, gold) with no separable
-India-specific component. Association, not causation.</p>
+<code>descriptive_only</code> marks configured outcomes (Brent, gold) with no
+separable India-specific component. <code>available_outcomes</code> and
+<code>unavailable_outcomes</code> in the JSON disclose what the current source cache
+actually supports; an unavailable configured outcome has no CSV rows and is
+never described as reported. Association, not causation.</p>
 <h2>JSON <code>_meta</code> blocks</h2>
 <p>Every dict-shaped JSON published by the pipeline embeds a <code>_meta</code> object
 (what the file is, license, citation, codebook link, source URL,
@@ -256,7 +259,11 @@ files again.</p>
 </tr>
 <tr>
 <td><code>descriptive_only</code></td>
-<td>Outcomes with no separable India-specific component (Brent, gold)</td>
+<td>Configured outcomes with no separable India-specific component (Brent, gold)</td>
+</tr>
+<tr>
+<td><code>available_outcomes</code> / <code>unavailable_outcomes</code></td>
+<td>Which configured series have at least one observation in this release</td>
 </tr>
 <tr>
 <td><code>channels.&lt;ch&gt;.outcomes.&lt;o&gt;.&lt;w&gt;</code></td>
@@ -268,9 +275,13 @@ files again.</p>
 </tr>
 </tbody>
 </table>
-<p>Outcomes: <code>nifty_minus_em</code> (strips global equity beta), <code>defence_minus_nifty</code>
-(the India-specific hypothesis), <code>usdinr_minus_dxy</code> (strips broad dollar
-moves), <code>brent_ret</code>, <code>gold_ret</code> (descriptive).</p>
+<p>Configured outcomes: <code>nifty_minus_em</code> (strips global equity beta),
+<code>defence_minus_nifty</code>, <code>energy_omc_minus_nifty</code>,
+<code>it_services_minus_nifty</code>, <code>ports_logistics_minus_nifty</code>,
+<code>usdinr_minus_dxy</code> (strips broad dollar moves), <code>brent_ret</code>, and
+<code>gold_ret</code> (descriptive). At the 2026-08-07 audit,
+Brent was unavailable and therefore correctly belongs in
+<code>unavailable_outcomes</code>, not in the published result grid.</p>
 <h2>docs/data/validation.json</h2>
 <table>
 <thead>
@@ -626,12 +637,16 @@ filtered to India) and committed; the site fetches no external
 geometry. Countries keyed by ADM0_A3, Indian states by FIPS. States too
 small for 110m polygons carry a point marker instead of a path.</p>
 <h2>docs/data/stress_gauge.json</h2>
-<p>The India Stress Gauge (methodology section 9): today's 0-100 gauge,
+<p>The experimental India Stress Gauge (methodology section 9): today's 0-100 gauge,
 the per-component percentiles behind it (press, events, market,
 wikipedia), the pre-registered weights, the hit-rate against the
 pre-registered episode list with per-miss detail, and a 365-day
-history. Publishes only once the events history is complete
-(<code>_meta.partial</code> stays false on anything served). Weights, detection
+history. <code>_meta.registered_weights</code> records the intended four-component
+design. <code>_meta.latest_available_components</code>, <code>latest_missing_components</code>
+and <code>latest_effective_weights</code> disclose any per-date renormalization;
+<code>_meta.partial</code> is true when either the events history or a latest-date
+component is missing. The current 2/29 validation result is experimental
+and the gauge is not eligible as a headline measure. Weights, detection
 rule, and missing-component rule live in
 <code>validation/stress_gauge_weights.json</code>, committed before any hit-rate
 was computed.</p>
@@ -779,14 +794,15 @@ divergence between them is a documented finding. Cite UCDP for these
 numbers, not IGRM. Raw per-event store (id-keyed, revisable):
 <code>data/raw/ucdp_events.csv</code>.</p>
 <h2>docs/data/receipts_archive.json</h2>
-<p>Trailing-week receipts archive: per channel and day (up to 7 days from
+<p>Available recent receipts archive: per channel and day (up to 7 days from
 the committed corpus day-caches), the matched articles assembled
 identically to <code>receipts.json</code> (same matcher provenance, tier sort,
 syndication dedup, lane labels), capped at <code>_meta.per_day_cap</code> per
 channel-day (<code>n_matched</code> still reports the day's full match count).
-Today's full list lives in <code>receipts.json</code>; this file exists so a
-channel page always carries a week of enumerable, dated evidence.
-Depth comes from days, never from padding.</p>
+Today's full list lives in <code>receipts.json</code>. <code>_meta.available_days</code> and
+<code>complete_window</code> disclose whether all seven cache days exist. The archive
+never implies a complete week when it does not have one, and depth comes
+from days, never from padding.</p>
 <h2>docs/data/episode_terms.json</h2>
 <p>Term-level attribution per channel-day: how many matched-article
 HEADLINES in the day's corpus cache contain each registered phrase
@@ -1040,7 +1056,10 @@ Episode detection fires when a channel's share exceeds its trailing
 90-day mean plus 2σ. A crisis therefore enters the very window its own
 future threshold is computed from: the mean rises, the standard
 deviation rises faster, and the bar climbs for ninety days — peaking
-<em>after</em> the crisis is over in 521 of 523 detected episodes.</p>
+<em>after</em> the crisis is over in 521 of 523 analysed episodes. The payload's
+<code>excluded_episodes</code> lists any detected episode the diagnostic cannot
+evaluate and gives the reason; the current one-row exclusion is caused by
+an absent pre-episode source day rather than being silently dropped.</p>
 <p>Worked example, <code>pakistan_west</code> through Pahalgam and Sindoor: the
 threshold was 0.0244 on 2025-04-21, and 0.6912 on 2025-07-20 — a <strong>28×</strong>
 higher bar. On 2025-05-20 the channel's share was 0.1340, five and a
@@ -1096,7 +1115,7 @@ percent-of-corpus shares, <code>composite_mean_of_ranks</code> is the mean of th
 daily composite percentiles. It ships because twenty users aggregating
 this themselves would make twenty different silent decisions about the
 same three traps, and their results would stop being comparable.</p>
-<p><em>Short months.</em> <code>coverage</code> is days present over days expected (for the
+<p><em>Short months.</em> <code>coverage</code> is share-data days present over days expected (for the
 current month, over days elapsed). A month below 80% publishes its row
 with <strong>null values</strong> and a stated <code>refused_reason</code> rather than a mean
 over the survivors — 2025-06 has 14 of 30 days and is the case that
@@ -1114,7 +1133,11 @@ Both are published so the difference is visible rather than resolved by
 whoever aggregates first. The <code>share_*</code> columns mean the same thing in
 every year and are the recommended input to anything estimated;
 percentiles are ranks against a moving two-year window and are offered
-as convenience.</p>
+as convenience. <code>n_days_composite_present</code> and <code>composite_coverage</code>
+separately report how many ranked daily composite scores exist; a monthly
+composite below the same 80% floor is null with a
+<code>composite_refused_reason</code>. JSON uses <code>null</code> for missing numeric values;
+CSV represents the same values as blank cells.</p>
 <h2>docs/data/episode_themes.json</h2>
 <p>Narrative composition (G4): per channel per day, the GKG theme codes
 carried by the day's MATCHED articles — the registered dictionaries

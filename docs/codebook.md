@@ -56,8 +56,11 @@ One row per channel × outcome × window. `mean_cum_log_return_pct` is the
 mean cumulative log return (percent) over `window_trading_days` after
 episode starts; `ci95_lo`/`ci95_hi` bound the bootstrapped 95% interval;
 `n_episodes` is the number of episodes with sufficient data;
-`descriptive_only` marks outcomes (Brent, gold) with no separable
-India-specific component. Association, not causation.
+`descriptive_only` marks configured outcomes (Brent, gold) with no
+separable India-specific component. `available_outcomes` and
+`unavailable_outcomes` in the JSON disclose what the current source cache
+actually supports; an unavailable configured outcome has no CSV rows and is
+never described as reported. Association, not causation.
 
 ## JSON `_meta` blocks
 
@@ -124,13 +127,18 @@ Array of episodes, each:
 |---|---|
 | `windows` | Trading-day windows (1, 5, 20), inclusive of first trading day ≥ episode start |
 | `units` | Cumulative log return, percent |
-| `descriptive_only` | Outcomes with no separable India-specific component (Brent, gold) |
+| `descriptive_only` | Configured outcomes with no separable India-specific component (Brent, gold) |
+| `available_outcomes` / `unavailable_outcomes` | Which configured series have at least one observation in this release |
 | `channels.<ch>.outcomes.<o>.<w>` | `{mean, ci95:[lo,hi], n}` across the channel's episodes; CI from 1,000 episode resamples |
 | `per_episode.<ch>[]` | `{start, outcomes.<o>.<w>}` raw window returns for one episode (no CI; n = 1) |
 
-Outcomes: `nifty_minus_em` (strips global equity beta), `defence_minus_nifty`
-(the India-specific hypothesis), `usdinr_minus_dxy` (strips broad dollar
-moves), `brent_ret`, `gold_ret` (descriptive).
+Configured outcomes: `nifty_minus_em` (strips global equity beta),
+`defence_minus_nifty`, `energy_omc_minus_nifty`,
+`it_services_minus_nifty`, `ports_logistics_minus_nifty`,
+`usdinr_minus_dxy` (strips broad dollar moves), `brent_ret`, and
+`gold_ret` (descriptive). At the 2026-08-07 audit,
+Brent was unavailable and therefore correctly belongs in
+`unavailable_outcomes`, not in the published result grid.
 
 ## docs/data/validation.json
 
@@ -322,12 +330,16 @@ small for 110m polygons carry a point marker instead of a path.
 
 ## docs/data/stress_gauge.json
 
-The India Stress Gauge (methodology section 9): today's 0-100 gauge,
+The experimental India Stress Gauge (methodology section 9): today's 0-100 gauge,
 the per-component percentiles behind it (press, events, market,
 wikipedia), the pre-registered weights, the hit-rate against the
 pre-registered episode list with per-miss detail, and a 365-day
-history. Publishes only once the events history is complete
-(`_meta.partial` stays false on anything served). Weights, detection
+history. `_meta.registered_weights` records the intended four-component
+design. `_meta.latest_available_components`, `latest_missing_components`
+and `latest_effective_weights` disclose any per-date renormalization;
+`_meta.partial` is true when either the events history or a latest-date
+component is missing. The current 2/29 validation result is experimental
+and the gauge is not eligible as a headline measure. Weights, detection
 rule, and missing-component rule live in
 `validation/stress_gauge_weights.json`, committed before any hit-rate
 was computed.
@@ -504,14 +516,15 @@ numbers, not IGRM. Raw per-event store (id-keyed, revisable):
 
 ## docs/data/receipts_archive.json
 
-Trailing-week receipts archive: per channel and day (up to 7 days from
+Available recent receipts archive: per channel and day (up to 7 days from
 the committed corpus day-caches), the matched articles assembled
 identically to `receipts.json` (same matcher provenance, tier sort,
 syndication dedup, lane labels), capped at `_meta.per_day_cap` per
 channel-day (`n_matched` still reports the day's full match count).
-Today's full list lives in `receipts.json`; this file exists so a
-channel page always carries a week of enumerable, dated evidence.
-Depth comes from days, never from padding.
+Today's full list lives in `receipts.json`. `_meta.available_days` and
+`complete_window` disclose whether all seven cache days exist. The archive
+never implies a complete week when it does not have one, and depth comes
+from days, never from padding.
 
 ## docs/data/episode_terms.json
 
@@ -810,7 +823,10 @@ Episode detection fires when a channel's share exceeds its trailing
 90-day mean plus 2σ. A crisis therefore enters the very window its own
 future threshold is computed from: the mean rises, the standard
 deviation rises faster, and the bar climbs for ninety days — peaking
-*after* the crisis is over in 521 of 523 detected episodes.
+*after* the crisis is over in 521 of 523 analysed episodes. The payload's
+`excluded_episodes` lists any detected episode the diagnostic cannot
+evaluate and gives the reason; the current one-row exclusion is caused by
+an absent pre-episode source day rather than being silently dropped.
 
 Worked example, `pakistan_west` through Pahalgam and Sindoor: the
 threshold was 0.0244 on 2025-04-21, and 0.6912 on 2025-07-20 — a **28×**
@@ -876,7 +892,7 @@ daily composite percentiles. It ships because twenty users aggregating
 this themselves would make twenty different silent decisions about the
 same three traps, and their results would stop being comparable.
 
-*Short months.* `coverage` is days present over days expected (for the
+*Short months.* `coverage` is share-data days present over days expected (for the
 current month, over days elapsed). A month below 80% publishes its row
 with **null values** and a stated `refused_reason` rather than a mean
 over the survivors — 2025-06 has 14 of 30 days and is the case that
@@ -896,7 +912,11 @@ Both are published so the difference is visible rather than resolved by
 whoever aggregates first. The `share_*` columns mean the same thing in
 every year and are the recommended input to anything estimated;
 percentiles are ranks against a moving two-year window and are offered
-as convenience.
+as convenience. `n_days_composite_present` and `composite_coverage`
+separately report how many ranked daily composite scores exist; a monthly
+composite below the same 80% floor is null with a
+`composite_refused_reason`. JSON uses `null` for missing numeric values;
+CSV represents the same values as blank cells.
 
 ## docs/data/episode_themes.json
 

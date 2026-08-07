@@ -19,7 +19,7 @@ body {
   font-size: var(--fs-body);
   line-height: 1.55;
 }
-.wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color var(--dur-quick) var(--ease); }
 a:hover { color: var(--state); }
 :focus-visible { outline: 2px solid var(--state); outline-offset: 2px; }
@@ -37,14 +37,14 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
 .section-sub { color: var(--muted); font-size: var(--fs-dense); margin: 4px 0 14px; max-width: 68ch; }
 .empty { color: var(--muted); font-style: italic; }
 
-/* Masthead — sticky glass */
+/* Masthead — compact institutional navigation */
 .masthead {
   position: sticky; top: 0; z-index: 20;
   border-bottom: 1px solid var(--rule);
-  padding: 22px 0 18px;
-  background: color-mix(in srgb, var(--paper) 82%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  backdrop-filter: blur(14px) saturate(1.4);
+  padding: 12px 0;
+  background: color-mix(in srgb, var(--paper) 76%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+  backdrop-filter: blur(18px) saturate(1.35);
   transition: padding var(--dur-calm) var(--ease);
 }
 /* Shrink-on-scroll (founder request 2026-08-06): once the reader is
@@ -57,14 +57,47 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
 .masthead.shrunk .tagline { max-height: 0; opacity: 0; margin: 0; }
 .masthead.shrunk h1 { font-size: var(--fs-lead); }
 .masthead.shrunk .mono-eyebrow { display: none; }
-.masthead-row { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; flex-wrap: wrap; }
-.mast-links { display: flex; gap: 4px; font-size: var(--fs-dense); flex-wrap: wrap; }
+.nav-shell {
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 22px; align-items: center;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--ink); text-decoration: none;
+}
+.brand:hover { color: var(--ink); }
+.brand-mark {
+  display: grid; place-items: center; width: 38px; aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--calm) 55%, var(--rule));
+  border-radius: 12px; color: var(--ink); font-family: "Fraunces", Georgia, serif;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--calm) 18%, transparent), transparent 55%),
+    color-mix(in srgb, var(--surface) 82%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ink) 10%, transparent);
+}
+.brand-copy { display: flex; flex-direction: column; line-height: 1.15; }
+.brand-copy strong { letter-spacing: 0.12em; font-size: var(--fs-dense); }
+.brand-copy small { color: var(--muted); font-size: var(--fs-micro); margin-top: 3px; }
+.mast-links {
+  justify-self: center; display: flex; gap: 3px; padding: 4px;
+  font-size: var(--fs-dense); flex-wrap: nowrap;
+  border: 1px solid var(--rule-soft); border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 66%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ink) 5%, transparent);
+}
 .mast-links a {
   text-decoration: none; color: var(--muted);
   padding: 6px 12px; border-radius: 999px;
   transition: color var(--dur-quick) var(--ease), background var(--dur-quick) var(--ease);
 }
 .mast-links a:hover { color: var(--ink); background: var(--rule-soft); }
+.nav-actions { display: flex; gap: 8px; align-items: center; }
+.data-cta {
+  padding: 7px 13px; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule));
+  border-radius: 999px; color: var(--ink); text-decoration: none;
+  font-size: var(--fs-small); background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.data-cta:hover { color: var(--ink); background: color-mix(in srgb, var(--accent) 14%, transparent); }
 .theme-btn {
   font: inherit; font-size: var(--fs-small); color: var(--muted);
   background: transparent; border: 1px solid var(--rule);
@@ -73,15 +106,81 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
 }
 .theme-btn:hover { color: var(--ink); border-color: var(--muted); }
 
+/* Homepage thesis and live instrument share one first-screen stage. */
+.hero-stage {
+  display: grid; grid-template-columns: minmax(300px, 0.72fr) minmax(640px, 1.45fr);
+  gap: 28px; align-items: stretch; padding: 48px 0 28px;
+}
+.hero-copy {
+  display: flex; flex-direction: column; justify-content: center;
+  min-width: 0; padding: 18px 4px 18px 0;
+}
+.hero-kicker {
+  display: flex; align-items: center; gap: 8px; margin: 0 0 18px;
+  color: var(--muted); font-size: var(--fs-micro); font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+}
+.status-dot {
+  display: inline-block; flex: 0 0 auto; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--muted);
+}
+.hero-copy h1 {
+  font-size: clamp(2.7rem, 5vw, 4.8rem); line-height: 0.98;
+  letter-spacing: -0.045em; text-wrap: balance;
+}
+.hero-copy h1 span {
+  background: linear-gradient(100deg, var(--ink) 4%, var(--calm) 48%, var(--elevated) 105%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-copy .tagline {
+  max-width: 48ch; margin-top: 22px; color: var(--muted);
+  font-size: var(--fs-lead); line-height: 1.55;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+.hero-btn {
+  display: inline-flex; align-items: center; gap: 10px; padding: 9px 15px;
+  border: 1px solid var(--rule); border-radius: 999px;
+  color: var(--muted); text-decoration: none; font-size: var(--fs-small);
+  transition: color var(--dur-quick) var(--ease), background var(--dur-quick) var(--ease),
+              border-color var(--dur-quick) var(--ease), transform var(--dur-instant) var(--ease);
+}
+.hero-btn:hover { color: var(--ink); border-color: var(--muted); }
+.hero-btn:active { transform: scale(0.98); }
+.hero-btn-primary {
+  border-color: color-mix(in srgb, var(--calm) 60%, var(--rule));
+  color: var(--paper); background: var(--calm);
+}
+.hero-btn-primary:hover { color: var(--paper); background: color-mix(in srgb, var(--calm) 86%, var(--ink)); }
+.hero-facts {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0; margin: 34px 0 0; padding: 0;
+  border-top: 1px solid var(--rule-soft); border-left: 1px solid var(--rule-soft);
+}
+.hero-facts div { padding: 11px 13px; border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
+.hero-facts dt {
+  color: var(--muted); font-size: var(--fs-micro); letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.hero-facts dd { margin: 3px 0 0; color: var(--ink); font-size: var(--fs-dense); font-weight: 600; }
+
 /* Instrument — the hero card */
 .instrument {
   display: grid; grid-template-columns: minmax(240px, 1fr) 1.35fr;
-  gap: 48px; padding: 36px 40px; margin: 36px 0;
+  gap: 30px; padding: 26px 30px 30px; margin: 0;
   background: var(--surface);
   border: 1px solid var(--rule-soft);
   border-radius: 18px;
   box-shadow: var(--shadow);
 }
+.instrument-meta {
+  grid-column: 1 / -1; display: flex; align-items: center;
+  justify-content: space-between; gap: 18px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule-soft); color: var(--muted);
+  font-size: var(--fs-micro); letter-spacing: 0.1em; text-transform: uppercase;
+}
+.instrument-meta span { display: inline-flex; align-items: center; gap: 8px; }
+.instrument-meta a { color: var(--muted); text-decoration: none; }
+.instrument-meta a:hover { color: var(--ink); }
 .big-number {
   font-family: "Fraunces", Georgia, serif;
   font-optical-sizing: auto;
@@ -143,6 +242,24 @@ a.component-row { text-decoration: none; color: inherit; cursor: pointer; }
 .down { color: var(--calm); }
 .flat { color: var(--muted); }
 
+.evidence-rail {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 26px; border: 1px solid var(--rule-soft); border-radius: 14px;
+  overflow: hidden; background: color-mix(in srgb, var(--surface) 48%, transparent);
+}
+.evidence-rail a {
+  display: flex; flex-direction: column; min-width: 0; padding: 16px 18px;
+  border-right: 1px solid var(--rule-soft); text-decoration: none;
+  transition: background var(--dur-quick) var(--ease), color var(--dur-quick) var(--ease);
+}
+.evidence-rail a:last-child { border-right: 0; }
+.evidence-rail a:hover { color: var(--ink); background: color-mix(in srgb, var(--surface) 82%, transparent); }
+.evidence-rail span {
+  color: var(--muted); font-size: var(--fs-micro); letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.evidence-rail strong { margin-top: 5px; font-size: var(--fs-dense); font-weight: 600; }
+
 /* Sections */
 .chart-section, .note-section, .archive-section { padding: 40px 0; border-bottom: 1px solid var(--rule-soft); }
 .archive-section:last-of-type { border-bottom: none; }
@@ -164,8 +281,13 @@ a.component-row { text-decoration: none; color: inherit; cursor: pointer; }
 .chart-wrap { margin-top: 10px; }
 
 /* Note */
-.note { max-width: 64ch; }
-.note h3 { font-family: "Fraunces", Georgia, serif; }
+.note { max-width: 76ch; }
+.note h2 { margin: 18px 0 6px; font-size: var(--fs-h1); line-height: 1.15; }
+.note h3 {
+  margin: 28px 0 8px; color: var(--state); font-family: "Archivo", system-ui, sans-serif;
+  font-size: var(--fs-small); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.note p { color: color-mix(in srgb, var(--ink) 92%, var(--muted)); }
 
 /* Tables */
 .table-scroll { overflow-x: auto; }
@@ -333,6 +455,7 @@ body::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(60% 80% at 18% 20%, color-mix(in srgb, var(--state) 9%, transparent), transparent 60%);
 }
+.instrument > * { position: relative; z-index: 1; }
 .big-number {
   font-size: clamp(5rem, 13vw, 8rem);
   text-shadow: 0 2px 28px color-mix(in srgb, var(--state) 16%, transparent);
@@ -376,6 +499,34 @@ h2 { position: relative; }
  * all because line 393 re-declared the same property further down.
  * Keeping every media query at the end makes source order match intent.
  * ===================================================================== */
+@media (max-width: 1080px) {
+  .nav-shell { grid-template-columns: auto 1fr; }
+  .mast-links { justify-self: end; }
+  .nav-actions { grid-column: 1 / -1; justify-self: end; margin-top: -4px; }
+  .hero-stage { grid-template-columns: 1fr; padding-top: 34px; }
+  .hero-copy { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr); column-gap: 34px; }
+  .hero-kicker, .hero-copy h1, .hero-copy .tagline, .hero-actions { grid-column: 1; }
+  .hero-facts { grid-column: 2; grid-row: 2 / span 3; align-self: end; }
+  .instrument { min-height: 0; }
+}
+
+@media (max-width: 760px) {
+  .nav-shell { display: flex; flex-wrap: wrap; gap: 10px; }
+  .brand-copy small { display: none; }
+  .mast-links {
+    order: 3; width: 100%; justify-self: auto; flex-wrap: nowrap;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    border-radius: 10px; padding-bottom: 2px;
+  }
+  .mast-links::-webkit-scrollbar { display: none; }
+  .mast-links a { white-space: nowrap; padding: 5px 10px; }
+  .nav-actions { margin-left: auto; }
+  .hero-stage { padding: 22px 0 16px; gap: 18px; }
+  .hero-copy { display: block; padding: 0; }
+  .hero-facts { display: none; }
+  .hero-stage > .instrument { order: -1; }
+}
+
 /* ---- The phone hero -------------------------------------------------
  * The brief is explicit: the headline number and the five channel rows
  * ARE the hero and must read instantly on a phone. Measured on a
@@ -389,6 +540,13 @@ h2 { position: relative; }
  * standfirst. None of that is the instrument.
  */
 @media (max-width: 640px) {
+  .nav-shell { display: flex; flex-wrap: wrap; gap: 10px; }
+  .brand-copy small { display: none; }
+  .brand-mark { width: 34px; border-radius: 10px; }
+  .mast-links { order: 3; width: 100%; justify-self: auto; border-radius: 10px; }
+  .nav-actions { margin-left: auto; }
+  .data-cta { display: none; }
+
   /* One scrolling row instead of three stacked ones. The links stay
      reachable and stop costing a fifth of the screen. */
   .mast-links {
@@ -415,8 +573,26 @@ h2 { position: relative; }
 
   .masthead { padding: 14px 0 12px; }
   .wrap { padding: 0 18px; }
+  .hero-stage { padding: 26px 0 16px; gap: 18px; }
+  .hero-copy { display: block; padding: 0; }
+  .hero-kicker { margin-bottom: 12px; }
+  .hero-copy h1 { font-size: clamp(2.35rem, 12vw, 3.4rem); }
+  .hero-copy .tagline {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden; margin-top: 14px; font-size: var(--fs-body);
+  }
+  .hero-actions { margin-top: 16px; }
+  .hero-facts { display: none; }
+  .evidence-rail {
+    display: flex; overflow-x: auto; border-radius: 12px; margin-bottom: 14px;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .evidence-rail::-webkit-scrollbar { display: none; }
+  .evidence-rail a { flex: 0 0 230px; padding: 13px 15px; }
   .glance { margin: 10px 0 0; }
-  .instrument { margin: 18px 0; padding: 22px 18px; gap: 18px; }
+  .instrument { margin: 0; padding: 18px; gap: 16px; }
+  .instrument-meta { padding-bottom: 10px; }
+  .instrument-meta a { display: none; }
 
   /* 80px of number on a 375px screen is a poster, not an instrument.
      64px still reads from arm's length and buys a whole channel row. */

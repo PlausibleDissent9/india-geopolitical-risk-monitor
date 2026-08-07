@@ -196,7 +196,7 @@ def render_home() -> None:
         d = arrow(delta(hist["channels"].get(k, [])))
         row_parts.append(
             f'\n      <a class="component-row" href="receipts.html?channel={k}">'
-            f'<span class="component-name">{c["label"]}</span>'
+            f'<span class="component-name">{escape(c["label"])}</span>'
             f'<span class="component-score">{score}</span>'
             f'<span class="component-delta">{d}</span></a>'
         )

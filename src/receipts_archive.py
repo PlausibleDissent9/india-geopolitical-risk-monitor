@@ -1,15 +1,13 @@
 """
-Rolling receipts archive (founder requirement 2026-08-06: minimum 100
-visible articles per channel per day, never stagnant).
+Rolling receipts archive (up to seven available committed cache days).
 
-A single day cannot honestly guarantee 100 articles: on a dead channel
-day, fewer than 100 matching articles exist anywhere. The archive is
-the honest route to guaranteed depth: today's receipts stay the
-primary evidence (receipts.json, unchanged), and this module publishes
-the trailing week from the same committed corpus day-caches
-(data/raw/receipt_days/), every article dated, so a channel page
-always carries a week of enumerable evidence -- typically several
-hundred articles -- without one fabricated or padded row.
+A single day cannot honestly guarantee an article quota: on a dead
+channel day, fewer matching articles may exist. Today's receipts stay
+the primary evidence (receipts.json, unchanged), and this module publishes
+up to seven available days from the same committed corpus day-caches
+(data/raw/receipt_days/), every article dated. A channel page carries
+the days that actually exist in the cache—possibly fewer than seven—
+without one fabricated or padded row.
 
 Construction per day and channel is identical to receipts_ngrams
 assembly (same matcher provenance, same tier sort, same syndication
@@ -84,14 +82,18 @@ def build() -> dict[str, Any]:
             channels[ch]["total_articles"] += len(arts)
     return {
         "_meta": {
-            "what": ("Trailing-week receipts archive: per channel and day, "
+            "what": ("Available recent receipts archive: per channel and day, "
                      "the matched articles from that day's committed corpus "
                      "cache, assembled identically to receipts.json (same "
                      "matcher provenance, tier sort, syndication dedup, "
                      "lane labels), capped per day. Today's full list lives "
-                     "in receipts.json; this file guarantees a week of "
-                     "enumerable, dated evidence per channel."),
+                     "in receipts.json. The cache may contain fewer than "
+                     "seven days; available_days and complete_window make "
+                     "that explicit."),
             "days": sorted(days_used, reverse=True),
+            "target_days": ARCHIVE_DAYS,
+            "available_days": len(days_used),
+            "complete_window": len(days_used) >= ARCHIVE_DAYS,
             "per_day_cap": ARCHIVE_PER_DAY,
             "generated": datetime.now(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"),

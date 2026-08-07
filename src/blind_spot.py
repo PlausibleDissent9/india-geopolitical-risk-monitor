@@ -81,7 +81,9 @@ def threshold_path(s: pd.Series) -> pd.DataFrame:
                          "threshold": mu + bi.EPISODE_SIGMA * sd})
 
 
-def analyse_channel(s: pd.Series, channel: str) -> list[dict[str, Any]]:
+def analyse_channel(s: pd.Series, channel: str,
+                    exclusions: list[dict[str, str]] | None = None
+                    ) -> list[dict[str, Any]]:
     path = threshold_path(s)
     episodes = bi.detect_episodes(s, channel)
     out: list[dict[str, Any]] = []
@@ -90,9 +92,23 @@ def analyse_channel(s: pd.Series, channel: str) -> list[dict[str, Any]]:
         end = pd.Timestamp(ep["end"])
         day_before = start - pd.Timedelta(days=1)
         if day_before not in path.index:
+            if exclusions is not None:
+                exclusions.append({
+                    "channel": channel,
+                    "episode_start": ep["start"],
+                    "episode_end": ep["end"],
+                    "reason": "day before episode absent from share store",
+                })
             continue
         pre = path.loc[day_before, "threshold"]
         if not (pre > 0):
+            if exclusions is not None:
+                exclusions.append({
+                    "channel": channel,
+                    "episode_start": ep["start"],
+                    "episode_end": ep["end"],
+                    "reason": "pre-episode threshold unavailable or non-positive",
+                })
             continue
 
         # The peak is searched from the episode's START, not from its
@@ -103,6 +119,13 @@ def analyse_channel(s: pd.Series, channel: str) -> list[dict[str, Any]]:
         span = path.loc[start:end + pd.Timedelta(days=FOLLOW_DAYS)]
         after = path.loc[end:end + pd.Timedelta(days=FOLLOW_DAYS)].iloc[1:]
         if after.empty or span.empty:
+            if exclusions is not None:
+                exclusions.append({
+                    "channel": channel,
+                    "episode_start": ep["start"],
+                    "episode_end": ep["end"],
+                    "reason": "insufficient post-episode follow-up window",
+                })
             continue
 
         peak = float(span["threshold"].max())
@@ -144,8 +167,9 @@ def analyse_channel(s: pd.Series, channel: str) -> list[dict[str, Any]]:
 def main() -> None:
     v = pd.read_csv(STORE, parse_dates=["date"]).set_index("date")
     rows: list[dict[str, Any]] = []
+    exclusions: list[dict[str, str]] = []
     for ch in v.columns:
-        rows.extend(analyse_channel(v[ch].dropna(), ch))
+        rows.extend(analyse_channel(v[ch].dropna(), ch, exclusions))
 
     rows.sort(key=lambda r: (r["channel"], r["episode_start"]))
     multiples = [r["threshold_peak_multiple"] for r in rows]
@@ -216,6 +240,8 @@ def main() -> None:
                 "first one was most serious. Read "
                 "largest_episodes_by_peak_share, not the median."),
             "n_episodes_analysed": len(rows),
+            "n_episodes_excluded": len(exclusions),
+            "excluded_episodes": exclusions,
             "n_episodes_whose_bar_peaked_after_they_ended": late_peak,
             "max_threshold_multiple": max(multiples) if multiples else None,
             "median_threshold_multiple": (

@@ -210,7 +210,11 @@ function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.igrmTheme = theme;
   const btn = document.getElementById("theme-toggle");
-  if (btn) btn.textContent = theme === "dark" ? "Light" : "Dark";
+  if (btn) {
+    const target = theme === "dark" ? "light" : "dark";
+    btn.textContent = target[0].toUpperCase() + target.slice(1);
+    btn.setAttribute("aria-label", `Switch to ${target} theme`);
+  }
   const score = parseFloat(document.getElementById("composite-score").textContent);
   if (!Number.isNaN(score)) {
     document.documentElement.style.setProperty("--state", stateColor(score));
@@ -221,8 +225,11 @@ document.getElementById("theme-toggle")?.addEventListener("click", () => {
   applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
 });
 if (document.getElementById("theme-toggle")) {
-  document.getElementById("theme-toggle").textContent =
-    (localStorage.igrmTheme || "dark") === "dark" ? "Light" : "Dark";
+  const btn = document.getElementById("theme-toggle");
+  const current = localStorage.igrmTheme || "dark";
+  const target = current === "dark" ? "light" : "dark";
+  btn.textContent = target[0].toUpperCase() + target.slice(1);
+  btn.setAttribute("aria-label", `Switch to ${target} theme`);
 }
 
 /* Subscribe modal: centered, appears once after 15s of reading, fully
@@ -506,7 +513,7 @@ async function init() {
     renderLatest(latest, history);
     if (latest.definition) {
       document.getElementById("tagline").textContent =
-        latest.definition + " Final numbers by 6:00 AM IST; provisional nowcast every two hours.";
+        latest.definition + " Publication target: 6:00 AM IST; provisional nowcast every two hours.";
     }
   } catch (e) { console.warn("latest.json not available yet", e); }
   try {

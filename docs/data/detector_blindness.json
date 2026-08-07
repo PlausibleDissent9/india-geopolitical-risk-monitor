@@ -7,6 +7,15 @@
   "worked_example": "pakistan_west, Pahalgam/Sindoor: threshold 0.0244 on 2025-04-21, 0.6912 on 2025-07-20 -- 28.4x, peaking after the crisis ended. On 2025-05-20 the share was 0.1340, five and a half times the pre-crisis bar, and the detector stayed silent.",
   "the_effect_scales_with_episode_size": "Most detected episodes are small and barely move the bar; the median multiple is close to 1. The damage is in the tail, and it is the tail that matters: the largest episodes raise their channel's threshold by more than an order of magnitude, so the detector is least able to see a second event precisely when the first one was most serious. Read largest_episodes_by_peak_share, not the median.",
   "n_episodes_analysed": 523,
+  "n_episodes_excluded": 1,
+  "excluded_episodes": [
+   {
+    "channel": "gulf_energy",
+    "episode_start": "2017-12-03",
+    "episode_end": "2017-12-07",
+    "reason": "day before episode absent from share store"
+   }
+  ],
   "n_episodes_whose_bar_peaked_after_they_ended": 521,
   "max_threshold_multiple": 32.9,
   "median_threshold_multiple": 1.4,
@@ -21,7 +30,7 @@
   "suppressed_days_are_deduplicated": "Episode follow-windows overlap, so this is the count of DISTINCT channel-days, not the sum of per-episode counts, which would multiply-count the same day.",
   "median_days_until_bar_within_2x": 1,
   "follow_days": 120,
-  "generated": "2026-08-07T12:24:46Z",
+  "generated": "2026-08-07T16:12:32Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",

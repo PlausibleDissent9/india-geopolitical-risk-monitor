@@ -39,7 +39,7 @@
 <script src="motion.js?v=5f04349d"></script>
 <script src="vendor/chart.umd.min.js?v=81ffafe1"></script>
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="style.css?v=5bfeae13" />
+<link rel="stylesheet" href="style.css?v=67dd342d" />
 </head>
 <body>
 <header class="masthead">
@@ -57,7 +57,7 @@
     </nav>
     <div class="nav-actions">
       <a class="data-cta" href="data.html">Open data <span aria-hidden="true">↗</span></a>
-      <button id="theme-toggle" class="theme-btn" aria-label="Switch color theme">Light</button>
+      <button id="theme-toggle" class="theme-btn" aria-label="Switch to light theme">Light</button>
     </div>
   </div>
 </header>
@@ -67,7 +67,7 @@
     <div class="hero-copy">
       <p class="hero-kicker"><span class="status-dot" aria-hidden="true"></span> India-specific · daily · open</p>
       <h1 id="hero-title">Geopolitical attention,<br><span>measured for India.</span></h1>
-      <p class="tagline" id="tagline">Measures press salience across five India-relevant channels, ranked against each channel's own trailing two years. Not a measure of event probability or severity.</p>
+      <p class="tagline" id="tagline">Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice. Publication target: 6:00 AM IST; provisional nowcast every two hours.</p>
       <div class="hero-actions">
         <a class="hero-btn hero-btn-primary" href="start.html">Understand the index <span aria-hidden="true">→</span></a>
         <a class="hero-btn" href="methodology.html">Read the methodology</a>
@@ -99,9 +99,9 @@
       <div class="components" id="components"><!--ssr:components-->
       <a class="component-row" href="receipts.html?channel=pakistan_west"><span class="component-name">Pakistan / Western Border</span><span class="component-score">65.1</span><span class="component-delta">▼ -25.1</span></a>
       <a class="component-row" href="receipts.html?channel=china_east"><span class="component-name">China / Eastern Border</span><span class="component-score">5.3</span><span class="component-delta">▲ +0.8</span></a>
-      <a class="component-row" href="receipts.html?channel=gulf_energy"><span class="component-name">Gulf & Energy Security</span><span class="component-score">77.7</span><span class="component-delta">▼ -0.8</span></a>
-      <a class="component-row" href="receipts.html?channel=us_trade"><span class="component-name">US & Trade Policy</span><span class="component-score">15.6</span><span class="component-delta">▼ -20.0</span></a>
-      <a class="component-row" href="receipts.html?channel=shipping"><span class="component-name">Shipping & Chokepoints</span><span class="component-score">80.9</span><span class="component-delta">▼ -2.3</span></a>
+      <a class="component-row" href="receipts.html?channel=gulf_energy"><span class="component-name">Gulf &amp; Energy Security</span><span class="component-score">77.7</span><span class="component-delta">▼ -0.8</span></a>
+      <a class="component-row" href="receipts.html?channel=us_trade"><span class="component-name">US &amp; Trade Policy</span><span class="component-score">15.6</span><span class="component-delta">▼ -20.0</span></a>
+      <a class="component-row" href="receipts.html?channel=shipping"><span class="component-name">Shipping &amp; Chokepoints</span><span class="component-score">80.9</span><span class="component-delta">▼ -2.3</span></a>
     <!--/ssr:components--></div>
     </section>
   </section>
@@ -180,10 +180,10 @@
   <aside class="subscribe" role="dialog" aria-modal="true" aria-label="Subscribe to the weekly note">
     <button class="subscribe-close" id="subscribe-close" aria-label="Dismiss">×</button>
     <p class="mono-eyebrow">The weekly note</p>
-    <h2 class="subscribe-title">What moved. Why. In two minutes.</h2>
-    <p class="subscribe-copy">One ~250-word read each Friday: what moved in India's
-    geopolitical salience, why it moved, and what it does, and doesn't, imply.
-    Grounded in the week's sources, never more than two minutes of your time.</p>
+    <h2 class="subscribe-title">What changed. What the evidence shows.</h2>
+    <p class="subscribe-copy">One concise institutional assessment each Friday:
+    the week's index movements, cross-channel positioning, validation evidence
+    and limitations. Descriptive, source-linked and explicit about uncertainty.</p>
     <form id="subscribe-form">
       <input type="email" id="subscribe-email" placeholder="you@example.com" required
              autocomplete="email" aria-label="Email address" />
@@ -198,7 +198,7 @@
   </aside>
 </div>
 
-<script src="app.js?v=0b19ac81"></script>
+<script src="app.js?v=bd3eb21b"></script>
 <script src="reveal.js?v=33b267c3"></script>
 </body>
 </html>

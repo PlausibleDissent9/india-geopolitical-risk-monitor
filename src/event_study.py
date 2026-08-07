@@ -71,14 +71,18 @@ def run_event_study(episodes: list[dict], derived: pd.DataFrame) -> dict:
     for e in episodes:
         by_channel.setdefault(e["channel"], []).append(e)
 
-    outcomes = [o for o in RELATIVE_OUTCOMES + DESCRIPTIVE_OUTCOMES
-                if o in derived.columns]
+    configured_outcomes = RELATIVE_OUTCOMES + DESCRIPTIVE_OUTCOMES
+    outcomes = [o for o in configured_outcomes
+                if o in derived.columns and derived[o].notna().any()]
+    unavailable_outcomes = [o for o in configured_outcomes if o not in outcomes]
     results: dict = {
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
         "windows": WINDOWS,
         "units": "cumulative log return, percent",
         "language": "associated with -- no causal claim",
         "descriptive_only": DESCRIPTIVE_OUTCOMES,
+        "available_outcomes": outcomes,
+        "unavailable_outcomes": unavailable_outcomes,
         "channels": {},
     }
 
@@ -148,7 +152,8 @@ def write_output(results: dict) -> None:
     results = {"_meta": _file_meta(
         "Event study: mean cumulative India-specific relative returns "
         "after episode starts, with bootstrapped 95% CIs, plus raw "
-        "per-episode window returns.",
+        "per-episode window returns. available_outcomes and "
+        "unavailable_outcomes disclose the current data surface.",
         "cumulative log return, percent, over trading-day windows",
     ), **results}
     (SITE_DATA / "event_study.json").write_text(

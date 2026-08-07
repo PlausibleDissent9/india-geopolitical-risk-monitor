@@ -35,7 +35,7 @@ const DAYS = Math.min(1095, Math.max(30, parseInt(Q.get("days") || "365", 10)));
 const BASE = "";
 const NAMES = { composite: "Composite", pakistan_west: "Pakistan / Western Border",
   china_east: "China / Eastern Border", gulf_energy: "Gulf & Energy",
-  us_trade: "US & Trade Policy", shipping: "Shipping & Chokepoints", gauge: "India Stress Gauge" };
+  us_trade: "US & Trade Policy", shipping: "Shipping & Chokepoints", gauge: "Experimental India Stress Gauge" };
 function draw(labels, values, label, latest) {
   document.getElementById("t").innerHTML =
     `${label}: <span class="num">${latest == null ? "-" : latest}</span> <span style="color:var(--muted)">(percentile of trailing 2y; salience, not risk)</span>`;

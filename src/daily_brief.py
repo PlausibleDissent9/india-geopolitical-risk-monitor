@@ -84,7 +84,6 @@ def build_context() -> dict[str, Any]:
 
     latest = read("latest.json")
     receipts = read("receipts.json")
-    gauge = read("stress_gauge.json")
     evidence: dict[str, Any] = {}
     for ch, v in (receipts.get("channels") or {}).items():
         arts = v.get("articles", [])
@@ -99,7 +98,6 @@ def build_context() -> dict[str, Any]:
         "channels": latest.get("channels"),
         "receipts": evidence,
         "receipts_date": receipts.get("date"),
-        "stress_gauge": gauge.get("gauge"),
     }
 
 

@@ -121,10 +121,24 @@ def build() -> list[dict[str, Any]]:
             "mixed_instruments": bool(n_api and n_bridge),
         }
 
+        # Share coverage and ranked-score coverage are different.  The
+        # share store begins before the trailing window can produce a
+        # composite score, so calling the former `coverage` and leaving
+        # the latter implicit made early 2017 look fully populated when
+        # its composite was based on zero (or, in June, two) days.
+        comps = [c for c in (_fnum((hist.get(d["date"]) or {}).get("composite"))
+                             for d in days) if c is not None]
+        composite_coverage = len(comps) / expected if expected else 0.0
+        row["n_days_composite_present"] = len(comps)
+        row["composite_coverage"] = round(composite_coverage, 4)
+
         if coverage < MIN_COVERAGE:
             for ch in CHANNELS:
                 row[f"share_{ch}"] = ""
             row["composite_mean_of_ranks"] = ""
+            row["composite_refused_reason"] = (
+                "share coverage failed, so no monthly composite is "
+                "published")
             row["refused_reason"] = (
                 f"coverage {coverage:.0%} below the {MIN_COVERAGE:.0%} "
                 f"floor ({expected - present} of {expected} days absent "
@@ -138,10 +152,16 @@ def build() -> list[dict[str, Any]]:
                     if v is not None]
             row[f"share_{ch}"] = (round(sum(vals) / len(vals), 6)
                                   if vals else "")
-        comps = [c for c in (_fnum((hist.get(d["date"]) or {}).get("composite"))
-                             for d in days) if c is not None]
-        row["composite_mean_of_ranks"] = (round(sum(comps) / len(comps), 2)
-                                          if comps else "")
+        if composite_coverage < MIN_COVERAGE:
+            row["composite_mean_of_ranks"] = ""
+            row["composite_refused_reason"] = (
+                f"composite coverage {composite_coverage:.0%} below the "
+                f"{MIN_COVERAGE:.0%} floor ({expected - len(comps)} of "
+                f"{expected} daily composite scores unavailable)")
+        else:
+            row["composite_mean_of_ranks"] = round(
+                sum(comps) / len(comps), 2)
+            row["composite_refused_reason"] = ""
         row["refused_reason"] = ""
         rows.append(row)
     return rows
@@ -150,7 +170,9 @@ def build() -> list[dict[str, Any]]:
 FIELDS = (["month", "n_days_present", "n_days_expected", "coverage",
            "n_days_doc_api", "n_days_ngram_bridge", "mixed_instruments"]
           + [f"share_{c}" for c in CHANNELS]
-          + ["composite_mean_of_ranks", "refused_reason"])
+          + ["n_days_composite_present", "composite_coverage",
+             "composite_mean_of_ranks", "composite_refused_reason",
+             "refused_reason"])
 
 
 def main() -> None:
@@ -161,12 +183,19 @@ def main() -> None:
     SITE_DATA.mkdir(parents=True, exist_ok=True)
     with (SITE_DATA / "monthly.csv").open("w", encoding="utf-8",
                                           newline="") as f:
-        w = csv.DictWriter(f, fieldnames=FIELDS)
+        w = csv.DictWriter(f, fieldnames=FIELDS, lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
 
     refused = [r for r in rows if r["refused_reason"]]
     mixed = [r for r in rows if r["mixed_instruments"]]
+    # CSV blanks are the conventional representation of missing numeric
+    # values.  JSON has a real missing-value type; publishing empty
+    # strings there created mixed numeric/string columns for consumers.
+    json_rows = [
+        {k: (None if v == "" else v) for k, v in row.items()}
+        for row in rows
+    ]
     payload = {
         "_meta": {
             "what": (
@@ -183,6 +212,11 @@ def main() -> None:
                 "stated reason, never a mean over the survivors. The "
                 "current month is judged against days elapsed, not "
                 "against its full length."),
+            "composite_coverage_rule": (
+                "n_days_composite_present and composite_coverage count "
+                "only days with a ranked daily composite. A monthly "
+                f"composite below {MIN_COVERAGE:.0%} coverage is null "
+                "even when the underlying share series is complete."),
             "averaging_ranks_warning": (
                 "composite_mean_of_ranks is the mean of daily "
                 "percentiles, which is NOT the percentile of the monthly "
@@ -205,7 +239,7 @@ def main() -> None:
                 "%Y-%m-%dT%H:%M:%SZ"),
         },
         "csv": "monthly.csv",
-        "months": rows,
+        "months": json_rows,
     }
     (SITE_DATA / "monthly.json").write_text(json.dumps(payload, indent=1),
                                             encoding="utf-8")
