@@ -1,0 +1,181 @@
+/* IGRM design tokens — the single source of truth for both sheets.
+ *
+ * WHY THIS FILE EXISTS, twice over.
+ *
+ * Design: the site had thirteen distinct font sizes (11.2, 11.52, 12,
+ * 12.48, 12.8, 13.6, 14.08, 14.4, 16, 19.2, 21.6, 27.2, 80px). Values
+ * like 11.52 and 14.08 are not choices, they are nested em compounding
+ * — a scale that happened rather than a scale that was decided. An
+ * information-dense instrument needs a small deliberate ramp so that
+ * size means rank, everywhere, on every page.
+ *
+ * Structure: style.css (homepage) and site.css (nineteen subpages) each
+ * declared the same palette independently, under a comment reading
+ * "Keep the two sheets' values in step." That discipline had already
+ * failed once — the homepage palette names resolved empty in site.css
+ * on 2026-07-31, which crashed the gap chart's gradient and greyed
+ * every other chart on the page. Two hand-synchronised copies of one
+ * palette is a defect waiting for the next edit, so there is now one
+ * copy and both sheets import it.
+ *
+ * Character: dark, calm, technical. Night is the committed default;
+ * light is a persisted choice and must stay equally legible. Nothing
+ * here is decorative — no gradients, no glass, no glow. The reference
+ * points are FT data journalism, the Economist's data pages, and FRED.
+ */
+
+:root {
+  /* ---- Palette: night (default) ------------------------------------
+   * Deepened and desaturated from the previous #0E141E/#26303F. The old
+   * rule colour was heavy enough that tables read as grids first and
+   * data second; rules should be felt, not seen. */
+  --paper:      #0B1017;   /* page ground */
+  --surface:    #121924;   /* cards, raised blocks */
+  --surface-2:  #17202D;   /* nested / hover */
+  --ink:        #E6E4DC;   /* primary text */
+  --muted:      #8C95A4;   /* secondary text, captions */
+  --faint:      #7A8492;   /* tertiary: axis labels, fine print.
+                            * 5.04:1 on --paper. The first value here
+                            * was #626C7C at 3.59:1 -- AA-large only,
+                            * which is NOT AA for the small text this
+                            * token exists to colour. Measured before
+                            * anything used it. */
+  --rule:       #1F2833;   /* borders, table rules */
+  --rule-soft:  #161E29;   /* hairlines inside dense tables */
+
+  /* Identity accent. Terracotta is the project's colour; it is not
+   * being rebranded, only given a companion for links so that "accent"
+   * and "clickable" stop being the same signal. */
+  --accent:     #D96548;
+  --accent-dim: rgba(217, 101, 72, 0.14);
+  --link:       #7FA9D6;
+
+  /* State: calm / elevated / severe. Data-driven, the only place
+   * colour carries meaning about the world. */
+  --calm:       #3FA697;
+  --elevated:   #D9A43B;
+  --severe:     #D96548;
+  --state:      var(--calm);
+  --ok:         var(--calm);
+  --bad:        var(--severe);
+
+  /* Channel series. Five hues that differ in BOTH hue and lightness, so
+   * they survive greyscale printing and the common colour-vision
+   * deficiencies — a legend that only works for trichromats is not a
+   * legend. Desaturated on purpose: five saturated lines on a dark
+   * ground is a fairground, not an instrument. */
+  --ch-pakistan-west: #E08464;
+  --ch-china-east:    #7FB6A1;
+  --ch-gulf-energy:   #E0B75E;
+  --ch-us-trade:      #7FA9D6;
+  --ch-shipping:      #A98BC4;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.34), 0 10px 32px rgba(0, 0, 0, 0.38);
+
+  /* ---- Type scale --------------------------------------------------
+   * Seven steps plus a display size. Every rule in both sheets should
+   * name one of these; a literal font-size outside this ramp is a bug
+   * report about the ramp. */
+  --fs-micro:   0.6875rem;  /* 11px — table headers, eyebrows */
+  --fs-fine:    0.75rem;    /* 12px — fine print, footnotes */
+  --fs-small:   0.8125rem;  /* 13px — captions, chart notes */
+  --fs-dense:   0.875rem;   /* 14px — table cells, dense UI */
+  --fs-body:    1rem;       /* 16px — reading prose */
+  --fs-lead:    1.125rem;   /* 18px — standfirst, section leads */
+  --fs-h2:      1.25rem;    /* 20px — section heads */
+  --fs-stat:    1.5rem;     /* 24px — inline stat numbers (cards, rows) */
+  --fs-h1:      1.75rem;    /* 28px — page title */
+  --fs-display-sm: 4rem;    /* 64px — subpage headline number */
+  --fs-display: 5rem;       /* 80px — the homepage headline number */
+
+  --lh-tight: 1.2;
+  --lh-snug:  1.35;
+  --lh-body:  1.6;
+
+  /* ---- Spacing: 4px rhythm ----------------------------------------- */
+  --sp-1:  0.25rem;
+  --sp-2:  0.5rem;
+  --sp-3:  0.75rem;
+  --sp-4:  1rem;
+  --sp-5:  1.25rem;
+  --sp-6:  1.5rem;
+  --sp-8:  2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+
+  --radius:      6px;
+  --radius-lg:   10px;
+  --measure:     68ch;   /* prose line length */
+
+  /* ---- Motion ------------------------------------------------------
+   * Calm means short and linear-ish. Nothing bounces, nothing springs,
+   * nothing announces itself. Durations are named by intent so a future
+   * edit changes meaning rather than a magic number. */
+  --dur-instant: 90ms;
+  --dur-quick:   160ms;
+  --dur-calm:    260ms;
+  --ease:        cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+:root[data-theme="light"] {
+  --paper:      #FAFAF7;
+  --surface:    #FFFFFF;
+  --surface-2:  #F3F2EC;
+  --ink:        #12233D;
+  --muted:      #5C6675;
+  --faint:      #666E7C;   /* 4.91:1 on light paper, same reason */
+  --rule:       #D8D6CE;
+  --rule-soft:  #E7E5DD;
+
+  --accent:     #A2361F;
+  --accent-dim: rgba(162, 54, 31, 0.10);
+  --link:       #2C5C8F;
+
+  --calm:       #1E6E67;
+  --elevated:   #B07C1F;
+  --severe:     #A2361F;
+
+  --ch-pakistan-west: #B5502F;
+  --ch-china-east:    #2F7A63;
+  --ch-gulf-energy:   #96701A;
+  --ch-us-trade:      #2C5C8F;
+  --ch-shipping:      #6B4C8A;
+
+  --shadow: 0 1px 2px rgba(18, 35, 61, 0.04), 0 8px 28px rgba(18, 35, 61, 0.06);
+}
+
+/* Honour the system preference for anyone who has never touched the
+ * toggle. The inline script in each page sets data-theme from
+ * localStorage; this covers first visits only, and the explicit
+ * attribute always wins because it is more specific. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --paper: #FAFAF7; --surface: #FFFFFF; --surface-2: #F3F2EC;
+    --ink: #12233D; --muted: #5C6675; --faint: #666E7C;
+    --rule: #D8D6CE; --rule-soft: #E7E5DD;
+    --accent: #A2361F; --accent-dim: rgba(162, 54, 31, 0.10);
+    --link: #2C5C8F;
+    --calm: #1E6E67; --elevated: #B07C1F; --severe: #A2361F;
+    --ch-pakistan-west: #B5502F; --ch-china-east: #2F7A63;
+    --ch-gulf-energy: #96701A; --ch-us-trade: #2C5C8F;
+    --ch-shipping: #6B4C8A;
+  }
+}
+
+/* Motion is a courtesy, never a requirement. Anyone who has asked their
+ * system for less of it gets none: no transitions, no smooth scroll,
+ * no reveals. The page must be fully usable and identical in content. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0ms;
+    --dur-quick:   0ms;
+    --dur-calm:    0ms;
+  }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
