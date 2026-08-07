@@ -1,0 +1,413 @@
+{
+ "_meta": {
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/vintages_panel.json",
+  "what": "Every published vintage of the daily series, as an exact reconstruction recipe: truncate the current history.csv at the vintage's last_observation, then overwrite the values in its diffs. Gives a backtester the numbers as they stood on any publish date -- the ALFRED property -- without twelve git invocations.",
+  "reconstruction": "rows = {d: r for d, r in current.items() if d <= last_observation and d not in absent_days}; then for each diff day, apply its channel values over the row. Verified exact against git for every vintage listed, on every build; the builder refuses to publish otherwise.",
+  "why_diffs": "10 of the vintages differ from today's series by nothing at all (vintages.json is the nightly proof), so a full panel would be >99% duplication. The two revised vintages carry their changed values inline.",
+  "n_vintages": 12,
+  "generated": "2026-08-07T17:25:15Z"
+ },
+ "current_columns": [
+  "composite",
+  "pakistan_west",
+  "china_east",
+  "gulf_energy",
+  "us_trade",
+  "shipping"
+ ],
+ "vintages": [
+  {
+   "published": "2026-08-07",
+   "sha": "6ef9b6edd2d2af88d2abfd069a66e5445d724108",
+   "last_observation": "2026-08-06",
+   "n_rows": 3305,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-06",
+   "sha": "0269edf09a21713bb733f12375ea9979015f18e1",
+   "last_observation": "2026-08-05",
+   "n_rows": 3304,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-05",
+   "sha": "eec9aecfe8acc2f2fbee92171d861b29be156844",
+   "last_observation": "2026-08-04",
+   "n_rows": 3303,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-04",
+   "sha": "8376d998f7a9c9000ea0a00c0e5c074d17184e8c",
+   "last_observation": "2026-08-03",
+   "n_rows": 3302,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-03",
+   "sha": "a9f4bdf30c05d8383e4c4f42719ac6299d871d9f",
+   "last_observation": "2026-08-02",
+   "n_rows": 3301,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-02",
+   "sha": "1a5e5a7dd6a4fa7b81313685cdbf150b861140a2",
+   "last_observation": "2026-08-01",
+   "n_rows": 3300,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-01",
+   "sha": "3790999800972e7a646057102d2a980f8d8d5988",
+   "last_observation": "2026-07-31",
+   "n_rows": 3299,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-07-31",
+   "sha": "42a7d07d276a912d6008e16d5e4da37addc7a757",
+   "last_observation": "2026-07-30",
+   "n_rows": 3298,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-07-30",
+   "sha": "6f1c9699dbb9c52caf66ccdabdf25be20e7f4ed2",
+   "last_observation": "2026-07-29",
+   "n_rows": 3297,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-07-29",
+   "sha": "43d9aaefd18c6ec8339c516eb01258b42d344dd1",
+   "last_observation": "2026-07-28",
+   "n_rows": 3296,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-07-27",
+   "sha": "f3b11522cdb089a1ffd009ee24ac2190df635a28",
+   "last_observation": "2026-07-21",
+   "n_rows": 3285,
+   "n_diff_days": 17,
+   "absent_days": [
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04"
+   ],
+   "diffs": {
+    "2026-07-05": {
+     "composite": "",
+     "pakistan_west": "59.7",
+     "china_east": "25.4",
+     "gulf_energy": "81.4",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-06": {
+     "composite": "",
+     "pakistan_west": "76.6",
+     "china_east": "6.1",
+     "gulf_energy": "81.1",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-07": {
+     "composite": "",
+     "pakistan_west": "42.2",
+     "china_east": "2.4",
+     "gulf_energy": "82.5",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-08": {
+     "composite": "",
+     "pakistan_west": "88.3",
+     "china_east": "67.8",
+     "gulf_energy": "91.8",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-09": {
+     "composite": "",
+     "pakistan_west": "55.3",
+     "china_east": "49.1",
+     "gulf_energy": "87.6",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-10": {
+     "composite": "",
+     "pakistan_west": "67.8",
+     "china_east": "45.1",
+     "gulf_energy": "82.1",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-11": {
+     "composite": "",
+     "pakistan_west": "75.0",
+     "china_east": "81.0",
+     "gulf_energy": "81.8",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-12": {
+     "composite": "",
+     "pakistan_west": "29.1",
+     "china_east": "90.1",
+     "gulf_energy": "88.3",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-13": {
+     "composite": "",
+     "pakistan_west": "22.0",
+     "china_east": "59.5",
+     "gulf_energy": "87.4",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-14": {
+     "composite": "",
+     "pakistan_west": "48.9",
+     "china_east": "39.8",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-15": {
+     "composite": "",
+     "pakistan_west": "43.0",
+     "china_east": "51.8",
+     "gulf_energy": "84.5",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-16": {
+     "composite": "",
+     "pakistan_west": "50.2",
+     "china_east": "48.9",
+     "gulf_energy": "84.1",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-17": {
+     "composite": "",
+     "pakistan_west": "58.8",
+     "china_east": "65.7",
+     "gulf_energy": "81.5",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-18": {
+     "composite": "",
+     "pakistan_west": "68.5",
+     "china_east": "51.6",
+     "gulf_energy": "83.1",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-19": {
+     "composite": "",
+     "pakistan_west": "25.2",
+     "china_east": "58.7",
+     "gulf_energy": "85.2",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-20": {
+     "composite": "",
+     "pakistan_west": "57.8",
+     "china_east": "60.5",
+     "gulf_energy": "85.6",
+     "us_trade": "",
+     "shipping": ""
+    },
+    "2026-07-21": {
+     "composite": "",
+     "pakistan_west": "80.7",
+     "china_east": "6.9",
+     "gulf_energy": "82.8",
+     "us_trade": "",
+     "shipping": ""
+    }
+   }
+  },
+  {
+   "published": "2026-07-27",
+   "sha": "ff3c84b7370fa4e566855c5f96f964fadcc11f18",
+   "last_observation": "2026-07-21",
+   "n_rows": 3285,
+   "n_diff_days": 17,
+   "absent_days": [
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04"
+   ],
+   "diffs": {
+    "2026-07-05": {
+     "composite": "33.3",
+     "pakistan_west": "59.7",
+     "china_east": "25.4",
+     "gulf_energy": "81.4",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-06": {
+     "composite": "32.8",
+     "pakistan_west": "76.6",
+     "china_east": "6.1",
+     "gulf_energy": "81.1",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-07": {
+     "composite": "25.4",
+     "pakistan_west": "42.2",
+     "china_east": "2.4",
+     "gulf_energy": "82.5",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-08": {
+     "composite": "49.6",
+     "pakistan_west": "88.3",
+     "china_east": "67.8",
+     "gulf_energy": "91.8",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-09": {
+     "composite": "38.4",
+     "pakistan_west": "55.3",
+     "china_east": "49.1",
+     "gulf_energy": "87.6",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-10": {
+     "composite": "39.0",
+     "pakistan_west": "67.8",
+     "china_east": "45.1",
+     "gulf_energy": "82.1",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-11": {
+     "composite": "47.6",
+     "pakistan_west": "75.0",
+     "china_east": "81.0",
+     "gulf_energy": "81.8",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-12": {
+     "composite": "41.5",
+     "pakistan_west": "29.1",
+     "china_east": "90.1",
+     "gulf_energy": "88.3",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-13": {
+     "composite": "33.8",
+     "pakistan_west": "22.0",
+     "china_east": "59.5",
+     "gulf_energy": "87.4",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-14": {
+     "composite": "35.7",
+     "pakistan_west": "48.9",
+     "china_east": "39.8",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-15": {
+     "composite": "35.9",
+     "pakistan_west": "43.0",
+     "china_east": "51.8",
+     "gulf_energy": "84.5",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-16": {
+     "composite": "36.6",
+     "pakistan_west": "50.2",
+     "china_east": "48.9",
+     "gulf_energy": "84.1",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-17": {
+     "composite": "41.2",
+     "pakistan_west": "58.8",
+     "china_east": "65.7",
+     "gulf_energy": "81.5",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-18": {
+     "composite": "40.6",
+     "pakistan_west": "68.5",
+     "china_east": "51.6",
+     "gulf_energy": "83.1",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-19": {
+     "composite": "33.8",
+     "pakistan_west": "25.2",
+     "china_east": "58.7",
+     "gulf_energy": "85.2",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-20": {
+     "composite": "40.8",
+     "pakistan_west": "57.8",
+     "china_east": "60.5",
+     "gulf_energy": "85.6",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    },
+    "2026-07-21": {
+     "composite": "34.1",
+     "pakistan_west": "80.7",
+     "china_east": "6.9",
+     "gulf_energy": "82.8",
+     "us_trade": "0.0",
+     "shipping": "0.0"
+    }
+   }
+  }
+ ]
+}
