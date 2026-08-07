@@ -158,10 +158,18 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
 
   if (v.hit_rate) {
     const h = v.hit_rate;
+    const tranche2 = h.episodes.filter((e) => e.tranche === 2);
+    const tranche1 = h.episodes.filter((e) => e.tranche !== 2);
+    const trancheHits = (rows) => rows.filter((e) => e.hit).length;
     document.getElementById("hitSummary").innerHTML =
       "Detection window &plusmn;" + esc(h.window_days) + " days. Overall: <b>" +
       esc(h.overall.hits) + "/" + esc(h.overall.n) + " (" +
       Math.round(100 * h.overall.hits / h.overall.n) + "%)</b>. " +
+      "Original tranche: <b>" + trancheHits(tranche1) + "/" + tranche1.length +
+      " (" + Math.round(100 * trancheHits(tranche1) / tranche1.length) +
+      "%)</b>. Second dated tranche: <b>" + trancheHits(tranche2) + "/" +
+      tranche2.length + " (" +
+      Math.round(100 * trancheHits(tranche2) / tranche2.length) + "%)</b>. " +
       "List frozen before the first validation run; none of these event names appears in any query term. <a href=\"https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/validation/validation_episodes.json\" rel=\"noopener\">The pre-registered list itself</a>, with its append-only rule and <a href=\"https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/commits/main/validation/validation_episodes.json\" rel=\"noopener\">dated commit history</a>.";
     const tb = document.querySelector("#hits tbody");
     // V6: a HIT links to the anatomy page of the detected episode that

@@ -207,6 +207,7 @@ jobs:
         run: |
           python -m src.provenance
           python -m src.publish_shares
+          python -m src.splice_sensitivity
           python -m src.monthly
           python -m src.blind_spot
           python -m src.episode_actors

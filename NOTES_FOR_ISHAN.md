@@ -798,37 +798,35 @@ one) — that plus the recipe closes V13's design surface; the
 pip-installable package restructure waits for a quiet slot because it
 moves module paths that live cron lanes are executing tonight.
 
-## 0.24 Splice calibration: the n=1 finding, and the good news
+## 0.24 Splice calibration: signed decision executed, circular result rejected
 
 A referee flagged that `us_trade` and `shipping` splice ratios rested
-on a SINGLE overlap day (n_days=1) — a fair and serious catch, since
-those ratios scale a whole channel's recent history.
+on a single overlap day. You chose to keep the production ratios frozen
+and publish the stability table.
 
-Recomputed 2026-08-07 over all 38 cached ngram days:
+The first table was wrong. Its apparent n=38 denominator came from the
+live store, but on 37 of those 38 dates the store value had itself been
+created as NGrams divided by the old ratio. Re-estimating from that pair
+mostly recovered the input by construction. Codex and Claude both caught
+the exact 0.0% rows as the tell, and the table never reached the site.
 
-| channel | old ratio (n) | new ratio (n=38) | change |
+The replacement audit uses the last pre-bridge DOC-API store preserved
+in git commit `091c25e` and the retained NGrams caches:
+
+| channel | production ratio (n) | independent audit (n) | change |
 |---|---|---|---|
-| pakistan_west | 1.9547 (5) | 1.9762 | +1.1% |
-| china_east | 3.3612 (5) | 3.3243 | −1.1% |
-| gulf_energy | 1.7910 (5) | 1.7891 | −0.1% |
-| us_trade | 2.5616 (1) | 2.5616 | ~0% |
-| shipping | 2.9747 (1) | 2.9747 | ~0% |
+| pakistan_west | 1.9547 (5) | 2.4634 (18) | +26.0% |
+| china_east | 3.3612 (5) | 2.6998 (18) | -19.7% |
+| gulf_energy | 1.7910 (5) | 1.8098 (18) | +1.0% |
+| us_trade | 2.5616 (1) | no additional independent overlap | not estimated |
+| shipping | 2.9747 (1) | no additional independent overlap | not estimated |
 
-The estimates are stable under a 7–38x increase in sample size, which
-is the strongest possible answer to the objection. YOUR CALL, because
-adopting the new ratios moves published history values (by ~1%):
-
-  (a) adopt n=38 ratios with a dated changelog entry — better
-      estimates, tiny revision, and the stability table publishes as
-      evidence; or
-  (b) keep the frozen ratios and publish the stability table as a
-      robustness check — no revision at all, same evidence.
-
-Recommendation: **(b)**. The frozen ratios are within 1.1% of the
-better-estimated ones, so revising buys almost nothing and costs a
-vintage change; publishing the table answers the referee completely
-while leaving every historical value untouched. Say "adopt n=38" or
-"publish the stability table" and it ships either way.
+Your no-revision decision still stands, so v1 history is unchanged. The
+public methodology now publishes this as a sensitivity finding, not a
+stability victory, and sets an exit gate for any future measurement
+version: at least 14 independent overlap days for every channel, the
+score-level impact published, and the old vintage retained. The code and
+pre-bridge snapshot are committed under `analysis/` and locked by tests.
 
 ## 0.25 The referee report — what got answered on 7 August, and the two things still needing you
 
@@ -926,12 +924,9 @@ Indian public salience should be pointed at
 this index does not do, this is the honest answer, and having it
 published before being asked is worth more than the finding costs.
 
-**Two things that need you, and only these two:**
+**One thing still needs you:**
 
-1. **NOTES 0.24 is still open** — the splice recalibration. Say "adopt
-   n=38" or "publish the stability table" and it ships either way. My
-   recommendation remains (b).
-2. **#31, the name collision.** Still your call, still unchanged from
+1. **#31, the name collision.** Still your call, still unchanged from
    when you first saw it.
 
 ## 0.26 The hardening pass, 7 August — what was silently broken, and what now catches it

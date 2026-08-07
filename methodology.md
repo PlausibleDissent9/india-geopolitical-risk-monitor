@@ -1,6 +1,6 @@
 # IGRM Methodology
 
-Version 1.9.0 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability 2026-08-01, receipts drill-down 2026-08-02, API contract frozen 2026-08-04, corpus receipts and sampling bands 2026-08-06, 7-day headline 2026-08-06, raw shares published 2026-08-07 · [changelog](#changelog) at the end.
+Version 1.10.1 · five channels frozen 2026-07-24, V2 layers added 2026-07-31, comparators and predictability 2026-08-01, receipts drill-down 2026-08-02, API contract frozen 2026-08-04, corpus receipts and sampling bands 2026-08-06, 7-day headline 2026-08-06, raw shares and the independent splice audit published 2026-08-07 · [changelog](#changelog) at the end.
 
 ## 1. What the index measures (and what it does not)
 
@@ -87,7 +87,61 @@ tail is computed from GDELT's raw Web NGrams files at the maintainer's
 direction, the same share construct from half-hourly samples of the raw
 feed, and ratio-spliced to the API series on overlap days, with each
 channel's splice ratio and its dispersion published alongside the data
-(see changelog). The published score is the
+(see changelog).
+
+### 3.1 Independent audit of the splice calibration
+
+The production ratios remain frozen, but they are not described as
+validated. A proposed 38-day stability check was rejected before
+publication because it was circular: on 37 of the 38 cached days, the
+store value used as the denominator had itself been produced by dividing
+the cached NGrams value by the production ratio. Re-estimating from that
+pair mechanically recovers the old constant.
+
+The table below uses a genuinely independent denominator instead: the
+last pre-bridge DOC-API store preserved in git commit `091c25e`, paired
+with the retained NGrams day caches. The recovered window is 2026-06-30
+to 2026-07-21. It supplies 18 independent days for the first three
+channels, but only the original single day for US Trade and Shipping.
+
+| Channel | Frozen ratio (original n) | Independent audit ratio (n) | Change | Audit log-SD |
+|---|---:|---:|---:|---:|
+| Pakistan / Western Border | 1.9547 (5) | 2.4634 (18) | +26.0% | 0.3296 |
+| China / Eastern Border | 3.3612 (5) | 2.6998 (18) | -19.7% | 0.3954 |
+| Gulf & Energy | 1.7910 (5) | 1.8098 (18) | +1.0% | 0.0976 |
+| US & Trade | 2.5616 (1) | not independently re-estimable (1) | not estimated | 0.0000 |
+| Shipping & Chokepoints | 2.9747 (1) | not independently re-estimable (1) | not estimated | 0.0000 |
+
+This is a sensitivity finding, not a replacement calibration. It shows
+material uncertainty in the Pakistan and China links and leaves the two
+one-day links untested. Production values and published history remain
+unchanged to preserve the v1 vintage. The score-level effect is material,
+so it is published rather than summarized away:
+
+| Series | Channel | Median absolute shift | Maximum absolute shift | Shift on 2026-08-06 |
+|---|---|---:|---:|---:|
+| Daily | Pakistan / Western Border | 6.6 | 10.9 | -8.0 |
+| Daily | China / Eastern Border | 13.0 | 18.7 | +5.1 |
+| Daily | Gulf & Energy | 0.0 | 0.4 | 0.0 |
+| Daily | Composite | 1.3 | 3.0 | -0.6 |
+| Trailing 7-day | Pakistan / Western Border | 9.4 | 11.4 | -4.5 |
+| Trailing 7-day | China / Eastern Border | 21.7 | 25.6 | +23.5 |
+| Trailing 7-day | Gulf & Energy | 0.0 | 0.4 | 0.0 |
+| Trailing 7-day | Composite | 2.6 | 4.1 | +3.8 |
+
+Shifts are sensitivity score minus frozen production score over the 37
+mechanically bridged days from 2026-07-01 to 2026-08-06. The full daily
+series is published at `docs/data/splice_sensitivity.json`. It is not a
+corrected history and must not be substituted silently for the primary.
+
+A future measurement version may
+adopt new ratios only after at least 14 independently observed overlap
+days exist for every channel, the score-level impact is published, and
+the old vintage remains downloadable. Code and the recovered API snapshot
+are in `analysis/splice_overlap_audit.py` and
+`analysis/splice_overlap_api_091c25e.csv`.
+
+The published score is the
 percentile rank of today's share within the channel's trailing 730 days
 (inclusive of today; the window never contains future data). Days with
 no observed value stay missing rather than scoring zero.
@@ -363,6 +417,18 @@ a promise that rewrote itself every night would not be a promise.
 
 ## Changelog
 
+- **2026-08-07, v1.10.1 (independent splice audit; primary unchanged).**
+  A proposed 38-day calibration-stability result was rejected before
+  publication because 37 comparison values had been constructed from
+  the same numerator and production ratio. The independent replacement
+  recovers the last pre-bridge DOC-API store from git, reports 18-day
+  re-estimates for Pakistan, China and Gulf, refuses to claim a new
+  estimate for the two n=1 channels, and publishes the full score-level
+  sensitivity at `docs/data/splice_sensitivity.json`. Pakistan and China
+  shifts are material; the homepage carries a notice. Production ratios
+  and every primary history value remain unchanged to preserve the v1
+  vintage. The rejected result and correction mechanism are recorded in
+  the append-only corrections ledger.
 - **2026-08-07, v1.10.0 (the construct is partly Anglophone, measured).**
   The index is built from an English-language corpus, read by an
   English-language matcher, and was cross-validated against English

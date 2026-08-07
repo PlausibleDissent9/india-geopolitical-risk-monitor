@@ -779,6 +779,20 @@
    "stability": "stable"
   },
   {
+   "path": "data/splice_sensitivity.json",
+   "format": "json",
+   "description": "Score-level sensitivity to the independently audited NGrams splice ratios. The frozen primary series is unchanged. Pakistan, China and Gulf are recomputed only on mechanically identified bridge rows; US Trade and Shipping remain at their production ratios because no additional independent overlap exists. Publishes daily and trailing-7-day primary, sensitivity and delta arrays plus median, maximum and latest shifts.",
+   "frozen_fields": [
+    "_meta",
+    "calibration_audit",
+    "dates",
+    "daily",
+    "trailing_7_day",
+    "summary"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/spike_breadth.json",
    "format": "json",
    "description": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",

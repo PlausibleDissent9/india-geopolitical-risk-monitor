@@ -32,6 +32,21 @@
 published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.</p>
+<h2>2026-08-07: circular splice-stability result, caught pre-publish</h2>
+<p>The first stability check appeared to expand the splice calibration from
+one or five overlap days to 38 and found that no ratio moved by more than
+1.1%. That result was circular. On 37 of the 38 dates, the live-store
+denominator had already been constructed from the cached NGrams numerator
+and the production ratio, so the calculation was mostly recovering its
+own input.</p>
+<p>The result was stopped before publication. The independent audit now uses
+the last pre-bridge DOC-API store preserved in git and finds materially
+different ratios for Pakistan (+26.0%) and China (-19.7%), a small change
+for Gulf (+1.0%), and no additional independent overlap for US Trade or
+Shipping. The methodology publishes the full table and keeps the frozen
+production values unchanged. A regression test now requires the audit to
+use the preserved pre-bridge snapshot. No public exposure to the rejected
+38-day claim.</p>
 <h2>2026-08-01: unverifiable source-tier accusations, caught pre-publish</h2>
 <p>The first draft of <code>source_tiers.json</code> designated four broadcast
 outlets tier 4 with specific fabrication claims the project could not
