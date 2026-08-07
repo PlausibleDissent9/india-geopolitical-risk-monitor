@@ -1,14 +1,41 @@
 /* IGRM frontend. Reads only what the pipeline writes into docs/data/. */
 
-const COLORS = {
-  composite: "#12233D",
-  wikipedia: "#8A93A6",
-  pakistan_west: "#FF6B6B",
-  china_east: "#FFC94B",
-  gulf_energy: "#31D9C2",
-  us_trade: "#6FA8FF",
-  shipping: "#C39BFF",
-};
+/* Series colours come from tokens.css, not from here.
+ *
+ * These were seven hardcoded hexes, and they were a third copy of the
+ * palette after style.css and site.css -- the same duplication that
+ * greyed every chart on the analysis page in July, waiting to happen
+ * again. They also never changed with the theme: #12233D is the LIGHT
+ * theme's ink, so the composite line was drawn in near-black on a
+ * near-black ground in the default dark theme.
+ *
+ * And they were chosen for hue alone (#FF6B6B, #FFC94B, #31D9C2,
+ * #6FA8FF, #C39BFF): five saturated pastels at almost identical
+ * lightness, which merge into one grey ramp for a reader with a colour
+ * vision deficiency, and in any greyscale print. The tokens separate
+ * in luminance as well as hue, and a test enforces the gap.
+ *
+ * Read lazily, per call: the theme toggle rewrites the custom
+ * properties at runtime, so a value captured once at load would be
+ * stale the moment anyone switches.
+ */
+function seriesColor(key) {
+  const token = {
+    composite: "--ink",
+    wikipedia: "--muted",
+    pakistan_west: "--ch-pakistan-west",
+    china_east: "--ch-china-east",
+    gulf_energy: "--ch-gulf-energy",
+    us_trade: "--ch-us-trade",
+    shipping: "--ch-shipping",
+  }[key];
+  return token ? getCSS(token) : getCSS("--muted");
+}
+
+/* Kept as a Proxy so the ~3 existing COLORS[...] call sites keep
+ * working unchanged, while every read resolves against the live theme.
+ */
+const COLORS = new Proxy({}, { get: (_, key) => seriesColor(String(key)) });
 
 const state = { history: null, range: 365, on: { composite: true, daily_tape: true } };
 let chart = null;

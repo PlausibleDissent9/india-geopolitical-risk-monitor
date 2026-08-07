@@ -154,3 +154,17 @@ def test_responsive_overrides_come_last():
     assert not stray, (
         f"top-level rules appear after the responsive block ({stray}); "
         "they will override it")
+
+
+def test_no_stylesheet_or_script_holds_a_third_palette_copy():
+    """app.js carried seven hardcoded series hexes: a third copy of the
+    palette after the two stylesheets, and the one that never followed
+    the theme. Its composite colour was #12233D -- the LIGHT theme's ink
+    -- so the composite line drew near-black on a near-black ground in
+    the dark theme that ships by default."""
+    js = (DOCS / "app.js").read_text(encoding="utf-8")
+    body = js[:js.find("function seriesColor")] + js[js.find("const COLORS"):]
+    hexes = re.findall(r'["\']#[0-9A-Fa-f]{6}["\']', body)
+    assert not hexes, (
+        f"app.js hardcodes colours ({hexes}); series colours belong in "
+        "tokens.css so they follow the theme and stay testable")
