@@ -481,6 +481,19 @@
    "stability": "stable"
   },
   {
+   "path": "data/outlet_drift.json",
+   "format": "json",
+   "description": "Outlet-set drift (referee finding F15): pairwise Jaccard similarity between the outlet (domain) sets of every archived day, per channel and overall. jaccard[i][j] compares days[i] with days[j]; near 1.0 the same outlets carry the coverage, near 0.0 the population turned over. Cells are null where a day has no matched articles for the channel: an absent set is not evidence of turnover.",
+   "frozen_fields": [
+    "_meta",
+    "days",
+    "n_samples",
+    "channels",
+    "adjacent_day"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/permanence.json",
    "format": "json",
    "description": "The permanence lane's own record: the result of the latest Internet Archive snapshot request per page and the latest Software Heritage save-code-now registration. Fail-soft \u2014 an archive outage is recorded here, never hidden, and never blocks the pipeline. Wayback captures are browsable at web.archive.org/web/*/igrm.in.",
