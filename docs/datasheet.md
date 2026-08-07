@@ -68,7 +68,7 @@ the [standing comparison](vs-gpr.html).
 
 ### How many instances are there in total?
 
-The API contract (data/api_contract.json, version 2.2.0, frozen 2026-08-08) lists 80 endpoints: 74 JSON, 5 CSV, 1 RSS. The machine-readable OpenAPI 3.1 description is served at https://igrm.in/openapi.json.
+The API contract (data/api_contract.json, version 2.2.0, frozen 2026-08-08) lists 81 endpoints: 75 JSON, 5 CSV, 1 RSS. The machine-readable OpenAPI 3.1 description is served at https://igrm.in/openapi.json.
 
 *Source: docs/data/api_contract.json (counts computed at generation)*
 

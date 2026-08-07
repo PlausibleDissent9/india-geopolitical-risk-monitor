@@ -1032,6 +1032,33 @@
     }
    }
   },
+  "/data/multilingual.json": {
+   "get": {
+    "operationId": "get_data_multilingual_json",
+    "description": "English-bias audit: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Measures the instrument's bias; association, not risk.",
+    "x-igrm-stability": "stable",
+    "responses": {
+     "200": {
+      "description": "English-bias audit: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Measures the instrument's bias; association, not risk.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "channels"
+         ],
+         "properties": {
+          "_meta": {},
+          "channels": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/data/negative_results.json": {
    "get": {
     "operationId": "get_data_negative_results_json",
