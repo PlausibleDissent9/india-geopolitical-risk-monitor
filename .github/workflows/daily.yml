@@ -178,6 +178,8 @@ jobs:
           python -m src.episode_attribution
           python -m src.spike_breadth
           python -m src.syndication
+          python -m src.provenance
+          python -m src.monthly
       - name: Machine-written daily brief (founder-approved 2026-08-04)
         # Runs after receipts so the brief can cite today's evidence.
         # Fail-closed: without the ANTHROPIC_API_KEY secret the module

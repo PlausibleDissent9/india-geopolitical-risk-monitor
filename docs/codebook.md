@@ -683,6 +683,37 @@ is computed over the whole GDELT event population in
 averaged, because dividing by sources also counts one outlet running
 several distinct pieces on the same event.
 
+## docs/data/monthly.csv and monthly.json
+
+**The series at the frequency economists actually work in.** One row per
+calendar month: `share_<channel>` are means of the daily
+percent-of-corpus shares, `composite_mean_of_ranks` is the mean of the
+daily composite percentiles. It ships because twenty users aggregating
+this themselves would make twenty different silent decisions about the
+same three traps, and their results would stop being comparable.
+
+*Short months.* `coverage` is days present over days expected (for the
+current month, over days elapsed). A month below 80% publishes its row
+with **null values** and a stated `refused_reason` rather than a mean
+over the survivors — 2025-06 has 14 of 30 days and is the case that
+forces the rule. The row is never silently absent: a gap you can see is
+a limitation, a gap you cannot see is an error.
+
+*Mixed instruments.* `mixed_instruments`, with `n_days_doc_api` and
+`n_days_ngram_bridge`, marks months spanning the DOC API/NGrams-bridge
+boundary, where the mean crosses two instruments joined by an estimated
+splice ratio. 2026-06 is the first such month. Users who need one
+instrument can drop these rather than discover them.
+
+*Averaging ranks.* `composite_mean_of_ranks` is the mean of daily
+percentiles, which is **not** the percentile of the monthly mean; the
+two diverge most in skewed months, which are the months of interest.
+Both are published so the difference is visible rather than resolved by
+whoever aggregates first. The `share_*` columns mean the same thing in
+every year and are the recommended input to anything estimated;
+percentiles are ranks against a moving two-year window and are offered
+as convenience.
+
 ## docs/data/episode_themes.json
 
 Narrative composition (G4): per channel per day, the GKG theme codes

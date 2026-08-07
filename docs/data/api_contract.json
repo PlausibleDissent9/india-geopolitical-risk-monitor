@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.21.0",
+    "contract_version": "1.22.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -313,6 +313,39 @@
         "_meta",
         "states",
         "excluded_adm1"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/monthly.csv",
+      "format": "csv",
+      "description": "The daily series aggregated to calendar months, with the three traps handled in the open: months below 80% day coverage publish null values and a stated reason instead of a mean over the survivors, months spanning the DOC API/NGrams instrument boundary are flagged, and the mean-of-ranks composite is published beside the commensurable share means rather than instead of them.",
+      "frozen_fields": [
+        "month",
+        "n_days_present",
+        "n_days_expected",
+        "coverage",
+        "n_days_doc_api",
+        "n_days_ngram_bridge",
+        "mixed_instruments",
+        "share_pakistan_west",
+        "share_china_east",
+        "share_gulf_energy",
+        "share_us_trade",
+        "share_shipping",
+        "composite_mean_of_ranks",
+        "refused_reason"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/monthly.json",
+      "format": "json",
+      "description": "Monthly aggregation of the daily series, published so that every user is not silently making their own decisions about short months, mixed instruments and averaged ranks.",
+      "frozen_fields": [
+        "_meta",
+        "csv",
+        "months"
       ],
       "stability": "stable"
     },
@@ -687,7 +720,7 @@
     {
       "path": "data/shares.csv",
       "format": "csv",
-      "description": "The QUANTITY the index is built from: each channel's daily share of the GDELT-monitored corpus, in percent. Published so any reader can apply their own normalization; commensurable across channels and years where percentiles are not.",
+      "description": "The QUANTITY the index is built from: each channel's daily share of the GDELT-monitored corpus, in percent. Published so any reader can apply their own normalization; commensurable across channels and years where percentiles are not. The source column names the instrument that measured each day, because the series mixes DOC API counts with splice-linked NGrams-bridge days and a mean across that boundary inherits the linking constant's uncertainty.",
       "frozen_fields": [
         "date",
         "pakistan_west",

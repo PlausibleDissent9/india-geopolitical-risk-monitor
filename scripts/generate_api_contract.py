@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "1.21.0"  # + syndication.json (referee #23); shares.csv source column (referee #10)
+CONTRACT_VERSION = "1.22.0"  # + monthly.csv/json (referee #33), syndication.json (#23), shares source column (#10)
 FROZEN_DATE = "2026-08-04"
 
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
@@ -49,10 +49,21 @@ DESCRIPTIONS = {
         "divergence episodes and a lead-lag cross-correlation study.",
     "seasonality.json": "Day-of-week and month-of-year salience means, "
         "descriptive only, no seasonal adjustment applied anywhere else.",
+    "monthly.csv": "The daily series aggregated to calendar months, with "
+        "the three traps handled in the open: months below 80% day "
+        "coverage publish null values and a stated reason instead of a "
+        "mean over the survivors, months spanning the DOC API/NGrams "
+        "instrument boundary are flagged, and the mean-of-ranks composite "
+        "is published beside the commensurable share means rather than "
+        "instead of them.",
     "shares.csv": "The QUANTITY the index is built from: each channel's "
         "daily share of the GDELT-monitored corpus, in percent. Published "
         "so any reader can apply their own normalization; commensurable "
-        "across channels and years where percentiles are not.",
+        "across channels and years where percentiles are not. The source "
+        "column names the instrument that measured each day, because the "
+        "series mixes DOC API counts with splice-linked NGrams-bridge "
+        "days and a mean across that boundary inherits the linking "
+        "constant's uncertainty.",
     "validation.json": "The pre-registered validation record: hit rate "
         "against the 21-episode list, cross-source and placebo checks, "
         "robustness under alternate specifications.",
