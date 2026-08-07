@@ -683,6 +683,38 @@ is computed over the whole GDELT event population in
 averaged, because dividing by sources also counts one outlet running
 several distinct pieces on the same event.
 
+## docs/data/vintages.json
+
+**What did the index say on the day it said it?** Every daily publish is
+a commit, so `docs/data/history.csv` at a given SHA is exactly what the
+site served that morning. This file diffs every such vintage against
+what is served today, across the composite and all five channels on
+their overlapping dates — the question that decides whether a backtest
+built on the current file carries look-ahead bias.
+
+**Finding: 10 of 12 vintages show zero changed values.** The series is
+append-only in practice — days are added, not rewritten. The single
+revision episode is the two 2026-07-27 vintages (101 values across 17
+days, max 99.4 percentile points), and it sits exactly on methodology
+v1.0.1 of 2026-07-29, which changed the percentile computation and is
+recorded in the changelog. *A revision with a dated published cause is a
+version; a revision without one is a defect.*
+
+It is also a **tripwire**, which is the real reason it runs nightly. Any
+vintage that differs without its date appearing in
+`REGISTERED_REVISIONS` fails the build, so a future silent rewrite — a
+rebuilt store, a dictionary applied retroactively, a splice ratio
+quietly adopted — surfaces the next morning instead of being found by a
+user whose results stopped replicating.
+
+Retrieve any vintage yourself, with no tooling and no cooperation from
+this project:
+
+```
+git log --format='%H %ad' --date=short -- docs/data/history.csv
+git show <SHA>:docs/data/history.csv > history_as_of_that_day.csv
+```
+
 ## docs/data/detector_blindness.json
 
 **The detector cannot see a second crisis for about three months.**

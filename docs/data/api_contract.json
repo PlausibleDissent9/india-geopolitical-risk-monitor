@@ -1,7 +1,7 @@
 {
   "_meta": {
     "what": "The frozen v1 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-    "contract_version": "1.24.0",
+    "contract_version": "1.25.0",
     "frozen_date": "2026-08-04",
     "base_url": "https://igrm.in/",
     "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 1. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -840,6 +840,16 @@
         "placebo",
         "robustness",
         "drift"
+      ],
+      "stability": "stable"
+    },
+    {
+      "path": "data/vintages.json",
+      "format": "json",
+      "description": "Every published vintage of the daily series, diffed against what the site serves today. Answers whether a value read on day D is still the value shown for day D now -- the question that decides whether a backtest built on the current file has look-ahead bias in it.",
+      "frozen_fields": [
+        "_meta",
+        "vintages"
       ],
       "stability": "stable"
     },

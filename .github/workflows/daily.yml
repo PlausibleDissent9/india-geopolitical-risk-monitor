@@ -182,6 +182,17 @@ jobs:
           python -m src.monthly
           python -m src.wiki_hindi
           python -m src.blind_spot
+      - name: Vintage tripwire (published history must not be rewritten)
+        # Deliberately NOT continue-on-error, and deliberately its own
+        # step: this is the one check whose whole value is that it can
+        # fail the run. Every other lane above is enrichment, and a
+        # missing enrichment is a smaller harm than a red morning. A
+        # silently rewritten history is not -- it invalidates every
+        # result anyone has published from this series, so it stops the
+        # build and says so.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 10
+        run: python -m src.vintages
       - name: Machine-written daily brief (founder-approved 2026-08-04)
         # Runs after receipts so the brief can cite today's evidence.
         # Fail-closed: without the ANTHROPIC_API_KEY secret the module
