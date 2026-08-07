@@ -241,6 +241,7 @@ jobs:
           python -m src.monthly
           python -m src.blind_spot
           python -m src.detection_baselines
+          python -m src.negative_results
           python -m src.episode_actors
           python -m src.exposure
           python -m src.predictability

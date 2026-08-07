@@ -1,0 +1,68 @@
+{
+ "_meta": {
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/negative_results.json",
+  "what": "Every number that did not go this project's way, compiled from the payloads where each lives. Read live from those payloads at build time, never hand-typed, so a row that stops being true stops being published.",
+  "why": "Anyone can publish good numbers. The reason to believe the flattering ones is that the unflattering ones are computed by the same pipeline on the same schedule -- and this file is where they stand together instead of being scattered across seven payloads.",
+  "n_findings": 9,
+  "generated": "2026-08-07T17:16:04Z"
+ },
+ "findings": [
+  {
+   "finding": "Fusing four sources made detection worse, not better",
+   "number": "2 of 29 episodes detected (hit rate 0.069) vs 24 of 29 for the press channel alone",
+   "source": "data/stress_gauge.json",
+   "reading": "the pre-registered four-source gauge detects a twelfth of what the single press channel does; sophistication is not accuracy"
+  },
+  {
+   "finding": "Placebo channels overlap real episodes far above zero",
+   "number": "52 of 115 placebo episodes (45.2%) overlap real ones; chance under random placement is ~35.6%",
+   "source": "data/validation.json",
+   "reading": "part of every channel's signal is general news volume, and the excess over chance is ~10 points, not 45"
+  },
+  {
+   "finding": "A naive any-channel detector nearly matches the registered hit rate",
+   "number": "naive 26 of 29 vs registered 24 of 29; chance 6.8",
+   "source": "data/detection_baselines.json",
+   "reading": "detection alone is cheap; the channel attribution is what the apparatus actually contributes"
+  },
+  {
+   "finding": "The index tracks English-language attention, not Indian-language attention",
+   "number": "English Wikipedia leads Hindi on 5 of 5 channels, in both levels and changes, with no channel in the other direction",
+   "source": "data/wiki_hindi.json",
+   "reading": "the construct is Anglophone press salience of India; the name understates the qualifier"
+  },
+  {
+   "finding": "Two of four historical channels failed their own pre-registered test and were withheld",
+   "number": "gulf_energy r=0.153, us_trade r=0.216 against a registered floor of 0.6",
+   "source": "data/back_extension.json",
+   "reading": "the withholding rule is the contribution; publishing them anyway would have retracted it"
+  },
+  {
+   "finding": "No sector shows a return sensitivity that survives multiple-comparison correction",
+   "number": "0 of 39 cells significant at Benjamini-Hochberg FDR 10% on first computation",
+   "source": "data/sector_sensitivity.json",
+   "reading": "with this episode set, sector sensitivity to salience episodes is indistinguishable from zero once the search is paid for"
+  },
+  {
+   "finding": "The market moves before the press does",
+   "number": "largest association at lag -8: VIX-percentile changes tend to precede attention changes (association, not causation)",
+   "source": "data/priced_risk.json",
+   "reading": "this index is not an early-warning system for anything priced; whatever it is for, it is not that"
+  },
+  {
+   "finding": "Measured precision is uncalibrated and low on two channels",
+   "number": "author labels 16 of 100; machine agreement 0.875 on n=16",
+   "source": "data/precision.json",
+   "reading": "precision claims wait for the human calibration to reach its registered threshold"
+  },
+  {
+   "finding": "The headline is sensitive to a calibration constant on one channel",
+   "number": "china_east 7-day score moves up to 25.63 points across defensible splice ratios",
+   "source": "data/splice_sensitivity.json",
+   "reading": "the primary series is frozen while the founder decides; the sensitivity is published rather than absorbed"
+  }
+ ]
+}
