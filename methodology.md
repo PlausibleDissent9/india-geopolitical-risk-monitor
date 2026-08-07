@@ -276,7 +276,15 @@ a Wikipedia attention percentile. Each component is ranked against its
 own trailing 730 days with the same 180-observation minimum as the
 index; the gauge is their weighted mean.
 
-The weights (press 0.35, events 0.25, market 0.25, wikipedia 0.15),
+**These weights belong to the stress gauge, not to the index.** §4
+refuses any weighting of the five press channels because none is
+defensible; the gauge is a different registered object combining four
+*distinct measurement modalities*, where the components are not
+interchangeable and a stated weighting is unavoidable. A reader who
+finds §4 and §9 contradictory has found an ambiguity in this document
+rather than in the construction: the index composite is unweighted and
+always has been. The gauge's weights (press 0.35, events 0.25, market
+0.25, wikipedia 0.15),
 the detection rule (gauge at 90 or higher within 3 days of an episode
 date), and the missing-component rule (press required, at least two of
 the other three present, weights renormalized) were registered in

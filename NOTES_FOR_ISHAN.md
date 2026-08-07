@@ -797,3 +797,35 @@ identical transform → tests → publish with honesty surfaces on day
 one) — that plus the recipe closes V13's design surface; the
 pip-installable package restructure waits for a quiet slot because it
 moves module paths that live cron lanes are executing tonight.
+
+## 0.24 Splice calibration: the n=1 finding, and the good news
+
+A referee flagged that `us_trade` and `shipping` splice ratios rested
+on a SINGLE overlap day (n_days=1) — a fair and serious catch, since
+those ratios scale a whole channel's recent history.
+
+Recomputed 2026-08-07 over all 38 cached ngram days:
+
+| channel | old ratio (n) | new ratio (n=38) | change |
+|---|---|---|---|
+| pakistan_west | 1.9547 (5) | 1.9762 | +1.1% |
+| china_east | 3.3612 (5) | 3.3243 | −1.1% |
+| gulf_energy | 1.7910 (5) | 1.7891 | −0.1% |
+| us_trade | 2.5616 (1) | 2.5616 | ~0% |
+| shipping | 2.9747 (1) | 2.9747 | ~0% |
+
+The estimates are stable under a 7–38x increase in sample size, which
+is the strongest possible answer to the objection. YOUR CALL, because
+adopting the new ratios moves published history values (by ~1%):
+
+  (a) adopt n=38 ratios with a dated changelog entry — better
+      estimates, tiny revision, and the stability table publishes as
+      evidence; or
+  (b) keep the frozen ratios and publish the stability table as a
+      robustness check — no revision at all, same evidence.
+
+Recommendation: **(b)**. The frozen ratios are within 1.1% of the
+better-estimated ones, so revising buys almost nothing and costs a
+vintage change; publishing the table answers the referee completely
+while leaving every historical value untouched. Say "adopt n=38" or
+"publish the stability table" and it ships either way.
