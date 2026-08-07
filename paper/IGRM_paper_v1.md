@@ -292,9 +292,26 @@ Stated as constraints, not caveats.
 1. **Salience is not risk.** The index measures press attention. A
    quiet channel is not a safe one, and an anniversary can be as loud
    as an escalation.
-2. **Anglophone lens.** The substrate is English-language coverage; a
-   multilingual divergence audit is in progress and unpublished at
-   the time of writing.
+2. **Anglophone lens, measured.** The substrate is English-language
+   coverage, and a cross-language test shows this is a real constraint
+   rather than a formal one. Reading the same registered article set on
+   Hindi Wikipedia (titles resolved through Wikipedia's interlanguage
+   links, never hand-picked) over 3,394 overlapping days, English
+   Wikipedia tracks the index more closely than Hindi does **on five
+   channels of five, in both levels and day-to-day changes, with no
+   channel where Hindi leads**. Changes correlations fall from
+   0.223/0.340/0.589/0.117/0.564 (English) to
+   0.160/0.132/0.163/0.050/0.030 (Hindi); `us_trade` gives the study's
+   only negative level correlation, −0.136. Attenuation from thin Hindi
+   traffic does not explain the pattern: `us_trade` has the highest
+   median Hindi traffic and the worst agreement, `gulf_energy` the
+   lowest and the strongest. Six of 29 registered articles have no
+   Hindi counterpart at all, and they are the foreign-policy-apparatus
+   topics (sanctions regimes, maritime security), while the two
+   India-adjacent channels resolve completely. The index measures
+   English-language attention to India better than it measures
+   Indian-language attention, and should be cited accordingly
+   (`docs/data/wiki_hindi.json`).
 3. **Single-coder judgment.** Every construct decision traces to one
    author. Registration and append-only amendment constrain
    *post-hoc* revision but cannot substitute for independent coders;
@@ -303,8 +320,42 @@ Stated as constraints, not caveats.
    author's calibration labels currently stand at 16 of a registered
    threshold of 100 and the series is flagged UNCALIBRATED until met
    (machine-author agreement on the current overlap: 0.875, n = 16).
-4. **Syndication.** Share-of-coverage counts syndicated copies;
-   source tiers are disclosed but no de-duplication is applied.
+4. **Syndication, measured.** Share-of-coverage counts articles, so a
+   wire story carried by two hundred outlets moves a channel as far as
+   two hundred newsrooms reacting independently. The multiplier
+   (articles per distinct normalized headline, over the day's full
+   scanned corpus) is now published daily: on 2026-08-05, over a
+   119,349-document scan, `pakistan_west` ran 160 articles across 46
+   distinct stories, ×3.478 — roughly 71% of that channel's article
+   count was republication, in the channel that carries the
+   Pahalgam–Sindoor crisis. No de-duplication is applied and none is
+   proposed: republication is a real editorial decision, not noise, and
+   any deflation would be a second unregistered construct. The
+   estimator is biased downward at small samples (the same channel-day
+   reads 1.923 at 28,575 documents and 3.478 at 119,349), so only
+   full-depth scans enter the published history
+   (`docs/data/syndication.json`).
+5. **The detector goes blind after it fires.** Episode detection uses a
+   trailing 90-day mean + 2σ, so a crisis enters the window its own
+   future threshold is computed from. The bar rises for ninety days and
+   peaks *after* the episode ends in 521 of 523 detected episodes. For
+   `pakistan_west` through Pahalgam and Sindoor the threshold went from
+   0.0244 (2025-04-21) to 0.6912 (2025-07-20), a 28-fold increase; on
+   2025-05-20 a share of 0.1340 — five and a half times the pre-crisis
+   bar — did not register. Across the series, 2,158 distinct
+   channel-days (12.4%) carry coverage the pre-episode threshold would
+   have flagged and the live one did not. The registered rule is
+   unchanged because every alternative is worse (excluding spike days
+   presumes what a spike is; a fixed threshold abandons cross-channel
+   comparability; a longer window delays first detection), but the cost
+   is measured rather than inferred (`docs/data/detector_blindness.json`).
+6. **The series is not one instrument.** Most days are GDELT DOC API
+   counts; a minority were measured by the Web NGrams bridge and
+   divided by an estimated per-channel splice ratio to reach the API's
+   scale (38 of 3,484 days as of 2026-08-07). Any statistic crossing
+   that boundary inherits the linking constant's uncertainty. The
+   instrument label ships as a column in the published shares, and
+   monthly aggregates flag months that span the seam.
 5. **Sampling noise on thin channels.** Days estimated from samples
    carry wide intervals when a channel is quiet; the bands are
    published for exactly this reason.
