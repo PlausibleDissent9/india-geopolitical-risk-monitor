@@ -44,6 +44,15 @@ if [[ "${1:-}" == "--use-cache" ]]; then
 fi
 
 .venv/bin/python -m pytest -q
+
+# Marker file: anything in docs/data older than this was NOT regenerated
+# by this run. Without it the diff compares the clone's committed copy
+# against the source's identical committed copy and calls the match a
+# reproduction -- which is true of every file no module touched, and
+# tells a replicator nothing. Coverage is now reported as a number.
+REBUILD_MARK="$WORK/rebuild_start"
+touch "$REBUILD_MARK"
+
 if [[ "${IGRM_OFFLINE:-}" == "1" ]]; then
   # Cached mode verifies the committed vintage EXACTLY: incremental run
   # over the copied store, no healing, no fetching. Healing here once
@@ -73,13 +82,20 @@ fi
 .venv/bin/python -m src.publish_shares
 .venv/bin/python -m src.monthly
 .venv/bin/python -m src.blind_spot
+.venv/bin/python -m src.alt_specs
+.venv/bin/python -m src.seasonality
+.venv/bin/python -m src.uncertainty
+.venv/bin/python -m src.episode_actors
+.venv/bin/python -m src.exposure
+.venv/bin/python -m src.vintages
+.venv/bin/python -m src.status_data
 # Stamp last, or the rebuilt payloads lack the universal _meta fields
 # the committed ones carry and every file diffs as "present in one side
 # only" -- a reproducibility failure that is really a paperwork one.
 .venv/bin/python -m src.stamp_meta
 
 echo "[reproduce] diffing docs/data against committed versions"
-.venv/bin/python - "$SRC" <<'EOF'
+.venv/bin/python - "$SRC" "$REBUILD_MARK" <<'EOF'
 import json, sys
 from pathlib import Path
 
@@ -129,12 +145,28 @@ def compare(a, b, path="", dates_len=None):
         failures.append(f"{path}: {a!r} != {b!r}")
 
 print(f"[reproduce] market-vintage band: +/-{MARKET_TOL} on {MARKET_FILES}")
+
+mark = Path(sys.argv[2]).stat().st_mtime
+verified, untouched = [], []
 for f in sorted(src.glob("*.json")):
     mine = new / f.name
     if not mine.exists():
-        print(f"[reproduce] {f.name}: not rebuilt (module not run) -- skipped")
+        untouched.append(f.name)
         continue
+    # A file the rebuild never wrote is the clone's committed copy, so
+    # comparing it to the source's committed copy proves nothing. Say so
+    # rather than counting it as a reproduction.
+    if mine.stat().st_mtime < mark:
+        untouched.append(f.name)
+        continue
+    verified.append(f.name)
     compare(json.loads(f.read_text()), json.loads(mine.read_text()), f.name)
+
+print(f"[reproduce] COVERAGE: {len(verified)} payload(s) actually "
+      f"regenerated and diffed; {len(untouched)} not produced by any "
+      "module this run and therefore NOT verified")
+if untouched:
+    print(f"[reproduce] not verified: {', '.join(sorted(untouched))}")
 
 if failures:
     print(f"[reproduce] FAILED: {len(failures)} numeric differences")

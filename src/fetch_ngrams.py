@@ -40,6 +40,7 @@ from __future__ import annotations
 import gzip
 import io
 import json
+import os
 import re
 import sys
 import time
@@ -101,6 +102,18 @@ def group_specs() -> dict[str, dict]:
 
 
 def _fetch(url: str) -> bytes | None:
+    # IGRM_OFFLINE is the reproducibility contract: scripts/reproduce.sh
+    # --use-cache promises "ALL acquisition is refused" so the committed
+    # store is the only data source. fetch_gdelt honoured that; the
+    # NGrams bridge never did, so any lane reaching it -- src.uncertainty
+    # reads day caches through it -- could silently refetch mid-run and
+    # turn a reproduction into a recomputation against newer data.
+    # Refusal is loud rather than an empty return: a caller that quietly
+    # got None would treat a policy refusal as a missing file.
+    if os.environ.get("IGRM_OFFLINE"):
+        raise RuntimeError(
+            f"[ngrams] IGRM_OFFLINE is set; refusing to fetch {url}. "
+            "Offline mode serves committed caches only.")
     for attempt in (1, 2):
         try:
             r = requests.get(url, timeout=120, headers=HEADERS)
@@ -118,6 +131,11 @@ def _fetch(url: str) -> bytes | None:
 def _probe_window(day: date, base_minute: int, window_min: int) -> str | None:
     """First existing timestamp inside one sampling window, probing its
     minutes in order (the heartbeat drops files at arbitrary minutes)."""
+    if os.environ.get("IGRM_OFFLINE"):
+        raise RuntimeError(
+            "[ngrams] IGRM_OFFLINE is set; refusing to probe for "
+            f"{day} minute-files. Offline mode serves committed caches "
+            "only.")
     for offset in range(window_min):
         m = base_minute + offset
         ts = f"{day:%Y%m%d}{m // 60:02d}{m % 60:02d}00"
