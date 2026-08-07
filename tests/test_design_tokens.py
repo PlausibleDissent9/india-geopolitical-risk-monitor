@@ -114,3 +114,43 @@ def test_reduced_motion_is_honoured():
     assert "prefers-reduced-motion" in text, (
         "tokens.css must zero its motion durations for anyone who asked "
         "their system for less motion")
+
+
+def test_the_phone_hero_rules_survive():
+    """The brief: the headline number and the five channel rows ARE the
+    hero and must read instantly on a phone. Measured at 375x812 before
+    these rules existed, ZERO channel rows were visible without
+    scrolling -- the instrument card started at y=563 and each row stood
+    96px tall because a 90px sparkline squeezed the channel name onto
+    three lines.
+
+    These are the specific rules that bought it back (0 rows visible to
+    3, row height 96px to 54px). A future edit that drops them should
+    fail here rather than quietly restore a phone experience nobody
+    checks.
+    """
+    css = (DOCS / "style.css").read_text(encoding="utf-8")
+    idx = css.find("@media (max-width: 640px)")
+    assert idx != -1, "the phone hero media query is gone"
+    block = css[idx:]
+    for rule, why in [
+        (".component-row .spark", "the sparkline must be hidden on phones"),
+        (".nowcast-channels", "the duplicate channel chips must be hidden"),
+        (".mast-links", "the nav must scroll in one row, not wrap to three"),
+    ]:
+        assert rule in block, f"{rule} rule missing: {why}"
+
+
+def test_responsive_overrides_come_last():
+    """style.css declares .big-number three times. A media query placed
+    before a later duplicate is silently undone -- which happened: the
+    phone font-size was written, measured, and found to have no effect
+    because a later rule re-declared it."""
+    css = (DOCS / "style.css").read_text(encoding="utf-8")
+    last_media = css.rfind("@media (max-width")
+    assert last_media != -1
+    tail = css[last_media:]
+    stray = re.findall(r"^\.[\w-]+\s*\{", tail, re.M)
+    assert not stray, (
+        f"top-level rules appear after the responsive block ({stray}); "
+        "they will override it")

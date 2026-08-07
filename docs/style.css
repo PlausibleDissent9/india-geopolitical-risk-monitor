@@ -245,6 +245,7 @@ main > section:nth-child(5) { animation-delay: 240ms; }
   .instrument { grid-template-columns: 1fr; gap: 26px; padding: 26px 22px; }
   .masthead { position: static; }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .big-number, .band-tick, main > section { transition: none; animation: none; }
   .masthead, .masthead .tagline, .masthead h1 { transition: none; }
@@ -364,3 +365,79 @@ h2 { position: relative; }
 ::-webkit-scrollbar { width: 10px; height: 10px }
 ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 6px }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted) }
+
+
+/* =====================================================================
+ * RESPONSIVE OVERRIDES LAST.
+ * This sheet declares .big-number three separate times (a base rule, a
+ * text-shadow rule, and a later clamp) and header h1 twice. Later wins,
+ * so a mobile override placed mid-file is silently undone by whichever
+ * duplicate comes after it -- which is exactly what happened: the phone
+ * font-size below was written, measured, and found to have no effect at
+ * all because line 393 re-declared the same property further down.
+ * Keeping every media query at the end makes source order match intent.
+ * ===================================================================== */
+/* ---- The phone hero -------------------------------------------------
+ * The brief is explicit: the headline number and the five channel rows
+ * ARE the hero and must read instantly on a phone. Measured on a
+ * 375x812 screen before this block existed, they did not: the
+ * instrument card began at y=563 (69% of the first screen spent on
+ * preamble) and rowsVisibleInFirstScreen was ZERO. A reader on a phone
+ * met the masthead, scrolled, and only then met the index.
+ *
+ * Where the 505px of preamble went: 418px masthead — of which the
+ * seven-link nav wrapped onto THREE lines for 109px — plus an 87px
+ * standfirst. None of that is the instrument.
+ */
+@media (max-width: 640px) {
+  /* One scrolling row instead of three stacked ones. The links stay
+     reachable and stop costing a fifth of the screen. */
+  .mast-links {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .mast-links::-webkit-scrollbar { display: none; }
+  .mast-links a { white-space: nowrap; padding: 5px 10px; }
+
+  /* The tagline's FIRST sentence is the construct definition and earns
+     its place; the two that follow repeat what the page states again
+     lower down. Clamped rather than deleted, so nothing is lost on a
+     wider screen and nothing is hidden from a screen reader. */
+  .masthead .tagline {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  .masthead { padding: 14px 0 12px; }
+  .wrap { padding: 0 18px; }
+  .glance { margin: 10px 0 0; }
+  .instrument { margin: 18px 0; padding: 22px 18px; gap: 18px; }
+
+  /* 80px of number on a 375px screen is a poster, not an instrument.
+     64px still reads from arm's length and buys a whole channel row. */
+  .big-number { font-size: var(--fs-display-sm); margin: 6px 0 4px; }
+
+  /* The sparkline costs a channel row, and it is the cheapest thing in
+     the row to lose. It takes a fixed 90px of a 347px row, which
+     squeezes .component-name into 78px -- so "Pakistan / Western
+     Border" wraps onto THREE lines and the row stands 96px tall. Five
+     of those is 434px, more than half a phone screen, for five numbers.
+     Hidden here, the name gets its line back and the row drops to ~40px.
+     The trend it showed is one tap away on the channel's own page. */
+  .component-row .spark { display: none; }
+  .component-row { grid-template-columns: 1fr auto auto; padding: 8px 10px; gap: 12px; }
+
+  /* The nowcast chips list the same five channels as the rows directly
+     beneath them. On a wide screen that redundancy is harmless; on a
+     phone it is 124px spent saying a thing the page is about to say
+     properly. The provisional headline line stays -- it is the part
+     that is actually new. */
+  .nowcast-channels { display: none; }
+  .nowcast { margin-top: 8px; }
+}
