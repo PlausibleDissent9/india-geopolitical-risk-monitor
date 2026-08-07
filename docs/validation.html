@@ -37,6 +37,30 @@
   <tbody></tbody>
 </table>
 
+<section id="blind-section" hidden>
+<h3>What the detector cannot see</h3>
+<p class="chart-note">The hit-rate above is measured against episodes chosen in advance. This is
+the other half: what the detector <em>structurally</em> misses. Detection fires when a channel's
+share clears its trailing 90-day mean + 2&sigma;, so a crisis enters the very window its own
+future threshold is computed from — the mean rises, &sigma; rises faster, and the bar climbs for
+ninety days. It is not a tuning choice that can simply be improved: every alternative is worse
+(excluding spike days presumes what a spike is; a fixed threshold abandons the per-channel
+adaptivity that makes five channels comparable; a longer window delays first detection, which is
+the point). The registered rule stands and its cost is measured instead.</p>
+<p id="blind-headline" class="kv"></p>
+<div class="table-scroll"><table id="blind-table">
+  <thead><tr><th>Channel</th><th>Episode</th><th class="num">bar before</th>
+  <th class="num">bar after</th><th class="num">×</th>
+  <th class="num">days suppressed</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+<p class="chart-note">&ldquo;Days suppressed&rdquo; are days after an episode whose coverage cleared
+the threshold in force the day <em>before</em> that episode began, but not the live one — days a
+pre-crisis detector would have flagged and this one did not. Read the largest episodes, not the
+median: a one-day blip barely moves the bar, so the blindness is concentrated exactly where the
+first crisis was most serious.</p>
+</section>
+
 <h2>Placebo channels</h2>
 <p class="chart-note">Channels with no India-geopolitics content (IPL cricket, Bollywood) run through the identical pipeline. If they spike alongside real episodes, the pipeline measures general news volume, not channel salience.</p>
 <p id="placebo" class="kv">Not yet computed.</p>
@@ -295,6 +319,35 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     document.getElementById("drift").innerHTML =
       "Mean daily monitored articles, " + esc(years) +
       (corrs ? "<br>Share-vs-corpus correlation, " + esc(corrs) : "");
+  }
+
+  // What the detector structurally cannot see. Renders only when the
+  // payload exists; absent stays absent rather than showing a
+  // reassuring placeholder.
+  const bl = await j("data/detector_blindness.json");
+  if (bl && Array.isArray(bl.largest_episodes_by_peak_share) && bl.largest_episodes_by_peak_share.length) {
+    document.getElementById("blind-section").hidden = false;
+    const m = bl._meta;
+    document.getElementById("blind-headline").textContent =
+      "The bar peaks AFTER the episode ends in " +
+      m.n_episodes_whose_bar_peaked_after_they_ended + " of " +
+      m.n_episodes_analysed + " detected episodes, rising up to " +
+      m.max_threshold_multiple + "×. Across the series, " +
+      m.total_suppressed_channel_days +
+      " distinct channel-days carry coverage the pre-episode threshold " +
+      "would have flagged and the live one did not.";
+    const tb = document.querySelector("#blind-table tbody");
+    for (const e of bl.largest_episodes_by_peak_share.slice(0, 8)) {
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + esc(igrmLabel(e.channel)) + "</td>" +
+        "<td>" + esc(e.episode_start + "–" + e.episode_end) + "</td>" +
+        '<td class="num">' + esc(Number(e.threshold_before).toFixed(4)) + "</td>" +
+        '<td class="num">' + esc(Number(e.threshold_peak_after).toFixed(4)) + "</td>" +
+        '<td class="num">' + esc(e.threshold_peak_multiple) + "</td>" +
+        '<td class="num">' + esc(e.n_days_suppressed) + "</td>";
+      tb.appendChild(tr);
+    }
   }
 
   // Cross-language validity. Renders only when the payload exists;
