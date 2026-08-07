@@ -196,8 +196,8 @@ function renderChart() {
       scales: {
         y: { min: 0, max: 100,
              grid: { color: getCSS("--rule-soft") },
-             ticks: { color: getCSS("--muted") } },
-        x: { ticks: { maxTicksLimit: 8, color: getCSS("--muted") },
+             ticks: { color: getCSS("--faint") } },
+        x: { ticks: { maxTicksLimit: 8, color: getCSS("--faint") },
              grid: { display: false } },
       },
     },

@@ -49,8 +49,8 @@ function draw(labels, values, label, latest) {
       pointRadius: 0, tension: 0.15, spanGaps: true }] },
     options: { animation: false, responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: { y: { min: 0, max: 100, grid: { color: cssVar("--rule") }, ticks: { color: cssVar("--muted") } },
-                x: { grid: { display: false }, ticks: { color: cssVar("--muted"), maxTicksLimit: 6 } } } },
+      scales: { y: { min: 0, max: 100, grid: { color: cssVar("--rule") }, ticks: { color: cssVar("--faint") } },
+                x: { grid: { display: false }, ticks: { color: cssVar("--faint"), maxTicksLimit: 6 } } } },
   });
 }
 (async () => {

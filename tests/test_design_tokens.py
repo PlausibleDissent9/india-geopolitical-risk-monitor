@@ -50,7 +50,9 @@ def test_dark_theme_text_meets_wcag_aa():
     t = _tokens(":root {")
     paper = t["paper"]
     for name, minimum in (("ink", 4.5), ("muted", 4.5), ("faint", 4.5),
-                          ("accent", 4.5), ("link", 4.5)):
+                          ("accent", 4.5)):
+        if name not in t:
+            continue
         r = contrast(t[name], paper)
         assert r >= minimum, (
             f"dark --{name} is {r:.2f}:1 on --paper, below AA ({minimum})")
@@ -59,7 +61,7 @@ def test_dark_theme_text_meets_wcag_aa():
 def test_light_theme_text_meets_wcag_aa():
     t = _tokens(':root[data-theme="light"] {')
     paper = t["paper"]
-    for name in ("ink", "muted", "faint", "accent", "link"):
+    for name in ("ink", "muted", "faint", "accent"):
         if name not in t:
             continue
         r = contrast(t[name], paper)
@@ -196,3 +198,26 @@ def test_no_easing_overshoots():
             if len(pts) == 4 and (pts[1] > 1.0 or pts[3] > 1.0):
                 bad.append(f"{sheet}: {m.group(0)}")
     assert not bad, f"overshooting easings: {bad}"
+
+
+def test_no_token_is_declared_and_never_used():
+    """A token nobody references is not a system, it is a claim.
+
+    Three shipped that way on 2026-08-07: a --sp-1..--sp-16 spacing
+    ramp (deleted, spacing is deliberately not systematised), the motion
+    durations (now applied to all 46 literals), and --link (deleted --
+    applying it would have recoloured every link, which is a rebrand,
+    and the brief says improve execution instead).
+    """
+    declared = set(re.findall(r"^\s*(--[\w-]+):", TOKENS.read_text(encoding="utf-8"),
+                              re.M))
+    used = ""
+    for f in list(DOCS.glob("*.css")) + list(DOCS.glob("*.js")) + \
+            list(DOCS.glob("*.html")):
+        used += f.read_text(encoding="utf-8")
+    dead = [t for t in sorted(declared)
+            if f"var({t})" not in used
+            and f'"{t}"' not in used and f"'{t}'" not in used]
+    assert not dead, (
+        f"tokens declared but never referenced: {dead}. Use them or "
+        "delete them; a scale nobody applies is decoration.")

@@ -31,7 +31,6 @@
    * data second; rules should be felt, not seen. */
   --paper:      #0B1017;   /* page ground */
   --surface:    #121924;   /* cards, raised blocks */
-  --surface-2:  #17202D;   /* nested / hover */
   --ink:        #E6E4DC;   /* primary text */
   --muted:      #8C95A4;   /* secondary text, captions */
   --faint:      #7A8492;   /* tertiary: axis labels, fine print.
@@ -43,12 +42,12 @@
   --rule:       #1F2833;   /* borders, table rules */
   --rule-soft:  #161E29;   /* hairlines inside dense tables */
 
-  /* Identity accent. Terracotta is the project's colour; it is not
-   * being rebranded, only given a companion for links so that "accent"
-   * and "clickable" stop being the same signal. */
+  /* Identity accent. Terracotta is the project's colour and links wear
+   * it too. A separate --link tone was defined and then removed: it
+   * would have recoloured every link on the site, which is a rebrand,
+   * and the brief asks to improve the execution rather than rebrand. */
   --accent:     #D96548;
   --accent-dim: rgba(217, 101, 72, 0.14);
-  --link:       #7FA9D6;
 
   /* State: calm / elevated / severe. Data-driven, the only place
    * colour carries meaning about the world. */
@@ -86,11 +85,8 @@
   --fs-stat:    1.5rem;     /* 24px — inline stat numbers (cards, rows) */
   --fs-h1:      1.75rem;    /* 28px — page title */
   --fs-display-sm: 4rem;    /* 64px — subpage headline number */
-  --fs-display: 5rem;       /* 80px — the homepage headline number */
 
-  --lh-tight: 1.2;
-  --lh-snug:  1.35;
-  --lh-body:  1.6;
+  --lh-body:  1.6;   /* the one line-height the sheets name */
 
   /* ---- Spacing -----------------------------------------------------
    * NOT systematised, deliberately, and this note exists so nobody
@@ -109,7 +105,6 @@
    * is done it should be done as its own change, measured page by page.
    */
   --radius:      6px;
-  --radius-lg:   10px;
 
   /* ---- Motion ------------------------------------------------------
    * Calm means short and linear-ish. Nothing bounces, nothing springs,
@@ -131,7 +126,6 @@
 :root[data-theme="light"] {
   --paper:      #FAFAF7;
   --surface:    #FFFFFF;
-  --surface-2:  #F3F2EC;
   --ink:        #12233D;
   --muted:      #5C6675;
   --faint:      #666E7C;   /* 4.91:1 on light paper, same reason */
@@ -140,7 +134,6 @@
 
   --accent:     #A2361F;
   --accent-dim: rgba(162, 54, 31, 0.10);
-  --link:       #2C5C8F;
 
   --calm:       #1E6E67;
   --elevated:   #B07C1F;
@@ -161,11 +154,9 @@
  * attribute always wins because it is more specific. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    --paper: #FAFAF7; --surface: #FFFFFF; --surface-2: #F3F2EC;
-    --ink: #12233D; --muted: #5C6675; --faint: #666E7C;
+    --paper: #FAFAF7; --surface: #FFFFFF;    --ink: #12233D; --muted: #5C6675; --faint: #666E7C;
     --rule: #D8D6CE; --rule-soft: #E7E5DD;
     --accent: #A2361F; --accent-dim: rgba(162, 54, 31, 0.10);
-    --link: #2C5C8F;
     --calm: #1E6E67; --elevated: #B07C1F; --severe: #A2361F;
     --ch-pakistan-west: #B5502F; --ch-china-east: #2F7A63;
     --ch-gulf-energy: #96701A; --ch-us-trade: #2C5C8F;
