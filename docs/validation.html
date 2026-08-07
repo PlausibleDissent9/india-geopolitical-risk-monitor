@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=20260804b">
+<link rel="stylesheet" href="site.css?v=20260807a">
 <script src="labels.js?v=20260729a"></script>
 </head>
 <body>
@@ -79,6 +79,26 @@ composite is insulated from this choice (vs narrow 0.796, vs broad 0.880).</p>
 <h2>Coverage drift</h2>
 <p class="chart-note">GDELT's monitored corpus is not constant. Mean daily corpus size by year, and whether channel shares trend with it.</p>
 <p id="drift" class="kv">Not yet computed.</p>
+
+<section id="hi-section" hidden>
+<h2>Cross-language validity: Hindi Wikipedia</h2>
+<p class="chart-note">The corpus is English, the matcher is English, and the cross-source
+check above uses English Wikipedia — every leg Anglophone, so none of it could tell
+&ldquo;Indian salience&rdquo; apart from &ldquo;what the international English-language press
+covers about India.&rdquo; This test can. The same registered articles read on Hindi
+Wikipedia, with Hindi titles resolved through Wikipedia's own interlanguage links rather
+than chosen by hand, correlated against the same daily shares. Day-to-day
+<em>changes</em> is the load-bearing column: levels can agree through a shared trend alone.</p>
+<p id="hi-finding" class="kv"></p>
+<div class="table-scroll"><table id="hi-table">
+  <thead><tr><th>Channel</th>
+  <th class="num">English, changes</th><th class="num">Hindi, changes</th>
+  <th class="num">English, levels</th><th class="num">Hindi, levels</th>
+  <th class="num">Hindi articles</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+<p class="chart-note" id="hi-caveat"></p>
+</section>
 
 <section id="ml-section" hidden>
 <h2>Anglophone-lens audit (V5)</h2>
@@ -275,6 +295,38 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
     document.getElementById("drift").innerHTML =
       "Mean daily monitored articles, " + esc(years) +
       (corrs ? "<br>Share-vs-corpus correlation, " + esc(corrs) : "");
+  }
+
+  // Cross-language validity. Renders only when the payload exists;
+  // absent stays absent rather than showing a reassuring placeholder.
+  const hi = await j("data/wiki_hindi.json");
+  if (hi && hi.channels && Object.keys(hi.channels).length) {
+    document.getElementById("hi-section").hidden = false;
+    const en = hi.english_wikipedia_same_statistic || {};
+    const num = (x) => (x === null || x === undefined) ? "—" : Number(x).toFixed(3);
+    const tb = document.querySelector("#hi-table tbody");
+    for (const [ch, d] of Object.entries(hi.channels)) {
+      const e = en[ch] || {};
+      const tr = document.createElement("tr");
+      // The Hindi cells are marked when English leads, so the
+      // one-directional pattern is visible in the table itself and not
+      // only in the sentence above it.
+      const lead = (a, b) =>
+        (a !== null && b !== null && a !== undefined && b !== undefined && a > b)
+          ? ' class="num" style="font-weight:600"' : ' class="num"';
+      tr.innerHTML =
+        "<td>" + esc(igrmLabel(ch)) + "</td>" +
+        '<td' + lead(e.changes_pearson, d.changes_pearson) + ">" + esc(num(e.changes_pearson)) + "</td>" +
+        '<td class="num">' + esc(num(d.changes_pearson)) + "</td>" +
+        '<td' + lead(e.levels_pearson, d.levels_pearson) + ">" + esc(num(e.levels_pearson)) + "</td>" +
+        '<td class="num">' + esc(num(d.levels_pearson)) + "</td>" +
+        '<td class="num">' + esc((d.n_articles_resolved ?? "—") + "/" + (d.n_articles_registered ?? "—")) + "</td>";
+      tb.appendChild(tr);
+    }
+    document.getElementById("hi-finding").textContent = hi._meta.finding || "";
+    document.getElementById("hi-caveat").textContent =
+      (hi._meta.the_obvious_objection_and_why_it_fails || "") + " " +
+      (hi._meta.what_this_does_not_say || "");
   }
 
   // Anglophone-lens audit: renders only when the multilingual payload
