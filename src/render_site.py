@@ -66,8 +66,14 @@ PAGE_SHELL = """<!DOCTYPE html>
 
 
 def _render_md_page(src, slug: str, title: str, description: str) -> None:
+    # fenced_code matters more than it looks. Without it the converter
+    # emitted the ``` markers as literal paragraphs AND parsed the "#"
+    # comment lines inside a fence as H1 headings -- which is exactly
+    # what the codebook's Researcher quick-start had been rendering as:
+    # stray backticks around five giant headings, on the one section a
+    # new user reads first. Found 2026-08-07.
     body = markdown.markdown(src.read_text(encoding="utf-8"),
-                             extensions=["tables"])
+                             extensions=["tables", "fenced_code"])
     (DOCS / f"{slug}.html").write_text(
         PAGE_SHELL.format(
             site=SITE_URL, body=body, slug=slug, title=title,

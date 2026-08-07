@@ -39,18 +39,17 @@ If a published field is not documented here, that is a defect —
 <p>Fetch, cite, and reproduce in five lines. No key, no rate limit, CORS
 open; field stability is promised by the
 <a href="data/api_contract.json">frozen API contract</a>.</p>
-<p>```</p>
-<h1>1. The full daily series, 2017-present (composite + five channels):</h1>
-<p>curl -s https://igrm.in/data/history.csv -o igrm_history.csv</p>
-<h1>2. Today's finalized scores with metadata:</h1>
-<p>curl -s https://igrm.in/data/latest.json | python -m json.tool</p>
-<h1>3. The evidence behind today's numbers (per-channel matched articles):</h1>
-<p>curl -s https://igrm.in/data/receipts.json | python -m json.tool</p>
-<h1>4. The validation record (hit-rate, placebo, robustness, drift):</h1>
-<p>curl -s https://igrm.in/data/validation.json | python -m json.tool</p>
-<h1>5. Reproduce the index from source (pinned deps, same raw stores):</h1>
-<h1>git clone https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor</h1>
-<p>```</p>
+<pre><code># 1. The full daily series, 2017-present (composite + five channels):
+curl -s https://igrm.in/data/history.csv -o igrm_history.csv
+# 2. Today's finalized scores with metadata:
+curl -s https://igrm.in/data/latest.json | python -m json.tool
+# 3. The evidence behind today's numbers (per-channel matched articles):
+curl -s https://igrm.in/data/receipts.json | python -m json.tool
+# 4. The validation record (hit-rate, placebo, robustness, drift):
+curl -s https://igrm.in/data/validation.json | python -m json.tool
+# 5. Reproduce the index from source (pinned deps, same raw stores):
+#    git clone https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor
+</code></pre>
 <p>Citation: <em>Krishna, Ishan (2026). India Geopolitical Risk Monitor.
 https://igrm.in/</em> — data CC BY 4.0, code MIT. A ready-made BibTeX entry
 is at <a href="igrm.bib">igrm.bib</a>.</p>
@@ -954,8 +953,9 @@ quietly adopted — surfaces the next morning instead of being found by a
 user whose results stopped replicating.</p>
 <p>Retrieve any vintage yourself, with no tooling and no cooperation from
 this project:</p>
-<p><code>git log --format='%H %ad' --date=short -- docs/data/history.csv
-git show &lt;SHA&gt;:docs/data/history.csv &gt; history_as_of_that_day.csv</code></p>
+<pre><code>git log --format='%H %ad' --date=short -- docs/data/history.csv
+git show &lt;SHA&gt;:docs/data/history.csv &gt; history_as_of_that_day.csv
+</code></pre>
 <h2>docs/data/detector_blindness.json</h2>
 <p><strong>The detector cannot see a second crisis for about three months.</strong>
 Episode detection fires when a channel's share exceeds its trailing
