@@ -962,6 +962,17 @@
    "stability": "stable"
   },
   {
+   "path": "data/vintages_panel.json",
+   "format": "json",
+   "description": "Every published vintage of the daily series, as an exact reconstruction recipe: truncate the current history.csv at the vintage's last_observation, then overwrite the values in its diffs. Gives a backtester the numbers as they stood on any publish date -- the ALFRED property -- without twelve git invocations.",
+   "frozen_fields": [
+    "_meta",
+    "current_columns",
+    "vintages"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/wiki_hindi.json",
    "format": "json",
    "description": "Cross-language validity check. The index is built from an English-language corpus and was cross-validated against English Wikipedia, so every leg of the apparatus was Anglophone and none of it could distinguish 'Indian salience' from 'what the international English-language press covers'. Hindi Wikipedia pageviews are the same registered article set read by a different population, on infrastructure sharing no code or sampling with GDELT.",
