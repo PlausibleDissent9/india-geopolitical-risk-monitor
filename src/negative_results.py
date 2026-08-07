@@ -90,12 +90,16 @@ def compute() -> list[dict[str, Any]]:
         "reading": "the withholding rule is the contribution; publishing "
                    "them anyway would have retracted it"})
 
-    s = _load("sector_sensitivity.json")["_meta"]["multiple_comparisons"]
+    mc = _load("sector_sensitivity.json")["_meta"]["multiple_comparisons"]
+    # Derive the cell count from the payload's own text rather than
+    # hand-typing 39 -- the register's one rule.
+    assert "NO cell survived" in mc, (
+        "sector_sensitivity's multiple-comparisons note changed; re-derive "
+        "this entry rather than shipping a stale claim")
     rows.append({
         "finding": "No sector shows a return sensitivity that survives "
                    "multiple-comparison correction",
-        "number": "0 of 39 cells significant at Benjamini-Hochberg FDR 10% "
-                  "on first computation",
+        "number": mc.split("--")[0].strip(),
         "source": "data/sector_sensitivity.json",
         "reading": "with this episode set, sector sensitivity to salience "
                    "episodes is indistinguishable from zero once the "
