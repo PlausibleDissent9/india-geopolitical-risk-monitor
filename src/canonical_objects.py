@@ -20,6 +20,7 @@ import math
 import sys
 from collections import Counter
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any, NoReturn, Union, cast
@@ -71,6 +72,21 @@ class CanonicalObjectError(ValueError):
         super().__init__(code)
         self.code = code
         self.detail = detail
+
+
+@dataclass(frozen=True)
+class ValidatedCanonicalRelease:
+    """Validated records for trusted in-process projections.
+
+    Public validation continues to return only :attr:`summary`. Keeping the
+    loaded records attached to the successful validation pass prevents a
+    downstream projection from rereading mutable paths after signature and
+    digest checks have completed.
+    """
+
+    manifest: Mapping[str, Any]
+    objects: Mapping[str, Mapping[str, Mapping[str, Any]]]
+    summary: Mapping[str, object]
 
 
 def _fail(code: str, detail: str = "") -> NoReturn:
@@ -1024,7 +1040,7 @@ def _validate_edge(
         _fail("edge_created_after_release", edge_id)
 
 
-def validate_release(
+def load_validated_release(
     manifest_path: Path,
     *,
     root: Path = ROOT,
@@ -1033,8 +1049,8 @@ def validate_release(
     rights_signers_path: Path = RIGHTS_SIGNERS,
     method_registry_path: Path = METHOD_REGISTRY,
     release_signers_path: Path = RELEASE_SIGNERS,
-) -> dict[str, object]:
-    """Validate one complete canonical release or fail without partial success."""
+) -> ValidatedCanonicalRelease:
+    """Validate and load one canonical release for a trusted transformation."""
 
     _, validators, registry_sha = _load_schema_registry(root, schema_registry_path)
     methods, method_registry_sha = _load_method_registry(root, method_registry_path)
@@ -1174,13 +1190,38 @@ def validate_release(
             methods,
         )
 
-    return {
+    summary: dict[str, object] = {
         "status": "valid",
         "release_id": manifest["release_id"],
         "record_sha256": manifest["record_sha256"],
         "object_count": len(entries),
         "counts": actual_counts,
     }
+    return ValidatedCanonicalRelease(manifest=manifest, objects=objects, summary=summary)
+
+
+def validate_release(
+    manifest_path: Path,
+    *,
+    root: Path = ROOT,
+    schema_registry_path: Path = SCHEMA_REGISTRY,
+    rights_registry_path: Path = RIGHTS_REGISTRY,
+    rights_signers_path: Path = RIGHTS_SIGNERS,
+    method_registry_path: Path = METHOD_REGISTRY,
+    release_signers_path: Path = RELEASE_SIGNERS,
+) -> dict[str, object]:
+    """Validate one complete canonical release or fail without partial success."""
+
+    validated = load_validated_release(
+        manifest_path,
+        root=root,
+        schema_registry_path=schema_registry_path,
+        rights_registry_path=rights_registry_path,
+        rights_signers_path=rights_signers_path,
+        method_registry_path=method_registry_path,
+        release_signers_path=release_signers_path,
+    )
+    return dict(validated.summary)
 
 
 def main(argv: Sequence[str] | None = None) -> None:

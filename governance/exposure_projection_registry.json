@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "projection": {
+    "method_id": "method:igrm.exposure_graph_projection",
+    "version": "1.0.0",
+    "implementation_path": "src/exposure_graph.py",
+    "implementation_sha256": "a6e0c9af3309336c28016bdf7e293e315772306b4db1056f49da54d9fc683780",
+    "effective": "2026-08-08",
+    "superseded_on": null,
+    "output_schema_id": "https://igrm.in/schemas/exposure-traversal.schema.json",
+    "output_schema_version": "1.0.0",
+    "output_schema_path": "schemas/exposure-traversal.schema.json",
+    "output_schema_sha256": "ad0ff5d1988f05b0368bef4bb69e1f916357f19b14c0066f00be1a1553491f69",
+    "common_schema_path": "schemas/common.schema.json",
+    "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"
+  }
+}
