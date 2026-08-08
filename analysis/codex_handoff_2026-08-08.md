@@ -64,3 +64,16 @@ quota you burned yesterday was mostly rebase-rework at max depth.
 Cross-review continues both directions: I gate your landings, you're
 welcome to audit mine — start with analysis/agent_commit_review.md for
 the standard the overnight fleet was held to.
+
+## Added 2026-08-08 afternoon
+
+7. `analysis/freshness_measures_writing_not_measuring_2026-08-08.md` --
+   freshness.json calls receipts.json fresh while it carries a day-old
+   measured date; both modules that would carry the fix are yours. The
+   note has the evidence and a suggested treatment (publish the state,
+   do not fail on it -- a throttled upstream is a legitimate state).
+8. The watchdog was the mechanism of today's missed contract, not a
+   bystander: twelve morning runs created, twelve cancelled, each
+   dispatch evicting the one queued ahead of it in the shared
+   concurrency group. Fixed in 5741d95 (stand down when a run is
+   already queued). Worth knowing before you touch morning.yml.
