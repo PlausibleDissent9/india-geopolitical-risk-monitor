@@ -404,3 +404,41 @@ and a personal inbox, not an agent's decision. **Surfaced, not touched.**
 7. `ALLOWED_EMAILS` entry (or drop the `@`) in
    `tests/test_precision_audit_v3.py:219`; restore the scanner's exhaustiveness.
 8. `write_package` in-repo destination guard; `.ots` stamp on registration.json.
+
+---
+
+## Resolution, verified 2026-08-08 evening (appended, not edited)
+
+Both blocking defects were fixed within the hour and **independently
+verified against origin/main `2da9bb7`**, fetched from GitHub rather
+than from a local clone -- the first verification attempt tested a
+stale checkout that predated the fix and wrongly reported it
+incomplete, the same stale-checkout class this repo fixed in the
+morning guard earlier the same day.
+
+- **DEFECT 1 (living-file pins) -- DEFUSED.** `c328278` adds
+  `base_commit` and a per-file `resolution`: the three living
+  instruments (`dictionaries.json`, `src/fetch_ngrams.py`,
+  `auditor/RUBRIC.md`) resolve via `git show` at the frozen commit; the
+  two study documents stay working-tree pins. Probed by making the
+  exact edits the defect predicted -- amended `dictionaries.json`,
+  appended to `src/fetch_ngrams.py`, amended `auditor/RUBRIC.md`.
+  Baseline green, green after all three. The 06:00 contract is no
+  longer exposed.
+- **DEFECT 2 (unrecordable regime change) -- FIXED.**
+  `record_day_outcome` now catches `FrameValidationError` and writes a
+  failure attestation through the same `_record_payload`, so a
+  legitimate matcher edit records the failure and the chain continues
+  instead of reddening the rest of the 90-day window. The behaviour
+  daily.yml and PROTOCOL.md described is now the behaviour the code
+  has.
+- **D5 from the production sweep (ungated subscribe modal) -- CLOSED.**
+  `0c6610b` implements the gate its comment always claimed:
+  `if (!overlay || !BUTTONDOWN_USER) return;`. With no provider
+  configured the modal cannot render, so no visitor address can be
+  collected.
+
+Still open from this review: PROTOCOL.md's "five" against
+registration.json's "ten" gate count, the GOVERNANCE.md label-authority
+wording, the `write_package` destination guard, and an `.ots` stamp on
+the v3 registration.

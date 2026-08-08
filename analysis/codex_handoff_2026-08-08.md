@@ -99,7 +99,7 @@ the standard the overnight fleet was held to.
    pubDate, raw-Markdown descriptions) were all in one function and are
    fixed in 7baf222.
 
-## URGENT, added 2026-08-08 evening — two defects that stop the 06:00 publish
+## RESOLVED 2026-08-08 evening (was URGENT) — both defects fixed, verified at 2da9bb7
 
 `analysis/precision_prereg_review_2026-08-08.md` has the full review of
 efdc969. The design, estimand discipline and interval math are the
