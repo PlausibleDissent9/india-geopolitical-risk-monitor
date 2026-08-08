@@ -70,7 +70,17 @@ _NEG = re.compile(
 
 
 def _guarded(text: str, start: int, before: int = 100, after: int = 0) -> bool:
-    """True when the match sits in a negated or quoted/discussed span."""
+    """True when the match sits in a negated or quoted/discussed span.
+
+    KNOWN FALSE-NEGATIVE (accepted, 2026-08-08): the window does not
+    stop at sentence boundaries, so a negation in a PRIOR sentence can
+    excuse a claim in the next one ("Not investment advice. IGRM
+    measures risk." slips through). External review flagged it; a
+    sentence-boundary cut was tried and REVERTED the same hour -- it
+    fired on honest deny-lists and on decimal points ("99.5" reads as a
+    boundary), and this file's own rule is that zero false positives
+    beats fewer false negatives. The bias is toward under-flagging,
+    which the audit cycle (not this test) exists to catch."""
     lo = max(0, start - before)
     if _NEG.search(text[lo:start]):
         return True

@@ -21,14 +21,19 @@ name: morning-contract
 
 on:
   schedule:
-    - cron: "45 23 * * *"   # 05:15 IST -- early shot: congestion delay is
-                            # additive to schedule time, so margin comes
-                            # from starting earlier, not from more shots
-    - cron: "3 0 * * *"     # 05:33 IST -- second shot
-    - cron: "17 0 * * *"    # 05:47 IST -- third shot
+    # A 05:15 IST early shot stood here for half a day and was wrong:
+    # the measured UTC day closes at 05:30 IST, so a shot before that
+    # cannot heal the contract's target day (heal refuses days newer
+    # than today-1) and only squats on the shared lane with a 35-minute
+    # cap while the valid shots queue. Caught in external review before
+    # it ever fired. Margin against scheduler congestion comes from the
+    # push trigger below, which is not subject to cron congestion.
+    - cron: "3 0 * * *"     # 05:33 IST -- first valid shot (day closes 05:30)
+    - cron: "17 0 * * *"    # 05:47 IST -- second shot
     - cron: "29 0 * * *"    # 05:59 IST -- last shot inside the window
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - ".trigger/morning"
     # The scheduler-independent path. On 2026-08-08 GitHub fired all
@@ -70,13 +75,29 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Idempotence guard (multiple shots, at most one publish)
         id: guard
+        # Two defects fixed 2026-08-08 after external review (Codex
+        # stand-in, verified against the code before fixing):
+        # 1. STALE CHECKOUT: actions/checkout pins github.sha at trigger
+        #    time, so a run that waited in the concurrency queue wakes
+        #    with a tree that predates the run it queued behind, decides
+        #    "nothing published today", and can replay older derived
+        #    state over a newer publish via publish_push's --theirs.
+        #    The guard now asks the REMOTE TIP, fetched after the lane
+        #    is acquired, never its own checkout.
+        # 2. WRONG PREDICATE: _meta.generated is a wall-clock stamp; a
+        #    degraded run can stamp today onto stale data and make every
+        #    later rescue shot skip. The contract's actual target is the
+        #    MEASURED day: latest.date == yesterday (UTC), so the guard
+        #    tests that.
         run: |
-          TODAY=$(date -u +%F)
-          GEN=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
-          if [ "$GEN" = "$TODAY" ]; then
-            echo "final already generated today ($GEN); nothing to do"
+          TARGET=$(date -u -d "yesterday" +%F)
+          git fetch --quiet origin main
+          REMOTE_DATE=$(git show origin/main:docs/data/latest.json 2>/dev/null | python -c "import json,sys; print(json.load(sys.stdin)['date'])" 2>/dev/null || echo "")
+          if [ "$REMOTE_DATE" = "$TARGET" ]; then
+            echo "final for $TARGET already on origin/main; nothing to do"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
+            echo "remote tip has $REMOTE_DATE, contract target is $TARGET"
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Enforce dictionary rules (ex-ante rule)
