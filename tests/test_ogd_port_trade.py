@@ -284,7 +284,21 @@ def test_compile_requires_signed_approved_rights_and_keeps_edges_empty(
         signers_path=signers,
     )
     assert result["_meta"]["publication_allowed"] is True
-    assert len(result["joint_observations"]) == 3
+    assert len(result["joint_observations"]) == 39
+    assert result["coverage"]["joint_observation_frame_count"] == 39
+    assert len(result["coverage"]["joint_observation_frame_sha256"]) == 64
+    assert {
+        status: sum(row["value_status"] == status for row in result["joint_observations"])
+        for status in ("observed_positive", "observed_zero", "source_missing")
+    } == {
+        "observed_positive": 3,
+        "observed_zero": 35,
+        "source_missing": 1,
+    }
+    missing = next(
+        row for row in result["joint_observations"] if row["value_status"] == "source_missing"
+    )
+    assert missing["quantity"] is None
     assert result["dependency_edges"] == []
     assert "country_crosswalk" in result["dependency_edge_status"]
 

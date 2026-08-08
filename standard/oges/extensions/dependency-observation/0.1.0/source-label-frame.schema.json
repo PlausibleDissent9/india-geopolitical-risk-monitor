@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/dependency-observation/0.1.0/source-label-frame.schema.json",
+  "title": "OGES source-label frame 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "frame_id",
+    "record_sha256",
+    "source_id",
+    "source_artifact_sha256",
+    "slot",
+    "semantic_role_id",
+    "provider_values",
+    "member_count",
+    "extraction_method"
+  ],
+  "properties": {
+    "object_type": {"const": "source_label_frame"},
+    "schema_version": {"const": "0.1.0"},
+    "frame_id": {"type": "string", "pattern": "^labelframe:[a-z0-9][a-z0-9._:-]{2,115}$"},
+    "record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+    "source_artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "slot": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+    "semantic_role_id": {"type": "string", "pattern": "^role:[a-z0-9][a-z0-9._:-]{2,119}$"},
+    "provider_values": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\u0000-\\u001f]+$"}
+    },
+    "member_count": {"type": "integer", "minimum": 1},
+    "extraction_method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_path", "implementation_sha256", "run_id"],
+      "properties": {
+        "method_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "implementation_path": {"type": "string", "minLength": 1, "maxLength": 240},
+        "implementation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "run_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+      }
+    }
+  }
+}

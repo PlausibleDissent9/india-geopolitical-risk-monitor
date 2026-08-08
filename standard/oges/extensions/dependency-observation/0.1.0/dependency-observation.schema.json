@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/dependency-observation/0.1.0/dependency-observation.schema.json",
+  "title": "OGES DependencyObservation extension 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "observation_id",
+    "record_sha256",
+    "relation_type",
+    "flow_semantics_id",
+    "value_status",
+    "measure",
+    "roles",
+    "period",
+    "observed_at",
+    "knowledge_available_at",
+    "compiled_at",
+    "source",
+    "coverage",
+    "method",
+    "relation_compilation_status",
+    "guarantees",
+    "limitation_codes"
+  ],
+  "properties": {
+    "object_type": {"const": "dependency_observation"},
+    "schema_version": {"const": "0.1.0"},
+    "observation_id": {
+      "type": "string",
+      "pattern": "^depobs:[a-z0-9][a-z0-9._:-]{2,119}$"
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "relation_type": {"const": "joint_physical_flow_observation"},
+    "flow_semantics_id": {
+      "type": "string",
+      "pattern": "^flow:[a-z0-9][a-z0-9._:-]{2,119}$"
+    },
+    "value_status": {
+      "enum": ["observed_positive", "observed_zero", "source_missing", "suppressed"]
+    },
+    "measure": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "unit", "scale_factor", "denominator"],
+          "properties": {
+            "value": {"type": "number", "minimum": 0},
+            "unit": {"type": "string", "minLength": 1, "maxLength": 120},
+            "scale_factor": {"type": "number", "exclusiveMinimum": 0},
+            "denominator": {"type": "string", "minLength": 1, "maxLength": 300}
+          }
+        },
+        {"type": "null"}
+      ]
+    },
+    "roles": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot",
+          "semantic_role_id",
+          "provider_value",
+          "crosswalk_entry_id",
+          "resolution_status",
+          "canonical_entity_id",
+          "interpretation_status"
+        ],
+        "properties": {
+          "slot": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,63}$"
+          },
+          "semantic_role_id": {
+            "type": "string",
+            "pattern": "^role:[a-z0-9][a-z0-9._:-]{2,119}$"
+          },
+          "provider_value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "^[^\\u0000-\\u001f]+$"
+          },
+          "crosswalk_entry_id": {
+            "type": "string",
+            "pattern": "^xwe:[a-z0-9][a-z0-9._:-]{2,119}$"
+          },
+          "resolution_status": {
+            "enum": ["matched", "unmatched", "ambiguous", "withheld"]
+          },
+          "canonical_entity_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9._:-]{2,127}$"
+              },
+              {"type": "null"}
+            ]
+          },
+          "interpretation_status": {
+            "enum": ["resolved", "provider_ambiguous", "withheld"]
+          }
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "start", "end", "time_basis"],
+      "properties": {
+        "label": {"type": "string", "minLength": 1, "maxLength": 80},
+        "start": {"type": "string", "format": "date"},
+        "end": {"type": "string", "format": "date"},
+        "time_basis": {"enum": ["fiscal_year", "calendar_year", "month", "day", "event_window"]}
+      }
+    },
+    "observed_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "knowledge_available_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "compiled_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "artifact_sha256",
+        "rights_decision_id",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "rights_decision_artifact_sha256",
+        "locator"
+      ],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+        "artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "rights_decision_id": {"type": "string", "minLength": 3, "maxLength": 160},
+        "rights_registry_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "rights_signers_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "rights_decision_artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["document_id", "table_id", "page", "row", "column"],
+          "properties": {
+            "document_id": {"type": "string", "minLength": 1, "maxLength": 200},
+            "table_id": {"type": "string", "minLength": 1, "maxLength": 80},
+            "page": {"type": ["integer", "null"], "minimum": 1},
+            "row": {"type": ["integer", "null"], "minimum": 1},
+            "column": {"type": "string", "minLength": 1, "maxLength": 120}
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "joint_frame_id",
+        "joint_frame_sha256",
+        "joint_frame_count",
+        "frame_member_id",
+        "value_partition"
+      ],
+      "properties": {
+        "joint_frame_id": {"type": "string", "pattern": "^frame:[a-z0-9][a-z0-9._:-]{2,119}$"},
+        "joint_frame_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "joint_frame_count": {"type": "integer", "minimum": 1},
+        "frame_member_id": {"type": "string", "pattern": "^member:[a-z0-9][a-z0-9._:-]{2,119}$"},
+        "value_partition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["observed_positive", "observed_zero", "source_missing", "suppressed"],
+          "properties": {
+            "observed_positive": {"type": "integer", "minimum": 0},
+            "observed_zero": {"type": "integer", "minimum": 0},
+            "source_missing": {"type": "integer", "minimum": 0},
+            "suppressed": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_path", "implementation_sha256", "run_id"],
+      "properties": {
+        "method_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "implementation_path": {"type": "string", "minLength": 1, "maxLength": 240},
+        "implementation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "run_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+      }
+    },
+    "relation_compilation_status": {
+      "enum": ["not_requested", "blocked_unresolved_roles", "blocked_semantic_ambiguity", "blocked_nonpositive_or_missing", "eligible_for_separate_registered_projection"]
+    },
+    "guarantees": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binary_edge_implied", "causal_attribution_performed", "forecast_performed", "risk_score_assigned"],
+      "properties": {
+        "binary_edge_implied": {"const": false},
+        "causal_attribution_performed": {"const": false},
+        "forecast_performed": {"const": false},
+        "risk_score_assigned": {"const": false}
+      }
+    },
+    "limitation_codes": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"value_status": {"enum": ["observed_positive", "observed_zero"]}}},
+      "then": {"properties": {"measure": {"type": "object"}}},
+      "else": {"properties": {"measure": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"value_status": {"const": "observed_positive"}}},
+      "then": {"properties": {"measure": {"properties": {"value": {"exclusiveMinimum": 0}}}}}
+    },
+    {
+      "if": {"properties": {"value_status": {"const": "observed_zero"}}},
+      "then": {"properties": {"measure": {"properties": {"value": {"const": 0}}}}}
+    }
+  ]
+}

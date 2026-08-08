@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:dependency_observation",
+  "version": "0.1.0",
+  "effective": "2026-08-09",
+  "status": "public_draft_no_adoption_claim",
+  "base_standard": {
+    "version": "0.1.0",
+    "profile_path": "standard/oges/0.1.0/profile.json",
+    "profile_sha256": "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2"
+  },
+  "specification": {
+    "path": "standard/oges/extensions/dependency-observation/0.1.0/SPEC.md",
+    "sha256": "2ae3874906c6c9ccbbb3911633d72b508e8092f15340a73361612159f6a68627"
+  },
+  "normative_files": [
+    {
+      "kind": "dependency_observation_schema",
+      "path": "standard/oges/extensions/dependency-observation/0.1.0/dependency-observation.schema.json",
+      "sha256": "fcd5cf2bd127615d8ef1e8aaa733cb1a3645f2a51e0a87f8827275e7d229832c"
+    },
+    {
+      "kind": "source_label_frame_schema",
+      "path": "standard/oges/extensions/dependency-observation/0.1.0/source-label-frame.schema.json",
+      "sha256": "df3150b4afb3e6e6a6c957f77de5e52c80040b4b9383c008db3aac0dcc172397"
+    },
+    {
+      "kind": "entity_crosswalk_release_schema",
+      "path": "standard/oges/extensions/dependency-observation/0.1.0/entity-crosswalk-release.schema.json",
+      "sha256": "6e294fb0ba6a82b446b1a37872d9ab8698b3618561a2188debc7db44d5f4ec7d"
+    },
+    {
+      "kind": "role_registry",
+      "path": "standard/oges/extensions/dependency-observation/0.1.0/role-registry.json",
+      "sha256": "63d430d47b037174b45acaf0c3c489a9c622d69fecf145db06ccf18449d526a2"
+    },
+    {
+      "kind": "adversarial_cases",
+      "path": "standard/oges/extensions/dependency-observation/0.1.0/adversarial-cases.json",
+      "sha256": "e250917cc20938b36c131a32958cbd88f7f4b5f2c32a272c2d95a98bd4cae94a"
+    }
+  ],
+  "reference_implementation": {
+    "path": "src/dependency_observation.py",
+    "sha256": "f3806c6df8a924789a78298fb5925a93df99e69c621665ad635bf52efe8d82e8"
+  },
+  "required_rights_uses": [
+    "cite_metadata",
+    "publish_derived_value",
+    "publish_extract"
+  ],
+  "claim_boundary": [
+    "Conformance establishes structural, frame, crosswalk, rights-snapshot, method and temporal consistency only.",
+    "A DependencyObservation is a source-bound n-ary association, not a binary exposure edge.",
+    "Conformance does not establish causation, disruption, substitution, economic loss, forecast skill or a risk score.",
+    "A matched provider label does not establish complete national, firm, shipment, vessel or route coverage.",
+    "The extension is a public draft and has no government, industry, ISO or BIS adoption status."
+  ]
+}

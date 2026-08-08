@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/dependency-observation/0.1.0/entity-crosswalk-release.schema.json",
+  "title": "OGES entity crosswalk release 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "crosswalk_id",
+    "record_sha256",
+    "frame_id",
+    "frame_record_sha256",
+    "source_id",
+    "slot",
+    "semantic_role_id",
+    "entries",
+    "entry_count",
+    "resolution_counts"
+  ],
+  "properties": {
+    "object_type": {"const": "entity_crosswalk_release"},
+    "schema_version": {"const": "0.1.0"},
+    "crosswalk_id": {"type": "string", "pattern": "^crosswalk:[a-z0-9][a-z0-9._:-]{2,114}$"},
+    "record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "frame_id": {"type": "string", "pattern": "^labelframe:[a-z0-9][a-z0-9._:-]{2,115}$"},
+    "frame_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+    "slot": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+    "semantic_role_id": {"type": "string", "pattern": "^role:[a-z0-9][a-z0-9._:-]{2,119}$"},
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entry_id",
+          "provider_value",
+          "resolution_status",
+          "canonical_entity_id",
+          "evidence_ids",
+          "reviewed_by",
+          "limitation_codes"
+        ],
+        "properties": {
+          "entry_id": {"type": "string", "pattern": "^xwe:[a-z0-9][a-z0-9._:-]{2,119}$"},
+          "provider_value": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\u0000-\\u001f]+$"},
+          "resolution_status": {"enum": ["matched", "unmatched", "ambiguous", "withheld"]},
+          "canonical_entity_id": {
+            "oneOf": [
+              {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+              {"type": "null"}
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+            "uniqueItems": true
+          },
+          "reviewed_by": {
+            "type": "array",
+            "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+            "uniqueItems": true
+          },
+          "limitation_codes": {
+            "type": "array",
+            "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "entry_count": {"type": "integer", "minimum": 1},
+    "resolution_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["matched", "unmatched", "ambiguous", "withheld"],
+      "properties": {
+        "matched": {"type": "integer", "minimum": 0},
+        "unmatched": {"type": "integer", "minimum": 0},
+        "ambiguous": {"type": "integer", "minimum": 0},
+        "withheld": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

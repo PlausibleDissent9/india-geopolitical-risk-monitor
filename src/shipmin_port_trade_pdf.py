@@ -651,15 +651,25 @@ def _json_number(value: Decimal) -> int | float:
     return int(value) if value == value.to_integral_value() else float(value)
 
 
-def _observations(profiles: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _observations(
+    profiles: list[dict[str, Any]], *, source_artifact_sha256: str
+) -> list[dict[str, Any]]:
     result: list[dict[str, Any]] = []
     for profile in profiles:
         for row in profile["rows"]:
             for port, value in row["values"].items():
-                if port == "ALL PORTS" or value is None or value <= 0:
+                if port == "ALL PORTS":
                     continue
+                value_status = (
+                    "source_missing"
+                    if value is None
+                    else "observed_zero"
+                    if value == 0
+                    else "observed_positive"
+                )
                 material = "|".join(
                     (
+                        source_artifact_sha256,
                         profile["flow"],
                         row["commodity"],
                         row["reported_country"],
@@ -675,7 +685,8 @@ def _observations(profiles: list[dict[str, Any]]) -> list[dict[str, Any]]:
                         "reported_country": row["reported_country"],
                         "country_semantics": profile["country_semantics"],
                         "port_column": port,
-                        "quantity": _json_number(value),
+                        "quantity": _json_number(value) if value is not None else None,
+                        "value_status": value_status,
                         "unit": "thousand_metric_tonnes",
                         "pdf_page": row["page"],
                         "row_all_ports_quantity": (
@@ -744,6 +755,10 @@ def compile_baseline(
         signers_path=signers_path,
     )
     profiles = extract_profiles(pdf_path, registry)
+    observations = _observations(profiles, source_artifact_sha256=registry["artifact"]["sha256"])
+    expected_observations = sum(profile["coverage"]["expected_joint_cells"] for profile in profiles)
+    if len(observations) != expected_observations:
+        _fail("joint_observation_frame_incomplete")
     return {
         "_meta": {
             "schema_version": "1.0.0",
@@ -762,8 +777,18 @@ def compile_baseline(
             "flows": [{"flow": profile["flow"], **profile["coverage"]} for profile in profiles],
             "national_port_coverage": None,
             "national_port_coverage_reason": registry["port_frame"]["excluded_scope"],
+            "joint_observation_frame_count": len(observations),
+            "joint_observation_frame_sha256": hashlib.sha256(
+                json.dumps(
+                    observations,
+                    ensure_ascii=False,
+                    allow_nan=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode()
+            ).hexdigest(),
         },
-        "joint_observations": _observations(profiles),
+        "joint_observations": observations,
         "dependency_relations": [],
         "dependency_relation_status": (
             "not_emitted_until_entity_crosswalks_and_lossless_multi_role_schema_are_registered"

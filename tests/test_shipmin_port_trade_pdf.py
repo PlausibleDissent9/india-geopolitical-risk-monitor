@@ -114,6 +114,20 @@ def test_parser_preserves_blank_zero_and_missing_printed_total() -> None:
     assert beta["values"]["ALL PORTS"] is None
     assert beta["reconciliation_drift"] is None
 
+    observations = shipmin._observations([profile], source_artifact_sha256="a" * 64)
+    assert len(observations) == 26
+    assert {
+        status: sum(row["value_status"] == status for row in observations)
+        for status in ("observed_positive", "observed_zero", "source_missing")
+    } == {
+        "observed_positive": 3,
+        "observed_zero": 1,
+        "source_missing": 22,
+    }
+    assert all(
+        row["quantity"] is None for row in observations if row["value_status"] == "source_missing"
+    )
+
 
 def test_commodity_sequence_and_numeric_column_geometry_fail_closed() -> None:
     words = _fixture_words()

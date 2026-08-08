@@ -1,0 +1,73 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:dependency_observation",
+  "default_policy": "deny",
+  "roles": [
+    {
+      "semantic_role_id": "role:country_of_origin",
+      "slot": "country",
+      "entity_type": "country_or_territory",
+      "meaning": "Provider-reported origin country for cargo unloaded at an Indian port.",
+      "interpretation_status": "resolved"
+    },
+    {
+      "semantic_role_id": "role:provider_reported_country_loaded_ambiguous",
+      "slot": "reported_country",
+      "entity_type": "country_or_territory",
+      "meaning": "Country label printed by the loaded-cargo table under the heading Country of Origin; destination is not asserted.",
+      "interpretation_status": "provider_ambiguous"
+    },
+    {
+      "semantic_role_id": "role:principal_commodity",
+      "slot": "commodity",
+      "entity_type": "commodity_class",
+      "meaning": "Provider principal-commodity category preserved at the source vintage.",
+      "interpretation_status": "resolved"
+    },
+    {
+      "semantic_role_id": "role:india_major_port_table_column",
+      "slot": "port",
+      "entity_type": "port_or_dock_system",
+      "meaning": "Exact Indian Major Port or dock-system table column, not an assertion of national port coverage.",
+      "interpretation_status": "resolved"
+    }
+  ],
+  "flows": [
+    {
+      "flow_semantics_id": "flow:overseas_cargo_unloaded_at_india_major_port",
+      "provider_flow": "unloaded",
+      "direction": "inbound_to_india_port",
+      "required_roles": [
+        {"slot": "country", "semantic_role_id": "role:country_of_origin"},
+        {"slot": "commodity", "semantic_role_id": "role:principal_commodity"},
+        {"slot": "port", "semantic_role_id": "role:india_major_port_table_column"}
+      ],
+      "semantic_ambiguity": false
+    },
+    {
+      "flow_semantics_id": "flow:overseas_cargo_loaded_at_india_major_port_country_role_unresolved",
+      "provider_flow": "loaded",
+      "direction": "outbound_from_india_port_country_role_unresolved",
+      "required_roles": [
+        {"slot": "reported_country", "semantic_role_id": "role:provider_reported_country_loaded_ambiguous"},
+        {"slot": "commodity", "semantic_role_id": "role:principal_commodity"},
+        {"slot": "port", "semantic_role_id": "role:india_major_port_table_column"}
+      ],
+      "semantic_ambiguity": true
+    }
+  ],
+  "projection_rule": {
+    "dependency_edge_implied": false,
+    "requires_separate_registered_method": true,
+    "requires_all_roles_matched": true,
+    "requires_all_interpretations_resolved": true,
+    "requires_observed_positive_value": true,
+    "requires_declared_universe_coverage": true
+  },
+  "limits": [
+    "A schema-valid observation is a source-bound joint association, not an exposure edge.",
+    "A matched label does not establish causal, supplier, ownership, substitution or economic-loss meaning.",
+    "Loaded-country semantics remain blocked until an authoritative source resolves the provider heading.",
+    "The port role covers the registered table frame, not every Indian port."
+  ]
+}

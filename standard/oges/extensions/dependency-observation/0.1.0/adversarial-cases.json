@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:dependency_observation",
+  "cases": [
+    {"case_id": "valid_complete_joint_observation", "expected_status": "pass", "expected_reason": null},
+    {"case_id": "positive_value_without_measure", "expected_status": "refused", "expected_reason": "observation_schema_invalid"},
+    {"case_id": "source_missing_with_measure", "expected_status": "refused", "expected_reason": "observation_schema_invalid"},
+    {"case_id": "required_role_removed", "expected_status": "refused", "expected_reason": "observation_role_set_invalid"},
+    {"case_id": "duplicate_role_slot", "expected_status": "refused", "expected_reason": "observation_role_slot_duplicate"},
+    {"case_id": "unregistered_role_semantics", "expected_status": "refused", "expected_reason": "observation_role_semantics_invalid"},
+    {"case_id": "loaded_country_relabelled_destination", "expected_status": "refused", "expected_reason": "observation_role_semantics_invalid"},
+    {"case_id": "crosswalk_member_omitted", "expected_status": "refused", "expected_reason": "crosswalk_frame_partition_invalid"},
+    {"case_id": "matched_crosswalk_without_entity", "expected_status": "refused", "expected_reason": "crosswalk_resolution_invalid"},
+    {"case_id": "observation_crosswalk_value_mismatch", "expected_status": "refused", "expected_reason": "observation_crosswalk_mismatch"},
+    {"case_id": "knowledge_before_observation", "expected_status": "refused", "expected_reason": "observation_time_order_invalid"},
+    {"case_id": "rights_snapshot_or_approval_missing", "expected_status": "refused", "expected_reason": "observation_rights_invalid"},
+    {"case_id": "record_hash_tampered", "expected_status": "refused", "expected_reason": "record_digest_mismatch"},
+    {"case_id": "value_partition_not_complete", "expected_status": "refused", "expected_reason": "observation_value_partition_invalid"},
+    {"case_id": "invented_method_digest", "expected_status": "refused", "expected_reason": "observation_method_digest_mismatch"}
+  ]
+}

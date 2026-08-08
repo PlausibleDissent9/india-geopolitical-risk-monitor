@@ -502,13 +502,26 @@ def _approved_source(
     return source
 
 
-def _candidate_cells(profile: dict[str, Any]) -> list[dict[str, Any]]:
+def _joint_cells(profile: dict[str, Any]) -> list[dict[str, Any]]:
     result: list[dict[str, Any]] = []
     for row in profile["detail_rows"]:
         for port, value in row["ports"].items():
-            if value is None or value == 0:
-                continue
-            material = "|".join((profile["flow"], row["commodity"], row["reported_country"], port))
+            value_status = (
+                "source_missing"
+                if value is None
+                else "observed_zero"
+                if value == 0
+                else "observed_positive"
+            )
+            material = "|".join(
+                (
+                    profile["artifact_sha256"],
+                    profile["flow"],
+                    row["commodity"],
+                    row["reported_country"],
+                    port,
+                )
+            )
             result.append(
                 {
                     "observation_id": "ogdpt:" + hashlib.sha256(material.encode()).hexdigest()[:24],
@@ -518,6 +531,7 @@ def _candidate_cells(profile: dict[str, Any]) -> list[dict[str, Any]]:
                     "country_semantics": profile["country_semantics"],
                     "port_column": port,
                     "quantity": value,
+                    "value_status": value_status,
                     "unit": profile["unit"],
                     "source_line": row["line_number"],
                     "row_all_ports_quantity": row["all_ports"],
@@ -590,7 +604,10 @@ def compile_baseline(
         profile_artifact(unloaded_path, flow="unloaded", registry=registry),
         profile_artifact(loaded_path, flow="loaded", registry=registry),
     ]
-    observations = [cell for profile in profiles for cell in _candidate_cells(profile)]
+    observations = [cell for profile in profiles for cell in _joint_cells(profile)]
+    expected_observations = sum(profile["coverage"]["expected_joint_cells"] for profile in profiles)
+    if len(observations) != expected_observations:
+        _fail("joint_observation_frame_incomplete")
     return {
         "_meta": {
             "schema_version": "1.0.0",
@@ -608,6 +625,16 @@ def compile_baseline(
             "flows": [{"flow": profile["flow"], **profile["coverage"]} for profile in profiles],
             "national_port_coverage": None,
             "national_port_coverage_reason": registry["port_frame"]["excluded_scope"],
+            "joint_observation_frame_count": len(observations),
+            "joint_observation_frame_sha256": hashlib.sha256(
+                json.dumps(
+                    observations,
+                    ensure_ascii=False,
+                    allow_nan=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode()
+            ).hexdigest(),
         },
         "joint_observations": observations,
         "dependency_edges": [],

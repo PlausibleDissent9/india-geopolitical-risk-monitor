@@ -40,6 +40,81 @@ These layers stay separate. They may be viewed together, but an attention readin
 never silently becomes an event probability, an event count never becomes an
 economic-loss estimate, and a market move never becomes evidence of causation.
 
+### The category redefinition: geopolitical reality infrastructure
+
+The maximum version is not merely an index, observatory, map, chatbot or digital
+twin. It is **India's open geopolitical reality infrastructure**: a continuously
+versioned system that estimates what is known about the external world, reconciles
+that knowledge with India's physical and economic constraints, tests bounded
+counterfactuals, compiles role-specific decisions and learns from what happened
+next. Its closed loop is:
+
+```text
+world evidence
+  -> typed claims, events and competing hypotheses
+  -> point-in-time world-state ledger
+  -> temporal India dependency model
+  -> constraint-aware shock propagation
+  -> robust interventions and explicit abstentions
+  -> evidence-identical research / policy / business / public artifacts
+  -> observed outcomes, postmortems and recalibration
+  -> next world-state vintage
+```
+
+The system has four irreducible engines:
+
+1. **World-state ledger.** Rumours, allegations, official statements, observed
+   actions, disruptions and recoveries remain different typed objects. Supporting,
+   contradicting and superseding evidence changes state without rewriting history.
+2. **India dependency model.** A temporal constraint graph represents stocks,
+   flows, capacities, inventories, ownership, substitution ceilings, activation
+   lags, geographic routes and recovery curves. A static correlation graph is not
+   a digital twin.
+3. **Proof-carrying decision compiler.** Natural-language and interface requests
+   compile into finite query and transformation plans. Every sentence, number,
+   map mark and scenario path carries the same claim/evidence hash across the
+   researcher, board, newsroom, API and audit-bundle views.
+4. **Learning institution.** Forecasts, scenarios, decisions, abstentions,
+   incidents and outcomes enter a permanent loss register. Models and methods are
+   recalibrated against prospective evidence; favourable anecdotes cannot erase
+   failed calls.
+
+The differentiator is **decision-grade state estimation under incomplete
+evidence**, not information density. IGRM should answer six questions together:
+
+- What does the evidence establish, contradict or leave unresolved as of a
+  specified knowledge cutoff?
+- Through which registered India-relevant paths could an event propagate?
+- Which stock, flow, capacity, substitution, timing and policy constraints bind?
+- How much of that path is observed, mapped, assumed, stale or rights-restricted?
+- Which interventions remain useful across plausible parameter ranges rather than
+  only in one chosen forecast?
+- What later evidence would falsify the current explanation or change the action?
+
+This architecture makes live maps and the assistant views over one governed state,
+not separate products that can disagree. It also permits confidential firm or
+institution modules to use selective disclosure: the public layer can verify the
+method, scope and signed result without receiving restricted raw records.
+
+#### Digital-twin maturity ladder
+
+The words “digital twin” are licensed only by achieved maturity, not ambition:
+
+| Level | Required capability | Licensed description |
+|---|---|---|
+| L0 — contract | synthetic schemas and refusal tests | executable foundation only |
+| L1 — observations | rights-approved, complete source frames with typed missingness | official-source observation layer |
+| L2 — identity and topology | audited crosswalks and versioned n-ary relations across one declared universe | bounded dependency map |
+| L3 — state and constraints | time-varying flows, stocks, capacities, buffers, substitutes and lags | bounded India dependency twin for the named vertical |
+| L4 — propagation | prospective backtests and externally reviewed uncertainty for shock and recovery ranges | validated propagation model for the named tasks |
+| L5 — decision utility | blinded users outperform declared baselines and failures remain public | decision-useful geopolitical twin for the tested tasks |
+
+The current official port compilers are L1 candidates whose public observations
+remain rights-gated. They do not license an L2 dependency map, an L3 twin or a
+national exposure claim. The ten-week objective is one exceptional vertical that
+can credibly advance through L2 and, only where data support it, a partial L3—not
+a decorative whole-economy twin assembled from invented edges.
+
 ### The atomic promise
 
 No public analytical claim renders unless its complete machine-validated

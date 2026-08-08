@@ -33,6 +33,11 @@ total; visible port quantities are retained without inventing a row total.
 Provider spellings and apparent typos remain untouched pending a separately
 registered crosswalk.
 
+Any future rights-approved compiler output partitions the complete declared
+joint frame, including positive values, observed zeros and source-missing
+cells. A frame hash binds the whole partition. Positive-only extraction is
+available as an analytical view, not as a substitute for the denominator.
+
 The loaded table itself labels the country field `Country of Origin`. IGRM does
 not relabel it `destination` without an authoritative semantic resolution.
 
