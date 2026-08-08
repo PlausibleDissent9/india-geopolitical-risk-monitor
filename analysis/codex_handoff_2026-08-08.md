@@ -77,3 +77,24 @@ the standard the overnight fleet was held to.
    dispatch evicting the one queued ahead of it in the shared
    concurrency group. Fixed in 5741d95 (stand down when a run is
    already queued). Worth knowing before you touch morning.yml.
+
+9. `analysis/post_redesign_sweep_2026-08-08.md` -- 302 live assertions
+   against igrm.in after your design pass. The pass itself is clean
+   (26/26 pages on the new shell, 0 dead links, 0 stale stamps, 0
+   external egress, 86/86 endpoints). Two items are yours:
+   - **D5, live and user-facing:** `docs/app.js`'s subscribe modal is
+     NOT gated as its own comment claims. `BUTTONDOWN_USER` is empty,
+     but `initSubscribe()` only returns early on a missing overlay, so
+     the modal still auto-opens after 15s and relays visitor addresses
+     through formsubmit.co into the founder's personal Gmail -- no
+     list, no double opt-in, and the address sits in clear text in
+     public JS. Pre-existing (55441aa), not a redesign regression. Left
+     for the founder because it is his newsletter promise and his
+     inbox, not a bug I should silently switch off.
+   - **D1 follow-through:** the freshness blind spot from item 7 is now
+     measured, not theoretical -- the receipts lane stall refuses 5 of
+     26 questions on the Ask surface's launch day while
+     `freshness.json` reports the payload fresh.
+   The three RSS defects in the same report (590-char title, missing
+   pubDate, raw-Markdown descriptions) were all in one function and are
+   fixed in 7baf222.
