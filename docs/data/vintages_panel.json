@@ -8,7 +8,7 @@
   "reconstruction": "rows = {d: r for d, r in current.items() if d <= last_observation and d not in absent_days}; then for each diff day, apply its channel values over the row. Verified exact against git for every vintage listed, on every build; the builder refuses to publish otherwise.",
   "why_diffs": "10 of the vintages differ from today's series by nothing at all (vintages.json is the nightly proof), so a full panel would be >99% duplication. The two revised vintages carry their changed values inline.",
   "n_vintages": 12,
-  "generated": "2026-08-07T17:25:15Z"
+  "generated": "2026-08-08T05:31:19Z"
  },
  "current_columns": [
   "composite",

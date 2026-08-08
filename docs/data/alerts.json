@@ -6,13 +6,64 @@
    "T2": "composite_percentile_crossing (90th pctl, 730d window)",
    "T3": "integrity_event"
   },
-  "generated": "2026-08-07T18:03:20Z",
+  "generated": "2026-08-08T05:32:16Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/alerts.json"
  },
  "alerts": [
+  {
+   "id": "2026-08-07-gulf_energy-T1",
+   "date": "2026-08-07",
+   "type": "band_separated_move",
+   "channel": "gulf_energy",
+   "direction": "down",
+   "score": 76.3,
+   "band": [
+    75.6,
+    76.6
+   ],
+   "prev_score": 77.7,
+   "prev_band": [
+    77.3,
+    78.3
+   ]
+  },
+  {
+   "id": "2026-08-07-us_trade-T1",
+   "date": "2026-08-07",
+   "type": "band_separated_move",
+   "channel": "us_trade",
+   "direction": "up",
+   "score": 46.1,
+   "band": [
+    37.4,
+    56.9
+   ],
+   "prev_score": 15.6,
+   "prev_band": [
+    7.4,
+    26.2
+   ]
+  },
+  {
+   "id": "2026-08-07-shipping-T1",
+   "date": "2026-08-07",
+   "type": "band_separated_move",
+   "channel": "shipping",
+   "direction": "down",
+   "score": 61.7,
+   "band": [
+    45.0,
+    71.0
+   ],
+   "prev_score": 80.9,
+   "prev_band": [
+    74.1,
+    86.7
+   ]
+  },
   {
    "id": "2026-08-06-contract-T3",
    "date": "2026-08-06",

@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Engineering Goods: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-07T18:03:26Z",
+  "generated": "2026-08-08T05:32:22Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,34 +11,34 @@
  "sector": "engineering_goods",
  "label": "Engineering Goods",
  "rationale": "Largest export category by breadth; US/EU demand-side policy, sea freight both directions, Chinese components upstream.",
- "date": "2026-08-06",
+ "date": "2026-08-07",
  "channels": {
   "china_east": {
    "label": "China / Eastern Border",
-   "score": 5.3,
+   "score": 27.3,
    "band95": [
-    0.4,
-    40.2
+    4.8,
+    67.4
    ],
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#china_east"
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 80.9,
+   "score": 61.7,
    "band95": [
-    74.1,
-    86.7
+    45.0,
+    71.0
    ],
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#shipping"
   },
   "us_trade": {
    "label": "US & Trade Policy",
-   "score": 15.6,
+   "score": 46.1,
    "band95": [
-    7.4,
-    26.2
+    37.4,
+    56.9
    ],
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#us_trade"

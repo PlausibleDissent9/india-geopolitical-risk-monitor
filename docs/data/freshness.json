@@ -7,11 +7,11 @@
   "what": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
   "undatable_is_a_failure": "A payload with no _meta.generated cannot be audited by anything, so it counts as a failure rather than a pass. An auditor that skips what it cannot read is worse than no auditor, because it reports green.",
   "default_max_age_days": 3,
-  "n_payloads": 76,
-  "n_fresh": 66,
+  "n_payloads": 81,
+  "n_fresh": 71,
   "n_stale_or_undatable": 0,
   "n_exempt": 10,
-  "generated": "2026-08-07T18:02:24Z"
+  "generated": "2026-08-08T05:31:16Z"
  },
  "payloads": [
   {
@@ -22,14 +22,14 @@
   {
    "payload": "alerts.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "alt_specs.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 10,
    "status": "fresh"
   },
@@ -41,34 +41,34 @@
   {
    "payload": "aptness.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "back_extension.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 40,
    "status": "fresh"
   },
   {
    "payload": "chokepoints.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "comparators.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "country_china.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -76,20 +76,27 @@
   {
    "payload": "cow_mids.json",
    "generated": "2026-08-06",
-   "age_days": 1,
+   "age_days": 2,
    "max_age_days": 400,
    "status": "fresh"
   },
   {
    "payload": "daily_brief.json",
    "generated": "2026-08-07",
+   "age_days": 1,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "detection_baselines.json",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "detector_blindness.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 5,
    "status": "fresh"
@@ -102,13 +109,13 @@
   {
    "payload": "energy_context.json",
    "generated": "2026-08-06",
-   "age_days": 1,
+   "age_days": 2,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "episode_actors.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -116,14 +123,14 @@
   {
    "payload": "episode_terms.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "episode_themes.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -134,7 +141,7 @@
   },
   {
    "payload": "event_study.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -142,13 +149,13 @@
   {
    "payload": "expert_shelf.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "exposure_sectors.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -156,7 +163,7 @@
   {
    "payload": "forecasts.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -168,43 +175,57 @@
   {
    "payload": "gpr_comparison.json",
    "generated": "2026-08-06",
-   "age_days": 1,
+   "age_days": 2,
    "max_age_days": 40,
    "status": "fresh"
   },
   {
    "payload": "history.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "latest.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "map_relations.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "map_states.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "monthly.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 5,
+   "status": "fresh"
+  },
+  {
+   "payload": "multilingual.json",
+   "generated": "2026-08-07",
+   "age_days": 1,
+   "max_age_days": 30,
+   "status": "fresh"
+  },
+  {
+   "payload": "negative_results.json",
+   "generated": "2026-08-08",
+   "age_days": 0,
+   "max_age_days": 3,
    "status": "fresh"
   },
   {
@@ -220,6 +241,13 @@
   {
    "payload": "nowcast.json",
    "generated": "2026-08-07",
+   "age_days": 1,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "outlet_drift.json",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -227,20 +255,20 @@
   {
    "payload": "permanence.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 10,
    "status": "fresh"
   },
   {
    "payload": "precision.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "predictability.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -253,153 +281,153 @@
   {
    "payload": "priced_risk.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 10,
    "status": "fresh"
   },
   {
    "payload": "receipts.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "receipts_archive.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "reliability.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "replication.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "robustness_series.json",
    "generated": "2026-08-06",
-   "age_days": 1,
+   "age_days": 2,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "seasonality.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 10,
    "status": "fresh"
   },
   {
    "payload": "sector_agri_food.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_auto_components.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_chemicals.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_defence_aerospace.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_electronics.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_energy_manufacturing.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_engineering_goods.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_fmcg.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_gems_jewellery.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_it_services.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_marine_products.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_metals.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_petroleum_refining.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_pharma.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_sensitivity.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -407,13 +435,13 @@
   {
    "payload": "sector_textiles_apparel.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "shares.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -421,13 +449,13 @@
   {
    "payload": "spike_breadth.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "splice_sensitivity.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -439,7 +467,7 @@
   },
   {
    "payload": "stress_gauge.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -447,27 +475,27 @@
   {
    "payload": "syndication.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 5,
    "status": "fresh"
   },
   {
    "payload": "tone.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "ucdp_context.json",
    "generated": "2026-08-06",
-   "age_days": 1,
+   "age_days": 2,
    "max_age_days": 400,
    "status": "fresh"
   },
   {
    "payload": "uncertainty.json",
-   "generated": "2026-08-07",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
@@ -475,20 +503,27 @@
   {
    "payload": "validation.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "vintages.json",
    "generated": "2026-08-07",
-   "age_days": 0,
+   "age_days": 1,
    "max_age_days": 5,
    "status": "fresh"
   },
   {
-   "payload": "wiki_hindi.json",
+   "payload": "vintages_panel.json",
    "generated": "2026-08-07",
+   "age_days": 1,
+   "max_age_days": 3,
+   "status": "fresh"
+  },
+  {
+   "payload": "wiki_hindi.json",
+   "generated": "2026-08-08",
    "age_days": 0,
    "max_age_days": 10,
    "status": "fresh"
@@ -496,7 +531,7 @@
   {
    "payload": "episodes.csv",
    "generated": "2026-08-04",
-   "age_days": 3,
+   "age_days": 4,
    "max_age_days": 90,
    "status": "fresh"
   },
@@ -507,7 +542,7 @@
   },
   {
    "payload": "history.csv",
-   "generated": "2026-08-06",
+   "generated": "2026-08-07",
    "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"
@@ -515,13 +550,13 @@
   {
    "payload": "monthly.csv",
    "generated": "2026-08-01",
-   "age_days": 6,
+   "age_days": 7,
    "max_age_days": 70,
    "status": "fresh"
   },
   {
    "payload": "shares.csv",
-   "generated": "2026-08-06",
+   "generated": "2026-08-07",
    "age_days": 1,
    "max_age_days": 3,
    "status": "fresh"

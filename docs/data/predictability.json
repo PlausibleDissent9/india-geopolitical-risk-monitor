@@ -3,7 +3,7 @@
   "what": "Directed lead-lag predictability on daily changes: R2 increment from adding five lags of the leading series to five own-lags, permutation p-values (time-shifted null, 300 draws). Predictability in this sense is an association across time, never causality, and none of this is a forecast or investment advice.",
   "lags": 5,
   "permutations": 300,
-  "generated": "2026-08-07",
+  "generated": "2026-08-08",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,34 +11,34 @@
  },
  "pairs": {
   "salience_leads_events": {
-   "n": 3301,
+   "n": 3302,
    "r2_increment": 0.0015,
-   "p_permutation": 0.661
+   "p_permutation": 0.738
   },
   "salience_leads_vix": {
-   "n": 2214,
+   "n": 2215,
    "r2_increment": 0.0023,
-   "p_permutation": 0.399
+   "p_permutation": 0.385
   },
   "salience_leads_inr_vol": {
-   "n": 2262,
+   "n": 2263,
    "r2_increment": 0.001,
-   "p_permutation": 0.817
+   "p_permutation": 0.797
   },
   "events_leads_salience": {
-   "n": 3301,
-   "r2_increment": 0.0098,
-   "p_permutation": 0.05
+   "n": 3302,
+   "r2_increment": 0.0099,
+   "p_permutation": 0.063
   },
   "vix_leads_salience": {
-   "n": 2214,
+   "n": 2215,
    "r2_increment": 0.0027,
-   "p_permutation": 0.146
+   "p_permutation": 0.136
   },
   "inr_vol_leads_salience": {
-   "n": 2262,
+   "n": 2263,
    "r2_increment": 0.0018,
-   "p_permutation": 0.352
+   "p_permutation": 0.385
   }
  }
 }

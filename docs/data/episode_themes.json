@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Narrative composition (G4): per channel per day, the GKG theme codes carried by the MATCHED articles -- the registered dictionaries choose every article, BigQuery only reads its V2Themes; an annotation, never a filter, entering no score. share = fraction of themed matched articles carrying the code; codes stay raw GDELT identifiers for auditability. n_themed vs n_matched discloses the join rate.",
-  "generated": "2026-08-07T18:03:19Z",
+  "generated": "2026-08-08T05:32:15Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -548,6 +548,278 @@
      {
       "code": "ECON_OILPRICE",
       "share": 0.481
+     }
+    ]
+   }
+  },
+  "2026-08-07": {
+   "china_east": {
+    "n_matched": 71,
+    "n_themed": 62,
+    "top_themes": [
+     {
+      "code": "TAX_ETHNICITY_CHINESE",
+      "share": 0.903
+     },
+     {
+      "code": "TAX_WORLDLANGUAGES_CHINESE",
+      "share": 0.903
+     },
+     {
+      "code": "TAX_ETHNICITY_INDIAN",
+      "share": 0.887
+     },
+     {
+      "code": "BORDER",
+      "share": 0.726
+     },
+     {
+      "code": "UNGP_FORESTS_RIVERS_OCEANS",
+      "share": 0.677
+     },
+     {
+      "code": "CRISISLEX_C07_SAFETY",
+      "share": 0.581
+     },
+     {
+      "code": "TAX_FNCACT_MINISTER",
+      "share": 0.452
+     },
+     {
+      "code": "TAX_FNCACT_DIRECTOR",
+      "share": 0.435
+     },
+     {
+      "code": "TAX_FNCACT_SECRETARY",
+      "share": 0.403
+     },
+     {
+      "code": "GENERAL_GOVERNMENT",
+      "share": 0.387
+     },
+     {
+      "code": "RELATIONS",
+      "share": 0.387
+     },
+     {
+      "code": "EPU_POLICY_GOVERNMENT",
+      "share": 0.371
+     }
+    ]
+   },
+   "gulf_energy": {
+    "n_matched": 2388,
+    "n_themed": 2126,
+    "top_themes": [
+     {
+      "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
+      "share": 0.636
+     },
+     {
+      "code": "ENV_OIL",
+      "share": 0.627
+     },
+     {
+      "code": "LEADER",
+      "share": 0.61
+     },
+     {
+      "code": "UNGP_FORESTS_RIVERS_OCEANS",
+      "share": 0.589
+     },
+     {
+      "code": "TAX_ECON_PRICE",
+      "share": 0.581
+     },
+     {
+      "code": "USPEC_POLITICS_GENERAL1",
+      "share": 0.556
+     },
+     {
+      "code": "EPU_CATS_NATIONAL_SECURITY",
+      "share": 0.545
+     },
+     {
+      "code": "WB_2433_CONFLICT_AND_VIOLENCE",
+      "share": 0.538
+     },
+     {
+      "code": "TAX_FNCACT_PRESIDENT",
+      "share": 0.536
+     },
+     {
+      "code": "ARMEDCONFLICT",
+      "share": 0.535
+     },
+     {
+      "code": "WB_696_PUBLIC_SECTOR_MANAGEMENT",
+      "share": 0.514
+     },
+     {
+      "code": "CRISISLEX_CRISISLEXREC",
+      "share": 0.492
+     }
+    ]
+   },
+   "pakistan_west": {
+    "n_matched": 63,
+    "n_themed": 52,
+    "top_themes": [
+     {
+      "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
+      "share": 0.885
+     },
+     {
+      "code": "WB_2433_CONFLICT_AND_VIOLENCE",
+      "share": 0.846
+     },
+     {
+      "code": "ARMEDCONFLICT",
+      "share": 0.827
+     },
+     {
+      "code": "CRISISLEX_C07_SAFETY",
+      "share": 0.808
+     },
+     {
+      "code": "CRISISLEX_CRISISLEXREC",
+      "share": 0.769
+     },
+     {
+      "code": "WB_2462_POLITICAL_VIOLENCE_AND_WAR",
+      "share": 0.769
+     },
+     {
+      "code": "UNGP_FORESTS_RIVERS_OCEANS",
+      "share": 0.712
+     },
+     {
+      "code": "WB_696_PUBLIC_SECTOR_MANAGEMENT",
+      "share": 0.673
+     },
+     {
+      "code": "WB_133_INFORMATION_AND_COMMUNICATION_TECHNOLOGIES",
+      "share": 0.596
+     },
+     {
+      "code": "WB_678_DIGITAL_GOVERNMENT",
+      "share": 0.596
+     },
+     {
+      "code": "UNGP_CRIME_VIOLENCE",
+      "share": 0.577
+     },
+     {
+      "code": "KILL",
+      "share": 0.577
+     }
+    ]
+   },
+   "shipping": {
+    "n_matched": 363,
+    "n_themed": 305,
+    "top_themes": [
+     {
+      "code": "CRISISLEX_CRISISLEXREC",
+      "share": 0.875
+     },
+     {
+      "code": "MARITIME",
+      "share": 0.823
+     },
+     {
+      "code": "UNGP_FORESTS_RIVERS_OCEANS",
+      "share": 0.82
+     },
+     {
+      "code": "ARMEDCONFLICT",
+      "share": 0.793
+     },
+     {
+      "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
+      "share": 0.774
+     },
+     {
+      "code": "WB_2433_CONFLICT_AND_VIOLENCE",
+      "share": 0.731
+     },
+     {
+      "code": "EPU_CATS_NATIONAL_SECURITY",
+      "share": 0.708
+     },
+     {
+      "code": "MANMADE_DISASTER_IMPLIED",
+      "share": 0.685
+     },
+     {
+      "code": "GENERAL_GOVERNMENT",
+      "share": 0.682
+     },
+     {
+      "code": "TAX_ETHNICITY_HOUTHI",
+      "share": 0.672
+     },
+     {
+      "code": "ENV_OIL",
+      "share": 0.662
+     },
+     {
+      "code": "TAX_ETHNICITY_HOUTHIS",
+      "share": 0.646
+     }
+    ]
+   },
+   "us_trade": {
+    "n_matched": 205,
+    "n_themed": 177,
+    "top_themes": [
+     {
+      "code": "USPEC_POLICY1",
+      "share": 0.927
+     },
+     {
+      "code": "LEADER",
+      "share": 0.927
+     },
+     {
+      "code": "USPEC_POLITICS_GENERAL1",
+      "share": 0.91
+     },
+     {
+      "code": "TAX_FNCACT_PRESIDENT",
+      "share": 0.887
+     },
+     {
+      "code": "TAX_ETHNICITY_RUSSIAN",
+      "share": 0.87
+     },
+     {
+      "code": "ENV_OIL",
+      "share": 0.87
+     },
+     {
+      "code": "TAX_WORLDLANGUAGES_RUSSIAN",
+      "share": 0.864
+     },
+     {
+      "code": "TAX_WORLDLANGUAGES_RUSSIA",
+      "share": 0.864
+     },
+     {
+      "code": "SANCTIONS",
+      "share": 0.842
+     },
+     {
+      "code": "LEGISLATION",
+      "share": 0.836
+     },
+     {
+      "code": "EPU_POLICY_LEGISLATION",
+      "share": 0.836
+     },
+     {
+      "code": "EPU_ECONOMY_HISTORIC",
+      "share": 0.825
      }
     ]
    }
