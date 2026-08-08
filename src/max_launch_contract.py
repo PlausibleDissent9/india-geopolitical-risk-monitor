@@ -1,4 +1,4 @@
-"""Fail-closed validator for the founder-authorized IGRM Max launch program.
+"""Fail-closed validator for the proposed IGRM Max launch program.
 
 The contract is not a motivational roadmap.  It prevents the October scope from
 quietly shrinking and prevents repository activity from being relabelled as an
@@ -6,21 +6,71 @@ external outcome.  A completed deliverable must name committed product, contract
 and test surfaces together; every engine and required capability remains in the
 machine-readable denominator until it is genuinely evidenced.
 
-Standalone: ``python -m src.max_launch_contract``.
+The scope lock and founder authorization are deliberately separate.  Scope can
+be inspected while authorization is pending; the full validator succeeds only
+after the founder's registered Ed25519 key verifies a detached authorization
+statement over the immutable scope digest.  Progress rows remain mutable and
+are explicitly outside that signature.
+
+Standalone::
+
+    python -m src.max_launch_contract --scope-only
+    python -m src.max_launch_contract
 """
 from __future__ import annotations
 
+import base64
+import binascii
 import hashlib
 import json
 import re
 import subprocess
+import sys
 from datetime import date
 from pathlib import Path, PurePosixPath
-from typing import Any, NoReturn
+from typing import Any, NoReturn, cast
+
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "design" / "igrm_max_launch_contract.json"
-EXPECTED_SCOPE_SHA256 = "8dabe5401d505564df84721acfc8c60bd7521b5b004a812102331c91757ebc1e"
+FOUNDER_SIGNERS = ROOT / "governance" / "founder_signers.json"
+AUTHORIZATION_STATEMENT = (
+    ROOT / "governance" / "authorizations" / "igrm-max-2026-10-24.authorization.json"
+)
+AUTHORIZATION_SIGNATURE = (
+    ROOT / "governance" / "authorizations" / "igrm-max-2026-10-24.authorization.sig"
+)
+EXPECTED_SCOPE_SHA256 = "5e82f8c73535a85886213666fe84cc43cdf65f5881bf54ebc06c1f52790a1c56"
+REQUIRED_AUTHORIZATION_POLICY = {
+    "mechanism": "detached_ed25519",
+    "required_signer_id": "founder:ishan-krishna",
+    "required_role": "igrm_max_scope_authorizer",
+    "signer_registry_path": "governance/founder_signers.json",
+    "statement_path": (
+        "governance/authorizations/igrm-max-2026-10-24.authorization.json"
+    ),
+    "signature_path": (
+        "governance/authorizations/igrm-max-2026-10-24.authorization.sig"
+    ),
+    "scope_only": True,
+    "progress_excluded": True,
+}
+AUTHORIZATION_TEXT = (
+    "I, Ishan Krishna, authorize the exact IGRM Max scope, launch date and "
+    "INR budget ceiling identified by this statement. I understand that this "
+    "does not approve any individual purchase or establish validation, legal "
+    "clearance, external adoption, citation, award or government endorsement."
+)
+AUTHORIZATION_LIMITATIONS = [
+    "no_individual_purchase_approved",
+    "not_scientific_validation",
+    "not_legal_clearance",
+    "not_external_adoption",
+    "not_citation_or_award",
+    "not_government_endorsement",
+]
 
 PILLARS = {
     "core",
@@ -242,13 +292,12 @@ def _scope_projection(document: dict[str, Any]) -> dict[str, object]:
         _fail("program_scope_invalid")
     return {
         "program_id": document.get("program_id"),
-        "status": document.get("status"),
-        "authorized_on": document.get("authorized_on"),
         "launch_date": document.get("launch_date"),
         "objective": document.get("objective"),
         "budget": {
             "currency": budget.get("currency"),
             "ceiling": budget.get("ceiling"),
+            "state": budget.get("state"),
             "purchase_rule": budget.get("purchase_rule"),
         },
         "launch_boundary": document.get("launch_boundary"),
@@ -275,17 +324,19 @@ def scope_sha256(document: dict[str, Any]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def validate_contract(
+def validate_scope(
     document: dict[str, Any], *, repo_root: Path = ROOT
 ) -> dict[str, object]:
-    if document.get("schema_version") != "1.0.0":
+    if document.get("schema_version") != "1.1.0":
         _fail("schema_version_invalid")
     if document.get("program_id") != "igrm-max-2026-10-24":
         _fail("program_id_invalid")
-    if document.get("status") != "founder_authorized":
+    if document.get("status") != "founder_authorization_pending":
         _fail("authorization_state_invalid")
-    if _day(document.get("authorized_on"), "authorization_date_invalid") != date(2026, 8, 8):
-        _fail("authorization_date_changed")
+    if _day(document.get("proposed_on"), "proposal_date_invalid") != date(2026, 8, 8):
+        _fail("proposal_date_changed")
+    if document.get("authorization_policy") != REQUIRED_AUTHORIZATION_POLICY:
+        _fail("authorization_policy_changed")
     launch = _day(document.get("launch_date"), "launch_date_invalid")
     if launch != date(2026, 10, 24):
         _fail("launch_date_changed")
@@ -419,12 +470,219 @@ def validate_contract(
         "engines": len(engine_ids),
         "required_capabilities": len(capability_ids),
         "completed_deliverables": len(completed_ids),
-        "status": "contract_valid",
+        "status": "scope_valid_authorization_pending",
+    }
+
+
+def canonical_json_bytes(document: dict[str, Any]) -> bytes:
+    """The one byte representation that may be signed."""
+
+    return (
+        json.dumps(
+            document,
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+            allow_nan=False,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def _read_strict_json_file(path: Path, code: str) -> tuple[bytes, dict[str, Any]]:
+    if path.is_symlink() or not path.is_file():
+        _fail(code)
+    try:
+        raw = path.read_bytes()
+        value = json.loads(
+            raw,
+            object_pairs_hook=_unique_object,
+            parse_constant=_reject_constant,
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise MaxLaunchContractError(code) from exc
+    if not isinstance(value, dict):
+        _fail(code)
+    return raw, cast(dict[str, Any], value)
+
+
+def _authorization_day(value: object, proposed: date, launch: date) -> date:
+    authorized = _day(value, "authorization_date_invalid")
+    if not proposed <= authorized <= launch:
+        _fail("authorization_date_outside_program")
+    return authorized
+
+
+def _founder_public_key(
+    registry: dict[str, Any], *, authorized_on: date
+) -> Ed25519PublicKey:
+    if set(registry) != {"schema_version", "effective", "default_policy", "signers"}:
+        _fail("founder_signer_registry_invalid")
+    if (
+        registry.get("schema_version") != "1.0.0"
+        or registry.get("default_policy") != "deny"
+        or _day(registry.get("effective"), "founder_signer_registry_invalid")
+        > authorized_on
+    ):
+        _fail("founder_signer_registry_invalid")
+    rows = registry.get("signers")
+    if not isinstance(rows, list):
+        _fail("founder_signer_registry_invalid")
+    ids: set[str] = set()
+    required: dict[str, Any] | None = None
+    for value in rows:
+        if not isinstance(value, dict) or set(value) != {
+            "signer_id",
+            "name",
+            "role",
+            "public_key_ed25519_base64",
+            "public_key_sha256",
+            "effective",
+            "revoked_on",
+        }:
+            _fail("founder_signer_entry_invalid")
+        signer_id = value.get("signer_id")
+        if not isinstance(signer_id, str) or signer_id in ids:
+            _fail("founder_signer_entry_invalid")
+        ids.add(signer_id)
+        if signer_id == REQUIRED_AUTHORIZATION_POLICY["required_signer_id"]:
+            required = value
+    if required is None:
+        _fail("founder_signer_missing")
+    if (
+        required.get("name") != "Ishan Krishna"
+        or required.get("role") != REQUIRED_AUTHORIZATION_POLICY["required_role"]
+    ):
+        _fail("founder_signer_identity_invalid")
+    effective = _day(required.get("effective"), "founder_signer_effective_invalid")
+    revoked_raw = required.get("revoked_on")
+    revoked = (
+        _day(revoked_raw, "founder_signer_revocation_invalid")
+        if revoked_raw is not None
+        else None
+    )
+    if effective > authorized_on or (revoked is not None and revoked <= authorized_on):
+        _fail("founder_signer_not_effective")
+    encoded_key = required.get("public_key_ed25519_base64")
+    if not isinstance(encoded_key, str):
+        _fail("founder_public_key_invalid")
+    try:
+        raw_key = base64.b64decode(encoded_key, validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise MaxLaunchContractError("founder_public_key_invalid") from exc
+    if len(raw_key) != 32 or base64.b64encode(raw_key).decode("ascii") != encoded_key:
+        _fail("founder_public_key_invalid")
+    if required.get("public_key_sha256") != hashlib.sha256(raw_key).hexdigest():
+        _fail("founder_public_key_fingerprint_invalid")
+    try:
+        return Ed25519PublicKey.from_public_bytes(raw_key)
+    except ValueError as exc:
+        raise MaxLaunchContractError("founder_public_key_invalid") from exc
+
+
+def build_authorization_statement(
+    document: dict[str, Any],
+    *,
+    signer_registry_bytes: bytes,
+    authorized_on: str,
+) -> dict[str, Any]:
+    """Build the exact statement the founder must personally sign."""
+
+    validate_scope(document)
+    authorization_date = _authorization_day(
+        authorized_on,
+        _day(document.get("proposed_on"), "proposal_date_invalid"),
+        _day(document.get("launch_date"), "launch_date_invalid"),
+    )
+    budget = document["budget"]
+    return {
+        "schema_version": "1.0.0",
+        "authorization_id": "founder-authorization:igrm-max-2026-10-24",
+        "program_id": document["program_id"],
+        "signer_id": REQUIRED_AUTHORIZATION_POLICY["required_signer_id"],
+        "signer_role": REQUIRED_AUTHORIZATION_POLICY["required_role"],
+        "authorized_on": authorization_date.isoformat(),
+        "proposal_date": document["proposed_on"],
+        "launch_date": document["launch_date"],
+        "program_scope_sha256": scope_sha256(document),
+        "scope_projection": "src.max_launch_contract._scope_projection",
+        "progress_excluded": True,
+        "signer_registry_path": REQUIRED_AUTHORIZATION_POLICY["signer_registry_path"],
+        "signer_registry_sha256": hashlib.sha256(signer_registry_bytes).hexdigest(),
+        "budget": {
+            "currency": budget["currency"],
+            "ceiling": budget["ceiling"],
+            "purchase_rule": budget["purchase_rule"],
+            "individual_purchases_approved": False,
+        },
+        "statement": AUTHORIZATION_TEXT,
+        "limitations": AUTHORIZATION_LIMITATIONS,
+    }
+
+
+def validate_contract(
+    document: dict[str, Any],
+    *,
+    repo_root: Path = ROOT,
+    signer_registry_path: Path = FOUNDER_SIGNERS,
+    authorization_statement_path: Path = AUTHORIZATION_STATEMENT,
+    authorization_signature_path: Path = AUTHORIZATION_SIGNATURE,
+) -> dict[str, object]:
+    """Validate immutable scope and the founder's detached authorization."""
+
+    summary = validate_scope(document, repo_root=repo_root)
+    statement_raw, statement = _read_strict_json_file(
+        authorization_statement_path, "authorization_statement_missing"
+    )
+    if statement_raw != canonical_json_bytes(statement):
+        _fail("authorization_statement_not_canonical")
+    authorized = _authorization_day(
+        statement.get("authorized_on"),
+        _day(document.get("proposed_on"), "proposal_date_invalid"),
+        _day(document.get("launch_date"), "launch_date_invalid"),
+    )
+    registry_raw, registry = _read_strict_json_file(
+        signer_registry_path, "founder_signer_registry_missing"
+    )
+    public_key = _founder_public_key(registry, authorized_on=authorized)
+    expected_statement = build_authorization_statement(
+        document,
+        signer_registry_bytes=registry_raw,
+        authorized_on=authorized.isoformat(),
+    )
+    if statement != expected_statement:
+        _fail("authorization_statement_scope_mismatch")
+    if authorization_signature_path.is_symlink() or not authorization_signature_path.is_file():
+        _fail("authorization_signature_missing")
+    try:
+        signature = authorization_signature_path.read_bytes()
+    except OSError as exc:
+        raise MaxLaunchContractError("authorization_signature_missing") from exc
+    if len(signature) != 64:
+        _fail("authorization_signature_invalid")
+    try:
+        public_key.verify(signature, statement_raw)
+    except InvalidSignature as exc:
+        raise MaxLaunchContractError("authorization_signature_invalid") from exc
+    return {
+        **summary,
+        "status": "founder_authorized_contract_valid",
+        "authorized_on": authorized.isoformat(),
+        "authorization_statement_sha256": hashlib.sha256(statement_raw).hexdigest(),
+        "authorization_signature_sha256": hashlib.sha256(signature).hexdigest(),
     }
 
 
 def main() -> None:
-    summary = validate_contract(load_contract())
+    try:
+        summary = (
+            validate_scope(load_contract())
+            if "--scope-only" in sys.argv
+            else validate_contract(load_contract())
+        )
+    except MaxLaunchContractError as exc:
+        print(json.dumps({"status": "refused", "reason": str(exc)}, sort_keys=True))
+        raise SystemExit(1) from None
     print(json.dumps(summary, sort_keys=True))
 
 

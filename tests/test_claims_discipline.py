@@ -88,6 +88,7 @@ MD_FILES = sorted(
     | {str(p.relative_to(ROOT)) for p in (ROOT / "nef").rglob("*.md")}
     | {str(p.relative_to(ROOT)) for p in (ROOT / "listings").rglob("*.md")}
     | {str(p.relative_to(ROOT)) for p in (ROOT / "standard").rglob("*.md")}
+    | {str(p.relative_to(ROOT)) for p in (ROOT / "governance").rglob("*.md")}
 )
 
 # -- pages ------------------------------------------------------------------

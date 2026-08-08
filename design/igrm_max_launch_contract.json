@@ -1,15 +1,25 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "program_id": "igrm-max-2026-10-24",
-  "program_scope_sha256": "8dabe5401d505564df84721acfc8c60bd7521b5b004a812102331c91757ebc1e",
-  "status": "founder_authorized",
-  "authorized_on": "2026-08-08",
+  "program_scope_sha256": "5e82f8c73535a85886213666fe84cc43cdf65f5881bf54ebc06c1f52790a1c56",
+  "status": "founder_authorization_pending",
+  "proposed_on": "2026-08-08",
+  "authorization_policy": {
+    "mechanism": "detached_ed25519",
+    "required_signer_id": "founder:ishan-krishna",
+    "required_role": "igrm_max_scope_authorizer",
+    "signer_registry_path": "governance/founder_signers.json",
+    "statement_path": "governance/authorizations/igrm-max-2026-10-24.authorization.json",
+    "signature_path": "governance/authorizations/igrm-max-2026-10-24.authorization.sig",
+    "scope_only": true,
+    "progress_excluded": true
+  },
   "launch_date": "2026-10-24",
   "objective": "Ship an integrated, evidence-bounded IGRM Max v1 that connects world state, evidence, India exposure, transmission, response and recovery without licensing unsupported truth, causal, forecast, superiority or adoption claims.",
   "budget": {
     "currency": "INR",
     "ceiling": 250000,
-    "state": "founder_confirmation_pending",
+    "state": "ceiling_proposed_no_purchase_approved",
     "purchase_rule": "No purchase without a written capability gain, rights analysis, price, cheaper alternative and no-buy consequence."
   },
   "launch_boundary": {

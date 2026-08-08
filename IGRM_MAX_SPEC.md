@@ -578,13 +578,21 @@ traversal with measurable coverage and a harder evidence boundary.
 Nothing in the maximum version is sacrificed; sequencing prevents an attractive
 feature from outrunning the measurement beneath it.
 
-The founder-authorized launch denominator is registered in
+The proposed launch denominator is registered in
 `design/igrm_max_launch_contract.json`: eight pillars, eleven engines and twenty
-required capabilities for 24 October 2026. `python -m src.max_launch_contract`
-fails if that scope shrinks, a milestone silently drops an engine, or completed
-work lacks exact product, implementation and refusal-test blobs at its named Git
-commit. Repository progress cannot stand in for citations, adoption, awards or
-study observations that do not yet exist.
+required capabilities for 24 October 2026. It is currently **pending the
+founder's personal detached signature**. `python -m src.max_launch_contract
+--scope-only` verifies the immutable denominator; the same command without
+`--scope-only` fails closed until the registered founder key verifies the exact
+scope, launch date and INR budget ceiling. The encrypted private key must remain
+outside the repository. Evidence-backed progress is deliberately excluded from
+the signature so progress can be recorded without silently changing what was
+authorized. Repository progress cannot stand in for citations, adoption,
+awards or study observations that do not yet exist, and founder authorization
+does not approve an individual purchase or establish scientific validation,
+legal clearance, adoption or endorsement.
+The founder-only procedure and key boundary are documented in
+`governance/FOUNDER_AUTHORIZATION.md`.
 
 ### Program 0 — make the existing instrument unimpeachable
 
