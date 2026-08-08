@@ -82,6 +82,16 @@
    "stability": "stable"
   },
   {
+   "path": "data/assistant_answers.json",
+   "format": "json",
+   "description": "The evidence-locked assistant's registered question space, answered at build time on the committed payloads and published with each answer's full evidence ledger. Every value in every sentence was re-verified against its source bytes (hash, pointer, type, unit, date) by src/evidence_assistant.py before publication; a verification failure publishes as a stable refusal, never as prose. No language model wrote or can write any of this text.",
+   "frozen_fields": [
+    "_meta",
+    "answers"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/back_extension.json",
    "format": "json",
    "description": "Historical attention proxy 1979-2019 (M1; registration frozen before first computation, analysis/back_extension_memo.md). A DIFFERENT construct from the live instrument -- monthly event-mention shares by frozen actor-pair filters -- never spliced into or drawn with the 2017+ series. Four channels; shipping has no defensible event analog and is excluded. Channels whose 2017-2019 overlap correlation is under 0.4 do not publish a historical series; that negative is the finding.",
