@@ -125,25 +125,48 @@ def test_each_channel_has_a_complete_finite_receipt_plan(
 
     assert parsed.fact_ids == ea._receipt_fact_ids(channel)
     assert not any(fact_id.startswith("latest.") for fact_id in parsed.fact_ids)
-    assert answer.status == "answered"
-    assert answer.fact_ids == parsed.fact_ids
-    assert len(answer.evidence) == 2 + 5 * ea.RECEIPT_ENTRIES_PER_ANSWER
+    # Against LIVE data a channel may legitimately be quiet (china_east
+    # displayed 0 articles on 2026-08-03) and the assistant's CORRECT
+    # behavior is the fail-closed refusal -- requiring "answered" here
+    # turned a designed refusal into a suite failure on any quiet day.
+    # The deterministic answered/refused branches are pinned by the
+    # fixture tests; this live check asserts behavior matches state.
+    assert answer.status in ("answered", "refused")
+    if answer.status == "answered":
+        assert answer.fact_ids == parsed.fact_ids
+        assert len(answer.evidence) == 2 + 5 * ea.RECEIPT_ENTRIES_PER_ANSWER
+    else:
+        assert answer.refusal_code is not None
+        assert answer.evidence == ()
 
 
-def test_current_score_evidence_refuses_the_real_cross_date_join() -> None:
+def test_current_score_evidence_matches_the_live_date_state() -> None:
+    """The first version asserted the LIVE payloads were misaligned
+    ("fixture must exercise the guard") -- true only on 2026-08-08,
+    when the morning miss had desynced them. Alignment is the normal
+    state (13 of the last 15 data commits), so that assert was a time
+    bomb set for the next routine refresh: the same living-state-pin
+    class fe45a4e killed a day earlier. The guard's refusal branch is
+    pinned deterministically by the fixture test below; against live
+    data this test asserts only that behavior matches state."""
     latest = json.loads(
         (ROOT / "docs" / "data" / "latest.json").read_text(encoding="utf-8")
     )
     receipts = json.loads(
         (ROOT / "docs" / "data" / "receipts.json").read_text(encoding="utf-8")
     )
-    assert latest["date"] != receipts["date"], "fixture must exercise the guard"
-
     answer = ea.answer_question("Why is the current shipping score here?")
-    assert answer.status == "refused"
-    assert answer.refusal_code == "evidence_date_mismatch"
-    assert "not from the same completed news day" in answer.text
-    assert answer.evidence == ()
+    if latest["date"] != receipts["date"]:
+        assert answer.status == "refused"
+        assert answer.refusal_code == "evidence_date_mismatch"
+        assert "not from the same completed news day" in answer.text
+        assert answer.evidence == ()
+    else:
+        assert answer.status in ("answered", "refused")
+        if answer.status == "refused":
+            assert answer.refusal_code is not None
+            assert answer.refusal_code != "evidence_date_mismatch"
+            assert answer.evidence == ()
 
 
 def test_current_score_evidence_answers_only_after_exact_date_alignment(
