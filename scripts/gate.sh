@@ -63,8 +63,10 @@ if [ -x .venv/bin/activate ] || [ -f .venv/bin/activate ]; then
   . .venv/bin/activate
 fi
 
-# Every `run:` under the checks job, minus the pip install (the local venv
-# is already provisioned and reinstalling on every gate is minutes wasted).
+# Every `run:` under the checks job, minus the pip install. CI and the local
+# gate both run check_environment.py immediately afterward, so a stale or
+# partially provisioned local venv fails instead of making missing package
+# types disappear from mypy. Reinstalling on every gate remains unnecessary.
 #
 # Written as a while-read loop rather than `mapfile`, which is bash 4+ and
 # absent from the bash 3.2 macOS still ships -- the gate has to run on the

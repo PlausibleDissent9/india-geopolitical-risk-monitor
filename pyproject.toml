@@ -29,7 +29,7 @@ dependencies = [
 
 [project.optional-dependencies]
 # Display-layer machine labeling only; every score computes without it.
-brief = ["anthropic>=0.116,<1"]
+brief = ["anthropic==0.121.0"]
 
 [project.urls]
 Homepage = "https://igrm.in"

@@ -436,11 +436,7 @@ Use zero channels for latest_headline, instrument_scope, or refuse; one for chan
             system=self.SYSTEM,
             messages=[{"role": "user", "content": question}],
         )
-        blocks = [
-            block.text
-            for block in response.content
-            if getattr(block, "type", None) == "text"
-        ]
+        blocks = [block.text for block in response.content if block.type == "text"]
         if len(blocks) != 1:
             raise RouterError("model_selection_not_single_text")
         try:

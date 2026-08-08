@@ -78,6 +78,29 @@ def test_every_workflow_agrees_on_the_python_version():
         f"workflows disagree about the Python version: {sorted(versions)}")
 
 
+def test_reproduction_requirements_are_exactly_pinned():
+    """A floating provider SDK changed its typed response union overnight.
+
+    CI installed the new SDK while the local gate had no SDK installed, so
+    mypy was red remotely and green locally. The reproduction file already
+    promises exact pins; enforce the promise for every active requirement.
+    """
+    unpinned = []
+    for line_number, raw in enumerate(REQUIREMENTS.read_text().splitlines(), 1):
+        requirement = raw.split("#", 1)[0].strip()
+        if requirement and not re.fullmatch(r"[A-Za-z0-9_.-]+==[^\s;]+", requirement):
+            unpinned.append(f"line {line_number}: {requirement}")
+    assert not unpinned, f"requirements.txt contains non-exact pins: {unpinned}"
+
+
+def test_optional_assistant_sdk_matches_the_runtime_pin():
+    runtime = re.search(r"^anthropic==([^\s]+)$", REQUIREMENTS.read_text(), re.M)
+    assert runtime, "requirements.txt must pin the assistant SDK"
+    assert f'brief = ["anthropic=={runtime.group(1)}"]' in PYPROJECT.read_text(), (
+        "pyproject's optional assistant SDK must match requirements.txt exactly"
+    )
+
+
 @pytest.mark.live
 def test_every_pin_supports_the_declared_floor():
     """Resolved against PyPI, because the constraint lives there and
