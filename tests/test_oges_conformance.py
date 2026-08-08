@@ -205,6 +205,8 @@ def test_every_public_oges_json_download_is_in_the_frozen_api_contract() -> None
             if path in {
                 "schemas/sensor-fusion.schema.json",
                 "schemas/exposure-dna.schema.json",
+                "schemas/shock-scenario.schema.json",
+                "schemas/shock-compilation.schema.json",
             }
             else "static versioned public draft 0.1.0"
         )

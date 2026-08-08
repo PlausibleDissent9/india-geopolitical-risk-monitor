@@ -63,6 +63,8 @@ def test_versioned_oges_profile_and_schemas_are_first_class_endpoints():
             if path in {
                 "schemas/sensor-fusion.schema.json",
                 "schemas/exposure-dna.schema.json",
+                "schemas/shock-scenario.schema.json",
+                "schemas/shock-compilation.schema.json",
             }
             else "static versioned public draft 0.1.0"
         )

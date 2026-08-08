@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "engine": {
+    "method_id": "method:igrm.shock_compiler",
+    "version": "1.0.0",
+    "implementation_path": "src/shock_compiler.py",
+    "implementation_sha256": "f60316249ee2cf50583fbef9b4862c3e4ee38bf6345b70d15521633000f21caf",
+    "effective": "2026-08-08",
+    "superseded_on": null,
+    "input_schema_id": "https://igrm.in/schemas/shock-scenario.schema.json",
+    "input_schema_version": "1.0.0",
+    "input_schema_path": "schemas/shock-scenario.schema.json",
+    "input_schema_sha256": "01c242e74ba84b77f94e0772d6c08606fc6e2c70408074a71e7cf6fb712e914d",
+    "output_schema_id": "https://igrm.in/schemas/shock-compilation.schema.json",
+    "output_schema_version": "1.0.0",
+    "output_schema_path": "schemas/shock-compilation.schema.json",
+    "output_schema_sha256": "f5391b08f226d1292213a63c07e742798d47690a5f94c9164f9b095a7416abe1",
+    "common_schema_path": "schemas/common.schema.json",
+    "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+    "exposure_traversal_schema_path": "schemas/exposure-traversal.schema.json",
+    "exposure_traversal_schema_sha256": "ad0ff5d1988f05b0368bef4bb69e1f916357f19b14c0066f00be1a1553491f69",
+    "exposure_graph_implementation_path": "src/exposure_graph.py",
+    "exposure_graph_implementation_sha256": "a6e0c9af3309336c28016bdf7e293e315772306b4db1056f49da54d9fc683780",
+    "exposure_projection_registry_path": "governance/exposure_projection_registry.json",
+    "exposure_projection_registry_sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66",
+    "max_duration_days": 365,
+    "max_substitutions": 20,
+    "max_buffers": 20,
+    "supported_edge_units": [
+      "percent_of_import_volume",
+      "percent_of_input_volume",
+      "percent_of_procurement_value",
+      "percent_of_routed_volume"
+    ]
+  },
+  "transforms": [
+    {
+      "transform_id": "transform:shock.gross_affected_share",
+      "equation": "edge_interval * shock_percent / 100"
+    },
+    {
+      "transform_id": "transform:shock.residual_after_substitution",
+      "equation": "gross_interval * (1 - substitution_percent / 100)"
+    },
+    {
+      "transform_id": "transform:shock.residual_duration",
+      "equation": "max(0, shock_duration - buffer_duration)"
+    }
+  ]
+}

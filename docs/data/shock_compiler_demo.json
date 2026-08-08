@@ -1,0 +1,552 @@
+{
+  "_meta": {
+    "schema": "igrm-shock-compiler-demo-v1",
+    "generated": "2026-08-08T13:05:00Z",
+    "date": "2026-08-08",
+    "what": "Deterministic synthetic bounded Shock Compiler conformance vector.",
+    "scope": "synthetic_test_vector_only",
+    "production_release": false,
+    "real_entity_source_rights_exposure_or_disruption_claims": false,
+    "forecast_probability_causation_advice_or_scalar_score": false,
+    "license": "CC BY 4.0",
+    "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+    "source": "https://igrm.in/data/shock_compiler_demo.json",
+    "codebook": "https://igrm.in/standard.html",
+    "method": "method:igrm.shock_compiler@1.0.0"
+  },
+  "synthetic_labels": {
+    "evt:oges.fixture.policy.001": "Synthetic policy action",
+    "ent:country.synthetic_origin": "Synthetic origin country",
+    "ent:commodity.synthetic_crude": "Synthetic crude input",
+    "edg:oges.fixture.origin_crude.001": "Synthetic import-dependence edge"
+  },
+  "scenario": {
+    "object_type": "shock_scenario",
+    "schema_version": "1.0.0",
+    "record_sha256": "91da1986c1571add12479249440eecc5949d4e3d658c9a311e9012bdffaa3ee6",
+    "scenario_id": "scenario:shock.fixture.origin_flow.001",
+    "created_at": "2026-08-08T13:05:00Z",
+    "release": {
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "record_sha256": "e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08"
+    },
+    "knowledge_cutoff": "2026-08-08T13:00:00Z",
+    "event_id": "evt:oges.fixture.policy.001",
+    "target_entity_id": "ent:commodity.synthetic_crude",
+    "shock_subject_entity_id": "ent:country.synthetic_origin",
+    "purpose": "bounded_stress_test",
+    "shock": {
+      "assumption": {
+        "assumption_id": "assumption:shock.fixture.flow_reduction",
+        "status": "hypothetical",
+        "origin": "user_supplied",
+        "evidence_id": null
+      },
+      "quantity": "subject_flow_reduction",
+      "magnitude": {
+        "lower": 30,
+        "upper": 40,
+        "unit": "percent_of_subject_flow_reduced"
+      },
+      "duration": {
+        "lower": 10,
+        "upper": 14,
+        "unit": "days"
+      },
+      "effective_start": "2026-08-08",
+      "effective_end": "2026-08-21"
+    },
+    "substitutions": [
+      {
+        "assumption": {
+          "assumption_id": "assumption:shock.fixture.substitution",
+          "status": "hypothetical",
+          "origin": "user_supplied",
+          "evidence_id": null
+        },
+        "applies_to_edge_id": "edg:oges.fixture.origin_crude.001",
+        "fraction_of_gross_effect": {
+          "lower": 20,
+          "upper": 30,
+          "unit": "percent_of_gross_affected_share_substituted"
+        }
+      }
+    ],
+    "buffers": [
+      {
+        "assumption": {
+          "assumption_id": "assumption:shock.fixture.buffer",
+          "status": "hypothetical",
+          "origin": "user_supplied",
+          "evidence_id": null
+        },
+        "applies_to_target_entity_id": "ent:commodity.synthetic_crude",
+        "duration_offset": {
+          "lower": 3,
+          "upper": 5,
+          "unit": "days"
+        }
+      }
+    ],
+    "traversal": {
+      "max_hops": 4,
+      "max_paths": 25
+    },
+    "guardrails": {
+      "forecast_performed": false,
+      "probability_assigned": false,
+      "causal_attribution_performed": false,
+      "recommendation_generated": false,
+      "cross_unit_aggregation_performed": false
+    },
+    "limitations": [
+      "not_a_forecast",
+      "not_a_probability_distribution",
+      "not_advice_or_recommendation",
+      "not_causal_attribution",
+      "scenario_values_are_hypothetical_assumptions"
+    ]
+  },
+  "compilation": {
+    "object_type": "shock_compilation",
+    "schema_version": "1.0.0",
+    "record_sha256": "7a3472491e3fc6c61539bb9e30a3ec5dd42fda1d5734708bb1e8ee537fe4da30",
+    "release": {
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "record_sha256": "e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "contract": {
+      "input_schema_id": "https://igrm.in/schemas/shock-scenario.schema.json",
+      "input_schema_sha256": "01c242e74ba84b77f94e0772d6c08606fc6e2c70408074a71e7cf6fb712e914d",
+      "output_schema_id": "https://igrm.in/schemas/shock-compilation.schema.json",
+      "output_schema_sha256": "f5391b08f226d1292213a63c07e742798d47690a5f94c9164f9b095a7416abe1",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "compiler_registry_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+      "exposure_traversal_schema_sha256": "ad0ff5d1988f05b0368bef4bb69e1f916357f19b14c0066f00be1a1553491f69",
+      "exposure_projection_registry_sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66"
+    },
+    "method": {
+      "method_id": "method:igrm.shock_compiler",
+      "version": "1.0.0",
+      "implementation_sha256": "f60316249ee2cf50583fbef9b4862c3e4ee38bf6345b70d15521633000f21caf",
+      "transform_ids": [
+        "transform:shock.gross_affected_share",
+        "transform:shock.residual_after_substitution",
+        "transform:shock.residual_duration"
+      ]
+    },
+    "scenario": {
+      "scenario_id": "scenario:shock.fixture.origin_flow.001",
+      "record_sha256": "91da1986c1571add12479249440eecc5949d4e3d658c9a311e9012bdffaa3ee6",
+      "created_at": "2026-08-08T13:05:00Z",
+      "knowledge_cutoff": "2026-08-08T13:00:00Z",
+      "event_id": "evt:oges.fixture.policy.001",
+      "target_entity_id": "ent:commodity.synthetic_crude",
+      "shock_subject_entity_id": "ent:country.synthetic_origin",
+      "purpose": "bounded_stress_test",
+      "shock": {
+        "assumption": {
+          "assumption_id": "assumption:shock.fixture.flow_reduction",
+          "status": "hypothetical",
+          "origin": "user_supplied",
+          "evidence_id": null
+        },
+        "quantity": "subject_flow_reduction",
+        "magnitude": {
+          "lower": 30,
+          "upper": 40,
+          "unit": "percent_of_subject_flow_reduced"
+        },
+        "duration": {
+          "lower": 10,
+          "upper": 14,
+          "unit": "days"
+        },
+        "effective_start": "2026-08-08",
+        "effective_end": "2026-08-21"
+      },
+      "substitutions": [
+        {
+          "assumption": {
+            "assumption_id": "assumption:shock.fixture.substitution",
+            "status": "hypothetical",
+            "origin": "user_supplied",
+            "evidence_id": null
+          },
+          "applies_to_edge_id": "edg:oges.fixture.origin_crude.001",
+          "fraction_of_gross_effect": {
+            "lower": 20,
+            "upper": 30,
+            "unit": "percent_of_gross_affected_share_substituted"
+          }
+        }
+      ],
+      "buffers": [
+        {
+          "assumption": {
+            "assumption_id": "assumption:shock.fixture.buffer",
+            "status": "hypothetical",
+            "origin": "user_supplied",
+            "evidence_id": null
+          },
+          "applies_to_target_entity_id": "ent:commodity.synthetic_crude",
+          "duration_offset": {
+            "lower": 3,
+            "upper": 5,
+            "unit": "days"
+          }
+        }
+      ],
+      "guardrails": {
+        "forecast_performed": false,
+        "probability_assigned": false,
+        "causal_attribution_performed": false,
+        "recommendation_generated": false,
+        "cross_unit_aggregation_performed": false
+      },
+      "limitations": [
+        "not_a_forecast",
+        "not_a_probability_distribution",
+        "not_advice_or_recommendation",
+        "not_causal_attribution",
+        "scenario_values_are_hypothetical_assumptions"
+      ]
+    },
+    "traversal": {
+      "record_sha256": "1ae8ce8b887692773122f730da74e9cd667b43ea40f14735c28441d1f1ac81c9",
+      "method_id": "method:igrm.exposure_graph_projection",
+      "method_version": "1.0.0",
+      "selection_rule": "bounded_breadth_first_stored_direction_simple_paths",
+      "max_hops": 4,
+      "max_paths": 25,
+      "truncated": false
+    },
+    "paths": [
+      {
+        "path_id": "path:shock.8a3f32d136e1b2d0bf878478",
+        "entry_entity_id": "ent:country.synthetic_origin",
+        "entity_ids": [
+          "ent:country.synthetic_origin",
+          "ent:commodity.synthetic_crude"
+        ],
+        "edge_ids": [
+          "edg:oges.fixture.origin_crude.001"
+        ],
+        "hops": [
+          {
+            "edge_id": "edg:oges.fixture.origin_crude.001",
+            "record_sha256": "2cf03fae03288b3db6fe09e0320704878c11c82c0fb714658788995433c74708",
+            "source_entity_id": "ent:country.synthetic_origin",
+            "target_entity_id": "ent:commodity.synthetic_crude",
+            "edge_type": "import_dependence",
+            "quantification_status": "quantified",
+            "magnitude": {
+              "value": 12.5,
+              "unit": "percent_of_import_volume",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "period_start": "2026-01-01",
+              "period_end": "2026-06-30",
+              "currency": null,
+              "price_basis": null,
+              "uncertainty": {
+                "status": "interval",
+                "meaning": "Synthetic test interval.",
+                "lower": 10.0,
+                "upper": 15.0,
+                "category": null
+              }
+            },
+            "freshness": {
+              "observed_at": "2026-08-08T10:00:00Z",
+              "observation_age_seconds": 10800,
+              "max_current_age_days": 30,
+              "status": "current",
+              "source_policies": [
+                {
+                  "source_id": "oges_fixture_source",
+                  "max_current_age_days": 30
+                }
+              ]
+            },
+            "coverage": {
+              "universe_release_id": "unv:oges.fixture.commodities.1",
+              "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef",
+              "entity_type": "commodity",
+              "reference_date": "2026-08-08",
+              "covered_entity_id": "ent:commodity.synthetic_crude",
+              "member_status": "included",
+              "counts": {
+                "total_eligible": 1,
+                "included": 1,
+                "excluded": 0,
+                "unmappable": 0,
+                "stale": 0
+              }
+            },
+            "evidence_ids": [
+              "evd:oges.fixture.official.001"
+            ],
+            "limitation_codes": []
+          }
+        ],
+        "quantification_status": "bounded_range",
+        "reason_code": "reason:shock.bounded_transform_applied",
+        "gross_affected_share": {
+          "lower": 3.0,
+          "upper": 6.0,
+          "unit": "percentage_points_of_edge_denominator",
+          "denominator": "total synthetic crude-oil import volume in the period",
+          "equation": "edge_interval * shock_percent / 100",
+          "transform_id": "transform:shock.gross_affected_share"
+        },
+        "residual_affected_share": {
+          "lower": 2.1,
+          "upper": 4.8,
+          "unit": "percentage_points_of_edge_denominator",
+          "denominator": "total synthetic crude-oil import volume in the period",
+          "equation": "gross_interval * (1 - substitution_percent / 100)",
+          "transform_id": "transform:shock.residual_after_substitution"
+        },
+        "residual_duration": {
+          "lower": 5,
+          "upper": 11,
+          "unit": "days",
+          "equation": "max(0, shock_duration - buffer_duration)",
+          "transform_id": "transform:shock.residual_duration"
+        },
+        "sensitivity_grid": [
+          {
+            "shock_magnitude_percent": 30,
+            "duration_days": 10,
+            "gross_affected_share": {
+              "lower": 3.0,
+              "upper": 4.5,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "edge_interval * shock_percent / 100",
+              "transform_id": "transform:shock.gross_affected_share"
+            },
+            "residual_affected_share": {
+              "lower": 2.1,
+              "upper": 3.6,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "gross_interval * (1 - substitution_percent / 100)",
+              "transform_id": "transform:shock.residual_after_substitution"
+            },
+            "residual_duration_days": {
+              "lower": 5,
+              "upper": 7,
+              "unit": "days",
+              "equation": "max(0, shock_duration - buffer_duration)",
+              "transform_id": "transform:shock.residual_duration"
+            }
+          },
+          {
+            "shock_magnitude_percent": 30,
+            "duration_days": 14,
+            "gross_affected_share": {
+              "lower": 3.0,
+              "upper": 4.5,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "edge_interval * shock_percent / 100",
+              "transform_id": "transform:shock.gross_affected_share"
+            },
+            "residual_affected_share": {
+              "lower": 2.1,
+              "upper": 3.6,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "gross_interval * (1 - substitution_percent / 100)",
+              "transform_id": "transform:shock.residual_after_substitution"
+            },
+            "residual_duration_days": {
+              "lower": 9,
+              "upper": 11,
+              "unit": "days",
+              "equation": "max(0, shock_duration - buffer_duration)",
+              "transform_id": "transform:shock.residual_duration"
+            }
+          },
+          {
+            "shock_magnitude_percent": 40,
+            "duration_days": 10,
+            "gross_affected_share": {
+              "lower": 4.0,
+              "upper": 6.0,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "edge_interval * shock_percent / 100",
+              "transform_id": "transform:shock.gross_affected_share"
+            },
+            "residual_affected_share": {
+              "lower": 2.8,
+              "upper": 4.8,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "gross_interval * (1 - substitution_percent / 100)",
+              "transform_id": "transform:shock.residual_after_substitution"
+            },
+            "residual_duration_days": {
+              "lower": 5,
+              "upper": 7,
+              "unit": "days",
+              "equation": "max(0, shock_duration - buffer_duration)",
+              "transform_id": "transform:shock.residual_duration"
+            }
+          },
+          {
+            "shock_magnitude_percent": 40,
+            "duration_days": 14,
+            "gross_affected_share": {
+              "lower": 4.0,
+              "upper": 6.0,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "edge_interval * shock_percent / 100",
+              "transform_id": "transform:shock.gross_affected_share"
+            },
+            "residual_affected_share": {
+              "lower": 2.8,
+              "upper": 4.8,
+              "unit": "percentage_points_of_edge_denominator",
+              "denominator": "total synthetic crude-oil import volume in the period",
+              "equation": "gross_interval * (1 - substitution_percent / 100)",
+              "transform_id": "transform:shock.residual_after_substitution"
+            },
+            "residual_duration_days": {
+              "lower": 9,
+              "upper": 11,
+              "unit": "days",
+              "equation": "max(0, shock_duration - buffer_duration)",
+              "transform_id": "transform:shock.residual_duration"
+            }
+          }
+        ],
+        "assumption_ids_used": [
+          "assumption:shock.fixture.buffer",
+          "assumption:shock.fixture.flow_reduction",
+          "assumption:shock.fixture.substitution"
+        ],
+        "gap_codes": [],
+        "limitation_codes": []
+      }
+    ],
+    "assumption_ledger": [
+      {
+        "assumption_id": "assumption:shock.fixture.buffer",
+        "assumption_type": "buffer",
+        "status": "hypothetical",
+        "origin": "user_supplied",
+        "used_by_path_ids": [
+          "path:shock.8a3f32d136e1b2d0bf878478"
+        ],
+        "unused_reason": null
+      },
+      {
+        "assumption_id": "assumption:shock.fixture.flow_reduction",
+        "assumption_type": "shock",
+        "status": "hypothetical",
+        "origin": "user_supplied",
+        "used_by_path_ids": [
+          "path:shock.8a3f32d136e1b2d0bf878478"
+        ],
+        "unused_reason": null
+      },
+      {
+        "assumption_id": "assumption:shock.fixture.substitution",
+        "assumption_type": "substitution",
+        "status": "hypothetical",
+        "origin": "user_supplied",
+        "used_by_path_ids": [
+          "path:shock.8a3f32d136e1b2d0bf878478"
+        ],
+        "unused_reason": null
+      }
+    ],
+    "coverage": [
+      {
+        "universe_release_id": "unv:oges.fixture.commodities.1",
+        "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef",
+        "entity_type": "commodity",
+        "reference_date": "2026-08-08",
+        "covered_entity_id": "ent:commodity.synthetic_crude",
+        "member_status": "included",
+        "counts": {
+          "total_eligible": 1,
+          "included": 1,
+          "excluded": 0,
+          "unmappable": 0,
+          "stale": 0
+        }
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "evd:oges.fixture.official.001",
+        "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+        "source_id": "oges_fixture_source",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "oges-fixture-decision-2026-08-08",
+        "content_sha256": "4cd387cee0d680f2c088ab21feea092221f36b3b7ae34e9fc0cd13354565c5c7",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "official_record"
+      }
+    ],
+    "rights": [
+      {
+        "source_id": "oges_fixture_source",
+        "decision_id": "oges-fixture-decision-2026-08-08",
+        "decision_artifact_sha256": "072f57a4db318e9fb18ad2326e5153a2856c6b3a159f5a92dfb6c21b312d3590",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "oges_fixture_provider",
+        "authority_class": "official_primary"
+      }
+    ],
+    "gaps": [],
+    "counts": {
+      "structural_paths": 1,
+      "bounded_paths": 1,
+      "abstained_paths": 0,
+      "stale_hops": 0,
+      "unknown_freshness_hops": 0,
+      "gaps": 0,
+      "assumptions": 3,
+      "assumptions_used": 3
+    },
+    "result": {
+      "status": "compiled",
+      "public_claim_state": "requires_claim_bundle",
+      "forecast_performed": false,
+      "probability_assigned": false,
+      "causal_attribution_performed": false,
+      "recommendation_generated": false,
+      "scalar_score_computed": false
+    },
+    "limitations": [
+      "bounded_scenario_not_forecast",
+      "edge_magnitudes_retain_original_denominators",
+      "event_status_not_ground_truth",
+      "no_advice_or_recommendation",
+      "no_cross_unit_aggregation_or_scalar_score",
+      "path_search_is_bounded",
+      "requires_claim_bundle_before_non_synthetic_public_rendering",
+      "scenario_values_are_not_probabilities",
+      "stored_edge_direction_only",
+      "structural_paths_are_not_causal_attribution",
+      "unsupported_propagation_abstains"
+    ]
+  }
+}

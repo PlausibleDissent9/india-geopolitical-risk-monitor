@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=839b7044">
+<link rel="stylesheet" href="site.css?v=13d519f5">
 </head>
 <body class="site-page layout-article" data-page="standard.html" data-root=".">
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -111,7 +111,9 @@ python -m src.oges_conformance validate --bundle /path/to/bundle</code></pre>
       <a href="schemas/sensor-fusion.schema.json">Sensor Fusion output schema</a> for
       semantically separated multi-lane collation; and the
       <a href="schemas/exposure-dna.schema.json">Exposure DNA output schema</a> for
-      non-scalar snapshots and release-to-release deltas.</li>
+      non-scalar snapshots and release-to-release deltas; plus the
+      <a href="schemas/shock-scenario.schema.json">bounded scenario input schema</a> and
+      <a href="schemas/shock-compilation.schema.json">Shock Compiler output schema</a>.</li>
   </ul>
 
   <h2 id="claim-boundary">What a pass means</h2>
@@ -130,6 +132,7 @@ python -m src.oges_conformance validate --bundle /path/to/bundle</code></pre>
   <a href="replay.html">Knowledge replay</a> ·
   <a href="sensors.html">Sensor Fusion</a> ·
   <a href="dna.html">India Exposure DNA</a> ·
+  <a href="shock.html">Shock Compiler</a> ·
   <a href="codebook.html">Data codebook</a> · <a href="corrections.html">Corrections</a> ·
   <a href="data.html">Open data</a></p>
 </div>

@@ -100,6 +100,10 @@ EXEMPT: dict[str, str] = {
         "a deterministic synthetic two-vintage Exposure DNA conformance demonstration, "
         "not a live entity-exposure feed; its fixed time is part of the public test vector"
     ),
+    "shock_compiler_demo.json": (
+        "a deterministic synthetic bounded-scenario conformance demonstration, not "
+        "a live disruption or forecasting lane; its fixed time is part of the public test vector"
+    ),
     "notes.json": "the author's weekly writing; cadence is human",
     "note_latest.json": "the author's weekly writing; cadence is human",
     "episodes.json": (

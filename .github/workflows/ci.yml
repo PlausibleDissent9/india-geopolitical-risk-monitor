@@ -31,6 +31,8 @@ jobs:
         run: python -m src.sensor_fusion_fixture && git diff --exit-code -- docs/data/sensor_fusion_demo.json
       - name: Exposure DNA synthetic conformance artifact is current
         run: python -m src.exposure_dna_fixture && git diff --exit-code -- docs/data/exposure_dna_demo.json
+      - name: Shock Compiler synthetic conformance artifact is current
+        run: python -m src.shock_compiler_fixture && git diff --exit-code -- docs/data/shock_compiler_demo.json
       - name: Lint (ruff)
         run: ruff check .
       - name: Types (mypy)

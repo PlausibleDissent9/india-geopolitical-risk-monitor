@@ -1,4 +1,4 @@
-"""The public site is one system across all thirty-five committed routes."""
+"""The public site is one system across every committed route."""
 
 from __future__ import annotations
 
@@ -24,6 +24,7 @@ EXPECTED_LAYOUTS = {
         "replay.html",
         "research/history.html",
         "sensors.html",
+        "shock.html",
         "standard.html",
         "vintages.html",
         "vs-gpr.html",
@@ -74,9 +75,9 @@ def _parse(relative: str) -> tuple[str, StructureParser]:
     return text, parser
 
 
-def test_all_thirty_five_public_routes_have_an_owned_layout() -> None:
+def test_all_public_routes_have_an_owned_layout() -> None:
     routes = {str(path.relative_to(DOCS)) for path in DOCS.rglob("*.html")}
-    assert len(routes) == 36
+    assert len(routes) == 37
     expected_shell = set().union(*EXPECTED_LAYOUTS.values())
     assert set(site_shell.PAGES) == expected_shell
     assert routes == expected_shell | {"index.html", "embed.html"}

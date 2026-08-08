@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.6",
+  "contract_version": "2.2.7",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -963,6 +963,18 @@
    "stability": "stable"
   },
   {
+   "path": "data/shock_compiler_demo.json",
+   "format": "json",
+   "description": "Deterministic synthetic bounded Shock Compiler conformance vector.",
+   "frozen_fields": [
+    "_meta",
+    "synthetic_labels",
+    "scenario",
+    "compilation"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/spike_breadth.json",
    "format": "json",
    "description": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
@@ -1319,6 +1331,38 @@
    "path": "schemas/sensor-fusion.schema.json",
    "format": "json",
    "description": "JSON Schema for a structural eight-lane Sensor Fusion matrix that keeps unlike evidence semantically separate, publishes lane coverage and emits no observed values or numeric fusion.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "$defs"
+   ],
+   "stability": "static synthetic foundation 1.0.0"
+  },
+  {
+   "path": "schemas/shock-compilation.schema.json",
+   "format": "json",
+   "description": "JSON Schema for deterministic bounded shock compilations over signed exposure paths, including assumptions, ranges, freshness and explicit gaps.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "$defs"
+   ],
+   "stability": "static synthetic foundation 1.0.0"
+  },
+  {
+   "path": "schemas/shock-scenario.schema.json",
+   "format": "json",
+   "description": "JSON Schema for a release-bound hypothetical shock scenario with strict magnitude, duration, substitution, buffer and non-forecast guardrails.",
    "frozen_fields": [
     "$schema",
     "$id",
