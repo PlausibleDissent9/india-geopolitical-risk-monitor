@@ -13,11 +13,35 @@ REPRODUCE_WORKFLOW = ROOT / ".github" / "workflows" / "reproduce.yml"
 
 
 def test_committed_requirement_files_are_exact_and_installed() -> None:
-    pins = check_environment.required_pins(
-        (ROOT / "requirements.txt", ROOT / "requirements-dev.txt")
-    )
-    assert "anthropic" in pins
-    assert not check_environment.installed_mismatches(pins)
+    """Runtime pins must be present; gate pins only where a gate runs.
+
+    This asserted both files at once, which is true of ci.yml, the local
+    gate and reproduce.yml -- and false of daily.yml and morning.yml,
+    which install requirements.txt alone and then run this very suite as
+    their first step. So the nightly publish and the 06:00 IST contract
+    both failed on ruff and mypy being absent, which is exactly how those
+    lanes are built on purpose. daily-update #100 died here at 15:53Z on
+    2026-08-08 having computed nothing.
+
+    A version that DRIFTS is still a failure everywhere, and a partially
+    installed gate environment is still a failure -- only a wholly
+    runtime-only environment is allowed to skip the gate half. That keeps
+    the false-green this test was written to close.
+    """
+
+    runtime = check_environment.required_pins((ROOT / "requirements.txt",))
+    gate = check_environment.required_pins((ROOT / "requirements-dev.txt",))
+    assert "anthropic" in runtime
+    assert not check_environment.installed_mismatches(runtime)
+
+    gate_problems = check_environment.installed_mismatches(gate)
+    if len(gate_problems) == len(gate) and all(
+        " missing (" in problem for problem in gate_problems
+    ):
+        pytest.skip(
+            "runtime-only environment: every gate pin is absent, which is "
+            "how the publishing lanes are installed on purpose")
+    assert not gate_problems
 
 
 def test_clean_room_reproduction_installs_runtime_and_gate_pins() -> None:
