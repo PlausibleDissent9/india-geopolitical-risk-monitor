@@ -92,3 +92,38 @@ def test_the_page_renders_the_payload_and_nothing_else():
 def test_the_page_is_in_the_sitemap():
     sitemap = (ROOT / "docs" / "sitemap.xml").read_text(encoding="utf-8")
     assert "ask.html" in sitemap
+
+def test_the_page_router_refuses_what_the_planner_refuses():
+    """The page claims "the same routing rules as the repository's
+    evidence-locked assistant". It checked channels before the
+    forbidden set, so "compare china and pakistan, which should I buy"
+    was answered as a plain comparison with the advice refusal silently
+    dropped -- the page more permissive than the instrument it mirrors.
+
+    The planner tests _FORBIDDEN first; so must the page. This pins the
+    precedence and the pattern parity, because the two live in
+    different languages and drift silently."""
+    import re as _re
+
+    from src import evidence_assistant as ea
+
+    page = PAGE.read_text(encoding="utf-8")
+    js = _re.search(r"var FORBIDDEN = /\\b\(([^)]+)\)\\b/", page)
+    assert js, "the page no longer tests a forbidden set before routing"
+    page_terms = set(js.group(1).split("|"))
+    planner_terms = set(
+        _re.search(r"\\b\(([^)]+)\)\\b", ea._FORBIDDEN.pattern).group(1)
+        .replace("\n", "").split("|"))
+    assert page_terms == planner_terms, (
+        f"page and planner forbidden sets diverged: "
+        f"page-only {sorted(page_terms - planner_terms)}, "
+        f"planner-only {sorted(planner_terms - page_terms)}")
+
+    router = page.index("function route(")
+    forbidden_at = page.index("if (FORBIDDEN.test(t))", router)
+    for later in ("_CHANNEL", "hits.length", "compare &&"):
+        idx = page.find(later, router)
+        if idx != -1:
+            assert forbidden_at < idx, (
+                "a routing rule is tested before the forbidden set; the "
+                "planner tests forbidden first and the page must too")

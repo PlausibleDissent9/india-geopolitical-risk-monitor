@@ -85,8 +85,27 @@ contract is in that payload's <code>_meta</code>.</p>
     gulf_energy: "Gulf energy", us_trade: "US trade", shipping: "shipping" };
   var byQuestion = {}, meta = null;
 
+  /* Mirrors src/evidence_assistant.py's _FORBIDDEN, and must be tested
+     BEFORE any other route, exactly as the planner tests it. Checking
+     channels first answered "compare china and pakistan, which should
+     I buy" as a plain comparison: the reader asked for advice inside a
+     question the page could partly answer, and got the answer with the
+     refusal silently dropped. The page claims the planner's routing
+     rules; a page more permissive than the instrument it mirrors is
+     making a claim it does not keep. */
+  var FORBIDDEN = /\b(forecast|predict|will|should|buy|sell|hedge|advice|investment|price target|trade recommendation)\b/;
+
   function route(text) {
     var t = " " + text.trim().toLowerCase().replace(/\s+/g, " ") + " ";
+    if (FORBIDDEN.test(t)) {
+      /* Which registered refusal: the planner emits one refusal for the
+         whole forbidden class, and both exemplars carry the same
+         refusal_code, so either canonical question shows the reader the
+         registered wording. */
+      return /\b(hedge|buy|sell|invest|investment|advice|portfolio)\b/.test(t)
+        ? "Should I hedge my portfolio against this?"
+        : "Will the index rise tomorrow?";
+    }
     var hits = Object.keys(CHANNELS).filter(function (c) { return CHANNELS[c].test(t); });
     var receipts = /\b(evidence|headlines?|sources?|articles?|receipts?|why)\b/.test(t);
     var current = /\b(current|today|why|score)\b/.test(t);
@@ -101,12 +120,8 @@ contract is in that payload's <code>_meta</code>.</p>
     if (hits.length === 1 && current) {
       return "Why is the current " + LABEL[hits[0]] + " score here?";
     }
-    if (/\b(will|forecast|predict|tomorrow|next week)\b/.test(t)) {
-      return "Will the index rise tomorrow?";
-    }
-    if (/\b(hedge|invest|buy|sell|portfolio|advice)\b/.test(t)) {
-      return "Should I hedge my portfolio against this?";
-    }
+    /* The forecast and advice branches that stood here are unreachable
+       now that FORBIDDEN is tested first, and were narrower than it. */
     if (/\b(better|beat|outperform|superior)\b/.test(t)) {
       return "Is IGRM better than the GPR index?";
     }
