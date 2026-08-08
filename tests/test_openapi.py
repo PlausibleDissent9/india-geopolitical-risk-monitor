@@ -113,6 +113,15 @@ def test_every_path_resolves_to_a_served_file():
         "reading the spec would request them and get a 404.")
 
 
+def test_generated_machine_documents_are_linked_from_public_data_surfaces():
+    for page_name in ("data.html", "api.html"):
+        page = (DOCS / page_name).read_text(encoding="utf-8")
+        assert 'href="openapi.json"' in page, (
+            f"{page_name} does not expose the generated OpenAPI document")
+        assert 'href="datasheet.md"' in page, (
+            f"{page_name} does not expose the dataset datasheet")
+
+
 def test_the_datasheet_quotes_every_register_finding_verbatim():
     """The negative-results register IS the known-limitations section.
     Every finding must appear verbatim -- a paraphrase is an edit, and

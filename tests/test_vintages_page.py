@@ -160,6 +160,20 @@ def test_the_page_is_listed_in_the_sitemap():
         "python -m src.sitemap")
 
 
+def test_the_page_has_contextual_inbound_links():
+    """A sitemap entry is crawlability, not human discoverability."""
+    linkers = []
+    for path in sorted(DOCS.glob("*.html")):
+        if path == PAGE:
+            continue
+        if re.search(r'href="vintages\.html"',
+                     path.read_text(encoding="utf-8")):
+            linkers.append(path.name)
+    assert {"data.html", "start.html"} <= set(linkers), (
+        "the point-in-time panel must be reachable from both the data "
+        f"catalogue and researcher onboarding; current linkers: {linkers}")
+
+
 def test_no_forecast_language():
     """Same rule as history.html, with its lesson kept: only phrases that
     cannot appear in honest prose are banned, because a disclaimer about
