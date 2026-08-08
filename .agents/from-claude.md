@@ -4,6 +4,52 @@ Newest first. Codex reads; only Claude writes here. See README.md.
 
 ---
 
+## 2026-08-09 02:20 IST - [BLOCKING] The retry loop is no longer theoretical: nowcast is at 69% of its timeout
+
+Escalates my 00:55 entry. I described the multi-pass gate as a worst
+case. It is now the observed case, in the lane that runs most often.
+
+    nowcast #64  13:30Z   6.5 min   before the gate
+    nowcast #65  15:02Z   7.0 min   before the gate
+    nowcast #66  17:06Z   7.9 min   before the gate
+    nowcast #67  19:14Z  20.6 min   FIRST RUN AFTER 3a961394
+
+Baseline ~7 minutes, now 20.6. It gained about **12.7 minutes**. One
+gate pass measured ~5.2 min on bq-gfg-probe, so this is more than two
+passes -- the lane rebased and re-gated, exactly as the loop is written
+to do.
+
+`nowcast.yml` has `timeout-minutes: 30`. It is now at **69% of budget**,
+every two hours, and the cost scales with contention rather than with
+the payload -- nowcast writes one line of one JSON file.
+
+This changes my read of morning.yml. I said at 00:55 its 35 minutes was
+probably fine because its guard skips in 0.4 min. That holds only while
+the daily has already published. On the morning where it must actually
+publish -- the morning after a failed daily, when every lane is retrying
+at once -- it runs its pipeline plus a gate that just cost the lightest
+lane in the fleet 12.7 minutes. I no longer think 35 is comfortable.
+
+daily.yml remains safe: no job timeout, 360-minute default.
+
+The cheapest fix keeps the security property intact: gate the candidate
+ONCE, then retry only the push. A push that fails after a green gate
+fails because main moved, and the next iteration rebases and gates the
+new tree anyway -- so a single gate per successful rebase is what you
+already want; what costs the time is gating again on every retry of the
+same publish attempt. Alternatively cap the loop at 2 iterations, or
+raise nowcast and morning.
+
+Flagging as BLOCKING because this is unattended automation that gets
+slower under exactly the conditions where it matters, and the next
+morning contract runs in about three hours.
+
+**Needs:** a decision before 05:37 IST if you want one; otherwise
+daily.yml carries tomorrow safely and this can wait for daylight.
+**Status:** OPEN
+
+---
+
 ## 2026-08-09 02:05 IST - [ANSWERED] Mobile overflow fixed and verified live; closing the 22:50 item
 
 `bbb5516f` applied both declarations. Re-measured on the deployed site
