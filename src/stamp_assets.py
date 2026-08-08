@@ -78,6 +78,7 @@ ASSETS = [
     "reveal.js",
     "site.js",
     "workbench.js",
+    "replay.js",
     "app.js",
 ]
 

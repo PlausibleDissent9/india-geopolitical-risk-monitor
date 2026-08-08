@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.3",
+  "contract_version": "2.2.4",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -381,6 +381,20 @@
     "composite7",
     "channels7",
     "wikipedia"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/knowledge_replay_demo.json",
+   "format": "json",
+   "description": "Deterministic synthetic demonstration of two-time signed-release replay; it contains no real geopolitical observation.",
+   "frozen_fields": [
+    "_meta",
+    "schema_version",
+    "demo_class",
+    "before_correction_receipt",
+    "after_correction_receipt",
+    "assertions"
    ],
    "stability": "stable"
   },
@@ -1205,6 +1219,53 @@
    "path": "schemas/exposure-traversal.schema.json",
    "format": "json",
    "description": "OGES 0.1.0 JSON Schema for a bounded exposure traversal result.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "$defs"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/knowledge-availability-receipt.schema.json",
+   "format": "json",
+   "description": "JSON Schema for a separately signed, hash-chained canonical-release availability receipt used by the synthetic knowledge-replay foundation.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/knowledge-replay-ledger.schema.json",
+   "format": "json",
+   "description": "JSON Schema for the signed complete-release ledger used by the synthetic knowledge-replay foundation.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "$defs"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/knowledge-replay.schema.json",
+   "format": "json",
+   "description": "JSON Schema for a structural bitemporal replay result that separates knowledge cutoff from valid date and emits no claim values.",
    "frozen_fields": [
     "$schema",
     "$id",

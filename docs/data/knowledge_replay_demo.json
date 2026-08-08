@@ -1,0 +1,219 @@
+{
+  "_meta": {
+    "schema": "igrm-knowledge-replay-demo-v1",
+    "generated": "2026-08-08T00:00:00Z",
+    "date": "2026-08-08",
+    "what": "Deterministic synthetic demonstration of two-time signed-release replay; it contains no real geopolitical observation.",
+    "license": "CC-BY-4.0",
+    "citation": "India Geopolitical Risk Monitor (2026), Knowledge replay synthetic conformance demonstration.",
+    "source": "https://igrm.in/data/knowledge_replay_demo.json",
+    "codebook": "https://igrm.in/standard.html"
+  },
+  "schema_version": "1.0.0",
+  "demo_class": "synthetic_test_vector_only",
+  "before_correction_receipt": {
+    "object_type": "knowledge_replay",
+    "schema_version": "1.0.0",
+    "record_sha256": "6664b4db50284560339dff8071aba5159f626f1f36727d275f988b3556adc0c8",
+    "ledger": {
+      "ledger_id": "kld:oges.fixture.2026-08-09",
+      "record_sha256": "1c6f409cb02eeb23c4a5859b1b34a48c3ab2276662e4cb4e1ea4f84f22e4e9c6",
+      "file_sha256": "14ed4bb73afbcf9261c685a526ae1a3cd9933f58540bd47b9088dc27c03739f3",
+      "created_at": "2026-08-09T15:00:00Z",
+      "ledger_signer_id": "signer:knowledge.ledger.fixture",
+      "replay_registry_sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef",
+      "availability_signers_sha256": "4f470731932c1d910909f76dec6e7357c12583923f72c70bbb101ca7018b29c9"
+    },
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/knowledge-replay.schema.json",
+      "schema_version": "1.0.0",
+      "schema_sha256": "c6a2b84833c9af503acb6b00b43909195200fa189632e8e8b1850070dafd800f",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"
+    },
+    "method": {
+      "method_id": "method:igrm.knowledge_replay",
+      "version": "1.0.0",
+      "implementation_sha256": "3ef7790be23349350b3d87195709a5d438c443a85a077c4662f64fb3b79fd7b8"
+    },
+    "query": {
+      "knowledge_cutoff": "2026-08-08T14:30:00Z",
+      "valid_on": "2026-08-08",
+      "object_type": "event",
+      "object_id": null,
+      "selection_rule": "latest_separately_receipted_complete_release_at_or_before_cutoff"
+    },
+    "selected_release": {
+      "sequence": 1,
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "manifest_file_sha256": "4ba1ddf66f9ebf8afd0ea68119f7f23737d3462a01443b767191e5507c3ff1f1",
+      "manifest_record_sha256": "8a9fb51b2a08b9d5f000df110a098218121bad3baec89b091bb7e542f5a70e8a",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "available_at": "2026-08-08T14:00:00Z",
+      "receipt_id": "krc:oges.fixture.0001",
+      "receipt_file_sha256": "5c4b04d601b15b2bbea06880cbc1f530d5727bf5dc63e16a74f06804570f0f74",
+      "receipt_signer_id": "signer:knowledge.availability.fixture",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "previous_release": null,
+    "records": [
+      {
+        "object_type": "event",
+        "object_id": "evt:oges.fixture.policy.001",
+        "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282",
+        "lifecycle_revision": 1,
+        "lifecycle_state": "active",
+        "record_status": "confirmed",
+        "publication_phase": "final",
+        "verification_status": null,
+        "effective_on_valid_date": true,
+        "selection_status": "included",
+        "selection_reason": "active_and_effective"
+      }
+    ],
+    "changes": {
+      "basis_release_id": null,
+      "added_ids": [
+        "evt:oges.fixture.policy.001"
+      ],
+      "removed_ids": [],
+      "same_id_changed_ids": []
+    },
+    "result": {
+      "status": "state_found",
+      "requested_object_present": null,
+      "records_considered": 1,
+      "included": 1,
+      "excluded": 0
+    },
+    "limitations": [
+      "complete_signed_snapshot_not_global_ground_truth",
+      "knowledge_cutoff_uses_separate_receipt_time",
+      "no_automatic_causal_forecast_or_truth_inference",
+      "separate_signer_identity_not_institutional_independence",
+      "signed_chain_not_external_transparency_log",
+      "structural_metadata_only_no_claim_values",
+      "valid_time_separate_from_knowledge_time"
+    ]
+  },
+  "after_correction_receipt": {
+    "object_type": "knowledge_replay",
+    "schema_version": "1.0.0",
+    "record_sha256": "e6ac62bee4133b15045defd97a25bc7e7abd0fb4b11a7f6e19da32d629c1f98d",
+    "ledger": {
+      "ledger_id": "kld:oges.fixture.2026-08-09",
+      "record_sha256": "1c6f409cb02eeb23c4a5859b1b34a48c3ab2276662e4cb4e1ea4f84f22e4e9c6",
+      "file_sha256": "14ed4bb73afbcf9261c685a526ae1a3cd9933f58540bd47b9088dc27c03739f3",
+      "created_at": "2026-08-09T15:00:00Z",
+      "ledger_signer_id": "signer:knowledge.ledger.fixture",
+      "replay_registry_sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef",
+      "availability_signers_sha256": "4f470731932c1d910909f76dec6e7357c12583923f72c70bbb101ca7018b29c9"
+    },
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/knowledge-replay.schema.json",
+      "schema_version": "1.0.0",
+      "schema_sha256": "c6a2b84833c9af503acb6b00b43909195200fa189632e8e8b1850070dafd800f",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"
+    },
+    "method": {
+      "method_id": "method:igrm.knowledge_replay",
+      "version": "1.0.0",
+      "implementation_sha256": "3ef7790be23349350b3d87195709a5d438c443a85a077c4662f64fb3b79fd7b8"
+    },
+    "query": {
+      "knowledge_cutoff": "2026-08-09T14:30:00Z",
+      "valid_on": "2026-08-08",
+      "object_type": "event",
+      "object_id": null,
+      "selection_rule": "latest_separately_receipted_complete_release_at_or_before_cutoff"
+    },
+    "selected_release": {
+      "sequence": 2,
+      "release_id": "rel:oges.fixture.2026-08-09",
+      "manifest_file_sha256": "50d04a8c8a9352f9be961866590270b6208ad11a95cbedf81c7fe343a06baa87",
+      "manifest_record_sha256": "b92e58bdf19aa8fbe795f22ce32501edc2934f57e218a985ca9c081ba01036b7",
+      "generated_at": "2026-08-09T13:00:00Z",
+      "effective_date": "2026-08-09",
+      "available_at": "2026-08-09T14:00:00Z",
+      "receipt_id": "krc:oges.fixture.0002",
+      "receipt_file_sha256": "84e33c90c391341fb637f5ca012594ec56e014fc97f64c6b1e7b751bc2bc58a9",
+      "receipt_signer_id": "signer:knowledge.availability.fixture",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "previous_release": {
+      "sequence": 1,
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "manifest_file_sha256": "4ba1ddf66f9ebf8afd0ea68119f7f23737d3462a01443b767191e5507c3ff1f1",
+      "manifest_record_sha256": "8a9fb51b2a08b9d5f000df110a098218121bad3baec89b091bb7e542f5a70e8a",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "available_at": "2026-08-08T14:00:00Z",
+      "receipt_id": "krc:oges.fixture.0001",
+      "receipt_file_sha256": "5c4b04d601b15b2bbea06880cbc1f530d5727bf5dc63e16a74f06804570f0f74",
+      "receipt_signer_id": "signer:knowledge.availability.fixture",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "records": [
+      {
+        "object_type": "event",
+        "object_id": "evt:oges.fixture.policy.002",
+        "record_sha256": "48dce02f570d36dfba32114b91b663dbddba82f7b09a4e7b630881122e427122",
+        "lifecycle_revision": 2,
+        "lifecycle_state": "active",
+        "record_status": "disputed",
+        "publication_phase": "final",
+        "verification_status": null,
+        "effective_on_valid_date": true,
+        "selection_status": "included",
+        "selection_reason": "active_and_effective"
+      }
+    ],
+    "changes": {
+      "basis_release_id": "rel:oges.fixture.2026-08-08",
+      "added_ids": [
+        "evt:oges.fixture.policy.002"
+      ],
+      "removed_ids": [
+        "evt:oges.fixture.policy.001"
+      ],
+      "same_id_changed_ids": []
+    },
+    "result": {
+      "status": "state_found",
+      "requested_object_present": null,
+      "records_considered": 1,
+      "included": 1,
+      "excluded": 0
+    },
+    "limitations": [
+      "complete_signed_snapshot_not_global_ground_truth",
+      "knowledge_cutoff_uses_separate_receipt_time",
+      "no_automatic_causal_forecast_or_truth_inference",
+      "separate_signer_identity_not_institutional_independence",
+      "signed_chain_not_external_transparency_log",
+      "structural_metadata_only_no_claim_values",
+      "valid_time_separate_from_knowledge_time"
+    ]
+  },
+  "assertions": {
+    "same_valid_date": true,
+    "different_knowledge_cutoffs": true,
+    "later_revision_never_leaks_into_earlier_cutoff": true,
+    "production_release": false
+  }
+}

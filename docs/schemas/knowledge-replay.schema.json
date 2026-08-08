@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/knowledge-replay.schema.json",
+  "title": "IGRM hindsight-bounded knowledge replay result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "ledger",
+    "contract",
+    "method",
+    "query",
+    "selected_release",
+    "previous_release",
+    "records",
+    "changes",
+    "result",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "knowledge_replay"},
+    "schema_version": {"const": "1.0.0"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ledger_id",
+        "record_sha256",
+        "file_sha256",
+        "created_at",
+        "ledger_signer_id",
+        "replay_registry_sha256",
+        "availability_signers_sha256"
+      ],
+      "properties": {
+        "ledger_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "file_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "created_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "ledger_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "replay_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "availability_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_id", "schema_version", "schema_sha256", "common_schema_sha256"],
+      "properties": {
+        "schema_id": {"const": "https://igrm.in/schemas/knowledge-replay.schema.json"},
+        "schema_version": {"const": "1.0.0"},
+        "schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "common_schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_sha256"],
+      "properties": {
+        "method_id": {"const": "method:igrm.knowledge_replay"},
+        "version": {"const": "1.0.0"},
+        "implementation_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["knowledge_cutoff", "valid_on", "object_type", "object_id", "selection_rule"],
+      "properties": {
+        "knowledge_cutoff": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "valid_on": {"$ref": "common.schema.json#/$defs/date"},
+        "object_type": {"$ref": "#/$defs/nullableObjectType"},
+        "object_id": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+        "selection_rule": {"const": "latest_separately_receipted_complete_release_at_or_before_cutoff"}
+      }
+    },
+    "selected_release": {"$ref": "#/$defs/releaseSelection"},
+    "previous_release": {"oneOf": [{"$ref": "#/$defs/releaseSelection"}, {"type": "null"}]},
+    "records": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/recordSelection"}
+    },
+    "changes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basis_release_id", "added_ids", "removed_ids", "same_id_changed_ids"],
+      "properties": {
+        "basis_release_id": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+        "added_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+        "removed_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+        "same_id_changed_ids": {"$ref": "common.schema.json#/$defs/idArray"}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "requested_object_present", "records_considered", "included", "excluded"],
+      "properties": {
+        "status": {"enum": ["state_found", "state_empty", "object_absent"]},
+        "requested_object_present": {"type": ["boolean", "null"]},
+        "records_considered": {"type": "integer", "minimum": 0},
+        "included": {"type": "integer", "minimum": 0},
+        "excluded": {"type": "integer", "minimum": 0}
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$"}
+    }
+  },
+  "$defs": {
+    "objectType": {
+      "type": "string",
+      "enum": ["evidence_item", "entity", "event", "exposure_edge", "universe_release"]
+    },
+    "nullableObjectType": {
+      "type": ["string", "null"],
+      "enum": [null, "evidence_item", "entity", "event", "exposure_edge", "universe_release"]
+    },
+    "releaseSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence",
+        "release_id",
+        "manifest_file_sha256",
+        "manifest_record_sha256",
+        "generated_at",
+        "effective_date",
+        "available_at",
+        "receipt_id",
+        "receipt_file_sha256",
+        "receipt_signer_id",
+        "release_signer_id",
+        "schema_registry_sha256",
+        "method_registry_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "release_signers_sha256"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "manifest_file_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "manifest_record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "effective_date": {"$ref": "common.schema.json#/$defs/date"},
+        "available_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "receipt_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "receipt_file_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "receipt_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "release_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "schema_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "method_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "release_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "recordSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_type",
+        "object_id",
+        "record_sha256",
+        "lifecycle_revision",
+        "lifecycle_state",
+        "record_status",
+        "publication_phase",
+        "verification_status",
+        "effective_on_valid_date",
+        "selection_status",
+        "selection_reason"
+      ],
+      "properties": {
+        "object_type": {"$ref": "#/$defs/objectType"},
+        "object_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "lifecycle_revision": {"type": "integer", "minimum": 1},
+        "lifecycle_state": {"$ref": "common.schema.json#/$defs/recordState"},
+        "record_status": {"type": ["string", "null"], "enum": [null, "candidate", "confirmed", "disputed", "withdrawn"]},
+        "publication_phase": {"type": ["string", "null"], "enum": [null, "provisional", "final"]},
+        "verification_status": {"type": ["string", "null"], "enum": [null, "unverified", "single_source", "independently_corroborated", "official_record", "disputed", "withdrawn"]},
+        "effective_on_valid_date": {"type": "boolean"},
+        "selection_status": {"enum": ["included", "excluded"]},
+        "selection_reason": {
+          "enum": [
+            "active_and_effective",
+            "inactive_lifecycle",
+            "before_effective_start",
+            "after_effective_end",
+            "before_event_start",
+            "after_event_end",
+            "universe_reference_date_mismatch"
+          ]
+        }
+      }
+    }
+  }
+}

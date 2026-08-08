@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/knowledge-availability-receipt.schema.json",
+  "title": "IGRM separately signed knowledge-availability receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "receipt_id",
+    "record_sha256",
+    "sequence",
+    "previous_receipt_file_sha256",
+    "release_id",
+    "release_manifest_file_sha256",
+    "release_record_sha256",
+    "release_generated_at",
+    "available_at",
+    "signer_id",
+    "signature_path"
+  ],
+  "properties": {
+    "object_type": {"const": "knowledge_availability_receipt"},
+    "schema_version": {"const": "1.0.0"},
+    "receipt_id": {"type": "string", "pattern": "^krc:[a-z0-9][a-z0-9._:-]{2,123}$"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "previous_receipt_file_sha256": {"$ref": "common.schema.json#/$defs/nullableSha256"},
+    "release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "release_manifest_file_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release_record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release_generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "available_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "signature_path": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+\\.sig$"
+    }
+  }
+}

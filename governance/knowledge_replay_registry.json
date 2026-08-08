@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "replay": {
+    "method_id": "method:igrm.knowledge_replay",
+    "version": "1.0.0",
+    "implementation_path": "src/knowledge_replay.py",
+    "implementation_sha256": "3ef7790be23349350b3d87195709a5d438c443a85a077c4662f64fb3b79fd7b8",
+    "effective": "2026-08-08",
+    "superseded_on": null,
+    "max_releases": 10000,
+    "max_output_records": 5000,
+    "common_schema_path": "schemas/common.schema.json",
+    "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+    "ledger_schema_path": "schemas/knowledge-replay-ledger.schema.json",
+    "ledger_schema_id": "https://igrm.in/schemas/knowledge-replay-ledger.schema.json",
+    "ledger_schema_sha256": "2e4bfb372d98269a73ce6f8e0851f667c2ececc02712406f470b19b50b65b46e",
+    "receipt_schema_path": "schemas/knowledge-availability-receipt.schema.json",
+    "receipt_schema_id": "https://igrm.in/schemas/knowledge-availability-receipt.schema.json",
+    "receipt_schema_sha256": "9ea66e78c47e4f42e2a29265885ce5f3158dbe61ad5b99a358d63912774c911a",
+    "output_schema_path": "schemas/knowledge-replay.schema.json",
+    "output_schema_id": "https://igrm.in/schemas/knowledge-replay.schema.json",
+    "output_schema_sha256": "c6a2b84833c9af503acb6b00b43909195200fa189632e8e8b1850070dafd800f"
+  }
+}

@@ -23,7 +23,7 @@ DOCS = ROOT / "docs"
 
 # Patch: daily_brief withdrawn with a stable-shaped tombstone and explicit
 # deprecation record.
-CONTRACT_VERSION = "2.2.3"
+CONTRACT_VERSION = "2.2.4"
 FROZEN_DATE = "2026-08-08"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
@@ -138,6 +138,27 @@ PUBLIC_STANDARD_JSON: dict[str, dict[str, str]] = {
     },
     "schemas/exposure-traversal.schema.json": {
         "description": "OGES 0.1.0 JSON Schema for a bounded exposure traversal result.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/knowledge-availability-receipt.schema.json": {
+        "description": (
+            "JSON Schema for a separately signed, hash-chained canonical-release "
+            "availability receipt used by the synthetic knowledge-replay foundation."
+        ),
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/knowledge-replay-ledger.schema.json": {
+        "description": (
+            "JSON Schema for the signed complete-release ledger used by the "
+            "synthetic knowledge-replay foundation."
+        ),
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/knowledge-replay.schema.json": {
+        "description": (
+            "JSON Schema for a structural bitemporal replay result that separates "
+            "knowledge cutoff from valid date and emits no claim values."
+        ),
         "stability": "static versioned public draft 0.1.0",
     },
     "schemas/universe-frame.schema.json": {

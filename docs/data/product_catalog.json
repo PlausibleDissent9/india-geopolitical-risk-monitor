@@ -35,7 +35,7 @@
    "id": "evidence_engine",
    "name": "IGRM Evidence Engine",
    "current_state": "public_draft_foundation",
-   "current_boundary": "OGES 0.1, schemas, provenance-oriented research tools and frozen machine interfaces are public; no production canonical-object release has yet been issued."
+   "current_boundary": "OGES 0.1, schemas, signed synthetic knowledge replay, provenance-oriented research tools and frozen machine interfaces are public; no production canonical-object release has yet been issued."
   },
   {
    "id": "research_copilot",
@@ -124,6 +124,13 @@
    "pillar_id": "evidence_engine",
    "status": "public_draft",
    "purpose": "The OGES 0.1 profile, conformance boundary, schemas and adversarial test vectors."
+  },
+  {
+   "path": "replay.html",
+   "label": "Knowledge replay",
+   "pillar_id": "evidence_engine",
+   "status": "public_draft",
+   "purpose": "A signed synthetic bitemporal replay demonstration that prevents later revisions from entering an earlier knowledge cutoff."
   },
   {
    "path": "data.html",
@@ -287,6 +294,7 @@
   "predictions.html",
   "products.html",
   "receipts.html",
+  "replay.html",
   "research/forecasts.html",
   "research/history.html",
   "standard.html",

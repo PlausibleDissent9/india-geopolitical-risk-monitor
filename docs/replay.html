@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Replay, IGRM</title>
+<meta name="description" content="A signed, bitemporal IGRM foundation that replays only canonical world-state releases separately receipted by a selected knowledge cutoff.">
+<link rel="canonical" href="https://igrm.in/replay.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=1e13bfe7">
+</head>
+<body class="site-page layout-article" data-page="replay.html" data-root=".">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="masthead site-masthead">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
+      <a href="start.html">Start here</a>
+      <a href="products.html">Explore</a>
+      <a href="methodology.html" class="current">Methodology</a>
+      <a href="validation.html">Validation</a>
+      <a href="analysis.html">Research</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="data-cta" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
+    </div>
+  </div>
+</header>
+<div class="site-shell page-frame">
+  <section class="page-heading" aria-labelledby="page-title">
+    <div class="page-heading-copy">
+      <p class="page-kicker">Evidence infrastructure</p>
+      <h1 id="page-title">Knowledge replay</h1>
+      <p class="page-deck">Replay the exact signed structural state available by a chosen knowledge cutoff while keeping the separately chosen valid date—and every later correction—explicit.</p>
+    </div>
+    <dl class="page-meta" aria-label="Publication context">
+      <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
+      <div><dt>Freshness</dt><dd><a href="status.html">Source-by-source status</a></dd></div>
+    </dl>
+  </section>
+  <div class="article-grid">
+    <aside class="reading-rail" aria-label="On this page">
+      <p class="rail-label">On this page</p>
+      <nav data-page-toc><a href="#main-content">Overview</a></nav>
+    </aside>
+    <main id="main-content" class="page-content" tabindex="-1">
+      <!--site-shell:content-start-->
+      <div class="prose replay-page">
+  <div class="hardline"><b>Current state: implemented synthetic conformance foundation.</b>
+  No production canonical world-state ledger exists yet. The committed production signer
+  registry is empty, so this interface cannot silently convert the demonstration into a
+  claim about real events, exposure or institutional adoption.</div>
+
+  <section class="replay-explainer" aria-labelledby="two-clocks">
+    <div>
+      <p class="eyebrow">Two clocks, never conflated</p>
+      <h2 id="two-clocks">What was valid—and what was knowable?</h2>
+      <p>Valid time asks which state applied on a date. Knowledge time asks which complete,
+      signed release had entered the separately signed receipt chain by a cutoff. IGRM selects
+      on the second clock first, then evaluates the first. A later correction is therefore
+      incapable of leaking into an earlier knowledge cutoff.</p>
+    </div>
+    <dl class="replay-clocks">
+      <div><dt>Knowledge cutoff</dt><dd>Chooses the latest separately receipted complete release</dd></div>
+      <div><dt>Valid date</dt><dd>Evaluates lifecycle and effective intervals inside only that release</dd></div>
+    </dl>
+  </section>
+
+  <section class="replay-lab" aria-labelledby="replay-demo-title">
+    <div class="replay-lab-head">
+      <div>
+        <p class="eyebrow">Deterministic public test vector</p>
+        <h2 id="replay-demo-title">Hold the event date fixed. Move only knowledge time.</h2>
+      </div>
+      <div class="replay-switch" role="group" aria-label="Select a synthetic knowledge cutoff">
+        <button type="button" class="on" data-replay-mode="before" aria-pressed="true">Before correction receipt</button>
+        <button type="button" data-replay-mode="after" aria-pressed="false">After correction receipt</button>
+      </div>
+    </div>
+    <p id="replay-load" class="chart-note" role="status">Loading the hash-locked synthetic demonstration…</p>
+    <div id="replay-result" class="replay-result" hidden>
+      <div class="replay-facts">
+        <div><span>Valid date</span><strong data-replay-valid></strong></div>
+        <div><span>Knowledge cutoff</span><strong data-replay-cutoff></strong></div>
+        <div><span>Selected release</span><strong data-replay-release></strong></div>
+        <div><span>Receipt time</span><strong data-replay-receipt></strong></div>
+      </div>
+      <div class="replay-state" aria-live="polite">
+        <span class="replay-revision" data-replay-revision></span>
+        <div><small>Typed event object</small><strong data-replay-object></strong></div>
+        <div><small>Epistemic state in selected release</small><strong data-replay-status></strong></div>
+      </div>
+      <div class="replay-diff">
+        <p><b>Added in this release</b><span data-replay-added></span></p>
+        <p><b>Removed through versioned succession</b><span data-replay-removed></span></p>
+        <p><b>Same-ID silent rewrites</b><span data-replay-changed></span></p>
+      </div>
+    </div>
+    <noscript><p>This demonstration requires JavaScript. The complete deterministic output is
+      available as <a href="data/knowledge_replay_demo.json">knowledge_replay_demo.json</a>.</p></noscript>
+  </section>
+
+  <h2 id="refusal-boundary">What the engine refuses</h2>
+  <ul>
+    <li>A cutoff before the first separate receipt or after the signed ledger closes.</li>
+    <li>A missing receipt, broken hash chain, invalid signature or release byte mismatch.</li>
+    <li>A changed record under the same object ID, a revision without its prior parent,
+      a forked revision line or an unexplained deletion from a complete snapshot.</li>
+    <li>Labels, source text, URLs, exposure values, confidence scores, causal attribution,
+      forecasts or advice in the structural replay result.</li>
+  </ul>
+
+  <h2 id="machine-contract">Machine contract</h2>
+  <pre><code>python -m src.knowledge_replay LEDGER.json \
+  --knowledge-cutoff 2026-08-08T14:30:00Z \
+  --valid-on 2026-08-08 --object-type event</code></pre>
+  <p>The validator rechecks the ledger and receipt signatures, every complete canonical
+  release, each historical governance snapshot, immutable object lineage, the replay
+  implementation and all three schemas. A successful result is a structural snapshot,
+  not a finding that an event is true.</p>
+
+  <h2 id="production-gates">What must happen before production</h2>
+  <p>The engine requires distinct identities and public keys for canonical release,
+  availability and replay-ledger signing. Even that separation does not establish
+  institutional independence. IGRM must establish
+  externally controlled availability and ledger-signing keys,
+  issue rights-reviewed production canonical releases, retain versioned governance
+  snapshots and publish the receipt chain through an external transparency or timestamp
+  service. Until then, this page proves executable behavior only.</p>
+  <p class="chart-note"><a href="standard.html">Open evidence standard</a> ·
+    <a href="data/knowledge_replay_demo.json">Synthetic replay JSON</a> ·
+    <a href="schemas/knowledge-replay.schema.json">Output schema</a> ·
+    <a href="workbench.html">Research workbench</a></p>
+</div>
+<script src="replay.js?v=be01ec02"></script>
+      <!--site-shell:content-end-->
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="footer-context">
+      <!--site-shell:footer-start-->
+      <p>Signed structural replay is not global ground truth, causal attribution,
+      a forecast, advice or institutional endorsement.</p>
+      <!--site-shell:footer-end-->
+    </div>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="./">India Geopolitical Risk Monitor</a>
+        <p>Public research instrument · India-specific press salience</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="products.html">Explore IGRM</a>
+        <a href="maps.html">Maps</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="validation.html">Validation</a>
+        <a href="history.html">1979&ndash;2019 history</a>
+        <a href="data.html">Data</a>
+        <a href="corrections.html">Corrections</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="site.js?v=88fb47ea"></script>
+</body>
+</html>

@@ -86,6 +86,10 @@ EXEMPT: dict[str, str] = {
         "only when the protected product surface changes, so daily aging "
         "would falsely label a stable catalog as stale"
     ),
+    "knowledge_replay_demo.json": (
+        "a deterministic synthetic two-release conformance demonstration, not "
+        "a live world-state lane; its fixed time is part of the public test vector"
+    ),
     "notes.json": "the author's weekly writing; cadence is human",
     "note_latest.json": "the author's weekly writing; cadence is human",
     "episodes.json": (
