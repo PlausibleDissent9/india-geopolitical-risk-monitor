@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0.0",
+  "standard_id": "oges",
+  "standard_name": "Open Geopolitical Evidence Standard",
+  "standard_version": "0.1.0",
+  "status": "public_draft_reference_implementation",
+  "effective": "2026-08-08",
+  "implementation": {
+    "organization": "India Geopolitical Risk Monitor",
+    "profile": "complete_signed_release",
+    "network_access": "forbidden",
+    "validator_path": "src/canonical_objects.py",
+    "validator_sha256": "1237ebac1eaa2521c0927229674344c6dc1d7086745171b6a603aca0511e4112",
+    "schema_registry_path": "governance/canonical_schema_registry.json",
+    "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+    "spec_path": "standard/oges/0.1.0/SPEC.md",
+    "spec_sha256": "6d4dd553c80a0011b464ae10a1c762b44726bedd4214a03eebad9dc86ff84f1a",
+    "adversarial_cases_path": "standard/oges/0.1.0/adversarial-cases.json",
+    "adversarial_cases_sha256": "8b8000e918596e62f680bfd96cacc63cd8d4b2aa34e22a06ba1b1260c6cf5d61"
+  },
+  "required_object_types": [
+    "evidence_item",
+    "entity",
+    "event",
+    "universe_release",
+    "exposure_edge"
+  ],
+  "normative_boundaries": [
+    "strict_canonical_json",
+    "exact_schema_registry",
+    "signed_release_manifest",
+    "signed_rights_decisions",
+    "privacy_and_permitted_use",
+    "closed_release_membership",
+    "exact_object_provenance",
+    "typed_event_evidence_roles",
+    "source_independence_groups",
+    "registered_executable_methods",
+    "declared_universe_partition",
+    "quantification_boundary",
+    "bitemporal_ordering"
+  ],
+  "conformance": {
+    "required_case_count": 11,
+    "success_rule": "Every registered case returns its exact expected status and refusal code; the valid case passes and no case is skipped.",
+    "report_disclosure": [
+      "standard_id",
+      "standard_version",
+      "profile_sha256",
+      "validator_sha256",
+      "schema_registry_sha256",
+      "release_id",
+      "release_record_sha256",
+      "object_counts",
+      "case_statuses"
+    ],
+    "report_forbidden": [
+      "evidence_text",
+      "source_extracts",
+      "exposure_values",
+      "private_keys",
+      "credentials"
+    ]
+  },
+  "meaning_boundary": {
+    "pass_means": "The supplied release satisfies the exact structural, cryptographic, temporal, rights-state, provenance, denominator and quantification invariants in this public draft profile.",
+    "pass_does_not_mean": [
+      "source statements are substantively true",
+      "the signed rights decision is legally correct",
+      "declared source independence is empirically established",
+      "event or exposure coverage is complete beyond its declared universe",
+      "an association is causal",
+      "a scenario is a probability or forecast",
+      "IGRM, government or institutional endorsement"
+    ]
+  },
+  "fixture_trust": {
+    "class": "synthetic_nonproduction",
+    "signing_keys": "public_test_only",
+    "production_trust_forbidden": true,
+    "external_data_or_rights_claim": false
+  }
+}

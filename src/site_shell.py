@@ -61,6 +61,7 @@ PAGES: dict[str, Page] = {
     "research/forecasts.html": Page("Forecast experiment (V11)", "Research", "article", "analysis", True),
     "research/history.html": Page("Historical attention proxy, 1979–2019", "Research", "article", "analysis", True),
     "start.html": Page("Start here", "Orientation", "onboarding", "start"),
+    "standard.html": Page("Open evidence standard", "Interoperability", "article", "methodology"),
     "status.html": Page("System status", "Operations", "system", "data", True),
     "validation.html": Page("Validation", "Evidence", "dashboard", "validation"),
     "viewer.html": Page("Data viewer", "Data infrastructure", "system", "data"),

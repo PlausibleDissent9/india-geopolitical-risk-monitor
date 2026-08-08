@@ -45,6 +45,28 @@ def test_every_served_payload_is_in_the_contract():
     assert "feed.xml" in listed
 
 
+def test_versioned_oges_profile_and_schemas_are_first_class_endpoints():
+    contract = _contract()
+    endpoints = {e["path"]: e for e in contract["endpoints"]}
+    expected = {
+        "oges/0.1.0/profile.json",
+        "oges/0.1.0/adversarial-cases.json",
+        *{
+            f"schemas/{path.name}"
+            for path in (ROOT / "docs" / "schemas").glob("*.schema.json")
+        },
+    }
+    assert expected == {
+        path for path in endpoints if path.startswith(("oges/", "schemas/"))
+    }
+    for path in expected:
+        endpoint = endpoints[path]
+        assert endpoint["format"] == "json"
+        assert endpoint["stability"] == "static versioned public draft 0.1.0"
+        assert endpoint["description"]
+        assert (ROOT / "docs" / path).is_file()
+
+
 def test_contract_lists_no_endpoint_that_no_longer_exists():
     contract = _contract()
     for e in contract["endpoints"]:

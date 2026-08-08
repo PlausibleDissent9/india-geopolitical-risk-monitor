@@ -2,7 +2,7 @@
  "openapi": "3.1.0",
  "info": {
   "title": "India Geopolitical Risk Monitor (IGRM)",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "summary": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
   "description": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.\n\nAn analytical field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the date recorded here, before removal in the next major version. Operational or personal material served by mistake may be withdrawn immediately, with the removal recorded here.\n\nauth: none\ncors: Access-Control-Allow-Origin: *\nrate_limit: none stated; ordinary politeness (poll daily, not per-request)\nrefresh: daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)",
   "license": {
@@ -2592,6 +2592,423 @@
           "description",
           "guid"
          ]
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/oges/0.1.0/adversarial-cases.json": {
+   "get": {
+    "operationId": "get_oges_0_1_0_adversarial_cases_json",
+    "description": "The eleven registered OGES 0.1.0 conformance vectors: one valid bundle and ten exact fail-closed mutations with their required refusal codes. Synthetic test material only; not empirical evidence or an adoption claim.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "The eleven registered OGES 0.1.0 conformance vectors: one valid bundle and ten exact fail-closed mutations with their required refusal codes. Synthetic test material only; not empirical evidence or an adoption claim.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "schema_version",
+          "standard_id",
+          "standard_version",
+          "fixture_class",
+          "cases"
+         ],
+         "properties": {
+          "schema_version": {},
+          "standard_id": {},
+          "standard_version": {},
+          "fixture_class": {},
+          "cases": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/oges/0.1.0/profile.json": {
+   "get": {
+    "operationId": "get_oges_0_1_0_profile_json",
+    "description": "The hash-pinned OGES 0.1.0 reference profile: required canonical object types, normative schema and validator digests, conformance suite digest, and explicit non-adoption boundary.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "The hash-pinned OGES 0.1.0 reference profile: required canonical object types, normative schema and validator digests, conformance suite digest, and explicit non-adoption boundary.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "schema_version",
+          "standard_id",
+          "standard_name",
+          "standard_version",
+          "status",
+          "effective",
+          "implementation",
+          "required_object_types",
+          "normative_boundaries",
+          "conformance",
+          "meaning_boundary",
+          "fixture_trust"
+         ],
+         "properties": {
+          "schema_version": {},
+          "standard_id": {},
+          "standard_name": {},
+          "standard_version": {},
+          "status": {},
+          "effective": {},
+          "implementation": {},
+          "required_object_types": {},
+          "normative_boundaries": {},
+          "conformance": {},
+          "meaning_boundary": {},
+          "fixture_trust": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/canonical-release.schema.json": {
+   "get": {
+    "operationId": "get_schemas_canonical_release_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for a signed canonical release manifest.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for a signed canonical release manifest.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/common.schema.json": {
+   "get": {
+    "operationId": "get_schemas_common_schema_json",
+    "description": "OGES 0.1.0 shared JSON Schema definitions and primitives.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 shared JSON Schema definitions and primitives.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "$defs"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "$defs": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/entity.schema.json": {
+   "get": {
+    "operationId": "get_schemas_entity_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for a typed, versioned entity.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for a typed, versioned entity.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "allOf"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "allOf": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/event.schema.json": {
+   "get": {
+    "operationId": "get_schemas_event_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for a typed, evidence-linked event.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for a typed, evidence-linked event.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "allOf"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "allOf": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/evidence-item.schema.json": {
+   "get": {
+    "operationId": "get_schemas_evidence_item_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for a rights-aware evidence item.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for a rights-aware evidence item.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "allOf"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "allOf": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/exposure-edge.schema.json": {
+   "get": {
+    "operationId": "get_schemas_exposure_edge_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for a bounded, method-linked exposure edge.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for a bounded, method-linked exposure edge.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "allOf"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "allOf": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/exposure-traversal.schema.json": {
+   "get": {
+    "operationId": "get_schemas_exposure_traversal_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for a bounded exposure traversal result.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for a bounded exposure traversal result.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "$defs"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "$defs": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/universe-frame.schema.json": {
+   "get": {
+    "operationId": "get_schemas_universe_frame_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for an enumerated source-universe frame.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for an enumerated source-universe frame.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/universe-release.schema.json": {
+   "get": {
+    "operationId": "get_schemas_universe_release_schema_json",
+    "description": "OGES 0.1.0 JSON Schema for a reconciled, versioned universe release.",
+    "x-igrm-stability": "static versioned public draft 0.1.0",
+    "responses": {
+     "200": {
+      "description": "OGES 0.1.0 JSON Schema for a reconciled, versioned universe release.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {}
+         }
         }
        }
       }

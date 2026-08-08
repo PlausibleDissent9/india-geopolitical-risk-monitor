@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "standard_id": "oges",
+  "standard_version": "0.1.0",
+  "fixture_class": "synthetic_nonproduction",
+  "cases": [
+    {
+      "id": "valid_signed_release",
+      "operation": "none",
+      "expected_status": "conformant",
+      "expected_reason": null,
+      "boundary": "A complete synthetic release with exact schemas, signed rights, registered methods, a signed manifest and internally resolved objects passes."
+    },
+    {
+      "id": "tampered_release_signature",
+      "operation": "tamper_release_signature",
+      "expected_status": "refused",
+      "expected_reason": "release_signature_invalid",
+      "boundary": "A release manifest cannot change independently of its registered signer."
+    },
+    {
+      "id": "spoofed_official_confirmation",
+      "operation": "spoof_official_confirmation",
+      "expected_status": "refused",
+      "expected_reason": "event_official_confirmation_ineligible",
+      "boundary": "A news item cannot become official confirmation by changing an event-link label."
+    },
+    {
+      "id": "omitted_universe_member",
+      "operation": "omit_universe_member",
+      "expected_status": "refused",
+      "expected_reason": "universe_frame_membership_mismatch",
+      "boundary": "Included, excluded, unmappable and stale members must exactly partition the registered source frame."
+    },
+    {
+      "id": "invented_exposure_method",
+      "operation": "invent_exposure_method",
+      "expected_status": "refused",
+      "expected_reason": "method_unregistered",
+      "boundary": "A plausible-looking hash is not executable provenance."
+    },
+    {
+      "id": "qualitative_edge_with_number",
+      "operation": "qualitative_edge_with_number",
+      "expected_status": "refused",
+      "expected_reason": "object_schema_invalid",
+      "boundary": "A qualitative exposure cannot carry a numeric magnitude."
+    },
+    {
+      "id": "future_measurement_period",
+      "operation": "future_measurement_period",
+      "expected_status": "refused",
+      "expected_reason": "edge_magnitude_after_observation",
+      "boundary": "A measurement period cannot end after the observation time used to create the edge."
+    },
+    {
+      "id": "tampered_rights_registry",
+      "operation": "tamper_rights_registry",
+      "expected_status": "refused",
+      "expected_reason": "release_rights_registry_digest_mismatch",
+      "boundary": "A release freezes the exact rights decision state it used."
+    },
+    {
+      "id": "duplicate_json_key",
+      "operation": "duplicate_json_key",
+      "expected_status": "refused",
+      "expected_reason": "json_duplicate_key",
+      "boundary": "Ambiguous JSON is not canonical evidence."
+    },
+    {
+      "id": "false_release_count",
+      "operation": "false_release_count",
+      "expected_status": "refused",
+      "expected_reason": "release_counts_mismatch",
+      "boundary": "Manifest counts must equal the exact object membership."
+    },
+    {
+      "id": "restricted_evidence_bytes_exposed",
+      "operation": "expose_restricted_evidence",
+      "expected_status": "refused",
+      "expected_reason": "restricted_evidence_bytes_forbidden",
+      "boundary": "Restricted evidence cannot expose a public URL or artifact bytes."
+    }
+  ]
+}

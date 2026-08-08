@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/universe-release.schema.json",
+  "title": "IGRM declared entity universe release",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "universe_release_id",
+    "record_sha256",
+    "lifecycle",
+    "universe_id",
+    "version",
+    "name",
+    "entity_type",
+    "reference_date",
+    "denominator_definition",
+    "inclusion_rule",
+    "frame_artifact",
+    "source_evidence_ids",
+    "members",
+    "counts",
+    "provenance"
+  ],
+  "properties": {
+    "object_type": {"const": "universe_release"},
+    "schema_version": {"const": "1.0.0"},
+    "universe_release_id": {
+      "type": "string",
+      "pattern": "^unv:[a-z0-9][a-z0-9._:-]{2,123}$"
+    },
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "lifecycle": {"$ref": "common.schema.json#/$defs/recordLifecycle"},
+    "universe_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "version": {"$ref": "common.schema.json#/$defs/schemaVersion"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 300},
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "country",
+        "government_actor",
+        "organization",
+        "ministry",
+        "state_or_ut",
+        "district",
+        "sector",
+        "company",
+        "critical_asset",
+        "route",
+        "chokepoint",
+        "port",
+        "border_crossing",
+        "commodity",
+        "technology",
+        "treaty",
+        "sanction_regime",
+        "market_instrument"
+      ]
+    },
+    "reference_date": {"$ref": "common.schema.json#/$defs/date"},
+    "denominator_definition": {"type": "string", "minLength": 1, "maxLength": 1000},
+    "inclusion_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "version",
+        "implementation_path",
+        "implementation_sha256",
+        "documentation_path"
+      ],
+      "properties": {
+        "rule_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "version": {"$ref": "common.schema.json#/$defs/schemaVersion"},
+        "implementation_path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+        },
+        "implementation_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "documentation_path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+        }
+      }
+    },
+    "frame_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "format"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+\\.json$"
+        },
+        "sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "format": {"const": "igrm_universe_frame_v1"}
+      }
+    },
+    "source_evidence_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+    "members": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_id", "status", "reason_code", "assessed_on"],
+        "properties": {
+          "entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+          "status": {
+            "type": "string",
+            "enum": ["included", "excluded", "unmappable", "stale"]
+          },
+          "reason_code": {"$ref": "common.schema.json#/$defs/stableId"},
+          "assessed_on": {"$ref": "common.schema.json#/$defs/date"}
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total_eligible", "included", "excluded", "unmappable", "stale"],
+      "properties": {
+        "total_eligible": {"type": "integer", "minimum": 1},
+        "included": {"type": "integer", "minimum": 0},
+        "excluded": {"type": "integer", "minimum": 0},
+        "unmappable": {"type": "integer", "minimum": 0},
+        "stale": {"type": "integer", "minimum": 0}
+      }
+    },
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"}
+  }
+}

@@ -23,7 +23,7 @@ DOCS = ROOT / "docs"
 
 # Patch: daily_brief withdrawn with a stable-shaped tombstone and explicit
 # deprecation record.
-CONTRACT_VERSION = "2.2.1"
+CONTRACT_VERSION = "2.2.2"
 FROZEN_DATE = "2026-08-08"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
@@ -89,6 +89,66 @@ DESCRIPTIONS = {
 # are not analytical payloads: igrm.bib (citation download), sitemap.xml
 # and robots.txt (crawler infrastructure).
 EXCLUDE = {"api_contract.json", "decisions.json"}
+
+# Versioned public-standard files live outside docs/data/ but are still
+# machine-consumption endpoints.  Keep the inventory explicit: adding a file
+# under docs/oges or docs/schemas must be an intentional API-contract change,
+# not an implicit directory walk that silently expands the public promise.
+PUBLIC_STANDARD_JSON: dict[str, dict[str, str]] = {
+    "oges/0.1.0/adversarial-cases.json": {
+        "description": (
+            "The eleven registered OGES 0.1.0 conformance vectors: one valid "
+            "bundle and ten exact fail-closed mutations with their required "
+            "refusal codes. Synthetic test material only; not empirical "
+            "evidence or an adoption claim."
+        ),
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "oges/0.1.0/profile.json": {
+        "description": (
+            "The hash-pinned OGES 0.1.0 reference profile: required canonical "
+            "object types, normative schema and validator digests, conformance "
+            "suite digest, and explicit non-adoption boundary."
+        ),
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/canonical-release.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for a signed canonical release manifest.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/common.schema.json": {
+        "description": "OGES 0.1.0 shared JSON Schema definitions and primitives.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/entity.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for a typed, versioned entity.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/event.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for a typed, evidence-linked event.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/evidence-item.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for a rights-aware evidence item.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/exposure-edge.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for a bounded, method-linked exposure edge.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/exposure-traversal.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for a bounded exposure traversal result.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/universe-frame.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for an enumerated source-universe frame.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/universe-release.schema.json": {
+        "description": "OGES 0.1.0 JSON Schema for a reconciled, versioned universe release.",
+        "stability": "static versioned public draft 0.1.0",
+    },
+}
 
 
 def _fields(data) -> list[str] | str:
@@ -217,6 +277,19 @@ def build() -> dict:
             "description": DESCRIPTIONS.get(path.name, ""),
             "frozen_fields": columns,
             "stability": "stable",
+        })
+
+    for relative, contract_fields in PUBLIC_STANDARD_JSON.items():
+        path = DOCS / relative
+        if not path.is_file():
+            raise SystemExit(f"public standard endpoint is missing: {relative}")
+        data = json.loads(path.read_text(encoding="utf-8"))
+        endpoints.append({
+            "path": relative,
+            "format": "json",
+            "description": contract_fields["description"],
+            "frozen_fields": _fields(data),
+            "stability": contract_fields["stability"],
         })
 
     endpoints.append({

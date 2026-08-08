@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.1",
+  "contract_version": "2.2.2",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -1061,6 +1061,176 @@
     "guid"
    ],
    "stability": "stable"
+  },
+  {
+   "path": "oges/0.1.0/adversarial-cases.json",
+   "format": "json",
+   "description": "The eleven registered OGES 0.1.0 conformance vectors: one valid bundle and ten exact fail-closed mutations with their required refusal codes. Synthetic test material only; not empirical evidence or an adoption claim.",
+   "frozen_fields": [
+    "schema_version",
+    "standard_id",
+    "standard_version",
+    "fixture_class",
+    "cases"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "oges/0.1.0/profile.json",
+   "format": "json",
+   "description": "The hash-pinned OGES 0.1.0 reference profile: required canonical object types, normative schema and validator digests, conformance suite digest, and explicit non-adoption boundary.",
+   "frozen_fields": [
+    "schema_version",
+    "standard_id",
+    "standard_name",
+    "standard_version",
+    "status",
+    "effective",
+    "implementation",
+    "required_object_types",
+    "normative_boundaries",
+    "conformance",
+    "meaning_boundary",
+    "fixture_trust"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/canonical-release.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for a signed canonical release manifest.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/common.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 shared JSON Schema definitions and primitives.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "$defs"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/entity.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for a typed, versioned entity.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "allOf"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/event.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for a typed, evidence-linked event.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "allOf"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/evidence-item.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for a rights-aware evidence item.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "allOf"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/exposure-edge.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for a bounded, method-linked exposure edge.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "allOf"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/exposure-traversal.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for a bounded exposure traversal result.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "$defs"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/universe-frame.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for an enumerated source-universe frame.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties"
+   ],
+   "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/universe-release.schema.json",
+   "format": "json",
+   "description": "OGES 0.1.0 JSON Schema for a reconciled, versioned universe release.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties"
+   ],
+   "stability": "static versioned public draft 0.1.0"
   }
  ]
 }

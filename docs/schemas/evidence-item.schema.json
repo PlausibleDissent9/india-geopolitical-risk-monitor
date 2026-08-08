@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/evidence-item.schema.json",
+  "title": "IGRM canonical EvidenceItem",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "evidence_id",
+    "record_sha256",
+    "lifecycle",
+    "source_id",
+    "source_record_id",
+    "retrieval_id",
+    "evidence_type",
+    "title",
+    "publisher_entity_id",
+    "authors",
+    "language",
+    "published_at",
+    "observed_at",
+    "effective_start",
+    "effective_end",
+    "retrieved_at",
+    "geography_entity_ids",
+    "public_url",
+    "artifact_path",
+    "content_sha256",
+    "artifact_sha256",
+    "content_availability",
+    "rights_use",
+    "rights_decision_id",
+    "privacy_class",
+    "verification_status",
+    "extraction_method",
+    "provenance"
+  ],
+  "properties": {
+    "object_type": {"const": "evidence_item"},
+    "schema_version": {"const": "1.0.0"},
+    "evidence_id": {
+      "type": "string",
+      "pattern": "^evd:[a-z0-9][a-z0-9._:-]{2,123}$"
+    },
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "lifecycle": {"$ref": "common.schema.json#/$defs/recordLifecycle"},
+    "source_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "source_record_id": {"type": ["string", "null"], "minLength": 1, "maxLength": 500},
+    "retrieval_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "evidence_type": {
+      "type": "string",
+      "enum": [
+        "official_document",
+        "official_statement",
+        "dataset_observation",
+        "news_article",
+        "research_paper",
+        "web_page",
+        "image",
+        "audio",
+        "video",
+        "analyst_note"
+      ]
+    },
+    "title": {"type": "string", "minLength": 1, "maxLength": 500},
+    "publisher_entity_id": {"$ref": "common.schema.json#/$defs/nullableId"},
+    "authors": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 200},
+      "uniqueItems": true
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+    },
+    "published_at": {"$ref": "common.schema.json#/$defs/nullableDateTime"},
+    "observed_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "effective_start": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "effective_end": {"$ref": "common.schema.json#/$defs/nullableDateTime"},
+    "retrieved_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "geography_entity_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+    "public_url": {
+      "oneOf": [
+        {"type": "string", "format": "uri", "pattern": "^https://"},
+        {"type": "null"}
+      ]
+    },
+    "artifact_path": {
+      "type": ["string", "null"],
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+    },
+    "content_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "artifact_sha256": {"$ref": "common.schema.json#/$defs/nullableSha256"},
+    "content_availability": {
+      "type": "string",
+      "enum": ["full_bytes", "public_extract", "hash_metadata_only", "restricted"]
+    },
+    "rights_use": {
+      "type": "string",
+      "enum": [
+        "cite_metadata",
+        "model_processing",
+        "publish_derived_value",
+        "publish_extract",
+        "redistribute_full_record"
+      ]
+    },
+    "rights_decision_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "privacy_class": {
+      "type": "string",
+      "enum": ["public", "public_with_redactions", "restricted", "prohibited"]
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "single_source",
+        "independently_corroborated",
+        "official_record",
+        "disputed",
+        "withdrawn"
+      ]
+    },
+    "extraction_method": {
+      "type": "string",
+      "enum": ["direct_bytes", "provider_api", "structured_export", "manual_capture"]
+    },
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "content_availability": {"enum": ["full_bytes", "public_extract"]}
+        }
+      },
+      "then": {
+        "properties": {
+          "artifact_path": {"type": "string"},
+          "artifact_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"privacy_class": {"const": "prohibited"}}},
+      "then": {
+        "properties": {
+          "content_availability": {"const": "restricted"},
+          "public_url": {"type": "null"},
+          "artifact_path": {"type": "null"},
+          "artifact_sha256": {"type": "null"}
+        }
+      }
+    }
+  ]
+}

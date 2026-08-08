@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/entity.schema.json",
+  "title": "IGRM canonical Entity",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "entity_id",
+    "record_sha256",
+    "lifecycle",
+    "entity_type",
+    "canonical_name",
+    "aliases",
+    "identifiers",
+    "parent_entity_ids",
+    "jurisdiction_entity_ids",
+    "geometry",
+    "effective_start",
+    "effective_end",
+    "identity_status",
+    "provenance"
+  ],
+  "properties": {
+    "object_type": {"const": "entity"},
+    "schema_version": {"const": "1.0.0"},
+    "entity_id": {
+      "type": "string",
+      "pattern": "^ent:[a-z0-9][a-z0-9._:-]{2,123}$"
+    },
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "lifecycle": {"$ref": "common.schema.json#/$defs/recordLifecycle"},
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "country",
+        "government_actor",
+        "organization",
+        "ministry",
+        "state_or_ut",
+        "district",
+        "sector",
+        "company",
+        "critical_asset",
+        "route",
+        "chokepoint",
+        "port",
+        "border_crossing",
+        "commodity",
+        "technology",
+        "treaty",
+        "sanction_regime",
+        "market_instrument"
+      ]
+    },
+    "canonical_name": {"type": "string", "minLength": 1, "maxLength": 300},
+    "aliases": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 300},
+      "uniqueItems": true
+    },
+    "identifiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scheme", "value", "effective_start", "effective_end", "evidence_ids"],
+        "properties": {
+          "scheme": {"type": "string", "minLength": 1, "maxLength": 100},
+          "value": {"type": "string", "minLength": 1, "maxLength": 300},
+          "effective_start": {"$ref": "common.schema.json#/$defs/nullableDate"},
+          "effective_end": {"$ref": "common.schema.json#/$defs/nullableDate"},
+          "evidence_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+        }
+      }
+    },
+    "parent_entity_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+    "jurisdiction_entity_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+    "geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_path", "artifact_sha256", "geometry_type", "precision"],
+      "properties": {
+        "artifact_path": {"type": ["string", "null"], "minLength": 1},
+        "artifact_sha256": {"$ref": "common.schema.json#/$defs/nullableSha256"},
+        "geometry_type": {
+          "type": "string",
+          "enum": ["none", "point", "line", "polygon", "multipolygon"]
+        },
+        "precision": {
+          "type": "string",
+          "enum": ["exact", "approximate", "administrative", "route_level", "unknown", "not_applicable"]
+        }
+      }
+    },
+    "effective_start": {"$ref": "common.schema.json#/$defs/nullableDate"},
+    "effective_end": {"$ref": "common.schema.json#/$defs/nullableDate"},
+    "identity_status": {
+      "type": "string",
+      "enum": ["authoritative", "crosswalked", "provisional", "disputed"]
+    },
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"geometry": {"properties": {"geometry_type": {"const": "none"}}}}},
+      "then": {
+        "properties": {
+          "geometry": {
+            "properties": {
+              "artifact_path": {"type": "null"},
+              "artifact_sha256": {"type": "null"},
+              "precision": {"const": "not_applicable"}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "geometry": {
+            "properties": {
+              "artifact_path": {"type": "string"},
+              "artifact_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+            }
+          }
+        }
+      }
+    }
+  ]
+}
