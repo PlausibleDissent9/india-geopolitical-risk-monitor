@@ -1,6 +1,6 @@
-# Evidence-locked IGRM assistant — implementation contract v0.2.0
+# Evidence-locked IGRM assistant — implementation contract v0.3.0
 
-Status: **implemented safety core; no public endpoint; no model authorized**
+Status: **implemented safety core and disabled selector adapter; no public endpoint; no model authorized**
 
 Effective: 2026-08-08
 
@@ -38,18 +38,20 @@ evidence verifier     (source hash, pointer, type, unit, denominator, date join)
 registered renderer   (deterministic text + fact-level evidence ledger)
 ```
 
-Only the first box may later use a model. Model output is parsed with an exact
-field allowlist. It has no field through which to supply prose, literal numbers,
-dates, entity names, citations, calculations or denominators. The renderer never
-interpolates the user's text.
+Only the first box may use a model. The implemented router narrows its output
+further: a model emits only an intent and registered channel keys; code compiles
+those into the strict fact plan. It has no field through which to supply prose,
+literal numbers, dates, citations, calculations or denominators. The renderer
+never interpolates the user's text. Tiering and cost controls are specified in
+`design/assistant_model_routing.md`; the kill switch remains closed.
 
-## Implemented v0.2 surface
+## Implemented bounded answer surface
 
 `src/evidence_assistant.py` currently supports six bounded question classes:
 
 1. latest 7-day headline;
 2. one channel's latest 7-day reading;
-3. a deterministic comparison of exactly two channel readings; and
+3. a deterministic comparison of exactly two channel readings;
 4. the instrument definition carried by `latest.json`;
 5. five displayed receipt entries for the latest available receipt day; and
 6. same-day receipt evidence for a current daily channel score, only when the
@@ -117,7 +119,7 @@ The core is designed to fail closed against:
 The system does not claim to validate open-ended geopolitical interpretation.
 It removes that interpretation from the publishable path.
 
-## Conditions before a model or public endpoint
+## Conditions before enabling a model or public endpoint
 
 This core may not be described as a public chatbot yet. A successor slice must
 meet all of the following before deployment:
@@ -155,8 +157,9 @@ instrument:
 - multilingual question classification while answers retain one canonical fact
   ledger;
 - alerts that link back to the exact fact bundle that triggered them; and
-- an optional model selector that improves language understanding but cannot
-  change a rendered claim.
+- the implemented tiered model selector, once its frozen evaluation and public
+  deployment gates pass, improving language understanding without changing a
+  rendered claim.
 
 The feature is therefore sequenced, not sacrificed: user breadth grows at the
 selector and fact-catalog layers while the evidence verifier remains the fixed

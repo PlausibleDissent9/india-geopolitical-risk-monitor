@@ -820,8 +820,8 @@ def render_plan(
     )
 
 
-def answer_question(question: str, root: Path = ROOT) -> Answer:
-    plan = plan_question(question)
+def answer_plan(plan: Plan, root: Path = ROOT) -> Answer:
+    """Load only the plan's registered sources, then verify and render it."""
     if plan.template_id.startswith("refusal_"):
         return render_plan(plan, {}, root)
     try:
@@ -857,6 +857,10 @@ def answer_question(question: str, root: Path = ROOT) -> Answer:
             (),
             (),
         )
+
+
+def answer_question(question: str, root: Path = ROOT) -> Answer:
+    return answer_plan(plan_question(question), root)
 
 
 def main(argv: Sequence[str] | None = None) -> None:
