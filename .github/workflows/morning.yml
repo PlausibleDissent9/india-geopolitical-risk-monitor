@@ -21,10 +21,24 @@ name: morning-contract
 
 on:
   schedule:
-    - cron: "3 0 * * *"     # 05:33 IST -- first shot
-    - cron: "17 0 * * *"    # 05:47 IST -- second shot
+    - cron: "45 23 * * *"   # 05:15 IST -- early shot: congestion delay is
+                            # additive to schedule time, so margin comes
+                            # from starting earlier, not from more shots
+    - cron: "3 0 * * *"     # 05:33 IST -- second shot
+    - cron: "17 0 * * *"    # 05:47 IST -- third shot
     - cron: "29 0 * * *"    # 05:59 IST -- last shot inside the window
   workflow_dispatch:
+  push:
+    paths:
+      - ".trigger/morning"
+    # The scheduler-independent path. On 2026-08-08 GitHub fired all
+    # three crons 82+ minutes late and the 06:00 contract was missed
+    # with every shot accounted for -- cron here is best-effort by
+    # design and no shot count fixes that. A push to .trigger/morning
+    # starts this lane within seconds of the push, so any agent with
+    # push access (the resident machine checks at 05:40 IST) can fire
+    # the morning when the scheduler has not. The idempotence guard
+    # makes a redundant trigger a no-op, same as a redundant cron shot.
 
 permissions:
   contents: write
