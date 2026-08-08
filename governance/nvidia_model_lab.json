@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "status": "candidate_review_fleet_only",
+  "default_policy": "deny",
+  "provider": {
+    "name": "NVIDIA NIM API Catalog",
+    "base_url": "https://integrate.api.nvidia.com",
+    "models_path": "/v1/models",
+    "chat_path": "/v1/chat/completions",
+    "official_reference": "https://docs.api.nvidia.com/nim/reference/llm-apis"
+  },
+  "credential": {
+    "storage": "macos_keychain",
+    "service": "igrm-nvidia-api",
+    "account_source": "local_os_user",
+    "environment_fallback": false
+  },
+  "limits": {
+    "input_bytes": 120000,
+    "response_bytes": 2000000,
+    "timeout_seconds": 90,
+    "temperature": 0,
+    "max_findings": 40
+  },
+  "models": [
+    {
+      "model_id": "poolside/laguna-xs-2.1",
+      "status": "candidate_unbenchmarked",
+      "roles": ["code_review"],
+      "max_output_tokens": 1800
+    },
+    {
+      "model_id": "nvidia/nemotron-3-super-120b-a12b",
+      "status": "candidate_unbenchmarked",
+      "roles": ["code_review", "claim_review", "method_review"],
+      "max_output_tokens": 1800
+    },
+    {
+      "model_id": "openai/gpt-oss-120b",
+      "status": "candidate_unbenchmarked",
+      "roles": ["claim_review", "method_review"],
+      "max_output_tokens": 1800
+    },
+    {
+      "model_id": "nvidia/riva-translate-4b-instruct-v2",
+      "status": "candidate_unbenchmarked",
+      "roles": ["multilingual_review"],
+      "max_output_tokens": 1400
+    }
+  ],
+  "authority_boundary": {
+    "repository_write": false,
+    "commit": false,
+    "publish": false,
+    "label_or_adjudicate": false,
+    "final_claim_authority": false,
+    "review_output_is_evidence": false
+  },
+  "forbidden_inputs": [
+    "secrets or credentials",
+    "private keys or signed decision material",
+    "restricted or paid-source raw data",
+    "personal data",
+    "unreleased coder labels",
+    "confidential legal advice"
+  ]
+}
