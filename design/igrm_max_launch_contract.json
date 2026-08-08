@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0.0",
+  "program_id": "igrm-max-2026-10-24",
+  "program_scope_sha256": "8dabe5401d505564df84721acfc8c60bd7521b5b004a812102331c91757ebc1e",
+  "status": "founder_authorized",
+  "authorized_on": "2026-08-08",
+  "launch_date": "2026-10-24",
+  "objective": "Ship an integrated, evidence-bounded IGRM Max v1 that connects world state, evidence, India exposure, transmission, response and recovery without licensing unsupported truth, causal, forecast, superiority or adoption claims.",
+  "budget": {
+    "currency": "INR",
+    "ceiling": 250000,
+    "state": "founder_confirmation_pending",
+    "purchase_rule": "No purchase without a written capability gain, rights analysis, price, cheaper alternative and no-buy consequence."
+  },
+  "launch_boundary": {
+    "must_ship": "An integrated v1 of every registered pillar and engine, with explicit coverage and abstention where evidence is absent.",
+    "cannot_be_scheduled": [
+      "independent citations",
+      "awards",
+      "government adoption",
+      "completed evidence from a study whose registered observation window ends after launch",
+      "historical depth that did not exist by the authorization date"
+    ],
+    "rule": "External and time-dependent outcomes publish their actual state and next evidence gate; they never become simulated accomplishments."
+  },
+  "pillars": [
+    {
+      "id": "core",
+      "name": "IGRM Core",
+      "launch_outcome": "Citable, reproducible measurement objects, temporal vintages and bounded attention/event/transmission instruments."
+    },
+    {
+      "id": "atlas",
+      "name": "IGRM Atlas",
+      "launch_outcome": "A live energy-shipping-trade India exposure vertical with declared universes, exact traversal and measured gaps."
+    },
+    {
+      "id": "evidence_engine",
+      "name": "IGRM Evidence Engine",
+      "launch_outcome": "Typed claims, events, entities, evidence, rights, retrievals, transformations and signed release lineage."
+    },
+    {
+      "id": "research_copilot",
+      "name": "IGRM Research Copilot",
+      "launch_outcome": "Natural-language research over registered facts and executable transformations with clause-level refusal."
+    },
+    {
+      "id": "observatory",
+      "name": "IGRM Observatory",
+      "launch_outcome": "Event dossiers, hypothesis ledgers, transmission monitoring, scenario state and correction-aware alerts."
+    },
+    {
+      "id": "benchmark_lab",
+      "name": "IGRM Benchmark Lab",
+      "launch_outcome": "Frozen comparisons, causal/forecast experiments, decision-task protocols and a permanent win/loss register."
+    },
+    {
+      "id": "institution",
+      "name": "IGRM Institution",
+      "launch_outcome": "Methods, rights, security, conflicts, corrections, continuity and external-pilot governance that can survive founder absence."
+    },
+    {
+      "id": "distribution",
+      "name": "IGRM Distribution",
+      "launch_outcome": "Research packages, board briefs, newsroom claim cards, institutional offline bundles, multilingual and accessible public/API surfaces."
+    }
+  ],
+  "engines": [
+    {
+      "id": "world_state",
+      "name": "World-state engine",
+      "pillars": ["evidence_engine", "observatory"],
+      "launch_definition": "Versioned actors, claims, events, entities, relationships, policies and observed responses with bitemporal state and correction history."
+    },
+    {
+      "id": "sensor_fusion",
+      "name": "Sensor fusion engine",
+      "pillars": ["core", "evidence_engine", "observatory"],
+      "launch_definition": "Semantically separate official, news, event, physical, trade, energy, market and public-attention lanes joined only through registered transformations."
+    },
+    {
+      "id": "knowledge_time_machine",
+      "name": "Knowledge time machine",
+      "pillars": ["core", "evidence_engine", "observatory"],
+      "launch_definition": "Replay facts, releases, alerts, evidence and models exactly as knowable at a selected historical cutoff."
+    },
+    {
+      "id": "india_exposure_dna",
+      "name": "India Exposure DNA",
+      "pillars": ["atlas"],
+      "launch_definition": "Living, coverage-bounded exposure vectors for covered states, sectors, firms, ports, corridors, commodities and critical public assets."
+    },
+    {
+      "id": "shock_compiler",
+      "name": "Shock compiler",
+      "pillars": ["atlas", "observatory"],
+      "launch_definition": "Compile bounded event assumptions into exposure paths, ranges, missing links, substitutions and buffers without presenting a point scenario as a forecast."
+    },
+    {
+      "id": "causal_lab",
+      "name": "Causal discovery laboratory",
+      "pillars": ["benchmark_lab"],
+      "launch_definition": "Pre-registered event studies and rival explanations that keep association, identification and causal claims distinct."
+    },
+    {
+      "id": "strategy_resilience",
+      "name": "Strategy and resilience engine",
+      "pillars": ["atlas", "observatory"],
+      "launch_definition": "Compare route, supplier, inventory, policy and diversification scenarios with assumptions and uncertainty, never directives or advice."
+    },
+    {
+      "id": "forecast_lab",
+      "name": "Statistical and AI forecast laboratory",
+      "pillars": ["benchmark_lab"],
+      "launch_definition": "A separated, no-lookahead laboratory with statistical and AI-ensemble models, strong naive baselines, proper scores, calibration and permanent losses.",
+      "allowed_model_classes": ["statistical", "ai_ensemble"],
+      "human_expert_tournament_required": false
+    },
+    {
+      "id": "verified_copilot",
+      "name": "Verified intelligence copilot",
+      "pillars": ["research_copilot"],
+      "launch_definition": "Natural-language plans compile into registered facts and executable transformations; models cannot author public facts, numbers, citations, dates or confidence."
+    },
+    {
+      "id": "institutional_network",
+      "name": "Institutional collaboration network",
+      "pillars": ["institution", "distribution"],
+      "launch_definition": "Signed modules, corrections, replications, dissent and pilot evidence with disclosed identity, role, compensation and conflicts."
+    },
+    {
+      "id": "open_evidence_standard",
+      "name": "Open geopolitical evidence standard",
+      "pillars": ["evidence_engine", "institution", "distribution"],
+      "launch_definition": "A versioned public conformance specification for evidence, time, rights, claims, events, exposure, uncertainty, releases, corrections and refusal."
+    }
+  ],
+  "required_capabilities": [
+    {"id": "typed_event", "requirement": "A geopolitical event is a typed and versioned object, not a headline."},
+    {"id": "epistemic_status", "requirement": "Rumor, allegation, coded inference, official confirmation and realized disruption are distinct machine states."},
+    {"id": "source_semantics", "requirement": "News, official records, events, physical transmission, trade, energy, markets and public attention retain separate meanings."},
+    {"id": "india_dependency_traversal", "requirement": "Events traverse registered India dependency edges across routes, ports, commodities, sectors, states, firms and policy authority."},
+    {"id": "edge_evidence", "requirement": "Every public link states what is known, effective date, source, rights state, coverage denominator and uncertainty."},
+    {"id": "time_varying_exposure", "requirement": "Covered entities expose time-varying fingerprints, stale edges, unknowns and declared-universe coverage."},
+    {"id": "bounded_scenarios", "requirement": "Users can vary duration and magnitude and receive paths, assumptions, missing links and ranges rather than a made-up forecast."},
+    {"id": "knowledge_replay", "requirement": "A past cutoff reconstructs the exact then-available knowledge state and prevents hindsight in research."},
+    {"id": "hypothesis_falsification", "requirement": "Competing hypotheses state supporting, contradicting and potentially falsifying evidence."},
+    {"id": "causal_boundary", "requirement": "Observed post-event changes remain separate from defensible attribution."},
+    {"id": "four_outputs", "requirement": "One evidence graph can generate a research package, board brief, newsroom claim card and institutional offline audit bundle."},
+    {"id": "verified_natural_language", "requirement": "Open-ended questions compile from facts and transformations; an unsupported required clause forces abstention."},
+    {"id": "research_subsets", "requirement": "Researchers generate exact citable subsets and manifests."},
+    {"id": "forecast_separation", "requirement": "Statistical and AI forecasts live outside descriptive instruments and publish calibration and losses."},
+    {"id": "benchmark_losses", "requirement": "Benchmark Lab publishes registered wins and losses against the full benchmark contract, never an overall superiority shortcut."},
+    {"id": "multilingual_access", "requirement": "Major Indian-language question understanding and bounded public explanations preserve the same fact ledger."},
+    {"id": "event_to_recovery", "requirement": "The system keeps event, exposure, transmission, response and recovery as separate connected layers."},
+    {"id": "blinded_utility", "requirement": "Usefulness is tested through frozen blinded decision tasks, not page views or testimonials."},
+    {"id": "global_shock_india", "requirement": "A global shock can be evaluated against India-specific exposure and the architecture is country-portable."},
+    {"id": "open_conformance", "requirement": "External systems can test compatible evidence bundles against a public standard and adversarial fixtures."}
+  ],
+  "milestones": [
+    {
+      "date": "2026-09-05",
+      "name": "Evidence substrate gate",
+      "required_engine_ids": ["world_state", "sensor_fusion", "knowledge_time_machine", "open_evidence_standard"]
+    },
+    {
+      "date": "2026-10-03",
+      "name": "Flagship vertical gate",
+      "required_engine_ids": ["india_exposure_dna", "shock_compiler", "strategy_resilience", "verified_copilot"]
+    },
+    {
+      "date": "2026-10-24",
+      "name": "Integrated Max v1 launch",
+      "required_engine_ids": ["causal_lab", "forecast_lab", "institutional_network"]
+    }
+  ],
+  "evidence_backed_progress": [
+    {
+      "deliverable_id": "citation_ready_research_workbench",
+      "pillar_ids": ["core", "distribution"],
+      "capability_ids": ["research_subsets"],
+      "state": "complete",
+      "commit": "077883df5d3a588b8264e116209c1871154a5e52",
+      "artifacts": [
+        {
+          "role": "public_surface",
+          "path": "docs/workbench.html",
+          "sha256": "0f86da3e6878d846b1139f911585e560e8e6f8b18bb0adbcc5d0a4bc9478a9a0"
+        },
+        {
+          "role": "executable_implementation",
+          "path": "docs/workbench.js",
+          "sha256": "9b5966bfcd49999fcbf272d832e9600fa769d31972bf0f4503976cdaef25cf9a"
+        },
+        {
+          "role": "contract_and_refusal_test",
+          "path": "tests/test_research_workbench.py",
+          "sha256": "7f9b42c0cfccf9e9133f2d674fc9b96f5124647b65cc17228ab60e060ea7fed7"
+        }
+      ]
+    }
+  ],
+  "founder_contact_policy": {
+    "default": "continue_and_consolidate",
+    "interrupt_only_for": [
+      "spending",
+      "legal_or_licensing_authority",
+      "external_communication",
+      "identity_authorship_or_deposit",
+      "fundamental_scope_choice",
+      "critical_external_blocker"
+    ],
+    "action_queue": {
+      "id": "igrm-max-founder-actions-2026-10-24",
+      "visibility": "founder_private",
+      "repository_path": null
+    }
+  },
+  "proof_rule": "A deliverable may be complete only when its committed product surface, contract, negative/refusal behavior and tests are named together; external outcomes cannot be marked complete by repository evidence alone."
+}

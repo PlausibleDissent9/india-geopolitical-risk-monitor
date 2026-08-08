@@ -578,6 +578,14 @@ traversal with measurable coverage and a harder evidence boundary.
 Nothing in the maximum version is sacrificed; sequencing prevents an attractive
 feature from outrunning the measurement beneath it.
 
+The founder-authorized launch denominator is registered in
+`design/igrm_max_launch_contract.json`: eight pillars, eleven engines and twenty
+required capabilities for 24 October 2026. `python -m src.max_launch_contract`
+fails if that scope shrinks, a milestone silently drops an engine, or completed
+work lacks exact product, implementation and refusal-test blobs at its named Git
+commit. Repository progress cannot stand in for citations, adoption, awards or
+study observations that do not yet exist.
+
 ### Program 0 — make the existing instrument unimpeachable
 
 - finish prospective precision/recall infrastructure and field the studies;
