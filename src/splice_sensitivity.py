@@ -85,6 +85,9 @@ def build() -> dict:
     primary_weekly = build_scores7(volume)
     audit_weekly = build_scores7(alternative)
     start, end = min(adjusted_days), max(adjusted_days)
+    adjusted_store_dates = [
+        day.date().isoformat() for day in sorted(adjusted_days)
+    ]
     dates = pd.date_range(start, end, freq="D")
     reported = list(CHANNELS) + ["composite"]
 
@@ -144,7 +147,8 @@ def build() -> dict:
             ),
             "affected_start": start.date().isoformat(),
             "affected_end": end.date().isoformat(),
-            "n_adjusted_store_days": len(adjusted_days),
+            "n_adjusted_store_days": len(adjusted_store_dates),
+            "adjusted_store_dates": adjusted_store_dates,
             "generated": date.today().isoformat(),
             "license": "CC BY 4.0",
             "citation": (

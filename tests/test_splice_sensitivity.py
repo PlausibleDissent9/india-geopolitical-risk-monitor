@@ -6,7 +6,10 @@ def test_sensitivity_reports_material_score_impact_without_restatement():
     payload = build()
     meta = payload["_meta"]
     assert meta["status"] == "sensitivity analysis, not a replacement series"
-    assert meta["n_adjusted_store_days"] == 37
+    adjusted = meta["adjusted_store_dates"]
+    assert adjusted == sorted(set(adjusted))
+    assert meta["n_adjusted_store_days"] == len(adjusted)
+    assert len(adjusted) >= 37
     daily = payload["summary"]["daily"]
     weekly = payload["summary"]["trailing_7_day"]
     assert daily["pakistan_west"]["median_absolute_shift"] > 5

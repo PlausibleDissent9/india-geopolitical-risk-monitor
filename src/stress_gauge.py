@@ -137,8 +137,6 @@ def main() -> None:
     result = validate(df)
     last = df.dropna(subset=["gauge"]).iloc[-1]
     last_date = df.dropna(subset=["gauge"]).index[-1]
-    comp_cols = [c for c in ("press", "events", "market", "wikipedia")
-                 if c in df.columns]
     registered_weights = reg["weights"]
     available_latest = [c for c in registered_weights
                         if c in df.columns and not pd.isna(last.get(c))]
@@ -171,8 +169,17 @@ def main() -> None:
         },
         "date": str(last_date.date()),
         "gauge": float(last["gauge"]),
-        "components": {c: (None if pd.isna(last[c]) else round(float(last[c]), 1))
-                       for c in comp_cols},
+        # Keep the registered four-component schema stable even when a
+        # source is unavailable.  Missing observations are explicit nulls;
+        # availability and renormalized weights are disclosed above.
+        "components": {
+            c: (
+                None
+                if c not in df.columns or pd.isna(last.get(c))
+                else round(float(last[c]), 1)
+            )
+            for c in registered_weights
+        },
         "validation": result,
         "history_365d": {
             "dates": [str(d.date()) for d in tail.index],
