@@ -12,8 +12,12 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+        with:
+          # Frozen validation and benchmark registrations resolve historical
+          # commits. A shallow checkout makes those integrity checks fail.
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt -r requirements-dev.txt
