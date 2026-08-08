@@ -13,8 +13,9 @@ construction (no lookahead from dictionary tuning), (b) published
 sampling uncertainty, (c) an event-study layer showing measured
 historical associations with Indian market series (n and CIs stated,
 Benjamini-Hochberg corrected, association language enforced), and
-(d) external validation against the academic GPR-India index (monthly
-r=0.48, zero shared pipeline).
+(d) descriptive comparison with the academic GPR-India index (monthly
+r=0.48, zero shared pipeline), indicating limited co-movement between
+related measures rather than validation.
 
 **Delivery:** static CSV/JSON over HTTPS, CORS-open, no auth
 (https://igrm.in/data/history.csv); field stability under a versioned

@@ -20,12 +20,10 @@ fires on honest prose trains people to ignore it, which is worse than
 no test.
 
 KNOWN VIOLATIONS LEDGER: analysis/claims_audit_2026-08-08.md records
-five violating sentences, all in files that carried another agent's
-uncommitted co-edits on audit day, so the prose was reported rather
-than rewritten. Each is pinned below by its exact sentence. A pin
-tolerates that sentence and nothing else -- a new unlicensed claim in
-the same file still fails -- and each pin dies naturally once the fix
-lands, because a pin that matches nothing tolerates nothing.
+the six sentences found by the audit. All six were rewritten in the
+same commit that emptied the pin list below; no reader-facing claim is
+grandfathered. Future temporary pins must tolerate one exact sentence
+only and must be removed with its fix.
 """
 import html as html_mod
 import json
@@ -175,24 +173,7 @@ PATTERNS = [
 # The known-violations ledger: (file, exact sentence). See the audit
 # for the classification and the one-line fixes. Delete each entry when
 # its fix lands; a stale pin is inert, never load-bearing.
-KNOWN_VIOLATIONS = [
-    ("docs/index.html",
-     "Open data, validated methodology."),
-    ("docs/data/gpr_comparison.json",
-     "is external validation; divergence is analysis"),
-    # Audit item 6: the same sentence, machine-copied into the contract
-    # from the payload's _meta.what by scripts/generate_api_contract.py.
-    # Heals when the src/gpr_comparison.py fix lands and the contract
-    # regenerates.
-    ("docs/data/api_contract.json",
-     "is external validation; divergence is analysis"),
-    ("listings/kaggle_dataset_metadata.json",
-     "External validation: monthly co-movement"),
-    ("listings/nasdaq_data_link_pitch.md",
-     "external validation against the academic GPR-India index"),
-    ("nef/REVIEWERS_GUIDE.md",
-     "Placebo channels stay quiet"),
-]
+KNOWN_VIOLATIONS: list[tuple[str, str]] = []
 
 _TAGS = re.compile(r"<script\b.*?</script>|<style\b.*?</style>|<[^>]+>", re.S | re.I)
 # Meta descriptions render in search results and social cards -- they

@@ -81,8 +81,9 @@ def main() -> None:
                      "different corpus and construction entirely), "
                      "2017-present -- correlation in levels and in "
                      "monthly changes, per channel and composite. "
-                     "Co-movement despite zero shared pipeline is "
-                     "external validation; divergence is analysis. "
+                     "Co-movement and divergence are descriptive comparisons "
+                     "between related measures, not validation or an accuracy "
+                     "test. "
                      "Nothing in any IGRM series depends on GPR."),
             "attribution": ATTRIBUTION,
             "gpr_through": gpr.index.max().date().isoformat(),

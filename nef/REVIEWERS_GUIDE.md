@@ -13,7 +13,7 @@ where the known soft spots are — before you find them.*
 | The index measures press salience, not risk | every page footer, methodology §1 | The banned-language lint (no forecast verbs anywhere) is enforced in CI; grep the repo |
 | Dictionaries are registered, ex-ante, never event-chasing | methodology changelog | `dictionaries.json` per-term rationales + dated append-only amendments in git history |
 | The index detects real episodes it was never told about | validation.html, hit-rate 18/21 | `validation/validation_episodes.json` was frozen 2026-07-24 (commit history proves date); event names never appear in query terms |
-| Placebo channels stay quiet | validation.html | placebo payload; rerun `python -m src.validate placebo` |
+| The placebo diagnostic is unfavorable | validation.html | 52 of 115 placebo episodes overlap registered-episode days (45.2%), versus about 35.6% under duration-preserving random placement; inspect the placebo payload and rerun the documented command |
 | Results are not an artifact of one term list | validation.html robustness | correlations AND the weekly overlay chart; the weak case (gulf narrow 0.527) is discussed by name on the page |
 | Recent daily scores carry quantified sampling noise | index chart band, uncertainty.json | Wilson-interval construction documented in the codebook; every published point sits inside its own band (checkable in one script) |
 | Every number has receipts | receipts.html | most receipt articles are drawn from the same sampled corpus the score was computed over ("in scored sample" label) — the estimator's own evidence, enumerated |

@@ -323,7 +323,7 @@
   {
    "path": "data/gpr_comparison.json",
    "format": "json",
-   "description": "V17 replication wedge: monthly-mean IGRM percentile scores vs Caldara-Iacoviello's GPRC_IND (a different corpus and construction entirely), 2017-present -- correlation in levels and in monthly changes, per channel and composite. Co-movement despite zero shared pipeline is external validation; divergence is analysis. Nothing in any IGRM series depends on GPR.",
+   "description": "V17 replication wedge: monthly-mean IGRM percentile scores vs Caldara-Iacoviello's GPRC_IND (a different corpus and construction entirely), 2017-present -- correlation in levels and in monthly changes, per channel and composite. Co-movement and divergence are descriptive comparisons between related measures, not validation or an accuracy test. Nothing in any IGRM series depends on GPR.",
    "frozen_fields": [
     "_meta",
     "series"
