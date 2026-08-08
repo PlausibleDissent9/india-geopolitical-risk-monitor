@@ -39,7 +39,15 @@ concurrency:
 jobs:
   final:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # 20 was calibrated for an on-time shot. On 2026-08-08 GitHub fired
+    # all three crons 82+ minutes late and the single surviving shot was
+    # killed BY THIS LINE at 20m15s, mid-pipeline under GDELT throttle --
+    # congestion plus throttle plus a tight cap is three failures where
+    # any two would have been survivable. The cap exists so a hung shot
+    # cannot block the daily lane's concurrency slot; 35 still clears
+    # well before the daily cron and lets a throttled-but-working shot
+    # finish.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
