@@ -48,12 +48,13 @@ REGISTRATION_ARTIFACTS = [
     "validation/blind_audit_500/registration.json",
     "validation/forecast_logit_frozen.json",
     "validation/forecast_registration.json",
+    "validation/precision_v3/registration.json",
 ]
 
-# Cardinality guard: the 8 artifacts above plus the retained v1 proof exist
-# today. If enumeration ever returns fewer than 8, the glob broke or proofs
+# Cardinality guard: the 9 artifacts above plus the retained v1 proof exist
+# today. If enumeration ever returns fewer than 10, the glob broke or proofs
 # were deleted -- either way the suite must not pass vacuously.
-MIN_STAMPS = 8
+MIN_STAMPS = 10
 
 
 def _sha256(path: Path) -> str:
