@@ -24,7 +24,7 @@
       "id": "atlas",
       "name": "IGRM Atlas",
       "current_state": "live_foundation_expansion_underway",
-      "current_boundary": "Maps, event geography, sector exposure and episode navigation are public; the declared firm-port-commodity-state dependency universe remains an October build objective."
+      "current_boundary": "Maps, event geography, sector exposure and episode navigation are public; India Exposure DNA now has a signed synthetic two-vintage conformance foundation, while declared real firm-port-commodity-state universes remain an October objective."
     },
     {
       "id": "evidence_engine",
@@ -71,6 +71,7 @@
     {"path": "maps.html", "label": "Maps", "pillar_id": "atlas", "status": "live", "purpose": "India-partner and state-level press-recorded event geography, with explicit source and boundary limits."},
     {"path": "exposure.html", "label": "Sector exposure", "pillar_id": "atlas", "status": "live", "purpose": "A user-selected sector view over current channel readings, evidence and transparent computation."},
     {"path": "episode.html", "label": "Episode dossiers", "pillar_id": "atlas", "status": "live", "purpose": "A directory and detail view for detected episodes and their associated market-context cells."},
+    {"path": "dna.html", "label": "India Exposure DNA", "pillar_id": "atlas", "status": "public_draft", "purpose": "A signed synthetic two-vintage fingerprint that preserves direct exposure units, declared-universe coverage, freshness and explicit gaps without a scalar score."},
     {"path": "standard.html", "label": "Open evidence standard", "pillar_id": "evidence_engine", "status": "public_draft", "purpose": "The OGES 0.1 profile, conformance boundary, schemas and adversarial test vectors."},
     {"path": "replay.html", "label": "Knowledge replay", "pillar_id": "evidence_engine", "status": "public_draft", "purpose": "A signed synthetic bitemporal replay demonstration that prevents later revisions from entering an earlier knowledge cutoff."},
     {"path": "sensors.html", "label": "Sensor Fusion", "pillar_id": "evidence_engine", "status": "public_draft", "purpose": "A signed synthetic eight-lane matrix that collates unlike evidence without numeric blending and names every missing lane."},
@@ -97,7 +98,7 @@
   ],
   "protected_routes": [
     "analysis.html", "api.html", "ask.html", "break.html", "codebook.html",
-    "corrections.html", "data.html", "divergence.html", "embed.html",
+    "corrections.html", "data.html", "divergence.html", "dna.html", "embed.html",
     "episode.html", "explorer.html", "exposure.html", "history.html",
     "index.html", "maps.html", "methodology.html", "notes.html",
     "predictions.html", "products.html", "receipts.html",

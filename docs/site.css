@@ -420,6 +420,215 @@ body[data-page="sensors.html"] .sensor-page { max-width: none; }
   .sensor-ledger { grid-template-columns: 1fr; }
 }
 
+/* India Exposure DNA: a non-scalar, coverage-bounded fingerprint. The visual
+ * system makes unlike units legible beside each other without implying that
+ * bar length or card order is an exposure ranking. */
+.dna-page { max-width: none; }
+.dna-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(270px, .8fr);
+  gap: 28px;
+  align-items: start;
+  margin: 30px 0;
+}
+.dna-intro h2,
+.dna-lab h2 { margin-top: 0; padding-top: 0; border-top: 0; }
+.dna-intro-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--rule);
+}
+.dna-intro-stats div { min-width: 0; padding: 16px 12px; background: var(--surface); }
+.dna-intro-stats dt {
+  color: var(--fg);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: var(--fs-stat);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.dna-intro-stats dd { margin: 4px 0 0; color: var(--muted); font-size: var(--fs-micro); line-height: 1.4; }
+.dna-lab {
+  margin: 32px 0;
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--calm) 46%, var(--rule));
+  border-radius: var(--radius);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--calm) 7%, transparent), transparent 44%),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 30rem),
+    var(--surface);
+  box-shadow: var(--shadow);
+}
+.dna-lab-head { display: flex; gap: 24px; justify-content: space-between; align-items: end; }
+.dna-switch { display: flex; gap: 6px; }
+.dna-switch button {
+  min-width: 76px;
+  padding: 7px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-small);
+  transition: color var(--dur-quick) var(--ease), border-color var(--dur-quick) var(--ease), background var(--dur-quick) var(--ease);
+}
+.dna-switch button:hover { color: var(--fg); border-color: var(--muted); }
+.dna-switch button.on {
+  border-color: color-mix(in srgb, var(--calm) 65%, var(--rule));
+  background: color-mix(in srgb, var(--calm) 12%, transparent);
+  color: var(--fg);
+}
+.dna-overline,
+.dna-metrics span {
+  display: block;
+  color: var(--muted);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+.dna-identity {
+  display: grid;
+  grid-template-columns: minmax(240px, .8fr) minmax(0, 1.2fr);
+  gap: 18px;
+  align-items: end;
+  margin: 22px 0 12px;
+  padding: 19px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--paper) 78%, transparent);
+}
+.dna-identity > div > strong { display: block; margin-top: 4px; font-family: "Fraunces", Georgia, serif; font-size: var(--fs-h3); }
+.dna-identity > div > small { color: var(--muted); }
+.dna-identity dl {
+  display: grid;
+  grid-template-columns: 1.15fr .65fr 1fr;
+  gap: 10px;
+  margin: 0;
+}
+.dna-identity dl div { min-width: 0; padding-left: 10px; border-left: 1px solid var(--rule); }
+.dna-identity dt { color: var(--muted); font-size: var(--fs-micro); text-transform: uppercase; }
+.dna-identity dd { margin: 4px 0 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-micro); }
+.dna-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--rule);
+}
+.dna-metrics > div { min-width: 0; padding: 13px; background: var(--surface); }
+.dna-metrics strong { display: block; margin: 5px 0 1px; font-family: "Fraunces", Georgia, serif; font-size: var(--fs-lead); font-variant-numeric: tabular-nums; }
+.dna-metrics small { color: var(--muted); font-size: var(--fs-micro); }
+.dna-section-head {
+  display: flex;
+  gap: 20px;
+  align-items: end;
+  justify-content: space-between;
+  margin: 30px 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+.dna-section-head h3 { margin: 3px 0 0; font-family: "Fraunces", Georgia, serif; font-size: var(--fs-h3); }
+.dna-section-head > p { max-width: 38ch; margin: 0; color: var(--muted); font-size: var(--fs-small); text-align: right; }
+.dna-dimensions { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.dna-dimension {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid var(--rule);
+  border-top: 2px solid color-mix(in srgb, var(--calm) 70%, var(--rule));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+.dna-dimension-top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+.dna-dimension-index { color: var(--faint); font-family: var(--font-mono); font-size: var(--fs-micro); }
+.dna-dimension h4 { margin: 0; font-family: "Fraunces", Georgia, serif; font-size: var(--fs-small); line-height: 1.35; }
+.dna-dimension p { display: none; }
+.dna-dimension-count { font-family: var(--font-mono); font-size: var(--fs-body); }
+.dna-dimension-meter { display: flex; height: 5px; margin: 14px 0 7px; overflow: hidden; border-radius: 999px; background: var(--rule); }
+.dna-dimension-meter .quantified { background: var(--calm); }
+.dna-dimension-meter .qualitative { background: var(--accent); }
+.dna-dimension-meter .unknown { background: var(--severe); }
+.dna-dimension > small { display: block; color: var(--muted); font-size: var(--fs-micro); line-height: 1.45; }
+.dna-components { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.dna-component {
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+}
+.dna-component-head { display: flex; gap: 14px; justify-content: space-between; align-items: start; }
+.dna-component-type { color: var(--muted); font-size: var(--fs-micro); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.dna-component h4 { margin: 3px 0 1px; font-family: "Fraunces", Georgia, serif; font-size: var(--fs-body); }
+.dna-component-head small { color: var(--muted); font-size: var(--fs-micro); }
+.dna-badges { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.dna-badge { padding: 2px 7px; border: 1px solid var(--rule); border-radius: 999px; color: var(--muted); font-size: var(--fs-micro); }
+.dna-badge.quantified,
+.dna-badge.current { border-color: color-mix(in srgb, var(--calm) 55%, var(--rule)); color: var(--calm); }
+.dna-badge.unknown,
+.dna-badge.stale { border-color: color-mix(in srgb, var(--severe) 55%, var(--rule)); color: var(--severe); }
+.dna-component-value { display: block; margin: 18px 0 5px; color: var(--fg); font-size: var(--fs-body); }
+.dna-denominator,
+.dna-period { margin: 2px 0; color: var(--muted); font-size: var(--fs-small); line-height: 1.45; }
+.dna-component-foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; margin: 14px 0 0; }
+.dna-component-foot div { min-width: 0; padding-top: 7px; border-top: 1px solid var(--rule-soft); }
+.dna-component-foot dt { color: var(--faint); font-size: var(--fs-micro); text-transform: uppercase; }
+.dna-component-foot dd { margin: 2px 0 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-micro); }
+.dna-bottom-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
+.dna-universe,
+.dna-delta { padding: 17px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); }
+.dna-universe h3,
+.dna-delta h3 { margin: 4px 0 13px; font-family: "Fraunces", Georgia, serif; font-size: var(--fs-body); }
+.dna-universe-bar { display: flex; height: 9px; overflow: hidden; border-radius: 999px; background: var(--rule); }
+.dna-universe-bar .included { background: var(--calm); }
+.dna-universe-bar .excluded { background: var(--accent); }
+.dna-universe-bar .unmappable { background: var(--severe); }
+.dna-universe-bar .stale { background: var(--faint); }
+.dna-universe dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.dna-universe dl div { min-width: 0; }
+.dna-universe dt { color: var(--muted); font-size: var(--fs-micro); text-transform: uppercase; }
+.dna-universe dd { margin: 2px 0 0; font-family: var(--font-mono); font-size: var(--fs-small); }
+.dna-universe p,
+.dna-delta > p { margin: 10px 0 0; color: var(--muted); font-size: var(--fs-small); }
+.dna-delta-counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; overflow: hidden; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--rule); }
+.dna-delta-counts div { padding: 10px; background: var(--paper); text-align: center; }
+.dna-delta-counts strong { display: block; font-family: "Fraunces", Georgia, serif; font-size: var(--fs-lead); }
+.dna-delta-counts span { color: var(--muted); font-size: var(--fs-micro); text-transform: uppercase; }
+.dna-delta ul { margin: 12px 0 0; padding-left: 18px; color: var(--muted); font-size: var(--fs-small); }
+.dna-delta li + li { margin-top: 5px; }
+@media (max-width: 960px) {
+  .dna-dimensions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dna-identity { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .dna-intro,
+  .dna-bottom-grid { grid-template-columns: 1fr; }
+  .dna-lab-head,
+  .dna-section-head { flex-direction: column; align-items: start; }
+  .dna-section-head > p { text-align: left; }
+  .dna-components { grid-template-columns: 1fr; }
+  .dna-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .dna-lab { padding: 16px; }
+  .dna-intro-stats,
+  .dna-dimensions,
+  .dna-identity dl,
+  .dna-metrics { grid-template-columns: 1fr; }
+  .dna-component-head { display: block; }
+  .dna-badges { justify-content: flex-start; margin-top: 8px; }
+  .dna-component-foot { grid-template-columns: 1fr; }
+  .dna-universe dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* Public product directory: every capability stays visible without turning the
  * masthead into a wall of links. Status is text, never color alone. */
 .catalog-intro {

@@ -29,6 +29,8 @@ jobs:
         run: python -m src.knowledge_replay_fixture && git diff --exit-code -- docs/data/knowledge_replay_demo.json
       - name: Sensor Fusion synthetic conformance artifact is current
         run: python -m src.sensor_fusion_fixture && git diff --exit-code -- docs/data/sensor_fusion_demo.json
+      - name: Exposure DNA synthetic conformance artifact is current
+        run: python -m src.exposure_dna_fixture && git diff --exit-code -- docs/data/exposure_dna_demo.json
       - name: Lint (ruff)
         run: ruff check .
       - name: Types (mypy)

@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "engine": {
+    "method_id": "method:igrm.exposure_dna",
+    "version": "1.0.0",
+    "implementation_path": "src/exposure_dna.py",
+    "implementation_sha256": "549237378c7f9a0f6decf00098f596bb1912d7ef0b7d2c5315ef1a593c04011b",
+    "effective": "2026-08-08",
+    "superseded_on": null,
+    "output_schema_id": "https://igrm.in/schemas/exposure-dna.schema.json",
+    "output_schema_version": "1.0.0",
+    "output_schema_path": "schemas/exposure-dna.schema.json",
+    "output_schema_sha256": "9f137907d3ef3b5316784af11e0e93ca767b5868675550d5840bc6467f63d170",
+    "common_schema_path": "schemas/common.schema.json",
+    "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+    "max_direct_edges": 5000,
+    "allowed_target_entity_types": [
+      "state_or_ut",
+      "sector",
+      "company",
+      "critical_asset",
+      "route",
+      "chokepoint",
+      "port",
+      "border_crossing",
+      "commodity",
+      "technology"
+    ],
+    "freshness_policy": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies"
+  },
+  "dimensions": [
+    {
+      "dimension_id": "dim:exposure.cross_border_supply",
+      "label": "Cross-border supply",
+      "definition": "Direct supply, input, energy and trade-dependence edges retained in their original units and denominators.",
+      "edge_types": [
+        "import_dependence",
+        "export_dependence",
+        "energy_dependence",
+        "supplier_concentration",
+        "input_dependency"
+      ]
+    },
+    {
+      "dimension_id": "dim:exposure.logistics",
+      "label": "Logistics and access",
+      "definition": "Direct freight, route and border-access edges without inferring throughput, substitution or realized disruption.",
+      "edge_types": [
+        "freight_dependence",
+        "border_proximity",
+        "route_dependency"
+      ]
+    },
+    {
+      "dimension_id": "dim:exposure.corporate_footprint",
+      "label": "Corporate footprint",
+      "definition": "Direct ownership and operational-presence relationships, distinct from supply dependence or policy authority.",
+      "edge_types": [
+        "ownership",
+        "operational_presence"
+      ]
+    },
+    {
+      "dimension_id": "dim:exposure.policy_legal",
+      "label": "Policy and legal reach",
+      "definition": "Direct treaty, sanctions and policy-jurisdiction edges without interpreting legal effect or predicting enforcement.",
+      "edge_types": [
+        "treaty_obligation",
+        "sanctions_reach",
+        "policy_jurisdiction"
+      ]
+    },
+    {
+      "dimension_id": "dim:exposure.digital_infrastructure",
+      "label": "Digital and technology",
+      "definition": "Direct cyber and technology-dependence edges, kept separate from physical infrastructure and market outcomes.",
+      "edge_types": [
+        "cyber_dependency",
+        "technology_dependency"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.5",
+  "contract_version": "2.2.6",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -309,6 +309,19 @@
    "frozen_fields": [
     "_meta",
     "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/exposure_dna_demo.json",
+   "format": "json",
+   "description": "Deterministic synthetic two-vintage India Exposure DNA conformance vector.",
+   "frozen_fields": [
+    "_meta",
+    "synthetic_labels",
+    "before_snapshot",
+    "after_snapshot",
+    "delta"
    ],
    "stability": "stable"
   },
@@ -1209,6 +1222,19 @@
     "allOf"
    ],
    "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/exposure-dna.schema.json",
+   "format": "json",
+   "description": "JSON Schema for non-scalar India Exposure DNA snapshots and release-to-release deltas that retain original units, declared-universe coverage, source-policy freshness and explicit gaps.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "oneOf",
+    "$defs"
+   ],
+   "stability": "static synthetic foundation 1.0.0"
   },
   {
    "path": "schemas/exposure-edge.schema.json",

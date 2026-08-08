@@ -81,6 +81,7 @@ ASSETS = [
     "workbench.js",
     "replay.js",
     "sensors.js",
+    "dna.js",
     "app.js",
 ]
 

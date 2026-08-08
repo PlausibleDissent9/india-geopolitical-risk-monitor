@@ -60,7 +60,10 @@ def test_versioned_oges_profile_and_schemas_are_first_class_endpoints():
         assert endpoint["format"] == "json"
         expected_stability = (
             "static synthetic foundation 1.0.0"
-            if path == "schemas/sensor-fusion.schema.json"
+            if path in {
+                "schemas/sensor-fusion.schema.json",
+                "schemas/exposure-dna.schema.json",
+            }
             else "static versioned public draft 0.1.0"
         )
         assert endpoint["stability"] == expected_stability

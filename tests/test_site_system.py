@@ -16,6 +16,7 @@ EXPECTED_LAYOUTS = {
         "break.html",
         "codebook.html",
         "corrections.html",
+        "dna.html",
         "history.html",
         "methodology.html",
         "notes.html",
@@ -75,7 +76,7 @@ def _parse(relative: str) -> tuple[str, StructureParser]:
 
 def test_all_thirty_five_public_routes_have_an_owned_layout() -> None:
     routes = {str(path.relative_to(DOCS)) for path in DOCS.rglob("*.html")}
-    assert len(routes) == 35
+    assert len(routes) == 36
     expected_shell = set().union(*EXPECTED_LAYOUTS.values())
     assert set(site_shell.PAGES) == expected_shell
     assert routes == expected_shell | {"index.html", "embed.html"}

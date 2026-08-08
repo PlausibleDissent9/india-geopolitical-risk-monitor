@@ -1,0 +1,1856 @@
+{
+  "_meta": {
+    "schema": "igrm-exposure-dna-demo-v1",
+    "generated": "2026-08-08T13:00:00Z",
+    "date": "2026-08-08",
+    "what": "Deterministic synthetic two-vintage India Exposure DNA conformance vector.",
+    "scope": "synthetic_test_vector_only",
+    "production_release": false,
+    "real_entity_source_rights_or_exposure_claims": false,
+    "scalar_score_computed": false,
+    "license": "CC BY 4.0",
+    "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+    "source": "https://igrm.in/data/exposure_dna_demo.json",
+    "codebook": "https://igrm.in/standard.html",
+    "method": "method:igrm.exposure_dna@1.0.0"
+  },
+  "synthetic_labels": {
+    "ent:company.synthetic_india_anchor": "Synthetic India Anchor Limited",
+    "ent:commodity.synthetic_crude": "Synthetic crude input",
+    "ent:country.synthetic_origin": "Synthetic origin country",
+    "ent:port.synthetic_gateway": "Synthetic gateway port",
+    "ent:route.synthetic_sea_lane": "Synthetic sea lane",
+    "ent:sector.synthetic_manufacturing": "Synthetic manufacturing sector",
+    "ent:state.synthetic_coast": "Synthetic coastal state",
+    "ent:technology.synthetic_platform": "Synthetic technology platform",
+    "ent:critical_asset.synthetic_grid": "Synthetic grid asset"
+  },
+  "before_snapshot": {
+    "object_type": "exposure_dna_snapshot",
+    "schema_version": "1.0.0",
+    "record_sha256": "347996a0153b80c7cc48bbad4700b3a5f5b1f7b1777013548a5b48534f8fef72",
+    "release": {
+      "release_id": "rel:exposure.dna.fixture.before",
+      "record_sha256": "5ae9fb698d937d878a52eefaf8a8856758642932feaecccff55967a862c1b662",
+      "generated_at": "2026-08-08T12:30:00Z",
+      "effective_date": "2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "b9318258f56f862875586a9e6c6501a2dbc6ce277ccf3ca1ecc0f8dca2f0e89d",
+      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/exposure-dna.schema.json",
+      "schema_version": "1.0.0",
+      "schema_sha256": "9f137907d3ef3b5316784af11e0e93ca767b5868675550d5840bc6467f63d170",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "dna_registry_sha256": "76fe58ff970e9e5ce3395020436d841065f5bb486ed85310c5609226cf2edf96"
+    },
+    "method": {
+      "method_id": "method:igrm.exposure_dna",
+      "version": "1.0.0",
+      "implementation_sha256": "549237378c7f9a0f6decf00098f596bb1912d7ef0b7d2c5315ef1a593c04011b"
+    },
+    "query": {
+      "target_entity_id": "ent:company.synthetic_india_anchor",
+      "selection_rule": "active_direct_edges_effective_on_canonical_release_date",
+      "freshness_rule": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies"
+    },
+    "target": {
+      "entity_id": "ent:company.synthetic_india_anchor",
+      "record_sha256": "795a92d4917ac028692f9f2bf954601d253f255ec422775b9294e19959d8c8c1",
+      "entity_type": "company",
+      "lifecycle_state": "active",
+      "identity_status": "authoritative",
+      "effective_start": null,
+      "effective_end": null,
+      "parent_entity_ids": [
+        "ent:sector.synthetic_manufacturing"
+      ],
+      "jurisdiction_entity_ids": [
+        "ent:state.synthetic_coast"
+      ],
+      "evidence_ids": [
+        "evd:oges.fixture.official.001"
+      ]
+    },
+    "target_universes": [
+      {
+        "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+        "record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+        "reference_date": "2026-08-08",
+        "member_status": "included",
+        "reason_code": "reason:exposure.dna.fixture.in_frame",
+        "assessed_on": "2026-08-08",
+        "counts": {
+          "total_eligible": 4,
+          "included": 2,
+          "excluded": 1,
+          "unmappable": 1,
+          "stale": 0
+        }
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": "edg:exposure.dna.fixture.port_company.001",
+        "record_sha256": "6f00a72f70b5388265919386cf9738303737cb42b670f6437af136177f0c2059",
+        "orientation": "incoming",
+        "source_entity_id": "ent:port.synthetic_gateway",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:port.synthetic_gateway",
+          "record_sha256": "b5a33dd190b6dc1ab754f783ba68900c3204a407d336828e1dc4fa3b551be00e",
+          "entity_type": "port",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "freight_dependence",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 9000,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.crude_company.001",
+        "record_sha256": "82eff6351025719c03b0d0822ba206c58891aca31bd8a17e38eedae5ff04044e",
+        "orientation": "incoming",
+        "source_entity_id": "ent:commodity.synthetic_crude",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:commodity.synthetic_crude",
+          "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2",
+          "entity_type": "commodity",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "input_dependency",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "quantified",
+        "magnitude": {
+          "value": 40.0,
+          "unit": "percent_of_input_volume",
+          "denominator": "total synthetic input volume in the period",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30",
+          "currency": null,
+          "price_basis": null,
+          "uncertainty": {
+            "status": "interval",
+            "meaning": "Synthetic test interval; not calibrated uncertainty.",
+            "lower": 35.0,
+            "upper": 45.0,
+            "category": null
+          }
+        },
+        "derivation_type": "calculated",
+        "effective_start": "2026-06-30",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 9000,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic quantified component; confidence is not probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": []
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.route_company.001",
+        "record_sha256": "b4f3a4070ee0bd3563f5619f500013fc0ec69538eb0092b65402c3e57318ecec",
+        "orientation": "incoming",
+        "source_entity_id": "ent:route.synthetic_sea_lane",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:route.synthetic_sea_lane",
+          "record_sha256": "091cf06d4aeba48a9e82d3855c0e2408fd989d4527c5f9b190ca9d1381f04cb7",
+          "entity_type": "route",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "route_dependency",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "quantified",
+        "magnitude": {
+          "value": 60.0,
+          "unit": "percent_of_routed_volume",
+          "denominator": "total synthetic routed volume in May 2026",
+          "period_start": "2026-05-01",
+          "period_end": "2026-05-31",
+          "currency": null,
+          "price_basis": null,
+          "uncertainty": {
+            "status": "interval",
+            "meaning": "Synthetic test interval; not calibrated uncertainty.",
+            "lower": 55.0,
+            "upper": 65.0,
+            "category": null
+          }
+        },
+        "derivation_type": "calculated",
+        "effective_start": "2026-05-31",
+        "effective_end": null,
+        "observed_at": "2026-06-01T00:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-06-01T00:00:00Z",
+          "observation_age_seconds": 5920200,
+          "max_current_age_days": 30,
+          "status": "stale",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic quantified component; confidence is not probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": []
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.origin_company.001",
+        "record_sha256": "3d7a8db578160ec0ee4680ad5121bf8dd786455cc762d9b98ee52e162a8bc4eb",
+        "orientation": "incoming",
+        "source_entity_id": "ent:country.synthetic_origin",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:country.synthetic_origin",
+          "record_sha256": "d1bdfbdbf915e67238c5f16bdde3ae6da05c1812a2abf62402e5444c366530ec",
+          "entity_type": "country",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "supplier_concentration",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "quantified",
+        "magnitude": {
+          "value": 28.0,
+          "unit": "percent_of_procurement_value",
+          "denominator": "total synthetic procurement value in the period",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30",
+          "currency": null,
+          "price_basis": null,
+          "uncertainty": {
+            "status": "interval",
+            "meaning": "Synthetic test interval; not calibrated uncertainty.",
+            "lower": 23.0,
+            "upper": 33.0,
+            "category": null
+          }
+        },
+        "derivation_type": "calculated",
+        "effective_start": "2026-06-30",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 9000,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic quantified component; confidence is not probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": []
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.technology_company.001",
+        "record_sha256": "fbf864139c763f99545fb622aa1969197f1eea1f785cc6c233173d11d1038f0e",
+        "orientation": "incoming",
+        "source_entity_id": "ent:technology.synthetic_platform",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:technology.synthetic_platform",
+          "record_sha256": "ff4147799dd55aa01e7d8d20a4a544be378624cb973d13b525dacff4d4d5e527",
+          "entity_type": "technology",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "technology_dependency",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 9000,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.company_sector.001",
+        "record_sha256": "7a8be7b22ae8943d1f84453382e43722ee12da3f69d749be130af393ebfa3ec2",
+        "orientation": "outgoing",
+        "source_entity_id": "ent:company.synthetic_india_anchor",
+        "target_entity_id": "ent:sector.synthetic_manufacturing",
+        "counterpart": {
+          "entity_id": "ent:sector.synthetic_manufacturing",
+          "record_sha256": "9a129431326f78a4b60c2b1171313a95492f959d6d2f84a4243e7adb5e006c0a",
+          "entity_type": "sector",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "operational_presence",
+        "exposure_direction": "non_directional",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 9000,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.company_state.001",
+        "record_sha256": "4b44f9b4683ef1ea0f6d520533fafa637abf3357466dcbeadb1389b0e4470f4c",
+        "orientation": "outgoing",
+        "source_entity_id": "ent:company.synthetic_india_anchor",
+        "target_entity_id": "ent:state.synthetic_coast",
+        "counterpart": {
+          "entity_id": "ent:state.synthetic_coast",
+          "record_sha256": "60154fe4ea844d8ec17e114868d6c1e3a91bf752d67941ea00d1cafe7928f90d",
+          "entity_type": "state_or_ut",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "policy_jurisdiction",
+        "exposure_direction": "jurisdictional",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 9000,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      }
+    ],
+    "dimensions": [
+      {
+        "dimension_id": "dim:exposure.cross_border_supply",
+        "label": "Cross-border supply",
+        "definition": "Direct supply, input, energy and trade-dependence edges retained in their original units and denominators.",
+        "edge_types": [
+          "import_dependence",
+          "export_dependence",
+          "energy_dependence",
+          "supplier_concentration",
+          "input_dependency"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.crude_company.001",
+          "edg:exposure.dna.fixture.origin_company.001"
+        ],
+        "counts": {
+          "edges": 2,
+          "quantified": 2,
+          "qualitative": 0,
+          "unknown": 0,
+          "current": 2,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.logistics",
+        "label": "Logistics and access",
+        "definition": "Direct freight, route and border-access edges without inferring throughput, substitution or realized disruption.",
+        "edge_types": [
+          "freight_dependence",
+          "border_proximity",
+          "route_dependency"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.port_company.001",
+          "edg:exposure.dna.fixture.route_company.001"
+        ],
+        "counts": {
+          "edges": 2,
+          "quantified": 1,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 1,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.corporate_footprint",
+        "label": "Corporate footprint",
+        "definition": "Direct ownership and operational-presence relationships, distinct from supply dependence or policy authority.",
+        "edge_types": [
+          "ownership",
+          "operational_presence"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.company_sector.001"
+        ],
+        "counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.policy_legal",
+        "label": "Policy and legal reach",
+        "definition": "Direct treaty, sanctions and policy-jurisdiction edges without interpreting legal effect or predicting enforcement.",
+        "edge_types": [
+          "treaty_obligation",
+          "sanctions_reach",
+          "policy_jurisdiction"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.company_state.001"
+        ],
+        "counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.digital_infrastructure",
+        "label": "Digital and technology",
+        "definition": "Direct cyber and technology-dependence edges, kept separate from physical infrastructure and market outcomes.",
+        "edge_types": [
+          "cyber_dependency",
+          "technology_dependency"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.technology_company.001"
+        ],
+        "counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      }
+    ],
+    "gaps": {
+      "target_universe_not_declared": false,
+      "target_universe_not_included_ids": [],
+      "unknown_quantification_edge_ids": [],
+      "stale_edge_ids": [
+        "edg:exposure.dna.fixture.route_company.001"
+      ],
+      "unknown_freshness_edge_ids": [],
+      "missing_dimension_ids": []
+    },
+    "counts": {
+      "direct_edges": 7,
+      "incoming_edges": 5,
+      "outgoing_edges": 2,
+      "quantified_edges": 3,
+      "qualitative_edges": 4,
+      "unknown_edges": 0,
+      "current_edges": 6,
+      "stale_edges": 1,
+      "unknown_freshness_edges": 0,
+      "target_universes": 1
+    },
+    "result": {
+      "status": "fingerprint_present",
+      "scalar_score_computed": false,
+      "public_claim_state": "requires_claim_bundle"
+    },
+    "limitations": [
+      "absence_means_no_eligible_edge_in_release_not_no_real_world_exposure",
+      "canonical_release_generation_is_not_external_availability_proof",
+      "coverage_counts_are_not_aggregated_across_unlike_universes",
+      "edge_confidence_is_not_probability",
+      "edge_direction_is_not_shock_direction",
+      "exposure_is_not_realized_loss",
+      "freshness_is_source_policy_age_not_decision_materiality",
+      "no_causal_attribution",
+      "no_cross_unit_aggregation_or_scalar_score",
+      "no_forecast_recommendation_or_advice",
+      "requires_claim_bundle_before_non_synthetic_public_rendering",
+      "structural_fingerprint_not_measured_decision_utility"
+    ]
+  },
+  "after_snapshot": {
+    "object_type": "exposure_dna_snapshot",
+    "schema_version": "1.0.0",
+    "record_sha256": "84da215234fb4996e27d7c9303cf4d13f9ddfdead918a143294e12502e6513d9",
+    "release": {
+      "release_id": "rel:exposure.dna.fixture.after",
+      "record_sha256": "a63852e01166d48be0c45ba7dccfe4121d30f93d334b36058c0de8dceef3ad94",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "b9318258f56f862875586a9e6c6501a2dbc6ce277ccf3ca1ecc0f8dca2f0e89d",
+      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/exposure-dna.schema.json",
+      "schema_version": "1.0.0",
+      "schema_sha256": "9f137907d3ef3b5316784af11e0e93ca767b5868675550d5840bc6467f63d170",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "dna_registry_sha256": "76fe58ff970e9e5ce3395020436d841065f5bb486ed85310c5609226cf2edf96"
+    },
+    "method": {
+      "method_id": "method:igrm.exposure_dna",
+      "version": "1.0.0",
+      "implementation_sha256": "549237378c7f9a0f6decf00098f596bb1912d7ef0b7d2c5315ef1a593c04011b"
+    },
+    "query": {
+      "target_entity_id": "ent:company.synthetic_india_anchor",
+      "selection_rule": "active_direct_edges_effective_on_canonical_release_date",
+      "freshness_rule": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies"
+    },
+    "target": {
+      "entity_id": "ent:company.synthetic_india_anchor",
+      "record_sha256": "795a92d4917ac028692f9f2bf954601d253f255ec422775b9294e19959d8c8c1",
+      "entity_type": "company",
+      "lifecycle_state": "active",
+      "identity_status": "authoritative",
+      "effective_start": null,
+      "effective_end": null,
+      "parent_entity_ids": [
+        "ent:sector.synthetic_manufacturing"
+      ],
+      "jurisdiction_entity_ids": [
+        "ent:state.synthetic_coast"
+      ],
+      "evidence_ids": [
+        "evd:oges.fixture.official.001"
+      ]
+    },
+    "target_universes": [
+      {
+        "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+        "record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+        "reference_date": "2026-08-08",
+        "member_status": "included",
+        "reason_code": "reason:exposure.dna.fixture.in_frame",
+        "assessed_on": "2026-08-08",
+        "counts": {
+          "total_eligible": 4,
+          "included": 2,
+          "excluded": 1,
+          "unmappable": 1,
+          "stale": 0
+        }
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": "edg:exposure.dna.fixture.grid_company.001",
+        "record_sha256": "f81f122bd0177503f8ee812fd501770965864332a3e7ca27d0e94b61841c20b5",
+        "orientation": "incoming",
+        "source_entity_id": "ent:critical_asset.synthetic_grid",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:critical_asset.synthetic_grid",
+          "record_sha256": "7e0ac30714bc6fe7cb7cdb43a4aae4f35a04d2adba5020236a75610cb012eb57",
+          "entity_type": "critical_asset",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "energy_dependence",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "unknown",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 10800,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "not_estimated",
+          "meaning": "Synthetic relationship with no magnitude estimate.",
+          "lower": null,
+          "upper": null,
+          "category": null
+        },
+        "limitation_codes": [
+          "magnitude_unknown"
+        ]
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.port_company.001",
+        "record_sha256": "6f00a72f70b5388265919386cf9738303737cb42b670f6437af136177f0c2059",
+        "orientation": "incoming",
+        "source_entity_id": "ent:port.synthetic_gateway",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:port.synthetic_gateway",
+          "record_sha256": "b5a33dd190b6dc1ab754f783ba68900c3204a407d336828e1dc4fa3b551be00e",
+          "entity_type": "port",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "freight_dependence",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 10800,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.crude_company.001",
+        "record_sha256": "4b4716c4b5ab578d38b9ded7c359c3884b8eb6fff7db66fa679e015552575e05",
+        "orientation": "incoming",
+        "source_entity_id": "ent:commodity.synthetic_crude",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:commodity.synthetic_crude",
+          "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2",
+          "entity_type": "commodity",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "input_dependency",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "quantified",
+        "magnitude": {
+          "value": 45.0,
+          "unit": "percent_of_input_volume",
+          "denominator": "total synthetic input volume in the period",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30",
+          "currency": null,
+          "price_basis": null,
+          "uncertainty": {
+            "status": "interval",
+            "meaning": "Synthetic test interval; not calibrated uncertainty.",
+            "lower": 40.0,
+            "upper": 50.0,
+            "category": null
+          }
+        },
+        "derivation_type": "calculated",
+        "effective_start": "2026-06-30",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 10800,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic quantified component; confidence is not probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": []
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.route_company.001",
+        "record_sha256": "b4f3a4070ee0bd3563f5619f500013fc0ec69538eb0092b65402c3e57318ecec",
+        "orientation": "incoming",
+        "source_entity_id": "ent:route.synthetic_sea_lane",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:route.synthetic_sea_lane",
+          "record_sha256": "091cf06d4aeba48a9e82d3855c0e2408fd989d4527c5f9b190ca9d1381f04cb7",
+          "entity_type": "route",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "route_dependency",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "quantified",
+        "magnitude": {
+          "value": 60.0,
+          "unit": "percent_of_routed_volume",
+          "denominator": "total synthetic routed volume in May 2026",
+          "period_start": "2026-05-01",
+          "period_end": "2026-05-31",
+          "currency": null,
+          "price_basis": null,
+          "uncertainty": {
+            "status": "interval",
+            "meaning": "Synthetic test interval; not calibrated uncertainty.",
+            "lower": 55.0,
+            "upper": 65.0,
+            "category": null
+          }
+        },
+        "derivation_type": "calculated",
+        "effective_start": "2026-05-31",
+        "effective_end": null,
+        "observed_at": "2026-06-01T00:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-06-01T00:00:00Z",
+          "observation_age_seconds": 5922000,
+          "max_current_age_days": 30,
+          "status": "stale",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic quantified component; confidence is not probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": []
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.origin_company.001",
+        "record_sha256": "3d7a8db578160ec0ee4680ad5121bf8dd786455cc762d9b98ee52e162a8bc4eb",
+        "orientation": "incoming",
+        "source_entity_id": "ent:country.synthetic_origin",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:country.synthetic_origin",
+          "record_sha256": "d1bdfbdbf915e67238c5f16bdde3ae6da05c1812a2abf62402e5444c366530ec",
+          "entity_type": "country",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "supplier_concentration",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "quantified",
+        "magnitude": {
+          "value": 28.0,
+          "unit": "percent_of_procurement_value",
+          "denominator": "total synthetic procurement value in the period",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30",
+          "currency": null,
+          "price_basis": null,
+          "uncertainty": {
+            "status": "interval",
+            "meaning": "Synthetic test interval; not calibrated uncertainty.",
+            "lower": 23.0,
+            "upper": 33.0,
+            "category": null
+          }
+        },
+        "derivation_type": "calculated",
+        "effective_start": "2026-06-30",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 10800,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic quantified component; confidence is not probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": []
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.technology_company.001",
+        "record_sha256": "fbf864139c763f99545fb622aa1969197f1eea1f785cc6c233173d11d1038f0e",
+        "orientation": "incoming",
+        "source_entity_id": "ent:technology.synthetic_platform",
+        "target_entity_id": "ent:company.synthetic_india_anchor",
+        "counterpart": {
+          "entity_id": "ent:technology.synthetic_platform",
+          "record_sha256": "ff4147799dd55aa01e7d8d20a4a544be378624cb973d13b525dacff4d4d5e527",
+          "entity_type": "technology",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "technology_dependency",
+        "exposure_direction": "inbound_to_india",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 10800,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.company_sector.001",
+        "record_sha256": "7a8be7b22ae8943d1f84453382e43722ee12da3f69d749be130af393ebfa3ec2",
+        "orientation": "outgoing",
+        "source_entity_id": "ent:company.synthetic_india_anchor",
+        "target_entity_id": "ent:sector.synthetic_manufacturing",
+        "counterpart": {
+          "entity_id": "ent:sector.synthetic_manufacturing",
+          "record_sha256": "9a129431326f78a4b60c2b1171313a95492f959d6d2f84a4243e7adb5e006c0a",
+          "entity_type": "sector",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "operational_presence",
+        "exposure_direction": "non_directional",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 10800,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      },
+      {
+        "edge_id": "edg:exposure.dna.fixture.company_state.001",
+        "record_sha256": "4b44f9b4683ef1ea0f6d520533fafa637abf3357466dcbeadb1389b0e4470f4c",
+        "orientation": "outgoing",
+        "source_entity_id": "ent:company.synthetic_india_anchor",
+        "target_entity_id": "ent:state.synthetic_coast",
+        "counterpart": {
+          "entity_id": "ent:state.synthetic_coast",
+          "record_sha256": "60154fe4ea844d8ec17e114868d6c1e3a91bf752d67941ea00d1cafe7928f90d",
+          "entity_type": "state_or_ut",
+          "identity_status": "authoritative"
+        },
+        "edge_type": "policy_jurisdiction",
+        "exposure_direction": "jurisdictional",
+        "quantification_status": "qualitative",
+        "magnitude": null,
+        "derivation_type": "calculated",
+        "effective_start": "2026-08-08",
+        "effective_end": null,
+        "observed_at": "2026-08-08T10:00:00Z",
+        "freshness": {
+          "basis": "edge_observed_at_against_release_generated_at_using_all_evidence_source_policies",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "observation_age_seconds": 10800,
+          "max_current_age_days": 30,
+          "status": "current",
+          "source_policies": [
+            {
+              "source_id": "oges_fixture_source",
+              "max_current_age_days": 30
+            }
+          ]
+        },
+        "coverage": {
+          "universe_release_id": "unv:exposure.dna.fixture.companies.1",
+          "universe_record_sha256": "55e475a78d86e508118c1a6d96b269700c1b0a529dc4395e63be4060de2c7326",
+          "universe_entity_type": "company",
+          "reference_date": "2026-08-08",
+          "covered_entity_id": "ent:company.synthetic_india_anchor",
+          "member_status": "included",
+          "counts": {
+            "total_eligible": 4,
+            "included": 2,
+            "excluded": 1,
+            "unmappable": 1,
+            "stale": 0
+          }
+        },
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "method": {
+          "method_id": "method:oges.fixture.exposure",
+          "version": "1.0.0",
+          "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+          "run_id": "run:exposure.dna.fixture.edges.001"
+        },
+        "confidence": {
+          "status": "categorical",
+          "meaning": "Synthetic qualitative relationship; not a probability.",
+          "lower": null,
+          "upper": null,
+          "category": "test_only"
+        },
+        "limitation_codes": [
+          "magnitude_not_quantified"
+        ]
+      }
+    ],
+    "dimensions": [
+      {
+        "dimension_id": "dim:exposure.cross_border_supply",
+        "label": "Cross-border supply",
+        "definition": "Direct supply, input, energy and trade-dependence edges retained in their original units and denominators.",
+        "edge_types": [
+          "import_dependence",
+          "export_dependence",
+          "energy_dependence",
+          "supplier_concentration",
+          "input_dependency"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.grid_company.001",
+          "edg:exposure.dna.fixture.crude_company.001",
+          "edg:exposure.dna.fixture.origin_company.001"
+        ],
+        "counts": {
+          "edges": 3,
+          "quantified": 2,
+          "qualitative": 0,
+          "unknown": 1,
+          "current": 3,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.logistics",
+        "label": "Logistics and access",
+        "definition": "Direct freight, route and border-access edges without inferring throughput, substitution or realized disruption.",
+        "edge_types": [
+          "freight_dependence",
+          "border_proximity",
+          "route_dependency"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.port_company.001",
+          "edg:exposure.dna.fixture.route_company.001"
+        ],
+        "counts": {
+          "edges": 2,
+          "quantified": 1,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 1,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.corporate_footprint",
+        "label": "Corporate footprint",
+        "definition": "Direct ownership and operational-presence relationships, distinct from supply dependence or policy authority.",
+        "edge_types": [
+          "ownership",
+          "operational_presence"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.company_sector.001"
+        ],
+        "counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.policy_legal",
+        "label": "Policy and legal reach",
+        "definition": "Direct treaty, sanctions and policy-jurisdiction edges without interpreting legal effect or predicting enforcement.",
+        "edge_types": [
+          "treaty_obligation",
+          "sanctions_reach",
+          "policy_jurisdiction"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.company_state.001"
+        ],
+        "counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.digital_infrastructure",
+        "label": "Digital and technology",
+        "definition": "Direct cyber and technology-dependence edges, kept separate from physical infrastructure and market outcomes.",
+        "edge_types": [
+          "cyber_dependency",
+          "technology_dependency"
+        ],
+        "edge_ids": [
+          "edg:exposure.dna.fixture.technology_company.001"
+        ],
+        "counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      }
+    ],
+    "gaps": {
+      "target_universe_not_declared": false,
+      "target_universe_not_included_ids": [],
+      "unknown_quantification_edge_ids": [
+        "edg:exposure.dna.fixture.grid_company.001"
+      ],
+      "stale_edge_ids": [
+        "edg:exposure.dna.fixture.route_company.001"
+      ],
+      "unknown_freshness_edge_ids": [],
+      "missing_dimension_ids": []
+    },
+    "counts": {
+      "direct_edges": 8,
+      "incoming_edges": 6,
+      "outgoing_edges": 2,
+      "quantified_edges": 3,
+      "qualitative_edges": 4,
+      "unknown_edges": 1,
+      "current_edges": 7,
+      "stale_edges": 1,
+      "unknown_freshness_edges": 0,
+      "target_universes": 1
+    },
+    "result": {
+      "status": "fingerprint_present",
+      "scalar_score_computed": false,
+      "public_claim_state": "requires_claim_bundle"
+    },
+    "limitations": [
+      "absence_means_no_eligible_edge_in_release_not_no_real_world_exposure",
+      "canonical_release_generation_is_not_external_availability_proof",
+      "coverage_counts_are_not_aggregated_across_unlike_universes",
+      "edge_confidence_is_not_probability",
+      "edge_direction_is_not_shock_direction",
+      "exposure_is_not_realized_loss",
+      "freshness_is_source_policy_age_not_decision_materiality",
+      "no_causal_attribution",
+      "no_cross_unit_aggregation_or_scalar_score",
+      "no_forecast_recommendation_or_advice",
+      "requires_claim_bundle_before_non_synthetic_public_rendering",
+      "structural_fingerprint_not_measured_decision_utility"
+    ]
+  },
+  "delta": {
+    "object_type": "exposure_dna_delta",
+    "schema_version": "1.0.0",
+    "record_sha256": "990df1761409d87568408e99d0c39fb0769596371ffe0845e6b84d21f1d55271",
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/exposure-dna.schema.json",
+      "schema_version": "1.0.0",
+      "schema_sha256": "9f137907d3ef3b5316784af11e0e93ca767b5868675550d5840bc6467f63d170",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "dna_registry_sha256": "76fe58ff970e9e5ce3395020436d841065f5bb486ed85310c5609226cf2edf96"
+    },
+    "method": {
+      "method_id": "method:igrm.exposure_dna",
+      "version": "1.0.0",
+      "implementation_sha256": "549237378c7f9a0f6decf00098f596bb1912d7ef0b7d2c5315ef1a593c04011b"
+    },
+    "query": {
+      "target_entity_id": "ent:company.synthetic_india_anchor",
+      "comparison_rule": "same_entity_two_independently_validated_snapshots"
+    },
+    "target": {
+      "entity_id": "ent:company.synthetic_india_anchor",
+      "entity_type": "company",
+      "before_record_sha256": "795a92d4917ac028692f9f2bf954601d253f255ec422775b9294e19959d8c8c1",
+      "after_record_sha256": "795a92d4917ac028692f9f2bf954601d253f255ec422775b9294e19959d8c8c1",
+      "record_changed": false
+    },
+    "before": {
+      "release": {
+        "release_id": "rel:exposure.dna.fixture.before",
+        "record_sha256": "5ae9fb698d937d878a52eefaf8a8856758642932feaecccff55967a862c1b662",
+        "generated_at": "2026-08-08T12:30:00Z",
+        "effective_date": "2026-08-08",
+        "release_signer_id": "signer:oges.fixture.release",
+        "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+        "method_registry_sha256": "b9318258f56f862875586a9e6c6501a2dbc6ce277ccf3ca1ecc0f8dca2f0e89d",
+        "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+        "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+        "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+      },
+      "snapshot_record_sha256": "347996a0153b80c7cc48bbad4700b3a5f5b1f7b1777013548a5b48534f8fef72"
+    },
+    "after": {
+      "release": {
+        "release_id": "rel:exposure.dna.fixture.after",
+        "record_sha256": "a63852e01166d48be0c45ba7dccfe4121d30f93d334b36058c0de8dceef3ad94",
+        "generated_at": "2026-08-08T13:00:00Z",
+        "effective_date": "2026-08-08",
+        "release_signer_id": "signer:oges.fixture.release",
+        "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+        "method_registry_sha256": "b9318258f56f862875586a9e6c6501a2dbc6ce277ccf3ca1ecc0f8dca2f0e89d",
+        "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+        "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+        "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+      },
+      "snapshot_record_sha256": "84da215234fb4996e27d7c9303cf4d13f9ddfdead918a143294e12502e6513d9"
+    },
+    "edge_changes": {
+      "added": [
+        {
+          "edge_id": "edg:exposure.dna.fixture.grid_company.001",
+          "after_record_sha256": "f81f122bd0177503f8ee812fd501770965864332a3e7ca27d0e94b61841c20b5"
+        }
+      ],
+      "removed": [],
+      "revised": [
+        {
+          "edge_id": "edg:exposure.dna.fixture.crude_company.001",
+          "before_record_sha256": "82eff6351025719c03b0d0822ba206c58891aca31bd8a17e38eedae5ff04044e",
+          "after_record_sha256": "4b4716c4b5ab578d38b9ded7c359c3884b8eb6fff7db66fa679e015552575e05",
+          "changed_aspects": [
+            "quantification",
+            "freshness"
+          ]
+        }
+      ],
+      "unchanged_edge_ids": [
+        "edg:exposure.dna.fixture.company_sector.001",
+        "edg:exposure.dna.fixture.company_state.001",
+        "edg:exposure.dna.fixture.origin_company.001",
+        "edg:exposure.dna.fixture.port_company.001",
+        "edg:exposure.dna.fixture.route_company.001",
+        "edg:exposure.dna.fixture.technology_company.001"
+      ]
+    },
+    "dimension_changes": [
+      {
+        "dimension_id": "dim:exposure.cross_border_supply",
+        "before_counts": {
+          "edges": 2,
+          "quantified": 2,
+          "qualitative": 0,
+          "unknown": 0,
+          "current": 2,
+          "stale": 0,
+          "unknown_freshness": 0
+        },
+        "after_counts": {
+          "edges": 3,
+          "quantified": 2,
+          "qualitative": 0,
+          "unknown": 1,
+          "current": 3,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.logistics",
+        "before_counts": {
+          "edges": 2,
+          "quantified": 1,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 1,
+          "unknown_freshness": 0
+        },
+        "after_counts": {
+          "edges": 2,
+          "quantified": 1,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 1,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.corporate_footprint",
+        "before_counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        },
+        "after_counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.policy_legal",
+        "before_counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        },
+        "after_counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      },
+      {
+        "dimension_id": "dim:exposure.digital_infrastructure",
+        "before_counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        },
+        "after_counts": {
+          "edges": 1,
+          "quantified": 0,
+          "qualitative": 1,
+          "unknown": 0,
+          "current": 1,
+          "stale": 0,
+          "unknown_freshness": 0
+        }
+      }
+    ],
+    "gap_changes": {
+      "opened": [
+        "unknown_quantification:edg:exposure.dna.fixture.grid_company.001"
+      ],
+      "resolved": [],
+      "persistent": [
+        "stale_edge:edg:exposure.dna.fixture.route_company.001"
+      ]
+    },
+    "counts": {
+      "added_edges": 1,
+      "removed_edges": 0,
+      "revised_edges": 1,
+      "unchanged_edges": 6,
+      "opened_gaps": 1,
+      "resolved_gaps": 0
+    },
+    "result": {
+      "status": "changed",
+      "scalar_score_computed": false,
+      "causal_interpretation_performed": false
+    },
+    "limitations": [
+      "absence_means_no_eligible_edge_in_release_not_no_real_world_exposure",
+      "canonical_release_generation_is_not_external_availability_proof",
+      "coverage_counts_are_not_aggregated_across_unlike_universes",
+      "delta_is_release_difference_not_real_world_change_attribution",
+      "edge_confidence_is_not_probability",
+      "edge_direction_is_not_shock_direction",
+      "exposure_is_not_realized_loss",
+      "freshness_is_source_policy_age_not_decision_materiality",
+      "no_causal_attribution",
+      "no_cross_unit_aggregation_or_scalar_score",
+      "no_forecast_recommendation_or_advice",
+      "requires_claim_bundle_before_non_synthetic_public_rendering",
+      "structural_fingerprint_not_measured_decision_utility"
+    ]
+  }
+}

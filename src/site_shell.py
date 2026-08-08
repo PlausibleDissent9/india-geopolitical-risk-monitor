@@ -48,6 +48,7 @@ PAGES: dict[str, Page] = {
     "codebook.html": Page("Codebook", "Reference", "article", "data", True),
     "corrections.html": Page("Corrections", "Accountability", "article", "methodology", True),
     "data.html": Page("Data", "Open infrastructure", "system", "data"),
+    "dna.html": Page("India Exposure DNA", "India dependency infrastructure", "article", "products"),
     "divergence.html": Page("Divergence register", "Evidence", "evidence", "analysis"),
     "episode.html": Page("Episode detail", "Evidence", "evidence", "analysis"),
     "explorer.html": Page("Outcomes explorer", "Research", "dashboard", "analysis"),
