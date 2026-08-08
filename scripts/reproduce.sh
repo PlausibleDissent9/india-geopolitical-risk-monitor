@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
-# Reproducibility check (spec B4): from a clean clone, rebuild everything
-# and diff the numeric outputs against the committed versions.
+# Reproducibility checks with explicit evidence boundaries.
 #
-#   scripts/reproduce.sh [--use-cache]
+#   scripts/reproduce.sh --public       rights-safe public index reconstruction
+#   scripts/reproduce.sh --use-cache    owner cache-dependent pipeline audit
+#   scripts/reproduce.sh --live-source  new-vintage source re-execution
 #
-# --use-cache copies data/raw/ from the source checkout first, so the run
-# verifies computation only (minutes). Without it, the full GDELT backfill
-# refetches (~30-60 min politely rate-limited) and the run additionally
-# verifies the fetch path; recent GDELT revisions of the last few days can
-# then produce small tail diffs -- the diff step ignores the final 35 days
-# (matching the heal window in daily.yml: heal revisions and opportunistic
-# chunk harvests propagate through trailing percentiles well past 7 days;
-# 2026-08-06: the first proof run failed at indices 6-13 days back for
-# exactly this reason -- committed history is a vintage record, a fresh
-# rebuild is a current-data recomputation, and both are correct).
+# --public is the CI/public guarantee. It uses no raw store and proves that
+# every published score cell is reconstructed exactly from public inputs by
+# code forbidden from importing the production score pipeline.
 #
-# Expected runtime: ~5 min cached, ~45 min uncached.
+# --use-cache is not an external reproduction guarantee. It requires the
+# source checkout to possess every exact private/rights-restricted cache,
+# including unredistributed market inputs, and fails closed when they are
+# absent. --live-source fetches a new upstream vintage; differences are a
+# vintage comparison, not evidence that the committed vintage reproduced.
 set -euo pipefail
 
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
 WORK="$(mktemp -d)"
+MODE="${1:---public}"
+case "$MODE" in
+  --public|--use-cache|--live-source) ;;
+  *)
+    echo "usage: scripts/reproduce.sh --public|--use-cache|--live-source" >&2
+    exit 2
+    ;;
+esac
 echo "[reproduce] source: $SRC"
 echo "[reproduce] workdir: $WORK"
 
@@ -29,7 +35,17 @@ cd "$WORK/clone"
 python3 -m venv .venv
 .venv/bin/pip install --quiet -r requirements.txt -r requirements-dev.txt
 
-if [[ "${1:-}" == "--use-cache" ]]; then
+if [[ "$MODE" == "--use-cache" ]]; then
+  for required in \
+    data/raw/gdelt_volume.csv \
+    data/raw/prices.csv \
+    data/raw/derived_returns.csv; do
+    if [[ ! -f "$SRC/$required" ]]; then
+      echo "[reproduce] REQUIRED OWNER CACHE ABSENT: $required" >&2
+      echo "[reproduce] use --public for the rights-safe public proof" >&2
+      exit 3
+    fi
+  done
   echo "[reproduce] copying raw-data cache from source checkout"
   rm -rf data/raw
   cp -R "$SRC/data/raw" data/raw
@@ -43,7 +59,21 @@ if [[ "${1:-}" == "--use-cache" ]]; then
   export IGRM_OFFLINE=1
 fi
 
-.venv/bin/python -m pytest -q
+if [[ "$MODE" == "--public" ]]; then
+  export IGRM_OFFLINE=1
+fi
+
+# `live` tests assert on changing deployed/source state and one queries PyPI.
+# They belong in ordinary CI, not an offline reconstruction receipt.
+.venv/bin/python -m pytest -q -m "not live"
+
+if [[ "$MODE" == "--public" ]]; then
+  .venv/bin/python -m src.blind_replicator --check
+  echo "[reproduce] PUBLIC SCOPE: every published channel/composite cell"
+  echo "[reproduce] EXCLUDED: raw acquisition and market-dependent outputs"
+  echo "[reproduce] OK: rights-safe public index reconstruction is exact"
+  exit 0
+fi
 
 # Marker file: anything in docs/data older than this was NOT regenerated
 # by this run. Without it the diff compares the clone's committed copy
@@ -53,7 +83,7 @@ fi
 REBUILD_MARK="$WORK/rebuild_start"
 touch "$REBUILD_MARK"
 
-if [[ "${IGRM_OFFLINE:-}" == "1" ]]; then
+if [[ "$MODE" == "--use-cache" ]]; then
   # Cached mode verifies the committed vintage EXACTLY: incremental run
   # over the copied store, no healing, no fetching. Healing here once
   # pulled one extra day in and shifted a shipping episode's bootstrap
@@ -101,25 +131,14 @@ fi
 .venv/bin/python -m src.stamp_meta
 
 echo "[reproduce] diffing docs/data against committed versions"
-.venv/bin/python - "$SRC" "$REBUILD_MARK" <<'EOF'
+.venv/bin/python - "$SRC" "$REBUILD_MARK" "$MODE" <<'EOF'
 import json, sys
 from pathlib import Path
 
 src = Path(sys.argv[1]) / "docs" / "data"
 new = Path("docs") / "data"
-IGNORE_TAIL_DAYS = 35
-TOL = 1e-6
-# Market-dependent outputs (event_study, priced_risk) rest on Yahoo
-# inputs that are deliberately NOT committed (redistribution license),
-# so the committed numbers carry CI's fetch vintage and a replicator
-# carries their own: Yahoo revises recent bars between fetches, which
-# moves seeded-bootstrap fields by resampling-noise scale (observed
-# max 0.046 on 2026-08-01). Those files compare within MARKET_TOL and
-# the run reports how many numbers used the band. Everything whose
-# inputs are fully committed must match to TOL.
-MARKET_TOL = 0.06
-MARKET_FILES = ("event_study.json", "priced_risk.json")
-band_hits = [0]
+mode = sys.argv[3]
+TOL = 1e-12
 failures = []
 
 def compare(a, b, path="", dates_len=None):
@@ -132,25 +151,15 @@ def compare(a, b, path="", dates_len=None):
                 continue
             compare(a[k], b[k], f"{path}.{k}")
     elif isinstance(a, list) and isinstance(b, list):
-        n = min(len(a), len(b), max(0, len(a) - IGNORE_TAIL_DAYS))
-        for i in range(n):
+        if len(a) != len(b):
+            failures.append(f"{path}: list lengths {len(a)} != {len(b)}")
+        for i in range(min(len(a), len(b))):
             compare(a[i], b[i], f"{path}[{i}]")
     elif isinstance(a, (int, float)) and isinstance(b, (int, float)):
-        tol = MARKET_TOL if path.startswith(MARKET_FILES) else TOL
-        # Tail maturation: the newest episode's 5- and 20-day market
-        # windows complete as trading days pass, so per-cell episode
-        # counts in market files legitimately differ by one between
-        # vintages (observed 107 vs 108, 2026-08-01).
-        if path.startswith(MARKET_FILES) and path.endswith(".n"):
-            tol = 1.0
-        if abs(a - b) > tol:
+        if abs(a - b) > TOL:
             failures.append(f"{path}: {a} != {b}")
-        elif abs(a - b) > TOL:
-            band_hits[0] += 1
     elif a != b:
         failures.append(f"{path}: {a!r} != {b!r}")
-
-print(f"[reproduce] market-vintage band: +/-{MARKET_TOL} on {MARKET_FILES}")
 
 mark = Path(sys.argv[2]).stat().st_mtime
 verified, untouched = [], []
@@ -175,11 +184,15 @@ if untouched:
     print(f"[reproduce] not verified: {', '.join(sorted(untouched))}")
 
 if failures:
-    print(f"[reproduce] FAILED: {len(failures)} numeric differences")
+    label = "NEW-VINTAGE DIFFERENCES" if mode == "--live-source" else "FAILED"
+    print(f"[reproduce] {label}: {len(failures)} differences")
     for line in failures[:40]:
         print("  ", line)
-    sys.exit(1)
-print("[reproduce] OK: rebuilt outputs match committed data within tolerance")
+    if mode != "--live-source":
+        sys.exit(1)
+    print("[reproduce] live-source completed; this is not a reproduction pass")
+else:
+    print("[reproduce] OK: all regenerated outputs match the committed vintage")
 EOF
 
 echo "[reproduce] done; workdir left at $WORK for inspection"

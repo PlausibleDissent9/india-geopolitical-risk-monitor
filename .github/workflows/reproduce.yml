@@ -1,10 +1,10 @@
 name: reproduce
 
-# V7: the reproduce-from-nothing guarantee, verified monthly. A fresh
-# clone and venv recompute every published output from committed raw
-# data (strictly offline; market-vintage tolerance documented inside
-# the script). Failing this workflow means the repo no longer
-# reproduces its own site, which outranks all feature work.
+# Rights-safe public reconstruction, verified monthly. A fresh clone and
+# venv rebuild every published channel/composite cell from the public
+# codebook and shares and require exact equality with the published series.
+# It deliberately makes no claim about market-dependent outputs whose exact
+# input vintage is not redistributable in this repository.
 
 on:
   schedule:
@@ -38,5 +38,5 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
-      - name: Fresh-clone offline reproduction
-        run: bash scripts/reproduce.sh --use-cache
+      - name: Fresh-clone public index reconstruction
+        run: bash scripts/reproduce.sh --public

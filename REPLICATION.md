@@ -1,8 +1,9 @@
 # Replication kit
 
 For an external reproducer: what to run, what you should see, and what
-each outcome proves. No credentials are needed anywhere in this
-procedure; every data source is public.
+each outcome proves. The public reconstruction needs no credentials or
+non-public data. Re-executing every upstream lane is a separate task with
+different rights and vintage constraints, stated below rather than hidden.
 
 ## Setup
 
@@ -20,7 +21,7 @@ is withdrawn and cannot call a model or write prose, with or without a key.
 ## Path 0 — check the index against its own documentation (~3 seconds)
 
 ```
-.venv/bin/python -m src.blind_replicator
+.venv/bin/python -m src.blind_replicator --check
 ```
 
 Start here. This is the fastest and, for most readers, the most
@@ -38,8 +39,12 @@ construction and measures nothing.
 **Expected result:**
 
 ```
-[blind_replicator] best: weak / calendar -- 19830/19830 values agree (100.0000%)
+[blind_replicator] best: weak / calendar -- N/N values agree (100.0000%)
 ```
+
+`N` advances with the published series. The command also requires zero
+missing reconstructed cells; 100% agreement over a smaller overlap is a
+failure, not a pass.
 
 **What it proves:** the published index is exactly reproducible from its
 own published documentation, by code with no access to the code that
@@ -67,48 +72,54 @@ This check runs every night in `daily.yml` and is **fail-loud**: it
 requires an exact match, so a future methodology change breaks the lane
 until the codebook is updated to match. That is deliberate.
 
-## Path 1 — cached verification (~5 minutes)
+## Path 1 — clean-room public reconstruction (~2 minutes)
+
+```
+scripts/reproduce.sh --public
+```
+
+Clones the checkout into a temporary directory, creates a fresh pinned
+environment, runs the non-live test suite with source access refused, and executes the independent
+public reconstruction above. It does not copy `data/raw`, fetch a source,
+or read the production score implementation.
+
+**What it proves:** every published daily channel and composite score cell
+can be reconstructed exactly from the public codebook and shares file,
+with complete denominator coverage, in a clean checkout. This is the
+rights-safe guarantee enforced by the `reproduce` workflow.
+
+**What it does not prove:** it does not recreate acquisition, receipts,
+event studies, market-derived outputs, or every analytical payload. Those
+claims require their own input-complete proofs; this command never presents
+a partial rebuild as full-pipeline reproduction.
+
+## Path 2 — owner cache-dependent pipeline audit
 
 ```
 scripts/reproduce.sh --use-cache
 ```
 
-Clones your checkout into a temp dir, copies the committed raw store,
-sets `IGRM_OFFLINE=1` (all acquisition refused — network and chunk
-cache alike; the committed store is the only data source), reruns the
-full pipeline, and diffs every `docs/data/*.json` against the
-committed versions.
+This mode is for an authorized checkout holding the exact source caches.
+It remains strictly offline and fails closed if any required cache is
+absent. In particular, `data/raw/prices.csv` and
+`data/raw/derived_returns.csv` are not redistributed in Git, so a public
+clone cannot use this mode to recreate market-dependent outputs. A passing
+owner run is an internal computation audit, not an independently accessible
+public reproduction receipt. It compares complete arrays and every regenerated
+field; there is no ignored tail or market-tolerance escape hatch.
 
-**What it proves:** every published number is a deterministic function
-of the committed raw data. The pipeline is fully deterministic —
-rebuilding twice produces byte-identical output (bootstraps are
-seeded).
-
-**Expected result:** exact match at tolerance 1e-6, with two
-documented exceptions:
-
-- `event_study.json` / `priced_risk.json` compare within ±0.06. Their
-  market inputs come from Yahoo Finance, which we do not redistribute
-  (license); your fetch vintage differs from CI's by recent-bar
-  revisions, which moves seeded-bootstrap fields by resampling-noise
-  scale. Per-cell episode counts (`.n`) may differ by one as the
-  newest episode's market windows mature.
-- Run the check against a **daily data commit** (the ones titled
-  `data: update YYYY-MM-DD` or `data: final ...`), where store and
-  outputs were committed as a pair. Mid-day working commits between
-  daily runs may carry code ahead of data.
-
-## Path 2 — uncached verification (~45 minutes)
+## Path 3 — new-vintage source re-execution
 
 ```
-scripts/reproduce.sh
+scripts/reproduce.sh --live-source
 ```
 
-Same, but refetches everything from GDELT's public API (politely
-rate-limited). Additionally proves the fetch path. The diff ignores
-the trailing 35 days (the heal window): GDELT revises recent days, so
-a committed vintage and a fresh fetch legitimately differ there; both
-are correct records of what the source said at their respective times.
+This refetches available upstream sources and therefore creates a new
+source vintage. It can test acquisition and transformation behavior, but
+it cannot prove that the exact historical bytes behind the committed
+vintage were recovered. GDELT revisions, source outages, licensing limits,
+and market-bar revisions are reported as such; they are never hidden by
+calling a tolerance band “exact reproduction.”
 
 ## Independent checks that need no rebuild
 

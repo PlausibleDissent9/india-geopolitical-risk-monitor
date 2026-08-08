@@ -4,7 +4,7 @@ The codebook and the methodology are the two documents that claim to be
 authoritative, and both hand-type numbers a nightly lane recomputes:
 
     "10 of 12 vintages show zero changed values"      vintages.json
-    "19,830 of 19,830 published values exactly"       replication.json
+    "every published ... score cell must match"        replication.json
     "24 of 29 (83%)"                                  validation.json
     "5 of 5 channels"                                 wiki_hindi.json
 
@@ -45,7 +45,7 @@ def _payload(name: str) -> dict:
 
 
 def _says(page: str, *variants: str) -> bool:
-    """Prose writes 19,830; JSON says 19830. Accept either."""
+    """Prose may use thousands separators while JSON does not."""
     text = _page(page)
     return any(v in text for v in variants)
 
@@ -59,13 +59,50 @@ def test_the_vintage_count_on_the_codebook_is_current():
         "publish rewrites history.csv, so it goes stale on its own.")
 
 
-def test_the_replication_count_on_the_codebook_is_current():
+def test_the_replication_claim_requires_the_full_published_denominator():
     b = _payload("replication.json")["best"]
-    n, total = b["n_agree"], b["n_compared"]
-    assert _says("codebook.html", f"{n:,} of {total:,}", f"{n} of {total}"), (
-        f"replication.json reports {n:,} of {total:,}; the codebook says "
-        "something else. This is the strongest claim on the site and the "
-        "one most worth keeping exactly true.")
+    assert b["n_published"] == b["n_compared"] == b["n_agree"]
+    assert b["n_missing"] == 0
+
+    text = _page("codebook.html")
+    assert "Every published daily channel and composite score cell must match" in text
+    assert "missing reconstructed cells count as failures" in text
+    assert "data/replication.json" in text
+    assert "19,830 of 19,830" not in text
+
+
+def test_reproduction_collateral_never_upgrades_the_public_score_proof_to_full_pipeline():
+    surfaces = [
+        "README.md",
+        "GOVERNANCE.md",
+        "REPLICATION.md",
+        ".github/ISSUE_TEMPLATE/adversarial-review.md",
+        "listings/dbnomics_submission.md",
+        "nef/REVIEWERS_GUIDE.md",
+        "paper/IGRM_paper_v1.md",
+        "paper/WORKING_PAPER.md",
+        "paper/founder_interview.md",
+    ]
+    stale_claims = [
+        "full reproducibility from a clean checkout",
+        "complete reproducibility, including the raw store",
+        "rebuilds every published payload",
+        "fresh clone rebuilds every published number",
+        "pipeline reproduces from a clean checkout",
+        "19,830 of 19,830",
+        "within a documented 0.06 band",
+        "market-vintage tolerance",
+    ]
+    violations = []
+    for relative in surfaces:
+        text = (ROOT / relative).read_text(encoding="utf-8").lower()
+        for claim in stale_claims:
+            if claim.lower() in text:
+                violations.append(f"{relative}: {claim}")
+    assert not violations, (
+        "Public score-cell reconstruction was inflated into full-pipeline "
+        f"reproduction: {violations}"
+    )
 
 
 def test_the_hit_rate_in_the_methodology_is_current():

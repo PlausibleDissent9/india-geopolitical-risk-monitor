@@ -7,10 +7,8 @@ committed vintage."
 
 That claim is only as strong as the modules the script actually runs. An
 audit on 2026-08-07 found that of twelve modules making network calls,
-exactly ONE (fetch_gdelt) checks IGRM_OFFLINE. The guarantee holds today
-because reproduce.sh runs only run_daily plus four pure-computation
-lanes -- but nothing stopped the next person adding a fetching module to
-that script and quietly turning a reproduction into a re-fetch.
+exactly ONE (fetch_gdelt) checked IGRM_OFFLINE. The guarantee holds only
+while every invoked module is network-free or honors that refusal flag.
 
 So the invariant is pinned here rather than left to memory: every module
 reproduce.sh invokes must either honour IGRM_OFFLINE or make no network

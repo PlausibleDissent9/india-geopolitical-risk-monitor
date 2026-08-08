@@ -413,8 +413,9 @@ that week, shown as a gap, never interpolated.
 
 Those conventions are sufficient for `src/blind_replicator.py` to rebuild
 the series from this codebook and the published `shares.csv` without importing
-the pipeline. It reproduces **19,830 of 19,830 published values exactly**.
-The comparison is recomputed nightly and published at
+the pipeline. Every published daily channel and composite score cell must match,
+and missing reconstructed cells count as failures rather than disappearing from
+the denominator. The current cell count and exact result are recomputed nightly at
 [`data/replication.json`](data/replication.json); a methodology change that is
 not reflected here breaks the exact-agreement test.
 

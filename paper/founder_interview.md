@@ -195,9 +195,13 @@ run the Hindi comparison.
 **Strongest, and I'll say it at full strength:**
 
 IGRM is a daily, fully public measure of India's press salience that is
-**exactly reproducible from its own published documentation** — 19,830 of
-19,830 values, rebuilt every night by code that is forbidden from reading the
-pipeline. Every published vintage is diffed for silent revision. Its
+**exactly reconstructable at the published score-cell layer from its own
+documentation**: every current daily channel/composite cell must match, and a
+missing cell fails rather than disappearing from the denominator. The check is
+rebuilt every night by code forbidden from reading the production score
+pipeline. This does not claim that non-redistributed market or acquisition
+inputs can be recreated from a public clone. Every published vintage is diffed
+for silent revision. Its
 pre-registered episode detection recovers **24 of 29** events within ±3 days.
 Its two border channels replicate against an independently built forty-one-
 year proxy at **r = 0.89** and **0.85**, under filters frozen in a signed memo
@@ -257,9 +261,10 @@ project and starts being infrastructure.
 
 **Two: somebody rebuilds the series from the codebook without emailing me.**
 The machinery for that now exists and is measured every night. If a stranger
-can reconstruct 19,830 values from a public page and never need to ask me a
-question, then the thing is genuinely independent of me — which is the only
-definition of undeniable I actually care about.
+can reconstruct every currently published daily channel/composite cell from a
+public page and never need to ask me a question, then that score transform is
+genuinely independent of me. The broader upstream evidence boundary remains
+explicit rather than being folded into that claim.
 
 The greedy version: both, plus the 1979 series being the thing people cite,
 because a forty-one-year India-specific attention measure that nobody had
@@ -291,7 +296,7 @@ before is worth more to the literature than another daily tracker.
 | 0 of 39 cells survive FDR 10% | `docs/data/sector_sensitivity.json` |
 | VIX leads attention, lag −8 | `docs/data/priced_risk.json` |
 | Precision uncalibrated, 16/100, agreement 0.875 | `docs/data/precision.json` |
-| 19,830 / 19,830 blind replication | `docs/data/replication.json` |
+| Complete published-cell blind reconstruction and denominator | `docs/data/replication.json` |
 | Silent-revision tripwire | `docs/data/vintages.json` |
 | Shipping has no actor-pair analog | `src/back_extension.py` |
 | Gap 2025-06-15..07-01 unrecoverable | `NOTES` 0.25, `src/fill_gaps.py` |

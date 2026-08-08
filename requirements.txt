@@ -1,5 +1,6 @@
-# Pinned exactly for reproducibility (B4): scripts/reproduce.sh verifies a
-# clean clone rebuilds the committed outputs with these versions.
+# Pinned exactly for the clean-room public reconstruction environment.
+# Full upstream-pipeline replay additionally needs exact source caches whose
+# redistribution status is documented in REPLICATION.md.
 # Python 3.9.
 pandas==2.3.3
 numpy==2.0.2

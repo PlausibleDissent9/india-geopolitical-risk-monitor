@@ -23,9 +23,10 @@ them:
   (computable from the sub-query shares already stored).
 - **V7, the citable instrument.** Quarterly versioned data releases
   with Zenodo DOIs, a frozen v1 API contract page, a monthly
-  fresh-clone reproduce-from-nothing CI job, and the paper submission
-  package. This is what turns a website into something other people
-  cite.
+  fresh-clone public score-reconstruction CI job, rights-scoped release
+  manifests, and the paper submission package. This makes the quantitative
+  claim independently checkable without pretending that non-redistributed
+  upstream vintages are public.
 
 A cheaper alternative worth considering before any of these: the
 precision audit program (hand-label article samples per channel,
@@ -36,7 +37,7 @@ publish precision numbers). It slots into V5 naturally.
 Now in the mission queue, one verified increment per night: V5
 measurement quality (English-vs-multilingual bias audit, precision
 samples, uncertainty bands); V6 actors and narratives; V7 citable
-instrument (Zenodo packaging, frozen API, reproduce-from-nothing CI,
+instrument (Zenodo packaging, frozen API, rights-safe score reconstruction CI,
 preprint assembly); V8 GRM template (country monitors as config); V9
 priced-risk panel (CDS, risk reversals; markets forecast, IGRM reads);
 V10 outcome layer (UCDP/ACLED ground truth, out-of-sample scoreboard);
@@ -352,13 +353,15 @@ lanes such as aptness, but the daily-brief workflow no longer receives it.
 Option (a), deterministic assembly from typed facts, remains the only acceptable
 direction for a successor; it has not been implemented or authorized.
 
-Reproduce cannot byte-match event-study numbers because their market
-inputs (Yahoo) are gitignored by the redistribution-license decision.
-Current policy: those two files verify within a 0.06 tolerance band,
-documented in reproduce.sh. If you ever want byte-exact replication,
-the option is committing derived_returns.csv (log returns, not
-prices); whether derived returns clear the license line is your call,
-not mine. Everything else byte-reproduces.
+The public reconstruction proves every published daily channel/composite score
+cell from the public codebook and shares, with no missing-cell or tolerance
+escape hatch. It does not byte-rebuild the full pipeline: Yahoo market inputs
+and some acquisition evidence are gitignored or rights-restricted. The
+owner-cache audit therefore requires those exact local bytes, while a live fetch
+is labelled a new vintage rather than “reproduction.” Whether derived returns
+can be redistributed remains a source-rights/legal decision, not a coding
+assumption; nothing outside the public score-cell proof is described as exact
+until its complete evidence is independently available.
 
 ## 0.6 V8 decision memo: Pakistan monitor architecture (founder signs before any registration)
 

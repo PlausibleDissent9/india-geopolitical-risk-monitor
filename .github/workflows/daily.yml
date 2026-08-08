@@ -278,10 +278,11 @@ jobs:
         # it is a badge.
         #
         # Must run after publish_shares (it reads shares.csv) and before
-        # stamp_meta (it writes replication.json).
+        # stamp_meta. --check --write validates the entire published-cell
+        # denominator first, then refreshes replication.json only on success.
         if: github.event.inputs.backfill != 'true'
         timeout-minutes: 10
-        run: python -m src.blind_replicator --check
+        run: python -m src.blind_replicator --check --write
       - name: Cross-language validity (V5-adjacent; Wikimedia API)
         # Its own step because it is the only remaining network call in
         # this group, and a Wikimedia outage must not cost the derived

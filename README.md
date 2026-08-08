@@ -83,7 +83,10 @@ python -m src.validate robustness      # broad/narrow dictionary variants
 ```
 
 To verify the published numbers independently, see
-[REPLICATION.md](REPLICATION.md) (a cached check takes ~5 minutes).
+[REPLICATION.md](REPLICATION.md). The public clean-room command reconstructs
+every published daily channel/composite score cell and fails on missing cells;
+the document separately identifies pipeline lanes that need non-redistributed
+source caches.
 Decision rules, append-only surfaces, and the deprecation policy live
 in [GOVERNANCE.md](GOVERNANCE.md); adding a country monitor follows
 [countries/RECIPE.md](countries/RECIPE.md).

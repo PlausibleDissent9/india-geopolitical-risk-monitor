@@ -174,12 +174,14 @@ anchors (registered before first fetch), making cross-country lines
 comparable by construction; a registered three-language audit
 (Hindi, Urdu, Chinese) of the index's English bias is in collection.
 
-**A reproduction guarantee.** A fresh clone rebuilds every published
-number offline from committed raw data, byte-exact wherever inputs are
-committed and within a documented 0.06 band on bootstrap fields whose
-market inputs cannot be redistributed; the check runs monthly in CI,
-and a public corrections ledger records every error caught, including
-those that never reached the site.
+**A bounded reproduction guarantee.** A fresh clone independently rebuilds
+every published daily channel/composite score cell from the public codebook and
+shares file, with complete denominator coverage and exact published-precision
+agreement; the check runs monthly in CI. This does not recreate acquisition,
+receipts, event studies, or market-derived outputs. Exact market-input vintages
+and some source evidence are not redistributed, so those lanes are excluded
+rather than passed under a tolerance. The public corrections ledger records
+errors caught, including those that never reached the site.
 
 ## 8. Conclusion [YOUR VOICE]
 

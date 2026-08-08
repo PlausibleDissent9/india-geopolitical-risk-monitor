@@ -10,7 +10,8 @@ labels: adversarial-review
 
 **Your method**
 (Code, query, diff, or dated episode list — enough for us to rerun it.
-`scripts/reproduce.sh --use-cache` runs in ~5 minutes with no credentials.)
+`scripts/reproduce.sh --public` performs the rights-safe clean-room score
+reconstruction; `REPLICATION.md` states exactly what it proves and excludes.)
 
 **Your result**
 (What you found, with numbers.)

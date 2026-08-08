@@ -65,10 +65,17 @@ where the known soft spots are — before you find them.*
 
 ```
 git clone https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor
-cd india-geopolitical-risk-monitor && pip install -r requirements.txt
-python -m pytest            # the full test suite, including honesty guards
-python -m src.run_daily     # rebuild today from the committed raw stores
+cd india-geopolitical-risk-monitor
+bash scripts/reproduce.sh --public
 ```
+
+This clean-room command runs the non-live gates and independently reconstructs
+every published daily channel/composite score cell from the public codebook and
+shares, refusing a missing cell or numerical disagreement. It does **not**
+recreate acquisition, receipts, event studies, or market-derived outputs. Exact
+market-input vintages and some source evidence are not redistributed; the
+separate owner-cache and new-vintage paths, with their limits, are documented in
+`REPLICATION.md`.
 
 Every payload the site serves is a committed file; the site fetches
 nothing at read time from anywhere but its own origin (strict CSP,

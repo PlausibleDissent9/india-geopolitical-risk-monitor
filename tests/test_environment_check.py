@@ -43,6 +43,29 @@ def test_reproduction_environment_changes_trigger_a_proof_run() -> None:
         assert f'      - "{required_path}"' in workflow
 
 
+def test_public_workflow_uses_the_rights_safe_reconstruction_path() -> None:
+    workflow = REPRODUCE_WORKFLOW.read_text(encoding="utf-8")
+    assert "run: bash scripts/reproduce.sh --public" in workflow
+    assert "run: bash scripts/reproduce.sh --use-cache" not in workflow
+
+    script = REPRODUCE.read_text(encoding="utf-8")
+    public_environment = script.index('if [[ "$MODE" == "--public" ]]')
+    test_run = script.index('pytest -q -m "not live"')
+    public_start = script.index('if [[ "$MODE" == "--public" ]]', test_run)
+    public_exit = script.index("  exit 0", public_start)
+    cache_pipeline = script.index('REBUILD_MARK="$WORK/rebuild_start"')
+    public_block = script[public_start:public_exit]
+    assert "src.blind_replicator --check" in public_block
+    assert "src.run_daily" not in public_block
+    assert public_exit < cache_pipeline
+
+    offline_export = script.index("export IGRM_OFFLINE=1", public_environment)
+    assert public_environment < offline_export < test_run < public_start
+    assert "IGNORE_TAIL_DAYS" not in script
+    assert "MARKET_TOL" not in script
+    assert "list lengths" in script
+
+
 def test_environment_check_refuses_a_floating_requirement(tmp_path: Path) -> None:
     requirements = tmp_path / "requirements.txt"
     requirements.write_text("anthropic>=0.116,<1\n", encoding="utf-8")

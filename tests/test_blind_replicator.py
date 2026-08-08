@@ -11,8 +11,10 @@ from __future__ import annotations
 
 import ast
 import re
+import sys
 from pathlib import Path
 
+import pytest
 from src import blind_replicator as br
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,18 +62,61 @@ def test_it_reads_only_published_files():
 def test_the_published_series_is_exactly_reproducible():
     """The headline claim, recomputed every run rather than remembered.
 
-    Measured 2026-08-07: 19830 of 19830 published values, from
-    docs/data/shares.csv and the transform as stated in the codebook,
-    with no access to src/scores.py.
+    Every published value must be reconstructed from docs/data/shares.csv
+    and the transform as stated in the codebook, with no access to the
+    production score implementation.
     """
     results = br.run_all()
     best = results[0]
+    n_published = sum(len(row) for row in br.read_published().values())
+    assert best["n_published"] == n_published
+    assert best["n_compared"] == n_published
+    assert best["n_missing"] == 0
     assert best["agreement"] >= br.MIN_AGREEMENT, (
         f"an independent rebuild from the published codebook reproduces "
         f"{best['n_agree']}/{best['n_compared']} values "
         f"({best['agreement']:.4%}); the floor is {br.MIN_AGREEMENT:.4%}. "
         "Either the pipeline changed without the codebook changing, or "
         "the codebook was never sufficient to reproduce the number.")
+
+
+def test_missing_published_cells_cannot_hide_behind_perfect_overlap() -> None:
+    day = br.date(2026, 8, 8)
+    result = br.compare(
+        {day: {"pakistan_west": 50.0}},
+        {day: {"pakistan_west": 50.0, "china_east": 60.0}},
+    )
+    assert result["n_published"] == 2
+    assert result["n_compared"] == 1
+    assert result["n_missing"] == 1
+    assert result["n_agree"] == 1
+    assert result["agreement"] == 0.5
+    assert result["missing_examples"] == ["2026-08-08 china_east"]
+
+
+def test_check_write_refuses_to_publish_a_partial_result(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    results = br.run_all()
+    partial = {**results[0], "n_missing": 1, "missing_examples": ["x y"]}
+    monkeypatch.setattr(br, "run_all", lambda: [partial, *results[1:]])
+    monkeypatch.setattr(br, "coverage_gap", lambda: [])
+    monkeypatch.setattr(br, "SITE_DATA", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["blind_replicator", "--check", "--write"])
+
+    with pytest.raises(SystemExit, match="no reconstructed value"):
+        br.main()
+    assert not (tmp_path / "replication.json").exists()
+
+
+def test_atomic_writer_leaves_only_complete_json(tmp_path: Path) -> None:
+    target = tmp_path / "replication.json"
+    br._atomic_write_json(target, {"complete": True, "n": 19_836})
+    assert br.json.loads(target.read_text(encoding="utf-8")) == {
+        "complete": True,
+        "n": 19_836,
+    }
+    assert list(tmp_path.iterdir()) == [target]
 
 
 def test_the_floor_has_not_been_lowered():

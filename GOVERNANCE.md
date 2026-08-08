@@ -45,8 +45,9 @@ in the corrections ledger like any other.
 3. **Data revisions**: the heal window (35 days) is the only sanctioned
    revision mechanism; committed store and outputs pair at each daily
    data commit. Vintage differences between a committed record and a
-   fresh rebuild are documented behavior, not errors
-   (`scripts/reproduce.sh` states the tolerance and the reason).
+   fresh source execution are reported as a different vintage, never
+   absorbed into an “exact” tolerance. The public score reconstruction
+   and owner-only cache audit have separate scopes in `REPLICATION.md`.
 
 ## Deprecation policy (project level)
 

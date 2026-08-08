@@ -25,8 +25,10 @@ India_all finding Spearman rho = 0.256 in 106 month-over-month changes
 but substantial non-redundancy; a 1979–2016 historical proxy on a different construct
 whose border channels replicate the live series at r ≈ 0.87 and whose
 two weaker channels are refused publication by a pre-registered
-threshold; full reproducibility from a clean checkout in about five
-minutes. State plainly what it measures — press attention — and what
+threshold; and exact clean-room reconstruction of every published daily
+channel/composite score cell from rights-safe public inputs. State plainly
+that this is not full upstream-pipeline reproduction: exact market-input
+vintages and some acquisition evidence are not redistributed. State plainly what
 it does not: risk, probability, or any forecast.**]**
 
 **Keywords:** geopolitical risk, media salience, text-as-data, GDELT,
@@ -55,7 +57,9 @@ using, each defensible:
   hit-rate computed only after the episode list was frozen; (iii)
   independent-corpus and independent-index validation; (iv) a
   registered historical proxy back to 1979 that publishes its own
-  failures; (v) complete reproducibility, including the raw store.
+  failures; (v) exact public score-transform reconstruction with explicit
+  disclosure of acquisition and market-input lanes that require restricted
+  or non-redistributed evidence.
 - The honest frame: this measures how loudly the world's press
   discusses India-relevant geopolitics, and nothing more.**]**
 
@@ -305,19 +309,20 @@ is paid for. That null is published in the payload and on the site.
 
 ## 5. Reproducibility and evidence
 
-**Reproduction.** `scripts/reproduce.sh --use-cache` clones the
-repository, refuses all data acquisition (network *and* cache),
-rebuilds every published payload from the committed raw store, and
-diffs against the published versions — about five minutes, no
-credentials. Market-dependent outputs compare within a documented
-±0.06 band because their Yahoo Finance inputs cannot be
-redistributed; everything with committed inputs matches to 1e-6.
+**Reproduction.** `scripts/reproduce.sh --public` creates a clean pinned
+environment and independently reconstructs every published daily channel and
+composite score cell from the public codebook and shares file. A disagreement
+or missing cell fails; the current denominator and result are published in
+`docs/data/replication.json`. This is deliberately narrower than a full
+upstream-pipeline reproduction. Exact Yahoo market-input vintages and some raw
+acquisition evidence are not redistributed, and no tolerance band is described
+as exact replication. An authorized owner cache audit is a separate mode.
 
-**Article-level evidence.** Each published day enumerates the matched
-articles from the same corpus the score was computed from — on
-2026-08-05, 119,349 documents were scanned and every matched article
-is listed with its lane (counted by the estimator, present in the
-day's wider corpus, or retrieved by relevance search).
+**Article-level evidence.** The receipts surface publishes a bounded,
+lane-labelled set of title-key representatives from the scored and extended
+corpus lanes, plus separately identified query-matched supplements when
+available. It also publishes the pre-collapse URL and sampling-depth counts;
+the displayed list is not a complete census of every matched article.
 
 **Operational transparency.** A public status page reports each
 source's data age against stated freshness windows, and the morning

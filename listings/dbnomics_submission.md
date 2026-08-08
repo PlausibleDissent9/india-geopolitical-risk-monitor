@@ -17,8 +17,10 @@ channel's own trailing 730 days, 0–100.
 English news coverage matching registered channel dictionaries. Not a
 risk measure; no forecasts. Methodology, validation record (24/29
 pre-registered episodes), sampling bands, and per-article receipts
-are public; the pipeline reproduces from a clean checkout in ~5
-minutes (https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/REPLICATION.md).
+are public. A clean-room public command reconstructs every published daily
+channel/composite score cell exactly; acquisition, receipts and market-derived
+outputs have separately disclosed evidence/rights limits
+(https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/REPLICATION.md).
 
 **Stability commitment:** field names frozen under a versioned public
 API contract (https://igrm.in/data/api_contract.json) with a stated

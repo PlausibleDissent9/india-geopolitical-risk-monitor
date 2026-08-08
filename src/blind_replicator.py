@@ -73,7 +73,9 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import sys
+import tempfile
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -100,12 +102,32 @@ PRECISION = 1
 # would grow first if the transform ever drifted.
 NEAR = 0.05
 
-# Measured: 19830 of 19830. An exact reproduction is either true or it
-# is not, so the floor is exact. A legitimate methodology change WILL
-# break this, and that is the point -- the codebook is then obliged to
+# Every currently published cell must reproduce. An exact reconstruction
+# is either true or it is not, so the floor is exact. A legitimate
+# methodology change WILL break this, and that is the point -- the codebook is obliged to
 # change with the method before the lane goes green again. Lowering this
 # to clear a red run is the exact failure this module exists to expose.
 MIN_AGREEMENT = 1.0
+
+
+def _atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
+    """Durably replace one public receipt without exposing partial JSON."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    temp = Path(temp_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, indent=1)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp, path)
+        directory_fd = os.open(path.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
+    finally:
+        temp.unlink(missing_ok=True)
 
 
 # --------------------------------------------------------------------
@@ -211,22 +233,38 @@ def replicate(shares: dict[str, dict[date, float]],
 
 def compare(mine: dict[date, dict[str, float]],
             theirs: dict[date, dict[str, float]]) -> dict[str, Any]:
-    """Agreement on the days and columns BOTH produced."""
-    n = 0
+    """Agreement over every published cell, including missing rebuild cells."""
+    n_published = 0
+    n_compared = 0
     agree = 0
     worst = 0.0
     worst_at: str | None = None
-    per_col: dict[str, dict[str, float]] = {}
+    missing: list[str] = []
+    per_col: dict[str, dict[str, Any]] = {}
 
     for d, published in theirs.items():
         got = mine.get(d, {})
         for col, want in published.items():
+            n_published += 1
+            slot = per_col.setdefault(
+                col,
+                {
+                    "n_published": 0,
+                    "n_compared": 0,
+                    "n_missing": 0,
+                    "agree": 0,
+                    "max_diff": 0.0,
+                },
+            )
+            slot["n_published"] += 1
             if col not in got:
+                slot["n_missing"] += 1
+                if len(missing) < 25:
+                    missing.append(f"{d} {col}")
                 continue
             diff = abs(got[col] - want)
-            n += 1
-            slot = per_col.setdefault(col, {"n": 0, "agree": 0, "max_diff": 0.0})
-            slot["n"] += 1
+            n_compared += 1
+            slot["n_compared"] += 1
             # Judged at the precision actually published.
             if round(got[col], PRECISION) == want:
                 agree += 1
@@ -236,13 +274,21 @@ def compare(mine: dict[date, dict[str, float]],
                 worst, worst_at = diff, f"{d} {col}"
 
     return {
-        "n_compared": n,
+        "n_published": n_published,
+        "n_compared": n_compared,
+        "n_missing": n_published - n_compared,
+        "missing_examples": missing,
         "n_agree": agree,
-        "agreement": round(agree / n, 6) if n else 0.0,
+        "agreement": round(agree / n_published, 6) if n_published else 0.0,
         "max_abs_diff": round(worst, 4),
         "max_abs_diff_at": worst_at,
-        "per_column": {k: {**v, "agreement": round(v["agree"] / v["n"], 6)}
-                       for k, v in sorted(per_col.items())},
+        "per_column": {
+            k: {
+                **v,
+                "agreement": round(v["agree"] / v["n_published"], 6),
+            }
+            for k, v in sorted(per_col.items())
+        },
     }
 
 
@@ -285,6 +331,7 @@ def coverage_gap() -> list[str]:
 
 def main() -> None:
     check = "--check" in sys.argv
+    write = "--write" in sys.argv or not check
     results = run_all()
     best = results[0]
     gap = coverage_gap()
@@ -321,12 +368,12 @@ def main() -> None:
                 "were entirely an artifact of comparing different "
                 "precisions."),
             "finding": (
-                f"{best['n_agree']} of {best['n_compared']} published "
+                f"{best['n_agree']} of {best['n_published']} published "
                 "values are reproduced exactly, by code that has never "
                 "read the pipeline, from the codebook and the shares "
                 "file alone."
-                if best["agreement"] >= 1.0 else
-                f"{best['n_agree']} of {best['n_compared']} reproduced; "
+                if best["agreement"] >= 1.0 and not best["n_missing"] else
+                f"{best['n_agree']} of {best['n_published']} reproduced; "
                 "the series is NOT currently reproducible from its own "
                 "documentation."),
             "generated": datetime.now(timezone.utc).strftime(
@@ -334,6 +381,10 @@ def main() -> None:
         },
         "best": best,
         "coverage": {
+            "n_published_values": best["n_published"],
+            "n_values_compared": best["n_compared"],
+            "n_published_values_without_a_reconstruction": best["n_missing"],
+            "missing_value_examples": best["missing_examples"],
             "n_published_days_without_a_shares_row": len(gap),
             "days": gap[:25],
             "why": (
@@ -386,21 +437,9 @@ def main() -> None:
         for a in payload["ambiguities_in_the_codebook"]:
             a["margin_over_next"] = margin
 
-    # --check inspects without publishing. It used to write the payload
-    # anyway, which mutated a reproducer's checkout: the replication
-    # walkthrough agent ran Path 0 as documented and then could not
-    # `git checkout` other commits because a tracked file had changed
-    # under it -- a wall the document never warns about, hit by the one
-    # audience this module exists to serve. Same defect as decisions.py's
-    # --check, found the same day.
-    if not check:
-        SITE_DATA.mkdir(parents=True, exist_ok=True)
-        (SITE_DATA / "replication.json").write_text(
-            json.dumps(payload, indent=1), encoding="utf-8")
-
     print(f"[blind_replicator] best: {best['percentile_convention']} / "
           f"{best['window_convention']} -- "
-          f"{best['n_agree']}/{best['n_compared']} values agree "
+          f"{best['n_agree']}/{best['n_published']} values agree "
           f"({best['agreement']:.4%}), max diff {best['max_abs_diff']} "
           f"at {best['max_abs_diff_at']}")
     for r in results[1:]:
@@ -420,6 +459,13 @@ def main() -> None:
             "their published input entirely. publish_shares runs under "
             "continue-on-error, which is exactly how this happens quietly.")
 
+    if check and best["n_missing"]:
+        raise SystemExit(
+            f"[blind_replicator] {best['n_missing']} published values have "
+            "no reconstructed value. Agreement over the surviving overlap "
+            "is not a full-series replication; first missing cells "
+            f"{best['missing_examples'][:3]}.")
+
     if check and best["agreement"] < MIN_AGREEMENT:
         raise SystemExit(
             f"[blind_replicator] an independent rebuild from the published "
@@ -427,6 +473,13 @@ def main() -> None:
             f"values (floor {MIN_AGREEMENT:.4%}). Either the pipeline "
             f"changed without the codebook changing, or the codebook was "
             f"never sufficient. Do not lower MIN_AGREEMENT to clear this.")
+
+    # --check inspects without publishing unless --write is also present.
+    # The combined form validates first and promotes only a passing result,
+    # which lets the daily lane refresh the public receipt atomically without
+    # ever publishing a degraded or partial reconstruction.
+    if write:
+        _atomic_write_json(SITE_DATA / "replication.json", payload)
 
 
 if __name__ == "__main__":

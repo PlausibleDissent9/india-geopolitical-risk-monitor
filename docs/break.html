@@ -61,10 +61,14 @@ them.</b> Finding a real error earns a permanent entry in the
 
 <div class="falsify">
   <h3>1. Non-reproducibility</h3>
-  <p>Claim: every published number is a deterministic function of the committed raw data.</p>
-  <p class="how">Break it: clone the repo, run <code>scripts/reproduce.sh --use-cache</code>
-  (~5 minutes, no credentials), and produce a diff outside the documented tolerances.
-  The procedure and every tolerance's reason: <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/REPLICATION.md">REPLICATION.md</a>.</p>
+  <p>Claim: every published daily channel and composite score cell can be
+  reconstructed exactly from the public codebook and shares file, with no
+  missing cells hidden by an overlap-only percentage.</p>
+  <p class="how">Break it: clone the repo and run
+  <code>scripts/reproduce.sh --public</code>. A single numerical disagreement or
+  missing reconstructed cell fails. Market-dependent and acquisition outputs are
+  explicitly outside this rights-safe claim; the exact scope and separate
+  cache-dependent path are in <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/REPLICATION.md">REPLICATION.md</a>.</p>
 </div>
 
 <div class="falsify">
