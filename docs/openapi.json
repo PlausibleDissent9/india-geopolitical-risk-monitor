@@ -1039,11 +1039,11 @@
   "/data/multilingual.json": {
    "get": {
     "operationId": "get_data_multilingual_json",
-    "description": "English-bias audit: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Measures the instrument's bias; association, not risk.",
+    "description": "English-language coverage comparison: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Quantifies language-scope differences for completed series; it does not establish which corpus is correct, represent all Indian-language news, validate the index, or change any score.",
     "x-igrm-stability": "stable",
     "responses": {
      "200": {
-      "description": "English-bias audit: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Measures the instrument's bias; association, not risk.",
+      "description": "English-language coverage comparison: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Quantifies language-scope differences for completed series; it does not establish which corpus is correct, represent all Indian-language news, validate the index, or change any score.",
       "content": {
        "application/json": {
         "schema": {

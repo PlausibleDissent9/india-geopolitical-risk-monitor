@@ -144,20 +144,26 @@ than chosen by hand, correlated against the same daily shares. Day-to-day
 <p class="chart-note" id="hi-caveat"></p>
 </section>
 
-<section id="ml-section" hidden>
-<h2>Anglophone-lens audit (V5)</h2>
-<p class="chart-note">The instrument reads English coverage; this audit measures what that
-lens costs. Per channel: the weekly percentile of each registered non-English language's
-own-language coverage against its own history, beside the English percentile. Divergence
-is English minus the mean non-English percentile — a positive number means the English
-press ran hotter than the non-English press that week. This measures the instrument's
-bias; it changes no score.</p>
-<table id="ml-table">
-  <thead><tr><th>Channel</th><th class="num">latest divergence (pctl pts)</th>
-  <th class="num">mean |divergence|, 26 wks</th><th class="num">weeks compared</th></tr></thead>
-  <tbody></tbody>
-</table>
-<p class="kv" id="ml-langs"></p>
+<section id="ml-section">
+<h2>English-language coverage comparison (V5)</h2>
+<p class="chart-note">The production instrument reads English coverage. This comparison
+asks how its weekly percentile differs from selected registered-language corpora, each
+ranked against its own history. Divergence is English minus the mean of the non-English
+series available for that channel: positive means the English percentile was higher;
+negative means it was lower. This does not establish which language is correct, represent
+the full Indian news ecosystem, validate the index, or change any score.</p>
+<p id="ml-coverage" class="chart-note"><strong>Loading coverage…</strong></p>
+<div class="table-scroll"><table id="ml-table">
+  <thead><tr><th>Channel</th><th>Languages compared</th><th>Latest week</th>
+  <th class="num">English pctl</th><th class="num">non-English mean</th>
+  <th class="num">English − non-English</th>
+  <th class="num">mean |gap|, last 26 wks</th><th class="num">weeks</th></tr></thead>
+  <tbody><tr><td colspan="8" class="empty">Loading language comparison…</td></tr></tbody>
+</table></div>
+<p class="kv" id="ml-langs">Registered languages load from the payload.</p>
+<noscript><p class="chart-note">This table is rendered from
+<a href="data/multilingual.json">data/multilingual.json</a>. JavaScript is disabled;
+read the self-describing payload directly.</p></noscript>
 </section>
 
 <footer>
@@ -169,6 +175,64 @@ bias; it changes no score.</p>
 "use strict";
 async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+async function renderMultilingual() {
+  // This evidence layer is independent of validation.json. A failure in
+  // another payload must not leave this section stuck on "Loading".
+  const ml = await j("data/multilingual.json");
+  if (ml && ml.channels && Object.keys(ml.channels).length) {
+    const meta = ml._meta || {};
+    const coverage = meta.coverage || {};
+    const languageLabels = meta.languages || {};
+    const coverageEl = document.getElementById("ml-coverage");
+    const coverageLead = coverage.complete ? "Coverage is complete: " : "Coverage is partial: ";
+    coverageEl.innerHTML = "<strong>" + coverageLead + "</strong>" +
+      esc(coverage.n_published_series ?? "—") + " of " +
+      esc(coverage.n_expected_series ?? "—") + " registered channel-language series, across " +
+      esc(coverage.n_published_channels ?? "—") + " of " +
+      esc(coverage.n_expected_channels ?? "—") + " channels. " +
+      esc(coverage.interpretation || "Only completed series are shown; missing series are not zeros.");
+    const tb = document.querySelector("#ml-table tbody");
+    tb.innerHTML = "";
+    const fmt = (x) => Number.isFinite(Number(x)) ? Number(x).toFixed(1) : "—";
+    for (const [ch, d] of Object.entries(ml.channels)) {
+      const langCodes = d.languages_compared || Object.keys(d.lang_pct || {});
+      const latest = d.weeks.length - 1;
+      const nonEnglish = langCodes
+        .map((lg) => d.lang_pct[lg][latest])
+        .filter((x) => Number.isFinite(Number(x)));
+      const nonEnglishMean = nonEnglish.length
+        ? nonEnglish.reduce((a, x) => a + Number(x), 0) / nonEnglish.length
+        : null;
+      const tail = d.divergence.slice(-26).filter((x) => Number.isFinite(Number(x)));
+      const meanAbs = tail.reduce((a, x) => a + Math.abs(x), 0) / tail.length;
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + esc(igrmLabel(ch)) + "</td><td>" +
+        esc(langCodes.map((lg) => languageLabels[lg] || lg).join(", ")) +
+        "</td><td>" + esc(d.weeks[latest] || "—") + '</td><td class="num">' +
+        esc(fmt(d.english_pct[latest])) + '</td><td class="num">' +
+        esc(fmt(nonEnglishMean)) + '</td><td class="num">' +
+        esc(fmt(d.latest_divergence)) + '</td><td class="num">' +
+        esc(fmt(meanAbs)) + '</td><td class="num">' + esc(d.weeks.length) + "</td>";
+      tb.appendChild(tr);
+    }
+    const langs = Object.values(languageLabels);
+    document.getElementById("ml-langs").textContent = langs.length
+      ? "Registered languages: " + langs.join(", ") +
+        ". Registration defines the intended audit; each row names the subset currently complete. " +
+        "Weekly means; every language is ranked against its own history only."
+      : "";
+  } else {
+    const coverageEl = document.getElementById("ml-coverage");
+    coverageEl.className = "verdict-fail";
+    coverageEl.textContent =
+      "Language-comparison payload failed to load; no result is displayed. See data/multilingual.json.";
+    document.querySelector("#ml-table tbody").innerHTML =
+      '<tr><td colspan="8" class="empty">Comparison unavailable.</td></tr>';
+  }
+}
+
+renderMultilingual();
 
 (async () => {
   const v = await j("data/validation.json");
@@ -410,28 +474,6 @@ function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
       (hi._meta.what_this_does_not_say || "");
   }
 
-  // Anglophone-lens audit: renders only when the multilingual payload
-  // exists with at least one channel -- absent stays absent, honestly.
-  const ml = await j("data/multilingual.json");
-  if (ml && ml.channels && Object.keys(ml.channels).length) {
-    document.getElementById("ml-section").hidden = false;
-    const tb = document.querySelector("#ml-table tbody");
-    for (const [ch, d] of Object.entries(ml.channels)) {
-      const tail = d.divergence.slice(-26);
-      const meanAbs = tail.reduce((a, x) => a + Math.abs(x), 0) / tail.length;
-      const tr = document.createElement("tr");
-      tr.innerHTML = "<td>" + esc(igrmLabel(ch)) + '</td><td class="num">' +
-        esc(d.latest_divergence.toFixed(1)) + '</td><td class="num">' +
-        esc(meanAbs.toFixed(1)) + '</td><td class="num">' +
-        esc(d.weeks.length) + "</td>";
-      tb.appendChild(tr);
-    }
-    const langs = Object.values((ml._meta && ml._meta.languages) || {});
-    document.getElementById("ml-langs").textContent = langs.length
-      ? "Registered languages: " + langs.join(", ") +
-        ". Weekly means; each language ranked against its own history only."
-      : "";
-  }
 })();
 </script>
 <script src="reveal.js?v=33b267c3"></script>

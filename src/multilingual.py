@@ -9,8 +9,9 @@ days; the published number per channel is the divergence between the
 English percentile and the mean non-English percentile, weekly. A
 large positive divergence means the story is louder in English than in
 the registered languages; negative means the non-English press is
-carrying it harder. The audit measures the instrument's own bias and
-never enters the composite.
+carrying it harder. This is a language-scope comparison, not evidence
+that one language is correct or a representative census of Indian news;
+it never enters the composite.
 
 Store: data/raw/multilingual_salience.csv (date x channel_lang)
 Site:  docs/data/multilingual.json
@@ -210,13 +211,18 @@ def publish() -> None:
     eng = build_scores(vol)
 
     out: dict = {"_meta": {
-        "what": ("English-bias audit: per-language percentile of each "
+        "what": ("English-language coverage comparison: per-language "
+                 "percentile of each "
                  "channel's own-language coverage history vs the English "
                  "percentile, weekly means; divergence is English minus "
-                 "mean non-English. Registered in languages.json. Measures "
-                 "the instrument's bias; association, not risk."),
+                 "mean non-English. Registered in languages.json. "
+                 "Quantifies language-scope differences for completed "
+                 "series; it does not establish which corpus is correct, "
+                 "represent all Indian-language news, validate the index, "
+                 "or change any score."),
         "generated": date.today().isoformat(),
         "languages": {k: v["label"] for k, v in langs.items()},
+        "registered_channels": {k: v["label"] for k, v in dicts.items()},
     }, "channels": {}}
 
     for ch in dicts:
@@ -245,9 +251,30 @@ def publish() -> None:
             "weeks": [d.date().isoformat() for d in joint.index],
             "english_pct": joint["eng"].tolist(),
             "lang_pct": {lg: joint[lg].tolist() for lg in lang_pcts},
+            "languages_compared": list(lang_pcts),
+            "languages_pending": [lg for lg in langs if lg not in lang_pcts],
             "divergence": div.tolist(),
             "latest_divergence": float(div.iloc[-1]),
         }
+    expected = set(expected_keys())
+    published = {
+        f"{ch}_{lg}"
+        for ch, block in out["channels"].items()
+        for lg in block["languages_compared"]
+    }
+    out["_meta"]["coverage"] = {
+        "n_expected_series": len(expected),
+        "n_published_series": len(published),
+        "n_expected_channels": len(dicts),
+        "n_published_channels": len(out["channels"]),
+        "complete": published == expected,
+        "missing_series": sorted(expected - published),
+        "interpretation": (
+            "Only completed channel-language series appear. Missing series "
+            "are pending, not zero, and published channels are not an "
+            "index-wide result until coverage is complete."
+        ),
+    }
     SITE_JSON.write_text(json.dumps(out), encoding="utf-8")
     print("[multilingual] wrote multilingual.json:",
           {k: v["latest_divergence"] for k, v in out["channels"].items()})

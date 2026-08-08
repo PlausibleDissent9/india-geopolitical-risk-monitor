@@ -21,11 +21,7 @@ JS_ARTIFACT = re.compile(r"['\"]\s*\+|\$\d|\{|\}")
 
 # Payloads a page fetches defensively and guards for absence. Each entry
 # is a promise that the page degrades rather than breaks without it.
-ALLOWED_ABSENT_FETCHES = {
-    "data/multilingual.json": (
-        "V5 is still backfilling; validation.html guards on falsy and "
-        "leaves its section hidden"),
-}
+ALLOWED_ABSENT_FETCHES: dict[str, str] = {}
 
 
 def _internal_refs(html: str) -> list[str]:
@@ -78,6 +74,13 @@ def test_declared_absent_fetches_carry_a_reason():
     for path, reason in ALLOWED_ABSENT_FETCHES.items():
         assert isinstance(reason, str) and len(reason) > 20, (
             f"{path} is allowed absent without a stated reason")
+
+
+def test_declared_absent_fetches_are_actually_absent():
+    landed = [path for path in ALLOWED_ABSENT_FETCHES if (DOCS / path).exists()]
+    assert not landed, (
+        f"these defensive fetches now exist and must leave the exemption "
+        f"list: {landed}")
 
 
 def test_the_404_page_uses_root_absolute_links():

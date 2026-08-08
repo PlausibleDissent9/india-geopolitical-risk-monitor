@@ -1,11 +1,39 @@
 {
  "_meta": {
-  "what": "English-bias audit: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Measures the instrument's bias; association, not risk.",
-  "generated": "2026-08-07",
+  "what": "English-language coverage comparison: per-language percentile of each channel's own-language coverage history vs the English percentile, weekly means; divergence is English minus mean non-English. Registered in languages.json. Quantifies language-scope differences for completed series; it does not establish which corpus is correct, represent all Indian-language news, validate the index, or change any score.",
+  "generated": "2026-08-08",
   "languages": {
    "hin": "Hindi",
    "urd": "Urdu",
    "zho": "Chinese"
+  },
+  "registered_channels": {
+   "pakistan_west": "Pakistan / Western Border",
+   "china_east": "China / Eastern Border",
+   "gulf_energy": "Gulf & Energy Security",
+   "us_trade": "US & Trade Policy",
+   "shipping": "Shipping & Chokepoints"
+  },
+  "coverage": {
+   "n_expected_series": 15,
+   "n_published_series": 4,
+   "n_expected_channels": 5,
+   "n_published_channels": 2,
+   "complete": false,
+   "missing_series": [
+    "china_east_urd",
+    "china_east_zho",
+    "gulf_energy_hin",
+    "gulf_energy_urd",
+    "gulf_energy_zho",
+    "shipping_hin",
+    "shipping_urd",
+    "shipping_zho",
+    "us_trade_hin",
+    "us_trade_urd",
+    "us_trade_zho"
+   ],
+   "interpretation": "Only completed channel-language series appear. Missing series are pending, not zero, and published channels are not an index-wide result until coverage is complete."
   },
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
@@ -1866,6 +1894,12 @@
      88.2
     ]
    },
+   "languages_compared": [
+    "hin",
+    "urd",
+    "zho"
+   ],
+   "languages_pending": [],
    "divergence": [
     -21.7,
     -24.1,
@@ -3354,6 +3388,13 @@
      69.3
     ]
    },
+   "languages_compared": [
+    "hin"
+   ],
+   "languages_pending": [
+    "urd",
+    "zho"
+   ],
    "divergence": [
     -50.5,
     -56.5,
