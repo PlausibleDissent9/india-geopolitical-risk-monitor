@@ -1,23 +1,39 @@
 # Security policy
 
-IGRM is a static open-data site (GitHub Pages) with a read-only public
-surface: no accounts, no cookies, no server-side code, no collection of
-visitor data. The attack surface is correspondingly small, and is kept
-that way deliberately:
+IGRM's analytical surface is a static GitHub Pages site. It has no public
+account system or server-side application runtime. That reduces one class of
+attack surface; it does not make the project secure by declaration.
 
-- **Transport:** HTTPS only (GitHub Pages TLS).
-- **Content Security Policy** on every page: scripts restricted to
-  same-origin plus cdnjs (Chart.js, pinned with a subresource-integrity
-  hash); no third-party analytics or trackers of any kind.
-- **Write access:** all authoring flows go through GitHub's own
-  authentication (2FA-capable, fully audited); the site itself has no
-  login surface to attack.
-- **Supply chain:** Python dependencies are pinned exactly and updated
-  via Dependabot; CI (ruff, mypy, pytest) gates every change.
-- **Data integrity:** the pipeline refuses to publish stale or partial
-  data, and every published file embeds its generation date.
+The machine-verifiable repository baseline is registered in
+`governance/security_integrity_registry.json` and published, with explicit
+limitations, at `docs/data/security_integrity.json`:
+
+- **Workflow supply chain:** external actions use reviewed, immutable commit
+  identities rather than moving version tags.
+- **History and evidence:** every workflow checkout fetches the history needed
+  to verify frozen registrations.
+- **Token scope:** each workflow declares top-level permissions; only a small,
+  registered set of dispatching lanes may request `actions: write`.
+- **Publisher parity:** every publishing lane installs both pinned runtime and
+  development requirements.
+- **Credential isolation:** checkout does not persist a Git credential. The
+  repository write token is passed only to the final publication step and is
+  removed from the environment before repository code or the candidate gate
+  executes.
+- **Exact-candidate gate:** after every rebase and before every bot push, the
+  shared publisher runs the full committed CI gate against the exact candidate
+  commit. A red candidate is refused even when that loses a scheduled update.
+- **Browser boundary:** pages carry a Content Security Policy; the project does
+  not intentionally include third-party behavioral analytics or ad trackers.
+
+These are repository controls, not a penetration test, security audit,
+certification, availability guarantee, verification of founder-device or
+GitHub-account security, or proof of branch/MFA/environment settings. See
+`design/security_integrity_plane.md` for the threat boundary and next gates.
 
 ## Reporting
 
-Found something anyway? Email ishankrishna9@gmail.com with details.
-Good-faith reports are welcome and will be acknowledged.
+Found something? Email ishankrishna9@gmail.com with reproduction details and
+the affected URL or commit. Good-faith reports are welcome. No response-time
+SLA is claimed yet; acknowledgements and remediation timing will be measured
+before any public service commitment is adopted.

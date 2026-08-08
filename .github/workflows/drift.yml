@@ -33,11 +33,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Compute coverage drift
         run: python -m src.validate drift
       - name: S5 Media Cloud cross-validation (weekly; fail-closed sans key)
@@ -72,6 +75,8 @@ jobs:
           python -m src.stamp_meta || true
           python -m src.stamp_assets || true
       - name: Commit
+        env:
+          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"

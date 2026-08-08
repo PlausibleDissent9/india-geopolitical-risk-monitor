@@ -124,3 +124,23 @@ def test_a_failed_push_still_fails_the_lane():
     text = SCRIPT.read_text(encoding="utf-8")
     assert re.search(r'pushed"?\s*!=\s*"1"', text) and "exit 1" in text, (
         "publish_push.sh can exit 0 without having pushed")
+
+
+def test_every_rebased_candidate_runs_the_committed_gate_before_push():
+    """Bot pushes do not trigger ordinary push CI. The shared lane must
+    therefore test the exact post-rebase commit itself, and a red candidate
+    must exit rather than trading integrity for the day's availability."""
+
+    text = SCRIPT.read_text(encoding="utf-8")
+    assert "bash scripts/gate.sh --committed" in text
+    assert "SECURITY REFUSAL" in text
+    assert text.count("if ! gate_candidate; then exit 1; fi") == 2
+    assert "unset IGRM_PUBLISH_TOKEN" in text
+    assert not re.search(r"^\s*if git push", text, re.M)
+    pushes = list(re.finditer(r"^\s*if git_push", text, re.M))
+    assert len(pushes) == 2
+    for push in pushes:
+        preceding = text[max(0, push.start() - 120) : push.start()]
+        assert "gate_candidate" in preceding, (
+            "a push path exists without an immediately preceding committed gate"
+        )

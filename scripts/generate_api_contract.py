@@ -24,7 +24,7 @@ DOCS = ROOT / "docs"
 
 # Patch: daily_brief withdrawn with a stable-shaped tombstone and explicit
 # deprecation record.
-CONTRACT_VERSION = "2.2.8"
+CONTRACT_VERSION = "2.2.9"
 FROZEN_DATE = "2026-08-08"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:

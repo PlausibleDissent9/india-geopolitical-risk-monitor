@@ -12,17 +12,20 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Frozen validation and benchmark registrations resolve historical
           # commits. A shallow checkout makes those integrity checks fail.
           fetch-depth: 0
-      - uses: actions/setup-python@v7
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Environment matches exact pins
         run: python scripts/check_environment.py
+      - name: Security integrity plane matches the exact repository controls
+        run: python -m src.security_integrity --write && git diff --exit-code -- docs/data/security_integrity.json
       - name: Public product catalog and route floor
         run: python -m src.product_catalog --check
       - name: Knowledge replay synthetic conformance artifact is current

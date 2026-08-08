@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.8",
+  "contract_version": "2.2.9",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -935,6 +935,21 @@
     "rationale",
     "date",
     "channels"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/security_integrity.json",
+   "format": "json",
+   "description": "Static, machine-verified repository-control baseline for workflow actions, permissions, history, publisher environments and the exact post-rebase publication gate; not a penetration test or security certification.",
+   "frozen_fields": [
+    "_meta",
+    "controls",
+    "default_policy",
+    "limitations",
+    "publishing_lanes",
+    "scope",
+    "status"
    ],
    "stability": "stable"
   },

@@ -68,13 +68,14 @@ jobs:
     # finish.
     timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v7
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Idempotence guard (multiple shots, at most one publish)
         id: guard
         # Two defects fixed 2026-08-08 after external review (Codex
@@ -149,6 +150,8 @@ jobs:
           python -m src.stamp_assets || true
       - name: Commit and push
         if: steps.guard.outputs.skip != 'true'
+        env:
+          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"

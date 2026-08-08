@@ -48,12 +48,52 @@ set -uo pipefail
 MSG="${1:?usage: publish_push.sh <commit message>}"
 DERIVED_RE='^(docs/|data/raw/)'
 
+# Checkout uses persist-credentials:false, so build, generation and tests never
+# inherit a repository write credential through Git configuration. The token is
+# supplied only to the final workflow step. Convert it to one ephemeral Git
+# header, then remove every token variable before any repository code or test
+# process runs. AUTH_HEADER is a non-exported shell variable; only git_push's
+# single subprocess receives it.
+PUBLISH_TOKEN="${IGRM_PUBLISH_TOKEN:?IGRM_PUBLISH_TOKEN is required}"
+AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$PUBLISH_TOKEN" | base64 | tr -d '\n')"
+unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN
+
+git_push() {
+  GIT_CONFIG_COUNT=1 \
+    GIT_CONFIG_KEY_0='http.https://github.com/.extraheader' \
+    GIT_CONFIG_VALUE_0="$AUTH_HEADER" \
+    git push
+}
+
+# A GITHUB_TOKEN push does not trigger another push workflow. Before this
+# guard, a publisher could therefore rebase generated files onto a newer main
+# commit and push that exact combined tree without CI ever testing it. Checks
+# earlier in the lane were evidence about the pre-rebase tree only.
+#
+# Run the canonical CI gate against HEAD after EVERY successful rebase and
+# immediately before each push attempt. --committed ignores caches and other
+# runner state and tests the exact Git tree that will be published. If it is
+# red, losing this scheduled output is the safe result: availability pressure
+# must never become authority to publish unverified bytes.
+gate_candidate() {
+  local commit tree
+  commit=$(git rev-parse --verify HEAD) || return 1
+  tree=$(git rev-parse --verify 'HEAD^{tree}') || return 1
+  echo "[publish] verifying exact candidate commit=$commit tree=$tree"
+  if ! bash scripts/gate.sh --committed; then
+    echo "[publish] SECURITY REFUSAL: candidate failed the committed CI gate"
+    return 1
+  fi
+  echo "[publish] exact candidate passed the committed CI gate"
+}
+
 git commit -m "$MSG" || echo "[publish] no changes to commit"
 
 pushed=0
 for i in 1 2 3 4 5; do
   if git pull --rebase origin main; then
-    if git push; then pushed=1; break; fi
+    if ! gate_candidate; then exit 1; fi
+    if git_push; then pushed=1; break; fi
   else
     # Resolve only the derived paths, to this run's computation.
     if git diff --name-only --diff-filter=U | grep -qE "$DERIVED_RE"; then
@@ -68,8 +108,9 @@ for i in 1 2 3 4 5; do
       git rebase --abort || true
     elif ! GIT_EDITOR=true git rebase --continue; then
       git rebase --abort || true
-    elif git push; then
-      pushed=1; break
+    else
+      if ! gate_candidate; then exit 1; fi
+      if git_push; then pushed=1; break; fi
     fi
   fi
   echo "[publish] push attempt $i failed; retrying"

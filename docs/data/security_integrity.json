@@ -1,0 +1,82 @@
+{
+ "_meta": {
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "date": "2026-08-08",
+  "generated": "2026-08-08T00:00:00Z",
+  "license": "CC BY 4.0",
+  "schema_version": "1.0.0",
+  "source": "https://igrm.in/data/security_integrity.json",
+  "what": "Static, machine-verified repository-control baseline for workflow actions, permissions, history, publisher environments and the exact post-rebase publication gate; not a penetration test or security certification."
+ },
+ "controls": {
+  "exact_post_rebase_publication_gate": {
+   "command": "bash scripts/gate.sh --committed",
+   "policy": "refuse_publish_on_red_candidate",
+   "push_paths_verified": 2,
+   "status": "pass"
+  },
+  "full_history_for_frozen_evidence": {
+   "fetch_depth": 0,
+   "status": "pass",
+   "workflow_count": 15
+  },
+  "immutable_workflow_actions": {
+   "action_references": 30,
+   "reviewed_action_identities": 2,
+   "status": "pass"
+  },
+  "least_privilege_workflow_permissions": {
+   "actions_write_workflows": [
+    "events-backfill.yml",
+    "multilingual-backfill.yml",
+    "nowcast.yml",
+    "watchdog.yml"
+   ],
+   "status": "pass",
+   "workflow_count": 16
+  },
+  "publisher_credential_isolation": {
+   "checkout_persist_credentials": false,
+   "status": "pass",
+   "token_cleared_before_candidate_gate": true,
+   "token_scope": "final_publication_step_only"
+  },
+  "publisher_environment_parity": {
+   "publishing_lane_count": 11,
+   "requirement_sets": [
+    "requirements.txt",
+    "requirements-dev.txt"
+   ],
+   "status": "pass"
+  }
+ },
+ "default_policy": "deny",
+ "limitations": [
+  "This verifies committed repository and workflow text; it does not inspect GitHub account settings, MFA, branch protection, environment protection, token policy or hosted infrastructure.",
+  "No external penetration test, independent security audit, formal threat-model review or security certification has been completed.",
+  "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
+  "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
+  "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
+ ],
+ "publishing_lanes": [
+  "bq-backext.yml",
+  "bq-gfg-probe.yml",
+  "daily.yml",
+  "drift.yml",
+  "events-backfill.yml",
+  "morning.yml",
+  "multilingual-backfill.yml",
+  "notes.yml",
+  "nowcast.yml",
+  "permanence.yml",
+  "validate.yml"
+ ],
+ "scope": {
+  "canonical_gate_script": "scripts/gate.sh",
+  "publisher_push_script": "scripts/publish_push.sh",
+  "repository_controls_only": true,
+  "workflow_directory": ".github/workflows"
+ },
+ "status": "static_repository_control_foundation"
+}

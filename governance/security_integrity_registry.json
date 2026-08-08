@@ -1,0 +1,48 @@
+{
+ "schema_version": "1.0.0",
+ "effective": "2026-08-08",
+ "status": "repository_control_baseline",
+ "default_policy": "deny",
+ "workflow_directory": ".github/workflows",
+ "implementation": {
+  "path": "src/security_integrity.py",
+  "sha256": "6887c684df6203b2bb25101feffbfd9a92d58ac92196fd92b3cb44752231409d"
+ },
+ "actions": {
+  "actions/checkout": {
+   "sha256": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+   "version": "7.0.1"
+  },
+  "actions/setup-python": {
+   "sha256": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+   "version": "7.0.0"
+  }
+ },
+ "actions_write_workflows": [
+  "events-backfill.yml",
+  "multilingual-backfill.yml",
+  "nowcast.yml",
+  "watchdog.yml"
+ ],
+ "publisher": {
+  "workflow_marker": "publish_push.sh",
+  "required_install_fragment": "pip install -r requirements.txt -r requirements-dev.txt",
+  "required_token_fragment": "IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+  "required_gate_command": "bash scripts/gate.sh --committed",
+  "push_script": {
+   "path": "scripts/publish_push.sh",
+   "sha256": "439d26f7dce6f5273266d27894687d1176f0bae3aa9f0d8c4c5c5c8c1ed73ba5"
+  },
+  "gate_script": {
+   "path": "scripts/gate.sh",
+   "sha256": "a923a6f863d6a142ceaf8d249fa383d24da45c1aacdbf4e19ad80b172eef6ce9"
+  }
+ },
+ "limitations": [
+  "This verifies committed repository and workflow text; it does not inspect GitHub account settings, MFA, branch protection, environment protection, token policy or hosted infrastructure.",
+  "No external penetration test, independent security audit, formal threat-model review or security certification has been completed.",
+  "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
+  "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
+  "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
+ ]
+}
