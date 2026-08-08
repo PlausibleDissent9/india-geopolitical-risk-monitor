@@ -80,8 +80,35 @@ jobs:
             echo "final is $GEN, expected $TODAY -- the morning lane has not published"
           fi
 
-      - name: Dispatch the morning lane
+      - name: Is a morning run already waiting for the lane?
+        id: queued
         if: steps.check.outputs.stale == 'true'
+        # 2026-08-08: TWELVE morning runs were created and all twelve
+        # were cancelled. morning.yml shares daily.yml's concurrency
+        # group, and GitHub keeps at most ONE pending run per group --
+        # each new dispatch EVICTS the run waiting ahead of it. A long
+        # daily run held the slot all morning while this watchdog's
+        # many shots took turns cancelling each other, so the contract
+        # missed by five hours with a run available the whole time.
+        #
+        # Many shots is still the right answer to a silent drop, the
+        # failure this lane was built for. It is the wrong answer once
+        # a run exists: the queue already holds the button-press, and
+        # pressing again destroys it. Stand down instead.
+        run: |
+          RUNS_URL="https://api.github.com/repos/${{ github.repository }}/actions/workflows/morning.yml/runs?per_page=10"
+          curl -s -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" "$RUNS_URL" -o /tmp/mruns.json || true
+          N=$(python3 -c "import json;runs=json.load(open('/tmp/mruns.json')).get('workflow_runs',[]);print(sum(1 for r in runs if r.get('status') in ('queued','in_progress','waiting','pending','requested')))" 2>/dev/null || echo 0)
+          echo "morning runs already queued or running: $N"
+          if [ "$N" -gt 0 ]; then
+            echo "busy=true" >> "$GITHUB_OUTPUT"
+            echo "a morning run already holds a place in the queue; not evicting it"
+          else
+            echo "busy=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dispatch the morning lane
+        if: steps.check.outputs.stale == 'true' && steps.queued.outputs.busy != 'true'
         run: |
           CODE=$(curl -s -o /tmp/body -w "%{http_code}" -X POST \
             -H "Authorization: Bearer ${{ github.token }}" \
@@ -93,7 +120,7 @@ jobs:
           [ "$CODE" = "204" ]
 
       - name: Verify a run actually appeared
-        if: steps.check.outputs.stale == 'true'
+        if: steps.check.outputs.stale == 'true' && steps.queued.outputs.busy != 'true'
         # HTTP 204 means the API accepted the request, NOT that a run
         # exists. A disabled workflow, a deleted file on the target ref,
         # or a scheduling outage all return 204 and produce nothing --
