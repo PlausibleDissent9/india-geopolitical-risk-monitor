@@ -12,9 +12,13 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    # Editing this file IS the no-CLI dispatch (same pattern as
-    # drift.yml): touch the run-stamp and push to force a proof run.
-    paths: [".github/workflows/reproduce.yml"]
+    # A proof run must follow any change to its own environment or
+    # procedure. Editing this file remains the no-CLI manual dispatch.
+    paths:
+      - ".github/workflows/reproduce.yml"
+      - "scripts/reproduce.sh"
+      - "requirements.txt"
+      - "requirements-dev.txt"
 
 # run-stamp: 2026-08-06 (first proof run: the job existed for a week
 # without ever running once, which made "reproduce-from-nothing CI" a

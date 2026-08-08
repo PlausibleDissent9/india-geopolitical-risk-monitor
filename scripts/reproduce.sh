@@ -27,7 +27,7 @@ git clone --quiet "$SRC" "$WORK/clone"
 cd "$WORK/clone"
 
 python3 -m venv .venv
-.venv/bin/pip install --quiet -r requirements.txt
+.venv/bin/pip install --quiet -r requirements.txt -r requirements-dev.txt
 
 if [[ "${1:-}" == "--use-cache" ]]; then
   echo "[reproduce] copying raw-data cache from source checkout"
