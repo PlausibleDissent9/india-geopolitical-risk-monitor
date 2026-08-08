@@ -24,28 +24,109 @@ the six sentences found by the audit. All six were rewritten in the
 same commit that emptied the pin list below; no reader-facing claim is
 grandfathered. Future temporary pins must tolerate one exact sentence
 only and must be removed with its fix.
+
+COVERAGE IS MANIFEST-RECONCILED (external review finding #14,
+2026-08-08): the scan set used to be guarded by count floors (md >= 12,
+html >= 20, payloads >= 25) -- catastrophic-shrinkage detection only.
+Losing one important page was invisible, and a new surface was unscanned
+by definition. Each scanned class is now reconciled against a manifest
+the publication machinery already maintains for its own reasons: pages
+against docs/sitemap.xml (itself derived and enforced by
+tests/test_sitemap.py), payloads against docs/data/api_contract.json's
+promised endpoints, markdown against the git index filtered to
+reader-facing paths. The tests below assert the scanned set EQUALS the
+derived manifest, so an unexplained addition or removal fails with the
+delta named. Every exception is listed here with its reason; nothing
+else is hand-enumerated.
 """
 import html as html_mod
 import json
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+DOCS = ROOT / "docs"
 
-# The reader-facing committed surface. Design documents (IGRM_MAX_SPEC,
-# DESIGN_*, NOTES_FOR_ISHAN, CONTINUITY) are working notes, not reader
-# surfaces, and are excluded on purpose.
-MD_FILES = (
-    ["README.md", "methodology.md", "package/README.md"]
-    + sorted(str(p.relative_to(ROOT)) for p in (ROOT / "docs").glob("*.md"))
-    + sorted(str(p.relative_to(ROOT)) for p in (ROOT / "paper").glob("*.md"))
-    + sorted(str(p.relative_to(ROOT)) for p in (ROOT / "nef").glob("*.md"))
-    + sorted(str(p.relative_to(ROOT)) for p in (ROOT / "listings").glob("*.md"))
+# -- markdown ---------------------------------------------------------------
+# Tracked markdown that is NOT reader-facing, each with its reason.
+# Entries ending in "/" exclude the directory; anything tracked and not
+# excluded here is reader-facing BY DEFAULT and must be scanned -- a new
+# file or directory of markdown fails the manifest test until it is
+# either scanned or named here with a reason.
+MD_EXCLUDED = {
+    ".github/": "issue-form scaffolding for reviewers, not IGRM prose",
+    "CONTINUITY.md": "working notes between agent sessions",
+    "DESIGN_BRIEF.md": "design working notes",
+    "DESIGN_SYSTEM.md": "design working notes",
+    "IGRM_MAX_SPEC.md": "the internal build spec, a working document",
+    "NOTES_FOR_ISHAN.md": "working notes addressed to the founder",
+    "sectors_nse_amendment_DRAFT.md": "an unmerged draft amendment",
+    "analysis/": "internal audits and run logs; the site never links a reader here",
+    "auditor/": "the versioned machine-coding rubric, a registered instrument",
+    "briefs/": "internal template for the practitioner brief",
+    "countries/": "the country-fork recipe, an internal working document",
+    "design/": "design working notes",
+    "notes/": "weekly note SOURCES; their published forms (docs/feed.xml "
+              "and the notes payload) are scanned instead",
+    "notes-inbox/": "unpublished drafts",
+    "prompts/": "LLM prompt sources and their changelog",
+    "validation/": "hash-frozen registered study evidence "
+                   "(tests/test_blind_audit_500.py pins the bytes); a claims "
+                   "lint must never be able to demand edits to frozen evidence",
+}
+
+# The scanned markdown, derived from disk. Top-level repo-front documents
+# are named (a directory glob cannot express "these five files");
+# GOVERNANCE, REPLICATION and SECURITY joined the scan 2026-08-08 -- they
+# are read on GitHub by exactly the audience the claims rubric protects.
+MD_FILES = sorted(
+    {"README.md", "GOVERNANCE.md", "REPLICATION.md", "SECURITY.md",
+     "methodology.md", "package/README.md"}
+    | {str(p.relative_to(ROOT)) for p in DOCS.rglob("*.md")}
+    | {str(p.relative_to(ROOT)) for p in (ROOT / "paper").rglob("*.md")}
+    | {str(p.relative_to(ROOT)) for p in (ROOT / "nef").rglob("*.md")}
+    | {str(p.relative_to(ROOT)) for p in (ROOT / "listings").rglob("*.md")}
 )
-HTML_FILES = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "docs").glob("*.html"))
+
+# -- pages ------------------------------------------------------------------
+# Served pages the sitemap deliberately hides from crawlers
+# (src/sitemap.py EXCLUDE, reasons there). They are still public bytes on
+# the origin, so they are still scanned; the manifest test keeps this
+# list synchronized with the sitemap's own exclusion list.
+NON_SITEMAP_PAGES = {
+    "404.html": "served to every mistyped URL",
+    "embed.html": "rendered inside other people's pages",
+    "portal.html": "noindex, but public bytes on the origin",
+    "write.html": "noindex, but public bytes on the origin",
+}
+HTML_FILES = sorted(str(p.relative_to(ROOT)) for p in DOCS.rglob("*.html"))
+
+# -- payloads ---------------------------------------------------------------
+# JSON on disk under docs/ that is not IGRM-authored prose and not a
+# promised endpoint. Anything else on disk must be promised or named.
+NON_PAYLOAD_JSON = {
+    "docs/geo/india.json": "third-party map geometry, no IGRM-authored prose",
+    "docs/geo/world.json": "third-party map geometry, no IGRM-authored prose",
+}
+# Prose-bearing machine surfaces scanned although they are not contract
+# endpoints (the contract cannot promise itself).
+EXTRA_PAYLOADS = {
+    "docs/data/api_contract.json": "the contract itself; endpoints cannot include it",
+    "docs/openapi.json": "generator-mirrored contract prose served to integrators",
+    "listings/kaggle_dataset_metadata.json": "third-party listing copy, not an endpoint",
+}
+# The one prose-bearing non-JSON endpoint; scanned as markup. The five
+# CSV endpoints carry no authored prose field (they ARE the numeric
+# series) -- the manifest test asserts that stays true of every non-JSON
+# endpoint other than this one.
+FEED = "docs/feed.xml"
+
 JSON_FILES = sorted(
-    str(p.relative_to(ROOT)) for p in (ROOT / "docs" / "data").glob("*.json")
-) + ["listings/kaggle_dataset_metadata.json"]
+    ({str(p.relative_to(ROOT)) for p in DOCS.rglob("*.json")}
+     - set(NON_PAYLOAD_JSON))
+    | {p for p in EXTRA_PAYLOADS if not p.startswith("docs/")}
+)
 
 # JSON keys that hold IGRM-authored framing prose. Article titles,
 # episode names and other third-party press content live under other
@@ -230,7 +311,72 @@ def _surface() -> dict[str, str]:
         texts[rel] = _html_text((ROOT / rel).read_text(encoding="utf-8"))
     for rel in JSON_FILES:
         texts[rel] = _json_prose(ROOT / rel)
+    # The RSS feed is IGRM-authored prose in XML clothing; tag-stripping
+    # leaves exactly the item text a feed reader displays.
+    texts[FEED] = _html_text((ROOT / FEED).read_text(encoding="utf-8"))
     return texts
+
+
+def _tracked_md() -> set[str]:
+    """Tracked *.md per the git index. Falls back to the disk tree where
+    .git is absent: a `git archive` extract IS the committed tree, so the
+    fallback is exact there and only there."""
+    try:
+        out = subprocess.run(
+            ["git", "ls-files", "*.md"], cwd=ROOT,
+            capture_output=True, text=True, check=True,
+        ).stdout
+        files = {line.strip() for line in out.splitlines() if line.strip()}
+        if files:
+            return files
+    except (OSError, subprocess.CalledProcessError):
+        pass
+    junk = {".venv", "node_modules", ".git"}
+    return {
+        str(p.relative_to(ROOT)) for p in ROOT.rglob("*.md")
+        if junk.isdisjoint(p.relative_to(ROOT).parts)
+    }
+
+
+def _md_excluded(rel: str) -> bool:
+    return any(
+        rel == entry or (entry.endswith("/") and rel.startswith(entry))
+        for entry in MD_EXCLUDED
+    )
+
+
+def _sitemap_pages() -> set[str]:
+    text = (DOCS / "sitemap.xml").read_text(encoding="utf-8")
+    pages = set()
+    for loc in re.findall(r"<loc>([^<]+)</loc>", text):
+        rel = loc.replace("https://igrm.in/", "").rstrip("/")
+        pages.add("docs/" + (rel if rel.endswith(".html") else "index.html"))
+    return pages
+
+
+def _promised_endpoints() -> tuple[set[str], set[str]]:
+    contract = json.loads(
+        (ROOT / "docs" / "data" / "api_contract.json").read_text(encoding="utf-8")
+    )
+    json_promises: set[str] = set()
+    other_promises: set[str] = set()
+    for endpoint in contract["endpoints"]:
+        path = "docs/" + endpoint["path"]
+        (json_promises if path.endswith(".json") else other_promises).add(path)
+    return json_promises, other_promises
+
+
+def _deltas(scanned: set[str], manifest: set[str], extra_hint: str,
+            missing_hint: str) -> list[str]:
+    problems = [
+        f"scanned but not in the manifest: {rel} -- {extra_hint}"
+        for rel in sorted(scanned - manifest)
+    ]
+    problems += [
+        f"in the manifest but not scanned: {rel} -- {missing_hint}"
+        for rel in sorted(manifest - scanned)
+    ]
+    return problems
 
 
 def _pinned_spans(rel: str, text: str) -> list[tuple[int, int]]:
@@ -265,16 +411,97 @@ def test_no_reader_facing_surface_makes_an_unlicensed_claim():
         "receipts):\n" + "\n".join(offenders))
 
 
-def test_the_scan_actually_covers_the_surface():
-    """A glob that silently matches nothing would make the test above
-    pass vacuously; the file counts are the tripwire."""
+def test_the_scanned_pages_equal_the_sitemap_manifest():
+    """Pages come from the publication machinery's own list. A page on
+    disk that the sitemap does not know is an unexplained addition (add
+    it to the sitemap or to src/sitemap.py EXCLUDE plus the named set
+    here); a sitemap entry with no scanned file is a removal the scan
+    would otherwise paper over."""
+    from src import sitemap as sitemap_mod
+
+    assert set(NON_SITEMAP_PAGES) == set(sitemap_mod.EXCLUDE), (
+        "the scanned non-sitemap set has drifted from src/sitemap.py "
+        "EXCLUDE; the two lists must name the same pages: "
+        f"{sorted(set(NON_SITEMAP_PAGES) ^ set(sitemap_mod.EXCLUDE))}")
+    manifest = _sitemap_pages() | {"docs/" + p for p in NON_SITEMAP_PAGES}
+    problems = _deltas(
+        set(HTML_FILES), manifest,
+        "not in docs/sitemap.xml and not a named non-sitemap page",
+        "listed in docs/sitemap.xml but absent from disk")
+    assert not problems, "\n".join(problems)
+
+
+def test_the_scanned_payloads_equal_the_contract_manifest():
+    """Payloads come from the API contract's promised endpoints. A JSON
+    file on disk the contract does not promise is an unexplained
+    addition (contract it, or name it in EXTRA_PAYLOADS/NON_PAYLOAD_JSON
+    with a reason); a promised endpoint with no file is a removal."""
+    json_promises, other_promises = _promised_endpoints()
+
+    assert FEED in other_promises, (
+        "the feed endpoint left the contract; its scan entry is stale")
+    unscannable = other_promises - {FEED}
+    assert all(p.endswith(".csv") for p in sorted(unscannable)), (
+        "a promised non-JSON, non-CSV endpoint exists that the prose "
+        "scan silently skips; wire it into _surface(): "
+        f"{sorted(p for p in unscannable if not p.endswith('.csv'))}")
+
+    for rel, reason in NON_PAYLOAD_JSON.items():
+        assert (ROOT / rel).is_file(), (
+            f"stale NON_PAYLOAD_JSON entry ({reason}): {rel} is gone")
+        assert rel not in json_promises, (
+            f"{rel} is excluded as non-prose but the contract now "
+            "promises it; it must be scanned instead")
+    for rel in EXTRA_PAYLOADS:
+        assert rel not in json_promises, (
+            f"{rel} is named as a non-endpoint extra but the contract "
+            "now promises it; drop the redundant naming")
+
+    manifest = json_promises | set(EXTRA_PAYLOADS)
+    problems = _deltas(
+        set(JSON_FILES) | {p for p in EXTRA_PAYLOADS if p.startswith("docs/")},
+        manifest,
+        "not promised by docs/data/api_contract.json and not named",
+        "promised by the contract but absent from the scan")
+    assert not problems, "\n".join(problems)
+
+
+def test_the_scanned_markdown_equals_the_tracked_reader_facing_set():
+    """Markdown comes from the git index minus named exceptions. A new
+    tracked .md anywhere is reader-facing by default: it either enters
+    the scan (the disk globs pick up the covered directories on their
+    own) or gets a named exclusion with a reason. A scan list that
+    quietly narrowed would leave tracked reader-facing files here and
+    fail with their names."""
+    tracked = _tracked_md()
+    for entry, reason in MD_EXCLUDED.items():
+        assert any(
+            rel == entry or (entry.endswith("/") and rel.startswith(entry))
+            for rel in tracked
+        ), f"stale MD_EXCLUDED entry ({reason}): nothing tracked matches {entry}"
+    manifest = {rel for rel in tracked if not _md_excluded(rel)}
+    problems = _deltas(
+        set(MD_FILES), manifest,
+        "on disk but not tracked reader-facing markdown (untracked file, "
+        "or it belongs in MD_EXCLUDED with a reason)",
+        "tracked reader-facing markdown the scan misses (extend the scan "
+        "or add a named exclusion with a reason)")
+    assert not problems, "\n".join(problems)
+
+
+def test_the_prose_extraction_is_not_vacuous():
+    """Manifest equality checks file SETS; this checks the extractors
+    still yield text. A misspelled PROSE_KEYS entry or a broken tag
+    stripper would zero the scanned prose while every set test stayed
+    green."""
     texts = _surface()
-    assert len(MD_FILES) >= 12, f"markdown surface shrank to {len(MD_FILES)}"
-    assert len(HTML_FILES) >= 20, f"html surface shrank to {len(HTML_FILES)}"
-    assert len(JSON_FILES) >= 25, f"payload surface shrank to {len(JSON_FILES)}"
-    assert len(texts) >= 25, f"scanned surface shrank to {len(texts)} files"
-    nonempty = sum(1 for t in texts.values() if t.strip())
-    assert nonempty >= 25, f"only {nonempty} scanned files had any text"
+    for rel in ("README.md", "docs/index.html", "docs/data/latest.json", FEED):
+        assert texts[rel].strip(), f"prose extraction went empty for {rel}"
+    payloads = [rel for rel in JSON_FILES]
+    nonempty = [rel for rel in payloads if texts[rel].strip()]
+    assert len(nonempty) * 2 > len(payloads), (
+        f"only {len(nonempty)} of {len(payloads)} payloads yielded prose; "
+        "the JSON prose extractor is scanning air")
 
 
 def test_the_pins_still_match_their_files():
