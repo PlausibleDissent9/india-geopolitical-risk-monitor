@@ -38,7 +38,7 @@ jobs:
     outputs:
       run: ${{ steps.check.outputs.run }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - id: check
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -58,7 +58,7 @@ jobs:
     if: needs.gate.outputs.run == 'yes'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
