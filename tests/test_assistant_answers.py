@@ -66,7 +66,13 @@ def test_no_forecast_language_in_any_published_text():
 
 def test_the_page_renders_the_payload_and_nothing_else():
     page = PAGE.read_text(encoding="utf-8")
-    assert 'fetch("data/assistant_answers.json")' in page
+    # Assert the payload is fetched, not the exact call spelling: the
+    # first version pinned 'fetch("data/assistant_answers.json")' and
+    # broke the moment a cache option was added -- brittle-string class.
+    assert re.search(r'fetch\(\s*"data/assistant_answers\.json"', page)
+    assert "no-store" in page, (
+        "the nightly answer set must not be served from cache; a stale "
+        "copy pairs yesterday's answers with today's scores")
     assert "no language model" in page.lower()
     assert 'id="ask-input"' in page, "the free-text ask box is the product"
     assert "Refusals are part of the product" in page

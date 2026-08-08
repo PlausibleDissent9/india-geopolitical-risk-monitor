@@ -73,13 +73,22 @@ def build() -> dict[str, Any]:
         else:
             n_refused += 1
         answers.append({"question": q, **a.to_dict()})
+    latest = json.loads((SITE_DATA / "latest.json").read_text(encoding="utf-8"))
+    receipts = json.loads(
+        (SITE_DATA / "receipts.json").read_text(encoding="utf-8"))
+    state = {
+        "score_date": latest["date"],
+        "receipts_date": receipts["date"],
+        "aligned": latest["date"] == receipts["date"],
+    }
+
     if n_answered == 0:
         raise SystemExit(
             "[ask] every registered question refused; the committed "
             "payloads are missing or incoherent and publishing an "
             "all-refusal answer set would look like a product outage "
             "with no red anywhere")
-    return {"answers": answers,
+    return {"answers": answers, "data_state": state,
             "n_answered": n_answered, "n_refused": n_refused}
 
 
@@ -106,6 +115,17 @@ def main() -> None:
                 "superiority -- are published with their refusal codes, "
                 "because the refusal behavior is the reason to trust "
                 "the answer behavior."),
+            "data_state": {
+                **built["data_state"],
+                "why_it_matters": (
+                    "A current-score question joins today's score to the "
+                    "receipt headlines for the same completed news day. "
+                    "When those two dates differ the assistant refuses "
+                    "rather than join across days -- the exact error that "
+                    "withdrew the machine-written brief. The nightly lane "
+                    "realigns them; no answer is edited to paper over the "
+                    "gap."),
+            },
             "n_questions": built["n_answered"] + built["n_refused"],
             "n_answered": built["n_answered"],
             "n_refused": built["n_refused"],

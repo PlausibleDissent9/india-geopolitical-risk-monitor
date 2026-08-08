@@ -6,10 +6,16 @@
   "source": "https://igrm.in/data/assistant_answers.json",
   "what": "The evidence-locked assistant's registered question space, answered at build time on the committed payloads and published with each answer's full evidence ledger. Every value in every sentence was re-verified against its source bytes (hash, pointer, type, unit, date) by src/evidence_assistant.py before publication; a verification failure publishes as a stable refusal, never as prose. No language model wrote or can write any of this text.",
   "refusals_are_the_product_too": "Questions the assistant declines -- forecasts, advice, superiority -- are published with their refusal codes, because the refusal behavior is the reason to trust the answer behavior.",
+  "data_state": {
+   "score_date": "2026-08-07",
+   "receipts_date": "2026-08-06",
+   "aligned": false,
+   "why_it_matters": "A current-score question joins today's score to the receipt headlines for the same completed news day. When those two dates differ the assistant refuses rather than join across days -- the exact error that withdrew the machine-written brief. The nightly lane realigns them; no answer is edited to paper over the gap."
+  },
   "n_questions": 23,
   "n_answered": 16,
   "n_refused": 7,
-  "generated": "2026-08-08T09:43:17Z"
+  "generated": "2026-08-08T09:47:37Z"
  },
  "answers": [
   {
