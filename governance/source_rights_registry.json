@@ -422,6 +422,36 @@
       "max_current_age_days": null,
       "permitted_uses": [],
       "notes": "The provider's public-domain statement and bundled version still require a recorded decision."
+    },
+    {
+      "source_id": "un_comtrade",
+      "name": "UN Comtrade",
+      "provider": "United Nations Statistics Division",
+      "role": "official_trade_structure",
+      "authority_class": "intergovernmental_dataset",
+      "independence_group": "un_statistics_division",
+      "lineage_policy": "primary",
+      "decision_state": "review_required",
+      "decision_id": "pending:un_comtrade",
+      "decision_owner": "unassigned",
+      "signer_id": null,
+      "decision_artifact_path": null,
+      "decision_artifact_sha256": null,
+      "decision_signature_path": null,
+      "reviewed_on": null,
+      "review_due": null,
+      "access_url": "https://comtradeplus.un.org/",
+      "terms_url": "https://uncomtrade.org/docs/faqs-on-use-and-re-dissemination/",
+      "access_basis": "public_preview_and_account_access_pending_signed_terms_review",
+      "geographic_coverage": "Official reporter-partner-commodity-period trade statistics, subject to reporter field availability",
+      "historical_coverage": "Provider dataset and classification dependent; current-version service may revise prior periods",
+      "retrieval_target": "India monthly partner-by-HS trade structure and extended-field coverage profiling",
+      "outage_fallback": "Retain no silent substitute; preserve a pinned dated vintage only after rights approval",
+      "cost_owner": "Ishan Krishna",
+      "reproducibility_tier": "undetermined_pending_rights_and_vintage_policy",
+      "max_current_age_days": null,
+      "permitted_uses": [],
+      "notes": "Premium changes throughput, not observation granularity. No public rows, aggregates or derived products are authorized until a signed redistribution decision exists."
     }
   ]
 }

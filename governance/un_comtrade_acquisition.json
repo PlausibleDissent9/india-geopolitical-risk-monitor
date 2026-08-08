@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "source_id": "un_comtrade",
+  "decision": "evaluate_free_before_purchase",
+  "rights_state": "review_required",
+  "public_preview": {
+    "origin": "https://comtradeapi.un.org",
+    "path": "/public/v1/preview/C/M/HS",
+    "reporter_code": 699,
+    "reporter_name": "India",
+    "max_records": 500,
+    "timeout_seconds": 30,
+    "minimum_seconds_between_calls": 1.1,
+    "maximum_probe_calls": 24
+  },
+  "sample_plan": {
+    "flow_codes": [
+      "M",
+      "X"
+    ],
+    "commodities": [
+      {
+        "cmd_code": "10",
+        "label": "cereals"
+      },
+      {
+        "cmd_code": "27",
+        "label": "mineral_fuels"
+      },
+      {
+        "cmd_code": "30",
+        "label": "pharmaceuticals"
+      },
+      {
+        "cmd_code": "84",
+        "label": "machinery"
+      },
+      {
+        "cmd_code": "85",
+        "label": "electrical_machinery"
+      }
+    ]
+  },
+  "documented_plan_limits": {
+    "basic_calls_per_day": 500,
+    "basic_records_per_call": 100000,
+    "premium_individual_calls_per_day": 5000,
+    "premium_records_per_call": 250000,
+    "premium_async_records_per_call": 2500000
+  },
+  "provider_documented_absences": [
+    "buyer_supplier_identity",
+    "shipment_date",
+    "origin_destination_port"
+  ],
+  "provider_documentation": {
+    "subscriptions": "https://uncomtrade.org/docs/subscriptions/",
+    "api": "https://uncomtrade.org/docs/un-comtrade-api/",
+    "redistribution": "https://uncomtrade.org/docs/faqs-on-use-and-re-dissemination/",
+    "firm_level_absence": "https://uncomtrade.org/docs/does-un-comtrade-provide-buyer-supplier-level-data/",
+    "transport_scope": "https://uncomtrade.org/docs/mode-of-transport-and-trade-routes/"
+  },
+  "purchase_gate": {
+    "direct_purchase_allowed": false,
+    "required_sequence": [
+      "complete_basic_profile",
+      "obtain_written_redistribution_decision",
+      "run_premium_trial_if_basic_is_censored",
+      "measure_trial_time_and_record_advantage",
+      "approve_only_if_the_advantage_changes_a_registered_product"
+    ],
+    "premium_never_establishes": [
+      "port_identity",
+      "trade_route",
+      "buyer_supplier_identity",
+      "shipment_level_lineage"
+    ]
+  }
+}
