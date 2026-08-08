@@ -33,6 +33,8 @@ jobs:
         run: python -m src.exposure_dna_fixture && git diff --exit-code -- docs/data/exposure_dna_demo.json
       - name: Shock Compiler synthetic conformance artifact is current
         run: python -m src.shock_compiler_fixture && git diff --exit-code -- docs/data/shock_compiler_demo.json
+      - name: Evidence Output Engine synthetic conformance artifacts are current
+        run: python -m src.evidence_outputs_fixture && git diff --exit-code -- docs/data/evidence_outputs_demo.json docs/downloads/igrm-evidence-outputs-demo.zip
       - name: Lint (ruff)
         run: ruff check .
       - name: Types (mypy)

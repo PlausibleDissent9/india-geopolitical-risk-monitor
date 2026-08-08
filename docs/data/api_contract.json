@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.7",
+  "contract_version": "2.2.8",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -299,6 +299,18 @@
     "unavailable_outcomes",
     "channels",
     "per_episode"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/evidence_outputs_demo.json",
+   "format": "json",
+   "description": "Deterministic synthetic demonstration of one signed evidence release producing a research package, board-brief draft, newsroom claim card and offline audit bundle from identical registered facts.",
+   "frozen_fields": [
+    "_meta",
+    "download",
+    "synthetic_labels",
+    "output_set"
    ],
    "stability": "stable"
   },
@@ -1234,6 +1246,22 @@
     "allOf"
    ],
    "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/evidence-output-set.schema.json",
+   "format": "json",
+   "description": "JSON Schema for one deterministic four-product compilation from a signed canonical evidence release: research package, board-brief draft, newsroom claim card and authenticated offline audit bundle.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "$defs"
+   ],
+   "stability": "static synthetic foundation 1.0.0"
   },
   {
    "path": "schemas/exposure-dna.schema.json",

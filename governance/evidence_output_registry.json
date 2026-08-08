@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "engine": {
+    "method_id": "method:igrm.evidence_outputs",
+    "version": "1.0.0",
+    "implementation_path": "src/evidence_outputs.py",
+    "implementation_sha256": "d483f6b6f6fa210e30d91da04fe830009616dd49603e8a2fbf4edbc3afe3da9f",
+    "effective": "2026-08-08",
+    "superseded_on": null,
+    "output_schema_id": "https://igrm.in/schemas/evidence-output-set.schema.json",
+    "output_schema_version": "1.0.0",
+    "output_schema_path": "schemas/evidence-output-set.schema.json",
+    "output_schema_sha256": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780",
+    "common_schema_path": "schemas/common.schema.json",
+    "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+    "exposure_graph_implementation_path": "src/exposure_graph.py",
+    "exposure_graph_implementation_sha256": "a6e0c9af3309336c28016bdf7e293e315772306b4db1056f49da54d9fc683780",
+    "exposure_projection_registry_path": "governance/exposure_projection_registry.json",
+    "exposure_projection_registry_sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66",
+    "required_output_ids": [
+      "output:research_package",
+      "output:board_brief",
+      "output:newsroom_claim_card",
+      "output:offline_audit_bundle"
+    ],
+    "rendering_rule": "registered_deterministic_templates_no_model_generation",
+    "public_privacy_classes": [
+      "public",
+      "public_with_redactions"
+    ],
+    "public_rights_uses": [
+      "cite_metadata",
+      "publish_derived_value",
+      "publish_extract",
+      "redistribute_full_record"
+    ],
+    "max_objects": 10000,
+    "max_archive_bytes": 50000000
+  }
+}

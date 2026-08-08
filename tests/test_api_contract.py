@@ -65,6 +65,7 @@ def test_versioned_oges_profile_and_schemas_are_first_class_endpoints():
                 "schemas/exposure-dna.schema.json",
                 "schemas/shock-scenario.schema.json",
                 "schemas/shock-compilation.schema.json",
+                "schemas/evidence-output-set.schema.json",
             }
             else "static versioned public draft 0.1.0"
         )

@@ -2,7 +2,7 @@
  "openapi": "3.1.0",
  "info": {
   "title": "India Geopolitical Risk Monitor (IGRM)",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "summary": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
   "description": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.\n\nAn analytical field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the date recorded here, before removal in the next major version. Operational or personal material served by mistake may be withdrawn immediately, with the removal recorded here.\n\nauth: none\ncors: Access-Control-Allow-Origin: *\nrate_limit: none stated; ordinary politeness (poll daily, not per-request)\nrefresh: daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)",
   "license": {
@@ -692,6 +692,37 @@
           "unavailable_outcomes": {},
           "channels": {},
           "per_episode": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/data/evidence_outputs_demo.json": {
+   "get": {
+    "operationId": "get_data_evidence_outputs_demo_json",
+    "description": "Deterministic synthetic demonstration of one signed evidence release producing a research package, board-brief draft, newsroom claim card and offline audit bundle from identical registered facts.",
+    "x-igrm-stability": "stable",
+    "responses": {
+     "200": {
+      "description": "Deterministic synthetic demonstration of one signed evidence release producing a research package, board-brief draft, newsroom claim card and offline audit bundle from identical registered facts.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "download",
+          "synthetic_labels",
+          "output_set"
+         ],
+         "properties": {
+          "_meta": {},
+          "download": {},
+          "synthetic_labels": {},
+          "output_set": {}
          }
         }
        }
@@ -3021,6 +3052,45 @@
           "required": {},
           "properties": {},
           "allOf": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/evidence-output-set.schema.json": {
+   "get": {
+    "operationId": "get_schemas_evidence_output_set_schema_json",
+    "description": "JSON Schema for one deterministic four-product compilation from a signed canonical evidence release: research package, board-brief draft, newsroom claim card and authenticated offline audit bundle.",
+    "x-igrm-stability": "static synthetic foundation 1.0.0",
+    "responses": {
+     "200": {
+      "description": "JSON Schema for one deterministic four-product compilation from a signed canonical evidence release: research package, board-brief draft, newsroom claim card and authenticated offline audit bundle.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "$defs"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "$defs": {}
          }
         }
        }

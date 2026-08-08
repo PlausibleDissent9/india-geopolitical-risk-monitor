@@ -24,7 +24,7 @@ DOCS = ROOT / "docs"
 
 # Patch: daily_brief withdrawn with a stable-shaped tombstone and explicit
 # deprecation record.
-CONTRACT_VERSION = "2.2.7"
+CONTRACT_VERSION = "2.2.8"
 FROZEN_DATE = "2026-08-08"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
@@ -145,6 +145,14 @@ PUBLIC_STANDARD_JSON: dict[str, dict[str, str]] = {
     "schemas/exposure-traversal.schema.json": {
         "description": "OGES 0.1.0 JSON Schema for a bounded exposure traversal result.",
         "stability": "static versioned public draft 0.1.0",
+    },
+    "schemas/evidence-output-set.schema.json": {
+        "description": (
+            "JSON Schema for one deterministic four-product compilation from a "
+            "signed canonical evidence release: research package, board-brief draft, "
+            "newsroom claim card and authenticated offline audit bundle."
+        ),
+        "stability": "static synthetic foundation 1.0.0",
     },
     "schemas/shock-scenario.schema.json": {
         "description": (

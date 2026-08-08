@@ -92,6 +92,29 @@ python -m src.oges_conformance validate --bundle /path/to/bundle</code></pre>
   release ID, release hash, object counts and refusal codes—not evidence text, exposure
   values, credentials or private keys.</p>
 
+  <h2 id="four-output-engine">One release, four deterministic products</h2>
+  <p>The implemented synthetic Evidence Output Engine turns one validated release and
+  one bounded event-to-target query into a research package, board-brief draft,
+  newsroom claim card and authenticated offline audit bundle. All four products use the
+  same object and evidence hashes. Fixed templates—not a language model—write their
+  reader-visible sentences; every sentence carries object and evidence IDs, and a
+  resealed prose or number change fails semantic recompilation.</p>
+  <p>The public compiler refuses non-public evidence and unlicensed artifact
+  redistribution. A no-path result remains visible and is never reframed as proof of no
+  exposure. The audit verifier requires a digest obtained outside the ZIP, rejects unsafe
+  archive entries, checks every byte and revalidates the canonical release without
+  executing bundled code.</p>
+  <ul>
+    <li><a href="data/evidence_outputs_demo.json">Synthetic four-output result</a> —
+      embedded products, exact release lineage and archive digest.</li>
+    <li><a href="downloads/igrm-evidence-outputs-demo.zip">Offline audit test bundle</a>
+      — synthetic source metadata and public test keys only.</li>
+    <li><a href="schemas/evidence-output-set.schema.json">Strict output-set schema</a>.</li>
+  </ul>
+  <p class="chart-note">This proves deterministic construction and refusal behaviour,
+  not a production release, real exposure map, external utility result or institutional
+  adoption.</p>
+
   <h2 id="downloads">Normative downloads</h2>
   <ul>
     <li><a href="oges/0.1.0/profile.json">Machine profile 0.1.0</a> — exact validator,
@@ -114,7 +137,9 @@ python -m src.oges_conformance validate --bundle /path/to/bundle</code></pre>
       <a href="schemas/exposure-dna.schema.json">Exposure DNA output schema</a> for
       non-scalar snapshots and release-to-release deltas; plus the
       <a href="schemas/shock-scenario.schema.json">bounded scenario input schema</a> and
-      <a href="schemas/shock-compilation.schema.json">Shock Compiler output schema</a>.</li>
+      <a href="schemas/shock-compilation.schema.json">Shock Compiler output schema</a>;
+      and the <a href="schemas/evidence-output-set.schema.json">four-product evidence
+      output schema</a>.</li>
   </ul>
 
   <h2 id="claim-boundary">What a pass means</h2>

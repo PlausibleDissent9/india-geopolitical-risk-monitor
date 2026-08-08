@@ -1,0 +1,372 @@
+{
+  "_meta": {
+    "schema": "igrm-evidence-outputs-demo-v1",
+    "generated": "2026-08-08T13:00:00Z",
+    "date": "2026-08-08",
+    "what": "Deterministic synthetic demonstration of one signed evidence release producing a research package, board-brief draft, newsroom claim card and offline audit bundle from identical registered facts.",
+    "scope": "synthetic_test_vector_only",
+    "production_release": false,
+    "real_event_entity_source_right_exposure_or_adoption_claims": false,
+    "model_generated_facts_numbers_dates_citations_or_confidence": false,
+    "forecast_probability_causation_advice_or_scalar_score": false,
+    "license": "CC BY 4.0",
+    "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+    "source": "https://igrm.in/data/evidence_outputs_demo.json",
+    "codebook": "https://igrm.in/standard.html",
+    "method": "method:igrm.evidence_outputs@1.0.0"
+  },
+  "download": {
+    "url": "https://igrm.in/downloads/igrm-evidence-outputs-demo.zip",
+    "sha256": "e8928d75e14222416da4f6f0f8fffef88fca78b1b0cf49f1ab3fffe705c33efa",
+    "bytes": 176511,
+    "media_type": "application/zip",
+    "authentication_warning": "Authenticate this digest outside the ZIP before extraction; never execute code merely because it is bundled."
+  },
+  "synthetic_labels": {
+    "evt:oges.fixture.policy.001": "Synthetic policy action",
+    "ent:commodity.synthetic_crude": "Synthetic crude input"
+  },
+  "output_set": {
+    "object_type": "evidence_output_set",
+    "schema_version": "1.0.0",
+    "record_sha256": "bb9c26e130024856f74f53f42efc2ea98475ec323329a0faba623c7b4d11433a",
+    "release": {
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "record_sha256": "e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/evidence-output-set.schema.json",
+      "schema_sha256": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "output_registry_sha256": "24d5c1367f50546ee8188e0e7a9b4ff574f3369ec75c7f0e8807dd14c1c00447",
+      "exposure_projection_registry_sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66"
+    },
+    "method": {
+      "method_id": "method:igrm.evidence_outputs",
+      "version": "1.0.0",
+      "implementation_sha256": "d483f6b6f6fa210e30d91da04fe830009616dd49603e8a2fbf4edbc3afe3da9f",
+      "rendering_rule": "registered_deterministic_templates_no_model_generation"
+    },
+    "query": {
+      "event_id": "evt:oges.fixture.policy.001",
+      "target_entity_id": "ent:commodity.synthetic_crude",
+      "max_hops": 4,
+      "max_paths": 25
+    },
+    "source_index": {
+      "event": {
+        "object_type": "event",
+        "object_id": "evt:oges.fixture.policy.001",
+        "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282"
+      },
+      "target": {
+        "object_type": "entity",
+        "object_id": "ent:commodity.synthetic_crude",
+        "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2"
+      },
+      "objects": [
+        {
+          "object_type": "exposure_edge",
+          "object_id": "edg:oges.fixture.origin_crude.001",
+          "record_sha256": "2cf03fae03288b3db6fe09e0320704878c11c82c0fb714658788995433c74708"
+        },
+        {
+          "object_type": "entity",
+          "object_id": "ent:commodity.synthetic_crude",
+          "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2"
+        },
+        {
+          "object_type": "entity",
+          "object_id": "ent:country.synthetic_origin",
+          "record_sha256": "d1bdfbdbf915e67238c5f16bdde3ae6da05c1812a2abf62402e5444c366530ec"
+        },
+        {
+          "object_type": "evidence_item",
+          "object_id": "evd:oges.fixture.official.001",
+          "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b"
+        },
+        {
+          "object_type": "event",
+          "object_id": "evt:oges.fixture.policy.001",
+          "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282"
+        },
+        {
+          "object_type": "universe_release",
+          "object_id": "unv:oges.fixture.commodities.1",
+          "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "evd:oges.fixture.official.001",
+          "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+          "source_id": "oges_fixture_source",
+          "title": "Synthetic official action",
+          "public_url": "https://example.test/oges-fixture/official-001",
+          "published_at": "2026-08-08T09:00:00Z",
+          "observed_at": "2026-08-08T09:00:00Z",
+          "verification_status": "official_record",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
+        }
+      ],
+      "structural_paths": 1,
+      "traversal_record_sha256": "1ae8ce8b887692773122f730da74e9cd667b43ea40f14735c28441d1f1ac81c9",
+      "traversal_truncated": false
+    },
+    "outputs": {
+      "research_package": {
+        "output_id": "output:research_package",
+        "title": "Evidence-bound research package — Synthetic policy action",
+        "as_of": "2026-08-08T13:00:00Z",
+        "object_index": [
+          {
+            "object_type": "exposure_edge",
+            "object_id": "edg:oges.fixture.origin_crude.001",
+            "record_sha256": "2cf03fae03288b3db6fe09e0320704878c11c82c0fb714658788995433c74708"
+          },
+          {
+            "object_type": "entity",
+            "object_id": "ent:commodity.synthetic_crude",
+            "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2"
+          },
+          {
+            "object_type": "entity",
+            "object_id": "ent:country.synthetic_origin",
+            "record_sha256": "d1bdfbdbf915e67238c5f16bdde3ae6da05c1812a2abf62402e5444c366530ec"
+          },
+          {
+            "object_type": "evidence_item",
+            "object_id": "evd:oges.fixture.official.001",
+            "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b"
+          },
+          {
+            "object_type": "event",
+            "object_id": "evt:oges.fixture.policy.001",
+            "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282"
+          },
+          {
+            "object_type": "universe_release",
+            "object_id": "unv:oges.fixture.commodities.1",
+            "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef"
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "evd:oges.fixture.official.001",
+            "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+            "source_id": "oges_fixture_source",
+            "title": "Synthetic official action",
+            "public_url": "https://example.test/oges-fixture/official-001",
+            "published_at": "2026-08-08T09:00:00Z",
+            "observed_at": "2026-08-08T09:00:00Z",
+            "verification_status": "official_record",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          }
+        ],
+        "coverage": {
+          "traversal_status": "paths_found",
+          "returned_paths": 1,
+          "truncated": false,
+          "declared_universes": [
+            {
+              "universe_release_id": "unv:oges.fixture.commodities.1",
+              "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef",
+              "entity_type": "commodity",
+              "reference_date": "2026-08-08",
+              "covered_entity_id": "ent:commodity.synthetic_crude",
+              "member_status": "included",
+              "counts": {
+                "total_eligible": 1,
+                "included": 1,
+                "excluded": 0,
+                "unmappable": 0,
+                "stale": 0
+              }
+            }
+          ]
+        },
+        "citation": "Krishna, Ishan (2026). IGRM evidence-bound research package for evt:oges.fixture.policy.001 to ent:commodity.synthetic_crude. Canonical release rel:oges.fixture.2026-08-08 (record SHA-256 e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4), generated 2026-08-08T13:00:00Z. India Geopolitical Risk Monitor. https://igrm.in/standard.html",
+        "limitations": [
+          "citation_identifies_release_and_compilation_not_source_truth",
+          "object_index_is_query_bounded",
+          "structural_paths_do_not_measure_realized_effect"
+        ],
+        "artifact": {
+          "filename": "igrm-research-2d8bcf03c756.json",
+          "media_type": "application/json",
+          "sha256": "e65d9ee3282c4dc8cd909fb01923cd1a743b31ddbbd8e0cea8d198b78152fb9c",
+          "bytes": 3081
+        }
+      },
+      "board_brief": {
+        "output_id": "output:board_brief",
+        "title": "Evidence-bound board brief — Synthetic policy action",
+        "as_of": "2026-08-08T13:00:00Z",
+        "review_status": "draft_requires_human_review",
+        "sections": [
+          {
+            "section_id": "section:board.event_record",
+            "heading": "Registered event record",
+            "text": "The signed release records Synthetic policy action as a confirmed policy_action beginning 2026-08-08T09:00:00Z; it was last verified at 2026-08-08T11:00:00Z.",
+            "object_ids": [
+              "evt:oges.fixture.policy.001"
+            ],
+            "evidence_ids": [
+              "evd:oges.fixture.official.001"
+            ]
+          },
+          {
+            "section_id": "section:board.india_linkage",
+            "heading": "Stored India linkage",
+            "text": "The registered bounded traversal returned 1 structural path(s) from stored event-entry entities to Synthetic crude oil within 4 hop(s). A structural path is not evidence of causation, realized disruption or economic loss.",
+            "object_ids": [
+              "evt:oges.fixture.policy.001",
+              "ent:commodity.synthetic_crude"
+            ],
+            "evidence_ids": [
+              "evd:oges.fixture.official.001"
+            ]
+          },
+          {
+            "section_id": "section:board.decision_boundary",
+            "heading": "Decision boundary",
+            "text": "This deterministic draft supplies traceable release facts and structural paths only. It does not estimate probability, severity, loss, causation, future outcomes or a recommended action; a human reviewer must inspect the evidence and declared gaps before use.",
+            "object_ids": [
+              "evt:oges.fixture.policy.001",
+              "ent:commodity.synthetic_crude"
+            ],
+            "evidence_ids": [
+              "evd:oges.fixture.official.001"
+            ]
+          }
+        ],
+        "limitations": [
+          "draft_requires_human_review",
+          "not_a_probability_severity_loss_or_recommendation",
+          "structural_path_not_causation"
+        ],
+        "artifact": {
+          "filename": "igrm-board-2d8bcf03c756.json",
+          "media_type": "application/json",
+          "sha256": "6fb6d97942e6cb1ad4af0a33b8c97ed3f27d2b6e60fe45144a52fe661aecc2ee",
+          "bytes": 1880
+        }
+      },
+      "newsroom_claim_card": {
+        "output_id": "output:newsroom_claim_card",
+        "title": "Verifiable claim card — Synthetic policy action",
+        "as_of": "2026-08-08T13:00:00Z",
+        "claims": [
+          {
+            "claim_id": "claim:card.event_record",
+            "statement": "In the signed release, Synthetic policy action is recorded as a confirmed policy_action beginning 2026-08-08T09:00:00Z.",
+            "scope": "release_record",
+            "object_ids": [
+              "evt:oges.fixture.policy.001"
+            ],
+            "evidence_ids": [
+              "evd:oges.fixture.official.001"
+            ],
+            "status": "compiled_from_registered_fields",
+            "limitations": [
+              "event_status_not_ground_truth"
+            ]
+          },
+          {
+            "claim_id": "claim:card.release_structure",
+            "statement": "The registered traversal returned 1 structural path(s) from the event's stored entity entries to Synthetic crude oil under its declared hop and path limits.",
+            "scope": "release_structure",
+            "object_ids": [
+              "evt:oges.fixture.policy.001",
+              "ent:commodity.synthetic_crude"
+            ],
+            "evidence_ids": [
+              "evd:oges.fixture.official.001"
+            ],
+            "status": "compiled_from_registered_fields",
+            "limitations": [
+              "bounded_traversal_not_complete_exposure",
+              "structural_path_not_causation"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "evd:oges.fixture.official.001",
+            "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+            "source_id": "oges_fixture_source",
+            "title": "Synthetic official action",
+            "public_url": "https://example.test/oges-fixture/official-001",
+            "published_at": "2026-08-08T09:00:00Z",
+            "observed_at": "2026-08-08T09:00:00Z",
+            "verification_status": "official_record",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          }
+        ],
+        "correction_route": "https://igrm.in/corrections.html",
+        "limitations": [
+          "claims_are_about_registered_release_records",
+          "not_independent_truth_or_completeness_claims",
+          "structural_path_not_causation"
+        ],
+        "artifact": {
+          "filename": "igrm-claim-card-2d8bcf03c756.json",
+          "media_type": "application/json",
+          "sha256": "7983f96a8993fce6376c8452b4c5021d6fade8d869c816ced8fb2d39f7940f09",
+          "bytes": 2078
+        }
+      },
+      "offline_audit_bundle": {
+        "output_id": "output:offline_audit_bundle",
+        "artifact": {
+          "filename": "igrm-audit-2d8bcf03c756.zip",
+          "media_type": "application/zip",
+          "sha256": "e8928d75e14222416da4f6f0f8fffef88fca78b1b0cf49f1ab3fffe705c33efa",
+          "bytes": 176511
+        },
+        "format": "deterministic_zip_store_v1",
+        "bundle_manifest_sha256": "6ff5515ffd2d9f1142a6efedfb6a0a23ccfbbdb0add92a54e33ecb983056418a",
+        "file_count": 40,
+        "canonical_validation_supported": true,
+        "external_verifier_required": true,
+        "excluded_evidence_content": [
+          "evd:oges.fixture.official.001"
+        ],
+        "limitations": [
+          "authenticate_external_verifier_before_execution",
+          "bundle_excludes_unlicensed_source_content",
+          "conformance_does_not_establish_substantive_truth"
+        ]
+      }
+    },
+    "result": {
+      "status": "compiled",
+      "output_count": 4,
+      "model_authored_facts": false,
+      "forecast_performed": false,
+      "probability_assigned": false,
+      "causal_attribution_performed": false,
+      "recommendation_generated": false,
+      "scalar_score_computed": false
+    },
+    "limitations": [
+      "bounded_traversal_not_complete_exposure",
+      "event_status_not_ground_truth",
+      "no_forecast_probability_or_advice",
+      "no_source_content_or_extracts",
+      "source_metadata_not_source_content",
+      "structural_path_not_causation"
+    ]
+  }
+}
