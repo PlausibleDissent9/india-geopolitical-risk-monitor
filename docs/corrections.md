@@ -5,6 +5,36 @@ published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.
 
+## 2026-08-08: the brief withdrawal's own account was wrong about the mechanism
+
+The entry below states that nine briefs cited a stress-gauge value "even
+though the generator never supplied that gauge to the model." Recomputed
+against git history, both halves are wrong. Eight brief versions cited a
+gauge value, not nine. For seven of those eight the generator did supply
+it: `build_context()` read `stress_gauge.json` from the feature's first
+commit, and each of those seven cited exactly the value in the
+`stress_gauge.json` committed in its own tree (65.1, 65.1, 60.5, 65.7,
+65.7, 65.7, 65.7). The model copied its input correctly.
+
+Exactly one citation is unsupported, and it is worse than the entry
+described. The gauge field was removed from `build_context()` on
+2026-08-07 inside an unrelated commit, with no check of the prose already
+published against it. The next brief generated after that removal cited
+"the stress gauge at 65.7" with no gauge in its input at all, while the
+gauge payload committed beside it read 57.2 -- a sentence invented whole,
+carrying a stale value the model could not see.
+
+The withdrawal stands: an experiment that produced one fabricated
+sentence in eight is withdrawn on its merits, and the other three
+confirmed failures in the entry below (display share read as pool
+quality, displayed count read as score denominator, 2026-08-07 scores
+joined to 2026-08-06 receipts) recompute as stated. What changes is the
+diagnosis, and the diagnosis is the part a reader learns from: the fault
+was not a model inventing numbers it was never given, it was an input
+silently removed mid-experiment while the published prose that depended
+on it was left standing. Found by routine cross-review of the withdrawal
+commit, three hours after it published.
+
 ## 2026-08-08: machine-brief experiment withdrawn after factual-grounding failures
 
 The public language-model brief had a prediction-word deny-list, but no
