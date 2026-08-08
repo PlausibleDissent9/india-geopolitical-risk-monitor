@@ -110,6 +110,25 @@ contract is in that payload's <code>_meta</code>.</p>
     if (/\b(better|beat|outperform|superior)\b/.test(t)) {
       return "Is IGRM better than the GPR index?";
     }
+    /* Scope questions -- what is this, what does it measure, is it risk
+       -- are the first thing most readers type, and the planner already
+       answers all three. Before this the page refused them and said
+       they were outside the registered space, which was false.
+
+       Each route requires a reference to the instrument. A bare
+       "what is ..." matched "what is the meaning of life" and answered
+       it with the scope statement: confidently, about something the
+       reader had not asked. Off-topic must refuse. */
+    var about = /\b(igrm|index|monitor|dataset|this|it|score)\b/.test(t);
+    if (about && /\b(measure|measures|measuring)\b/.test(t)) {
+      return "What does IGRM measure?";
+    }
+    if (about && /\brisk\b/.test(t)) {
+      return "Is this a measure of risk?";
+    }
+    if (about && /(\bwhat is\b|\bwhat's\b|\bexplain\b|\btell me about\b)/.test(t)) {
+      return "What is IGRM?";
+    }
     return null;
   }
 

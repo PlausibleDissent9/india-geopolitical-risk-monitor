@@ -59,6 +59,12 @@ def _questions() -> list[str]:
         "Will the index rise tomorrow?",
         "Should I hedge my portfolio against this?",
         "Is IGRM better than the GPR index?",
+        # The scope questions a reader asks first. The planner already
+        # routes all three to instrument_scope; they were simply never
+        # registered, so the page refused questions it could answer.
+        "What does IGRM measure?",
+        "Is this a measure of risk?",
+        "What is IGRM?",
     ]
     return qs
 

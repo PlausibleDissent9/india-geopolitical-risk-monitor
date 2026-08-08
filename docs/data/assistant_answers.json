@@ -12,10 +12,10 @@
    "aligned": false,
    "why_it_matters": "A current-score question joins today's score to the receipt headlines for the same completed news day. When those two dates differ the assistant refuses rather than join across days -- the exact error that withdrew the machine-written brief. The nightly lane realigns them; no answer is edited to paper over the gap."
   },
-  "n_questions": 23,
-  "n_answered": 16,
+  "n_questions": 26,
+  "n_answered": 19,
   "n_refused": 7,
-  "generated": "2026-08-08T09:47:37Z"
+  "generated": "2026-08-08T10:33:22Z"
  },
  "answers": [
   {
@@ -2632,6 +2632,117 @@
   },
   {
    "question": "Is IGRM better than the GPR index?",
+   "schema_version": "1.0.0",
+   "status": "answered",
+   "refusal_code": null,
+   "text": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+   "as_of": "2026-08-07",
+   "template_id": "instrument_scope",
+   "fact_ids": [
+    "latest.date",
+    "latest.definition"
+   ],
+   "evidence": [
+    {
+     "fact_id": "latest.date",
+     "value": "2026-08-07",
+     "source": "docs/data/latest.json",
+     "pointer": "/date",
+     "source_sha256": "00cfeb4b8d2b7df985f0f340419c8b24f837b8565badac9f99b8af19d003680d",
+     "as_of": "2026-08-07",
+     "unit": "ISO-8601 completed news day",
+     "denominator": "one completed UTC news day",
+     "citation": "https://igrm.in/data/latest.json"
+    },
+    {
+     "fact_id": "latest.definition",
+     "value": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+     "source": "docs/data/latest.json",
+     "pointer": "/definition",
+     "source_sha256": "00cfeb4b8d2b7df985f0f340419c8b24f837b8565badac9f99b8af19d003680d",
+     "as_of": "2026-08-07",
+     "unit": "text",
+     "denominator": "instrument definition carried by latest.json",
+     "citation": "https://igrm.in/data/latest.json"
+    }
+   ]
+  },
+  {
+   "question": "What does IGRM measure?",
+   "schema_version": "1.0.0",
+   "status": "answered",
+   "refusal_code": null,
+   "text": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+   "as_of": "2026-08-07",
+   "template_id": "instrument_scope",
+   "fact_ids": [
+    "latest.date",
+    "latest.definition"
+   ],
+   "evidence": [
+    {
+     "fact_id": "latest.date",
+     "value": "2026-08-07",
+     "source": "docs/data/latest.json",
+     "pointer": "/date",
+     "source_sha256": "00cfeb4b8d2b7df985f0f340419c8b24f837b8565badac9f99b8af19d003680d",
+     "as_of": "2026-08-07",
+     "unit": "ISO-8601 completed news day",
+     "denominator": "one completed UTC news day",
+     "citation": "https://igrm.in/data/latest.json"
+    },
+    {
+     "fact_id": "latest.definition",
+     "value": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+     "source": "docs/data/latest.json",
+     "pointer": "/definition",
+     "source_sha256": "00cfeb4b8d2b7df985f0f340419c8b24f837b8565badac9f99b8af19d003680d",
+     "as_of": "2026-08-07",
+     "unit": "text",
+     "denominator": "instrument definition carried by latest.json",
+     "citation": "https://igrm.in/data/latest.json"
+    }
+   ]
+  },
+  {
+   "question": "Is this a measure of risk?",
+   "schema_version": "1.0.0",
+   "status": "answered",
+   "refusal_code": null,
+   "text": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+   "as_of": "2026-08-07",
+   "template_id": "instrument_scope",
+   "fact_ids": [
+    "latest.date",
+    "latest.definition"
+   ],
+   "evidence": [
+    {
+     "fact_id": "latest.date",
+     "value": "2026-08-07",
+     "source": "docs/data/latest.json",
+     "pointer": "/date",
+     "source_sha256": "00cfeb4b8d2b7df985f0f340419c8b24f837b8565badac9f99b8af19d003680d",
+     "as_of": "2026-08-07",
+     "unit": "ISO-8601 completed news day",
+     "denominator": "one completed UTC news day",
+     "citation": "https://igrm.in/data/latest.json"
+    },
+    {
+     "fact_id": "latest.definition",
+     "value": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
+     "source": "docs/data/latest.json",
+     "pointer": "/definition",
+     "source_sha256": "00cfeb4b8d2b7df985f0f340419c8b24f837b8565badac9f99b8af19d003680d",
+     "as_of": "2026-08-07",
+     "unit": "text",
+     "denominator": "instrument definition carried by latest.json",
+     "citation": "https://igrm.in/data/latest.json"
+    }
+   ]
+  },
+  {
+   "question": "What is IGRM?",
    "schema_version": "1.0.0",
    "status": "answered",
    "refusal_code": null,
