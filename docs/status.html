@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Status — India Geopolitical Risk Monitor</title>
-<meta name="description" content="Live operational status: per-source data freshness against stated windows, the morning contract's measured record, and each pipeline lane's last evidence stamp.">
+<meta name="description" content="Live operational status: source freshness, write and measurement dates, cross-payload day alignment, and the morning publication record.">
 <link rel="canonical" href="https://igrm.in/status.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=35b07296">
+<link rel="stylesheet" href="site.css?v=9f3cee78">
 </head>
 <body class="site-page layout-system" data-page="status.html" data-root=".">
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -46,10 +46,10 @@
   <main id="main-content" class="page-content" tabindex="-1">
     <!--site-shell:content-start-->
     <h2>Status</h2>
-<p class="prose">This page is the instrument watching itself: each data source's latest
-data day against a stated freshness window, the morning contract's measured record, and
-the last evidence stamp from every pipeline lane. Everything below derives from committed
-files — nothing is self-reported, and a stale source shows as stale by rule. The freshness
+<p class="prose">This page is the instrument watching itself: each registered data source's latest
+data day against a stated freshness window, selected operational lanes' write and measurement
+dates, registered cross-payload alignment checks, and the morning contract's measured
+record. Everything below derives from committed files — nothing is self-reported, and a stale source shows as stale by rule. The freshness
 windows are operational expectations (source publish cadence plus fetch cadence), stated
 in <a href="data/status.json">the payload itself</a>; the morning contract is the only
 promise, and <a href="data/reliability.json">its record keeps misses listed forever</a>.</p>
@@ -73,10 +73,20 @@ timestamps since 2026-08-02.</p>
   <tbody id="src-body"><tr><td colspan="5">Loading status.json…</td></tr></tbody>
 </table></div>
 
-<h3>Pipeline lanes</h3>
+<h3>Cross-payload coherence</h3>
+<p class="prose">A payload may be written today while describing an older measured day.
+That is published as an operational state, not disguised as freshness and not treated as
+a pipeline crash. Features that require a mismatched join refuse or fall back exactly as
+listed below.</p>
+<div class="tblwrap"><table class="status-table alignment-table">
+  <thead><tr><th>Check</th><th>Reference day</th><th>Observed day</th><th>State and effect</th></tr></thead>
+  <tbody id="alignment-body"><tr><td colspan="4">Loading…</td></tr></tbody>
+</table></div>
+
+<h3>Selected operational lanes</h3>
 <div class="tblwrap"><table class="status-table">
-  <thead><tr><th>Lane</th><th>Last evidence stamp</th><th>Evidence file</th></tr></thead>
-  <tbody id="lane-body"><tr><td colspan="3">Loading…</td></tr></tbody>
+  <thead><tr><th>Lane</th><th>Last written</th><th>Measured day</th><th>Evidence file</th></tr></thead>
+  <tbody id="lane-body"><tr><td colspan="4">Loading…</td></tr></tbody>
 </table></div>
 
 <p class="prose role-note" id="gen-note"></p>
@@ -97,15 +107,38 @@ timestamps since 2026-08-02.</p>
         : '<span class="ok-no">no</span>' + (s.note ? " — " + esc(s.note) : "");
       return "<tr><td>" + esc(s.name) +
         '<div class="role-note">' + esc(s.role) + "</div></td>" +
-        '<td class="num">' + esc(s.latest_data || "—") + "</td>" +
+        '<td class="num">' + esc(s.latest_data || "—") +
+        (s.output_generated ? '<div class="role-note">output built ' +
+          esc(s.output_generated) + "</div>" : "") + "</td>" +
         '<td class="num">' + esc(s.age_days != null ? s.age_days : "—") + "</td>" +
         '<td class="num">' + esc(s.expect_within_days) + "</td>" +
         "<td>" + okCell + "</td></tr>";
     }).join("");
+    const alignmentBody = document.getElementById("alignment-body");
+    alignmentBody.innerHTML = (d.alignments || []).map(a => {
+      const diff = a.day_difference;
+      const relation = a.status === "aligned" ? "aligned" :
+        a.status === "lagging" ? "observed lane lags by " + diff +
+          (diff === 1 ? " day" : " days") :
+        a.status === "ahead" ? "observed lane is ahead by " + Math.abs(diff) +
+          (Math.abs(diff) === 1 ? " day" : " days") :
+        (a.status || "unavailable");
+      const state = a.aligned === true
+        ? '<span class="ok-yes">' + esc(relation) + '</span>'
+        : '<span class="ok-no">' + esc(relation) + '</span>';
+      return '<tr><td data-label="Check">' + esc(a.name) + "</td>" +
+        '<td data-label="Reference day">' + esc(a.reference.label) + '<div class="role-note">' +
+        esc(a.reference.date || "—") + "</div></td>" +
+        '<td data-label="Observed day">' + esc(a.observed.label) + '<div class="role-note">' +
+        esc(a.observed.date || "—") + "</div></td>" +
+        '<td data-label="State and effect">' + state + '<div class="role-note">' + esc(a.effect) +
+        "</div></td></tr>";
+    }).join("") || '<tr><td colspan="4">No registered alignment checks.</td></tr>';
     const laneBody = document.getElementById("lane-body");
     laneBody.innerHTML = d.lanes.map(l =>
       "<tr><td>" + esc(l.name) + "</td>" +
       '<td class="num">' + esc(l.last || "—") + "</td>" +
+      '<td class="num">' + esc(l.measured_day || "—") + "</td>" +
       "<td><a href=\"" + esc(l.evidence.replace("docs/", "")) + "\">" +
       esc(l.evidence.replace("docs/data/", "")) + "</a></td></tr>"
     ).join("");

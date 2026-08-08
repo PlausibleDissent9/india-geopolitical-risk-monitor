@@ -4,14 +4,16 @@
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/freshness.json",
-  "what": "Age of every published payload against the cadence its lane is supposed to run at. A lane that stops writing does not break: it keeps serving its last value, and a stale number is quoted as confidently as a fresh one. This is the check that notices.",
+  "what": "Write-time age of every non-exempt JSON payload against the cadence its lane is supposed to run at, with every exemption listed, plus the separately declared measurement day wherever the payload carries one. Dated CSVs expose their last measured row and explicitly state that no embedded write timestamp exists. A file can be rewritten today while still describing an older day; generated/written_date and measured_date must never be treated as synonyms.",
+  "measurement_policy": "Write-time staleness fails this audit. A valid older measurement day is published as state rather than treated as a pipeline crash; cross-payload day alignment and its reader-visible effect are reported in status.json.",
   "undatable_is_a_failure": "A payload with no _meta.generated cannot be audited by anything, so it counts as a failure rather than a pass. An auditor that skips what it cannot read is worse than no auditor, because it reports green.",
   "default_max_age_days": 3,
-  "n_payloads": 81,
-  "n_fresh": 70,
+  "n_payloads": 82,
+  "n_fresh": 71,
   "n_stale_or_undatable": 0,
   "n_exempt": 11,
-  "generated": "2026-08-08T06:27:58Z"
+  "n_with_declared_measurement_date": 25,
+  "generated": "2026-08-08T11:16:20Z"
  },
  "payloads": [
   {
@@ -23,15 +25,21 @@
    "payload": "alerts.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "alt_specs.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 10,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "api_contract.json",
@@ -42,43 +50,77 @@
    "payload": "aptness.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-06",
+   "measured_date_field": "_meta.date",
+   "measured_age_days": 2,
+   "measurement_status": "declared"
+  },
+  {
+   "payload": "assistant_answers.json",
+   "generated": "2026-08-08",
+   "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
+   "max_age_days": 3,
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "back_extension.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 40,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "chokepoints.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "comparators.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "country_china.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-08",
+   "measured_date_field": "date",
+   "measured_age_days": 0,
+   "measurement_status": "declared"
   },
   {
    "payload": "cow_mids.json",
    "generated": "2026-08-06",
    "age_days": 2,
+   "written_date": "2026-08-06",
+   "write_age_days": 2,
    "max_age_days": 400,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "daily_brief.json",
@@ -89,15 +131,21 @@
    "payload": "detection_baselines.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "detector_blindness.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 5,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "divergence_register.json",
@@ -108,29 +156,41 @@
    "payload": "energy_context.json",
    "generated": "2026-08-06",
    "age_days": 2,
+   "written_date": "2026-08-06",
+   "write_age_days": 2,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "episode_actors.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "episode_terms.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "episode_themes.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "episodes.json",
@@ -141,29 +201,41 @@
    "payload": "event_study.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "expert_shelf.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "exposure_sectors.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "forecasts.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "freshness.json",
@@ -174,57 +246,84 @@
    "payload": "gpr_comparison.json",
    "generated": "2026-08-06",
    "age_days": 2,
+   "written_date": "2026-08-06",
+   "write_age_days": 2,
    "max_age_days": 40,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "history.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "latest.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "map_relations.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "map_states.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "monthly.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 5,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "multilingual.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 30,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "negative_results.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "note_latest.json",
@@ -240,36 +339,54 @@
    "payload": "nowcast.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-08",
+   "measured_date_field": "date",
+   "measured_age_days": 0,
+   "measurement_status": "declared"
   },
   {
    "payload": "outlet_drift.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "permanence.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 10,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "precision.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "predictability.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "predictions.json",
@@ -280,183 +397,309 @@
    "payload": "priced_risk.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 10,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "receipts.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-06",
+   "measured_date_field": "date",
+   "measured_age_days": 2,
+   "measurement_status": "declared"
   },
   {
    "payload": "receipts_archive.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "reliability.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "replication.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "robustness_series.json",
    "generated": "2026-08-06",
    "age_days": 2,
+   "written_date": "2026-08-06",
+   "write_age_days": 2,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "seasonality.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 10,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "sector_agri_food.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_auto_components.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_chemicals.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_defence_aerospace.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_electronics.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_energy_manufacturing.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_engineering_goods.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_fmcg.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_gems_jewellery.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_it_services.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_marine_products.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_metals.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_petroleum_refining.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_pharma.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "sector_sensitivity.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "sector_textiles_apparel.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-07",
+   "measured_date_field": "date",
+   "measured_age_days": 1,
+   "measurement_status": "declared"
   },
   {
    "payload": "shares.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "spike_breadth.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "splice_sensitivity.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "status.json",
@@ -467,69 +710,103 @@
    "payload": "stress_gauge.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measured_date": "2026-08-04",
+   "measured_date_field": "date",
+   "measured_age_days": 4,
+   "measurement_status": "declared"
   },
   {
    "payload": "syndication.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 5,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "tone.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "ucdp_context.json",
    "generated": "2026-08-06",
    "age_days": 2,
+   "written_date": "2026-08-06",
+   "write_age_days": 2,
    "max_age_days": 400,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "uncertainty.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "validation.json",
    "generated": "2026-08-07",
    "age_days": 1,
+   "written_date": "2026-08-07",
+   "write_age_days": 1,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "vintages.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 5,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "vintages_panel.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "wiki_hindi.json",
    "generated": "2026-08-08",
    "age_days": 0,
+   "written_date": "2026-08-08",
+   "write_age_days": 0,
    "max_age_days": 10,
-   "status": "fresh"
+   "status": "fresh",
+   "measurement_status": "not_declared"
   },
   {
    "payload": "episodes.csv",
    "generated": "2026-08-04",
    "age_days": 4,
+   "measured_date": "2026-08-04",
+   "measured_age_days": 4,
+   "measurement_status": "declared",
+   "write_time_status": "not_embedded_in_csv",
    "max_age_days": 90,
    "status": "fresh"
   },
@@ -542,6 +819,10 @@
    "payload": "history.csv",
    "generated": "2026-08-07",
    "age_days": 1,
+   "measured_date": "2026-08-07",
+   "measured_age_days": 1,
+   "measurement_status": "declared",
+   "write_time_status": "not_embedded_in_csv",
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -549,6 +830,10 @@
    "payload": "monthly.csv",
    "generated": "2026-08-01",
    "age_days": 7,
+   "measured_date": "2026-08-01",
+   "measured_age_days": 7,
+   "measurement_status": "declared",
+   "write_time_status": "not_embedded_in_csv",
    "max_age_days": 70,
    "status": "fresh"
   },
@@ -556,6 +841,10 @@
    "payload": "shares.csv",
    "generated": "2026-08-07",
    "age_days": 1,
+   "measured_date": "2026-08-07",
+   "measured_age_days": 1,
+   "measurement_status": "declared",
+   "write_time_status": "not_embedded_in_csv",
    "max_age_days": 3,
    "status": "fresh"
   }

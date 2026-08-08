@@ -783,6 +783,45 @@ input:focus { outline: 2px solid var(--accent); border-color: transparent; }
   table { display: block; max-width: 100%; overflow-x: auto; }
   table th,
   table td { white-space: normal; }
+  .alignment-table { overflow: visible; }
+  .alignment-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .alignment-table tbody,
+  .alignment-table tr,
+  .alignment-table td { display: block; width: 100%; }
+  .alignment-table tr {
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--card);
+  }
+  .alignment-table td { padding: 5px 0; border: 0; }
+  .alignment-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    color: var(--muted);
+    font-size: var(--fs-fine);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .alignment-table td:first-child {
+    padding-top: 0;
+    color: var(--fg);
+    font-family: "Fraunces", Georgia, serif;
+    font-size: var(--fs-lead);
+    font-weight: 600;
+  }
+  .alignment-table td:last-child { padding-bottom: 0; }
   .chart-wrap { padding: 0.7rem; }
   #ask-row { align-items: stretch; flex-direction: column; }
   #ask-row button { width: 100%; }

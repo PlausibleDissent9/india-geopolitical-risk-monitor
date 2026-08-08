@@ -118,14 +118,28 @@ MAX_AGE_DAYS.update({
 })
 
 TIMESTAMP_KEYS = ("generated", "generated_at", "resolved_at")
+MEASURED_DATE_FIELDS = ("date", "_meta.date")
 
 
-def _generated(path: Path) -> str | None:
+def _json_dict(path: Path) -> dict[str, Any] | None:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return None
-    if not isinstance(data, dict):
+    return data if isinstance(data, dict) else None
+
+
+def _dig(obj: Any, dotted: str) -> Any:
+    for part in dotted.split("."):
+        if not isinstance(obj, dict):
+            return None
+        obj = obj.get(part)
+    return obj
+
+
+def _generated(path: Path) -> str | None:
+    data = _json_dict(path)
+    if data is None:
         return None
     meta = data.get("_meta")
     if not isinstance(meta, dict):
@@ -135,6 +149,60 @@ def _generated(path: Path) -> str | None:
         if isinstance(v, str) and len(v) >= 10:
             return v[:10]
     return None
+
+
+def _measured_date(path: Path) -> tuple[str | None, str | None]:
+    """Return an explicitly carried measurement day and its field.
+
+    A payload can be rewritten today while still describing yesterday.
+    That is a legitimate upstream state, not a write-cadence failure, but
+    it has to travel separately from ``_meta.generated``. Only explicit
+    date fields are read: absence means the payload does not declare one,
+    never that its write day should be guessed as its measurement day.
+    """
+    data = _json_dict(path)
+    if data is None:
+        return None, None
+    for field in MEASURED_DATE_FIELDS:
+        value = _dig(data, field)
+        if value is not None:
+            return str(value), field
+    return None, None
+
+
+def _attach_measurement_date(
+        row: dict[str, Any], path: Path, today: date) -> None:
+    measured, field = _measured_date(path)
+    if measured is None or field is None:
+        row["measurement_status"] = "not_declared"
+        return
+    row["measured_date"] = measured
+    row["measured_date_field"] = field
+    try:
+        measured_age = (today - date.fromisoformat(measured)).days
+    except ValueError:
+        row["measurement_status"] = "invalid"
+        row["status"] = "undatable"
+        row["reason"] = (
+            f"unparseable declared measurement date {measured!r} "
+            f"at {field}")
+        return
+    if len(measured) != 10 or date.fromisoformat(measured).isoformat() != measured:
+        row["measurement_status"] = "invalid"
+        row["status"] = "undatable"
+        row["reason"] = (
+            f"declared measurement date {measured!r} at {field} is not "
+            "an exact ISO-8601 day")
+        return
+    if measured_age < 0:
+        row["measurement_status"] = "future"
+        row["status"] = "undatable"
+        row["reason"] = (
+            f"declared measurement date {measured!r} at {field} is in "
+            "the future")
+        return
+    row["measured_age_days"] = measured_age
+    row["measurement_status"] = "declared"
 
 
 # A published CSV has nowhere to carry _meta, so its freshness is the
@@ -204,8 +272,19 @@ def audit_csvs(today: date | None = None) -> list[dict[str, Any]]:
                          "max_age_days": limit,
                          "reason": f"unparseable last date {last!r}"})
             continue
+        if age < 0:
+            rows.append({"payload": name, "status": "undatable",
+                         "max_age_days": limit,
+                         "reason": f"last measured row {last!r} is future"})
+            continue
         rows.append({
             "payload": name, "generated": last, "age_days": age,
+            # A dated CSV exposes its last measured row but carries no
+            # embedded write timestamp. Preserve the legacy keys while
+            # stating which clock is actually available.
+            "measured_date": last, "measured_age_days": age,
+            "measurement_status": "declared",
+            "write_time_status": "not_embedded_in_csv",
             "max_age_days": limit,
             "status": "fresh" if age <= limit else "STALE",
         })
@@ -237,11 +316,21 @@ def audit(today: date | None = None) -> list[dict[str, Any]]:
                          "max_age_days": limit,
                          "reason": f"unparseable timestamp {gen!r}"})
             continue
-        rows.append({
+        if age < 0:
+            rows.append({"payload": name, "status": "undatable",
+                         "max_age_days": limit,
+                         "reason": f"write timestamp {gen!r} is future"})
+            continue
+        row: dict[str, Any] = {
             "payload": name, "generated": gen, "age_days": age,
+            # Additive, explicit names. ``generated``/``age_days`` remain
+            # for API compatibility; they have always meant write time.
+            "written_date": gen, "write_age_days": age,
             "max_age_days": limit,
             "status": "fresh" if age <= limit else "STALE",
-        })
+        }
+        _attach_measurement_date(row, path, today)
+        rows.append(row)
     return rows
 
 
@@ -253,6 +342,8 @@ def main() -> None:
     bad = [r for r in rows if r["status"] in ("STALE", "undatable")]
     fresh = [r for r in rows if r["status"] == "fresh"]
     exempt = [r for r in rows if r["status"] == "exempt"]
+    measured = [r for r in rows
+                if r.get("measurement_status") == "declared"]
 
     # This module writes the LAST payload of the run, so a stamping step
     # that ran before it would always miss this file -- and did, on the
@@ -264,11 +355,20 @@ def main() -> None:
         "_meta": {
             **stamp_meta.universal_fields("freshness.json"),
             "what": (
-                "Age of every published payload against the cadence its "
-                "lane is supposed to run at. A lane that stops writing "
-                "does not break: it keeps serving its last value, and a "
-                "stale number is quoted as confidently as a fresh one. "
-                "This is the check that notices."),
+                "Write-time age of every non-exempt JSON payload against the "
+                "cadence its lane is supposed to run at, with every exemption "
+                "listed, plus the separately declared measurement day "
+                "wherever the payload carries one. Dated "
+                "CSVs expose their last measured row and explicitly state "
+                "that no embedded write timestamp exists. "
+                "A file can be rewritten today while still describing an "
+                "older day; generated/written_date and measured_date must "
+                "never be treated as synonyms."),
+            "measurement_policy": (
+                "Write-time staleness fails this audit. A valid older "
+                "measurement day is published as state rather than treated "
+                "as a pipeline crash; cross-payload day alignment and its "
+                "reader-visible effect are reported in status.json."),
             "undatable_is_a_failure": (
                 "A payload with no _meta.generated cannot be audited by "
                 "anything, so it counts as a failure rather than a pass. "
@@ -279,6 +379,7 @@ def main() -> None:
             "n_fresh": len(fresh),
             "n_stale_or_undatable": len(bad),
             "n_exempt": len(exempt),
+            "n_with_declared_measurement_date": len(measured),
             "generated": datetime.now(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"),
         },

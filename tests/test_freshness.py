@@ -34,6 +34,50 @@ def test_a_fresh_payload_passes(tmp_path, monkeypatch):
     assert freshness.audit(today=date(2026, 8, 7))[0]["status"] == "fresh"
 
 
+def test_write_day_and_measurement_day_are_never_conflated(
+        tmp_path, monkeypatch):
+    monkeypatch.setattr(freshness, "SITE_DATA", tmp_path)
+    _write(tmp_path, "thing.json",
+           {"generated": "2026-08-07T00:00:00Z"},
+           {"date": "2026-08-05", "value": 1})
+    row = freshness.audit(today=date(2026, 8, 7))[0]
+    assert row["status"] == "fresh"
+    assert row["written_date"] == "2026-08-07"
+    assert row["write_age_days"] == 0
+    assert row["measured_date"] == "2026-08-05"
+    assert row["measured_age_days"] == 2
+    assert row["measurement_status"] == "declared"
+
+
+def test_an_invalid_declared_measurement_day_is_not_called_fresh(
+        tmp_path, monkeypatch):
+    monkeypatch.setattr(freshness, "SITE_DATA", tmp_path)
+    _write(tmp_path, "thing.json",
+           {"generated": "2026-08-07T00:00:00Z"},
+           {"date": "not-a-day"})
+    row = freshness.audit(today=date(2026, 8, 7))[0]
+    assert row["status"] == "undatable"
+    assert row["measurement_status"] == "invalid"
+    assert "declared measurement date" in row["reason"]
+
+
+def test_measurement_days_must_be_exact_and_not_future(
+        tmp_path, monkeypatch):
+    monkeypatch.setattr(freshness, "SITE_DATA", tmp_path)
+    _write(tmp_path, "timestamp.json",
+           {"generated": "2026-08-07T00:00:00Z"},
+           {"date": "2026-08-06T12:00:00Z"})
+    _write(tmp_path, "future.json",
+           {"generated": "2026-08-07T00:00:00Z"},
+           {"date": "2026-08-08"})
+    rows = {row["payload"]: row
+            for row in freshness.audit(today=date(2026, 8, 7))}
+    assert rows["timestamp.json"]["measurement_status"] == "invalid"
+    assert rows["timestamp.json"]["status"] == "undatable"
+    assert rows["future.json"]["measurement_status"] == "future"
+    assert rows["future.json"]["status"] == "undatable"
+
+
 def test_an_undatable_payload_is_a_failure_not_a_pass(tmp_path, monkeypatch):
     """The trap this whole module exists to avoid: an auditor that
     skips what it cannot read reports green forever. Three real
