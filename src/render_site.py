@@ -15,6 +15,7 @@ from __future__ import annotations
 import email.utils
 import json
 import time
+from datetime import date, datetime, timezone
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -116,6 +117,67 @@ def _notes() -> list[dict]:
     return out
 
 
+FEED_TITLE_MAX = 90
+FEED_SUMMARY_MAX = 400
+
+
+def _feed_title(note: dict) -> str:
+    """The note's heading, or the week alone.
+
+    The first version took `splitlines()[0]` and stripped leading "#" --
+    which silently assumed every note opens with a heading. The 2026-W31
+    note does not, so its entire unwrapped opening paragraph became the
+    RSS title: 590 characters rendered as the headline in every reader.
+    A line is only a title if it is a heading; otherwise the week is the
+    honest title, and the paragraph belongs in the description where it
+    already is.
+    """
+    for line in note["markdown"].strip().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith("#"):
+            heading = line.lstrip("#").strip()
+            if heading:
+                title = f"{note['week']} — {heading}"
+                return (title if len(title) <= FEED_TITLE_MAX
+                        else title[:FEED_TITLE_MAX - 1].rstrip() + "\u2026")
+        break
+    return str(note["week"])
+
+
+def _feed_pubdate(week: str) -> str:
+    """RFC 822 date for an ISO week, dated to its Friday -- the day the
+    weekly note covers through. Without a pubDate a reader stamps each
+    item with whenever it first polled, so a two-year archive can all
+    appear to have been published this morning.
+    """
+    year, _, num = week.partition("-W")
+    try:
+        day = date.fromisocalendar(int(year), int(num), 5)
+    except (ValueError, TypeError):
+        return email.utils.formatdate(time.time())
+    return email.utils.format_datetime(
+        datetime(day.year, day.month, day.day, 12, 0, tzinfo=timezone.utc))
+
+
+def _feed_summary(markdown: str) -> str:
+    """Prose, not raw Markdown, ending on a word.
+
+    The first version sliced 400 raw characters: readers rendered the
+    "#" glyphs literally and both items ended mid-word ("alon").
+    """
+    lines = [ln.strip() for ln in markdown.strip().splitlines()]
+    prose = " ".join(ln.lstrip("#").strip() for ln in lines if ln)
+    prose = " ".join(prose.split())
+    if len(prose) <= FEED_SUMMARY_MAX:
+        return prose
+    cut = prose[:FEED_SUMMARY_MAX]
+    if " " in cut:
+        cut = cut[:cut.rfind(" ")]
+    return cut.rstrip(" ,;:-") + "\u2026"
+
+
 def render_notes() -> None:
     notes = _notes()
     SITE_DATA.mkdir(parents=True, exist_ok=True)
@@ -126,14 +188,13 @@ def render_notes() -> None:
     now = email.utils.formatdate(time.time())
     items = []
     for n in notes:
-        first_line = n["markdown"].strip().splitlines()[0].lstrip("# ").strip() \
-            if n["markdown"].strip() else n["week"]
         items.append(
             "<item>"
-            f"<title>{escape(n['week'] + ' — ' + first_line)}</title>"
+            f"<title>{escape(_feed_title(n))}</title>"
             f"<link>{SITE_URL}/notes.html#{escape(n['week'])}</link>"
             f"<guid isPermaLink=\"false\">igrm-note-{escape(n['week'])}</guid>"
-            f"<description>{escape(n['markdown'][:400])}</description>"
+            f"<pubDate>{_feed_pubdate(n['week'])}</pubDate>"
+            f"<description>{escape(_feed_summary(n['markdown']))}</description>"
             "</item>"
         )
     feed = (
