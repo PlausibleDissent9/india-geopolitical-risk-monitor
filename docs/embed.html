@@ -5,27 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IGRM embed</title>
 <meta name="robots" content="noindex">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<link rel="stylesheet" href="fonts.css?v=991014f5">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="tokens.css?v=c07df974">
 <script src="motion.js?v=5f04349d"></script>
 <script src="vendor/chart.umd.min.js?v=81ffafe1"></script>
 <style>
-  /* Deliberately self-contained: this widget is iframed into other
-     people's pages, so it carries its own minimal palette rather than
-     importing tokens.css and inheriting a host's cascade. The VALUES
-     must still track the site — until 2026-08-07 they were the old
-     #0E141E/#1C2532/#97A0B0 set, so the embed looked like a different
-     product from the site it represents. Mirrors tokens.css :root. */
-  :root { --bg:#0B1017; --fg:#E6E4DC; --muted:#8C95A4; --rule:#1F2833; --accent:#D96548; }
-  * { box-sizing:border-box; margin:0 }
-  body { background:var(--bg); color:var(--fg); font:13px/1.4 system-ui,sans-serif; padding:10px 12px }
-  .head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px }
-  .head a { color:var(--muted); text-decoration:none; font-size:11px }
-  .num { font-weight:700; color:var(--accent) }
-  .wrap { height: calc(100vh - 52px); min-height:120px }
+  /* The iframe keeps an isolated layout, but palette and typography now
+     come from the same tokens as every full page. Host CSS cannot cross an
+     iframe boundary, so no local palette copy is necessary. */
+  * { box-sizing: border-box; margin: 0; }
+  body { padding: 10px 12px; background: var(--paper); color: var(--ink);
+    font: var(--fs-small)/1.4 "Archivo", system-ui, sans-serif; }
+  .head { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 12px; margin-bottom: 6px; }
+  .head a { color: var(--muted); text-decoration: none; font-size: var(--fs-micro); }
+  .num { color: var(--accent); font-weight: 700; }
+  .embed-note { color: var(--muted); }
+  .wrap { height: calc(100vh - 52px); min-height: 120px; }
+  [role="alert"] { color: var(--severe); }
+  @media print { body { background: Canvas; color: CanvasText; }
+    .head a { display: none; } }
 </style>
 </head>
 <body>
-<div class="head"><span id="t">IGRM</span><a id="lnk" href="https://igrm.in/" target="_blank" rel="noopener">IGRM &nearr;</a></div>
+<div class="head"><span id="t" role="status" aria-live="polite">IGRM</span><a id="lnk" href="https://igrm.in/" target="_blank" rel="noopener">IGRM &nearr;</a></div>
 <div class="wrap"><canvas id="c"></canvas></div>
 <script>
 "use strict";
@@ -36,9 +41,23 @@ const BASE = "";
 const NAMES = { composite: "Composite", pakistan_west: "Pakistan / Western Border",
   china_east: "China / Eastern Border", gulf_energy: "Gulf & Energy",
   us_trade: "US & Trade Policy", shipping: "Shipping & Chokepoints", gauge: "Experimental India Stress Gauge" };
-function draw(labels, values, label, latest) {
+function chartDescriptor(what, payload) {
+  const meta = payload && payload._meta || {};
+  if (what === "gauge") {
+    const validation = meta.validation_status === "experimental_not_validated"
+      ? "experimental; not validated" : "validation status in payload";
+    const eligibility = meta.headline_eligible === false
+      ? "not headline-eligible" : "headline eligibility in payload";
+    return `daily 0–100 weighted salience-and-stress gauge; ${validation}; ${eligibility}; not a risk prediction`;
+  }
+  const units = meta.units || "0–100 percentile scale";
+  return what === "composite"
+    ? `daily tape; ${units}; salience, not risk`
+    : `${units}; salience, not risk`;
+}
+function draw(labels, values, label, latest, descriptor) {
   document.getElementById("t").innerHTML =
-    `${label}: <span class="num">${latest == null ? "-" : latest}</span> <span style="color:var(--muted)">(percentile of trailing 2y; salience, not risk)</span>`;
+    `${label}: <span class="num">${latest == null ? "-" : latest}</span> <span class="embed-note">(${descriptor})</span>`;
   // Chart.js needs literal colours, so read them from the one place
   // that defines them rather than repeating the hexes a second time in
   // the same file — that duplication is how the palette drifted.
@@ -59,16 +78,17 @@ function draw(labels, values, label, latest) {
     if (WHAT === "gauge") {
       const j = await (await fetch(BASE + "data/stress_gauge.json")).json();
       const h = j.history_365d;
-      draw(h.dates, h.gauge, NAMES.gauge, j.gauge);
+      draw(h.dates, h.gauge, NAMES.gauge, j.gauge, chartDescriptor(WHAT, j));
     } else {
       const j = await (await fetch(BASE + "data/history.json")).json();
       const s = Array.isArray(j[WHAT]) ? j[WHAT] : (j.channels || {})[WHAT];
-      if (!s) { document.getElementById("t").textContent = "Unknown chart: " + WHAT; return; }
+      if (!s) { document.getElementById("t").setAttribute("role", "alert"); document.getElementById("t").textContent = "Unknown chart: " + WHAT; return; }
       const dates = j.dates.slice(-DAYS), vals = s.slice(-DAYS);
       const last = [...vals].reverse().find(v => v != null);
-      draw(dates, vals, NAMES[WHAT] || WHAT, last == null ? null : Math.round(last * 10) / 10);
+      draw(dates, vals, NAMES[WHAT] || WHAT, last == null ? null : Math.round(last * 10) / 10,
+        chartDescriptor(WHAT, j));
     }
-  } catch (e) { document.getElementById("t").textContent = "IGRM data unavailable"; }
+  } catch (e) { document.getElementById("t").setAttribute("role", "alert"); document.getElementById("t").textContent = "IGRM data unavailable"; }
 })();
 </script>
 </body>

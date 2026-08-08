@@ -212,6 +212,14 @@ def main() -> None:
     render_methodology()
     render_notes()
     render_home()
+    # Markdown conversion above necessarily recreates three legacy page
+    # bodies. Apply the shared shell last so generated and hand-authored
+    # routes cannot diverge overnight; asset stamping runs after this module
+    # in every publishing lane.
+    from .site_shell import render_all
+
+    changed = render_all()
+    print(f"[render] applied shared shell to {len(changed)} changed route(s)")
 
 
 if __name__ == "__main__":

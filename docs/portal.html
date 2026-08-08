@@ -9,56 +9,46 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <link href="fonts.css?v=991014f5" rel="stylesheet">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=79731829">
-<style>
-  .tabs { display:flex; gap:6px; margin:1.2rem 0 0; flex-wrap:wrap }
-  .tab { font:inherit; font-size:0.86rem; padding:7px 16px; border-radius:999px 999px 0 0;
-         border:1px solid var(--line); border-bottom:none; background:transparent;
-         color:var(--muted); cursor:pointer }
-  .tab.on { background:var(--card); color:var(--fg); border-color:var(--accent) }
-  .panel { border:1px solid var(--line); border-radius:0 10px 10px 10px; padding:1.1rem 1.2rem;
-           background:color-mix(in srgb, var(--card) 70%, transparent) }
-  .row { display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap }
-  input[type="password"], input[type="text"], textarea { font:inherit; background:var(--bg); color:var(--fg);
-    border:1px solid var(--line); border-radius:8px; padding:0.5rem 0.75rem }
-  textarea { width:100%; min-height:300px; resize:vertical; font:0.9rem/1.5 ui-monospace,Menlo,monospace }
-  textarea:focus, input:focus { outline:2px solid var(--accent); border-color:transparent }
-  .btn.primary { background:var(--accent); color:#fff; border-color:var(--accent) }
-  .status { font-size:0.85rem; color:var(--muted); margin-top:0.5rem; min-height:1.2em }
-  .scorecards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:0.7rem }
-  .sc { border:1px solid var(--line); border-radius:10px; padding:0.7rem 0.9rem; background:var(--card) }
-  .sc .v { font-family:"Fraunces",Georgia,serif; font-size:1.7rem; font-weight:600;
-           text-shadow:0 0 22px color-mix(in srgb, var(--accent) 25%, transparent) }
-  .sc a { text-decoration:none }
-  .labelcard { border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem; margin:0.7rem 0;
-               background:var(--card) }
-  .labelcard .t { font-size:1.02rem; line-height:1.45 }
-  .labelbtns { display:flex; gap:0.5rem; margin-top:0.7rem }
-  .labelbtns .btn { padding:0.45rem 1.1rem; font-weight:600 }
-  .on-b { border-color:var(--ok); color:var(--ok) } .off-b { border-color:var(--bad); color:var(--bad) }
-  .health-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:0.7rem }
-  .prose-mini h1,.prose-mini h2 { font-size:1rem } .prose-mini { font-size:0.9rem }
-  .pill { display:inline-block; font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase;
-          padding:0.1em 0.55em; border-radius:999px; border:1px solid var(--line); color:var(--muted) }
-  .pill.ok { color:var(--ok); border-color:var(--ok) } .pill.bad { color:var(--bad); border-color:var(--bad) }
-</style>
+<link rel="stylesheet" href="site.css?v=35b07296">
 </head>
-<body>
-<header>
-  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
-  <nav class="masthead">
-    <a href="start.html">Start here</a>
-    <a href="methodology.html">Methodology</a><a href="analysis.html">Analysis</a>
-<a href="history.html">1979&ndash;2019</a>
-    <a href="maps.html">Maps</a><a href="data.html">Data</a><a href="notes.html">Notes</a>
-    <a href="divergence.html">Divergence</a>
-  </nav>
-  <p class="definition">The author's console. Sign in once per device with a fine-grained
+<body class="site-page layout-onboarding" data-page="portal.html" data-root=".">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="masthead site-masthead">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
+      <a href="start.html">Start here</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="validation.html">Validation</a>
+      <a href="analysis.html">Research</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="data-cta" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
+    </div>
+  </div>
+</header>
+<div class="site-shell page-frame">
+  <section class="page-heading" aria-labelledby="page-title">
+    <div class="page-heading-copy">
+      <p class="page-kicker">Operations</p>
+      <h1 id="page-title">Author portal</h1>
+      <p class="page-deck">The author's console. Sign in once per device with a fine-grained
   GitHub token (Contents read-write + Actions read, this repository only); it is stored in
   this browser only and sent nowhere except api.github.com.</p>
-</header>
-
-<div id="auth" class="panel" style="margin-top:1rem">
+    </div>
+    <dl class="page-meta" aria-label="Publication context">
+      <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
+      <div><dt>Freshness</dt><dd><a href="status.html">Source-by-source status</a></dd></div>
+    </dl>
+  </section>
+  <main id="main-content" class="page-content" tabindex="-1">
+    <!--site-shell:content-start-->
+    <div id="auth" class="panel" style="margin-top:1rem">
   <div class="row">
     <input type="password" id="token" placeholder="github_pat_…" style="flex:1;min-width:240px">
     <button class="btn primary" id="signin">Sign in</button>
@@ -283,5 +273,29 @@ async function loadResearch() {
   } catch { $("datapack").innerHTML = '<p class="empty">Could not load datapack.</p>'; }
 }
 </script>
+    <!--site-shell:content-end-->
+  </main>
+  <footer class="site-footer">
+    <div class="footer-context">
+      <!--site-shell:footer-start-->
+      <p>Association, not causation. Not investment advice.</p>
+      <!--site-shell:footer-end-->
+    </div>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="./">India Geopolitical Risk Monitor</a>
+        <p>Public research instrument · India-specific press salience</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="methodology.html">Methodology</a>
+        <a href="validation.html">Validation</a>
+        <a href="history.html">1979&ndash;2019 history</a>
+        <a href="data.html">Data</a>
+        <a href="corrections.html">Corrections</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="site.js?v=88fb47ea"></script>
 </body>
 </html>

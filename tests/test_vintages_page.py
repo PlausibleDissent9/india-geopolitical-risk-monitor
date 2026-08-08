@@ -38,7 +38,11 @@ def _prose_text() -> str:
     a guard that matched plain spaces and could not see "24&nbsp;of&nbsp;29",
     so entities are decoded BEFORE any matching here."""
     page = _page()
-    definition = re.search(r'<p class="definition">.*?</p>', page, re.S)
+    definition = re.search(
+        r'<p class="(?:definition|page-deck)"(?:\s[^>]*)?>.*?</p>',
+        page,
+        re.S,
+    )
     assert definition, "the page lost its masthead definition paragraph"
     start = page.index('<div class="prose">')
     prose = page[start:page.index("<script", start)]
@@ -55,7 +59,10 @@ def test_the_page_exists_with_the_committed_shell():
     description = re.search(r'<meta name="description" content="([^"]+)"\s*/?>', page)
     assert description and len(description.group(1)) >= 50, (
         "no substantive search description")
-    assert '<nav class="masthead">' in page, "the shared nav shell is missing"
+    assert 'class="masthead site-masthead"' in page, (
+        "the shared institutional shell is missing")
+    assert 'data-page="vintages.html"' in page
+    assert page.count('id="theme-toggle"') == 1
 
 
 def test_the_csp_is_byte_identical_to_the_rest_of_the_site():
@@ -91,8 +98,8 @@ def test_the_prose_carries_no_digits_at_rest():
     """The structural immunity: not one digit in the reader-facing text
     before the script runs. Stronger than banning the audit's "12"/"10"
     by name -- a count that is not in the source cannot go stale in the
-    source. The nav's "1979-2019" label sits in the header nav, outside
-    prose scope, which is the only digit-bearing text the shell needs."""
+    source. The shell's "1979-2019" history link sits outside prose scope,
+    which is the only digit-bearing text the shell needs."""
     text = _prose_text()
     digits = sorted(set(re.findall(r"\d[\d.,:-]*", text)))
     assert not digits, (
@@ -108,7 +115,9 @@ def test_the_audited_counts_are_not_baked_into_body_markup_or_script():
     query strings are content hashes and may legitimately contain any
     substring, so they are stripped first."""
     page = _page()
-    body = re.sub(r"\?v=[0-9a-f]{8}", "", page[page.index("<body>"):])
+    body_start = re.search(r"<body(?:\s[^>]*)?>", page)
+    assert body_start, "the page lost its body"
+    body = re.sub(r"\?v=[0-9a-f]{8}", "", page[body_start.start():])
     for banned in ("10", "12"):
         assert banned not in body, (
             f'the vintage count "{banned}" is baked into the page body; '
@@ -128,7 +137,9 @@ def test_number_bearing_content_is_js_filled_placeholders():
         assert not re.search(r"\d", content), (
             f"placeholder {key} ships with digits in its static content "
             f"({content!r}); the payload is the only permitted source")
-    script = page[page.index("<script", page.index("<body>")):]
+    body_start = re.search(r"<body(?:\s[^>]*)?>", page)
+    assert body_start, "the page lost its body"
+    script = page[page.index("<script", body_start.end()):]
     assert "data-fill" in script and "querySelectorAll" in script, (
         "the inline script no longer fills the data-fill placeholders")
 

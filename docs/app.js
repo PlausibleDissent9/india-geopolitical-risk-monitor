@@ -350,7 +350,8 @@ function renderGlance(history) {
 
 /* Count-up on the headline number; skipped for reduced-motion users. */
 function countUp(el, target) {
-  const dur = 700;
+  const dur = IGRM_MOTION.tokenMs("--dur-slow", 420);
+  const settle = IGRM_MOTION.tokenMs("--dur-calm", 260);
   let finished = false;
   const done = () => { finished = true; el.textContent = target.toFixed(1); };
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return done();
@@ -364,7 +365,7 @@ function countUp(el, target) {
   };
   requestAnimationFrame(tick);
   // rAF is a nicety, never a dependency: the number lands regardless.
-  setTimeout(() => { if (!finished) done(); }, dur + 300);
+  setTimeout(() => { if (!finished) done(); }, dur + settle);
 }
 
 function buildToggles(h) {

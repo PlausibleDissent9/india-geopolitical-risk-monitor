@@ -3,7 +3,8 @@
 The freelance brief (`DESIGN_BRIEF.md`) asked for four things: a token
 set, a redesigned homepage hero, one redesigned evidence template, and
 **a short usage note so the system can be applied to the remaining
-pages**. This is that note.
+pages**. This is that note, now implemented as the shared foundation for
+all thirty public routes.
 
 Character: **dark, calm, technical.** Night is the committed default;
 light is a persisted choice and must stay equally legible. Reference
@@ -34,8 +35,10 @@ tick may not, and used to: see §4.
 ## 1. One source of truth: `docs/tokens.css`
 
 Both stylesheets import it. `style.css` is the homepage; `site.css` is
-the other nineteen pages and keeps its historical variable names
-(`--bg`, `--fg`, `--line`, `--card`) as *aliases* onto the tokens.
+the shared sheet for the other twenty-eight full-page routes and keeps
+its historical variable names (`--bg`, `--fg`, `--line`, `--card`) as
+*aliases* onto the tokens. The iframe-only `embed.html` imports the
+tokens and fonts but deliberately does not import full-page chrome.
 
 **Never declare a colour in either sheet.** They each used to hold their
 own copy of the palette under a comment asking the next editor to keep
@@ -85,6 +88,35 @@ minimum luminance gap.
 
 State colour (`--calm` / `--elevated` / `--severe`) is the only place
 colour carries meaning about the world. Do not use it decoratively.
+
+## 3a. One shell, five information families
+
+`src/site_shell.py` owns the masthead, primary navigation, page header,
+publication context, main landmark, footer and shared interaction script
+for every route except the homepage and iframe embed. It runs after the
+markdown conversion in `src/render_site.py`; generated and hand-authored
+pages therefore cannot drift into different shells overnight.
+
+The content measure follows the work rather than forcing every page into
+one card grid:
+
+- **Article:** long-form research, codebook and methodology use a wide
+  shell, narrow prose and an in-page reading rail.
+- **Dashboard:** analytical charts, grids and tables use the available
+  width without relaxing table-overflow containment.
+- **Evidence:** receipts, episodes and drilldowns keep provenance close
+  to the finding.
+- **Onboarding:** Start, Ask and author tools prioritize task flow and
+  form states.
+- **System:** API, data, status, viewer and 404 routes prioritize exact
+  operational context.
+
+The renderer is intentionally fail-closed. Removed inline styles have a
+registered hash and selector inventory; each selector must exist in the
+shared sheet. Every rendered route is audited for exactly one parsed
+`h1`, one `main`, and one theme toggle. Content and footer markers make
+the transformation idempotent and keep analytical payloads and scripts
+inside the shell unchanged.
 
 ## 3b. Spacing is NOT systematised, on purpose
 
@@ -227,6 +259,9 @@ away; the page never scrolls sideways.**
   directly beneath them.
 - Tables scroll inside their own box. Panning a data table is a normal
   gesture; panning an article is a bug.
+- Page definitions remain complete. They become slightly smaller and
+  tighter below 640px, but are never line-clamped or hidden without an
+  accessible disclosure.
 
 Reference blocks (the receipts tier legend, the exact-query block)
 collapse into native `<details>` — no JS, keyboard-reachable, announced
@@ -247,25 +282,21 @@ Also confirm the browser pane has a real width before measuring layout.
 A collapsed pane reports `clientWidth: 0`, which makes every overflow
 check return true and every measurement meaningless.
 
-Run `pytest tests/test_design_tokens.py tests/test_csp.py
-tests/test_site_links.py` — contrast, the ramp, the single palette,
-reduced motion, the phone rules, the self-hosted-only guarantee, and
-dead links.
+Run `pytest tests/test_site_system.py tests/test_design_tokens.py
+tests/test_csp.py tests/test_site_links.py tests/test_asset_versions.py`
+— route ownership, single-heading and theme invariants, migrated selector
+coverage, contrast, the ramp, reduced motion, phone and print contracts,
+the self-hosted-only guarantee, asset stamps, and dead links.
 
 ## 8. What is still open
 
-The brief's items 2 and 3 are done to the point of diminishing returns,
-not to perfection:
+The shared shell and route-family foundation are the launch baseline,
+not permission to flatten every page into the same composition. Further
+work should refine the information architecture within individual
+families, beginning with the densest evidence and analytical routes,
+while keeping claims, units, provenance and limitations unchanged.
 
-- Three of five channel rows reach the first phone screen, not five. The
-  remaining 286px is eyebrow, number, delta, band and nowcast — all
-  substantive. Getting the fourth would mean reordering the card with
-  `display: contents`, which was judged not worth the fragility.
-- The evidence page's first article sits at 1,157px, down from 1,823px.
-  Getting it above the fold would mean cutting the machine-written brief
-  or the sampling caveat, both of which a reader should see.
-
-A designer hired against `DESIGN_BRIEF.md` should start here rather than
-from scratch: the tokens, the contrast floor and the phone constraints
-are settled and tested. What remains is judgement about hierarchy and
-the information architecture of the evidence card.
+The homepage remains the north star and should receive only
+system-level refinements. Its channel rows, headline hierarchy and phone
+density are deliberate; further compaction needs evidence that it does
+not hide context or reintroduce horizontal overflow.

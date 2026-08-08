@@ -9,26 +9,44 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=79731829">
+<link rel="stylesheet" href="site.css?v=35b07296">
 </head>
-<body>
-<header>
-  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
-  <nav class="masthead">
-    <a href="start.html">Start here</a>
-    <a href="methodology.html">Methodology</a>
-    <a href="validation.html">Validation</a>
-    <a href="analysis.html">Analysis</a>
-    <a href="history.html">1979&ndash;2019</a>
-    <a href="maps.html">Maps</a>
-    <a href="data.html" class="current">Data</a>
-    <a href="notes.html">Notes</a>
-    <a href="divergence.html">Divergence</a>
-  </nav>
-  <p class="definition">Every endpoint below is served open, no key, no signup. Not investment advice.</p>
+<body class="site-page layout-system" data-page="api.html" data-root=".">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="masthead site-masthead">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
+      <a href="start.html">Start here</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="validation.html">Validation</a>
+      <a href="analysis.html">Research</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="data-cta current" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
+    </div>
+  </div>
 </header>
-
-<h2>The frozen API contract</h2>
+<div class="site-shell page-frame">
+  <section class="page-heading" aria-labelledby="page-title">
+    <div class="page-heading-copy">
+      <p class="page-kicker">Data infrastructure</p>
+      <h1 id="page-title">API contract</h1>
+      <p class="page-deck">Every endpoint below is served open, no key, no signup. Not investment advice.</p>
+    </div>
+    <dl class="page-meta" aria-label="Publication context">
+      <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
+      <div><dt>Freshness</dt><dd><a href="status.html">Source-by-source status</a></dd></div>
+    </dl>
+  </section>
+  <main id="main-content" class="page-content" tabindex="-1">
+    <!--site-shell:content-start-->
+    <h2>The frozen API contract</h2>
 <p class="prose">IGRM's endpoints are not a moving target. This page is the machine-readable
 promise behind them: <b id="contract-version">loading…</b>, frozen <b id="frozen-date"></b>.
 The full record is <a href="data/api_contract.json">data/api_contract.json</a>, generated once
@@ -61,15 +79,7 @@ tracks construct changes) and the <code>igrm</code> Python package (which tracks
 breaking change to any frozen field bumps the contract's major version and is announced here,
 in the methodology changelog, and in the contract record. Contract v2 removed an operational
 author queue that had been served outside the analytical API's scope; no research endpoint or
-research data changed.</p>
-
-<footer>
-  <p><a href="methodology.html">Methodology</a> &middot; <a href="data.html">Data</a> &middot;
-  <a href="codebook.html">Codebook</a></p>
-  <p>Association, not causation. Not investment advice.</p>
-</footer>
-
-<script>
+research data changed.</p><script>
 "use strict";
 (async () => {
   try {
@@ -95,5 +105,31 @@ research data changed.</p>
 })();
 </script>
 <script src="reveal.js?v=33b267c3"></script>
+    <!--site-shell:content-end-->
+  </main>
+  <footer class="site-footer">
+    <div class="footer-context">
+      <!--site-shell:footer-start-->
+      <p><a href="methodology.html">Methodology</a> &middot; <a href="data.html">Data</a> &middot;
+  <a href="codebook.html">Codebook</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+      <!--site-shell:footer-end-->
+    </div>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="./">India Geopolitical Risk Monitor</a>
+        <p>Public research instrument · India-specific press salience</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="methodology.html">Methodology</a>
+        <a href="validation.html">Validation</a>
+        <a href="history.html">1979&ndash;2019 history</a>
+        <a href="data.html">Data</a>
+        <a href="corrections.html">Corrections</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="site.js?v=88fb47ea"></script>
 </body>
 </html>

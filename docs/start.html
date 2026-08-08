@@ -9,43 +9,43 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=79731829">
-<style>
-.start-hero { padding: 2.2rem 0 1.4rem; position: relative; }
-.start-hero h2 { font-size: clamp(1.6rem, 4.5vw, 2.4rem); line-height: 1.15; margin: 0 0 0.8rem; }
-.start-hero .lede { max-width: 46rem; font-size: 1.05rem; }
-.start-live { display: inline-flex; align-items: baseline; gap: 0.55rem; margin-top: 1rem;
-  border: 1px solid var(--rule); border-radius: 8px; padding: 0.5rem 0.9rem; background: var(--card); }
-.start-live b { font-size: 1.6rem; font-variant-numeric: tabular-nums; color: var(--accent); }
-.paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.8rem; margin: 1rem 0; }
-.path { border: 1px solid var(--rule); border-radius: 10px; padding: 1rem 1.1rem; background: var(--card); }
-.path h3 { margin: 0 0 0.4rem; font-size: 1.02rem; }
-.path p { margin: 0.2rem 0; font-size: 0.92rem; color: var(--muted); }
-.ninety li { margin: 0.45rem 0; }
-.instrument li { margin: 0.4rem 0; }
-@media (prefers-reduced-motion: no-preference) {
-  .path { transition: border-color 0.25s ease; }
-  .path:hover { border-color: var(--accent); }
-}
-</style>
+<link rel="stylesheet" href="site.css?v=35b07296">
 </head>
-<body>
-<header>
-  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
-  <nav class="masthead">
-    <a href="start.html">Start here</a>
-    <a href="methodology.html">Methodology</a>
-    <a href="validation.html">Validation</a>
-    <a href="analysis.html">Analysis</a>
-    <a href="history.html">1979&ndash;2019</a>
-    <a href="maps.html">Maps</a>
-    <a href="data.html">Data</a>
-    <a href="notes.html">Notes</a>
-    <a href="divergence.html">Divergence</a>
-  </nav>
+<body class="site-page layout-onboarding" data-page="start.html" data-root=".">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="masthead site-masthead">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
+      <a href="start.html" class="current">Start here</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="validation.html">Validation</a>
+      <a href="analysis.html">Research</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="data-cta" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
+    </div>
+  </div>
 </header>
-
-<section class="start-hero">
+<div class="site-shell page-frame">
+  <section class="page-heading" aria-labelledby="page-title">
+    <div class="page-heading-copy">
+      <p class="page-kicker">Orientation</p>
+      <h1 id="page-title">Start here</h1>
+    </div>
+    <dl class="page-meta" aria-label="Publication context">
+      <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
+      <div><dt>Freshness</dt><dd><a href="status.html">Source-by-source status</a></dd></div>
+    </dl>
+  </section>
+  <main id="main-content" class="page-content" tabindex="-1">
+    <!--site-shell:content-start-->
+    <section class="start-hero">
   <h2>One number for how loudly the world's press is talking about India's geopolitics. Updated every morning. Every number backed by the articles behind it.</h2>
   <p class="lede prose">IGRM measures <b>press salience</b>: the share of global news coverage matching
   five registered channels of India-relevant geopolitics &mdash; the Pakistan border, the China border,
@@ -122,15 +122,7 @@
 <p class="prose">Whether markets will move, whether a crisis will escalate, or what a
 government intends. Salience is attention, and attention is not risk: the
 <a href="analysis.html">attention-pricing gap study</a> documents exactly where press
-attention and market pricing diverge, as a finding, not a signal.</p>
-
-<footer>
-  <p><a href="./">Today's numbers</a> &middot; <a href="methodology.html">Methodology</a> &middot;
-  <a href="data.html">Data &amp; citation</a></p>
-  <p>Association, not causation. Not investment advice.</p>
-</footer>
-
-<script>
+attention and market pricing diverge, as a finding, not a signal.</p><script>
 "use strict";
 (async () => {
   try {
@@ -144,5 +136,31 @@ attention and market pricing diverge, as a finding, not a signal.</p>
   } catch (e) { /* static page works without the payload */ }
 })();
 </script>
+    <!--site-shell:content-end-->
+  </main>
+  <footer class="site-footer">
+    <div class="footer-context">
+      <!--site-shell:footer-start-->
+      <p><a href="./">Today's numbers</a> &middot; <a href="methodology.html">Methodology</a> &middot;
+  <a href="data.html">Data &amp; citation</a></p>
+  <p>Association, not causation. Not investment advice.</p>
+      <!--site-shell:footer-end-->
+    </div>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="./">India Geopolitical Risk Monitor</a>
+        <p>Public research instrument · India-specific press salience</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="methodology.html">Methodology</a>
+        <a href="validation.html">Validation</a>
+        <a href="history.html">1979&ndash;2019 history</a>
+        <a href="data.html">Data</a>
+        <a href="corrections.html">Corrections</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="site.js?v=88fb47ea"></script>
 </body>
 </html>

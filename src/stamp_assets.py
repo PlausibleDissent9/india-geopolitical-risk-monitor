@@ -76,6 +76,7 @@ ASSETS = [
     "motion.js",
     "labels.js",
     "reveal.js",
+    "site.js",
     "app.js",
 ]
 
@@ -102,7 +103,8 @@ def _pattern(asset: str) -> re.Pattern[str]:
     nowhere else. Prose that happens to name a file is prose.
     """
     return re.compile(
-        r"(?P<lead>(?:href|src)\s*=\s*[\"'](?:\.\./)*|url\(\s*[\"']?(?:\.\./)*)"
+        r"(?P<lead>(?:href|src)\s*=\s*[\"'](?:\.\./|/)*|"
+        r"url\(\s*[\"']?(?:\.\./|/)*)"
         + re.escape(asset)
         + r"(?:\?v=[^\"')\s]*)?(?P<close>[\"']|(?=\s*\)))")
 
