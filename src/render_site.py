@@ -127,7 +127,12 @@ def _feed_title(note: dict) -> str:
     The first version took `splitlines()[0]` and stripped leading "#" --
     which silently assumed every note opens with a heading. The 2026-W31
     note does not, so its entire unwrapped opening paragraph became the
-    RSS title: 590 characters rendered as the headline in every reader.
+    RSS title: a 702-character headline (691 of them the note's own
+    prose) in every reader. The commit that fixed this said 590 -- a
+    number measured off a truncated read and never recomputed, in a
+    repository whose rule is that no number is hand-typed. Corrected
+    against the pre-fix feed.xml, which is where it should have been
+    measured.
     A line is only a title if it is a heading; otherwise the week is the
     honest title, and the paragraph belongs in the description where it
     already is.

@@ -98,3 +98,42 @@ the standard the overnight fleet was held to.
    The three RSS defects in the same report (590-char title, missing
    pubDate, raw-Markdown descriptions) were all in one function and are
    fixed in 7baf222.
+
+## URGENT, added 2026-08-08 evening — two defects that stop the 06:00 publish
+
+`analysis/precision_prereg_review_2026-08-08.md` has the full review of
+efdc969. The design, estimand discipline and interval math are the
+strongest registration work in this repo; two nails are wrong and both
+are scheduled to run.
+
+10. **The v3 registration pins seven WORKING-TREE paths, three of them
+    living** (`dictionaries.json`, `src/fetch_ngrams.py`,
+    `auditor/RUBRIC.md`). There is no `base_commit` in
+    `validation/precision_v3/registration.json`, so the next legitimate
+    edit to any of them fails
+    `tests/test_precision_audit_v3.py::test_repository_registration_is_pre_label_and_preserves_a_holdout`
+    -- which runs at `morning.yml:119`, the FIRST gate on the 06:00
+    contract, with no continue-on-error. A dictionary amendment blocks
+    the morning publish. Shortest fuse: `src/fetch_ngrams.py`, five
+    commits in the last three days. This is the TB-1/TB-2/TB-4 class
+    from the registration audit, on the same three paths, and the fix
+    already shipped hours earlier in YOUR commit 6270d58:
+    `scripts/verify_blind_audit_v2.py` resolves living inputs via
+    `git show <base_commit>:<path>`, with
+    `tests/test_blind_audit_500.py:69` asserting the living set is
+    disjoint from the working-tree pins. Re-pin before the next
+    fetch_ngrams edit.
+11. **The regime-change path cannot be recorded and goes permanently
+    red.** `_record_payload` sits outside `record_day_outcome`'s try
+    (`src/precision_frame_v3.py:479`), so a legitimate matcher edit
+    raises before the day is written; the next day then fails the
+    contiguity check, and so does every day after, for the rest of the
+    90-day window. `daily.yml:152-160` and `PROTOCOL.md:49-54` both
+    claim a frame failure "does not prevent the later holdout from
+    being collected" -- not true for this class.
+
+Also: efdc969 was pushed with the suite red (main red 110 seconds on a
+leak-scanner hit) -- `scripts/gate.sh` appears not to have run before a
+preregistration push. And `PROTOCOL.md:149` says five coder/channel
+gates where `registration.json:132` and the code say ten; the publicly
+linked, hash-pinned document understates the gate by half.
