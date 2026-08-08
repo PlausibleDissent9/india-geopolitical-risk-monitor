@@ -112,15 +112,8 @@ def test_lastmod_is_not_one_frozen_date_for_every_page():
     assert dates, "no lastmod dates at all"
     # One date is legitimate only if every page really did change together.
     if len(dates) == 1:
-        import subprocess
-
-        changed = subprocess.run(
-            ["git", "log", "-1", "--format=%ad", "--date=short"],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-        assert dates == {changed}, (
-            f"every page claims lastmod {dates}, which matches no recent "
-            "commit -- the dates are frozen rather than derived"
+        page_dates = {sitemap._last_commit_date(path) for path in sitemap.pages()}
+        assert dates == page_dates, (
+            f"every page claims lastmod {dates}, but the page histories are "
+            f"{page_dates} -- the dates are frozen rather than derived"
         )
