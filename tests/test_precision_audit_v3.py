@@ -154,6 +154,7 @@ def _fixture_root(tmp_path: Path, *, complete: bool = True) -> Path:
             "path": relpath,
             "sha256": _sha((root / relpath).read_bytes()),
             "role": f"fixture_{index}",
+            "resolution": "working_tree",
         }
         for index, relpath in enumerate(registered_paths)
     ]
@@ -216,7 +217,7 @@ def _anchor_receipt(root: Path, package: Path) -> tuple[Path, str]:
     commands = (
         ("init", "-q"),
         ("config", "user.name", "Precision V3 Test"),
-        ("config", "user.email", "precision-v3-test" + chr(64) + "example.invalid"),
+        ("config", "user.email", "precision-v3-test.example.invalid"),
         ("add", "validation/precision_v3/freeze_v3a.json"),
         ("commit", "-q", "-m", "anchor precision v3 freeze receipt"),
     )
@@ -273,6 +274,32 @@ def test_repository_registration_is_pre_label_and_preserves_a_holdout() -> None:
     assert registration["attestation"]["v3_sample_drawn_when_registered"] is False
     assert registration["attestation"]["v3_label_seen_when_registered"] is False
     assert registration["attestation"]["comparison_claim_authorized"] is False
+
+
+def test_repository_registration_resolves_living_inputs_at_base_commit() -> None:
+    registration = audit._registration(ROOT)
+    by_path = {item["path"]: item for item in registration["registered_files"]}
+    base_paths = {
+        "auditor/RUBRIC.md",
+        "dictionaries.json",
+        "src/fetch_ngrams.py",
+        "src/precision_frame_v3.py",
+        "src/precision_audit_v3.py",
+    }
+    assert {
+        path for path, item in by_path.items()
+        if item["resolution"] == "base_commit"
+    } == base_paths
+    assert {
+        path for path, item in by_path.items()
+        if item["resolution"] == "working_tree"
+    } == {
+        "validation/precision_v3/PROTOCOL.md",
+        "validation/precision_v3/CODING_MANUAL.md",
+    }
+    for path in base_paths:
+        frozen = audit._git_blob(ROOT, registration["base_commit"], path)
+        assert _sha(frozen) == by_path[path]["sha256"]
 
 
 def test_complete_source_frame_reproduces_contributions_and_draws_exact_sample(tmp_path: Path) -> None:

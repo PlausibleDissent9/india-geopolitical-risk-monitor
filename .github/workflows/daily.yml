@@ -50,8 +50,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
@@ -154,7 +156,8 @@ jobs:
         # every group share exactly and writes an append-only, label-free day
         # attestation. An ineligible source day is preserved as a permanent
         # FRAME_FAILURE record: it invalidates that cohort without hiding the
-        # calendar day or preventing the later holdout from being collected.
+        # calendar day. A regime change remains visible and later days continue
+        # as failure attestations rather than silently starting a new regime.
         # Tool/runtime failures still make the job red; the final index remains
         # recoverable through the independent morning lane.
         if: github.event.inputs.backfill != 'true'

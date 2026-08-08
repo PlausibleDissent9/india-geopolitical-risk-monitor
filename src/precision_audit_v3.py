@@ -133,6 +133,20 @@ def _safe_path(root: Path, relpath: object, label: str) -> Path:
     return path
 
 
+def _git_blob(root: Path, commit: str, relpath: str) -> bytes:
+    """Read a preregistered blob from its immutable Git commit."""
+    proc = subprocess.run(
+        ["git", "-C", str(root), "show", f"{commit}:{relpath}"],
+        capture_output=True,
+        check=False,
+    )
+    if proc.returncode:
+        raise AuditV3Error(
+            f"registered base blob is unavailable: {commit}:{relpath}"
+        )
+    return proc.stdout
+
+
 def _registration(root: Path = ROOT) -> dict[str, Any]:
     path = root / "validation" / "precision_v3" / "registration.json"
     _, registration = _read_object(path)
@@ -141,6 +155,9 @@ def _registration(root: Path = ROOT) -> dict[str, Any]:
         "audit_id",
         "status",
         "registered_at",
+        "base_commit",
+        "base_commit_rule",
+        "pre_source_amendment",
         "source_collection",
         "cohorts",
         "registered_files",
@@ -167,24 +184,75 @@ def _registration(root: Path = ROOT) -> dict[str, Any]:
     if registered_at.tzinfo is None or registered_at.utcoffset() != timezone.utc.utcoffset(registered_at):
         raise AuditV3Error("registered_at must be UTC")
 
+    base_commit = registration["base_commit"]
+    if not isinstance(base_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", base_commit):
+        raise AuditV3Error("base_commit must be a full lowercase Git commit")
+    if not isinstance(registration["base_commit_rule"], str) or len(
+        registration["base_commit_rule"]
+    ) < 80:
+        raise AuditV3Error("base_commit_rule is missing or incomplete")
+    amendment = registration["pre_source_amendment"]
+    amendment_fields = {
+        "amended_at",
+        "prior_registration_commit",
+        "source_day_available",
+        "sample_drawn",
+        "labels_seen",
+        "changes",
+    }
+    if not isinstance(amendment, dict) or set(amendment) != amendment_fields:
+        raise AuditV3Error("pre_source_amendment fields are invalid")
+    if amendment["prior_registration_commit"] != base_commit:
+        raise AuditV3Error("pre-source amendment is not bound to the initial registration")
+    if any(
+        amendment[field] is not False
+        for field in ("source_day_available", "sample_drawn", "labels_seen")
+    ):
+        raise AuditV3Error("pre-source amendment occurred after study evidence existed")
+    if not isinstance(amendment["changes"], list) or not amendment["changes"]:
+        raise AuditV3Error("pre-source amendment has no change ledger")
+    try:
+        amended_at = datetime.fromisoformat(
+            str(amendment["amended_at"]).replace("Z", "+00:00")
+        )
+    except ValueError as exc:
+        raise AuditV3Error("pre-source amendment timestamp is invalid") from exc
+    if (
+        amended_at.tzinfo is None
+        or amended_at.utcoffset() != timezone.utc.utcoffset(amended_at)
+        or amended_at <= registered_at
+    ):
+        raise AuditV3Error("pre-source amendment timestamp is not later UTC")
+
     files = registration["registered_files"]
     if not isinstance(files, list) or not files:
         raise AuditV3Error("registered_files must be a non-empty list")
     seen_paths: set[str] = set()
     for item in files:
-        if not isinstance(item, dict) or set(item) != {"path", "sha256", "role"}:
+        if not isinstance(item, dict) or set(item) != {
+            "path", "sha256", "role", "resolution"
+        }:
             raise AuditV3Error("registered file entry is invalid")
         relpath = item["path"]
         if relpath in seen_paths:
             raise AuditV3Error("registered file path is duplicated")
         seen_paths.add(relpath)
         file_path = _safe_path(root, relpath, "registered file")
-        try:
-            observed = _sha256(file_path.read_bytes())
-        except OSError as exc:
-            raise AuditV3Error(f"registered file is missing: {relpath}") from exc
+        resolution = item["resolution"]
+        if resolution == "base_commit":
+            observed = _sha256(_git_blob(root, base_commit, relpath))
+        elif resolution == "working_tree":
+            try:
+                observed = _sha256(file_path.read_bytes())
+            except OSError as exc:
+                raise AuditV3Error(f"registered file is missing: {relpath}") from exc
+        else:
+            raise AuditV3Error(f"registered file resolution is invalid: {relpath}")
         if observed != item["sha256"]:
-            raise AuditV3Error(f"registered file changed: {relpath}")
+            raise AuditV3Error(
+                "registered file changed "
+                f"({resolution.replace('_', '-')} resolution): {relpath}"
+            )
 
     cohorts = registration["cohorts"]
     if not isinstance(cohorts, list) or len(cohorts) != 2:

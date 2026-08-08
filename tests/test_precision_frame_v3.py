@@ -307,6 +307,32 @@ def test_source_window_refuses_gaps_and_regime_changes(tmp_path: Path) -> None:
         frame.record_day(day_nine, tmp_path, require_live_hashes=False)
 
 
+def test_regime_change_records_failure_and_keeps_calendar_chain(
+    tmp_path: Path,
+) -> None:
+    _write_source_cache(tmp_path)
+    frame.record_day_outcome(DAY, tmp_path, require_live_hashes=False)
+
+    changed = b'{"version":"changed"}\n'
+    day_nine = date(2026, 8, 9)
+    _write_source_cache(tmp_path, day_nine, dictionary_bytes=changed)
+    failed_nine = frame.record_day_outcome(
+        day_nine, tmp_path, require_live_hashes=False
+    )
+    payload_nine = json.loads(failed_nine.read_text())
+    assert payload_nine["status"] == "FRAME_FAILURE_NO_LABELS"
+    assert "regime changed" in payload_nine["failure_reason"]
+
+    day_ten = date(2026, 8, 10)
+    _write_source_cache(tmp_path, day_ten, dictionary_bytes=changed)
+    failed_ten = frame.record_day_outcome(
+        day_ten, tmp_path, require_live_hashes=False
+    )
+    payload_ten = json.loads(failed_ten.read_text())
+    assert payload_ten["status"] == "FRAME_FAILURE_NO_LABELS"
+    assert "regime changed" in payload_ten["failure_reason"]
+
+
 def test_new_day_rechecks_every_prior_source_cache(tmp_path: Path) -> None:
     first_path = _write_source_cache(tmp_path)
     frame.record_day(DAY, tmp_path, require_live_hashes=False)

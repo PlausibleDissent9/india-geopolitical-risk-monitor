@@ -3,6 +3,20 @@
  "audit_id": "igrm-external-precision-v3-2026-08-08",
  "status": "PREREGISTERED_NO_SAMPLE_NO_LABELS",
  "registered_at": "2026-08-08T10:33:23Z",
+ "base_commit": "efdc969695a5af5b4ecea74f2fcb6f8438f9ffd4",
+ "base_commit_rule": "The original preregistration commit contains the exact living instrument, production matcher and audit implementation bytes frozen before any v3 source day, sample or label existed. Entries marked base_commit are always verified with git show at that immutable commit; only the two single-purpose study documents amended below remain working-tree pins.",
+ "pre_source_amendment": {
+  "amended_at": "2026-08-08T11:42:58Z",
+  "prior_registration_commit": "efdc969695a5af5b4ecea74f2fcb6f8438f9ffd4",
+  "source_day_available": false,
+  "sample_drawn": false,
+  "labels_seen": false,
+  "changes": [
+   "Resolve living instrument and implementation inputs at the immutable original preregistration commit so legitimate future maintenance cannot alter the registered bytes or block publication gates.",
+   "Correct the public protocol's coder-channel gate count from five to ten, matching two coders across five channels and the unchanged registered quality-gate rule.",
+   "Clarify and implement fail-closed regime-change recording: the calendar chain continues with immutable failure attestations and no replacement regime or restored confirmatory cohort."
+  ]
+ },
  "source_collection": {
   "attestation_directory": "data/raw/precision_v3_days",
   "production_cache_directory": "data/raw/ngram_days",
@@ -40,38 +54,45 @@
  "registered_files": [
   {
    "path": "validation/precision_v3/PROTOCOL.md",
-   "sha256": "45fe409c3d3380b4d56d7fd919b2bdf4c9fd0dc17e2f201d5f00dd188c99351a",
-   "role": "study_protocol"
+   "sha256": "6e6052906ab09a385f266ae40072c33ffb128dac0d405d23ffe1c8d5e946e109",
+   "role": "study_protocol",
+   "resolution": "working_tree"
   },
   {
    "path": "validation/precision_v3/CODING_MANUAL.md",
    "sha256": "ebd99d02d1dd6b16dfa2483302e302a8824955b198e83d6dcef8940bee252a1e",
-   "role": "coder_instructions"
+   "role": "coder_instructions",
+   "resolution": "working_tree"
   },
   {
    "path": "auditor/RUBRIC.md",
    "sha256": "2f285c9ffbc96d43946dbf9b53cd9fa688c2353be2c05e9df02ab5be8db38d17",
-   "role": "channel_specific_label_rubric"
+   "role": "channel_specific_label_rubric",
+   "resolution": "base_commit"
   },
   {
    "path": "dictionaries.json",
    "sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
-   "role": "production_dictionary_regime"
+   "role": "production_dictionary_regime",
+   "resolution": "base_commit"
   },
   {
    "path": "src/fetch_ngrams.py",
    "sha256": "0cbf9e9837e5d6bb51ddb558a4cd3397953907e9a4ba44133292fd7441629e39",
-   "role": "production_matcher_and_source_evidence_writer"
+   "role": "production_matcher_and_source_evidence_writer",
+   "resolution": "base_commit"
   },
   {
    "path": "src/precision_frame_v3.py",
    "sha256": "24489988b16bc9476029c2c58abd9ee296ba9d270ea56ced0bb69dc877f0e250",
-   "role": "prospective_day_attestation_builder"
+   "role": "prospective_day_attestation_builder",
+   "resolution": "base_commit"
   },
   {
    "path": "src/precision_audit_v3.py",
    "sha256": "973563a96e2e84aff5f769dacae562e957df2fb202889bdfb685f23cbbd97634",
-   "role": "frame_rebuilder_sampler_packet_builder_and_scorer"
+   "role": "frame_rebuilder_sampler_packet_builder_and_scorer",
+   "resolution": "base_commit"
   }
  ],
  "sampling": {

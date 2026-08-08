@@ -474,9 +474,10 @@ def record_day_outcome(
         payload = build_day_attestation(
             day, root, require_live_hashes=require_live_hashes
         )
+        return _record_payload(day, payload, root)
     except FrameValidationError as exc:
         payload = build_failure_attestation(day, exc, root)
-    return _record_payload(day, payload, root)
+        return _record_payload(day, payload, root)
 
 
 def _latest_day(root: Path) -> date:

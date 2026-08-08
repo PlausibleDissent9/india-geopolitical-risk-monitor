@@ -49,9 +49,12 @@ accepted day produces a compact append-only attestation in
 An ineligible production day is recorded instead as
 `FRAME_FAILURE_NO_LABELS`, with the source-cache hash and observed depth when
 available. It invalidates that cohort's sample but remains in the consecutive
-calendar chain, so the failure cannot be hidden and does not erase the later
-holdout. A failure record is immutable; a repaired or replaced source file may
-not retroactively turn it into an eligible day.
+calendar chain, so the failure cannot be hidden and every later calendar day
+can still be attested. A regime change ends confirmatory eligibility under this
+registration: later days remain recorded as failures rather than silently
+starting a new regime or restoring either cohort. A failure record is immutable;
+a repaired or replaced source file may not retroactively turn it into an eligible
+day.
 
 ## Frozen source populations
 
@@ -146,7 +149,7 @@ inflating a pass.
 Inter-coder reliability requires at least 400 unique-evidence firm overlaps
 per channel, no within-coder repeat conflict, raw agreement at least 0.90 and
 Gwet's AC1 at least 0.70. Constant-label overlap is inconclusive, not an
-automatic pass. All five coder/channel gates and all five reliability gates
+automatic pass. All ten coder/channel gates and all five reliability gates
 must pass conjunctively. Abstentions, access status, disagreements, repeated
 evidence, failures and deviations publish regardless of direction.
 
