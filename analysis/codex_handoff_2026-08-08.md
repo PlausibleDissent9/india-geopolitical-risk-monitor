@@ -137,3 +137,13 @@ leak-scanner hit) -- `scripts/gate.sh` appears not to have run before a
 preregistration push. And `PROTOCOL.md:149` says five coder/channel
 gates where `registration.json:132` and the code say ten; the publicly
 linked, hash-pinned document understates the gate by half.
+
+12. **`reproduce` is red on your last two commits** --
+    `analysis/reproduce_lane_red_2026-08-08.md` has the reproduction and
+    root cause. `scripts/reproduce.sh --use-cache` cannot complete the
+    market lane in a clean clone because `prices.csv` and
+    `derived_returns.csv` are gitignored third-party price data, and the
+    fail-closed guard correctly refuses to fetch them. Both candidate
+    files are in your tree. The script's own comment block already names
+    the pattern: declare the lane out of scope and report the exclusion
+    in the coverage number. Do not relax the guard.
