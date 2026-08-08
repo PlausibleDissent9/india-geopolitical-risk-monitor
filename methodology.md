@@ -56,10 +56,10 @@ quoted phrase, and disambiguation is done by a single channel-level anchor
 word, e.g. `India ("Line of Control" OR "ceasefire violations" OR …)`.
 Quoted phrases match exact token sequences (hyphens tokenize to spaces; no
 stemming, hence singular and plural forms where both are common in copy).
-Three generic phrases are accepted with open eyes and disclosed here:
-`"energy security"` and `"maritime security"` (broader than their channels;
-kept for recall of policy coverage) and `"Suez Canal"` (includes routine
-transit coverage; the percentile normalization absorbs its baseline).
+Two generic phrases are accepted with open eyes and disclosed here:
+`"energy security"` (broader than its channel; kept for recall of policy
+coverage) and `"Suez Canal"` (includes routine transit coverage; the
+percentile normalization absorbs its baseline).
 
 **Cross-channel bleed, decided and documented:** `"Russian oil"` (India)
 sits in *US & Trade Policy*, not *Gulf & Energy*, the risk vector is
@@ -393,38 +393,34 @@ cross-country questions V8 will formalize.
 The predictability study (`docs/data/predictability.json`) asks the
 directed lead-lag question on daily changes: five own-lags with and
 without five lags of the candidate leader, R-squared increment, and a
-permutation p-value from time-shifted nulls. Result, reported as
-found: press salience predicts none of conflict-event intensity, India
-VIX, or INR realized volatility (p 0.37 to 0.82); the only
-near-threshold direction is events leading salience (p 0.053). The
-index measures attention, and attention follows the world. This is the
-empirical basis for the site's standing claim that it is a salience
-monitor, not a risk predictor.
+permutation p-value from time-shifted nulls. In the published run, no
+salience-leading direction clears the conventional 0.05 threshold;
+events-leading-salience is the closest of the registered directions.
+Exact values live in `docs/data/predictability.json` rather than this
+prose so a registered rerun cannot leave a stale number here. This
+negative result is consistent with the instrument's stated scope: a
+salience monitor, not a risk predictor.
 
 ## 11. Receipts and source tiers
 
-Every channel score traces to a retrievable sample of the articles
-behind it. `docs/data/receipts.json` publishes, for the latest day
-only, each channel's exact GDELT query (the same `dictionaries.json`
-terms and anchor the score itself was built from) and a relevance-
-sorted sample of matched articles (GDELT `mode=artlist`, capped at 25
-per channel). This is a bounded sample, not a census: an active day's
-true coverage count is typically far larger than what artlist returns,
-and the site states this caveat wherever the sample appears.
+`docs/data/receipts.json` publishes a bounded latest-day evidence
+display, not a census and not the complete evidence behind the 7-day
+headline. The primary path reuses the sampled Web NGrams corpus and may
+add separately labelled, query-matched GDELT DOC supplemental URLs. It
+deduplicates URLs, then publishes one representative for each
+case-folded 120-character `(title or url)` key, up to 150 representatives
+per channel. If the corpus path is unavailable, the explicitly labelled
+artlist-only fallback publishes at most 75. On the primary path, every
+row states its lane; corpus rows distinguish the scoring sample from the
+extended scan.
 
-Each retrieved article's source domain is looked up against
-`source_tiers.json`, a registered, append-only domain-to-tier map:
-tier 1 wire services and public-service international broadcasters,
-tier 2 national and international broadsheets and business press,
-tier 3 mainstream TV, portals, and aggregators, tier 4 outlets with
-documented fabrication incidents or syndication mills with no original
-reporting. Assignments cite documented behaviors, not viewpoints; a
-domain not yet registered shows as "unranked" rather than being
-assumed into any tier. Tiers order the receipts list credible-first
-and produce one number, `spike_quality_tier12_share` (the tier 1-2
-share of that day's retrieved sample) -- **tiers never enter any
-channel score or the composite**, stated here and in the payload's
-`_meta`.
+Each displayed domain is looked up in `source_tiers.json`. Registered
+tiers affect presentation order and descriptive source-mix fields only;
+unregistered domains remain unranked. The legacy
+`spike_quality_tier12_share` field is the tier-1/2 share of the displayed,
+tier-sorted list and must not be read as the source mix of the underlying
+retrieval pool. Most importantly, **source tiers never enter a channel
+score or the composite**.
 
 ## 12. API contract
 

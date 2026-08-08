@@ -28,6 +28,7 @@ rather than fixing a claim. History is not stale; it is history.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -109,3 +110,59 @@ def test_the_gauge_number_in_the_ledger_is_left_alone():
         "the gauge has returned to 1 of 21, so this test's premise -- that "
         "the ledger entry is history rather than the current number -- "
         "needs rechecking rather than asserting.")
+
+
+def test_current_dictionary_and_receipts_prose_follow_the_live_rules():
+    """The current-method sections must not preserve superseded V1 rules."""
+    dictionary = json.loads((ROOT / "dictionaries.json").read_text())
+    shipping_terms = set(dictionary["shipping"]["terms"])
+    assert '"maritime security"' not in shipping_terms
+
+    method = (ROOT / "methodology.md").read_text(encoding="utf-8")
+    current_dictionary = method.split("**Cross-channel bleed", 1)[0]
+    assert "Two generic phrases" in current_dictionary
+    assert 'and `"maritime security"`' not in current_dictionary
+
+    from src import receipts, receipts_ngrams
+    for page in (method, _page("methodology.html")):
+        assert f"up to {receipts_ngrams.MAX_PUBLISHED}" in page
+        assert f"at most {receipts.MAX_ARTICLES_PUBLISHED}" in page
+        assert "capped at 25 per channel" not in page
+
+
+def test_predictability_prose_uses_the_payload_without_copying_nightly_pvalues():
+    pairs = _payload("predictability.json")["pairs"]
+    salience_leads = [v["p_permutation"] for k, v in pairs.items()
+                      if k.startswith("salience_leads_")]
+    assert salience_leads and min(salience_leads) >= 0.05
+    for page in ((ROOT / "methodology.md").read_text(encoding="utf-8"),
+                 _page("methodology.html")):
+        section = page.split("The predictability study", 1)[1]
+        section = section.split("Receipts and source tiers", 1)[0]
+        normalized = " ".join(section.split())
+        assert "no salience-leading direction clears" in normalized
+        assert "Exact values live in" in normalized
+        assert not re.search(r"p 0\.\d+", normalized)
+
+
+def test_citation_break_page_and_freshness_copy_follow_their_sources():
+    cff = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
+    version = re.search(r'^version:\s*"?([^"\n]+)', cff, re.M).group(1)
+    data_page = _page("data.html")
+    bib = (DOCS / "igrm.bib").read_text()
+    assert f"Version {version}" in data_page
+    assert f"Version {version}" in bib
+    page_title = re.search(
+        r"(India Geopolitical Risk Monitor: .+?)\. Version", data_page,
+        re.S).group(1)
+    bib_title = re.search(r"title\s*=\s*\{(.+?)\},", bib, re.S).group(1)
+    assert " ".join(page_title.split()) == " ".join(bib_title.split())
+
+    n_episodes = _payload("validation.json")["hit_rate"]["overall"]["n"]
+    assert f"{n_episodes} pre-registered episodes" in _page("break.html")
+
+    codebook = _page("codebook.html")
+    normalized = " ".join(codebook.split())
+    assert "this watches every payload" in normalized
+    assert "enumerated in <code>freshness.json</code>" in normalized
+    assert not re.search(r"watches all\s*~?\d+\s*<em>payloads", codebook)

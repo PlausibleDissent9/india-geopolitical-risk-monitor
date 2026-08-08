@@ -136,9 +136,10 @@ Configured outcomes: `nifty_minus_em` (strips global equity beta),
 `defence_minus_nifty`, `energy_omc_minus_nifty`,
 `it_services_minus_nifty`, `ports_logistics_minus_nifty`,
 `usdinr_minus_dxy` (strips broad dollar moves), `brent_ret`, and
-`gold_ret` (descriptive). At the 2026-08-07 audit,
-Brent was unavailable and therefore correctly belongs in
-`unavailable_outcomes`, not in the published result grid.
+`gold_ret` (descriptive). Consult `available_outcomes` and
+`unavailable_outcomes` for the current release: a configured unavailable
+outcome has no CSV result rows. Brent and gold remain descriptive-only
+whenever available.
 
 ## docs/data/validation.json
 
@@ -676,7 +677,7 @@ criterion is frozen in the registration; there is no third outcome.
 
 ## docs/data/back_extension.json
 
-The historical attention proxy, 1979–2016 (M1; registration frozen
+The historical attention proxy, 1979–2019 (M1; registration frozen
 before first computation in `analysis/back_extension_memo.md`). A
 DIFFERENT construct from the live instrument — monthly shares of
 global event-mentions by frozen actor-pair filters from GDELT's 1.0
@@ -765,8 +766,8 @@ several distinct pieces on the same event.
 published payload against the cadence its lane is supposed to run at.
 A lane that stops writing does not break — it keeps serving its last
 value, and a stale number is quoted exactly as confidently as a fresh
-one. `status.json` watches ten upstream *sources*; this watches all
-~66 *payloads*, which is where the silence actually lives.
+one. `status.json` watches upstream *sources*; this watches every payload
+enumerated in `freshness.json`, which is where the silence actually lives.
 
 **A payload with no `_meta.generated` counts as a failure, not a pass.**
 Three payloads (`alt_specs`, `seasonality`, `priced_risk`) had no

@@ -279,9 +279,10 @@ files again.</p>
 <code>defence_minus_nifty</code>, <code>energy_omc_minus_nifty</code>,
 <code>it_services_minus_nifty</code>, <code>ports_logistics_minus_nifty</code>,
 <code>usdinr_minus_dxy</code> (strips broad dollar moves), <code>brent_ret</code>, and
-<code>gold_ret</code> (descriptive). At the 2026-08-07 audit,
-Brent was unavailable and therefore correctly belongs in
-<code>unavailable_outcomes</code>, not in the published result grid.</p>
+<code>gold_ret</code> (descriptive). Consult <code>available_outcomes</code> and
+<code>unavailable_outcomes</code> for the current release: a configured unavailable
+outcome has no CSV result rows. Brent and gold remain descriptive-only
+whenever available.</p>
 <h2>docs/data/validation.json</h2>
 <table>
 <thead>
@@ -930,7 +931,7 @@ logistic on two registered inputs,
 at window close, voids counted. <code>cumulative</code>: Brier per arm. The fork
 criterion is frozen in the registration; there is no third outcome.</p>
 <h2>docs/data/back_extension.json</h2>
-<p>The historical attention proxy, 1979–2016 (M1; registration frozen
+<p>The historical attention proxy, 1979–2019 (M1; registration frozen
 before first computation in <code>analysis/back_extension_memo.md</code>). A
 DIFFERENT construct from the live instrument — monthly shares of
 global event-mentions by frozen actor-pair filters from GDELT's 1.0
@@ -1009,8 +1010,8 @@ several distinct pieces on the same event.</p>
 published payload against the cadence its lane is supposed to run at.
 A lane that stops writing does not break — it keeps serving its last
 value, and a stale number is quoted exactly as confidently as a fresh
-one. <code>status.json</code> watches ten upstream <em>sources</em>; this watches all
-~66 <em>payloads</em>, which is where the silence actually lives.</p>
+one. <code>status.json</code> watches upstream <em>sources</em>; this watches every payload
+enumerated in <code>freshness.json</code>, which is where the silence actually lives.</p>
 <p><strong>A payload with no <code>_meta.generated</code> counts as a failure, not a pass.</strong>
 Three payloads (<code>alt_specs</code>, <code>seasonality</code>, <code>priced_risk</code>) had no
 timestamp at all when this was built, and <code>validation.json</code> — the

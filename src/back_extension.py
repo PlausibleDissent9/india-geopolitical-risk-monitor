@@ -167,7 +167,7 @@ def publish() -> None:
                        "verdict": verdict}
     payload: dict[str, Any] = {
         "_meta": {
-            "what": ("Historical attention proxy 1979-2016 (M1; "
+            "what": ("Historical attention proxy 1979-2019 (M1; "
                      "registration frozen before first computation, "
                      "analysis/back_extension_memo.md). A DIFFERENT "
                      "construct from the live instrument -- monthly "

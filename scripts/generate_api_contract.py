@@ -24,6 +24,17 @@ DOCS = ROOT / "docs"
 CONTRACT_VERSION = "2.2.0"  # minor: country_china.json endpoint added; event_study.json and detector_blindness.json gained additive disclosure fields
 FROZEN_DATE = "2026-08-08"
 
+# api_contract.json is deliberately skipped by the daily metadata stamper:
+# a frozen promise must not drift as a side effect of a pipeline run. Keep
+# its self-citation fields here and lock them against src.stamp_meta in tests.
+UNIVERSAL_META = {
+    "license": "CC BY 4.0",
+    "citation": ("Krishna, Ishan (2026). India Geopolitical Risk Monitor. "
+                 "https://igrm.in/"),
+    "codebook": "https://igrm.in/codebook.html",
+    "source": "https://igrm.in/data/api_contract.json",
+}
+
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
 # borrow from. Kept short; the full construction lives in codebook.md.
 DESCRIPTIONS = {
@@ -147,6 +158,8 @@ OVERRIDES: dict = {
    "units",
    "language",
    "descriptive_only",
+   "available_outcomes",
+   "unavailable_outcomes",
    "channels",
    "per_episode"
   ]
@@ -257,6 +270,7 @@ def build() -> dict:
                     "was introduced; no research data were affected."
                 ),
             }],
+            **UNIVERSAL_META,
         },
         "endpoints": endpoints,
     }

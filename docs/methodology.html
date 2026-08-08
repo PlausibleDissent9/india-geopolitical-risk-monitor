@@ -77,10 +77,10 @@ quoted phrase, and disambiguation is done by a single channel-level anchor
 word, e.g. <code>India ("Line of Control" OR "ceasefire violations" OR …)</code>.
 Quoted phrases match exact token sequences (hyphens tokenize to spaces; no
 stemming, hence singular and plural forms where both are common in copy).
-Three generic phrases are accepted with open eyes and disclosed here:
-<code>"energy security"</code> and <code>"maritime security"</code> (broader than their channels;
-kept for recall of policy coverage) and <code>"Suez Canal"</code> (includes routine
-transit coverage; the percentile normalization absorbs its baseline).</p>
+Two generic phrases are accepted with open eyes and disclosed here:
+<code>"energy security"</code> (broader than its channel; kept for recall of policy
+coverage) and <code>"Suez Canal"</code> (includes routine transit coverage; the
+percentile normalization absorbs its baseline).</p>
 <p><strong>Cross-channel bleed, decided and documented:</strong> <code>"Russian oil"</code> (India)
 sits in <em>US &amp; Trade Policy</em>, not <em>Gulf &amp; Energy</em>, the risk vector is
 sanctions policy, not physical supply. Red Sea tanker coverage belongs to
@@ -474,35 +474,31 @@ cross-country questions V8 will formalize.</p>
 <p>The predictability study (<code>docs/data/predictability.json</code>) asks the
 directed lead-lag question on daily changes: five own-lags with and
 without five lags of the candidate leader, R-squared increment, and a
-permutation p-value from time-shifted nulls. Result, reported as
-found: press salience predicts none of conflict-event intensity, India
-VIX, or INR realized volatility (p 0.37 to 0.82); the only
-near-threshold direction is events leading salience (p 0.053). The
-index measures attention, and attention follows the world. This is the
-empirical basis for the site's standing claim that it is a salience
-monitor, not a risk predictor.</p>
+permutation p-value from time-shifted nulls. In the published run, no
+salience-leading direction clears the conventional 0.05 threshold;
+events-leading-salience is the closest of the registered directions.
+Exact values live in <code>docs/data/predictability.json</code> rather than this
+prose so a registered rerun cannot leave a stale number here. This
+negative result is consistent with the instrument's stated scope: a
+salience monitor, not a risk predictor.</p>
 <h2>11. Receipts and source tiers</h2>
-<p>Every channel score traces to a retrievable sample of the articles
-behind it. <code>docs/data/receipts.json</code> publishes, for the latest day
-only, each channel's exact GDELT query (the same <code>dictionaries.json</code>
-terms and anchor the score itself was built from) and a relevance-
-sorted sample of matched articles (GDELT <code>mode=artlist</code>, capped at 25
-per channel). This is a bounded sample, not a census: an active day's
-true coverage count is typically far larger than what artlist returns,
-and the site states this caveat wherever the sample appears.</p>
-<p>Each retrieved article's source domain is looked up against
-<code>source_tiers.json</code>, a registered, append-only domain-to-tier map:
-tier 1 wire services and public-service international broadcasters,
-tier 2 national and international broadsheets and business press,
-tier 3 mainstream TV, portals, and aggregators, tier 4 outlets with
-documented fabrication incidents or syndication mills with no original
-reporting. Assignments cite documented behaviors, not viewpoints; a
-domain not yet registered shows as "unranked" rather than being
-assumed into any tier. Tiers order the receipts list credible-first
-and produce one number, <code>spike_quality_tier12_share</code> (the tier 1-2
-share of that day's retrieved sample) -- <strong>tiers never enter any
-channel score or the composite</strong>, stated here and in the payload's
-<code>_meta</code>.</p>
+<p><code>docs/data/receipts.json</code> publishes a bounded latest-day evidence
+display, not a census and not the complete evidence behind the 7-day
+headline. The primary path reuses the sampled Web NGrams corpus and may
+add separately labelled, query-matched GDELT DOC supplemental URLs. It
+deduplicates URLs, then publishes one representative for each
+case-folded 120-character <code>(title or url)</code> key, up to 150 representatives
+per channel. If the corpus path is unavailable, the explicitly labelled
+artlist-only fallback publishes at most 75. On the primary path, every
+row states its lane; corpus rows distinguish the scoring sample from the
+extended scan.</p>
+<p>Each displayed domain is looked up in <code>source_tiers.json</code>. Registered
+tiers affect presentation order and descriptive source-mix fields only;
+unregistered domains remain unranked. The legacy
+<code>spike_quality_tier12_share</code> field is the tier-1/2 share of the displayed,
+tier-sorted list and must not be read as the source mix of the underlying
+retrieval pool. Most importantly, <strong>source tiers never enter a channel
+score or the composite</strong>.</p>
 <h2>12. API contract</h2>
 <p><code>docs/data/api_contract.json</code> freezes, as of 2026-08-07, every endpoint
 IGRM serves for machine consumption: the file's format, a plain-language

@@ -19,7 +19,11 @@
     "removed": "2026-08-07",
     "reason": "The founder's operational queue was outside the scope of the analytical API. It was removed on the day it was introduced; no research data were affected."
    }
-  ]
+  ],
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/api_contract.json"
  },
  "endpoints": [
   {
@@ -73,7 +77,7 @@
   {
    "path": "data/back_extension.json",
    "format": "json",
-   "description": "Historical attention proxy 1979-2016 (M1; registration frozen before first computation, analysis/back_extension_memo.md). A DIFFERENT construct from the live instrument -- monthly event-mention shares by frozen actor-pair filters -- never spliced into or drawn with the 2017+ series. Four channels; shipping has no defensible event analog and is excluded. Channels whose 2017-2019 overlap correlation is under 0.4 do not publish a historical series; that negative is the finding.",
+   "description": "Historical attention proxy 1979-2019 (M1; registration frozen before first computation, analysis/back_extension_memo.md). A DIFFERENT construct from the live instrument -- monthly event-mention shares by frozen actor-pair filters -- never spliced into or drawn with the 2017+ series. Four channels; shipping has no defensible event analog and is excluded. Channels whose 2017-2019 overlap correlation is under 0.4 do not publish a historical series; that negative is the finding.",
    "frozen_fields": [
     "_meta",
     "anchor_grades",
@@ -274,6 +278,8 @@
     "units",
     "language",
     "descriptive_only",
+    "available_outcomes",
+    "unavailable_outcomes",
     "channels",
     "per_episode"
    ],

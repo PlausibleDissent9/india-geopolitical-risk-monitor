@@ -154,3 +154,21 @@ def test_the_page_is_reachable_from_the_rest_of_the_site():
     assert len(linkers) >= 20, (
         f"only {len(linkers)} pages link to history.html: {linkers}")
     assert "index.html" in linkers, "the front page does not link to it"
+
+
+def test_every_current_description_names_the_full_published_range():
+    data = _data()
+    starts = [series["months"][0] for series in data["series"].values()]
+    ends = [series["months"][-1] for series in data["series"].values()]
+    label = f"{min(starts)[:4]}–{max(ends)[:4]}"
+    ascii_label = label.replace("–", "-")
+    surfaces = [
+        data["_meta"]["what"],
+        (ROOT / "docs" / "codebook.md").read_text(encoding="utf-8"),
+        (ROOT / "docs" / "codebook.html").read_text(encoding="utf-8"),
+        (ROOT / "docs" / "research" / "history.html").read_text(
+            encoding="utf-8"),
+    ]
+    for surface in surfaces:
+        assert label in surface or ascii_label in surface, (
+            f"historical description does not name published range {label}")

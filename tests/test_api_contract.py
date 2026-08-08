@@ -17,6 +17,20 @@ def test_contract_version_is_semver():
     assert re.match(r"^\d+\.\d+\.\d+$", version), version
 
 
+def test_contract_is_self_citing_and_freezes_outcome_availability_fields():
+    from src import stamp_meta
+
+    contract = _contract()
+    meta = contract["_meta"]
+    for key, value in stamp_meta.universal_fields("api_contract.json").items():
+        assert meta[key] == value
+
+    event_study = next(e for e in contract["endpoints"]
+                       if e["path"] == "data/event_study.json")
+    assert {"available_outcomes", "unavailable_outcomes"} <= set(
+        event_study["frozen_fields"])
+
+
 def test_every_served_payload_is_in_the_contract():
     contract = _contract()
     listed = {e["path"] for e in contract["endpoints"]}
