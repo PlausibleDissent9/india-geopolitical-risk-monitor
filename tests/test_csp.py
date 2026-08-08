@@ -22,9 +22,10 @@ CSP_RE = re.compile(
 # and the host. connect-src only -- never script-src, never style-src.
 ALLOWED_CONNECT: dict[str, dict[str, str]] = {
     "index.html": {
-        "hosts": "https://buttondown.com https://formsubmit.co",
-        "why": ("the subscribe form posts to the newsletter provider; "
-                "the visitor initiates it and no third-party code runs"),
+        "hosts": "https://buttondown.com",
+        "why": ("the subscribe form can post only to the configured "
+                "newsletter provider; an empty provider identifier keeps "
+                "the modal off and no third-party code runs"),
     },
     "portal.html": {
         "hosts": "https://api.github.com",
@@ -94,6 +95,19 @@ def test_declared_connections_still_match_the_page():
                 f"{name} no longer connects to {host}; the exemption is "
                 "stale and should be narrowed or removed")
         assert len(spec["why"]) > 30, f"{name} exemption has no real reason"
+
+
+def test_newsletter_is_fail_closed_without_a_real_provider():
+    app = (DOCS / "app.js").read_text(encoding="utf-8")
+    index = (DOCS / "index.html").read_text(encoding="utf-8")
+    assert 'const BUTTONDOWN_USER = ""' in app
+    gate = "if (!overlay || !BUTTONDOWN_USER) return;"
+    assert gate in app
+    assert app.index(gate) < app.index("setTimeout(() =>")
+    assert "formsubmit.co" not in app and "formsubmit.co" not in index
+    assert "ishankrishna9@gmail.com" not in app
+    assert "mailto:ishankrishna9@gmail.com" not in index
+    assert "No address was retained" in index
 
 
 def test_no_html_references_an_external_resource():

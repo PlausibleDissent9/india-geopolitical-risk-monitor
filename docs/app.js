@@ -239,7 +239,10 @@ if (document.getElementById("theme-toggle")) {
 const BUTTONDOWN_USER = "";  // buttondown.com username; empty = modal off
 function initSubscribe() {
   const overlay = document.getElementById("subscribe-overlay");
-  if (!overlay) return;
+  // Fail closed. An empty provider identifier means there is no verified
+  // subscription service, so the form never renders and no address can
+  // leave the visitor's browser. Preview mode does not bypass this gate.
+  if (!overlay || !BUTTONDOWN_USER) return;
   const dismiss = () => {
     overlay.hidden = true; overlay.style.display = "none";
     localStorage.igrmSubDismissed = "1";
@@ -273,28 +276,17 @@ function initSubscribe() {
     btn.disabled = true;
     let delivered = false;
     try {
-      if (BUTTONDOWN_USER) {
-        await fetch(
-          `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`,
-          { method: "POST", mode: "no-cors", body: new URLSearchParams({ email }) }
-        );
-        // no-cors responses are opaque; the service's own welcome email
-        // is the subscriber's receipt.
-        delivered = true;
-      } else {
-        // No-signup relay: forwards the address to the author's inbox.
-        const res = await fetch("https://formsubmit.co/ajax/ishankrishna9@gmail.com", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({ email, _subject: "New IGRM subscriber" }),
-        });
-        const body = res.ok ? await res.json() : null;
-        delivered = !!body && (body.success === true || body.success === "true");
-      }
+      await fetch(
+        `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`,
+        { method: "POST", mode: "no-cors", body: new URLSearchParams({ email }) }
+      );
+      // no-cors responses are opaque; the service's own welcome email
+      // is the subscriber's receipt.
+      delivered = true;
     } catch (e) { delivered = false; }
     if (!delivered) {
-      // Never claim success that didn't happen: show the mailto fallback
-      // and leave the form usable (and the modal re-armed for next visit).
+      // Never claim success that did not happen and never relay the address
+      // elsewhere: show a retry notice and leave the form usable.
       btn.disabled = false;
       document.getElementById("subscribe-error").hidden = false;
       return;
