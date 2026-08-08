@@ -831,3 +831,193 @@ input:focus { outline: 2px solid var(--accent); border-color: transparent; }
   .footer-grid { grid-template-columns: 1fr; align-items: start; }
   .footer-grid nav { justify-content: flex-start; }
 }
+
+/* Research workbench: a local, verifiable path from published bytes to a
+ * citation-ready subset. Dense controls collapse before the chart does. */
+.wb-trust {
+  display: grid;
+  grid-template-columns: 1.15fr 2fr 1.15fr;
+  gap: 1px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--rule);
+}
+.wb-trust > div,
+.wb-metrics > div {
+  min-width: 0;
+  padding: 1rem;
+  background: var(--surface);
+}
+.wb-trust strong,
+.wb-metrics strong {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--fg);
+  font-size: var(--fs-body);
+}
+.wb-trust code {
+  display: block;
+  margin-top: 0.35rem;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--fs-fine);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wb-eyebrow {
+  display: block;
+  color: var(--muted);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+.wb-grid {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.8fr) minmax(0, 2fr);
+  gap: 1rem;
+  align-items: start;
+  margin: 1rem 0 2rem;
+}
+.wb-controls,
+.wb-output,
+.wb-citation {
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.wb-controls {
+  display: grid;
+  gap: 1.15rem;
+  padding: 1.1rem;
+}
+.wb-controls fieldset {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  border: 0;
+}
+.wb-check {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.42rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: var(--fs-dense);
+}
+.wb-check:has(input:checked) {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--rule));
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  color: var(--fg);
+}
+.wb-check input { accent-color: var(--accent); }
+.wb-dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.wb-dates input {
+  width: 100%;
+  margin-top: 0.45rem;
+  padding: 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  background: var(--card);
+  color: var(--fg);
+  font: inherit;
+  font-size: var(--fs-small);
+}
+.wb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.65rem;
+}
+.wb-output {
+  min-height: 410px;
+  padding: 1rem;
+}
+.wb-output > .empty {
+  display: grid;
+  min-height: 375px;
+  place-items: center;
+}
+.wb-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  margin-bottom: 0.85rem;
+  border: 1px solid var(--rule-soft);
+  border-radius: 9px;
+  background: var(--rule-soft);
+}
+.wb-metrics > div { padding: 0.7rem 0.8rem; }
+.wb-chart-wrap {
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid var(--rule-soft);
+  border-radius: 9px;
+  background: var(--card);
+}
+#workbench-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.wb-gridline { stroke: var(--rule-soft); stroke-width: 1; }
+.wb-axis {
+  fill: var(--muted);
+  font-family: "Archivo", system-ui, sans-serif;
+  font-size: var(--fs-micro);
+}
+.wb-legend {
+  display: inline-flex;
+  gap: 0.3rem;
+  align-items: center;
+  margin: 0 0.75rem 0.25rem 0;
+}
+.wb-legend i {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+}
+.section-head {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  justify-content: space-between;
+  margin: 2.3rem 0 1rem;
+}
+.section-head h2 { margin: 0.15rem 0 0; }
+.wb-citation { margin-bottom: 1rem; padding: 1rem; }
+.wb-citation p {
+  margin: 0.45rem 0 0;
+  color: var(--fg);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+@media (max-width: 780px) {
+  .wb-trust,
+  .wb-grid { grid-template-columns: 1fr; }
+  .wb-metrics { grid-template-columns: 1fr 1fr; }
+  .section-head { display: block; }
+}
+@media (max-width: 480px) {
+  .wb-dates,
+  .wb-metrics { grid-template-columns: 1fr; }
+  .wb-output { min-height: 310px; }
+  .wb-output > .empty { min-height: 275px; }
+}

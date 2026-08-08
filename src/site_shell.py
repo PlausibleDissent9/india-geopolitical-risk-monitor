@@ -66,6 +66,7 @@ PAGES: dict[str, Page] = {
     "viewer.html": Page("Data viewer", "Data infrastructure", "system", "data"),
     "vintages.html": Page("Point-in-time vintages", "Research record", "article", "analysis"),
     "vs-gpr.html": Page("IGRM and the GPR indices", "Research", "article", "analysis"),
+    "workbench.html": Page("Research workbench", "Research infrastructure", "dashboard", "analysis"),
     "write.html": Page("Author console", "Operations", "onboarding"),
 }
 

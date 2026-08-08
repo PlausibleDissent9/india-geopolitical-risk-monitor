@@ -77,6 +77,7 @@ ASSETS = [
     "labels.js",
     "reveal.js",
     "site.js",
+    "workbench.js",
     "app.js",
 ]
 

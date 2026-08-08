@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research workbench, India Geopolitical Risk Monitor</title>
+<meta name="description" content="Build a precise IGRM research subset in your browser, verify the source bytes, inspect coverage, and download the data with a hash-bearing citation manifest.">
+<link rel="canonical" href="https://igrm.in/workbench.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=67aa17dc">
+</head>
+<body class="site-page layout-dashboard" data-page="workbench.html" data-root=".">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="masthead site-masthead">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
+      <a href="start.html">Start here</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="validation.html">Validation</a>
+      <a href="analysis.html" class="current">Research</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="data-cta" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
+    </div>
+  </div>
+</header>
+<div class="site-shell page-frame">
+  <section class="page-heading" aria-labelledby="page-title">
+    <div class="page-heading-copy">
+      <p class="page-kicker">Research infrastructure</p>
+      <h1 id="page-title">Research workbench</h1>
+      <p class="page-deck">Create a date- and channel-specific research extract from the
+  published daily series. The workbench validates the source structure, hashes the exact
+  downloaded bytes, and builds the subset, preview, permalink, citation and manifest
+  entirely in this browser. No question or selection leaves this device.</p>
+    </div>
+    <dl class="page-meta" aria-label="Publication context">
+      <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
+      <div><dt>Freshness</dt><dd><a href="status.html">Source-by-source status</a></dd></div>
+    </dl>
+  </section>
+  <main id="main-content" class="page-content" tabindex="-1">
+    <!--site-shell:content-start-->
+    <div class="wb-trust" aria-label="Workbench trust boundary">
+    <div><span class="wb-eyebrow">Source</span><strong id="source-state">Loading and verifying&hellip;</strong></div>
+    <div><span class="wb-eyebrow">Source SHA-256</span><code id="source-hash">&mdash;</code></div>
+    <div><span class="wb-eyebrow">Selected result</span><strong id="result-state">Waiting for source</strong></div>
+  </div>
+
+  <div id="workbench-error" class="hardline" role="alert" hidden></div>
+
+  <section class="wb-grid" aria-label="Research subset builder">
+    <form id="workbench-form" class="wb-controls">
+      <div>
+        <span class="wb-eyebrow">1 &middot; Measures</span>
+        <fieldset id="channel-fields">
+          <legend class="sr-only">Measures to include</legend>
+        </fieldset>
+      </div>
+      <div class="wb-dates">
+        <label><span class="wb-eyebrow">2 &middot; From</span><input id="date-from" type="date" required></label>
+        <label><span class="wb-eyebrow">Through</span><input id="date-to" type="date" required></label>
+      </div>
+      <div>
+        <span class="wb-eyebrow">3 &middot; Build</span>
+        <div class="wb-actions">
+          <button class="btn primary" type="submit">Build exact subset</button>
+          <button class="btn" id="last-year" type="button">Last 365 days</button>
+          <button class="btn" id="full-range" type="button">Full history</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="wb-output" aria-live="polite">
+      <div id="workbench-empty" class="empty">The verified subset will appear here.</div>
+      <div id="workbench-result" hidden>
+        <div class="wb-metrics" id="workbench-metrics"></div>
+        <div class="wb-chart-wrap">
+          <svg id="workbench-chart" viewBox="0 0 960 300" role="img"
+               aria-label="Selected IGRM daily percentile series"></svg>
+        </div>
+        <p class="chart-note" id="chart-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="export-section" hidden>
+    <div class="section-head">
+      <div><p class="wb-eyebrow">Research object</p><h2>Inspect, export, cite</h2></div>
+      <div class="wb-actions">
+        <button class="btn primary" id="download-csv" type="button">Download CSV</button>
+        <button class="btn" id="download-json" type="button">Download JSON</button>
+        <button class="btn" id="download-manifest" type="button">Download manifest</button>
+        <button class="btn" id="copy-citation" type="button">Copy citation</button>
+      </div>
+    </div>
+    <div class="wb-citation"><span class="wb-eyebrow">Suggested citation</span><p id="citation-text"></p></div>
+    <div class="table-scroll"><table id="workbench-preview"><thead></thead><tbody></tbody></table></div>
+    <p class="chart-note" id="preview-note"></p>
+  </section>
+
+  <div class="hardline prose">
+    <b>Construct boundary.</b> These values are channel-specific percentiles of press
+    salience against each channel's own trailing two-year history. They are not event
+    probabilities, severity, economic loss, forecasts, or investment advice. A content
+    hash establishes which bytes were used; it does not by itself establish upstream
+    source rights or make a changing URL an immutable archive. Save the source snapshot
+    beside the generated subset, or recover a dated public vintage from the
+    <a href="vintages.html">vintage panel</a>.
+  </div>
+
+  <p class="chart-note"><a id="source-download" href="data/history.csv" download>Download the complete source snapshot</a>
+  &middot; <a href="codebook.html">Codebook</a> &middot; <a href="methodology.html">Methodology</a>
+  &middot; <a href="data.html">All data</a></p>
+<script src="workbench.js?v=9b5966bf"></script>
+    <!--site-shell:content-end-->
+  </main>
+  <footer class="site-footer">
+    <div class="footer-context">
+      <!--site-shell:footer-start-->
+      <p>Association, not causation. Not investment advice.</p>
+      <!--site-shell:footer-end-->
+    </div>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="./">India Geopolitical Risk Monitor</a>
+        <p>Public research instrument · India-specific press salience</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="methodology.html">Methodology</a>
+        <a href="validation.html">Validation</a>
+        <a href="history.html">1979&ndash;2019 history</a>
+        <a href="data.html">Data</a>
+        <a href="corrections.html">Corrections</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="site.js?v=88fb47ea"></script>
+</body>
+</html>
