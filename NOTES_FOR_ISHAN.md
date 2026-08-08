@@ -341,23 +341,16 @@ summarises or serves whatever the visitor asks. Three honest options:
 
 Reply "approve ai memo a", "a+b", or "a+b+c"; (a) alone needs no reply.
 
-### 0.10 RESOLVED: you approved a+b in chat, 2026-08-04
+### 0.10 WITHDRAWN 2026-08-08: no generated daily brief is authorized
 
-The machinery is built and pushed (c5a828c): registered prompt
-(prompts/daily_brief.md v1.0.0), lint, fail-closed paths, workflow
-step, codebook entry, page rendering. It activates the day you do the
-one part only you can (about 10 minutes):
-
-1. Create an account at console.anthropic.com (your normal email).
-2. Billing: add the minimum credit ($5 covers roughly 2-3 months) and
-   set a monthly spend limit of $5 so a bug can never run up a bill.
-3. Create an API key, copy it once.
-4. Repo Settings > Secrets and variables > Actions > New repository
-   secret, name ANTHROPIC_API_KEY, paste the key.
-
-The next daily run after that publishes the first brief. Until then
-the step prints a skip line and the site shows nothing. Option c
-(ask-anything chat) stays open; nothing is built for it.
+The LLM-written experiment published unsupported numeric and denominator
+claims despite its prediction-language lint. It is disabled before any model
+call, and the API serves a null tombstone during the v2 deprecation window.
+Do not add, retain, or spend against an API key for daily-brief generation.
+`ANTHROPIC_API_KEY` may still be used by separately registered display-only
+lanes such as aptness, but the daily-brief workflow no longer receives it.
+Option (a), deterministic assembly from typed facts, remains the only acceptable
+direction for a successor; it has not been implemented or authorized.
 
 Reproduce cannot byte-match event-study numbers because their market
 inputs (Yahoo) are gitignored by the redistribution-license decision.
@@ -506,8 +499,8 @@ inside it; everything else can wait for September unless you say
 otherwise.
 
 ACCOUNTS AND KEYS, one-time, ~45 minutes total:
-1. AUG ANTHROPIC_API_KEY repo secret (activates daily briefs; steps in
-   0.10 RESOLVED above). ~10 min.
+1. AUG ANTHROPIC_API_KEY repo secret for the separately registered aptness
+   classifier only; it does not activate daily briefs. ~10 min.
 2. AUG Zenodo account (V7 DOI; packaging is ready and waiting). ~10 min.
 3. Buttondown account (weekly note delivery + subscribe modal; welcome
    email ready in 0.0). ~5 min.
@@ -561,8 +554,7 @@ You approved the GDELT-via-BigQuery lane and full-scale LLM aptness.
 Both go live the day these secrets exist. Likely cost: $0 for
 BigQuery (Google's 1TB/month query free tier covers our volumes;
 every query is also hard-capped with maximum_bytes_billed so a bad
-one fails instead of billing), $8-15/month for aptness + briefs
-combined.
+one fails instead of billing), plus the separately capped aptness cost.
 
 BigQuery (~15 min):
 1. console.cloud.google.com, sign in with your Google account.
@@ -579,7 +571,7 @@ BigQuery (~15 min):
    - New secret GCP_PROJECT_ID: the project id (e.g. igrm-data-4711).
 6. Delete the downloaded .json from your machine afterward.
 
-Aptness (piggybacks on the brief key):
+Aptness (uses the Anthropic key; daily-brief generation remains withdrawn):
 7. When you do the ANTHROPIC_API_KEY step from 0.10, set the console
    monthly spend cap to $20 instead of $5. That is the only change.
 
@@ -621,15 +613,14 @@ them, corridor transit data where relevant (PortWatch), and the
 market echo already computed. Zero new claims; it is a re-cut of
 published data by the reader's own frame.
 
-PART B, THE ASSISTANT (this is memo 0.10 option c, still unapproved).
-A question box that answers ONLY from published payloads, always with
-citations, and refuses to forecast by construction: same prompt
-registration and measurement-language lint as the daily brief, plus
-hard refusal on any request for prediction, advice, or price
-direction. Cost with a spend cap: perhaps 10-40 dollars a month
-depending on traffic, and it needs a small backend (the VPS can host
-it). It should ship only AFTER Part A, because Part A is what gives
-it something honest to say.
+PART B, THE ASSISTANT (not authorized). The failed daily-brief experiment
+proved that a prompt, citations label and prediction-word lint do not guarantee
+factual grounding. Any assistant now requires a separate evidence-locked
+design: typed facts with payload-path provenance, deterministic date joins,
+numeric/entity verification, refusal outside those facts, adversarial tests and
+a hard spend cap. No backend or model-serving work should begin before that
+design passes independent review. It should still follow Part A, because Part A
+is what gives a future system something bounded to expose.
 
 WHAT IT DOES FOR THE PROJECT: this is what makes practitioners use
 the thing weekly instead of admiring it once. Usage generates the
@@ -661,10 +652,9 @@ Still yours, two items:
    plus per-sector corridor rationale ships as DRAFT v0.9 for your
    edit; reply "freeze sectors" (with any edits) and it registers as
    v1.0.0.
-2. WhatsApp Channel for the daily brief: only you can create it (your
-   WhatsApp, Updates tab > Channels > Create). Say the word when made
-   and the crews wire the daily post into your review flow; nothing
-   posts without your tap in August.
+2. The proposed WhatsApp daily-brief channel is cancelled with the withdrawn
+   experiment. Do not create or wire a distribution channel for generated
+   prose. A future deterministic product would require a separate review.
 
 ## 0.14 Tranche-2 validation episodes — YOUR SIGNATURE NEEDED (MI4)
 

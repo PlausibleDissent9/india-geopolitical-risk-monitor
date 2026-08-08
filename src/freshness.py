@@ -68,6 +68,11 @@ MAX_AGE_DAYS: dict[str, int] = {
 
 # Exempt, each with the reason it is exempt. Short on purpose.
 EXEMPT: dict[str, str] = {
+    "daily_brief.json": (
+        "withdrawn 2026-08-08 after factual-grounding failures; the fixed "
+        "null tombstone remains through at least 2026-11-06 under the API "
+        "v2 deprecation window and must not be refreshed as generated prose"
+    ),
     "ai_gpr_benchmark.json": (
         "a hash-pinned, one-shot registered benchmark vintage; rewriting it "
         "on a cadence would violate the public registration"

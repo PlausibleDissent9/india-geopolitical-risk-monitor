@@ -52,10 +52,11 @@ next crew, and this file is append-only.
    with this in mind, alongside the genuine coverage collapse the
    non-overlapping bands establish.
 
-6. **The daily brief can lag the published day** (brief regenerates in
-   the CI lane, finals in the VPS lane). NOT A DEFECT: the receipts
-   page date-matches the brief and hides a stale one; disclosed here
-   for completeness.
+6. **SUPERSEDED 2026-08-08: the daily brief could lag the published day.**
+   The page hid a stale brief, but the generator itself later joined
+   2026-08-07 scores to 2026-08-06 receipts and published unsupported claims.
+   The experiment is withdrawn; see the corrections ledger and
+   `analysis/daily_brief_incident_2026-08-08.md`.
 
 7. Claims spot-checked and verified true today: hit-rate 18/21 with
    frozen-list commit history; placebo counts; robustness numbers and

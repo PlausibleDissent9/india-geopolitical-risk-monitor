@@ -1,27 +1,18 @@
-"""
-Machine-written daily briefs (FICCI round 2; approved by the author in
-chat 2026-08-04, NOTES_FOR_ISHAN.md 0.10 option b): one API call per
-day turns the site's own published payloads into a short brief per
-channel plus a composite line, labeled machine-written on the site and
-never presented as the author's voice.
+"""Withdrawn machine-written daily-brief experiment.
 
-Fail-closed by design: no ANTHROPIC_API_KEY means no call and no
-payload (the site simply shows no brief); a model refusal skips the
-day; a brief that fails the measurement-language lint is dropped for
-that channel, never softened. The prompt is a registered instrument
-(prompts/daily_brief.md, versioned, append-only changelog).
+The public lane was disabled on 2026-08-08 after generated prose stated
+numbers absent from its input context and repurposed display-selected receipt
+statistics as substantive evidence. The prediction-word deny-list below is
+preserved as instrument history; it was never a factual-grounding check.
 
-Cost, measured at registration: one call of roughly 4K input and 1.5K
-output tokens on claude-opus-5 is about $0.06 per day.
-
-Run by CI daily after receipts, or manually: python -m src.daily_brief
+``main()`` has no generation branch: it cannot import a model client, make a
+network call, or write a payload. Context and prompt helpers remain only for
+auditing the failed design and for a future evidence-locked redesign.
 """
 from __future__ import annotations
 
 import json
-import os
 import re
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -32,6 +23,7 @@ PROMPT_PATH = ROOT / "prompts" / "daily_brief.md"
 CHANNELS = ["pakistan_west", "china_east", "gulf_energy", "us_trade", "shipping"]
 MODEL = "claude-opus-5"
 MAX_TOKENS = 2000
+PUBLICATION_ENABLED = False
 
 # Measurement language only: a brief that predicts is not published.
 # The deny-list is deliberately blunt; a false positive costs one
@@ -70,9 +62,12 @@ def load_prompt() -> tuple[str, str]:
 
 
 def build_context() -> dict[str, Any]:
-    """Compact evidence bundle from payloads the site already
-    publishes; nothing here is fetched fresh, so the brief can never
-    know more than the site it summarizes."""
+    """Reconstruct the failed design's compact input for auditing.
+
+    Receipt evidence is included only when its news date equals the score
+    date. The live experiment lacked that gate and could pair one day's scores
+    with another day's displayed receipts.
+    """
     def read(name: str) -> dict[str, Any]:
         p = SITE_DATA / name
         if not p.exists():
@@ -84,20 +79,28 @@ def build_context() -> dict[str, Any]:
 
     latest = read("latest.json")
     receipts = read("receipts.json")
+    latest_date = latest.get("date")
+    receipts_date = receipts.get("date")
+    receipts_aligned = bool(latest_date and latest_date == receipts_date)
     evidence: dict[str, Any] = {}
-    for ch, v in (receipts.get("channels") or {}).items():
-        arts = v.get("articles", [])
-        evidence[ch] = {
-            "n_articles": len(arts),
-            "tier12_share": v.get("spike_quality_tier12_share"),
-            "top_headlines": [a.get("title") for a in arts[:5]],
-        }
+    if receipts_aligned:
+        for ch, v in (receipts.get("channels") or {}).items():
+            arts = v.get("articles", [])
+            evidence[ch] = {
+                "n_title_key_representatives_shown": len(arts),
+                "n_distinct_urls_in_pool": v.get("n_pool_urls"),
+                "n_corpus_title_keys": v.get("n_corpus_title_keys"),
+                "n_scored_sample_urls": v.get("n_matched_in_corpus"),
+                "pool_tier12_share": v.get("pool_tier12_share"),
+                "top_headlines": [a.get("title") for a in arts[:5]],
+            }
     return {
-        "date": latest.get("date"),
+        "date": latest_date,
         "composite": latest.get("composite"),
         "channels": latest.get("channels"),
         "receipts": evidence,
-        "receipts_date": receipts.get("date"),
+        "receipts_date": receipts_date,
+        "receipts_aligned_to_scores": receipts_aligned,
     }
 
 
@@ -110,60 +113,8 @@ def lint(brief: str | None) -> str | None:
 
 
 def main() -> None:
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("[daily_brief] ANTHROPIC_API_KEY not set; no brief today "
-              "(fail-closed by design)")
-        return
-
-    # Imported here so tests and keyless environments never need it.
-    import anthropic
-
-    system_prompt, prompt_version = load_prompt()
-    context = build_context()
-    if not context.get("date"):
-        print("[daily_brief] latest.json missing or dateless; skipping")
-        return
-
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        system=system_prompt,
-        output_config={"format": {"type": "json_schema", "schema": SCHEMA}},
-        messages=[{"role": "user", "content": json.dumps(context, sort_keys=True)}],
-    )
-    if response.stop_reason == "refusal":
-        # Fail closed: no brief beats a rerouted one nobody reviewed.
-        print("[daily_brief] model refused; no brief today")
-        return
-    text = next(b.text for b in response.content if b.type == "text")
-    briefs = json.loads(text)
-
-    channels = {ch: lint(briefs.get("channels", {}).get(ch)) for ch in CHANNELS}
-    dropped = sorted(ch for ch, v in channels.items() if v is None)
-    payload = {
-        "_meta": {
-            "what": (
-                "Machine-written daily brief per channel plus a composite "
-                "line, generated from the payloads this site already "
-                "publishes. Written by a language model, not the author; "
-                "measurement language enforced by prompt and lint."
-            ),
-            "voice": f"machine-written ({MODEL}); never the author's voice",
-            "model": MODEL,
-            "prompt_version": prompt_version,
-            "lint_dropped": dropped,
-            "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        },
-        "date": context["date"],
-        "composite": lint(briefs.get("composite")),
-        "channels": channels,
-    }
-    out = SITE_DATA / "daily_brief.json"
-    out.write_text(json.dumps(payload, indent=1), encoding="utf-8")
-    print(f"[daily_brief] wrote {out.name} for {context['date']} "
-          f"({len(CHANNELS) - len(dropped)}/{len(CHANNELS)} channels; "
-          f"lint dropped: {dropped or 'none'})")
+    print("[daily_brief] withdrawn_factual_grounding_failure: no model "
+          "call and no payload write")
 
 
 if __name__ == "__main__":

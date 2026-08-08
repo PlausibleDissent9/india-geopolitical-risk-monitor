@@ -307,16 +307,11 @@ jobs:
         run: |
           python -m src.vintages
           python -m src.vintages_panel
-      - name: Machine-written daily brief (founder-approved 2026-08-04)
-        # Runs after receipts so the brief can cite today's evidence.
-        # Fail-closed: without the ANTHROPIC_API_KEY secret the module
-        # prints a skip line and writes nothing; the site shows no
-        # brief rather than a stale or fabricated one.
+      - name: Machine-brief safety withdrawal check
+        # Generated prose was withdrawn 2026-08-08 after factual-grounding
+        # failures. This module has no model-call or payload-write branch;
+        # the stable API path serves a fixed null tombstone instead.
         if: github.event.inputs.backfill != 'true'
-        continue-on-error: true
-        timeout-minutes: 5
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python -m src.daily_brief
       - name: Machine aptness pre-filter (founder-approved 2026-08-06)
         # Labels receipts articles ON/OFF/ABSTAIN under the registered

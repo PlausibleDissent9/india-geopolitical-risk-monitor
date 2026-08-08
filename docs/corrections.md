@@ -5,6 +5,28 @@ published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.
 
+## 2026-08-08: machine-brief experiment withdrawn after factual-grounding failures
+
+The public language-model brief had a prediction-word deny-list, but no
+mechanical check that its numbers, denominators, dates or entity claims were
+supported by the supplied JSON. Ten committed brief versions covered five
+completed news days (2026-08-03 through 2026-08-07). Nine stated a stress-gauge
+value even though the generator never supplied that gauge to the model.
+
+The channel prose also called the number of displayed, title-key-deduplicated
+receipt representatives the number of articles underlying the score and
+interpreted a tier-first, capped display share as source-pool quality. The last
+version combined 2026-08-07 scores with the still-current 2026-08-06 receipt
+sample. These were factual-grounding failures, not stylistic defects.
+
+All generated prose is withdrawn and must not be cited. The API path now serves
+a stable-shaped null tombstone through at least 2026-11-06; the module has no
+model-call or payload-write branch; and the daily workflow no longer receives
+the model API key. Generated prose may return only under a new versioned design
+with exact score/receipt date alignment and machine-verifiable provenance for
+every numeric and entity claim. The full incident record is
+[`analysis/daily_brief_incident_2026-08-08.md`](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/analysis/daily_brief_incident_2026-08-08.md).
+
 ## 2026-08-08: blind-audit v2 did not match the production scoring frame, invalidated before coding
 
 The frozen v2 external-coder package was byte-reproducible, but a later

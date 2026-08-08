@@ -489,18 +489,21 @@ methodology.md section 12 for the versioning rule.
 
 ## docs/data/daily_brief.json
 
-Machine-written daily brief: one short paragraph per channel plus a
-composite line, generated once per day by a language model
-(claude-opus-5) from payloads this site already publishes (latest
-scores, receipts evidence, stress gauge). It is labeled
-machine-written everywhere it appears and is never the author's
-voice. The generating prompt is a registered instrument
-(prompts/daily_brief.md, versioned, append-only changelog), and a
-measurement-language lint drops any brief that crosses into
-prediction; a dropped channel is null and listed in
-`_meta.lint_dropped` rather than softened. Absent entirely on days
-the generation did not run (no API key, model refusal): fail-closed
-by design. Approved by the author 2026-08-04 (NOTES 0.10 option b).
+**Withdrawn 2026-08-08; stable-shaped null tombstone served during the v2
+deprecation window through at least 2026-11-06.** The experimental
+language-model brief stated stress-gauge values absent from its supplied
+context, interpreted a tier-sorted displayed-source share as pool quality,
+called displayed title-key representatives the articles underlying a score,
+and eventually paired 2026-08-07 scores with 2026-08-06 receipts. Its
+prediction-language lint did not establish factual grounding.
+
+The workflow and module now stop before any model call or prose-payload write.
+The endpoint retains its frozen top-level fields, but `composite` and every
+channel are null and `_meta.status` is
+`withdrawn_factual_grounding_failure`. Generated prose may return only under a
+new, versioned design that mechanically ties every numeric and entity claim to
+cited payload fields and rejects unsupported text. The failed outputs and
+withdrawal are recorded in the corrections ledger; they are not IGRM evidence.
 
 ## docs/data/ucdp_context.json
 

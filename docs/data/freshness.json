@@ -8,10 +8,10 @@
   "undatable_is_a_failure": "A payload with no _meta.generated cannot be audited by anything, so it counts as a failure rather than a pass. An auditor that skips what it cannot read is worse than no auditor, because it reports green.",
   "default_max_age_days": 3,
   "n_payloads": 81,
-  "n_fresh": 71,
+  "n_fresh": 70,
   "n_stale_or_undatable": 0,
-  "n_exempt": 10,
-  "generated": "2026-08-08T05:31:16Z"
+  "n_exempt": 11,
+  "generated": "2026-08-08T06:27:58Z"
  },
  "payloads": [
   {
@@ -21,8 +21,8 @@
   },
   {
    "payload": "alerts.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -40,8 +40,8 @@
   },
   {
    "payload": "aptness.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -82,10 +82,8 @@
   },
   {
    "payload": "daily_brief.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
-   "max_age_days": 3,
-   "status": "fresh"
+   "status": "exempt",
+   "reason": "withdrawn 2026-08-08 after factual-grounding failures; the fixed null tombstone remains through at least 2026-11-06 under the API v2 deprecation window and must not be refreshed as generated prose"
   },
   {
    "payload": "detection_baselines.json",
@@ -129,8 +127,8 @@
   },
   {
    "payload": "episode_themes.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -148,8 +146,8 @@
   },
   {
    "payload": "expert_shelf.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -162,8 +160,8 @@
   },
   {
    "payload": "forecasts.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -216,8 +214,8 @@
   },
   {
    "payload": "multilingual.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 30,
    "status": "fresh"
   },
@@ -240,8 +238,8 @@
   },
   {
    "payload": "nowcast.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -254,15 +252,15 @@
   },
   {
    "payload": "permanence.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 10,
    "status": "fresh"
   },
   {
    "payload": "precision.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -301,8 +299,8 @@
   },
   {
    "payload": "reliability.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -329,99 +327,99 @@
   },
   {
    "payload": "sector_agri_food.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_auto_components.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_chemicals.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_defence_aerospace.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_electronics.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_energy_manufacturing.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_engineering_goods.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_fmcg.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_gems_jewellery.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_it_services.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_marine_products.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_metals.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_petroleum_refining.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
   {
    "payload": "sector_pharma.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -434,8 +432,8 @@
   },
   {
    "payload": "sector_textiles_apparel.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -481,8 +479,8 @@
   },
   {
    "payload": "tone.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },
@@ -509,15 +507,15 @@
   },
   {
    "payload": "vintages.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 5,
    "status": "fresh"
   },
   {
    "payload": "vintages_panel.json",
-   "generated": "2026-08-07",
-   "age_days": 1,
+   "generated": "2026-08-08",
+   "age_days": 0,
    "max_age_days": 3,
    "status": "fresh"
   },

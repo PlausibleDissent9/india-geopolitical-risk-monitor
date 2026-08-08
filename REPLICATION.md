@@ -13,9 +13,9 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 ```
 
 Python 3.9+ works; CI runs 3.11. The optional `ANTHROPIC_API_KEY` is
-NOT part of replication — without it the pipeline skips two
-display-layer modules (daily brief, aptness labels) and no number
-changes.
+NOT part of replication. It may populate the separate display-only aptness
+labels, which never change a score. The machine-written daily-brief experiment
+is withdrawn and cannot call a model or write prose, with or without a key.
 
 ## Path 0 — check the index against its own documentation (~3 seconds)
 

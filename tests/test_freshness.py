@@ -70,6 +70,13 @@ def test_every_exemption_carries_a_reason():
             f"{name} is exempt without a real reason")
 
 
+def test_withdrawn_brief_tombstone_is_intentionally_static():
+    reason = freshness.EXEMPT["daily_brief.json"]
+    assert "withdrawn 2026-08-08" in reason
+    assert "2026-11-06" in reason
+    assert "must not be refreshed" in reason
+
+
 @pytest.mark.live
 def test_the_real_site_has_no_stale_or_undatable_payloads():
     """Belt and braces against the live tree, so this cannot pass in

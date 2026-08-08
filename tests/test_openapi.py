@@ -99,6 +99,13 @@ def test_spec_version_equals_contract_version():
         "different freeze than the contract it is derived from")
 
 
+def test_withdrawn_daily_brief_is_machine_deprecated():
+    operation = _spec()["paths"]["/data/daily_brief.json"]["get"]
+    assert operation["deprecated"] is True
+    assert "WITHDRAWN" in operation["description"]
+    assert "null tombstone" in operation["description"]
+
+
 def test_the_spec_serves_from_igrm_in():
     assert _spec()["servers"] == [{"url": "https://igrm.in"}]
 

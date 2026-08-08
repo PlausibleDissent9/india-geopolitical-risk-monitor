@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.0",
+  "contract_version": "2.2.1",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -12,7 +12,14 @@
    "rate_limit": "none stated; ordinary politeness (poll daily, not per-request)",
    "refresh": "daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)"
   },
-  "deprecated": [],
+  "deprecated": [
+   {
+    "path": "data/daily_brief.json",
+    "deprecated": "2026-08-08",
+    "earliest_removal": "2026-11-06",
+    "reason": "Generated prose failed factual grounding: unsupported numbers, selection-induced source-share interpretation, display-count/score-denominator conflation, and a cross-date score/receipt join. The prose is withdrawn; a stable-shaped null tombstone remains during the v2 deprecation window."
+   }
+  ],
   "removed": [
    {
     "path": "data/decisions.json",
@@ -135,14 +142,14 @@
   {
    "path": "data/daily_brief.json",
    "format": "json",
-   "description": "Machine-written daily brief per channel plus a composite line, generated from the payloads this site already publishes. Written by a language model, not the author; measurement language enforced by prompt and lint.",
+   "description": "WITHDRAWN machine-brief experiment. Generated prose failed factual grounding; a stable-shaped null tombstone preserves the frozen-v2 endpoint during its deprecation window.",
    "frozen_fields": [
     "_meta",
     "date",
     "composite",
     "channels"
    ],
-   "stability": "stable"
+   "stability": "deprecated; null tombstone through at least 2026-11-06"
   },
   {
    "path": "data/detection_baselines.json",

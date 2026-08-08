@@ -21,7 +21,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-CONTRACT_VERSION = "2.2.0"  # minor: country_china.json endpoint added; event_study.json and detector_blindness.json gained additive disclosure fields
+# Patch: daily_brief withdrawn with a stable-shaped tombstone and explicit
+# deprecation record.
+CONTRACT_VERSION = "2.2.1"
 FROZEN_DATE = "2026-08-08"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
@@ -127,6 +129,11 @@ def _description(name: str, data) -> str:
 # frozen payload cannot carry. test_api_contract_is_derived asserts
 # generated == committed, so drift in either direction now fails.
 OVERRIDES: dict = {
+ "data/daily_brief.json": {
+  "description": "WITHDRAWN machine-brief experiment. Generated prose failed factual grounding; a stable-shaped null tombstone preserves the frozen-v2 endpoint during its deprecation window.",
+  "stability": "deprecated; null tombstone through at least 2026-11-06",
+  "frozen_fields": ["_meta", "date", "composite", "channels"]
+ },
  "data/ai_gpr_benchmark.json": {
   "description": "Static, code-frozen comparison of monthly IGRM salience with Iacoviello-Tong AI-GPR India_all: registered primary and descriptive correlations, moving-block intervals, full eligible-month list, exploratory matrix, event-month ranks and largest rank divergences. Aggregates and ranks only; no raw AI-GPR values are redistributed.",
   "stability": "static registered vintage",
@@ -260,7 +267,19 @@ def build() -> dict:
                     "shape may still change, disclosed in its own "
                     "_meta)",
             },
-            "deprecated": [],
+            "deprecated": [{
+                "path": "data/daily_brief.json",
+                "deprecated": "2026-08-08",
+                "earliest_removal": "2026-11-06",
+                "reason": (
+                    "Generated prose failed factual grounding: unsupported "
+                    "numbers, selection-induced source-share interpretation, "
+                    "display-count/score-denominator conflation, and a "
+                    "cross-date score/receipt join. The prose is withdrawn; "
+                    "a stable-shaped null tombstone remains during the v2 "
+                    "deprecation window."
+                ),
+            }],
             "removed": [{
                 "path": "data/decisions.json",
                 "removed": "2026-08-07",

@@ -81,6 +81,20 @@ def test_operational_author_queue_is_not_a_public_endpoint():
     assert not (SITE_DATA / "decisions.json").exists()
 
 
+def test_withdrawn_daily_brief_has_a_contract_deprecation_window():
+    contract = _contract()
+    notices = {item["path"]: item
+               for item in contract["_meta"]["deprecated"]}
+    notice = notices["data/daily_brief.json"]
+    assert notice["deprecated"] == "2026-08-08"
+    assert notice["earliest_removal"] >= "2026-11-06"
+    endpoint = next(e for e in contract["endpoints"]
+                    if e["path"] == "data/daily_brief.json")
+    assert endpoint["stability"].startswith("deprecated")
+    assert endpoint["frozen_fields"] == [
+        "_meta", "date", "composite", "channels"]
+
+
 def test_the_contract_matches_its_generator():
     """committed == generated, the sitemap discipline applied to the API.
 

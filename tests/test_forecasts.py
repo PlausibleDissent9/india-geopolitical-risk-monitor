@@ -34,11 +34,19 @@ def test_registration_is_signed_and_frozen_logit_registered():
 
 
 def test_separation_no_forecast_payload_on_front_surfaces():
-    """latest.json, the brief, and index.html must never reference the
-    experiment -- the separation rule is load-bearing."""
-    for name in ("latest.json", "daily_brief.json"):
-        text = (ROOT / "docs" / "data" / name).read_text(encoding="utf-8")
-        assert "forecast" not in text.lower(), f"{name} mentions the experiment"
+    """The front surface has no forecast fields or generated brief prose."""
+    latest = json.loads(
+        (ROOT / "docs" / "data" / "latest.json").read_text(encoding="utf-8")
+    )
+    assert "forecast" not in latest
+    assert "prediction" not in latest
+    brief = json.loads(
+        (ROOT / "docs" / "data" / "daily_brief.json").read_text(
+            encoding="utf-8")
+    )
+    assert brief["_meta"]["status"] == "withdrawn_factual_grounding_failure"
+    assert brief["composite"] is None
+    assert all(value is None for value in brief["channels"].values())
     index = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
     assert "research/forecasts" not in index
 

@@ -771,18 +771,20 @@ version 2, plus the contract's promise, deprecation policy, and access
 terms in <code>_meta</code>. Rendered for humans at <code>docs/api.html</code>. See
 methodology.md section 12 for the versioning rule.</p>
 <h2>docs/data/daily_brief.json</h2>
-<p>Machine-written daily brief: one short paragraph per channel plus a
-composite line, generated once per day by a language model
-(claude-opus-5) from payloads this site already publishes (latest
-scores, receipts evidence, stress gauge). It is labeled
-machine-written everywhere it appears and is never the author's
-voice. The generating prompt is a registered instrument
-(prompts/daily_brief.md, versioned, append-only changelog), and a
-measurement-language lint drops any brief that crosses into
-prediction; a dropped channel is null and listed in
-<code>_meta.lint_dropped</code> rather than softened. Absent entirely on days
-the generation did not run (no API key, model refusal): fail-closed
-by design. Approved by the author 2026-08-04 (NOTES 0.10 option b).</p>
+<p><strong>Withdrawn 2026-08-08; stable-shaped null tombstone served during the v2
+deprecation window through at least 2026-11-06.</strong> The experimental
+language-model brief stated stress-gauge values absent from its supplied
+context, interpreted a tier-sorted displayed-source share as pool quality,
+called displayed title-key representatives the articles underlying a score,
+and eventually paired 2026-08-07 scores with 2026-08-06 receipts. Its
+prediction-language lint did not establish factual grounding.</p>
+<p>The workflow and module now stop before any model call or prose-payload write.
+The endpoint retains its frozen top-level fields, but <code>composite</code> and every
+channel are null and <code>_meta.status</code> is
+<code>withdrawn_factual_grounding_failure</code>. Generated prose may return only under a
+new, versioned design that mechanically ties every numeric and entity claim to
+cited payload fields and rejects unsupported text. The failed outputs and
+withdrawal are recorded in the corrections ledger; they are not IGRM evidence.</p>
 <h2>docs/data/ucdp_context.json</h2>
 <p>Monthly organized-violence event counts and best-estimate fatalities
 located in India, from the UCDP Georeferenced Event Dataset (pinned
