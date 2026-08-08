@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-09",
+  "status": "rights_ready_no_public_observations",
+  "source": {
+    "source_id": "india_major_ports_pdmp2",
+    "allowed_origin": "https://shipmin.gov.in",
+    "allowed_path_prefix": "/sites/default/files/",
+    "required_permitted_uses": [
+      "cite_metadata",
+      "publish_derived_value",
+      "publish_extract"
+    ],
+    "registered_vintages": [
+      {
+        "url": "https://shipmin.gov.in/sites/default/files/Report%20Monthly%20Major%20Port%20February%202026.pdf",
+      "sha256": "7b067dc2a9abe49c1ddeea2f5f6cfc5a24ed8e86c7c81895e22af11337d86e88",
+      "valid_period": "2026-02",
+      "estimate_status": "advance_estimate",
+      "published_on": "2026-03-20",
+        "table_pages": [
+          6,
+          7
+        ],
+        "registered_on": "2026-08-09"
+      }
+    ]
+  },
+  "implementation": {
+    "path": "src/port_commodity_marginals.py",
+    "sha256": "28fb57511b1a6c3a9fc5cf55ad84e015fcc34f5352431676bd56733ae8fde67a"
+  },
+  "port_frame": {
+    "frame_id": "india_major_port_authorities_12",
+    "scope": "The 12 Major Ports under the Ministry of Ports, Shipping and Waterways; this is not a denominator for all Indian ports.",
+    "member_ids": [
+      "smp_kolkata",
+      "paradip",
+      "visakhapatnam",
+      "kamarajar",
+      "chennai",
+      "voc",
+      "cochin",
+      "new_mangalore",
+      "mormugao",
+      "mumbai",
+      "jnpa",
+      "deendayal"
+    ],
+    "member_labels": {
+      "smp_kolkata": "SMP Kolkata",
+      "paradip": "Paradip",
+      "visakhapatnam": "Visakhapatnam",
+      "kamarajar": "Kamarajar",
+      "chennai": "Chennai",
+      "voc": "V.O.C.",
+      "cochin": "Cochin",
+      "new_mangalore": "New Mangalore",
+      "mormugao": "Mormugao",
+      "mumbai": "Mumbai",
+      "jnpa": "JNPA",
+      "deendayal": "Deendayal"
+    },
+    "subcomponent_policy": "KDS and HDC are components of SMP Kolkata, not additional major-port frame members.",
+    "excluded_scope": "Non-major ports are outside this frame and no national-port coverage percentage may be derived from it."
+  },
+  "commodity_frame": {
+    "frame_id": "india_major_ports_reported_tonne_commodities",
+    "classification": "Ministry monthly report commodity rows measured in tonnes",
+    "member_ids": [
+      "pol_crude",
+      "pol_products",
+      "lpg_lng",
+      "thermal_coal",
+      "coking_coal",
+      "other_coal",
+      "iron_ore",
+      "frm_liquid",
+      "fertilizer",
+      "frm_dry",
+      "foodgrains_excluding_pulses",
+      "edible_oil",
+      "other_ores",
+      "pulses",
+      "sugar",
+      "cement",
+      "iron_and_steel",
+      "project_cargo",
+      "other_commodities",
+      "container_tonnes"
+    ],
+    "member_labels": {
+      "pol_crude": "POL Crude",
+      "pol_products": "POL Products",
+      "lpg_lng": "LPG or LNG",
+      "thermal_coal": "Thermal Coal",
+      "coking_coal": "Coking Coal",
+      "other_coal": "Other Coal",
+      "iron_ore": "Iron Ore Pellets/Fine",
+      "frm_liquid": "FRM-Liquid",
+      "fertilizer": "Fertilizer",
+      "frm_dry": "FRM-Dry",
+      "foodgrains_excluding_pulses": "Food Grains excluding Pulses",
+      "edible_oil": "Edible Oil",
+      "other_ores": "Other Ores",
+      "pulses": "Pulses",
+      "sugar": "Sugar",
+      "cement": "Cement",
+      "iron_and_steel": "Iron and Steel",
+      "project_cargo": "Project Cargo",
+      "other_commodities": "Other Commodities",
+      "container_tonnes": "Container Tonnes"
+    },
+    "separate_metric": {
+      "metric_id": "container_teu",
+      "unit": "teu",
+      "denominator_status": "excluded_from_tonne_reconciliation"
+    }
+  },
+  "joint_observation": {
+    "status": "not_observed",
+    "inference_allowed": false,
+    "required_cells": 0,
+    "reason": "The candidate report publishes port marginals and commodity marginals in separate tables, not joint port-by-commodity cells."
+  },
+  "limitations": [
+    "The frame covers 12 Major Ports, not every Indian port.",
+    "Port and commodity marginals cannot identify a dependency edge.",
+    "Advance and provisional estimates must retain their stated status.",
+    "A source hash and two independent extraction checks establish transcription integrity, not source truth or completeness beyond the declared frame."
+  ]
+}

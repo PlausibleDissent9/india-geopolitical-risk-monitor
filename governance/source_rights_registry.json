@@ -452,6 +452,36 @@
       "max_current_age_days": null,
       "permitted_uses": [],
       "notes": "Premium changes throughput, not observation granularity. No public rows, aggregates or derived products are authorized until a signed redistribution decision exists."
+    },
+    {
+      "source_id": "india_major_ports_pdmp2",
+      "name": "Monthly cargo traffic handled at Major Ports",
+      "provider": "Ministry of Ports, Shipping and Waterways, Government of India",
+      "role": "official_port_and_commodity_marginals",
+      "authority_class": "official_primary",
+      "independence_group": "india_ministry_ports",
+      "lineage_policy": "primary",
+      "decision_state": "review_required",
+      "decision_id": "pending:india_major_ports_pdmp2",
+      "decision_owner": "unassigned",
+      "signer_id": null,
+      "decision_artifact_path": null,
+      "decision_artifact_sha256": null,
+      "decision_signature_path": null,
+      "reviewed_on": null,
+      "review_due": null,
+      "access_url": "https://shipmin.gov.in/en/content/monthly-cargo-traffic-handled-major-ports-during-february%C2%A02026%C2%A0",
+      "terms_url": "https://shipmin.gov.in/en/footer/copyrightpolicy",
+      "access_basis": "official_site_reproduction_policy_pending_signed_scope_review",
+      "geographic_coverage": "The 12 Major Ports under the Ministry; non-major ports are outside the source frame",
+      "historical_coverage": "Monthly report archive, report and estimate status dependent",
+      "retrieval_target": "Separate major-port cargo and all-major-port commodity marginals with no inferred joint matrix",
+      "outage_fallback": "Preserve the last authenticated report vintage and label it by valid period and knowledge time",
+      "cost_owner": "Ishan Krishna",
+      "reproducibility_tier": "official_pdf_hash_pinned; extraction_requires_two_checks; source_bytes_not_redistributed",
+      "max_current_age_days": null,
+      "permitted_uses": [],
+      "notes": "The Ministry policy appears to permit accurate attributed reproduction, but IGRM still requires a signed source-specific decision. Separate marginal tables do not establish port-by-commodity dependency edges."
     }
   ]
 }
