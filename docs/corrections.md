@@ -5,6 +5,45 @@ published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.
 
+## 2026-08-08: the nightly publish died on its linter, and the morning contract was next
+
+daily-update #100 failed at its first step in two minutes sixteen,
+having computed nothing. A dependency check added that afternoon
+asserted that the pins from both `requirements.txt` and
+`requirements-dev.txt` were installed. CI installs both; `daily.yml` and
+`morning.yml` install the runtime set alone and then gate on that same
+suite. The nightly publish was therefore reported broken because ruff
+and mypy were missing from environments deliberately built without them,
+and the 05:37 IST morning contract would have failed in the same place.
+Reproduced in a virtualenv holding `requirements.txt` and nothing else
+before anything was changed. Fixed by requiring runtime pins everywhere
+and gate pins only where a gate runs, with a version that drifts or a
+partially installed gate environment still a failure. A separate
+workflow now runs the publishing lanes' exact commands in the
+environment those lanes use, because ordinary CI was green on the commit
+that broke them.
+Public exposure: the site served the previous completed day, correctly
+labeled, overnight. No wrong numbers. One scheduled refresh was lost.
+
+## 2026-08-08: the site described a guard that was passing everything
+
+`products.html` told readers that the machine-readable protected route
+list was append-only, and that removing a capability required a dated
+public deprecation rather than deleting its link. The check behind that
+sentence chose which revision to compare against by re-serializing the
+committed catalog and comparing bytes. The catalog is hand-formatted one
+route per line, so the comparison was never equal, and every commit was
+compared against itself. Deleting the Atlas maps route with an empty
+removal ledger returned `{"status": "pass"}` and exit 0. Reproduced
+before the fix, and again afterwards where it refuses with
+`catalog_route_removed_without_prior_notice`. Fixed by comparing the
+parsed documents, and pinned by a test asserting which revision the
+floor reports comparing against, since every existing test of the floor
+supplied the prior catalog itself and so could not see this.
+Public exposure: the sentence was live and unsupported for about
+eighteen minutes, measured deploy to deploy. No route was removed in
+that window and no published capability was affected.
+
 ## 2026-08-08: the brief withdrawal's own account was wrong about the mechanism
 
 The entry below states that nine briefs cited a stress-gauge value "even
