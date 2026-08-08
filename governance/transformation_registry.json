@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "transformations": [
+    {
+      "transformation_id": "direct_registered_fact",
+      "version": "1.0.0",
+      "implementation_path": "src/publication_transforms.py",
+      "implementation_sha256": "d8d3a4d7b78313aee422e14196d54fb23517b2a7af72a1f9f988eaafbe6fdafc",
+      "claim_classes": [
+        "descriptive_current",
+        "descriptive_historical",
+        "methodology"
+      ],
+      "effective": "2026-08-08",
+      "superseded_on": null
+    }
+  ]
+}

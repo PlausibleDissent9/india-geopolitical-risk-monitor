@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "allowed_claim_classes": [
+    "descriptive_current",
+    "descriptive_historical",
+    "methodology"
+  ],
+  "forbidden_claim_classes": [
+    "causal",
+    "forecast",
+    "investment_advice",
+    "policy_directive",
+    "security_assurance",
+    "superiority"
+  ],
+  "allowed_temporal_policies": [
+    "same_effective_date"
+  ],
+  "templates": [
+    {
+      "template_id": "direct_fact_v1",
+      "claim_classes": [
+        "descriptive_current",
+        "descriptive_historical",
+        "methodology"
+      ],
+      "min_facts": 1,
+      "max_facts": 1,
+      "required_transformations": [
+        "direct_registered_fact"
+      ]
+    }
+  ]
+}

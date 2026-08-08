@@ -20,6 +20,7 @@ dependencies = [
   "pandas>=2",
   "numpy>=1.26",
   "scipy>=1.10",
+  "cryptography>=50,<51",
   "requests>=2.31",
   "yfinance>=0.2",
   "Markdown>=3.6",
