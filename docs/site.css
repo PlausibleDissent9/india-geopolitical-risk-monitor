@@ -841,6 +841,7 @@ h4 { margin: 1.4rem 0 0.45rem; font-size: var(--fs-dense); }
   color: var(--muted);
 }
 code {
+  overflow-wrap: anywhere;
   padding: 0 0.3em;
   border: 1px solid var(--line);
   border-radius: 3px;
@@ -1019,6 +1020,7 @@ textarea { width: 100%; min-height: 300px; resize: vertical; }
 .btn.primary { border-color: var(--accent); background: var(--accent); color: var(--paper); }
 .toggle {
   display: inline-flex;
+  flex-wrap: wrap;
   margin-left: 0.75rem;
   overflow: hidden;
   border: 1px solid var(--line);
