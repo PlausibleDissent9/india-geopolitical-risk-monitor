@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "schemas": [
+    {
+      "object_type": "common_definitions",
+      "schema_id": "https://igrm.in/schemas/common.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/common.schema.json",
+      "sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"
+    },
+    {
+      "object_type": "evidence_item",
+      "schema_id": "https://igrm.in/schemas/evidence-item.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/evidence-item.schema.json",
+      "sha256": "22efefb3703bfd02bcff5e4c5a28c68b01ead122a28c587afbdcf6b1d9b9df7b"
+    },
+    {
+      "object_type": "entity",
+      "schema_id": "https://igrm.in/schemas/entity.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/entity.schema.json",
+      "sha256": "67d951075f982b007f754827f5807f544213626ffbb3ae64dc827e70b6ed9135"
+    },
+    {
+      "object_type": "event",
+      "schema_id": "https://igrm.in/schemas/event.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/event.schema.json",
+      "sha256": "0ac9e8bc594b20b1c0a40762ca5417c426f0222c598ff0e64ccbf2e851152899"
+    },
+    {
+      "object_type": "exposure_edge",
+      "schema_id": "https://igrm.in/schemas/exposure-edge.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/exposure-edge.schema.json",
+      "sha256": "4c3805b4ec30b2df6a84d7bdc1189f1e96eca2b8273830db437fa61bf816fbcb"
+    },
+    {
+      "object_type": "universe_frame",
+      "schema_id": "https://igrm.in/schemas/universe-frame.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/universe-frame.schema.json",
+      "sha256": "ad98768365d5315d3394eeddcd87cb555e57eab72ac170ee8c39afbe3b290585"
+    },
+    {
+      "object_type": "universe_release",
+      "schema_id": "https://igrm.in/schemas/universe-release.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/universe-release.schema.json",
+      "sha256": "1b5dc27a85ea25833952c7b6ca3b4540e7c866d138edfb0bd304a595c2268961"
+    },
+    {
+      "object_type": "canonical_release",
+      "schema_id": "https://igrm.in/schemas/canonical-release.schema.json",
+      "version": "1.0.0",
+      "path": "schemas/canonical-release.schema.json",
+      "sha256": "d56dc91f4a6ee7c287c7476f66ed92debfd6b92427207890ae08ff37f194bdde"
+    }
+  ]
+}

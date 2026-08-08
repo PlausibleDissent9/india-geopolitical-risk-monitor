@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/universe-frame.schema.json",
+  "title": "IGRM immutable universe source frame",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "universe_id",
+    "entity_type",
+    "reference_date",
+    "source_evidence_id",
+    "source_version",
+    "extraction_query",
+    "extracted_at",
+    "entity_ids"
+  ],
+  "properties": {
+    "object_type": {"const": "universe_frame"},
+    "schema_version": {"const": "1.0.0"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "universe_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "country",
+        "government_actor",
+        "organization",
+        "ministry",
+        "state_or_ut",
+        "district",
+        "sector",
+        "company",
+        "critical_asset",
+        "route",
+        "chokepoint",
+        "port",
+        "border_crossing",
+        "commodity",
+        "technology",
+        "treaty",
+        "sanction_regime",
+        "market_instrument"
+      ]
+    },
+    "reference_date": {"$ref": "common.schema.json#/$defs/date"},
+    "source_evidence_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "source_version": {"type": "string", "minLength": 1, "maxLength": 300},
+    "extraction_query": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "extracted_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "entity_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "common.schema.json#/$defs/stableId"},
+      "uniqueItems": true
+    }
+  }
+}

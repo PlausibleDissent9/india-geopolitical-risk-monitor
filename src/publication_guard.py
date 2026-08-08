@@ -49,6 +49,18 @@ _RIGHTS_USES = {
     "redistribute_full_record",
 }
 _SOURCE_STATES = {"approved", "denied", "expired", "review_required"}
+_AUTHORITY_CLASSES = {
+    "aggregator",
+    "first_party_derived",
+    "independent_reporting",
+    "intergovernmental_dataset",
+    "market_data",
+    "official_primary",
+    "provider_coded_dataset",
+    "public_platform",
+    "reference_data",
+    "research_dataset",
+}
 _UNCERTAINTY = {"categorical", "interval", "not_applicable", "not_estimated"}
 
 
@@ -307,6 +319,8 @@ def _validate_rights_registry(
         "name",
         "provider",
         "role",
+        "authority_class",
+        "independence_group",
         "lineage_policy",
         "decision_state",
         "decision_id",
@@ -352,6 +366,11 @@ def _validate_rights_registry(
             "notes",
         ):
             _text(source[field], f"rights_source_{field}_invalid")
+        if source["authority_class"] not in _AUTHORITY_CLASSES:
+            _fail("rights_source_authority_class_invalid")
+        _identifier(
+            source["independence_group"], "rights_source_independence_group_invalid"
+        )
         state = source["decision_state"]
         if not isinstance(state, str):
             _fail("rights_source_state_invalid")
@@ -430,6 +449,11 @@ def _validate_rights_registry(
                 {
                     "schema_version",
                     "source_id",
+                    "name",
+                    "provider",
+                    "role",
+                    "authority_class",
+                    "independence_group",
                     "decision_id",
                     "decision_owner",
                     "signer_id",
@@ -448,6 +472,11 @@ def _validate_rights_registry(
             _text(artifact["statement"], "rights_source_decision_statement_invalid")
             matching_fields = {
                 "source_id",
+                "name",
+                "provider",
+                "role",
+                "authority_class",
+                "independence_group",
                 "decision_id",
                 "decision_owner",
                 "signer_id",

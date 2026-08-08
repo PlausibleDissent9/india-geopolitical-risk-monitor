@@ -21,6 +21,8 @@ does not authorize a model to write any claim.
 - a detached Ed25519 signature over the exact rights-decision artifact, verified
   against a registered public key;
 - approved upstream sources for every derived source;
+- signed source-authority and independence-group classifications rather than
+  publisher-name inference;
 - a non-symlinked repository evidence file and exact SHA-256;
 - strict JSON without duplicate keys;
 - an RFC 6901 pointer, scalar type and exact source value;

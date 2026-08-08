@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/exposure-edge.schema.json",
+  "title": "IGRM canonical ExposureEdge",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "edge_id",
+    "record_sha256",
+    "lifecycle",
+    "source_entity_id",
+    "target_entity_id",
+    "edge_type",
+    "exposure_direction",
+    "quantification_status",
+    "magnitude",
+    "derivation_type",
+    "effective_start",
+    "effective_end",
+    "observed_at",
+    "coverage_basis",
+    "evidence_ids",
+    "method",
+    "confidence",
+    "limitation_codes",
+    "provenance"
+  ],
+  "properties": {
+    "object_type": {"const": "exposure_edge"},
+    "schema_version": {"const": "1.0.0"},
+    "edge_id": {
+      "type": "string",
+      "pattern": "^edg:[a-z0-9][a-z0-9._:-]{2,123}$"
+    },
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "lifecycle": {"$ref": "common.schema.json#/$defs/recordLifecycle"},
+    "source_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "target_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "edge_type": {
+      "type": "string",
+      "enum": [
+        "import_dependence",
+        "export_dependence",
+        "freight_dependence",
+        "energy_dependence",
+        "supplier_concentration",
+        "ownership",
+        "operational_presence",
+        "border_proximity",
+        "treaty_obligation",
+        "sanctions_reach",
+        "cyber_dependency",
+        "policy_jurisdiction",
+        "input_dependency",
+        "route_dependency",
+        "technology_dependency"
+      ]
+    },
+    "exposure_direction": {
+      "type": "string",
+      "enum": [
+        "inbound_to_india",
+        "outbound_from_india",
+        "bidirectional",
+        "jurisdictional",
+        "non_directional"
+      ]
+    },
+    "quantification_status": {
+      "type": "string",
+      "enum": ["quantified", "qualitative", "unknown"]
+    },
+    "magnitude": {
+      "oneOf": [
+        {"$ref": "common.schema.json#/$defs/measure"},
+        {"type": "null"}
+      ]
+    },
+    "derivation_type": {
+      "type": "string",
+      "enum": ["direct_authoritative", "calculated", "expert_judgment"]
+    },
+    "effective_start": {"$ref": "common.schema.json#/$defs/date"},
+    "effective_end": {"$ref": "common.schema.json#/$defs/nullableDate"},
+    "observed_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "coverage_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["universe_release_id", "covered_entity_id", "member_status"],
+      "properties": {
+        "universe_release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "covered_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "member_status": {"const": "included"}
+      }
+    },
+    "evidence_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+    "method": {"$ref": "common.schema.json#/$defs/method"},
+    "confidence": {
+      "allOf": [
+        {"$ref": "common.schema.json#/$defs/uncertainty"},
+        {
+          "properties": {
+            "status": {"enum": ["categorical", "not_estimated"]},
+            "lower": {"type": "null"},
+            "upper": {"type": "null"}
+          }
+        }
+      ]
+    },
+    "limitation_codes": {"$ref": "common.schema.json#/$defs/idArray"},
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"quantification_status": {"const": "quantified"}}},
+      "then": {
+        "properties": {
+          "magnitude": {
+            "allOf": [
+              {"$ref": "common.schema.json#/$defs/measure"},
+              {
+                "properties": {
+                  "period_start": {"$ref": "common.schema.json#/$defs/date"},
+                  "period_end": {"$ref": "common.schema.json#/$defs/date"}
+                }
+              }
+            ]
+          }
+        }
+      },
+      "else": {"properties": {"magnitude": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"quantification_status": {"const": "unknown"}}},
+      "then": {
+        "properties": {
+          "confidence": {
+            "properties": {"status": {"const": "not_estimated"}}
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"quantification_status": {"const": "qualitative"}}},
+      "then": {
+        "properties": {
+          "confidence": {
+            "properties": {
+              "status": {"enum": ["categorical", "not_estimated"]},
+              "lower": {"type": "null"},
+              "upper": {"type": "null"}
+            }
+          },
+          "limitation_codes": {
+            "contains": {"const": "magnitude_not_quantified"}
+          }
+        }
+      }
+    }
+  ]
+}

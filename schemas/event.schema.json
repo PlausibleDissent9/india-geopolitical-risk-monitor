@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/event.schema.json",
+  "title": "IGRM canonical Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "event_id",
+    "record_sha256",
+    "lifecycle",
+    "canonical_label",
+    "event_class",
+    "secondary_classes",
+    "record_status",
+    "publication_phase",
+    "direction",
+    "starts_at",
+    "ends_at",
+    "temporal_precision",
+    "first_known_at",
+    "last_verified_at",
+    "actor_entity_ids",
+    "target_entity_ids",
+    "affected_entity_ids",
+    "locations",
+    "intensity",
+    "evidence_links",
+    "coding",
+    "provenance"
+  ],
+  "properties": {
+    "object_type": {"const": "event"},
+    "schema_version": {"const": "1.0.0"},
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt:[a-z0-9][a-z0-9._:-]{2,123}$"
+    },
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "lifecycle": {"$ref": "common.schema.json#/$defs/recordLifecycle"},
+    "canonical_label": {"type": "string", "minLength": 1, "maxLength": 300},
+    "event_class": {
+      "type": "string",
+      "enum": [
+        "armed_conflict",
+        "military_action",
+        "terrorism",
+        "diplomatic_action",
+        "trade_restriction",
+        "sanction",
+        "export_control",
+        "cyber_incident",
+        "border_disruption",
+        "shipping_disruption",
+        "infrastructure_disruption",
+        "policy_action",
+        "political_instability",
+        "treaty_change",
+        "other_observable_action"
+      ]
+    },
+    "secondary_classes": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 100},
+      "uniqueItems": true
+    },
+    "record_status": {
+      "type": "string",
+      "enum": ["candidate", "confirmed", "disputed", "withdrawn"]
+    },
+    "publication_phase": {"type": "string", "enum": ["provisional", "final"]},
+    "direction": {
+      "type": "string",
+      "enum": ["escalatory", "deescalatory", "mixed", "neutral", "unknown"]
+    },
+    "starts_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "ends_at": {"$ref": "common.schema.json#/$defs/nullableDateTime"},
+    "temporal_precision": {
+      "type": "string",
+      "enum": ["minute", "hour", "day", "date_range", "unknown"]
+    },
+    "first_known_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "last_verified_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "actor_entity_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+    "target_entity_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+    "affected_entity_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+    "locations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_id", "role", "precision", "evidence_ids"],
+        "properties": {
+          "entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+          "role": {
+            "type": "string",
+            "enum": ["primary", "origin", "destination", "affected", "claimed"]
+          },
+          "precision": {
+            "type": "string",
+            "enum": ["country", "state", "district", "site", "route", "unknown"]
+          },
+          "evidence_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+        }
+      }
+    },
+    "intensity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "scheme", "value", "unit", "denominator", "uncertainty"],
+      "properties": {
+        "status": {"type": "string", "enum": ["coded", "not_estimated"]},
+        "scheme": {"type": ["string", "null"], "minLength": 1, "maxLength": 120},
+        "value": {"type": ["number", "string", "null"], "minLength": 1, "maxLength": 120},
+        "unit": {"type": ["string", "null"], "minLength": 1, "maxLength": 120},
+        "denominator": {"type": ["string", "null"], "minLength": 1, "maxLength": 300},
+        "uncertainty": {"$ref": "common.schema.json#/$defs/uncertainty"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "coded"}}},
+          "then": {
+            "properties": {
+              "scheme": {"type": "string"},
+              "value": {"type": ["number", "string"]},
+              "unit": {"type": "string"},
+              "denominator": {"type": "string"}
+            }
+          },
+          "else": {
+            "properties": {
+              "scheme": {"type": "null"},
+              "value": {"type": "null"},
+              "unit": {"type": "null"},
+              "denominator": {"type": "null"},
+              "uncertainty": {
+                "properties": {"status": {"const": "not_estimated"}}
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evidence_links": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_id", "role", "asserted_at"],
+        "properties": {
+          "evidence_id": {"$ref": "common.schema.json#/$defs/stableId"},
+          "role": {
+            "type": "string",
+            "enum": [
+              "official_confirmation",
+              "corroborates",
+              "allegation",
+              "contradicts",
+              "context",
+              "correction"
+            ]
+          },
+          "asserted_at": {"$ref": "common.schema.json#/$defs/utcDateTime"}
+        }
+      }
+    },
+    "coding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "rule_version",
+        "implementation_sha256",
+        "status",
+        "coder_ids",
+        "adjudicator_ids",
+        "limitation_codes"
+      ],
+      "properties": {
+        "rule_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "rule_version": {"$ref": "common.schema.json#/$defs/schemaVersion"},
+        "implementation_sha256": {"$ref": "common.schema.json#/$defs/nullableSha256"},
+        "status": {
+          "type": "string",
+          "enum": ["machine_candidate", "human_coded", "dual_coded", "adjudicated"]
+        },
+        "coder_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+        "adjudicator_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+        "limitation_codes": {"$ref": "common.schema.json#/$defs/idArray"}
+      }
+    },
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"publication_phase": {"const": "final"}}},
+      "then": {
+        "properties": {
+          "record_status": {"enum": ["confirmed", "disputed", "withdrawn"]},
+          "coding": {
+            "properties": {
+              "status": {"enum": ["human_coded", "dual_coded", "adjudicated"]}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

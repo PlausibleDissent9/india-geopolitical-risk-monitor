@@ -80,6 +80,8 @@ def _fixture(
         "name": "Test source",
         "provider": "Test provider",
         "role": "first_party_test",
+        "authority_class": "official_primary",
+        "independence_group": "test_provider",
         "lineage_policy": lineage_policy,
         "decision_state": "approved",
         "decision_id": "test-decision-2026-08-08",
@@ -109,6 +111,11 @@ def _fixture(
     decision = {
         "schema_version": "1.0.0",
         "source_id": source["source_id"],
+        "name": source["name"],
+        "provider": source["provider"],
+        "role": source["role"],
+        "authority_class": source["authority_class"],
+        "independence_group": source["independence_group"],
         "decision_id": source["decision_id"],
         "decision_owner": source["decision_owner"],
         "signer_id": source["signer_id"],
@@ -615,6 +622,8 @@ def test_committed_registry_is_deny_by_default_and_external_sources_are_pending(
             else "primary"
         )
         assert source["lineage_policy"] == expected_lineage
+        assert source["authority_class"] in guard._AUTHORITY_CLASSES
+        assert isinstance(source["independence_group"], str)
         assert source["permitted_uses"] == []
         assert source["reviewed_on"] is None
         assert source["review_due"] is None
