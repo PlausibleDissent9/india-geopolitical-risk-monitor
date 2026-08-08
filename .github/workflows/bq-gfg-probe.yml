@@ -13,7 +13,12 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # The post-rebase committed-tree gate added 2026-08-08 takes about
+    # ten minutes by itself. Runs #9 and #10 reached the old ten-minute
+    # wall and GitHub reported them as cancelled before the candidate
+    # could be verified and pushed. Keep measured probe time plus the
+    # complete fail-closed publication gate inside one explicit budget.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
