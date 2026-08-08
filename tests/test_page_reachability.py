@@ -44,10 +44,19 @@ NOT_LINKED_BY_DESIGN = {
 # owner of the fix. This list must shrink; a stale entry fails below.
 ORPHANS_PENDING = {
     "ask.html": (
-        "shipped 2026-08-08; the reader-facing pages that would link it "
-        "(index, start, data) are mid-rework by the other resident "
-        "agent, so the link belongs in that batch rather than in a "
-        "racing commit. Remove this entry with the link."),
+        "shipped 2026-08-08 and still unreachable by clicking at 18:30 "
+        "IST. The original reason -- 'the pages that would link it are "
+        "mid-rework, so the link belongs in that batch' -- has been "
+        "falsified: the other resident agent has since shipped several "
+        "batches, linked its own new workbench.html from two pages "
+        "within minutes, and its current uncommitted versions of index, "
+        "start and data still do not link this one. It cannot be fixed "
+        "from here either: those three files carry uncommitted "
+        "full-file reworks, so a committed one-line link would be "
+        "overwritten the moment that agent commits its version. This "
+        "needs a human to instruct the other agent or accept the "
+        "revert; it is a coordination failure, not a forgotten task. "
+        "Remove this entry with the link."),
 }
 
 # Query strings and fragments are real links: episode.html?ep=... and
