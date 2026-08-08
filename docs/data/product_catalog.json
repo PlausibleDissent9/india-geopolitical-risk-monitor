@@ -35,7 +35,7 @@
    "id": "evidence_engine",
    "name": "IGRM Evidence Engine",
    "current_state": "public_draft_foundation",
-   "current_boundary": "OGES 0.1, schemas, signed synthetic knowledge replay, provenance-oriented research tools and frozen machine interfaces are public; no production canonical-object release has yet been issued."
+   "current_boundary": "OGES 0.1, schemas, signed synthetic knowledge replay, semantically separated Sensor Fusion, provenance-oriented research tools and frozen machine interfaces are public; no production canonical-object release has yet been issued."
   },
   {
    "id": "research_copilot",
@@ -131,6 +131,13 @@
    "pillar_id": "evidence_engine",
    "status": "public_draft",
    "purpose": "A signed synthetic bitemporal replay demonstration that prevents later revisions from entering an earlier knowledge cutoff."
+  },
+  {
+   "path": "sensors.html",
+   "label": "Sensor Fusion",
+   "pillar_id": "evidence_engine",
+   "status": "public_draft",
+   "purpose": "A signed synthetic eight-lane matrix that collates unlike evidence without numeric blending and names every missing lane."
   },
   {
    "path": "data.html",
@@ -297,6 +304,7 @@
   "replay.html",
   "research/forecasts.html",
   "research/history.html",
+  "sensors.html",
   "standard.html",
   "start.html",
   "status.html",

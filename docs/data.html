@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
-<link rel="stylesheet" href="site.css?v=1e13bfe7">
+<link rel="stylesheet" href="site.css?v=257c88ab">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org", "@type": "Dataset",
@@ -68,7 +68,8 @@ Use the <a href="workbench.html">Research Workbench</a> to select exact dates an
 inspect coverage, and download CSV/JSON plus a source- and subset-hashed citation manifest.
 Everything runs locally in your browser. For interoperable evidence, event, universe and
 exposure bundles, see the machine-testable <a href="standard.html">OGES public draft</a>
-and its exact served schemas.</div>
+and its exact served schemas. The <a href="sensors.html">Sensor Fusion test vector</a>
+shows how eight unlike evidence lanes remain separate and how missing lanes are exposed.</div>
 
     <h2>How to read the data</h2>
 <p class="prose">Every file reduces to one idea: <b>each row is one day, and each number answers
@@ -105,6 +106,7 @@ Excel, pandas (<code>pd.read_csv(url, index_col="date")</code>), or R.</p>
     <tr><td><a href="viewer.html?f=validation.json">validation.json</a> <span class="kv">(<a href="data/validation.json">raw</a>)</span></td><td>Hit-rate against the pre-registered episode list, placebo-channel overlap, dictionary-robustness correlations, cross-source agreement, coverage-drift diagnostics.</td></tr>
     <tr><td><a href="data/ai_gpr_benchmark.json">ai_gpr_benchmark.json</a></td><td><b>Code-frozen external benchmark:</b> aggregate and rank-only comparison with the Iacoviello-Tong AI-GPR India series, including the full eligible-month list, registered bootstrap intervals, exploratory matrix, event-month ranks and five largest divergences. No raw AI-GPR values are redistributed.</td></tr>
     <tr><td><a href="data/divergence_register.json">divergence_register.json</a></td><td><b>Append-only inspection record:</b> dated, receipt-linked rank gaps against AI-GPR and IMF PortWatch, with a claim limit on every row. Disagreement is recorded, not explained away.</td></tr>
+    <tr><td><a href="data/sensor_fusion_demo.json">sensor_fusion_demo.json</a></td><td><b>Synthetic executable foundation:</b> one signed eight-lane structural matrix and one deliberately partial window. It demonstrates semantic separation and explicit missingness, not live sensor coverage.</td></tr>
     <tr><td><a href="data/shares.csv" download>shares.csv</a> <span class="kv">(<a href="viewer.html?f=shares.json">metadata</a>)</span></td><td>The published quantity beneath the percentile transform: daily matched-article shares with the measuring instrument named on every row.</td></tr>
     <tr><td><a href="viewer.html?f=splice_sensitivity.json">splice_sensitivity.json</a> <span class="kv">(<a href="data/splice_sensitivity.json">raw</a>)</span></td><td><b>Calibration audit:</b> the frozen primary scores beside a recomputation under the independently estimated splice ratios, with daily and 7-day shifts. It is a sensitivity series, not a replacement.</td></tr>
     <tr><td><a href="viewer.html?f=alt_specs.json">alt_specs.json</a> <span class="kv">(<a href="data/alt_specs.json">raw</a>)</span></td><td>Secondary specifications: alternative composite weightings, episode thresholds (1.5&sigma;/2.5&sigma;), percentile windows (365/1095 days), each with its correlation to the primary.</td></tr>

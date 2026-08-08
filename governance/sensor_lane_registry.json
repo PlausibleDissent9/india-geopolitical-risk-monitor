@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "join_policy": "collate_only_never_average_or_convert",
+  "lanes": [
+    {
+      "lane_id": "official",
+      "label": "Official record",
+      "semantic_definition": "Statements, notices and documents issued by a registered public authority; authority is source identity, not automatic truth.",
+      "source_roles": ["official_record", "official_test_evidence"],
+      "permitted_evidence_types": ["official_document", "official_statement"]
+    },
+    {
+      "lane_id": "news",
+      "label": "News observation",
+      "semantic_definition": "Registered news retrieval or corpus evidence describing attention or reporting; volume and language are not event magnitude.",
+      "source_roles": ["news_attention_and_receipts", "news_attention_corpus", "news_test_evidence", "news_tone_context"],
+      "permitted_evidence_types": ["news_article", "web_page"]
+    },
+    {
+      "lane_id": "coded_event",
+      "label": "Coded event context",
+      "semantic_definition": "Provider-coded or research-coded event observations; coding is retained as a distinct measurement process, not ground truth.",
+      "source_roles": ["coded_event_context", "event_dataset_test", "historical_event_context"],
+      "permitted_evidence_types": ["dataset_observation"]
+    },
+    {
+      "lane_id": "physical_transmission",
+      "label": "Physical transmission",
+      "semantic_definition": "Observed physical throughput, congestion, movement or infrastructure state; it is not inferred from headlines or prices.",
+      "source_roles": ["physical_transmission", "physical_transmission_test"],
+      "permitted_evidence_types": ["dataset_observation"]
+    },
+    {
+      "lane_id": "trade_transmission",
+      "label": "Trade transmission",
+      "semantic_definition": "Observed trade-flow, customs or shipment quantities under a declared trade denominator and vintage.",
+      "source_roles": ["trade_transmission", "trade_transmission_test"],
+      "permitted_evidence_types": ["dataset_observation"]
+    },
+    {
+      "lane_id": "energy_transmission",
+      "label": "Energy transmission",
+      "semantic_definition": "Observed energy supply, demand, inventory or flow context under its own unit, frequency and revision policy.",
+      "source_roles": ["energy_transmission_context", "energy_transmission_test"],
+      "permitted_evidence_types": ["dataset_observation"]
+    },
+    {
+      "lane_id": "market_transmission",
+      "label": "Market transmission",
+      "semantic_definition": "Observed market prices or returns; market association is neither physical disruption nor causal attribution.",
+      "source_roles": ["financial_transmission", "market_transmission_test"],
+      "permitted_evidence_types": ["dataset_observation"]
+    },
+    {
+      "lane_id": "public_attention",
+      "label": "Public attention",
+      "semantic_definition": "Observed public-platform attention under a registered query and population; it is not opinion, probability or event severity.",
+      "source_roles": ["attention_test", "public_attention"],
+      "permitted_evidence_types": ["dataset_observation"]
+    }
+  ]
+}

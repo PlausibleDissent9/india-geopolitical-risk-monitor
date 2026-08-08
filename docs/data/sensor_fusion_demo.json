@@ -1,0 +1,590 @@
+{
+  "_meta": {
+    "schema": "igrm-sensor-fusion-demo-v1",
+    "generated": "2026-08-08T13:00:00Z",
+    "date": "2026-08-08",
+    "what": "Deterministic synthetic Sensor Fusion conformance vector.",
+    "scope": "synthetic_test_vector_only",
+    "production_release": false,
+    "real_source_or_rights_claims": false,
+    "numeric_fusion_performed": false,
+    "license": "CC BY 4.0",
+    "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+    "source": "https://igrm.in/data/sensor_fusion_demo.json",
+    "codebook": "https://igrm.in/standard.html",
+    "method": "method:igrm.sensor_fusion@1.0.0"
+  },
+  "complete_matrix": {
+    "object_type": "sensor_fusion",
+    "schema_version": "1.0.0",
+    "record_sha256": "18edde03ea48f0f9f1dc52986ba7245c6abedb129bdc377c114df11ffe2381d9",
+    "release": {
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "rights_registry_sha256": "0b456d38b6bbe486f0c4121918669294c50b12652c705390ee88ed92839aed05",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/sensor-fusion.schema.json",
+      "schema_version": "1.0.0",
+      "schema_sha256": "b0cd41f719710bad3cacc14e7184ec80123debf6e0564214a549d6f191b903d1",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "fusion_registry_sha256": "f5bde0586ab944970295951f3427cc321a5f633cc4e6cad8ce4e0d7fa5c0481f",
+      "lane_registry_sha256": "13dd8d4b16426e14716f0a59723a2eeecc454caaba924699dbe6cdcb3d6be91c"
+    },
+    "method": {
+      "method_id": "method:igrm.sensor_fusion",
+      "version": "1.0.0",
+      "implementation_sha256": "8472a47352a6835eda289b1cbd4039cd8bd0bd97c51432f2857c78ea6c36d8dc"
+    },
+    "query": {
+      "event_id": "evt:oges.fixture.policy.001",
+      "window_start": "2026-08-08T08:30:00Z",
+      "window_end": "2026-08-08T11:00:00Z",
+      "knowledge_cutoff": "2026-08-08T13:00:00Z",
+      "selection_rule": "event_linked_release_evidence_observed_in_window_and_retrieved_by_cutoff",
+      "join_policy": "collate_only_never_average_or_convert"
+    },
+    "event": {
+      "event_id": "evt:oges.fixture.policy.001",
+      "record_sha256": "224bc5ff74fc47232c5f5fd35cfbcf56a3071e2f2e90fffbf53dbe9b59411121",
+      "lifecycle_state": "active",
+      "record_status": "confirmed",
+      "publication_phase": "final",
+      "starts_at": "2026-08-08T09:00:00Z",
+      "first_known_at": "2026-08-08T10:00:00Z",
+      "last_verified_at": "2026-08-08T11:00:00Z"
+    },
+    "lanes": [
+      {
+        "lane_id": "official",
+        "label": "Official record",
+        "semantic_definition": "Statements, notices and documents issued by a registered public authority; authority is source identity, not automatic truth.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:oges.fixture.official.001",
+            "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+            "source_id": "oges_fixture_source",
+            "source_role": "official_test_evidence",
+            "evidence_type": "official_document",
+            "event_link_roles": [
+              "official_confirmation"
+            ],
+            "verification_status": "official_record",
+            "observed_at": "2026-08-08T09:00:00Z",
+            "effective_start": "2026-08-08T09:00:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T10:00:00Z",
+            "content_sha256": "4cd387cee0d680f2c088ab21feea092221f36b3b7ae34e9fc0cd13354565c5c7",
+            "rights_decision_id": "oges-fixture-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "news",
+        "label": "News observation",
+        "semantic_definition": "Registered news retrieval or corpus evidence describing attention or reporting; volume and language are not event magnitude.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "sensor_fixture_news"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:sensor.fixture.news.001",
+            "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec",
+            "source_id": "sensor_fixture_news",
+            "source_role": "news_test_evidence",
+            "evidence_type": "news_article",
+            "event_link_roles": [
+              "context"
+            ],
+            "verification_status": "single_source",
+            "observed_at": "2026-08-08T09:15:00Z",
+            "effective_start": "2026-08-08T09:15:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T09:20:00Z",
+            "content_sha256": "89fce067e72ecf5f578e2dd2e187d91025925683a54e53d54e2590642d037600",
+            "rights_decision_id": "sensor-fixture-news-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "coded_event",
+        "label": "Coded event context",
+        "semantic_definition": "Provider-coded or research-coded event observations; coding is retained as a distinct measurement process, not ground truth.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "sensor_fixture_coded_event"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:sensor.fixture.coded_event.001",
+            "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d",
+            "source_id": "sensor_fixture_coded_event",
+            "source_role": "event_dataset_test",
+            "evidence_type": "dataset_observation",
+            "event_link_roles": [
+              "context"
+            ],
+            "verification_status": "single_source",
+            "observed_at": "2026-08-08T09:30:00Z",
+            "effective_start": "2026-08-08T09:30:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T09:35:00Z",
+            "content_sha256": "32780a8aa705dac8f8e298d45030d83ea75bf6ca733c3bff0ce69aa209069ee6",
+            "rights_decision_id": "sensor-fixture-coded_event-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "physical_transmission",
+        "label": "Physical transmission",
+        "semantic_definition": "Observed physical throughput, congestion, movement or infrastructure state; it is not inferred from headlines or prices.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "sensor_fixture_physical"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:sensor.fixture.physical.001",
+            "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c",
+            "source_id": "sensor_fixture_physical",
+            "source_role": "physical_transmission_test",
+            "evidence_type": "dataset_observation",
+            "event_link_roles": [
+              "context"
+            ],
+            "verification_status": "single_source",
+            "observed_at": "2026-08-08T09:45:00Z",
+            "effective_start": "2026-08-08T09:45:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T09:50:00Z",
+            "content_sha256": "22cbb5fee38aa0634d3002792678efdd345fef35c6cc521f9612559b40ea6906",
+            "rights_decision_id": "sensor-fixture-physical_transmission-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "trade_transmission",
+        "label": "Trade transmission",
+        "semantic_definition": "Observed trade-flow, customs or shipment quantities under a declared trade denominator and vintage.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "sensor_fixture_trade"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:sensor.fixture.trade.001",
+            "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f",
+            "source_id": "sensor_fixture_trade",
+            "source_role": "trade_transmission_test",
+            "evidence_type": "dataset_observation",
+            "event_link_roles": [
+              "context"
+            ],
+            "verification_status": "single_source",
+            "observed_at": "2026-08-08T10:00:00Z",
+            "effective_start": "2026-08-08T10:00:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T10:05:00Z",
+            "content_sha256": "d473efd377cb4e54dad174031deb7740d2482b31711309871ceb1f8c8421e3e3",
+            "rights_decision_id": "sensor-fixture-trade_transmission-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "energy_transmission",
+        "label": "Energy transmission",
+        "semantic_definition": "Observed energy supply, demand, inventory or flow context under its own unit, frequency and revision policy.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "sensor_fixture_energy"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:sensor.fixture.energy.001",
+            "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2",
+            "source_id": "sensor_fixture_energy",
+            "source_role": "energy_transmission_test",
+            "evidence_type": "dataset_observation",
+            "event_link_roles": [
+              "context"
+            ],
+            "verification_status": "single_source",
+            "observed_at": "2026-08-08T10:15:00Z",
+            "effective_start": "2026-08-08T10:15:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T10:20:00Z",
+            "content_sha256": "7bac1bbd6cb02421509684b5765431e04fc8529b0d4df8c3be9b25a14b2337e2",
+            "rights_decision_id": "sensor-fixture-energy_transmission-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "market_transmission",
+        "label": "Market transmission",
+        "semantic_definition": "Observed market prices or returns; market association is neither physical disruption nor causal attribution.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "sensor_fixture_market"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:sensor.fixture.market.001",
+            "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962",
+            "source_id": "sensor_fixture_market",
+            "source_role": "market_transmission_test",
+            "evidence_type": "dataset_observation",
+            "event_link_roles": [
+              "context"
+            ],
+            "verification_status": "single_source",
+            "observed_at": "2026-08-08T10:30:00Z",
+            "effective_start": "2026-08-08T10:30:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T10:35:00Z",
+            "content_sha256": "d22f787f9ab63841cb66431956bd4e9a1da6fc3d6727e5c2af5c5bd86d300633",
+            "rights_decision_id": "sensor-fixture-market_transmission-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "public_attention",
+        "label": "Public attention",
+        "semantic_definition": "Observed public-platform attention under a registered query and population; it is not opinion, probability or event severity.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "sensor_fixture_attention"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:sensor.fixture.attention.001",
+            "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4",
+            "source_id": "sensor_fixture_attention",
+            "source_role": "attention_test",
+            "evidence_type": "dataset_observation",
+            "event_link_roles": [
+              "context"
+            ],
+            "verification_status": "single_source",
+            "observed_at": "2026-08-08T10:45:00Z",
+            "effective_start": "2026-08-08T10:45:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T10:50:00Z",
+            "content_sha256": "47e65efa544fb048465717f2b82dad920025c5d4fa51bd9ea74a923f9a8bf873",
+            "rights_decision_id": "sensor-fixture-public_attention-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      }
+    ],
+    "excluded_evidence": [],
+    "counts": {
+      "registered_lanes": 8,
+      "present_lanes": 8,
+      "absent_lanes": 0,
+      "event_evidence_links": 8,
+      "eligible_observations": 8,
+      "excluded_observations": 0
+    },
+    "coverage": {
+      "denominator": "eight_registered_semantic_lanes",
+      "observed_lane_ids": [
+        "official",
+        "news",
+        "coded_event",
+        "physical_transmission",
+        "trade_transmission",
+        "energy_transmission",
+        "market_transmission",
+        "public_attention"
+      ],
+      "missing_lane_ids": [],
+      "fraction": 1.0
+    },
+    "result": {
+      "status": "matrix_complete",
+      "semantic_join": "collation_only",
+      "numeric_fusion_performed": false
+    },
+    "limitations": [
+      "absence_means_no_eligible_link_in_release_not_no_real_world_signal",
+      "canonical_release_generation_is_not_external_availability_proof",
+      "event_status_not_ground_truth",
+      "lane_coverage_not_event_coverage",
+      "no_causal_attribution",
+      "no_cross_lane_numeric_fusion",
+      "no_forecast_or_probability",
+      "no_source_content_or_observed_values_rendered",
+      "semantic_collation_not_sensor_agreement"
+    ]
+  },
+  "narrow_window_matrix": {
+    "object_type": "sensor_fusion",
+    "schema_version": "1.0.0",
+    "record_sha256": "e38f719e2b47846da3a20e7a1e18dfe5352a214c2bafc32d830e219d67ad52d1",
+    "release": {
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "rights_registry_sha256": "0b456d38b6bbe486f0c4121918669294c50b12652c705390ee88ed92839aed05",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+    },
+    "contract": {
+      "schema_id": "https://igrm.in/schemas/sensor-fusion.schema.json",
+      "schema_version": "1.0.0",
+      "schema_sha256": "b0cd41f719710bad3cacc14e7184ec80123debf6e0564214a549d6f191b903d1",
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "fusion_registry_sha256": "f5bde0586ab944970295951f3427cc321a5f633cc4e6cad8ce4e0d7fa5c0481f",
+      "lane_registry_sha256": "13dd8d4b16426e14716f0a59723a2eeecc454caaba924699dbe6cdcb3d6be91c"
+    },
+    "method": {
+      "method_id": "method:igrm.sensor_fusion",
+      "version": "1.0.0",
+      "implementation_sha256": "8472a47352a6835eda289b1cbd4039cd8bd0bd97c51432f2857c78ea6c36d8dc"
+    },
+    "query": {
+      "event_id": "evt:oges.fixture.policy.001",
+      "window_start": "2026-08-08T08:30:00Z",
+      "window_end": "2026-08-08T09:05:00Z",
+      "knowledge_cutoff": "2026-08-08T13:00:00Z",
+      "selection_rule": "event_linked_release_evidence_observed_in_window_and_retrieved_by_cutoff",
+      "join_policy": "collate_only_never_average_or_convert"
+    },
+    "event": {
+      "event_id": "evt:oges.fixture.policy.001",
+      "record_sha256": "224bc5ff74fc47232c5f5fd35cfbcf56a3071e2f2e90fffbf53dbe9b59411121",
+      "lifecycle_state": "active",
+      "record_status": "confirmed",
+      "publication_phase": "final",
+      "starts_at": "2026-08-08T09:00:00Z",
+      "first_known_at": "2026-08-08T10:00:00Z",
+      "last_verified_at": "2026-08-08T11:00:00Z"
+    },
+    "lanes": [
+      {
+        "lane_id": "official",
+        "label": "Official record",
+        "semantic_definition": "Statements, notices and documents issued by a registered public authority; authority is source identity, not automatic truth.",
+        "state": "present",
+        "observation_count": 1,
+        "source_ids": [
+          "oges_fixture_source"
+        ],
+        "observations": [
+          {
+            "evidence_id": "evd:oges.fixture.official.001",
+            "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+            "source_id": "oges_fixture_source",
+            "source_role": "official_test_evidence",
+            "evidence_type": "official_document",
+            "event_link_roles": [
+              "official_confirmation"
+            ],
+            "verification_status": "official_record",
+            "observed_at": "2026-08-08T09:00:00Z",
+            "effective_start": "2026-08-08T09:00:00Z",
+            "effective_end": null,
+            "retrieved_at": "2026-08-08T10:00:00Z",
+            "content_sha256": "4cd387cee0d680f2c088ab21feea092221f36b3b7ae34e9fc0cd13354565c5c7",
+            "rights_decision_id": "oges-fixture-decision-2026-08-08",
+            "rights_use": "cite_metadata",
+            "privacy_class": "public"
+          }
+        ]
+      },
+      {
+        "lane_id": "news",
+        "label": "News observation",
+        "semantic_definition": "Registered news retrieval or corpus evidence describing attention or reporting; volume and language are not event magnitude.",
+        "state": "absent",
+        "observation_count": 0,
+        "source_ids": [],
+        "observations": []
+      },
+      {
+        "lane_id": "coded_event",
+        "label": "Coded event context",
+        "semantic_definition": "Provider-coded or research-coded event observations; coding is retained as a distinct measurement process, not ground truth.",
+        "state": "absent",
+        "observation_count": 0,
+        "source_ids": [],
+        "observations": []
+      },
+      {
+        "lane_id": "physical_transmission",
+        "label": "Physical transmission",
+        "semantic_definition": "Observed physical throughput, congestion, movement or infrastructure state; it is not inferred from headlines or prices.",
+        "state": "absent",
+        "observation_count": 0,
+        "source_ids": [],
+        "observations": []
+      },
+      {
+        "lane_id": "trade_transmission",
+        "label": "Trade transmission",
+        "semantic_definition": "Observed trade-flow, customs or shipment quantities under a declared trade denominator and vintage.",
+        "state": "absent",
+        "observation_count": 0,
+        "source_ids": [],
+        "observations": []
+      },
+      {
+        "lane_id": "energy_transmission",
+        "label": "Energy transmission",
+        "semantic_definition": "Observed energy supply, demand, inventory or flow context under its own unit, frequency and revision policy.",
+        "state": "absent",
+        "observation_count": 0,
+        "source_ids": [],
+        "observations": []
+      },
+      {
+        "lane_id": "market_transmission",
+        "label": "Market transmission",
+        "semantic_definition": "Observed market prices or returns; market association is neither physical disruption nor causal attribution.",
+        "state": "absent",
+        "observation_count": 0,
+        "source_ids": [],
+        "observations": []
+      },
+      {
+        "lane_id": "public_attention",
+        "label": "Public attention",
+        "semantic_definition": "Observed public-platform attention under a registered query and population; it is not opinion, probability or event severity.",
+        "state": "absent",
+        "observation_count": 0,
+        "source_ids": [],
+        "observations": []
+      }
+    ],
+    "excluded_evidence": [
+      {
+        "evidence_id": "evd:sensor.fixture.coded_event.001",
+        "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d",
+        "source_id": "sensor_fixture_coded_event",
+        "lane_id": "coded_event",
+        "reason": "outside_observation_window"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.energy.001",
+        "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2",
+        "source_id": "sensor_fixture_energy",
+        "lane_id": "energy_transmission",
+        "reason": "outside_observation_window"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.market.001",
+        "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962",
+        "source_id": "sensor_fixture_market",
+        "lane_id": "market_transmission",
+        "reason": "outside_observation_window"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.news.001",
+        "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec",
+        "source_id": "sensor_fixture_news",
+        "lane_id": "news",
+        "reason": "outside_observation_window"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.physical.001",
+        "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c",
+        "source_id": "sensor_fixture_physical",
+        "lane_id": "physical_transmission",
+        "reason": "outside_observation_window"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.attention.001",
+        "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4",
+        "source_id": "sensor_fixture_attention",
+        "lane_id": "public_attention",
+        "reason": "outside_observation_window"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.trade.001",
+        "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f",
+        "source_id": "sensor_fixture_trade",
+        "lane_id": "trade_transmission",
+        "reason": "outside_observation_window"
+      }
+    ],
+    "counts": {
+      "registered_lanes": 8,
+      "present_lanes": 1,
+      "absent_lanes": 7,
+      "event_evidence_links": 8,
+      "eligible_observations": 1,
+      "excluded_observations": 7
+    },
+    "coverage": {
+      "denominator": "eight_registered_semantic_lanes",
+      "observed_lane_ids": [
+        "official"
+      ],
+      "missing_lane_ids": [
+        "news",
+        "coded_event",
+        "physical_transmission",
+        "trade_transmission",
+        "energy_transmission",
+        "market_transmission",
+        "public_attention"
+      ],
+      "fraction": 0.125
+    },
+    "result": {
+      "status": "matrix_partial",
+      "semantic_join": "collation_only",
+      "numeric_fusion_performed": false
+    },
+    "limitations": [
+      "absence_means_no_eligible_link_in_release_not_no_real_world_signal",
+      "canonical_release_generation_is_not_external_availability_proof",
+      "event_status_not_ground_truth",
+      "lane_coverage_not_event_coverage",
+      "no_causal_attribution",
+      "no_cross_lane_numeric_fusion",
+      "no_forecast_or_probability",
+      "no_source_content_or_observed_values_rendered",
+      "semantic_collation_not_sensor_agreement"
+    ]
+  }
+}

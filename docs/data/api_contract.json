@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.4",
+  "contract_version": "2.2.5",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -914,6 +914,17 @@
    "stability": "stable"
   },
   {
+   "path": "data/sensor_fusion_demo.json",
+   "format": "json",
+   "description": "Deterministic synthetic Sensor Fusion conformance vector.",
+   "frozen_fields": [
+    "_meta",
+    "complete_matrix",
+    "narrow_window_matrix"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/shares.csv",
    "format": "csv",
    "description": "The QUANTITY the index is built from: each channel's daily share of the GDELT-monitored corpus, in percent. Published so any reader can apply their own normalization; commensurable across channels and years where percentiles are not. The source column names the instrument that measured each day, because the series mixes DOC API counts with splice-linked NGrams-bridge days and a mean across that boundary inherits the linking constant's uncertainty.",
@@ -1277,6 +1288,22 @@
     "$defs"
    ],
    "stability": "static versioned public draft 0.1.0"
+  },
+  {
+   "path": "schemas/sensor-fusion.schema.json",
+   "format": "json",
+   "description": "JSON Schema for a structural eight-lane Sensor Fusion matrix that keeps unlike evidence semantically separate, publishes lane coverage and emits no observed values or numeric fusion.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "$defs"
+   ],
+   "stability": "static synthetic foundation 1.0.0"
   },
   {
    "path": "schemas/universe-frame.schema.json",

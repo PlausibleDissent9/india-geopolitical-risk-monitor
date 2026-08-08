@@ -8,6 +8,7 @@ back to the legacy text-link header overnight.
 
 Standalone: python -m src.site_shell
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -60,8 +61,13 @@ PAGES: dict[str, Page] = {
     "products.html": Page("Explore IGRM", "Public product directory", "dashboard", "products"),
     "receipts.html": Page("Receipts", "Evidence", "evidence"),
     "replay.html": Page("Knowledge replay", "Evidence infrastructure", "article", "methodology"),
-    "research/forecasts.html": Page("Forecast experiment (V11)", "Research", "article", "analysis", True),
-    "research/history.html": Page("Historical attention proxy, 1979–2019", "Research", "article", "analysis", True),
+    "sensors.html": Page("Sensor Fusion", "World-state infrastructure", "article", "products"),
+    "research/forecasts.html": Page(
+        "Forecast experiment (V11)", "Research", "article", "analysis", True
+    ),
+    "research/history.html": Page(
+        "Historical attention proxy, 1979–2019", "Research", "article", "analysis", True
+    ),
     "start.html": Page("Start here", "Orientation", "onboarding", "start"),
     "standard.html": Page("Open evidence standard", "Interoperability", "article", "methodology"),
     "status.html": Page("System status", "Operations", "system", "data", True),
@@ -69,7 +75,9 @@ PAGES: dict[str, Page] = {
     "viewer.html": Page("Data viewer", "Data infrastructure", "system", "data"),
     "vintages.html": Page("Point-in-time vintages", "Research record", "article", "analysis"),
     "vs-gpr.html": Page("IGRM and the GPR indices", "Research", "article", "analysis"),
-    "workbench.html": Page("Research workbench", "Research infrastructure", "dashboard", "analysis"),
+    "workbench.html": Page(
+        "Research workbench", "Research infrastructure", "dashboard", "analysis"
+    ),
     "write.html": Page("Author console", "Operations", "onboarding"),
 }
 
@@ -94,47 +102,118 @@ MIGRATED_INLINE_STYLE_HASHES: dict[str, str] = {
 MIGRATED_INLINE_SELECTORS: dict[str, tuple[str, ...]] = {
     "404.html": (".nf", ".nf .code", ".nf ul", ".nf li"),
     "ask.html": (
-        "#chat-log", ".msg", ".msg.you", ".msg.igrm", ".msg.igrm.refused",
-        ".msg details", "#ask-row", "#ask-input", ".chip",
+        "#chat-log",
+        ".msg",
+        ".msg.you",
+        ".msg.igrm",
+        ".msg.igrm.refused",
+        ".msg details",
+        "#ask-row",
+        "#ask-input",
+        ".chip",
     ),
     "break.html": (".falsify", ".falsify h3", ".falsify p", ".falsify .how"),
     "exposure.html": (
-        ".hardline", ".sector-grid", ".sector-chip", ".sector-chip.on",
-        ".sector-chip b", ".sector-chip .why", ".reading-card",
-        ".reading-card h4", ".reading-card .score", ".reading-card .band",
-        ".reading-card .wt", ".compute", ".compute td", ".compute th",
-        ".tblwrap", "#profile-empty",
+        ".hardline",
+        ".sector-grid",
+        ".sector-chip",
+        ".sector-chip.on",
+        ".sector-chip b",
+        ".sector-chip .why",
+        ".reading-card",
+        ".reading-card h4",
+        ".reading-card .score",
+        ".reading-card .band",
+        ".reading-card .wt",
+        ".compute",
+        ".compute td",
+        ".compute th",
+        ".tblwrap",
+        "#profile-empty",
     ),
     "portal.html": (
-        ".tabs", ".tab", ".tab.on", ".panel", ".row",
-        'input[type="password"]', 'input[type="text"]', "textarea",
-        "textarea:focus", "input:focus", ".btn.primary", ".status",
-        ".scorecards", ".sc", ".sc .v", ".sc a", ".labelcard",
-        ".labelcard .t", ".labelbtns", ".labelbtns .btn", ".on-b",
-        ".off-b", ".health-grid", ".prose-mini h1", ".prose-mini h2",
-        ".prose-mini", ".pill", ".pill.ok", ".pill.bad",
+        ".tabs",
+        ".tab",
+        ".tab.on",
+        ".panel",
+        ".row",
+        'input[type="password"]',
+        'input[type="text"]',
+        "textarea",
+        "textarea:focus",
+        "input:focus",
+        ".btn.primary",
+        ".status",
+        ".scorecards",
+        ".sc",
+        ".sc .v",
+        ".sc a",
+        ".labelcard",
+        ".labelcard .t",
+        ".labelbtns",
+        ".labelbtns .btn",
+        ".on-b",
+        ".off-b",
+        ".health-grid",
+        ".prose-mini h1",
+        ".prose-mini h2",
+        ".prose-mini",
+        ".pill",
+        ".pill.ok",
+        ".pill.bad",
     ),
     "research/forecasts.html": (
-        ".mandate", ".q-table", ".q-table th", ".q-table td", ".tblwrap",
-        ".brier-strip", ".brier-strip b", ".brier-strip .kv",
+        ".mandate",
+        ".q-table",
+        ".q-table th",
+        ".q-table td",
+        ".tblwrap",
+        ".brier-strip",
+        ".brier-strip b",
+        ".brier-strip .kv",
     ),
     "research/history.html": (
-        ".mandate", ".h-table", ".h-table th", ".h-table td", ".hit",
-        ".miss", ".tblwrap", ".chart-wrap",
+        ".mandate",
+        ".h-table",
+        ".h-table th",
+        ".h-table td",
+        ".hit",
+        ".miss",
+        ".tblwrap",
+        ".chart-wrap",
     ),
     "start.html": (
-        ".start-hero", ".start-hero h2", ".start-hero .lede", ".start-live",
-        ".start-live b", ".paths", ".path", ".path h3", ".path p",
-        ".ninety li", ".instrument li", ".path:hover",
+        ".start-hero",
+        ".start-hero h2",
+        ".start-hero .lede",
+        ".start-live",
+        ".start-live b",
+        ".paths",
+        ".path",
+        ".path h3",
+        ".path p",
+        ".ninety li",
+        ".instrument li",
+        ".path:hover",
     ),
     "status.html": (
-        ".status-table", ".status-table th", ".status-table td",
-        ".status-table td.num", ".ok-yes", ".ok-no", ".tblwrap",
-        ".contract-strip", ".contract-strip b", ".contract-strip .kv",
+        ".status-table",
+        ".status-table th",
+        ".status-table td",
+        ".status-table td.num",
+        ".ok-yes",
+        ".ok-no",
+        ".tblwrap",
+        ".contract-strip",
+        ".contract-strip b",
+        ".contract-strip .kv",
         ".role-note",
     ),
     "viewer.html": (
-        ".meta-box", ".meta-box b", ".kvt td:first-child", ".section-block",
+        ".meta-box",
+        ".meta-box b",
+        ".kvt td:first-child",
+        ".section-block",
         ".truncated",
     ),
 }
@@ -145,7 +224,7 @@ HEADER_RE = re.compile(r"^\s*<header(?:\s[^>]*)?>(.*?)</header>\s*", re.S)
 FOOTER_RE = re.compile(r"\s*<footer(?:\s[^>]*)?>(.*?)</footer>\s*", re.S)
 DEFINITION_RE = re.compile(
     r'<p(?P<attrs>[^>]*\bclass="(?:definition|page-deck)"[^>]*)>'
-    r'(?P<content>.*?)</p>',
+    r"(?P<content>.*?)</p>",
     re.S,
 )
 STYLE_RE = re.compile(r"\s*<style>.*?</style>\s*", re.S)
@@ -201,14 +280,9 @@ def _remove_migrated_styles(relative: str, text: str) -> str:
             f"docs/{relative} selector inventory is incomplete: "
             f"missing={sorted(found - expected)}, stale={sorted(expected - found)}"
         )
-    gaps = set(expected) - css_selectors(
-        (DOCS / "site.css").read_text(encoding="utf-8")
-    )
+    gaps = set(expected) - css_selectors((DOCS / "site.css").read_text(encoding="utf-8"))
     if gaps:
-        raise ValueError(
-            f"docs/{relative} selectors were not migrated to site.css: "
-            f"{sorted(gaps)}"
-        )
+        raise ValueError(f"docs/{relative} selectors were not migrated to site.css: {sorted(gaps)}")
     return STYLE_RE.sub("\n", text)
 
 
@@ -237,24 +311,22 @@ def _masthead(page: Page, prefix: str) -> str:
       <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
     </a>
     <nav class="mast-links" aria-label="Primary navigation">
-      <a href="{_href(prefix, 'start.html')}"{_current(page.active, 'start')}>Start here</a>
-      <a href="{_href(prefix, 'products.html')}"{_current(page.active, 'products')}>Explore</a>
-      <a href="{_href(prefix, 'methodology.html')}"{_current(page.active, 'methodology')}>Methodology</a>
-      <a href="{_href(prefix, 'validation.html')}"{_current(page.active, 'validation')}>Validation</a>
-      <a href="{_href(prefix, 'analysis.html')}"{_current(page.active, 'analysis')}>Research</a>
-      <a href="{_href(prefix, 'notes.html')}"{_current(page.active, 'notes')}>Notes</a>
+      <a href="{_href(prefix, "start.html")}"{_current(page.active, "start")}>Start here</a>
+      <a href="{_href(prefix, "products.html")}"{_current(page.active, "products")}>Explore</a>
+      <a href="{_href(prefix, "methodology.html")}"{_current(page.active, "methodology")}>Methodology</a>
+      <a href="{_href(prefix, "validation.html")}"{_current(page.active, "validation")}>Validation</a>
+      <a href="{_href(prefix, "analysis.html")}"{_current(page.active, "analysis")}>Research</a>
+      <a href="{_href(prefix, "notes.html")}"{_current(page.active, "notes")}>Notes</a>
     </nav>
     <div class="nav-actions">
-      <a class="data-cta{(' current' if page.active == 'data' else '')}" href="{_href(prefix, 'data.html')}">Open data <span aria-hidden="true">↗</span></a>
+      <a class="data-cta{(" current" if page.active == "data" else "")}" href="{_href(prefix, "data.html")}">Open data <span aria-hidden="true">↗</span></a>
       <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
     </div>
   </div>
 </header>"""
 
 
-def _page_heading(
-    page: Page, prefix: str, definition: str, definition_id: str
-) -> str:
+def _page_heading(page: Page, prefix: str, definition: str, definition_id: str) -> str:
     id_attr = f' id="{escape(definition_id)}"' if definition_id else ""
     deck = (
         f'\n      <p class="page-deck"{id_attr}>{definition.strip()}</p>'
@@ -268,7 +340,7 @@ def _page_heading(
     </div>
     <dl class="page-meta" aria-label="Publication context">
       <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
-      <div><dt>Freshness</dt><dd><a href="{_href(prefix, 'status.html')}">Source-by-source status</a></dd></div>
+      <div><dt>Freshness</dt><dd><a href="{_href(prefix, "status.html")}">Source-by-source status</a></dd></div>
     </dl>
   </section>"""
 
@@ -283,17 +355,17 @@ def _footer(prefix: str, original: str) -> str:
     </div>
     <div class="footer-grid">
       <div>
-        <a class="footer-brand" href="{_href(prefix, 'index.html')}">India Geopolitical Risk Monitor</a>
+        <a class="footer-brand" href="{_href(prefix, "index.html")}">India Geopolitical Risk Monitor</a>
         <p>Public research instrument · India-specific press salience</p>
       </div>
       <nav aria-label="Footer navigation">
-        <a href="{_href(prefix, 'products.html')}">Explore IGRM</a>
-        <a href="{_href(prefix, 'maps.html')}">Maps</a>
-        <a href="{_href(prefix, 'methodology.html')}">Methodology</a>
-        <a href="{_href(prefix, 'validation.html')}">Validation</a>
-        <a href="{_href(prefix, 'history.html')}">1979&ndash;2019 history</a>
-        <a href="{_href(prefix, 'data.html')}">Data</a>
-        <a href="{_href(prefix, 'corrections.html')}">Corrections</a>
+        <a href="{_href(prefix, "products.html")}">Explore IGRM</a>
+        <a href="{_href(prefix, "maps.html")}">Maps</a>
+        <a href="{_href(prefix, "methodology.html")}">Methodology</a>
+        <a href="{_href(prefix, "validation.html")}">Validation</a>
+        <a href="{_href(prefix, "history.html")}">1979&ndash;2019 history</a>
+        <a href="{_href(prefix, "data.html")}">Data</a>
+        <a href="{_href(prefix, "corrections.html")}">Corrections</a>
       </nav>
     </div>
   </footer>"""
@@ -320,15 +392,13 @@ def _extract_existing(body: str) -> tuple[str, str, str, str]:
     definition = ""
     definition_id = ""
     if header_match:
-        definition, definition_id = _definition_parts(
-            DEFINITION_RE.search(header_match.group(1))
-        )
-        body = body[header_match.end():]
+        definition, definition_id = _definition_parts(DEFINITION_RE.search(header_match.group(1)))
+        body = body[header_match.end() :]
 
     footer_match = FOOTER_RE.search(body)
     footer = footer_match.group(1) if footer_match else ""
     if footer_match:
-        body = body[:footer_match.start()] + body[footer_match.end():]
+        body = body[: footer_match.start()] + body[footer_match.end() :]
 
     # ask.html and divergence.html already had a main landmark. The new
     # shell owns the single landmark, so unwrap only a leading legacy one.
@@ -360,12 +430,7 @@ def _drop_duplicate_heading(content: str, title: str) -> str:
             f'<span id="{escape(id_match.group(1))}" class="anchor-target" '
             'aria-hidden="true"></span>'
         )
-    return (
-        content[:match.start()]
-        + match.group("prefix")
-        + anchor
-        + content[match.end():]
-    )
+    return content[: match.start()] + match.group("prefix") + anchor + content[match.end() :]
 
 
 class _ShellAuditParser(HTMLParser):
@@ -375,9 +440,7 @@ class _ShellAuditParser(HTMLParser):
         self.main_count = 0
         self.theme_toggle_count = 0
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag == "h1":
             self.h1_count += 1
         elif tag == "main":
@@ -391,8 +454,7 @@ def _audit_shell(relative: str, body: str) -> None:
     parser.feed(body)
     if parser.h1_count != 1:
         raise ValueError(
-            f"docs/{relative} shell must contain exactly one parsed h1; "
-            f"found {parser.h1_count}"
+            f"docs/{relative} shell must contain exactly one parsed h1; found {parser.h1_count}"
         )
     if parser.main_count != 1:
         raise ValueError(
@@ -417,9 +479,7 @@ def render_text(relative: str, text: str) -> str:
     body_match = BODY_RE.search(text)
     if not body_match:
         raise ValueError(f"docs/{relative} has no body")
-    content, original_footer, definition, definition_id = _extract_existing(
-        body_match.group(1)
-    )
+    content, original_footer, definition, definition_id = _extract_existing(body_match.group(1))
     if page.drop_duplicate_heading:
         content = _drop_duplicate_heading(content, page.title)
 
@@ -442,7 +502,7 @@ def render_text(relative: str, text: str) -> str:
     {CONTENT_END}
   </main>"""
 
-    body = f"""<body class="site-page layout-{page.layout}" data-page="{escape(relative)}" data-root="{escape(prefix or '.')}">
+    body = f"""<body class="site-page layout-{page.layout}" data-page="{escape(relative)}" data-root="{escape(prefix or ".")}">
 <a class="skip-link" href="#main-content">Skip to content</a>
 {_masthead(page, prefix)}
 <div class="site-shell page-frame">
@@ -453,7 +513,7 @@ def render_text(relative: str, text: str) -> str:
 <script src="{script_src}"></script>
 </body>"""
     _audit_shell(relative, body)
-    return text[:body_match.start()] + body + text[body_match.end():]
+    return text[: body_match.start()] + body + text[body_match.end() :]
 
 
 def render_all() -> list[str]:
@@ -470,8 +530,7 @@ def render_all() -> list[str]:
 
 def main() -> None:
     changed = render_all()
-    print(f"[site_shell] applied shared shell to {len(PAGES)} routes; "
-          f"{len(changed)} files changed")
+    print(f"[site_shell] applied shared shell to {len(PAGES)} routes; {len(changed)} files changed")
 
 
 if __name__ == "__main__":

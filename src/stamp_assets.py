@@ -54,6 +54,7 @@ checks.
   python -m src.stamp_assets            rewrite references in place
   python -m src.stamp_assets --check    exit 1 if anything is stale
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -79,8 +80,10 @@ ASSETS = [
     "site.js",
     "workbench.js",
     "replay.js",
+    "sensors.js",
     "app.js",
 ]
+
 
 # Files that may contain a reference: every page, plus the two sheets
 # that @import tokens.css and fonts.css.
@@ -108,7 +111,8 @@ def _pattern(asset: str) -> re.Pattern[str]:
         r"(?P<lead>(?:href|src)\s*=\s*[\"'](?:\.\./|/)*|"
         r"url\(\s*[\"']?(?:\.\./|/)*)"
         + re.escape(asset)
-        + r"(?:\?v=[^\"')\s]*)?(?P<close>[\"']|(?=\s*\)))")
+        + r"(?:\?v=[^\"')\s]*)?(?P<close>[\"']|(?=\s*\)))"
+    )
 
 
 def stamp(write: bool) -> list[str]:
@@ -122,6 +126,7 @@ def stamp(write: bool) -> list[str]:
         pat = _pattern(asset)
         for ref in _referrers():
             text = ref.read_text(encoding="utf-8")
+
             # Bound explicitly: the lambda closes over the loop variables
             # and is only safe because sub() runs inside this iteration.
             # That is the kind of "correct by accident" this project keeps
@@ -155,9 +160,9 @@ def main() -> None:
                 "returning visitor would get a new sheet against a cached "
                 "old one, and an undefined custom property does not fall "
                 "back -- the whole declaration is dropped. Fix with: "
-                "python -m src.stamp_assets")
-        print(f"[stamp_assets] all references current "
-              f"({len(ASSETS)} assets)")
+                "python -m src.stamp_assets"
+            )
+        print(f"[stamp_assets] all references current ({len(ASSETS)} assets)")
         return
 
     if stale:
@@ -173,10 +178,11 @@ def main() -> None:
         for s in again:
             print(f"[stamp_assets] {s}")
     else:
-        raise SystemExit("[stamp_assets] did not reach a fixed point in 5 "
-                         "passes; a reference is probably self-referential")
-    print(f"[stamp_assets] stamped {len(ASSETS)} assets, "
-          f"{len(stale)} references updated")
+        raise SystemExit(
+            "[stamp_assets] did not reach a fixed point in 5 "
+            "passes; a reference is probably self-referential"
+        )
+    print(f"[stamp_assets] stamped {len(ASSETS)} assets, {len(stale)} references updated")
 
 
 if __name__ == "__main__":

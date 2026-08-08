@@ -1,4 +1,5 @@
 """The Max redesign cannot silently delete or hide an existing capability."""
+
 from __future__ import annotations
 
 import copy
@@ -17,15 +18,11 @@ DOCS = ROOT / "docs"
 
 
 def _catalog() -> dict:
-    return json.loads(
-        (ROOT / "design" / "public_product_catalog.json").read_text(encoding="utf-8")
-    )
+    return json.loads((ROOT / "design" / "public_product_catalog.json").read_text(encoding="utf-8"))
 
 
 def _payload() -> dict:
-    return json.loads(
-        (DOCS / "data" / "product_catalog.json").read_text(encoding="utf-8")
-    )
+    return json.loads((DOCS / "data" / "product_catalog.json").read_text(encoding="utf-8"))
 
 
 def test_catalog_accounts_for_every_served_page_and_protects_every_product() -> None:
@@ -34,7 +31,7 @@ def test_catalog_accounts_for_every_served_page_and_protects_every_product() -> 
         "status": "pass",
         "catalog_version": "1.0.0",
         "pillar_count": 8,
-        "protected_route_count": 31,
+        "protected_route_count": 32,
         "excluded_route_count": 5,
     }
     assert result["route_floor_status"] in {
@@ -43,15 +40,11 @@ def test_catalog_accounts_for_every_served_page_and_protects_every_product() -> 
         "checked_against_HEAD^",
     }
     catalog = _catalog()
-    served = {
-        path.relative_to(DOCS).as_posix() for path in DOCS.rglob("*.html")
-    }
+    served = {path.relative_to(DOCS).as_posix() for path in DOCS.rglob("*.html")}
     listed = {row["path"] for row in catalog["routes"]}
     excluded = {row["path"] for row in catalog["excluded_routes"]}
     assert served == listed | excluded
-    protected_exclusions = {
-        row["path"] for row in catalog["excluded_routes"] if row["protected"]
-    }
+    protected_exclusions = {row["path"] for row in catalog["excluded_routes"] if row["protected"]}
     assert listed | protected_exclusions == set(catalog["protected_routes"])
     assert listed.isdisjoint(excluded)
 
@@ -59,9 +52,7 @@ def test_catalog_accounts_for_every_served_page_and_protects_every_product() -> 
 def test_catalog_uses_the_exact_eight_locked_launch_pillars() -> None:
     catalog = _catalog()
     launch = json.loads(
-        (ROOT / "design" / "igrm_max_launch_contract.json").read_text(
-            encoding="utf-8"
-        )
+        (ROOT / "design" / "igrm_max_launch_contract.json").read_text(encoding="utf-8")
     )
     assert [(row["id"], row["name"]) for row in catalog["pillars"]] == [
         (row["id"], row["name"]) for row in launch["pillars"]
@@ -72,13 +63,9 @@ def test_catalog_uses_the_exact_eight_locked_launch_pillars() -> None:
 
 def test_public_catalog_is_an_exact_generated_payload() -> None:
     assert _payload() == product_catalog.build_public_payload()
-    contract = json.loads(
-        (DOCS / "data" / "api_contract.json").read_text(encoding="utf-8")
-    )
+    contract = json.loads((DOCS / "data" / "api_contract.json").read_text(encoding="utf-8"))
     endpoint = next(
-        row
-        for row in contract["endpoints"]
-        if row["path"] == "data/product_catalog.json"
+        row for row in contract["endpoints"] if row["path"] == "data/product_catalog.json"
     )
     assert endpoint["stability"] == "stable"
     assert endpoint["frozen_fields"] == [
@@ -103,9 +90,7 @@ def test_directory_links_every_product_and_never_promotes_author_operations() ->
         assert f'href="{row["path"]}"' not in page
     assert "Forecasting separation" in page
     for required in ("Start here", "Maps", "Methodology", "Explore every product"):
-        assert required in (
-            page + (DOCS / "index.html").read_text(encoding="utf-8")
-        )
+        assert required in (page + (DOCS / "index.html").read_text(encoding="utf-8"))
 
 
 def test_explore_is_in_global_navigation_on_every_shell_route() -> None:
@@ -124,9 +109,7 @@ def test_explore_is_in_global_navigation_on_every_shell_route() -> None:
 def test_route_omission_and_self_served_ghost_both_refuse() -> None:
     catalog = _catalog()
     missing = copy.deepcopy(catalog)
-    missing["routes"] = [
-        row for row in missing["routes"] if row["path"] != "maps.html"
-    ]
+    missing["routes"] = [row for row in missing["routes"] if row["path"] != "maps.html"]
     with pytest.raises(ProductCatalogError, match="catalog_protected_routes_mismatch"):
         product_catalog.validate_catalog(missing)
 
@@ -150,14 +133,10 @@ def test_route_floor_refuses_a_removal_without_an_earlier_notice(
 ) -> None:
     prior = _catalog()
     current = copy.deepcopy(prior)
-    current["routes"] = [
-        row for row in current["routes"] if row["path"] != "maps.html"
-    ]
+    current["routes"] = [row for row in current["routes"] if row["path"] != "maps.html"]
     current["protected_routes"].remove("maps.html")
     monkeypatch.setattr(product_catalog, "_catalog_at_revision", lambda revision: prior)
-    with pytest.raises(
-        ProductCatalogError, match="catalog_route_removed_without_prior_notice"
-    ):
+    with pytest.raises(ProductCatalogError, match="catalog_route_removed_without_prior_notice"):
         product_catalog.validate_route_continuity(current)
 
 
@@ -235,7 +214,8 @@ def test_the_floor_compares_against_the_parent_when_the_catalog_is_committed() -
         assert status == "checked_against_HEAD^", (
             "the catalog on disk is the one committed at HEAD, so the state "
             "before this change is HEAD^; comparing HEAD with HEAD lets a "
-            "committed removal check against a copy of itself and pass")
+            "committed removal check against a copy of itself and pass"
+        )
 
 
 def test_check_cli_is_machine_readable_and_green() -> None:
@@ -248,7 +228,5 @@ def test_check_cli_is_machine_readable_and_green() -> None:
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert json.loads(result.stdout)["status"] == "pass"
-    workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(
-        encoding="utf-8"
-    )
+    workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     assert "run: python -m src.product_catalog --check" in workflow

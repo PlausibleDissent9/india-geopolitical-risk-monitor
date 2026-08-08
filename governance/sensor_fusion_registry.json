@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "fusion": {
+    "method_id": "method:igrm.sensor_fusion",
+    "version": "1.0.0",
+    "implementation_path": "src/sensor_fusion.py",
+    "implementation_sha256": "8472a47352a6835eda289b1cbd4039cd8bd0bd97c51432f2857c78ea6c36d8dc",
+    "effective": "2026-08-08",
+    "superseded_on": null,
+    "lane_registry_path": "governance/sensor_lane_registry.json",
+    "lane_registry_sha256": "13dd8d4b16426e14716f0a59723a2eeecc454caaba924699dbe6cdcb3d6be91c",
+    "output_schema_id": "https://igrm.in/schemas/sensor-fusion.schema.json",
+    "output_schema_version": "1.0.0",
+    "output_schema_path": "schemas/sensor-fusion.schema.json",
+    "output_schema_sha256": "b0cd41f719710bad3cacc14e7184ec80123debf6e0564214a549d6f191b903d1",
+    "common_schema_path": "schemas/common.schema.json",
+    "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+    "max_event_evidence_links": 5000
+  }
+}

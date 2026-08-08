@@ -1,4 +1,5 @@
-"""The public site is one system across all thirty-four committed routes."""
+"""The public site is one system across all thirty-five committed routes."""
+
 from __future__ import annotations
 
 import re
@@ -12,17 +13,33 @@ DOCS = ROOT / "docs"
 
 EXPECTED_LAYOUTS = {
     "article": {
-        "break.html", "codebook.html", "corrections.html", "history.html",
-        "methodology.html", "notes.html", "research/forecasts.html",
-        "replay.html", "research/history.html", "standard.html", "vintages.html",
+        "break.html",
+        "codebook.html",
+        "corrections.html",
+        "history.html",
+        "methodology.html",
+        "notes.html",
+        "research/forecasts.html",
+        "replay.html",
+        "research/history.html",
+        "sensors.html",
+        "standard.html",
+        "vintages.html",
         "vs-gpr.html",
     },
     "dashboard": {
-        "analysis.html", "explorer.html", "maps.html", "validation.html",
-        "workbench.html", "products.html",
+        "analysis.html",
+        "explorer.html",
+        "maps.html",
+        "validation.html",
+        "workbench.html",
+        "products.html",
     },
     "evidence": {
-        "divergence.html", "episode.html", "exposure.html", "predictions.html",
+        "divergence.html",
+        "episode.html",
+        "exposure.html",
+        "predictions.html",
         "receipts.html",
     },
     "onboarding": {"ask.html", "portal.html", "start.html", "write.html"},
@@ -35,23 +52,18 @@ class StructureParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.tags: list[tuple[str, dict[str, str | None]]] = []
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         self.tags.append((tag, dict(attrs)))
 
     def count(self, tag: str | None = None, *, id_: str | None = None) -> int:
         return sum(
-            1 for found_tag, attrs in self.tags
-            if (tag is None or found_tag == tag)
-            and (id_ is None or attrs.get("id") == id_)
+            1
+            for found_tag, attrs in self.tags
+            if (tag is None or found_tag == tag) and (id_ is None or attrs.get("id") == id_)
         )
 
     def has_class(self, class_name: str) -> bool:
-        return any(
-            class_name in (attrs.get("class") or "").split()
-            for _, attrs in self.tags
-        )
+        return any(class_name in (attrs.get("class") or "").split() for _, attrs in self.tags)
 
 
 def _parse(relative: str) -> tuple[str, StructureParser]:
@@ -61,16 +73,15 @@ def _parse(relative: str) -> tuple[str, StructureParser]:
     return text, parser
 
 
-def test_all_thirty_four_public_routes_have_an_owned_layout() -> None:
+def test_all_thirty_five_public_routes_have_an_owned_layout() -> None:
     routes = {str(path.relative_to(DOCS)) for path in DOCS.rglob("*.html")}
-    assert len(routes) == 34
+    assert len(routes) == 35
     expected_shell = set().union(*EXPECTED_LAYOUTS.values())
     assert set(site_shell.PAGES) == expected_shell
     assert routes == expected_shell | {"index.html", "embed.html"}
     for layout, members in EXPECTED_LAYOUTS.items():
         assert {
-            relative for relative, page in site_shell.PAGES.items()
-            if page.layout == layout
+            relative for relative, page in site_shell.PAGES.items() if page.layout == layout
         } == members
 
 
@@ -117,9 +128,7 @@ def test_shell_render_is_idempotent_after_asset_stamping() -> None:
 
 
 def test_every_removed_inline_selector_exists_in_shared_css() -> None:
-    assert set(site_shell.MIGRATED_INLINE_STYLE_HASHES) == set(
-        site_shell.MIGRATED_INLINE_SELECTORS
-    )
+    assert set(site_shell.MIGRATED_INLINE_STYLE_HASHES) == set(site_shell.MIGRATED_INLINE_SELECTORS)
     assert site_shell.migrated_selector_gaps() == {}
 
 
@@ -160,11 +169,16 @@ def test_shared_system_covers_deep_links_states_and_print() -> None:
     css = (DOCS / "site.css").read_text(encoding="utf-8")
     js = (DOCS / "site.js").read_text(encoding="utf-8")
     for contract in (
-        ":target", ".skip-link", "[aria-busy=\"true\"]", "[role=\"alert\"]",
-        "@media print", "CanvasText", "@media (max-width: 640px)",
+        ":target",
+        ".skip-link",
+        '[aria-busy="true"]',
+        '[role="alert"]',
+        "@media print",
+        "CanvasText",
+        "@media (max-width: 640px)",
     ):
         assert contract in css
     assert "heading.id = candidate" in js
-    assert 'time.dateTime = latest.date' in js
+    assert "time.dateTime = latest.date" in js
     assert 'cache: "no-store"' in js
     assert "-webkit-line-clamp" not in css

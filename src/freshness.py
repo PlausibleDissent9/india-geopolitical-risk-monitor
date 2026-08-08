@@ -28,6 +28,7 @@ Three rules keep this honest rather than decorative:
   python -m src.freshness            audit, publish, exit non-zero if stale
   python -m src.freshness --report   audit and print, always exit 0
 """
+
 from __future__ import annotations
 
 import csv
@@ -47,14 +48,14 @@ DEFAULT_MAX_AGE_DAYS = 3
 # Lanes that legitimately run less often than daily. Each number is the
 # cadence plus slack, not a wish.
 MAX_AGE_DAYS: dict[str, int] = {
-    "datapack.json": 10,           # weekly, Fridays
-    "back_extension.json": 40,     # BigQuery lane, monthly-ish
-    "gpr_comparison.json": 40,     # external index updates monthly
-    "cow_mids.json": 400,          # frozen historical release
-    "ucdp_context.json": 400,      # pinned annual release
-    "jodi_energy.json": 45,        # JODI reports with a 1-3 month lag
-    "retest.json": 45,             # founder-paced human labelling
-    "permanence.json": 10,         # archive snapshots, weekly-ish
+    "datapack.json": 10,  # weekly, Fridays
+    "back_extension.json": 40,  # BigQuery lane, monthly-ish
+    "gpr_comparison.json": 40,  # external index updates monthly
+    "cow_mids.json": 400,  # frozen historical release
+    "ucdp_context.json": 400,  # pinned annual release
+    "jodi_energy.json": 45,  # JODI reports with a 1-3 month lag
+    "retest.json": 45,  # founder-paced human labelling
+    "permanence.json": 10,  # archive snapshots, weekly-ish
     "syndication.json": 5,
     "wiki_hindi.json": 10,
     "vintages.json": 5,
@@ -63,7 +64,7 @@ MAX_AGE_DAYS: dict[str, int] = {
     "seasonality.json": 10,
     "alt_specs.json": 10,
     "priced_risk.json": 10,
-    "multilingual.json": 30,       # V5 still backfilling
+    "multilingual.json": 30,  # V5 still backfilling
 }
 
 # Exempt, each with the reason it is exempt. Short on purpose.
@@ -80,7 +81,8 @@ EXEMPT: dict[str, str] = {
     "api_contract.json": (
         "a frozen promise, not a readout -- it is regenerated only when a "
         "maintainer deliberately freezes a baseline, and a rolling "
-        "timestamp on it would defeat the point"),
+        "timestamp on it would defeat the point"
+    ),
     "product_catalog.json": (
         "a versioned public-route contract, not a daily readout; it changes "
         "only when the protected product surface changes, so daily aging "
@@ -90,20 +92,27 @@ EXEMPT: dict[str, str] = {
         "a deterministic synthetic two-release conformance demonstration, not "
         "a live world-state lane; its fixed time is part of the public test vector"
     ),
+    "sensor_fusion_demo.json": (
+        "a deterministic synthetic eight-lane conformance demonstration, not "
+        "a live sensor feed; its fixed time is part of the public test vector"
+    ),
     "notes.json": "the author's weekly writing; cadence is human",
     "note_latest.json": "the author's weekly writing; cadence is human",
     "episodes.json": (
         "a bare JSON array with nowhere to carry _meta; it is written by "
         "the same lane and in the same commit as history.json and "
-        "latest.json, whose freshness is checked"),
+        "latest.json, whose freshness is checked"
+    ),
     "status.json": (
         "the freshness surface itself; it is checked by its own lane "
-        "and auditing it here would be circular"),
+        "and auditing it here would be circular"
+    ),
     "predictions.json": (
         "the Prediction Archive is append-only and event-driven: it "
         "changes when a prediction is registered or graded, not on a "
         "cadence. Ships honest-empty by design, so an unchanged file is "
-        "the correct state rather than a stalled lane"),
+        "the correct state rather than a stalled lane"
+    ),
     "divergence_register.json": (
         "append-only and event-driven: it changes when a registered comparison "
         "produces a qualifying row, not on a daily cadence"
@@ -117,14 +126,17 @@ EXEMPT_CSV: dict[str, str] = {
     "event_study.csv": (
         "not a series -- one row per channel x outcome x window, with no "
         "date column to age. It is recomputed from episodes.json in the "
-        "same lane, and episodes' own freshness is checked"),
+        "same lane, and episodes' own freshness is checked"
+    ),
 }
 
 # Cadence for the dated CSVs, where it differs from daily.
-MAX_AGE_DAYS.update({
-    "monthly.csv": 70,   # monthly series; a new month lands once a month
-    "episodes.csv": 90,  # event-driven -- a quiet quarter is not a stall
-})
+MAX_AGE_DAYS.update(
+    {
+        "monthly.csv": 70,  # monthly series; a new month lands once a month
+        "episodes.csv": 90,  # event-driven -- a quiet quarter is not a stall
+    }
+)
 
 TIMESTAMP_KEYS = ("generated", "generated_at", "resolved_at")
 MEASURED_DATE_FIELDS = ("date", "_meta.date")
@@ -179,8 +191,7 @@ def _measured_date(path: Path) -> tuple[str | None, str | None]:
     return None, None
 
 
-def _attach_measurement_date(
-        row: dict[str, Any], path: Path, today: date) -> None:
+def _attach_measurement_date(row: dict[str, Any], path: Path, today: date) -> None:
     measured, field = _measured_date(path)
     if measured is None or field is None:
         row["measurement_status"] = "not_declared"
@@ -192,23 +203,19 @@ def _attach_measurement_date(
     except ValueError:
         row["measurement_status"] = "invalid"
         row["status"] = "undatable"
-        row["reason"] = (
-            f"unparseable declared measurement date {measured!r} "
-            f"at {field}")
+        row["reason"] = f"unparseable declared measurement date {measured!r} at {field}"
         return
     if len(measured) != 10 or date.fromisoformat(measured).isoformat() != measured:
         row["measurement_status"] = "invalid"
         row["status"] = "undatable"
         row["reason"] = (
-            f"declared measurement date {measured!r} at {field} is not "
-            "an exact ISO-8601 day")
+            f"declared measurement date {measured!r} at {field} is not an exact ISO-8601 day"
+        )
         return
     if measured_age < 0:
         row["measurement_status"] = "future"
         row["status"] = "undatable"
-        row["reason"] = (
-            f"declared measurement date {measured!r} at {field} is in "
-            "the future")
+        row["reason"] = f"declared measurement date {measured!r} at {field} is in the future"
         return
     row["measured_age_days"] = measured_age
     row["measurement_status"] = "declared"
@@ -264,39 +271,58 @@ def audit_csvs(today: date | None = None) -> list[dict[str, Any]]:
     for path in sorted(SITE_DATA.glob("*.csv")):
         name = path.name
         if name in EXEMPT_CSV:
-            rows.append({"payload": name, "status": "exempt",
-                         "reason": EXEMPT_CSV[name]})
+            rows.append({"payload": name, "status": "exempt", "reason": EXEMPT_CSV[name]})
             continue
         limit = MAX_AGE_DAYS.get(name, DEFAULT_MAX_AGE_DAYS)
         last = _csv_last_date(path)
         if last is None:
-            rows.append({"payload": name, "status": "undatable",
-                         "max_age_days": limit,
-                         "reason": "no date column; cannot be aged"})
+            rows.append(
+                {
+                    "payload": name,
+                    "status": "undatable",
+                    "max_age_days": limit,
+                    "reason": "no date column; cannot be aged",
+                }
+            )
             continue
         try:
             age = (today - date.fromisoformat(last)).days
         except ValueError:
-            rows.append({"payload": name, "status": "undatable",
-                         "max_age_days": limit,
-                         "reason": f"unparseable last date {last!r}"})
+            rows.append(
+                {
+                    "payload": name,
+                    "status": "undatable",
+                    "max_age_days": limit,
+                    "reason": f"unparseable last date {last!r}",
+                }
+            )
             continue
         if age < 0:
-            rows.append({"payload": name, "status": "undatable",
-                         "max_age_days": limit,
-                         "reason": f"last measured row {last!r} is future"})
+            rows.append(
+                {
+                    "payload": name,
+                    "status": "undatable",
+                    "max_age_days": limit,
+                    "reason": f"last measured row {last!r} is future",
+                }
+            )
             continue
-        rows.append({
-            "payload": name, "generated": last, "age_days": age,
-            # A dated CSV exposes its last measured row but carries no
-            # embedded write timestamp. Preserve the legacy keys while
-            # stating which clock is actually available.
-            "measured_date": last, "measured_age_days": age,
-            "measurement_status": "declared",
-            "write_time_status": "not_embedded_in_csv",
-            "max_age_days": limit,
-            "status": "fresh" if age <= limit else "STALE",
-        })
+        rows.append(
+            {
+                "payload": name,
+                "generated": last,
+                "age_days": age,
+                # A dated CSV exposes its last measured row but carries no
+                # embedded write timestamp. Preserve the legacy keys while
+                # stating which clock is actually available.
+                "measured_date": last,
+                "measured_age_days": age,
+                "measurement_status": "declared",
+                "write_time_status": "not_embedded_in_csv",
+                "max_age_days": limit,
+                "status": "fresh" if age <= limit else "STALE",
+            }
+        )
     return rows
 
 
@@ -306,35 +332,52 @@ def audit(today: date | None = None) -> list[dict[str, Any]]:
     for path in sorted(SITE_DATA.glob("*.json")):
         name = path.name
         if name in EXEMPT:
-            rows.append({"payload": name, "status": "exempt",
-                         "reason": EXEMPT[name]})
+            rows.append({"payload": name, "status": "exempt", "reason": EXEMPT[name]})
             continue
         gen = _generated(path)
         limit = MAX_AGE_DAYS.get(name, DEFAULT_MAX_AGE_DAYS)
         if gen is None:
             # Not a pass. A payload nobody can date is a payload nobody
             # can trust, and it is the easiest possible thing to fix.
-            rows.append({"payload": name, "status": "undatable",
-                         "max_age_days": limit,
-                         "reason": "no _meta.generated; add one"})
+            rows.append(
+                {
+                    "payload": name,
+                    "status": "undatable",
+                    "max_age_days": limit,
+                    "reason": "no _meta.generated; add one",
+                }
+            )
             continue
         try:
             age = (today - date.fromisoformat(gen)).days
         except ValueError:
-            rows.append({"payload": name, "status": "undatable",
-                         "max_age_days": limit,
-                         "reason": f"unparseable timestamp {gen!r}"})
+            rows.append(
+                {
+                    "payload": name,
+                    "status": "undatable",
+                    "max_age_days": limit,
+                    "reason": f"unparseable timestamp {gen!r}",
+                }
+            )
             continue
         if age < 0:
-            rows.append({"payload": name, "status": "undatable",
-                         "max_age_days": limit,
-                         "reason": f"write timestamp {gen!r} is future"})
+            rows.append(
+                {
+                    "payload": name,
+                    "status": "undatable",
+                    "max_age_days": limit,
+                    "reason": f"write timestamp {gen!r} is future",
+                }
+            )
             continue
         row: dict[str, Any] = {
-            "payload": name, "generated": gen, "age_days": age,
+            "payload": name,
+            "generated": gen,
+            "age_days": age,
             # Additive, explicit names. ``generated``/``age_days`` remain
             # for API compatibility; they have always meant write time.
-            "written_date": gen, "write_age_days": age,
+            "written_date": gen,
+            "write_age_days": age,
             "max_age_days": limit,
             "status": "fresh" if age <= limit else "STALE",
         }
@@ -351,8 +394,7 @@ def main() -> None:
     bad = [r for r in rows if r["status"] in ("STALE", "undatable")]
     fresh = [r for r in rows if r["status"] == "fresh"]
     exempt = [r for r in rows if r["status"] == "exempt"]
-    measured = [r for r in rows
-                if r.get("measurement_status") == "declared"]
+    measured = [r for r in rows if r.get("measurement_status") == "declared"]
 
     # This module writes the LAST payload of the run, so a stamping step
     # that ran before it would always miss this file -- and did, on the
@@ -360,6 +402,7 @@ def main() -> None:
     # result independent of step order rather than dependent on getting
     # the order right forever.
     from src import stamp_meta
+
     payload = {
         "_meta": {
             **stamp_meta.universal_fields("freshness.json"),
@@ -372,44 +415,47 @@ def main() -> None:
                 "that no embedded write timestamp exists. "
                 "A file can be rewritten today while still describing an "
                 "older day; generated/written_date and measured_date must "
-                "never be treated as synonyms."),
+                "never be treated as synonyms."
+            ),
             "measurement_policy": (
                 "Write-time staleness fails this audit. A valid older "
                 "measurement day is published as state rather than treated "
                 "as a pipeline crash; cross-payload day alignment and its "
-                "reader-visible effect are reported in status.json."),
+                "reader-visible effect are reported in status.json."
+            ),
             "undatable_is_a_failure": (
                 "A payload with no _meta.generated cannot be audited by "
                 "anything, so it counts as a failure rather than a pass. "
                 "An auditor that skips what it cannot read is worse than "
-                "no auditor, because it reports green."),
+                "no auditor, because it reports green."
+            ),
             "default_max_age_days": DEFAULT_MAX_AGE_DAYS,
             "n_payloads": len(rows),
             "n_fresh": len(fresh),
             "n_stale_or_undatable": len(bad),
             "n_exempt": len(exempt),
             "n_with_declared_measurement_date": len(measured),
-            "generated": datetime.now(timezone.utc).strftime(
-                "%Y-%m-%dT%H:%M:%SZ"),
+            "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
         "payloads": rows,
     }
     SITE_DATA.mkdir(parents=True, exist_ok=True)
-    (SITE_DATA / "freshness.json").write_text(json.dumps(payload, indent=1),
-                                              encoding="utf-8")
+    (SITE_DATA / "freshness.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
 
-    print(f"[freshness] {len(fresh)} fresh, {len(bad)} stale/undatable, "
-          f"{len(exempt)} exempt, {len(rows)} total")
+    print(
+        f"[freshness] {len(fresh)} fresh, {len(bad)} stale/undatable, "
+        f"{len(exempt)} exempt, {len(rows)} total"
+    )
     for r in bad:
-        detail = r.get("reason") or (
-            f"{r.get('age_days')} days old, limit {r.get('max_age_days')}")
+        detail = r.get("reason") or (f"{r.get('age_days')} days old, limit {r.get('max_age_days')}")
         print(f"[freshness] {r['status']}: {r['payload']} ({detail})")
 
     if bad and "--report" not in sys.argv:
         raise SystemExit(
             f"[freshness] {len(bad)} payload(s) stale or undatable. A lane "
             "has stopped writing, or a payload needs a timestamp. The site "
-            "is still serving them either way.")
+            "is still serving them either way."
+        )
 
 
 if __name__ == "__main__":

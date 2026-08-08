@@ -1,4 +1,5 @@
 """Regression locks for the frozen v2 API contract."""
+
 import json
 import re
 from pathlib import Path
@@ -25,10 +26,8 @@ def test_contract_is_self_citing_and_freezes_outcome_availability_fields():
     for key, value in stamp_meta.universal_fields("api_contract.json").items():
         assert meta[key] == value
 
-    event_study = next(e for e in contract["endpoints"]
-                       if e["path"] == "data/event_study.json")
-    assert {"available_outcomes", "unavailable_outcomes"} <= set(
-        event_study["frozen_fields"])
+    event_study = next(e for e in contract["endpoints"] if e["path"] == "data/event_study.json")
+    assert {"available_outcomes", "unavailable_outcomes"} <= set(event_study["frozen_fields"])
 
 
 def test_every_served_payload_is_in_the_contract():
@@ -38,10 +37,12 @@ def test_every_served_payload_is_in_the_contract():
         if path.name in ("api_contract.json", "decisions.json"):
             continue
         assert f"data/{path.name}" in listed, (
-            f"{path.name} is served but missing from api_contract.json")
+            f"{path.name} is served but missing from api_contract.json"
+        )
     for path in sorted(SITE_DATA.glob("*.csv")):
         assert f"data/{path.name}" in listed, (
-            f"{path.name} is served but missing from api_contract.json")
+            f"{path.name} is served but missing from api_contract.json"
+        )
     assert "feed.xml" in listed
 
 
@@ -51,18 +52,18 @@ def test_versioned_oges_profile_and_schemas_are_first_class_endpoints():
     expected = {
         "oges/0.1.0/profile.json",
         "oges/0.1.0/adversarial-cases.json",
-        *{
-            f"schemas/{path.name}"
-            for path in (ROOT / "docs" / "schemas").glob("*.schema.json")
-        },
+        *{f"schemas/{path.name}" for path in (ROOT / "docs" / "schemas").glob("*.schema.json")},
     }
-    assert expected == {
-        path for path in endpoints if path.startswith(("oges/", "schemas/"))
-    }
+    assert expected == {path for path in endpoints if path.startswith(("oges/", "schemas/"))}
     for path in expected:
         endpoint = endpoints[path]
         assert endpoint["format"] == "json"
-        assert endpoint["stability"] == "static versioned public draft 0.1.0"
+        expected_stability = (
+            "static synthetic foundation 1.0.0"
+            if path == "schemas/sensor-fusion.schema.json"
+            else "static versioned public draft 0.1.0"
+        )
+        assert endpoint["stability"] == expected_stability
         assert endpoint["description"]
         assert (ROOT / "docs" / path).is_file()
 
@@ -74,7 +75,8 @@ def test_contract_lists_no_endpoint_that_no_longer_exists():
             assert (ROOT / "docs" / "feed.xml").exists()
             continue
         assert (ROOT / "docs" / e["path"]).exists(), (
-            f"{e['path']} is in the contract but no longer served")
+            f"{e['path']} is in the contract but no longer served"
+        )
 
 
 def test_frozen_fields_are_still_present_in_live_payloads():
@@ -92,7 +94,8 @@ def test_frozen_fields_are_still_present_in_live_payloads():
         missing = set(e["frozen_fields"]) - live_keys
         assert not missing, (
             f"{e['path']} dropped frozen field(s) {missing}; "
-            "a frozen field cannot be removed without a major version bump")
+            "a frozen field cannot be removed without a major version bump"
+        )
 
 
 def test_operational_author_queue_is_not_a_public_endpoint():
@@ -105,16 +108,13 @@ def test_operational_author_queue_is_not_a_public_endpoint():
 
 def test_withdrawn_daily_brief_has_a_contract_deprecation_window():
     contract = _contract()
-    notices = {item["path"]: item
-               for item in contract["_meta"]["deprecated"]}
+    notices = {item["path"]: item for item in contract["_meta"]["deprecated"]}
     notice = notices["data/daily_brief.json"]
     assert notice["deprecated"] == "2026-08-08"
     assert notice["earliest_removal"] >= "2026-11-06"
-    endpoint = next(e for e in contract["endpoints"]
-                    if e["path"] == "data/daily_brief.json")
+    endpoint = next(e for e in contract["endpoints"] if e["path"] == "data/daily_brief.json")
     assert endpoint["stability"].startswith("deprecated")
-    assert endpoint["frozen_fields"] == [
-        "_meta", "date", "composite", "channels"]
+    assert endpoint["frozen_fields"] == ["_meta", "date", "composite", "channels"]
 
 
 def test_the_contract_matches_its_generator():
@@ -130,9 +130,14 @@ def test_the_contract_matches_its_generator():
     """
     import subprocess
     import sys
+
     before = (SITE_DATA / "api_contract.json").read_bytes()
-    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "generate_api_contract.py")],
-                       capture_output=True, text=True, cwd=ROOT)
+    r = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "generate_api_contract.py")],
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
     after = (SITE_DATA / "api_contract.json").read_bytes()
     if before != after:
         (SITE_DATA / "api_contract.json").write_bytes(before)  # restore
@@ -141,4 +146,5 @@ def test_the_contract_matches_its_generator():
         "docs/data/api_contract.json differs from what its generator "
         "produces. Update the payload/_meta, the OVERRIDES table, or "
         "regenerate -- but do not let the served promise and its "
-        "generator disagree.")
+        "generator disagree."
+    )
