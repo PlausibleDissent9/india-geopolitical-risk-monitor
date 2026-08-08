@@ -538,6 +538,36 @@ dimension passes. Until then every row below is a target.
 | Worldwide Governance Indicators | source aggregation, uncertainty and reproducibility | fact-level provenance and uncertainty on every IGRM family | independent reproduction plus uncertainty/calibration audit |
 | BlackRock Geopolitical Risk Dashboard | decision-focused investor experience | public evidence, research exports and India-specific workflows | blinded UX/task benchmark with accessibility, latency and correctness gates |
 
+### The higher category definition
+
+IGRM Max is not the best possible news index. It is India's open geopolitical
+evidence and decision operating system; the scalar instrument is one sensor
+inside it. The launch denominator therefore also requires:
+
+- an **India dependency twin** whose declared input frames, physical flows,
+  capacities, lags, denominators and gaps reconcile rather than merely look
+  connected;
+- a **contradiction and uncertainty graph** that preserves rival claims and
+  decomposes source, mapping, temporal, model and missingness uncertainty;
+- a **proof-carrying decision compiler** whose researcher, board, newsroom, API
+  and offline-audit products retain identical facts and machine-verifiable clause
+  lineage;
+- a **constraint-aware resilience sandbox** that refuses infeasible routes and
+  represents substitution ceilings, activation lags, buffers and recovery time;
+- a **federated evidence network** through which external institutions can sign
+  scoped modules without centralizing restricted raw evidence;
+- an **institutional memory** for assumptions, decisions, dissent, incidents,
+  corrections and unresolved questions, not only historical data values;
+- an **open evaluation exchange** that makes blinded tasks, losses, abstentions
+  and scoring code as permanent as reported wins; and
+- a **zero-trust security and integrity plane** across acquisition, evidence,
+  copilot, build, release and recovery.
+
+This raises Max by increasing the number of enforceable relationships, not the
+number of decorative pages. A synthetic foundation is evidence that the
+contract works; it is never evidence that a real dependency, utility result or
+institutional adoption exists.
+
 ### System-level victory conditions
 
 IGRM Max reaches its intended ceiling only when all of these are true:
@@ -560,6 +590,9 @@ IGRM Max reaches its intended ceiling only when all of these are true:
    external review.
 10. **Restraint:** the system abstains when evidence is insufficient and never
     turns salience into risk, association into cause, or scenario into forecast.
+11. **Security:** no single model, bot or maintainer can create and authorize a
+    release; exact-commit provenance, key isolation, prompt boundaries, restore
+    drills and incident disclosure survive independent attack.
 
 No single favourable correlation, award, citation or government meeting satisfies
 this contract.
@@ -579,8 +612,8 @@ Nothing in the maximum version is sacrificed; sequencing prevents an attractive
 feature from outrunning the measurement beneath it.
 
 The proposed launch denominator is registered in
-`design/igrm_max_launch_contract.json`: eight pillars, eleven engines and twenty
-required capabilities for 24 October 2026. It is currently **pending the
+`design/igrm_max_launch_contract.json`: eight pillars, eighteen engines and
+thirty-eight required capabilities for 24 October 2026. It is currently **pending the
 founder's personal detached signature**. `python -m src.max_launch_contract
 --scope-only` verifies the immutable denominator; the same command without
 `--scope-only` fails closed until the registered founder key verifies the exact
@@ -593,6 +626,21 @@ does not approve an individual purchase or establish scientific validation,
 legal clearance, adoption or endorsement.
 The founder-only procedure and key boundary are documented in
 `governance/FOUNDER_AUTHORIZATION.md`.
+
+The same unsigned scope registers a ₹250,000 allocation envelope: ₹70,000 for
+independent measurement; ₹40,000 for the first rights-cleared dependency vertical
+and domain review; ₹50,000 for independent security, privacy and accessibility
+review; ₹35,000 for blinded pilot operations; ₹15,000 for hosting, archives and
+monitoring; ₹15,000 for methods editing and priority-language review; and ₹25,000
+for launch-critical contingency. No line is a purchase approval.
+
+This is not a ₹3.5 million institution compressed dishonestly into ₹250,000. The
+larger budget would buy full-time specialists, broad proprietary feeds, continuous
+firm-level mapping, round-the-clock operations, wider external review and service
+commitments. The constrained program buys one exceptional independently tested
+vertical and an open architecture. Models supply most engineering, design and
+documentation; money is reserved for evidence, rights, attacks and users that
+models cannot manufacture.
 
 ### Program 0 — make the existing instrument unimpeachable
 
@@ -636,6 +684,21 @@ The founder-only procedure and key boundary are documented in
 - run external pilots; and
 - license only the narrow advantage claims that passed.
 
+### Program 5 — make the trust boundary attackable
+
+- isolate founder, release and restricted-source credentials from every model and
+  routine build runner;
+- require a green exact commit, authenticated artifacts and independent approval
+  for production publication and high-impact corrections;
+- ship least-privilege workflows, immutable dependencies, an SBOM, provenance,
+  secret/privacy/malware scans and tamper-evident audit records;
+- constrain the copilot to allowlisted read-only transforms so source text and
+  user prompts cannot expand tool, rights or answer authority;
+- exercise backup restore, key revocation, incident response and public correction
+  procedures; and
+- commission an independent security, privacy and accessibility attack and publish
+  the bounded findings and remediation state.
+
 ### First implementation slices
 
 1. Canonical scope, claim-eligibility and source-rights contracts with build-time
@@ -648,7 +711,10 @@ The founder-only procedure and key boundary are documented in
 6. Energy–shipping–trade exposure graph pilot and exact evidence traversal.
 7. Event dossier generated from the canonical objects.
 8. Research export bundle with subset manifest and citation.
-9. Expanded assistant catalog, only after every preceding object is verifier-safe.
+9. Deterministic four-product compiler with semantic recompile and authenticated
+   offline verifier.
+10. Security integrity plane, threat model and exact-green-commit publication gate.
+11. Expanded assistant catalog, only after every preceding object is verifier-safe.
 
 Each slice lands code, data/schema, documentation and the tests that assert the
 same committed surface. A feature is not complete because its UI exists; it is
@@ -668,6 +734,9 @@ complete when its evidence, contract, correction path and failure behaviour exis
 - No forecast claim without a frozen, out-of-sample benchmark.
 - No comparative claim based on incomparable periods or constructs.
 - No public-institution endorsement claim without written evidence.
+- No production release created and authorized by one model, bot or maintainer.
+- No signing or restricted-source secret available to a model or routine runner.
+- No public assistant clause without exact evidence and transformation lineage.
 
 The maximum version is therefore not the project with the most features. It is
 the project in which the largest useful surface remains inside one enforceable

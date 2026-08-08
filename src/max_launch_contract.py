@@ -42,7 +42,7 @@ AUTHORIZATION_STATEMENT = (
 AUTHORIZATION_SIGNATURE = (
     ROOT / "governance" / "authorizations" / "igrm-max-2026-10-24.authorization.sig"
 )
-EXPECTED_SCOPE_SHA256 = "5e82f8c73535a85886213666fe84cc43cdf65f5881bf54ebc06c1f52790a1c56"
+EXPECTED_SCOPE_SHA256 = "1f3ccea2e2f67980bf13d0d581fac0ff5dab2ef9c4d51a8b4d9ae2f845af9ec6"
 REQUIRED_AUTHORIZATION_POLICY = {
     "mechanism": "detached_ed25519",
     "required_signer_id": "founder:ishan-krishna",
@@ -94,6 +94,13 @@ ENGINES = {
     "verified_copilot",
     "institutional_network",
     "open_evidence_standard",
+    "dependency_twin",
+    "contradiction_uncertainty",
+    "decision_compiler",
+    "federated_evidence_network",
+    "institutional_memory",
+    "security_integrity_plane",
+    "evaluation_exchange",
 }
 CAPABILITIES = {
     "typed_event",
@@ -116,6 +123,33 @@ CAPABILITIES = {
     "blinded_utility",
     "global_shock_india",
     "open_conformance",
+    "declared_universe_partition",
+    "dependency_flow_reconciliation",
+    "contradiction_preservation",
+    "uncertainty_decomposition",
+    "proof_carrying_clauses",
+    "constraint_feasibility",
+    "substitution_capacity_lag",
+    "role_invariant_outputs",
+    "value_of_information",
+    "federated_signed_modules",
+    "restricted_evidence_boundary",
+    "signed_release_provenance",
+    "publication_quorum",
+    "secure_build_supply_chain",
+    "prompt_injection_boundary",
+    "incident_recovery",
+    "institutional_memory",
+    "evaluation_exchange",
+}
+BUDGET_ALLOCATIONS = {
+    "independent_measurement": 70_000,
+    "flagship_vertical_data_and_review": 40_000,
+    "security_privacy_accessibility": 50_000,
+    "blinded_pilot_operations": 35_000,
+    "hosting_archival_monitoring": 15_000,
+    "methods_editor_translation": 15_000,
+    "contingency": 25_000,
 }
 PROGRESS_ARTIFACT_ROLES = {
     "public_surface",
@@ -294,11 +328,14 @@ def _scope_projection(document: dict[str, Any]) -> dict[str, object]:
         "program_id": document.get("program_id"),
         "launch_date": document.get("launch_date"),
         "objective": document.get("objective"),
+        "category_definition": document.get("category_definition"),
         "budget": {
             "currency": budget.get("currency"),
             "ceiling": budget.get("ceiling"),
             "state": budget.get("state"),
             "purchase_rule": budget.get("purchase_rule"),
+            "legal_cost_assumption": budget.get("legal_cost_assumption"),
+            "allocation_envelope": budget.get("allocation_envelope"),
         },
         "launch_boundary": document.get("launch_boundary"),
         "pillars": document.get("pillars"),
@@ -327,7 +364,7 @@ def scope_sha256(document: dict[str, Any]) -> str:
 def validate_scope(
     document: dict[str, Any], *, repo_root: Path = ROOT
 ) -> dict[str, object]:
-    if document.get("schema_version") != "1.1.0":
+    if document.get("schema_version") != "1.2.0":
         _fail("schema_version_invalid")
     if document.get("program_id") != "igrm-max-2026-10-24":
         _fail("program_id_invalid")
@@ -340,6 +377,53 @@ def validate_scope(
     launch = _day(document.get("launch_date"), "launch_date_invalid")
     if launch != date(2026, 10, 24):
         _fail("launch_date_changed")
+    category = document.get("category_definition")
+    if not isinstance(category, str) or len(category) < 250:
+        _fail("category_definition_too_weak")
+
+    budget = document.get("budget")
+    if not isinstance(budget, dict) or set(budget) != {
+        "currency",
+        "ceiling",
+        "state",
+        "purchase_rule",
+        "legal_cost_assumption",
+        "allocation_envelope",
+    }:
+        _fail("budget_contract_invalid")
+    if (
+        budget.get("currency") != "INR"
+        or budget.get("ceiling") != 250_000
+        or budget.get("state") != "ceiling_proposed_no_purchase_approved"
+        or not isinstance(budget.get("purchase_rule"), str)
+        or not isinstance(budget.get("legal_cost_assumption"), str)
+    ):
+        _fail("budget_contract_invalid")
+    allocations = budget.get("allocation_envelope")
+    if not isinstance(allocations, list) or len(allocations) != len(BUDGET_ALLOCATIONS):
+        _fail("budget_allocation_invalid")
+    observed_allocations: dict[str, int] = {}
+    for row in allocations:
+        if not isinstance(row, dict) or set(row) != {"id", "ceiling", "buys"}:
+            _fail("budget_allocation_invalid")
+        allocation_id = row.get("id")
+        ceiling = row.get("ceiling")
+        buys = row.get("buys")
+        if (
+            not isinstance(allocation_id, str)
+            or allocation_id in observed_allocations
+            or not isinstance(ceiling, int)
+            or isinstance(ceiling, bool)
+            or ceiling <= 0
+            or not isinstance(buys, str)
+            or len(buys) < 60
+        ):
+            _fail("budget_allocation_invalid")
+        observed_allocations[allocation_id] = ceiling
+    if observed_allocations != BUDGET_ALLOCATIONS:
+        _fail("budget_allocation_changed")
+    if sum(observed_allocations.values()) != budget["ceiling"]:
+        _fail("budget_allocation_sum_mismatch")
 
     pillar_ids = set(_ids(document.get("pillars"), "pillar"))
     engine_ids = set(_ids(document.get("engines"), "engine"))

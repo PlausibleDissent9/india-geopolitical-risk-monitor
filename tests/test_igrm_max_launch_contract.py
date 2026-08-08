@@ -85,8 +85,8 @@ def test_october_scope_is_registered_but_founder_authorization_is_pending() -> N
         "program_id": "igrm-max-2026-10-24",
         "launch_date": "2026-10-24",
         "pillars": 8,
-        "engines": 11,
-        "required_capabilities": 20,
+        "engines": 18,
+        "required_capabilities": 38,
         "completed_deliverables": 1,
         "status": "scope_valid_authorization_pending",
     }
@@ -105,6 +105,31 @@ def test_october_scope_is_registered_but_founder_authorization_is_pending() -> N
     assert load_contract(FOUNDER_SIGNERS)["signers"] == []
     with pytest.raises(MaxLaunchContractError, match="authorization_statement_missing"):
         validate_contract(document)
+
+
+def test_higher_category_and_budget_are_inside_the_unsigned_scope_lock() -> None:
+    document = _document()
+    assert "evidence operating system" in document["category_definition"]
+    assert {
+        "dependency_twin",
+        "contradiction_uncertainty",
+        "decision_compiler",
+        "federated_evidence_network",
+        "institutional_memory",
+        "security_integrity_plane",
+        "evaluation_exchange",
+    } <= {row["id"] for row in document["engines"]}
+    security = next(
+        row for row in document["engines"] if row["id"] == "security_integrity_plane"
+    )
+    assert len(security["launch_controls"]) == 6
+    allocations = document["budget"]["allocation_envelope"]
+    assert sum(row["ceiling"] for row in allocations) == 250_000
+    assert {row["id"]: row["ceiling"] for row in allocations}[
+        "security_privacy_accessibility"
+    ] == 50_000
+    assert document["status"] == "founder_authorization_pending"
+    assert scope_sha256(document) == EXPECTED_SCOPE_SHA256
 
 
 def test_valid_detached_founder_signature_authorizes_only_the_registered_scope(
@@ -250,6 +275,20 @@ def test_founder_private_key_cannot_be_created_inside_the_repository() -> None:
                 "interrupt_only_for"
             ].append("routine_technical_review"),
             "founder_interrupt_boundary_changed",
+        ),
+        (
+            lambda document: document["budget"]["allocation_envelope"][2].__setitem__(
+                "ceiling", 1
+            ),
+            "budget_allocation_changed",
+        ),
+        (
+            lambda document: next(
+                row
+                for row in document["engines"]
+                if row["id"] == "security_integrity_plane"
+            )["launch_controls"].pop(),
+            "program_scope_digest_mismatch",
         ),
     ],
 )

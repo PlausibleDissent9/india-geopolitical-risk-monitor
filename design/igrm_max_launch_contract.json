@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "program_id": "igrm-max-2026-10-24",
-  "program_scope_sha256": "5e82f8c73535a85886213666fe84cc43cdf65f5881bf54ebc06c1f52790a1c56",
+  "program_scope_sha256": "1f3ccea2e2f67980bf13d0d581fac0ff5dab2ef9c4d51a8b4d9ae2f845af9ec6",
   "status": "founder_authorization_pending",
   "proposed_on": "2026-08-08",
   "authorization_policy": {
@@ -15,12 +15,51 @@
     "progress_excluded": true
   },
   "launch_date": "2026-10-24",
-  "objective": "Ship an integrated, evidence-bounded IGRM Max v1 that connects world state, evidence, India exposure, transmission, response and recovery without licensing unsupported truth, causal, forecast, superiority or adoption claims.",
+  "objective": "Ship India's open geopolitical evidence and decision operating system: an integrated, evidence-bounded IGRM Max v1 that turns versioned world state into proof-carrying India exposure, transmission, response and recovery products without licensing unsupported truth, causal, forecast, superiority or adoption claims.",
+  "category_definition": "IGRM Max is not a larger scalar index or a collection of dashboards. It is a secure, bitemporal, rights-aware evidence operating system in which an event becomes a typed object, traverses a declared India dependency twin, preserves contradictions and uncertainty, compiles into role-specific products from invariant facts, and carries a machine-verifiable proof path to every public analytical clause.",
   "budget": {
     "currency": "INR",
     "ceiling": 250000,
     "state": "ceiling_proposed_no_purchase_approved",
-    "purchase_rule": "No purchase without a written capability gain, rights analysis, price, cheaper alternative and no-buy consequence."
+    "purchase_rule": "No purchase without a written capability gain, rights analysis, price, cheaper alternative and no-buy consequence.",
+    "legal_cost_assumption": "Founder-accessible legal review is expected at zero cash cost; every review still records scope, reviewer, conflicts and independence limits and is never called independent unless it is.",
+    "allocation_envelope": [
+      {
+        "id": "independent_measurement",
+        "ceiling": 70000,
+        "buys": "Independent coders, adjudication and study-quality control that no model or founder may self-supply."
+      },
+      {
+        "id": "flagship_vertical_data_and_review",
+        "ceiling": 40000,
+        "buys": "Rights-cleared port-to-commodity inputs, acquisition experiments and bounded domain review for the first real dependency vertical."
+      },
+      {
+        "id": "security_privacy_accessibility",
+        "ceiling": 50000,
+        "buys": "Independent penetration, privacy and accessibility review plus hardware-backed key separation and remediation evidence."
+      },
+      {
+        "id": "blinded_pilot_operations",
+        "ceiling": 35000,
+        "buys": "Preregistered decision-task recruitment, incentives, masking, operations and result packaging."
+      },
+      {
+        "id": "hosting_archival_monitoring",
+        "ceiling": 15000,
+        "buys": "Durable hosting, immutable archival copies, monitoring, rate control and backup retention."
+      },
+      {
+        "id": "methods_editor_translation",
+        "ceiling": 15000,
+        "buys": "Bounded methods editing, accessibility copy and human review of priority-language public explanations."
+      },
+      {
+        "id": "contingency",
+        "ceiling": 25000,
+        "buys": "Documented remediation of a launch-critical validation, data-rights, security or reliability blocker only."
+      }
+    ]
   },
   "launch_boundary": {
     "must_ship": "An integrated v1 of every registered pillar and engine, with explicit coverage and abstention where evidence is absent.",
@@ -143,6 +182,62 @@
       "name": "Open geopolitical evidence standard",
       "pillars": ["evidence_engine", "institution", "distribution"],
       "launch_definition": "A versioned public conformance specification for evidence, time, rights, claims, events, exposure, uncertainty, releases, corrections and refusal."
+    },
+    {
+      "id": "dependency_twin",
+      "name": "India dependency twin",
+      "pillars": ["core", "atlas", "observatory"],
+      "launch_definition": "A bitemporal, declared-universe network of physical, commercial and policy dependencies whose quantitative flows reconcile to source denominators, capacities and explicitly published gaps rather than inferred completeness.",
+      "launch_controls": [
+        "every universe partitions its immutable input frame",
+        "quantitative flow edges preserve source units and denominator",
+        "conservation or reconciliation failures refuse publication",
+        "no registered source means the edge remains synthetic"
+      ]
+    },
+    {
+      "id": "contradiction_uncertainty",
+      "name": "Contradiction and uncertainty graph",
+      "pillars": ["evidence_engine", "research_copilot", "observatory"],
+      "launch_definition": "Claims that disagree remain separately attributable graph objects, while source, mapping, temporal, model and missingness uncertainty are decomposed instead of collapsed into one confidence score or artificial consensus."
+    },
+    {
+      "id": "decision_compiler",
+      "name": "Proof-carrying decision compiler",
+      "pillars": ["research_copilot", "distribution"],
+      "launch_definition": "One validated release compiles invariant registered facts into researcher, board, newsroom and offline-audit products whose reader-visible analytical clauses carry object, evidence and transformation proofs and whose unsupported clauses refuse."
+    },
+    {
+      "id": "federated_evidence_network",
+      "name": "Federated evidence network",
+      "pillars": ["evidence_engine", "institution", "distribution"],
+      "launch_definition": "External institutions can validate and sign scoped modules, corrections and private-data-derived claims without transferring raw restricted evidence, while identity, authority, conflicts, revocation and conformance remain machine-checkable."
+    },
+    {
+      "id": "institutional_memory",
+      "name": "Institutional memory engine",
+      "pillars": ["observatory", "institution"],
+      "launch_definition": "Assumptions, decisions, dissent, corrections, incidents, evidence availability and policy responses retain bitemporal lineage so a later user can distinguish what was known, chosen, revised and still unresolved."
+    },
+    {
+      "id": "security_integrity_plane",
+      "name": "Zero-trust security and integrity plane",
+      "pillars": ["evidence_engine", "institution", "distribution"],
+      "launch_definition": "The build, evidence, copilot and publication boundaries use least privilege, isolated signing keys, exact-commit gates, authenticated provenance, secret and privacy scanning, tamper-evident logs, recovery tests and explicit incident disclosure.",
+      "launch_controls": [
+        "no model bot or single maintainer can both create and authorize a production release",
+        "production publishes only an exact green commit with authenticated artifacts",
+        "agents never receive founder release or restricted-source credentials",
+        "software bill of materials dependency review and provenance ship with releases",
+        "prompt injection cannot expand tools evidence rights or answer authority",
+        "backup restoration and incident response are exercised rather than documented only"
+      ]
+    },
+    {
+      "id": "evaluation_exchange",
+      "name": "Open evaluation exchange",
+      "pillars": ["benchmark_lab", "institution", "distribution"],
+      "launch_definition": "Frozen blinded tasks, comparator outputs, scoring code, losses, abstentions and decision effects can be independently run and deposited so benchmark selection, hidden failures and favourable-only reporting cannot manufacture superiority."
     }
   ],
   "required_capabilities": [
@@ -165,23 +260,41 @@
     {"id": "event_to_recovery", "requirement": "The system keeps event, exposure, transmission, response and recovery as separate connected layers."},
     {"id": "blinded_utility", "requirement": "Usefulness is tested through frozen blinded decision tasks, not page views or testimonials."},
     {"id": "global_shock_india", "requirement": "A global shock can be evaluated against India-specific exposure and the architecture is country-portable."},
-    {"id": "open_conformance", "requirement": "External systems can test compatible evidence bundles against a public standard and adversarial fixtures."}
+    {"id": "open_conformance", "requirement": "External systems can test compatible evidence bundles against a public standard and adversarial fixtures."},
+    {"id": "declared_universe_partition", "requirement": "Each Atlas universe reconciles included, excluded, unmappable, stale and unknown members to an authenticated source frame so coverage cannot be improved by silently shrinking the denominator."},
+    {"id": "dependency_flow_reconciliation", "requirement": "Quantified dependency flows retain original units, denominator, capacity and time basis and either reconcile within a registered tolerance or refuse publication."},
+    {"id": "contradiction_preservation", "requirement": "Conflicting source claims remain visible, attributable and unresolved until a registered resolution rule or authoritative correction changes their state."},
+    {"id": "uncertainty_decomposition", "requirement": "Source, mapping, model, temporal and missingness uncertainty are carried separately; the system may not launder them into one unsupported confidence number."},
+    {"id": "proof_carrying_clauses", "requirement": "Every reader-visible analytical clause identifies the exact objects, evidence, transformation and release from which it compiled, and semantic recompile rejects plausible resealed mutations."},
+    {"id": "constraint_feasibility", "requirement": "Resilience scenarios check capacity, route, inventory, timing and substitution constraints before presenting a path as feasible and show which constraint or missing input blocks an answer."},
+    {"id": "substitution_capacity_lag", "requirement": "Scenario results represent substitution ceilings, activation lags, inventory buffers and recovery timing as ranges or unknowns rather than instant frictionless replacement."},
+    {"id": "role_invariant_outputs", "requirement": "Researcher, board, newsroom, API and offline-audit products share one fact ledger; audience changes presentation but cannot change facts, dates, uncertainty or evidence lineage."},
+    {"id": "value_of_information", "requirement": "The system ranks data and mapping gaps by registered decision relevance and expected uncertainty reduction without pretending the ranking is a substantive policy recommendation."},
+    {"id": "federated_signed_modules", "requirement": "External modules have scoped authority, signed bytes, revocation, conflicts, coverage and correction lineage and cannot expand the central release's rights or truth claims."},
+    {"id": "restricted_evidence_boundary", "requirement": "Restricted evidence stays encrypted and access-controlled; public outputs expose only rights-permitted metadata or derived values and retain an auditable access and redaction decision."},
+    {"id": "signed_release_provenance", "requirement": "Every production release binds exact source, code, policy, schema, registry and artifact hashes to an authenticated release statement obtained outside the bundle."},
+    {"id": "publication_quorum", "requirement": "No model, bot or single maintainer can both create and authorize a production release, high-impact correction or expansion of public claim authority."},
+    {"id": "secure_build_supply_chain", "requirement": "Builds use least-privilege tokens, immutable dependencies, secret and malware scanning, an SBOM, provenance attestations and an exact-green-commit publication gate."},
+    {"id": "prompt_injection_boundary", "requirement": "Untrusted source text and user prompts cannot grant tools, cross privacy boundaries, alter evidence authority, access signing secrets or bypass clause-level refusal."},
+    {"id": "incident_recovery", "requirement": "Backups, restore procedures, key revocation, correction publication and incident disclosure are exercised and measured; an untested plan does not count as operational resilience."},
+    {"id": "institutional_memory", "requirement": "Decisions, assumptions, dissent, incidents, corrections and unresolved questions are versioned alongside evidence so later users can replay institutional reasoning without hindsight."},
+    {"id": "evaluation_exchange", "requirement": "Frozen blinded tasks, baselines, raw or rights-safe results, scoring code, abstentions and losses are independently rerunnable and permanently retained beside any reported win."}
   ],
   "milestones": [
     {
       "date": "2026-09-05",
       "name": "Evidence substrate gate",
-      "required_engine_ids": ["world_state", "sensor_fusion", "knowledge_time_machine", "open_evidence_standard"]
+      "required_engine_ids": ["world_state", "sensor_fusion", "knowledge_time_machine", "open_evidence_standard", "contradiction_uncertainty", "security_integrity_plane"]
     },
     {
       "date": "2026-10-03",
       "name": "Flagship vertical gate",
-      "required_engine_ids": ["india_exposure_dna", "shock_compiler", "strategy_resilience", "verified_copilot"]
+      "required_engine_ids": ["india_exposure_dna", "shock_compiler", "strategy_resilience", "verified_copilot", "dependency_twin", "decision_compiler", "institutional_memory"]
     },
     {
       "date": "2026-10-24",
       "name": "Integrated Max v1 launch",
-      "required_engine_ids": ["causal_lab", "forecast_lab", "institutional_network"]
+      "required_engine_ids": ["causal_lab", "forecast_lab", "institutional_network", "federated_evidence_network", "evaluation_exchange"]
     }
   ],
   "evidence_backed_progress": [
