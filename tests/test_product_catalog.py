@@ -197,6 +197,47 @@ def test_protected_route_floor_is_append_only_across_commits() -> None:
     assert not violations, "\n".join(violations)
 
 
+def test_the_floor_compares_against_the_parent_when_the_catalog_is_committed() -> None:
+    """The revision compared against must follow committed-ness, not layout.
+
+    Every other test of the floor supplies the prior catalog itself, by
+    monkeypatching `_catalog_at_revision`, so none of them exercises the
+    line that decides WHICH revision to ask for. That line re-serialized
+    the committed JSON and compared bytes; this catalog is hand-formatted
+    one route per line, so the comparison was false even for an untouched
+    checkout -- which is precisely what CI checks out. The floor compared
+    HEAD with HEAD, a removal was absent from both sides, and a commit
+    deleting maps.html against an empty removal_ledger returned
+    {"status": "pass"} with exit 0. Reproduced before this test existed.
+    """
+
+    def at(revision: str) -> dict | None:
+        shown = subprocess.run(
+            ["git", "show", f"{revision}:design/public_product_catalog.json"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return json.loads(shown.stdout) if shown.returncode == 0 else None
+
+    head = at("HEAD")
+    if head is None:
+        pytest.skip("no catalog committed at HEAD to compare against")
+    status = product_catalog.check_public_surface()["route_floor_status"]
+    if head != _catalog():
+        # An uncommitted edit: HEAD is genuinely the state before it.
+        assert status == "checked_against_HEAD"
+    elif at("HEAD^") is None:
+        # The commit that introduced the catalog establishes the floor.
+        assert status == "bootstrap_no_prior_catalog"
+    else:
+        assert status == "checked_against_HEAD^", (
+            "the catalog on disk is the one committed at HEAD, so the state "
+            "before this change is HEAD^; comparing HEAD with HEAD lets a "
+            "committed removal check against a copy of itself and pass")
+
+
 def test_check_cli_is_machine_readable_and_green() -> None:
     result = subprocess.run(
         [sys.executable, "-m", "src.product_catalog", "--check"],

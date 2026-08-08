@@ -283,11 +283,18 @@ def validate_route_continuity(current: dict[str, Any]) -> str:
     committed = _catalog_at_revision("HEAD")
     if committed is None:
         return "bootstrap_no_prior_catalog"
-    on_disk = CATALOG_PATH.read_bytes()
-    committed_bytes = (
-        json.dumps(committed, ensure_ascii=False, indent=2).encode("utf-8") + b"\n"
-    )
-    comparison_revision = "HEAD^" if on_disk == committed_bytes else "HEAD"
+    # Which revision holds the state BEFORE this change? If the catalog on
+    # disk is the one already committed at HEAD, then HEAD *is* the change
+    # under review and the state before it is HEAD^. The first form of this
+    # test re-serialized the committed document with indent=2 and compared
+    # bytes -- but this catalog is hand-formatted one route per line, so
+    # the comparison was false even for an untouched checkout, which is
+    # exactly what CI checks out. The floor therefore compared HEAD with
+    # HEAD, where a removal is already absent on both sides: deleting
+    # maps.html with an empty removal_ledger returned status "pass" and
+    # exit 0. Comparing the parsed documents asks the question that was
+    # meant, and no choice of layout can answer it wrongly.
+    comparison_revision = "HEAD^" if committed == current else "HEAD"
     previous = _catalog_at_revision(comparison_revision)
     if previous is None:
         return "bootstrap_no_prior_catalog"
