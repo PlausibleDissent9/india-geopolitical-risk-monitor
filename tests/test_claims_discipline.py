@@ -55,6 +55,9 @@ DOCS = ROOT / "docs"
 # file or directory of markdown fails the manifest test until it is
 # either scanned or named here with a reason.
 MD_EXCLUDED = {
+    ".agents/": "the async channel between the two resident agents; "
+                "operational notes in the same category as CONTINUITY.md, "
+                "and the site never links a reader here",
     ".github/": "issue-form scaffolding for reviewers, not IGRM prose",
     "CONTINUITY.md": "working notes between agent sessions",
     "DESIGN_BRIEF.md": "design working notes",
