@@ -5,6 +5,27 @@ published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.
 
+## 2026-08-08: blind-audit v2 did not match the production scoring frame, invalidated before coding
+
+The frozen v2 external-coder package was byte-reproducible, but a later
+source-frame audit found that its registered 2026-08-05 receipt cache covered
+39 sampled snapshots and 28,575 English documents while the cache used to
+produce that day's score covered 48 snapshots and 33,961 documents. Forty-nine
+of the 500 sampled rows came from the deficient cache.
+
+The audit also sampled unique document keys, while production adds sub-query
+group shares; a document matching two groups contributes twice to the effective
+score numerator but only once to v2's frame. The registered study therefore did
+not estimate precision for the production scoring quantity it claimed.
+
+No external or pilot label had been collected. V2 is invalidated before coding
+and must not be fielded, scored, merged into a later study, or cited as a
+precision result. A v3 may be frozen only after exact score-cache lineage,
+denominator parity and a contribution-level estimand are verified before
+sampling. The frozen v2 bytes remain available solely as correction evidence;
+the complete diagnosis is in
+[`validation/blind_audit_500/V2_INVALID.md`](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/validation/blind_audit_500/V2_INVALID.md).
+
 ## 2026-08-07: circular splice-stability result, caught pre-publish
 
 The first stability check appeared to expand the splice calibration from

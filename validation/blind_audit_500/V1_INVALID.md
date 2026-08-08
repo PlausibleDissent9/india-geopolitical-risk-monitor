@@ -16,7 +16,17 @@ Consequences:
 - The original registration and files remain recoverable in git history for a
   complete correction trail.
 
-The valid package is v2: its seed, input hashes and output hashes are frozen in
-`registration.json`. Tests independently reconstruct each channel's exact
-production document-key frame, reject any sampled item outside it, and reject
+`registration_v1_989c43f.json.ots` is retained only as historical evidence for
+the invalid v1 registration (SHA-256
+`a394918644686635443d424367e5806b863127987c6deb54d17b600d1ee25255`). It
+does **not** timestamp or authenticate the adjacent v2 `registration.json`.
+The adjacent `registration.json.ots` now stamps the exact v2 registration
+(SHA-256 `c313c7a557be3788aea2724796c23ce7fa36a59fd0f381a395bf4a5c924a9b87`).
+The v2 registration is also anchored by its full Git base commit and rebuilt
+from those exact registered blobs by `scripts/verify_blind_audit_v2.py`; the
+study itself is separately invalidated in `V2_INVALID.md`.
+
+The replacement package was v2: its seed, input hashes and output hashes remain
+frozen in `registration.json`. Tests independently reconstruct its retained
+document-key frame, reject any sampled item outside it, and reject
 URL deduplication as a substitute for the document instances the index counts.

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Validation, India Geopolitical Risk Monitor</title>
-<meta name="description" content="Pre-registered episode detection, placebo channels, dictionary robustness, and cross-source agreement for the IGRM salience index.">
+<meta name="description" content="Evidence and limits for IGRM: frozen episode detection, placebo channels, dictionary robustness, and incomplete precision and recall studies.">
 <link rel="canonical" href="https://igrm.in/validation.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
@@ -26,11 +26,20 @@
     <a href="notes.html">Notes</a>
     <a href="divergence.html">Divergence</a>
   </nav>
-  <p class="definition">How we know the index measures anything real: detection of a pre-registered
-  episode list the query terms never name, placebo channels that must stay quiet, robustness across
-  alternative dictionaries, and agreement across independent sources. What validation cannot do:
-  convert salience into risk.</p>
+  <p class="definition">What is currently tested: detection against a frozen episode list,
+  placebo channels, sensitivity across alternative dictionaries, and a cross-source comparison.
+  These diagnostics test instrument behavior; they do not convert salience into risk, establish
+  matched-item precision or population recall, or show superiority over another index.</p>
 </header>
+
+<aside class="verdict-panel">
+  <strong>External accuracy studies are not complete.</strong> The 500-row v2
+  precision pilot was invalidated before any label after a source-frame audit
+  found one deficient day and a unique-document versus score-contribution
+  estimand mismatch. No replacement v3 has been frozen. The recall study is a
+  protocol, not a fielded result. No independent precision or recall result
+  currently exists. <a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/validation/blind_audit_500/V2_INVALID.md">Read the invalidation record.</a>
+</aside>
 
 <h2>Pre-registered episode detection</h2>
 <p class="chart-note" id="hitSummary">Not yet computed, run <code>python -m src.validate hit-rate</code> after the backfill.</p>

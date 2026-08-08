@@ -8,13 +8,14 @@ import json
 from collections import Counter
 from pathlib import Path
 
+import pytest
+from scripts import verify_blind_audit_v2
 from src import blind_audit_500
-from src.fetch_ngrams import group_specs
-from src.receipts_ngrams import channel_doc_keys
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "validation" / "blind_audit_500"
 REGISTRATION = PACKAGE / "registration.json"
+ANCHORED_CHANNELS = {"pakistan_west", "china_east", "us_trade"}
 
 
 def _sha256(path: Path) -> str:
@@ -30,26 +31,209 @@ def _registration() -> dict:
     return json.loads(REGISTRATION.read_text(encoding="utf-8"))
 
 
+def _eligible_instances(
+    source_files: dict[str, str],
+) -> dict[str, set[tuple[str, str]]]:
+    """Independent registered union-plus-anchor arithmetic.
+
+    This deliberately imports no mutable production matcher. Receipt caches
+    key their frozen subqueries as ``<channel>/qN``; anchored channels then
+    intersect that union with the per-document India set.
+    """
+    eligible: dict[str, set[tuple[str, str]]] = {
+        channel: set() for channel in blind_audit_500.CHANNELS
+    }
+    for relpath in source_files:
+        payload = json.loads((ROOT / relpath).read_text(encoding="utf-8"))
+        india = set(payload.get("india") or [])
+        for channel in blind_audit_500.CHANNELS:
+            keys: set[str] = set()
+            for group, members in payload["matched"].items():
+                if group.startswith(f"{channel}/"):
+                    keys.update(members)
+            if channel in ANCHORED_CHANNELS:
+                keys &= india
+            eligible[channel].update((relpath, key) for key in keys)
+    return eligible
+
+
 def test_registered_builder_inputs_and_outputs_are_unchanged() -> None:
+    report = verify_blind_audit_v2.verify()
+    assert report["status"] == "REPRODUCIBLE_INVALID_STUDY"
+    assert report["artifact_verification"] == "PASS"
+    assert report["study_status"] == "INVALID_BEFORE_CODING"
+    assert report["base_commit"] == _registration()["base_commit"]
+    assert report["registration_sha256"] == _sha256(REGISTRATION)
+
+
+def test_living_registered_inputs_resolve_at_base_not_mutable_head() -> None:
     registration = _registration()
     inputs = registration["inputs"]
-    sample = registration["sample"]
+    living = {
+        inputs["rubric_path"],
+        inputs["dictionaries_path"],
+        *(item["path"] for item in inputs["production_matcher_files"]),
+    }
+    current_pins = {
+        path
+        for path, _ in verify_blind_audit_v2._current_evidence_paths(registration)
+    }
+    assert living.isdisjoint(current_pins)
+    for path in living:
+        expected = next(
+            digest
+            for registered_path, digest in verify_blind_audit_v2._registered_paths(
+                registration
+            )
+            if registered_path == path
+        )
+        frozen = verify_blind_audit_v2._run_git(
+            "show", f'{registration["base_commit"]}:{path}'
+        )
+        assert hashlib.sha256(frozen).hexdigest() == expected
 
-    assert _sha256(ROOT / inputs["builder_and_scorer"]) == inputs["builder_and_scorer_sha256"]
-    assert _sha256(ROOT / inputs["rubric_path"]) == inputs["rubric_sha256"]
-    assert _sha256(ROOT / inputs["dictionaries_path"]) == inputs["dictionaries_sha256"]
-    assert _sha256(ROOT / inputs["coder_instructions_path"]) == inputs["coder_instructions_sha256"]
-    for source in inputs["receipt_sources"]:
-        assert _sha256(ROOT / source["path"]) == source["sha256"]
-    for source in inputs["pilot_sources"]:
-        assert _sha256(ROOT / source["path"]) == source["sha256"]
-    for source in inputs["production_matcher_files"]:
-        assert _sha256(ROOT / source["path"]) == source["sha256"]
-    assert _sha256(ROOT / sample["coder_sheet_path"]) == sample["coder_sheet_sha256"]
-    assert _sha256(ROOT / sample["coder_1_sheet_path"]) == sample["coder_1_sheet_sha256"]
-    assert _sha256(ROOT / sample["coder_2_sheet_path"]) == sample["coder_2_sheet_sha256"]
-    assert _sha256(ROOT / sample["sample_key_path"]) == sample["sample_key_sha256"]
-    assert _sha256(ROOT / sample["pilot_sheet_path"]) == sample["pilot_sheet_sha256"]
+
+def test_tampered_registration_bytes_fail_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    tampered = tmp_path / "registration.json"
+    tampered.write_bytes(REGISTRATION.read_bytes() + b"\n")
+    monkeypatch.setattr(verify_blind_audit_v2, "REGISTRATION", tampered)
+
+    with pytest.raises(
+        verify_blind_audit_v2.VerificationError,
+        match="registration bytes changed",
+    ):
+        verify_blind_audit_v2._load_registration(tampered)
+
+
+def test_tampered_registered_base_hash_fails_closed() -> None:
+    registration = _registration()
+    registration["inputs"]["production_matcher_files"][0]["sha256"] = "0" * 64
+
+    with pytest.raises(
+        verify_blind_audit_v2.VerificationError,
+        match="registered base blob mismatch",
+    ):
+        verify_blind_audit_v2._verify_commit_inputs(registration)
+
+
+def test_tampered_rebuilt_output_hash_fails_closed() -> None:
+    registration = _registration()
+    registration["sample"]["coder_sheet_sha256"] = "0" * 64
+
+    with pytest.raises(
+        verify_blind_audit_v2.VerificationError,
+        match="frozen rebuild mismatch",
+    ):
+        verify_blind_audit_v2._rebuild(
+            registration,
+            registration["base_commit"],
+            ROOT,
+        )
+
+
+def test_tampered_current_evidence_fails_closed(tmp_path: Path) -> None:
+    registration = _registration()
+    path = registration["inputs"]["builder_and_scorer"]
+    candidate = tmp_path / path
+    candidate.parent.mkdir(parents=True)
+    candidate.write_bytes((ROOT / path).read_bytes() + b"\n")
+
+    with pytest.raises(
+        verify_blind_audit_v2.VerificationError,
+        match=f"frozen current evidence mismatch for {path}",
+    ):
+        verify_blind_audit_v2._verify_current_evidence(registration, tmp_path)
+
+
+def test_missing_registered_base_commit_fails_closed() -> None:
+    registration = _registration() | {"base_commit": "0" * 40}
+    with pytest.raises(verify_blind_audit_v2.VerificationError):
+        verify_blind_audit_v2._verify_commit_inputs(registration)
+
+
+def test_v2_is_publicly_invalidated_before_coding() -> None:
+    notice = (PACKAGE / "V2_INVALID.md").read_text(encoding="utf-8")
+    normalized = " ".join(notice.split())
+    assert verify_blind_audit_v2.INVALIDATION_MARKER in notice
+    assert "5,386 documents" in normalized
+    assert "Nine sampled article-instance rows" in normalized
+    assert (PACKAGE / "registration.json.ots").is_file()
+    assert (PACKAGE / "registration_v1_989c43f.json.ots").is_file()
+    for path in [*blind_audit_500.CODER_SHEETS, blind_audit_500.PILOT]:
+        assert all(not row["coder_label"] for row in _csv(path))
+    assert "invalidated before any label" in (
+        ROOT / "docs" / "validation.html"
+    ).read_text(encoding="utf-8")
+    assert "blind-audit v2 did not match" in (
+        ROOT / "docs" / "corrections.md"
+    ).read_text(encoding="utf-8")
+
+
+def test_v2_invalidation_matches_frozen_source_and_sample_evidence() -> None:
+    score = json.loads(
+        (ROOT / "data/raw/ngram_days/2026-08-05.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    receipt_path = "data/raw/receipt_days/2026-08-05.json"
+    receipt = json.loads((ROOT / receipt_path).read_text(encoding="utf-8"))
+    assert (score["n_samples"], score["n_docs_sampled"]) == (48, 33_961)
+    assert (receipt["n_samples"], receipt["n_docs_sampled"]) == (39, 28_575)
+
+    key_rows = json.loads(blind_audit_500.KEY.read_text(encoding="utf-8"))["items"]
+    deficient = [row for row in key_rows if row["source_path"] == receipt_path]
+    assert len(deficient) == 49
+    assert Counter(row["stratum"] for row in deficient) == Counter(
+        {"article_instance": 40, "story_cluster": 9}
+    )
+    assert Counter(row["channel"] for row in deficient) == Counter(
+        {
+            "pakistan_west": 10,
+            "china_east": 8,
+            "gulf_energy": 17,
+            "us_trade": 10,
+            "shipping": 4,
+        }
+    )
+
+    registration = _registration()
+    totals = {}
+    for channel in ("pakistan_west", "gulf_energy"):
+        union: set[tuple[str, str]] = set()
+        contributions = 0
+        for source in registration["inputs"]["receipt_sources"]:
+            payload = json.loads(
+                (ROOT / source["path"]).read_text(encoding="utf-8")
+            )
+            india = set(payload.get("india") or [])
+            for group, members in payload["matched"].items():
+                if not group.startswith(f"{channel}/"):
+                    continue
+                keys = set(members)
+                if channel in ANCHORED_CHANNELS:
+                    keys &= india
+                eligible = {
+                    key
+                    for key in keys
+                    if str(payload["meta"].get(key, {}).get("url") or "").strip()
+                    and str(
+                        payload["meta"].get(key, {}).get("title") or ""
+                    ).strip()
+                    and len(
+                        str(payload["meta"].get(key, {}).get("date") or "")
+                        .replace("-", "")
+                    )
+                    >= 8
+                }
+                contributions += len(eligible)
+                union.update((source["path"], key) for key in eligible)
+        totals[channel] = (contributions, len(union))
+    assert totals == {
+        "pakistan_west": (287, 264),
+        "gulf_energy": (8_178, 8_156),
+    }
 
 
 def test_scored_sheet_is_exactly_500_balanced_and_blind() -> None:
@@ -110,54 +294,42 @@ def test_pilot_is_unscored_and_disjoint_from_scored_sheet() -> None:
 
 
 def test_committed_sample_rebuilds_byte_for_byte_at_row_level() -> None:
-    sheet_rows, key_rows, counts, pilot_rows = blind_audit_500.build()
-    published_key = json.loads(blind_audit_500.KEY.read_text(encoding="utf-8"))
+    report = verify_blind_audit_v2.verify()
+    registration = _registration()
+    for key, expected_path in registration["sample"].items():
+        if not key.endswith("_path"):
+            continue
+        digest_key = key.removesuffix("_path") + "_sha256"
+        assert report["output_sha256"][expected_path] == registration["sample"][
+            digest_key
+        ]
 
-    assert sheet_rows == _csv(blind_audit_500.SHEET)
-    assert key_rows == published_key["items"]
-    assert counts == published_key["_meta"]["matched_document_instance_frame_by_channel"]
-    assert pilot_rows == _csv(blind_audit_500.PILOT)
 
-
-def test_every_sampled_instance_belongs_to_the_production_channel_numerator() -> None:
-    """Prevent auditing raw phrase matches or URL-deduped proxy units."""
-    specs = group_specs()
-
-    def eligible_instances(
-        source_files: dict[str, str],
-    ) -> dict[str, set[tuple[str, str]]]:
-        eligible: dict[str, set[tuple[str, str]]] = {
-            channel: set() for channel in blind_audit_500.CHANNELS
-        }
-        for relpath in source_files:
-            payload = json.loads((ROOT / relpath).read_text(encoding="utf-8"))
-            corpus = {
-                **payload,
-                "india": set(payload.get("india") or []),
-                "matched": {
-                    group: set(keys) for group, keys in payload["matched"].items()
-                },
-            }
-            for channel in blind_audit_500.CHANNELS:
-                keys = channel_doc_keys(channel, specs, corpus)
-                eligible[channel].update((relpath, key) for key in keys)
-        return eligible
-
-    scored_eligible = eligible_instances(blind_audit_500.SOURCE_FILES)
+def test_every_sampled_instance_belongs_to_the_registered_union_frame() -> None:
+    """Reproduce v2's union-plus-anchor frame without mutable matchers."""
+    scored_eligible = _eligible_instances(blind_audit_500.SOURCE_FILES)
     key_rows = json.loads(blind_audit_500.KEY.read_text(encoding="utf-8"))["items"]
     assert all(
         (row["source_path"], row["source_document_key"])
         in scored_eligible[row["channel"]]
         for row in key_rows
     )
-    pilot_universe = blind_audit_500._universe(blind_audit_500.PILOT_SOURCE_FILES)
-    pilot_evidence = {
-        channel: {
-            (row["article_date"], row["title"], row["url"])
-            for row in rows
-        }
-        for channel, rows in pilot_universe.items()
+    pilot_eligible = _eligible_instances(blind_audit_500.PILOT_SOURCE_FILES)
+    pilot_evidence: dict[str, set[tuple[str, str, str]]] = {
+        channel: set() for channel in blind_audit_500.CHANNELS
     }
+    for channel, instances in pilot_eligible.items():
+        for relpath, key in instances:
+            payload = json.loads((ROOT / relpath).read_text(encoding="utf-8"))
+            row = payload["meta"][key]
+            raw_date = str(row["date"]).replace("-", "")[:8]
+            pilot_evidence[channel].add(
+                (
+                    f"{raw_date[:4]}-{raw_date[4:6]}-{raw_date[6:8]}",
+                    str(row["title"]).strip(),
+                    str(row["url"]).strip(),
+                )
+            )
     assert all(
         (row["article_date"], row["title"], row["url"])
         in pilot_evidence[row["channel"]]
@@ -167,25 +339,16 @@ def test_every_sampled_instance_belongs_to_the_production_channel_numerator() ->
 
 def test_audit_universe_equals_independent_production_document_frame() -> None:
     """Parity must cover the whole frame, not just the eventual draw."""
-    specs = group_specs()
     expected: dict[str, set[tuple[str, str]]] = {
         channel: set() for channel in blind_audit_500.CHANNELS
     }
     for relpath in blind_audit_500.SOURCE_FILES:
         payload = json.loads((ROOT / relpath).read_text(encoding="utf-8"))
-        india = set(payload.get("india") or [])
-        matched = {group: set(keys) for group, keys in payload["matched"].items()}
+        eligible = _eligible_instances({relpath: blind_audit_500.SOURCE_FILES[relpath]})
         for channel in blind_audit_500.CHANNELS:
-            channel_specs = [spec for spec in specs.values() if spec["channel"] == channel]
-            keys: set[str] = set()
-            for group, spec in specs.items():
-                if spec["channel"] == channel:
-                    keys |= matched[group]
-            if any(spec["anchor"] == "india" for spec in channel_specs):
-                keys &= india
             expected[channel].update(
                 (relpath, key)
-                for key in keys
+                for _, key in eligible[channel]
                 if str(payload["meta"].get(key, {}).get("url") or "").strip()
                 and str(payload["meta"].get(key, {}).get("title") or "").strip()
                 and len(
@@ -195,11 +358,17 @@ def test_audit_universe_equals_independent_production_document_frame() -> None:
                 >= 8
             )
 
-    observed = blind_audit_500._universe()
-    assert {
-        channel: {(row["source_path"], row["source_document_key"]) for row in rows}
-        for channel, rows in observed.items()
-    } == expected
+    report = verify_blind_audit_v2.verify()["frame_by_channel"]
+    expected_report = {}
+    for channel, members in expected.items():
+        frame_ids = sorted(f"{path}|{key}" for path, key in members)
+        expected_report[channel] = {
+            "n": len(frame_ids),
+            "frame_ids_sha256": hashlib.sha256(
+                ("\n".join(frame_ids) + "\n").encode("utf-8")
+            ).hexdigest(),
+        }
+    assert report == expected_report
 
 
 def test_registration_forbids_recall_and_one_coder_reliability_claims() -> None:

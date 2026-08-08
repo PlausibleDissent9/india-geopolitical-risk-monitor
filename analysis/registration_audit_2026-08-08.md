@@ -1,5 +1,13 @@
 # IGRM registration audit — origin/main @ 88b9cbc (2026-08-07T18:35Z)
 
+> **Superseded precision-study status, 2026-08-08:** this file is a historical
+> audit of the named `origin/main` snapshot. A later source-frame audit found
+> that blind-audit v2's registered 2026-08-05 receipt cache omitted 5,386
+> documents present in the score-producing cache and that its unique-document
+> frame was not the score's group-contribution estimand. V2 is invalid before
+> coding; see `validation/blind_audit_500/V2_INVALID.md`. The byte-freeze
+> findings below remain useful provenance but do not authorize fielding v2.
+
 Method: all reads from `git show origin/main:<path>` or a `git archive origin/main` extract in scratch space. No working-tree file was read as evidence; nothing in the repo was written, staged, or checked out. Hash checks executed against real git objects in the repo (read-only plumbing: `cat-file`, `show`, `log`, `ls-tree`). The six registration-enforcement test files were run with the repo venv against the extract: **42 passed, 1 skipped** (the skip is `test_registered_inputs_match_code_and_repository`'s base-commit probe, which skips where `.git` is absent; the same check was executed manually against the repo — results below).
 
 Verdict key: SOUND / TIME-BOMB (will break on legitimate future change) / DRIFTED (registered ≠ implemented) / UNVERIFIABLE.

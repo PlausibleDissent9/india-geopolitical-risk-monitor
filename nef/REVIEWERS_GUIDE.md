@@ -14,6 +14,7 @@ where the known soft spots are — before you find them.*
 | Dictionaries are registered, ex-ante, never event-chasing | methodology changelog | `dictionaries.json` per-term rationales + dated append-only amendments in git history |
 | The index detects real episodes it was never told about | validation.html, hit-rate 18/21 | `validation/validation_episodes.json` was frozen 2026-07-24 (commit history proves date); event names never appear in query terms |
 | The placebo diagnostic is unfavorable | validation.html | 52 of 115 placebo episodes overlap registered-episode days (45.2%), versus about 35.6% under duration-preserving random placement; inspect the placebo payload and rerun the documented command |
+| External human accuracy evidence is incomplete | validation.html; `validation/blind_audit_500/` | Precision v2 was invalidated before coding after source-frame and estimand defects were found; no v3 is frozen and no v2 label or result exists |
 | Results are not an artifact of one term list | validation.html robustness | correlations AND the weekly overlay chart; the weak case (gulf narrow 0.527) is discussed by name on the page |
 | Recent daily scores carry quantified sampling noise | index chart band, uncertainty.json | Wilson-interval construction documented in the codebook; every published point sits inside its own band (checkable in one script) |
 | Every number has receipts | receipts.html | most receipt articles are drawn from the same sampled corpus the score was computed over ("in scored sample" label) — the estimator's own evidence, enumerated |
@@ -37,18 +38,23 @@ where the known soft spots are — before you find them.*
    currently 0.875 with n=16 author labels against a registered
    threshold of 100 — the precision series is flagged UNCALIBRATED on
    the site until that threshold is met.
-3. **The 2026 source switch is spliced.** GDELT's maintainer directed
+3. **The external precision study has no result.** V2 is reproducible as a
+   frozen artifact but invalid as a production-frame precision study: one
+   registered source day omitted 5,386 production documents, and its
+   unique-document frame did not match the score's group-contribution
+   numerator. It was invalidated before any label; do not field or score it.
+4. **The 2026 source switch is spliced.** GDELT's maintainer directed
    this project from the DOC API to the ngrams dataset; series levels
    are ratio-linked over an overlap window (calibration file published,
    log-sd per channel). Two channels' ratios rest on 1 overlap day —
    thin, disclosed, and improving as overlap accumulates.
-4. **Sampling design changed variance.** Ngrams-era scores are
+5. **Sampling design changed variance.** Ngrams-era scores are
    estimated from ~30k-document daily samples; that is exactly why the
    sampling bands exist and why they do not extend to API-era days.
-5. **Sub-national event geography has vintage gaps.** GDELT's FIPS
+6. **Sub-national event geography has vintage gaps.** GDELT's FIPS
    coding predates Telangana and Ladakh; their events count under
    parent codes, the maps page hover says so per state.
-6. **Coverage drift diagnostics are being recomputed** against the
+7. **Coverage drift diagnostics are being recomputed** against the
    amended dictionaries (drift mode exists in `src/validate.py`; the
    payload publishes under `validation.json → drift`). If the field is
    absent when you read this, a CI test is failing loudly about it —
