@@ -23,6 +23,8 @@ jobs:
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Environment matches exact pins
         run: python scripts/check_environment.py
+      - name: Public product catalog and route floor
+        run: python -m src.product_catalog --check
       - name: Lint (ruff)
         run: ruff check .
       - name: Types (mypy)

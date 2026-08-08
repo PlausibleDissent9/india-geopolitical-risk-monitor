@@ -57,6 +57,7 @@ PAGES: dict[str, Page] = {
     "notes.html": Page("Weekly notes", "Research notes", "article", "notes"),
     "portal.html": Page("Author portal", "Operations", "onboarding"),
     "predictions.html": Page("Prediction archive", "Evidence", "evidence", "analysis"),
+    "products.html": Page("Explore IGRM", "Public product directory", "dashboard", "products"),
     "receipts.html": Page("Receipts", "Evidence", "evidence"),
     "research/forecasts.html": Page("Forecast experiment (V11)", "Research", "article", "analysis", True),
     "research/history.html": Page("Historical attention proxy, 1979–2019", "Research", "article", "analysis", True),
@@ -236,6 +237,7 @@ def _masthead(page: Page, prefix: str) -> str:
     </a>
     <nav class="mast-links" aria-label="Primary navigation">
       <a href="{_href(prefix, 'start.html')}"{_current(page.active, 'start')}>Start here</a>
+      <a href="{_href(prefix, 'products.html')}"{_current(page.active, 'products')}>Explore</a>
       <a href="{_href(prefix, 'methodology.html')}"{_current(page.active, 'methodology')}>Methodology</a>
       <a href="{_href(prefix, 'validation.html')}"{_current(page.active, 'validation')}>Validation</a>
       <a href="{_href(prefix, 'analysis.html')}"{_current(page.active, 'analysis')}>Research</a>
@@ -284,6 +286,8 @@ def _footer(prefix: str, original: str) -> str:
         <p>Public research instrument · India-specific press salience</p>
       </div>
       <nav aria-label="Footer navigation">
+        <a href="{_href(prefix, 'products.html')}">Explore IGRM</a>
+        <a href="{_href(prefix, 'maps.html')}">Maps</a>
         <a href="{_href(prefix, 'methodology.html')}">Methodology</a>
         <a href="{_href(prefix, 'validation.html')}">Validation</a>
         <a href="{_href(prefix, 'history.html')}">1979&ndash;2019 history</a>

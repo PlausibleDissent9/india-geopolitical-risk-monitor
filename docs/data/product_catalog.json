@@ -1,0 +1,329 @@
+{
+ "_meta": {
+  "what": "The no-capability-loss public product catalog: every user-facing HTML route, its locked IGRM Max pillar, present maturity and claim boundary, plus explicit non-product exclusions.",
+  "definition": "This catalog records public surfaces and their present maturity. A listed route is not evidence that the full 24 October launch outcome for its pillar is complete.",
+  "catalog_version": "1.0.0",
+  "effective": "2026-08-08",
+  "license": "CC BY 4.0",
+  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/product_catalog.json"
+ },
+ "primary_navigation": [
+  "start.html",
+  "products.html",
+  "methodology.html",
+  "validation.html",
+  "analysis.html",
+  "notes.html",
+  "data.html"
+ ],
+ "pillars": [
+  {
+   "id": "core",
+   "name": "IGRM Core",
+   "current_state": "live_measurement_instrument",
+   "current_boundary": "Daily and seven-day press-salience measurement, receipts, vintages and operational evidence are live; salience is not risk or a forecast."
+  },
+  {
+   "id": "atlas",
+   "name": "IGRM Atlas",
+   "current_state": "live_foundation_expansion_underway",
+   "current_boundary": "Maps, event geography, sector exposure and episode navigation are public; the declared firm-port-commodity-state dependency universe remains an October build objective."
+  },
+  {
+   "id": "evidence_engine",
+   "name": "IGRM Evidence Engine",
+   "current_state": "public_draft_foundation",
+   "current_boundary": "OGES 0.1, schemas, provenance-oriented research tools and frozen machine interfaces are public; no production canonical-object release has yet been issued."
+  },
+  {
+   "id": "research_copilot",
+   "name": "IGRM Research Copilot",
+   "current_state": "bounded_prototype",
+   "current_boundary": "A limited evidence interface and deterministic workbench are public; unrestricted grounded natural-language research over canonical releases is not yet live."
+  },
+  {
+   "id": "observatory",
+   "name": "IGRM Observatory",
+   "current_state": "live_research_surfaces_expansion_underway",
+   "current_boundary": "Historical, event-study, market-comparison and analytical surfaces are public; full event dossiers, hypothesis ledgers and recovery monitoring remain October objectives."
+  },
+  {
+   "id": "benchmark_lab",
+   "name": "IGRM Benchmark Lab",
+   "current_state": "registered_experiments_and_loss_register",
+   "current_boundary": "Validation batteries, comparison studies, negative findings and experimental forecast records are public; no universal superiority claim is licensed."
+  },
+  {
+   "id": "institution",
+   "name": "IGRM Institution",
+   "current_state": "public_governance_foundation",
+   "current_boundary": "Methods, status, corrections and falsification surfaces are public; external governance, pilots, continuity and adoption must be earned and documented."
+  },
+  {
+   "id": "distribution",
+   "name": "IGRM Distribution",
+   "current_state": "open_web_and_data_distribution",
+   "current_boundary": "Open pages, data, feeds, embeds, notes and citation tools are live; multilingual institutional packages and role-specific compiled outputs remain October objectives."
+  }
+ ],
+ "routes": [
+  {
+   "path": "index.html",
+   "label": "Current measure",
+   "pillar_id": "core",
+   "status": "live",
+   "purpose": "The latest seven-day headline, channel decomposition, historical tape and research evidence."
+  },
+  {
+   "path": "start.html",
+   "label": "Start here",
+   "pillar_id": "core",
+   "status": "live",
+   "purpose": "A bounded orientation to what the instrument measures, how to read it and what it cannot answer."
+  },
+  {
+   "path": "receipts.html",
+   "label": "Evidence receipts",
+   "pillar_id": "core",
+   "status": "live",
+   "purpose": "Latest-day query-matched evidence representatives, lane status, denominators and source composition."
+  },
+  {
+   "path": "vintages.html",
+   "label": "Point-in-time vintages",
+   "pillar_id": "core",
+   "status": "live",
+   "purpose": "Reconstruct what the published series showed at earlier publication times without hindsight leakage."
+  },
+  {
+   "path": "maps.html",
+   "label": "Maps",
+   "pillar_id": "atlas",
+   "status": "live",
+   "purpose": "India-partner and state-level press-recorded event geography, with explicit source and boundary limits."
+  },
+  {
+   "path": "exposure.html",
+   "label": "Sector exposure",
+   "pillar_id": "atlas",
+   "status": "live",
+   "purpose": "A user-selected sector view over current channel readings, evidence and transparent computation."
+  },
+  {
+   "path": "episode.html",
+   "label": "Episode dossiers",
+   "pillar_id": "atlas",
+   "status": "live",
+   "purpose": "A directory and detail view for detected episodes and their associated market-context cells."
+  },
+  {
+   "path": "standard.html",
+   "label": "Open evidence standard",
+   "pillar_id": "evidence_engine",
+   "status": "public_draft",
+   "purpose": "The OGES 0.1 profile, conformance boundary, schemas and adversarial test vectors."
+  },
+  {
+   "path": "data.html",
+   "label": "Data library",
+   "pillar_id": "evidence_engine",
+   "status": "live",
+   "purpose": "Core downloadable files, caveats, citation instructions and the exhaustive API contract."
+  },
+  {
+   "path": "api.html",
+   "label": "API contract",
+   "pillar_id": "evidence_engine",
+   "status": "live",
+   "purpose": "The frozen machine interface, deprecation rules, OpenAPI document and dataset datasheet."
+  },
+  {
+   "path": "viewer.html",
+   "label": "Data viewer",
+   "pillar_id": "evidence_engine",
+   "status": "live",
+   "purpose": "A bounded browser for every contract-listed JSON endpoint."
+  },
+  {
+   "path": "codebook.html",
+   "label": "Codebook",
+   "pillar_id": "evidence_engine",
+   "status": "live",
+   "purpose": "Definitions, fields, units, construction choices and known limitations."
+  },
+  {
+   "path": "workbench.html",
+   "label": "Research workbench",
+   "pillar_id": "research_copilot",
+   "status": "live",
+   "purpose": "Browser-side exact extracts with input hashes and a citation-bearing manifest."
+  },
+  {
+   "path": "ask.html",
+   "label": "Ask IGRM",
+   "pillar_id": "research_copilot",
+   "status": "experimental",
+   "purpose": "A deliberately bounded evidence-access prototype, not an unrestricted or authoritative chatbot."
+  },
+  {
+   "path": "analysis.html",
+   "label": "Analysis",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "Market comparisons, chokepoints, seasonality, robustness and negative-result surfaces."
+  },
+  {
+   "path": "explorer.html",
+   "label": "Outcomes explorer",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "Historical episode-outcome cells and registered divergence evidence, labelled as association."
+  },
+  {
+   "path": "history.html",
+   "label": "Historical proxy",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "The 1979–2019 newspaper attention proxy and its explicit comparability boundary."
+  },
+  {
+   "path": "research/history.html",
+   "label": "Historical research note",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "The focused research interpretation of the historical attention proxy."
+  },
+  {
+   "path": "notes.html",
+   "label": "Weekly notes",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "Versioned public research notes derived from the instrument and its evidence."
+  },
+  {
+   "path": "validation.html",
+   "label": "Evaluation record",
+   "pillar_id": "benchmark_lab",
+   "status": "live",
+   "purpose": "Episode detection, baselines, robustness, comparisons and disclosed unfavorable diagnostics."
+  },
+  {
+   "path": "vs-gpr.html",
+   "label": "GPR comparison",
+   "pillar_id": "benchmark_lab",
+   "status": "live",
+   "purpose": "A registered, bounded comparison with AI-GPR India, including uncertainty and divergences."
+  },
+  {
+   "path": "divergence.html",
+   "label": "Divergence register",
+   "pillar_id": "benchmark_lab",
+   "status": "live",
+   "purpose": "Permanent comparator disagreements with exact samples, receipts and claim limits."
+  },
+  {
+   "path": "methodology.html",
+   "label": "Methodology",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "The complete construction, evaluation, limitations and versioned change record."
+  },
+  {
+   "path": "status.html",
+   "label": "System status",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "Freshness and reliability for selected core publication lanes and sources."
+  },
+  {
+   "path": "corrections.html",
+   "label": "Corrections",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "The dated public record of errors, withdrawals, restatements and methodological corrections."
+  },
+  {
+   "path": "break.html",
+   "label": "Break this index",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "Falsification questions, reproducible probes and the standard for publishing a serious failure."
+  },
+  {
+   "path": "products.html",
+   "label": "Explore IGRM",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "The authoritative directory of every user-facing product and its present maturity boundary."
+  },
+  {
+   "path": "embed.html",
+   "label": "Embeddable charts",
+   "pillar_id": "distribution",
+   "status": "live",
+   "purpose": "A compact public chart surface for external sites, with each series and unit explicitly labelled."
+  }
+ ],
+ "protected_routes": [
+  "analysis.html",
+  "api.html",
+  "ask.html",
+  "break.html",
+  "codebook.html",
+  "corrections.html",
+  "data.html",
+  "divergence.html",
+  "embed.html",
+  "episode.html",
+  "explorer.html",
+  "exposure.html",
+  "history.html",
+  "index.html",
+  "maps.html",
+  "methodology.html",
+  "notes.html",
+  "predictions.html",
+  "products.html",
+  "receipts.html",
+  "research/forecasts.html",
+  "research/history.html",
+  "standard.html",
+  "start.html",
+  "status.html",
+  "validation.html",
+  "viewer.html",
+  "vintages.html",
+  "vs-gpr.html",
+  "workbench.html"
+ ],
+ "excluded_routes": [
+  {
+   "path": "404.html",
+   "protected": false,
+   "reason": "System error route; linked contextually by the host, not promoted as a product."
+  },
+  {
+   "path": "portal.html",
+   "protected": false,
+   "reason": "Noindex author-operations surface; not a public research capability."
+  },
+  {
+   "path": "predictions.html",
+   "protected": true,
+   "reason": "Registered forecast experiment; preserved but deliberately separated from front-surface navigation."
+  },
+  {
+   "path": "research/forecasts.html",
+   "protected": true,
+   "reason": "Registered forecast experiment protocol; preserved under the same separation rule."
+  },
+  {
+   "path": "write.html",
+   "protected": false,
+   "reason": "Noindex author-operations surface; not a public research capability."
+  }
+ ],
+ "removal_ledger": []
+}

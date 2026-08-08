@@ -81,6 +81,11 @@ EXEMPT: dict[str, str] = {
         "a frozen promise, not a readout -- it is regenerated only when a "
         "maintainer deliberately freezes a baseline, and a rolling "
         "timestamp on it would defeat the point"),
+    "product_catalog.json": (
+        "a versioned public-route contract, not a daily readout; it changes "
+        "only when the protected product surface changes, so daily aging "
+        "would falsely label a stable catalog as stale"
+    ),
     "notes.json": "the author's weekly writing; cadence is human",
     "note_latest.json": "the author's weekly writing; cadence is human",
     "episodes.json": (

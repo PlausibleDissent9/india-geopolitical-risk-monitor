@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.2.2",
+  "contract_version": "2.2.3",
   "frozen_date": "2026-08-08",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -585,6 +585,21 @@
     "divergence_episodes",
     "lead_lag",
     "panel"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/product_catalog.json",
+   "format": "json",
+   "description": "The no-capability-loss public product catalog: every user-facing HTML route, its locked IGRM Max pillar, present maturity and claim boundary, plus explicit non-product exclusions.",
+   "frozen_fields": [
+    "_meta",
+    "primary_navigation",
+    "pillars",
+    "routes",
+    "protected_routes",
+    "excluded_routes",
+    "removal_ledger"
    ],
    "stability": "stable"
   },

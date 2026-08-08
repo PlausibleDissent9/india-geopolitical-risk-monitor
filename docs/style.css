@@ -268,6 +268,48 @@ a.component-row { text-decoration: none; color: inherit; cursor: pointer; }
 }
 .evidence-rail strong { margin-top: 5px; font-size: var(--fs-dense); font-weight: 600; }
 
+.platform-directory {
+  margin: 0 0 30px;
+  padding: 28px;
+  border: 1px solid var(--rule-soft);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--calm) 8%, transparent), transparent 48%),
+    color-mix(in srgb, var(--surface) 58%, transparent);
+}
+.platform-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.platform-head h2 { margin: 5px 0 6px; font-size: var(--fs-h1); }
+.platform-head p:not(.mono-eyebrow) { max-width: 72ch; margin: 0; color: var(--muted); font-size: var(--fs-small); }
+.platform-head .hero-btn { flex: 0 0 auto; margin: 0; }
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--rule-soft);
+  border-left: 1px solid var(--rule-soft);
+}
+.platform-grid a {
+  display: grid;
+  min-width: 0;
+  min-height: 108px;
+  padding: 14px;
+  border-right: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--rule-soft);
+  color: var(--ink);
+  text-decoration: none;
+  transition: background var(--dur-quick) var(--ease), transform var(--dur-instant) var(--ease);
+}
+.platform-grid a:hover { background: color-mix(in srgb, var(--surface) 82%, transparent); }
+.platform-grid a:active { transform: scale(0.99); }
+.platform-grid span { color: var(--muted); font-family: var(--font-mono); font-size: var(--fs-micro); }
+.platform-grid strong { align-self: end; margin-top: 12px; font-size: var(--fs-dense); }
+.platform-grid small { margin-top: 3px; overflow: hidden; color: var(--muted); font-size: var(--fs-micro); text-overflow: ellipsis; white-space: nowrap; }
+
 /* Sections */
 .chart-section, .note-section, .archive-section { padding: 40px 0; border-bottom: 1px solid var(--rule-soft); }
 .archive-section:last-of-type { border-bottom: none; }
@@ -373,6 +415,8 @@ main > section:nth-child(5) { animation-delay: var(--dur-calm); }
 @media (max-width: 720px) {
   .instrument { grid-template-columns: 1fr; gap: 26px; padding: 26px 22px; }
   .masthead { position: static; }
+  .platform-head { align-items: flex-start; flex-direction: column; }
+  .platform-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
