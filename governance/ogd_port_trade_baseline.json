@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-09",
+  "status": "acquired_rights_review_required",
+  "source": {
+    "source_id": "india_ogd_port_trade_2019_20",
+    "catalog_url": "https://www.data.gov.in/catalog/overseas-cargo-principal-commodities-unloaded-and-loaded-country-major-ports",
+    "license_url": "https://www.data.gov.in/sites/default/files/NDSAP_OpenDataLicense.pdf",
+    "allowed_file_path_prefixes": [
+      "/files/ogdpv2dms/s3fs-public/datafile/",
+      "/sites/default/files/datafile/"
+    ],
+    "required_permitted_uses": [
+      "cite_metadata",
+      "publish_derived_value",
+      "publish_extract"
+    ]
+  },
+  "implementation": {
+    "path": "src/ogd_port_trade.py",
+    "sha256": "7ebfde727af684e227c1877a6c1d9f2a71d03c2b68eee699f598772ca77d792a"
+  },
+  "period": {
+    "label": "2019-20",
+    "start": "2019-04-01",
+    "end": "2020-03-31",
+    "status": "historical_baseline_not_current"
+  },
+  "unit_evidence": {
+    "unit": "thousand_metric_tonnes",
+    "source_url": "https://www.shipmin.gov.in/sites/default/files/BPS2020.pdf",
+    "source_sha256": "ad1af140a52c4280bcc33ebac439339485fe2ed2dfe25a1fada0ab74f2d053a8",
+    "table_ids": [
+      "2.1.6",
+      "2.1.7"
+    ],
+    "pdf_pages": [
+      105,
+      118
+    ]
+  },
+  "port_frame": {
+    "frame_id": "india_major_port_table_columns_2019_20",
+    "columns": [
+      "SMP (KDS)",
+      "SMP(HDC)",
+      "PPT",
+      "VPT",
+      "KPL",
+      "ChPT",
+      "V.O.C",
+      "CoPT",
+      "NMPT",
+      "MoPT",
+      "JNPT",
+      "MbPT",
+      "DPT"
+    ],
+    "member_count": 13,
+    "scope": "The 13 table columns represent two Syama Prasad Mookerjee Port dock systems plus 11 other Major Port columns in the Ministry's 2019-20 table.",
+    "excluded_scope": "This frame is not all Indian ports: non-major ports are outside it, and the two Kolkata dock systems are table columns rather than additional port authorities."
+  },
+  "artifacts": [
+    {
+      "flow": "unloaded",
+      "resource_uuid": "03b77f2b-5952-4cbf-aeba-c4bb7856b103",
+      "resource_url": "https://www.data.gov.in/resource/country-port-wise-overseas-cargo-principal-commodities-unloaded-during-2019-20",
+      "declared_file_url": "https://www.data.gov.in/files/ogdpv2dms/s3fs-public/datafile/Overseas_unloaded_1.csv",
+      "retrieval_url": "https://www.data.gov.in/sites/default/files/datafile/Overseas_unloaded_1.csv",
+      "sha256": "4f8df1d300a3f0a580812b2ff014a56554190073c5c798476ed45e1d691e628e",
+      "file_size_bytes": 10170,
+      "published_on": "2021-08-26",
+      "updated_on": "2021-12-13",
+      "retrieved_at": "2026-08-08T19:53:30Z",
+      "expected_rows": 177,
+      "expected_summary_rows": 12,
+      "expected_detail_rows": 165,
+      "country_semantics": "country_of_origin"
+    },
+    {
+      "flow": "loaded",
+      "resource_uuid": "945465ed-5edf-4b27-a3d1-77717d68519a",
+      "resource_url": "https://www.data.gov.in/resource/country-port-wise-overseas-cargo-principal-commodities-loaded-during-2019-20",
+      "declared_file_url": "https://www.data.gov.in/files/ogdpv2dms/s3fs-public/datafile/Overseas_Loaded_1.csv",
+      "retrieval_url": "https://www.data.gov.in/sites/default/files/datafile/Overseas_Loaded_1.csv",
+      "sha256": "e8506e26095d2e72f1ae0825893115eda74919bc7f273bc07e7f593cb0d74270",
+      "file_size_bytes": 4157,
+      "published_on": "2021-08-26",
+      "updated_on": "2021-12-13",
+      "retrieved_at": "2026-08-08T19:53:30Z",
+      "expected_rows": 73,
+      "expected_summary_rows": 5,
+      "expected_detail_rows": 68,
+      "country_semantics": "provider_heading_says_country_of_origin_for_loaded_cargo_destination_not_asserted"
+    }
+  ],
+  "limits": [
+    "The observations are a 2019-20 historical baseline, not current port exposure.",
+    "The frame covers the Ministry table's Major Port columns, not every Indian port.",
+    "The loaded-cargo table still labels the country field Country of Origin; IGRM does not silently relabel it destination.",
+    "Source NA cells remain missing and are never converted to zero.",
+    "Displayed integer quantities are rounded to thousand metric tonnes, so small row reconciliation residuals are preserved.",
+    "The source does not identify firms, buyers, suppliers, vessels, shipments or end-to-end routes.",
+    "No dependency edge is emitted until a signed rights decision and registered entity crosswalk exist.",
+    "A historical cargo association is not a current disruption, loss estimate, forecast or causal effect."
+  ]
+}

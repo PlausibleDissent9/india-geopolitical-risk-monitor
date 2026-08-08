@@ -25,6 +25,7 @@ dependencies = [
   "requests>=2.31",
   "yfinance>=0.2",
   "Markdown>=3.6",
+  "pdfplumber>=0.11,<0.12",
 ]
 
 [project.optional-dependencies]

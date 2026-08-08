@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-09",
+  "status": "acquired_rights_review_required",
+  "source": {
+    "source_id": "india_major_ports_bps_2024_25",
+    "page_url": "https://shipmin.gov.in/en/content/basic-port-statistics-india-2024-25",
+    "terms_url": "https://shipmin.gov.in/en/footer/copyrightpolicy",
+    "required_permitted_uses": [
+      "cite_metadata",
+      "publish_derived_value",
+      "publish_extract"
+    ]
+  },
+  "implementation": {
+    "path": "src/shipmin_port_trade_pdf.py",
+    "sha256": "ca7eaef927b7307f36ffb26738c2e4870378b8a382321db3ab35b54fc7a4b51e"
+  },
+  "artifact": {
+    "url": "https://shipmin.gov.in/sites/default/files/BPS%202024-25_compressed.pdf",
+    "sha256": "c443531e8b7acd3d6912b25b99c97b2b2388fcba9d18d60123e2513fcd76e478",
+    "file_size_bytes": 2469332,
+    "page_count": 243,
+    "published_on": "2026-04-29",
+    "retrieved_at": "2026-08-08T20:04:00Z",
+    "table_ids": [
+      "2.1.6",
+      "2.1.7"
+    ]
+  },
+  "period": {
+    "label": "2024-25",
+    "start": "2024-04-01",
+    "end": "2025-03-31",
+    "status": "latest_released_fiscal_baseline_not_live"
+  },
+  "unit": "thousand_metric_tonnes",
+  "port_frame": {
+    "frame_id": "india_major_port_table_columns_2024_25",
+    "columns": [
+      "SMP(KDS)",
+      "SMP(HDC)",
+      "PPA",
+      "VPA",
+      "KPL",
+      "ChPA",
+      "V.O.C",
+      "CoPA",
+      "NMPA",
+      "MoPA",
+      "JNPA",
+      "MbPA",
+      "DPA"
+    ],
+    "member_count": 13,
+    "scope": "The 13 table columns are two Syama Prasad Mookerjee Port dock systems and 11 other Major Port Authority columns in tables 2.1.6 and 2.1.7.",
+    "excluded_scope": "This is not a denominator for all Indian ports. Non-major ports are outside the table and the two Kolkata dock-system columns do not represent two additional port authorities."
+  },
+  "flows": [
+    {
+      "flow": "unloaded",
+      "pdf_pages": [
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117
+      ],
+      "country_semantics": "country_of_origin",
+      "commodities": [
+        "POL-CRUDE",
+        "POL-PRODUCT",
+        "FERTILIZER",
+        "FRM-DRY",
+        "FRM-LIQUID",
+        "FOOD GRAIN",
+        "IRON & STEEL",
+        "EDIBLE OIL",
+        "COAL (COKING)",
+        "COAL (THERMAL)",
+        "IRON ORE / PELLETS",
+        "OTHER ORES",
+        "LPG",
+        "OTRHER COAL",
+        "other commodity"
+      ],
+      "expected_detail_rows": 483,
+      "expected_positive_joint_cells": 870,
+      "expected_rows_missing_all_ports_total": 7,
+      "expected_commodity_total_drifts": {
+        "POL-CRUDE": -1,
+        "POL-PRODUCT": -1,
+        "FERTILIZER": -1,
+        "FRM-DRY": 4,
+        "FRM-LIQUID": 0,
+        "FOOD GRAIN": 0,
+        "IRON & STEEL": 1,
+        "EDIBLE OIL": 1,
+        "COAL (COKING)": 1,
+        "COAL (THERMAL)": 0,
+        "IRON ORE / PELLETS": 0,
+        "OTHER ORES": 0,
+        "LPG": 0,
+        "OTRHER COAL": -1,
+        "other commodity": -3
+      }
+    },
+    {
+      "flow": "loaded",
+      "pdf_pages": [
+        118,
+        119,
+        120,
+        121,
+        122,
+        123
+      ],
+      "country_semantics": "provider_heading_says_country_of_origin_for_loaded_cargo_destination_not_asserted",
+      "commodities": [
+        "POL-PRODUCT",
+        "FOOD GRAIN",
+        "IRON & STEEL",
+        "IRON ORE / PELLETS",
+        "OTHER ORES",
+        "Other Commodities"
+      ],
+      "expected_detail_rows": 220,
+      "expected_positive_joint_cells": 394,
+      "expected_rows_missing_all_ports_total": 1,
+      "expected_commodity_total_drifts": {
+        "POL-PRODUCT": 0,
+        "FOOD GRAIN": 1,
+        "IRON & STEEL": 0,
+        "IRON ORE / PELLETS": 2,
+        "OTHER ORES": 1,
+        "Other Commodities": -1
+      }
+    }
+  ],
+  "limits": [
+    "The source is the latest released fiscal-year baseline, not live port traffic.",
+    "The port frame covers the Ministry table's Major Port columns, not every Indian port.",
+    "The loaded-cargo table labels its country field Country of Origin; IGRM does not silently assert that it means destination.",
+    "Blank PDF cells remain source blanks and are never converted to observed zeros.",
+    "The extractor preserves provider spellings and category labels, including apparent typographical errors, until a separately registered crosswalk resolves them.",
+    "Quantities are printed in thousand metric tonnes and small integer rounding residuals are retained.",
+    "The source does not identify firms, buyers, suppliers, vessels, shipments or end-to-end routes.",
+    "No dependency relation is emitted until a signed rights decision, entity crosswalks and a lossless multi-role canonical object exist.",
+    "A fiscal cargo association is not a disruption, loss estimate, forecast or causal effect."
+  ]
+}
