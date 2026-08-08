@@ -1,0 +1,47 @@
+name: publish-lane environment
+
+# ci.yml installs requirements.txt AND requirements-dev.txt. daily.yml and
+# morning.yml install requirements.txt ALONE and then gate on the same test
+# suite, so a test that needs the dev tooling is green in ci and red in the
+# lane that actually publishes.
+#
+# That is not hypothetical. On 2026-08-08 a test asserted that the pins from
+# BOTH requirement files were installed. ci was green on the commit that
+# introduced it. daily-update #100 died at its first step having computed
+# nothing, and the 06:00 IST contract would have died the same way at 05:37
+# -- because ruff and mypy were absent from environments deliberately built
+# without them.
+#
+# So this runs what those two lanes run, in the environment they run it in.
+# It is a separate workflow rather than a job inside ci.yml on purpose:
+# scripts/gate.sh extracts every `run:` line in ci.yml and executes it, so a
+# second job there would make the local gate run the suite three times per
+# ship. The lanes' environment is a CI-only concern; the local gate already
+# has the dev tooling by definition.
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  runtime-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Matches daily.yml and morning.yml: the suite resolves historical
+          # commits for the frozen registrations, and a shallow checkout
+          # would fail for a reason the lanes never hit.
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: daily.yml gates on exactly this
+        run: python -m pytest -q
+      - name: morning.yml gates on exactly this
+        run: python -m pytest -q -m "not live"
