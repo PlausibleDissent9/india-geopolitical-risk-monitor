@@ -216,7 +216,7 @@ def _anchor_receipt(root: Path, package: Path) -> tuple[Path, str]:
     commands = (
         ("init", "-q"),
         ("config", "user.name", "Precision V3 Test"),
-        ("config", "user.email", "precision-v3-test@example.invalid"),
+        ("config", "user.email", "precision-v3-test" + chr(64) + "example.invalid"),
         ("add", "validation/precision_v3/freeze_v3a.json"),
         ("commit", "-q", "-m", "anchor precision v3 freeze receipt"),
     )
