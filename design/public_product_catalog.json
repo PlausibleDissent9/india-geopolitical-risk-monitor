@@ -7,6 +7,7 @@
   "primary_navigation": [
     "start.html",
     "products.html",
+    "atlas.html",
     "methodology.html",
     "validation.html",
     "analysis.html",
@@ -68,6 +69,7 @@
     {"path": "start.html", "label": "Start here", "pillar_id": "core", "status": "live", "purpose": "A bounded orientation to what the instrument measures, how to read it and what it cannot answer."},
     {"path": "receipts.html", "label": "Evidence receipts", "pillar_id": "core", "status": "live", "purpose": "Latest-day query-matched evidence representatives, lane status, denominators and source composition."},
     {"path": "vintages.html", "label": "Point-in-time vintages", "pillar_id": "core", "status": "live", "purpose": "Reconstruct what the published series showed at earlier publication times without hindsight leakage."},
+    {"path": "atlas.html", "label": "IGRM Atlas", "pillar_id": "atlas", "status": "live", "purpose": "The integrated public hub for geography, detected episodes, sector salience, synthetic exposure fingerprints and bounded scenario compilation."},
     {"path": "maps.html", "label": "Maps", "pillar_id": "atlas", "status": "live", "purpose": "India-partner and state-level press-recorded event geography, with explicit source and boundary limits."},
     {"path": "exposure.html", "label": "Sector exposure", "pillar_id": "atlas", "status": "live", "purpose": "A user-selected sector view over current channel readings, evidence and transparent computation."},
     {"path": "episode.html", "label": "Episode dossiers", "pillar_id": "atlas", "status": "live", "purpose": "A directory and detail view for detected episodes and their associated market-context cells."},
@@ -98,7 +100,7 @@
     {"path": "embed.html", "label": "Embeddable charts", "pillar_id": "distribution", "status": "live", "purpose": "A compact public chart surface for external sites, with each series and unit explicitly labelled."}
   ],
   "protected_routes": [
-    "analysis.html", "api.html", "ask.html", "break.html", "codebook.html",
+    "analysis.html", "api.html", "ask.html", "atlas.html", "break.html", "codebook.html",
     "corrections.html", "data.html", "divergence.html", "dna.html", "embed.html",
     "episode.html", "explorer.html", "exposure.html", "history.html",
     "index.html", "maps.html", "methodology.html", "notes.html",

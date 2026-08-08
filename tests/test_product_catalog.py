@@ -31,7 +31,7 @@ def test_catalog_accounts_for_every_served_page_and_protects_every_product() -> 
         "status": "pass",
         "catalog_version": "1.0.0",
         "pillar_count": 8,
-        "protected_route_count": 34,
+        "protected_route_count": 35,
         "excluded_route_count": 5,
     }
     assert result["route_floor_status"] in {
@@ -93,17 +93,39 @@ def test_directory_links_every_product_and_never_promotes_author_operations() ->
         assert required in (page + (DOCS / "index.html").read_text(encoding="utf-8"))
 
 
-def test_explore_is_in_global_navigation_on_every_shell_route() -> None:
+def test_explore_and_atlas_are_in_global_navigation_on_every_shell_route() -> None:
     from src.site_shell import PAGES
 
     for relative in PAGES:
         page = (DOCS / relative).read_text(encoding="utf-8")
         prefix = "/" if relative == "404.html" else ("../" if "/" in relative else "")
         assert f'href="{prefix}products.html"' in page, relative
+        assert f'href="{prefix}atlas.html"' in page, relative
         assert f'href="{prefix}maps.html"' in page, relative
     homepage = (DOCS / "index.html").read_text(encoding="utf-8")
     assert 'href="products.html">Explore</a>' in homepage
-    assert 'href="maps.html"><span>02</span><strong>Atlas</strong>' in homepage
+    assert 'href="atlas.html">Atlas</a>' in homepage
+    assert 'href="atlas.html"><span>02</span><strong>Atlas</strong>' in homepage
+
+
+def test_atlas_hub_preserves_every_child_surface_and_its_maturity_boundary() -> None:
+    page = (DOCS / "atlas.html").read_text(encoding="utf-8")
+    for path in ("maps.html", "episode.html", "exposure.html", "dna.html", "shock.html"):
+        assert f'href="{path}"' in page
+    for boundary in (
+        "Live observation",
+        "Live utility",
+        "Synthetic foundation",
+        "0</dt><dd>production dependency-graph releases",
+        "does not yet publish a comprehensive real firm–port–commodity–state dependency graph",
+    ):
+        assert boundary in page
+
+    from src.site_shell import PAGES
+
+    assert PAGES["atlas.html"].active == "atlas"
+    for path in ("maps.html", "episode.html", "exposure.html", "dna.html", "shock.html"):
+        assert PAGES[path].active == "atlas"
 
 
 def test_route_omission_and_self_served_ghost_both_refuse() -> None:

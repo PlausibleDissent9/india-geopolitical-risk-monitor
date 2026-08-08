@@ -44,17 +44,18 @@ PAGES: dict[str, Page] = {
     "analysis.html": Page("Analysis", "Research", "dashboard", "analysis"),
     "api.html": Page("API contract", "Data infrastructure", "system", "data"),
     "ask.html": Page("Ask IGRM", "Evidence access", "onboarding", "start"),
+    "atlas.html": Page("IGRM Atlas", "Exposure intelligence", "dashboard", "atlas"),
     "break.html": Page("Break this index", "Accountability", "article", "methodology", True),
     "codebook.html": Page("Codebook", "Reference", "article", "data", True),
     "corrections.html": Page("Corrections", "Accountability", "article", "methodology", True),
     "data.html": Page("Data", "Open infrastructure", "system", "data"),
-    "dna.html": Page("India Exposure DNA", "India dependency infrastructure", "article", "products"),
+    "dna.html": Page("India Exposure DNA", "India dependency infrastructure", "article", "atlas"),
     "divergence.html": Page("Divergence register", "Evidence", "evidence", "analysis"),
-    "episode.html": Page("Episode detail", "Evidence", "evidence", "analysis"),
+    "episode.html": Page("Episode detail", "Evidence", "evidence", "atlas"),
     "explorer.html": Page("Outcomes explorer", "Research", "dashboard", "analysis"),
-    "exposure.html": Page("Your exposure", "Evidence utility", "evidence", "start", True),
+    "exposure.html": Page("Your exposure", "Evidence utility", "evidence", "atlas", True),
     "history.html": Page("1979–2019 historical proxy", "Research", "article", "analysis"),
-    "maps.html": Page("Maps", "Research", "dashboard", "analysis"),
+    "maps.html": Page("Maps", "Research", "dashboard", "atlas"),
     "methodology.html": Page("Methodology", "Method", "article", "methodology", True),
     "notes.html": Page("Weekly notes", "Research notes", "article", "notes"),
     "portal.html": Page("Author portal", "Operations", "onboarding"),
@@ -63,7 +64,7 @@ PAGES: dict[str, Page] = {
     "receipts.html": Page("Receipts", "Evidence", "evidence"),
     "replay.html": Page("Knowledge replay", "Evidence infrastructure", "article", "methodology"),
     "sensors.html": Page("Sensor Fusion", "World-state infrastructure", "article", "products"),
-    "shock.html": Page("Bounded Shock Compiler", "Scenario infrastructure", "article", "products"),
+    "shock.html": Page("Bounded Shock Compiler", "Scenario infrastructure", "article", "atlas"),
     "research/forecasts.html": Page(
         "Forecast experiment (V11)", "Research", "article", "analysis", True
     ),
@@ -315,6 +316,7 @@ def _masthead(page: Page, prefix: str) -> str:
     <nav class="mast-links" aria-label="Primary navigation">
       <a href="{_href(prefix, "start.html")}"{_current(page.active, "start")}>Start here</a>
       <a href="{_href(prefix, "products.html")}"{_current(page.active, "products")}>Explore</a>
+      <a href="{_href(prefix, "atlas.html")}"{_current(page.active, "atlas")}>Atlas</a>
       <a href="{_href(prefix, "methodology.html")}"{_current(page.active, "methodology")}>Methodology</a>
       <a href="{_href(prefix, "validation.html")}"{_current(page.active, "validation")}>Validation</a>
       <a href="{_href(prefix, "analysis.html")}"{_current(page.active, "analysis")}>Research</a>
@@ -362,6 +364,7 @@ def _footer(prefix: str, original: str) -> str:
       </div>
       <nav aria-label="Footer navigation">
         <a href="{_href(prefix, "products.html")}">Explore IGRM</a>
+        <a href="{_href(prefix, "atlas.html")}">Atlas</a>
         <a href="{_href(prefix, "maps.html")}">Maps</a>
         <a href="{_href(prefix, "methodology.html")}">Methodology</a>
         <a href="{_href(prefix, "validation.html")}">Validation</a>

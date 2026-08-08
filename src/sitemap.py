@@ -47,6 +47,7 @@ EXCLUDE: dict[str, str] = {
 PRIORITY: dict[str, str] = {
     "index.html": "1.0",
     "start.html": "0.9",
+    "atlas.html": "0.9",
     "methodology.html": "0.9",
     "codebook.html": "0.9",
     "history.html": "0.8",

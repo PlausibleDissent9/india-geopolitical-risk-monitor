@@ -12,6 +12,7 @@
  "primary_navigation": [
   "start.html",
   "products.html",
+  "atlas.html",
   "methodology.html",
   "validation.html",
   "analysis.html",
@@ -96,6 +97,13 @@
    "pillar_id": "core",
    "status": "live",
    "purpose": "Reconstruct what the published series showed at earlier publication times without hindsight leakage."
+  },
+  {
+   "path": "atlas.html",
+   "label": "IGRM Atlas",
+   "pillar_id": "atlas",
+   "status": "live",
+   "purpose": "The integrated public hub for geography, detected episodes, sector salience, synthetic exposure fingerprints and bounded scenario compilation."
   },
   {
    "path": "maps.html",
@@ -298,6 +306,7 @@
   "analysis.html",
   "api.html",
   "ask.html",
+  "atlas.html",
   "break.html",
   "codebook.html",
   "corrections.html",

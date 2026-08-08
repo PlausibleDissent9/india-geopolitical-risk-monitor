@@ -214,6 +214,7 @@ def validate_catalog(catalog: dict[str, Any] | None = None) -> dict[str, Any]:
     if set(navigation_routes) != {
         "start.html",
         "products.html",
+        "atlas.html",
         "methodology.html",
         "validation.html",
         "analysis.html",
