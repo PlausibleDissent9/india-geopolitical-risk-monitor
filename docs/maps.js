@@ -39,6 +39,17 @@
     tone: "Goldstein mean",
     protest: "Protest share"
   };
+  var OPERATIONS_INPUTS = {
+    latest: "data/latest.json",
+    episodes: "data/episodes.json",
+    status: "data/status.json"
+  };
+  var MISSIONS = {
+    partner: { scope: "world", metric: "conflict", window: "recent", entity: null, tab: "selection" },
+    border: { scope: "world", metric: "conflict", window: "recent", entity: "PAK", tab: "selection" },
+    states: { scope: "india", metric: "volume", window: "recent", entity: null, tab: "selection" },
+    audit: { scope: "world", metric: "volume", window: "all", entity: null, tab: "evidence" }
+  };
 
   var dom = {
     svg: document.getElementById("atlas-map"),
@@ -69,7 +80,16 @@
     legendHigh: document.getElementById("map-legend-high"),
     legendNote: document.getElementById("map-legend-note"),
     provenance: document.getElementById("map-provenance-line"),
-    share: document.getElementById("map-share")
+    share: document.getElementById("map-share"),
+    publicationDay: document.getElementById("map-publication-day"),
+    pulseChannels: document.getElementById("map-pulse-channels"),
+    episodeTape: document.getElementById("map-episode-tape"),
+    laneHealth: document.getElementById("map-lane-health"),
+    alignmentNote: document.getElementById("map-alignment-note"),
+    commandOpen: document.getElementById("map-command-open"),
+    commandDialog: document.getElementById("map-command-dialog"),
+    commandQuery: document.getElementById("map-command-query"),
+    commandResults: document.getElementById("map-command-results")
   };
 
   if (!dom.svg || !dom.layer || !dom.shell) return;
@@ -87,7 +107,12 @@
     baseViewBox: null,
     viewBox: null,
     drag: null,
-    moved: false
+    moved: false,
+    mission: "partner",
+    operations: {},
+    inspectorTab: "selection",
+    commandItems: [],
+    commandActive: 0
   };
 
   function escapeHtml(value) {
@@ -112,6 +137,17 @@
     return value == null || !Number.isFinite(Number(value))
       ? "—"
       : (Number(value) * 100).toFixed(1) + "%";
+  }
+
+  function isoDay(value) {
+    return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
+  }
+
+  function htmlElement(name, className, text) {
+    var element = document.createElement(name);
+    if (className) element.className = className;
+    if (text != null) element.textContent = text;
+    return element;
   }
 
   function clamp(value, low, high) {
@@ -558,11 +594,267 @@
     return partial ? partial[0] : null;
   }
 
+  function showInspectorTab(tab) {
+    if (!["selection", "episodes", "evidence"].includes(tab)) return;
+    state.inspectorTab = tab;
+    document.querySelectorAll("[data-inspector-tab]").forEach(function (button) {
+      var active = button.dataset.inspectorTab === tab;
+      button.setAttribute("aria-selected", active ? "true" : "false");
+      button.tabIndex = active ? 0 : -1;
+    });
+    document.querySelectorAll("[data-inspector-panel]").forEach(function (panel) {
+      panel.hidden = panel.dataset.inspectorPanel !== tab;
+    });
+  }
+
+  function applyMission(missionId) {
+    var mission = MISSIONS[missionId];
+    if (!mission) return;
+    state.mission = missionId;
+    var scopeChanged = state.scope !== mission.scope;
+    state.scope = mission.scope;
+    state.metric = mission.metric;
+    state.window = mission.window;
+    state.selected = mission.entity;
+    document.querySelectorAll("[data-map-mission]").forEach(function (button) {
+      button.setAttribute("aria-pressed", button.dataset.mapMission === missionId ? "true" : "false");
+    });
+    if (scopeChanged) renderGeometry();
+    else {
+      updateFeatureStyles();
+      var target = mission.entity || currentConfig().defaultEntity;
+      if (!state.features.has(target)) target = state.order[0];
+      if (target) setSelected(target, { zoom: Boolean(mission.entity), focus: false });
+      else resetViewBox();
+    }
+    showInspectorTab(mission.tab);
+  }
+
+  function clearMission() {
+    state.mission = null;
+    document.querySelectorAll("[data-map-mission]").forEach(function (button) {
+      button.setAttribute("aria-pressed", "false");
+    });
+  }
+
+  function validLatest(payload) {
+    if (!payload || typeof payload !== "object" || !isoDay(payload.date) ||
+        !payload._meta || !isoDay(payload._meta.generated) ||
+        !Number.isFinite(Number(payload.composite7)) ||
+        Number(payload.composite7) < 0 || Number(payload.composite7) > 100 ||
+        !payload.channels || typeof payload.channels !== "object" ||
+        Array.isArray(payload.channels) || Object.keys(payload.channels).length !== 5) return false;
+    return Object.values(payload.channels).every(function (channel) {
+      return channel && typeof channel.label === "string" && channel.label.trim() &&
+        Number.isFinite(Number(channel.score7)) && Number(channel.score7) >= 0 && Number(channel.score7) <= 100;
+    });
+  }
+
+  function validEpisodes(payload) {
+    return Array.isArray(payload) && payload.every(function (episode) {
+      return episode && typeof episode === "object" && typeof episode.channel === "string" &&
+        typeof episode.label === "string" && isoDay(episode.start) && isoDay(episode.end) &&
+        isoDay(episode.peak_date) && episode.start <= episode.end &&
+        Number.isInteger(episode.n_spike_days) && episode.n_spike_days >= 1;
+    });
+  }
+
+  function validStatus(payload) {
+    return payload && typeof payload === "object" && payload._meta &&
+      Array.isArray(payload.lanes) && payload.lanes.length > 0 &&
+      payload.lanes.every(function (lane) {
+        return lane && typeof lane.key === "string" && typeof lane.name === "string" &&
+          typeof lane.evidence === "string" && typeof lane.last === "string";
+      }) && Array.isArray(payload.alignments) && payload.alignments.every(function (row) {
+        return row && typeof row.name === "string" && typeof row.aligned === "boolean" &&
+          row.reference && isoDay(row.reference.date) && row.observed && isoDay(row.observed.date) &&
+          typeof row.effect === "string";
+      });
+  }
+
+  function renderPulse(payload) {
+    dom.pulseChannels.replaceChildren();
+    Object.values(payload.channels).forEach(function (channel) {
+      var chip = htmlElement("div", "map-pulse-chip");
+      chip.append(
+        htmlElement("span", "", channel.label),
+        htmlElement("strong", "", Number(channel.score7).toFixed(1)),
+        htmlElement("small", "", "7-day percentile")
+      );
+      dom.pulseChannels.appendChild(chip);
+    });
+    dom.publicationDay.textContent = "Data day " + payload.date + " · generated " + payload._meta.generated;
+  }
+
+  function renderEpisodes(payload) {
+    dom.episodeTape.replaceChildren();
+    payload.slice().sort(function (a, b) {
+      return b.end.localeCompare(a.end) || b.start.localeCompare(a.start);
+    }).slice(0, 6).forEach(function (episode) {
+      var item = htmlElement("li");
+      var link = htmlElement("a");
+      link.href = "episode.html?channel=" + encodeURIComponent(episode.channel) +
+        "&start=" + encodeURIComponent(episode.start);
+      link.append(
+        htmlElement("b", "", episode.label),
+        htmlElement("span", "", episode.start === episode.end
+          ? episode.start + " · one detected day"
+          : episode.start + " → " + episode.end + " · " + number(episode.n_spike_days) + " spike days")
+      );
+      item.appendChild(link);
+      dom.episodeTape.appendChild(item);
+    });
+  }
+
+  function renderStatus(payload) {
+    dom.laneHealth.replaceChildren();
+    payload.lanes.slice(0, 6).forEach(function (lane) {
+      var item = htmlElement("li");
+      item.append(
+        htmlElement("span", "map-health-light"),
+        htmlElement("b", "", lane.name),
+        htmlElement("span", "", lane.measured_day || lane.last.slice(0, 10))
+      );
+      dom.laneHealth.appendChild(item);
+    });
+    var misaligned = payload.alignments.filter(function (row) { return row.aligned !== true; });
+    dom.alignmentNote.classList.toggle("aligned", misaligned.length === 0);
+    if (!payload.alignments.length) {
+      dom.alignmentNote.textContent = "No cross-lane alignment check is published in this status vintage.";
+    } else if (!misaligned.length) {
+      dom.alignmentNote.textContent = "All " + number(payload.alignments.length) + " published cross-lane date checks are aligned.";
+    } else {
+      var first = misaligned[0];
+      dom.alignmentNote.textContent = first.name + ": " + first.reference.date + " vs " +
+        first.observed.date + ". " + first.effect;
+    }
+  }
+
+  function refuseOperations(message) {
+    dom.pulseChannels.replaceChildren(htmlElement("span", "map-loading-line", message));
+    dom.episodeTape.replaceChildren(htmlElement("li", "", message));
+    dom.laneHealth.replaceChildren(htmlElement("li", "", message));
+    dom.alignmentNote.textContent = "Operational context refused because a required public payload did not validate.";
+  }
+
+  function commandCatalog() {
+    var commands = [
+      { id: "partner", label: "Partner pulse", detail: "World · conflict share · trailing 365 days", kind: "Workspace", run: function () { applyMission("partner"); } },
+      { id: "border", label: "Border watch", detail: "Focus Pakistan in the published partner frame", kind: "Workspace", run: function () { applyMission("border"); } },
+      { id: "states", label: "India states", detail: "Located event volume inside India", kind: "Workspace", run: function () { applyMission("states"); } },
+      { id: "audit", label: "Evidence audit", detail: "Open pipeline and date-alignment evidence", kind: "Workspace", run: function () { applyMission("audit"); } },
+      { id: "episodes", label: "Latest episodes", detail: "Open the detector tape", kind: "Panel", run: function () { showInspectorTab("episodes"); } },
+      { id: "atlas", label: "Atlas overview", detail: "Open capability and maturity ledger", kind: "Route", href: "atlas.html" },
+      { id: "methodology", label: "Methodology", detail: "Definitions, limits and transformations", kind: "Route", href: "methodology.html" }
+    ];
+    Object.keys(SCOPE).forEach(function (scope) {
+      var payload = state.payloads[scope];
+      if (!payload) return;
+      Object.entries(payload[SCOPE[scope].dataKey]).forEach(function (entry) {
+        var code = entry[0];
+        var name = entry[1].name || code;
+        commands.push({
+          id: scope + ":" + code,
+          label: name,
+          detail: scope === "world" ? "Published partner aggregate" : "Published Indian-state aggregate",
+          kind: scope === "world" ? "Partner" : "State",
+          run: function () {
+            clearMission();
+            state.scope = scope;
+            state.selected = code;
+            state.metric = "conflict";
+            state.window = "recent";
+            renderGeometry();
+            setSelected(code, { zoom: true, focus: false });
+            showInspectorTab("selection");
+          }
+        });
+      });
+    });
+    return commands;
+  }
+
+  function renderCommands() {
+    var query = dom.commandQuery.value.trim().toLowerCase();
+    state.commandItems = commandCatalog().filter(function (item) {
+      return !query || (item.label + " " + item.detail + " " + item.kind).toLowerCase().includes(query);
+    }).slice(0, 24);
+    state.commandActive = clamp(state.commandActive, 0, Math.max(0, state.commandItems.length - 1));
+    dom.commandResults.replaceChildren();
+    if (!state.commandItems.length) {
+      dom.commandResults.appendChild(htmlElement("p", "map-command-empty", "No published Atlas command matches that query."));
+      return;
+    }
+    state.commandItems.forEach(function (item, index) {
+      var button = htmlElement("button", "map-command-result" + (index === state.commandActive ? " is-active" : ""));
+      button.type = "button";
+      button.setAttribute("role", "option");
+      button.setAttribute("aria-selected", index === state.commandActive ? "true" : "false");
+      button.append(
+        htmlElement("span", "", String(index + 1).padStart(2, "0")),
+        (function () {
+          var copy = htmlElement("span");
+          copy.append(htmlElement("b", "", item.label), htmlElement("small", "", item.detail));
+          return copy;
+        })(),
+        htmlElement("span", "", item.kind)
+      );
+      button.addEventListener("click", function () { runCommand(index); });
+      dom.commandResults.appendChild(button);
+    });
+  }
+
+  function runCommand(index) {
+    var item = state.commandItems[index];
+    if (!item) return;
+    dom.commandDialog.close();
+    if (item.href) window.location.href = item.href;
+    else item.run();
+  }
+
+  function openCommands() {
+    state.commandActive = 0;
+    dom.commandQuery.value = "";
+    renderCommands();
+    if (!dom.commandDialog.open) dom.commandDialog.showModal();
+    window.setTimeout(function () { dom.commandQuery.focus(); }, 0);
+  }
+
   function bindControls() {
+    document.querySelectorAll("[data-map-mission]").forEach(function (button) {
+      button.addEventListener("click", function () { applyMission(button.dataset.mapMission); });
+    });
+    document.querySelectorAll("[data-inspector-tab]").forEach(function (button) {
+      button.addEventListener("click", function () { showInspectorTab(button.dataset.inspectorTab); });
+    });
+    dom.commandOpen.addEventListener("click", openCommands);
+    dom.commandQuery.addEventListener("input", function () {
+      state.commandActive = 0;
+      renderCommands();
+    });
+    dom.commandQuery.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var direction = event.key === "ArrowDown" ? 1 : -1;
+        state.commandActive = (state.commandActive + direction + state.commandItems.length) %
+          Math.max(1, state.commandItems.length);
+        renderCommands();
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        runCommand(state.commandActive);
+      }
+    });
+    document.addEventListener("keydown", function (event) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        openCommands();
+      }
+    });
     document.querySelectorAll("[data-map-scope]").forEach(function (button) {
       button.addEventListener("click", function () {
         var scope = button.dataset.mapScope;
         if (!SCOPE[scope] || scope === state.scope) return;
+        clearMission();
         state.scope = scope;
         state.metric = "conflict";
         state.window = "recent";
@@ -573,6 +865,7 @@
     document.querySelectorAll("[data-map-metric]").forEach(function (button) {
       button.addEventListener("click", function () {
         if (!currentConfig().availableMetrics.includes(button.dataset.mapMetric)) return;
+        clearMission();
         state.metric = button.dataset.mapMetric;
         updateFeatureStyles();
       });
@@ -580,6 +873,7 @@
     document.querySelectorAll("[data-map-window]").forEach(function (button) {
       button.addEventListener("click", function () {
         if (button.disabled) return;
+        clearMission();
         state.window = button.dataset.mapWindow;
         updateFeatureStyles();
       });
@@ -695,8 +989,32 @@
     });
   }
 
+  async function initializeOperations() {
+    try {
+      var resources = await Promise.all([
+        getJson(OPERATIONS_INPUTS.latest),
+        getJson(OPERATIONS_INPUTS.episodes),
+        getJson(OPERATIONS_INPUTS.status)
+      ]);
+      if (!validLatest(resources[0]) || !validEpisodes(resources[1]) || !validStatus(resources[2])) {
+        throw new Error("Published operational payload shape is invalid");
+      }
+      state.operations.latest = resources[0];
+      state.operations.episodes = resources[1];
+      state.operations.status = resources[2];
+      renderPulse(resources[0]);
+      renderEpisodes(resources[1]);
+      renderStatus(resources[2]);
+    } catch (error) {
+      refuseOperations("Operational context unavailable · payload refused");
+      console.error("atlas operations:", error);
+    }
+  }
+
   async function initialize() {
     bindControls();
+    showInspectorTab("selection");
+    initializeOperations();
     try {
       var resources = await Promise.all([
         getJson(SCOPE.world.geometryUrl),

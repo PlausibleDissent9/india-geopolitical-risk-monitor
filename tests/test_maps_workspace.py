@@ -36,14 +36,17 @@ def test_maps_assets_are_external_and_content_versioned() -> None:
     assert '"http://www.w3.org/2000/svg"' in JS
 
 
-def test_maps_load_only_the_four_registered_public_inputs() -> None:
+def test_maps_load_only_the_seven_registered_public_inputs() -> None:
     expected = {
         "geo/world.json",
         "data/map_relations.json",
         "geo/india.json",
         "data/map_states.json",
+        "data/latest.json",
+        "data/episodes.json",
+        "data/status.json",
     }
-    declared = set(re.findall(r'(?:dataUrl|geometryUrl): "([^"]+)"', JS))
+    declared = set(re.findall(r'"((?:geo|data)/[^"]+\.json)"', JS))
     assert declared == expected
     for relative in expected:
         assert (DOCS / relative).is_file(), relative
@@ -57,6 +60,46 @@ def test_maps_refuse_partial_or_structurally_invalid_payloads() -> None:
     assert "map row has no registered geometry" in JS
     assert "Map unavailable · payload refused" in JS
     assert "No map ranking is rendered when a required payload fails" in JS
+    assert "Published operational payload shape is invalid" in JS
+    assert "Operational context unavailable · payload refused" in JS
+
+
+def test_observation_room_adds_workspaces_command_search_and_truth_panels() -> None:
+    for capability in (
+        'data-map-mission="partner"',
+        'data-map-mission="border"',
+        'data-map-mission="states"',
+        'data-map-mission="audit"',
+        'id="map-command-dialog"',
+        'data-inspector-tab="selection"',
+        'data-inspector-tab="episodes"',
+        'data-inspector-tab="evidence"',
+        'id="map-pulse-channels"',
+        'id="map-lane-health"',
+        'id="map-alignment-note"',
+    ):
+        assert capability in HTML
+    for behavior in (
+        "applyMission",
+        "showInspectorTab",
+        "commandCatalog",
+        "showModal",
+        'event.key.toLowerCase() === "k"',
+        "validLatest",
+        "validEpisodes",
+        "validStatus",
+    ):
+        assert behavior in JS
+
+
+def test_observation_room_never_labels_published_context_as_live_intelligence() -> None:
+    page = HTML.lower()
+    assert "observation room" in page
+    assert "published observation mode" in page
+    assert "not risk" in page
+    assert "live intelligence" not in page
+    assert "real-time intelligence" not in page
+    assert "ai confidence" not in page
 
 
 def test_recent_rankings_apply_the_same_sparse_data_floor_as_the_map() -> None:

@@ -113,8 +113,8 @@ def test_atlas_hub_preserves_every_child_surface_and_its_maturity_boundary() -> 
     for path in ("maps.html", "episode.html", "exposure.html", "dna.html", "shock.html"):
         assert f'href="{path}"' in page
     for boundary in (
-        "Live observation",
-        "Live utility",
+        "Published observation",
+        "Published utility",
         "Synthetic foundation",
         "0</dt><dd>production dependency-graph releases",
         "does not yet publish a comprehensive real firm–port–commodity–state dependency graph",
