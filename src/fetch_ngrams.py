@@ -38,6 +38,7 @@ Cache: data/raw/ngram_days/YYYY-MM-DD.json (one file per healed day).
 from __future__ import annotations
 
 import gzip
+import hashlib
 import io
 import json
 import os
@@ -99,6 +100,62 @@ def group_specs() -> dict[str, dict]:
                 "channel": ch, "phrases": phrases, "anchor": anchor,
             }
     return out
+
+
+def _canonical_specs(specs: dict[str, dict]) -> dict[str, dict]:
+    """JSON-safe snapshot of the matcher semantics used for one score day."""
+    return {
+        group: {
+            "channel": spec["channel"],
+            "anchor": spec.get("anchor"),
+            "phrases": [list(phrase) for phrase in spec["phrases"]],
+        }
+        for group, spec in sorted(specs.items())
+    }
+
+
+def _sha256_path(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _matcher_evidence(
+    day: date,
+    specs: dict[str, dict],
+    located_stamps: list[str],
+    loaded_stamps: list[str],
+    missing_stamps: list[str],
+    india_docs: set[str],
+    matched: dict[str, set[str]],
+    article_meta: dict[str, dict[str, str]],
+) -> dict:
+    """Freeze the exact numerator frame in the production day cache.
+
+    This is prospective study infrastructure, not a precision result.  It
+    prevents a future audit from reconstructing a look-alike corpus after the
+    score has already been published (the defect that invalidated audit v2).
+    """
+    canonical_specs = _canonical_specs(specs)
+    encoded_specs = json.dumps(
+        canonical_specs, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return {
+        "schema_version": "1.0.0",
+        "day": day.isoformat(),
+        "located_stamps": located_stamps,
+        "loaded_stamps": loaded_stamps,
+        "missing_stamps": missing_stamps,
+        "matcher_specs": canonical_specs,
+        "matcher_specs_sha256": hashlib.sha256(encoded_specs).hexdigest(),
+        "dictionaries_sha256": _sha256_path(ROOT / "dictionaries.json"),
+        "production_matcher_sha256": _sha256_path(Path(__file__)),
+        "india_document_keys": sorted(india_docs),
+        "matched_document_keys": {
+            group: sorted(keys) for group, keys in sorted(matched.items())
+        },
+        "article_meta": {
+            key: article_meta[key] for key in sorted(article_meta)
+        },
+    }
 
 
 def _fetch(url: str) -> bytes | None:
@@ -237,11 +294,16 @@ def compute_day(
     en_docs: set[str] = set()
     india_docs: set[str] = set()
     matched: dict[str, set[str]] = {g: set() for g in specs}
+    article_meta: dict[str, dict[str, str]] = {}
+    loaded_stamps: list[str] = []
+    missing_stamps: list[str] = []
 
     for ts, toc_gz, ng_gz in prefetch_pairs(stamps):
         if not toc_gz or not ng_gz:
+            missing_stamps.append(ts)
             continue
-        toc_en: set[str] = set()
+        loaded_stamps.append(ts)
+        toc_en: dict[str, dict[str, str]] = {}
         for line in gzip.decompress(toc_gz).decode("utf-8", "replace").splitlines():
             line = line.strip().rstrip(",")
             if not line or line in "[]":
@@ -251,7 +313,13 @@ def compute_day(
             except json.JSONDecodeError:
                 continue
             if rec.get("lang") == "en":
-                toc_en.add(str(rec.get("ID")))
+                docid = str(rec.get("ID"))
+                raw_date = re.sub(r"[^0-9]", "", str(rec.get("date") or ""))[:8]
+                toc_en[docid] = {
+                    "url": str(rec.get("url") or ""),
+                    "title": str(rec.get("title") or ""),
+                    "date": raw_date or f"{day:%Y%m%d}",
+                }
         en_docs |= {f"{ts}:{i}" for i in toc_en}
 
         with gzip.open(io.BytesIO(ng_gz), "rt", encoding="utf-8",
@@ -276,6 +344,7 @@ def compute_day(
                     for ph in s["phrases"]:
                         if len(ph) <= len(tokens) and _subseq(ph, tokens):
                             matched[g].add(key)
+                            article_meta.setdefault(key, toc_en[docid])
                             break
 
     total = len(en_docs)
@@ -285,8 +354,27 @@ def compute_day(
     for g, s in specs.items():
         hits = matched[g] & india_docs if s["anchor"] == "india" else matched[g]
         shares[g] = round(100.0 * len(hits & en_docs) / total, 6)
-    return {"date": day.isoformat(), "n_docs_sampled": total,
-            "n_samples": len(stamps), "shares": shares}
+    return {
+        "date": day.isoformat(),
+        "n_docs_sampled": total,
+        # Preserve the legacy meaning: located sampling windows.  Loaded and
+        # missing counts are additive so a partial acquisition cannot look
+        # complete to a future reviewer.
+        "n_samples": len(stamps),
+        "n_samples_loaded": len(loaded_stamps),
+        "partial": bool(missing_stamps or len(loaded_stamps) != len(stamps)),
+        "shares": shares,
+        "_matcher_evidence": _matcher_evidence(
+            day,
+            specs,
+            stamps,
+            loaded_stamps,
+            missing_stamps,
+            india_docs,
+            matched,
+            article_meta,
+        ),
+    }
 
 
 def _cached_day(day: date, specs: dict[str, dict]) -> dict | None:

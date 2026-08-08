@@ -145,6 +145,18 @@ jobs:
           else
             python -m src.run_daily
           fi
+      - name: Preserve prospective precision-v3 production frame
+        # The invalid v2 audit rebuilt its article frame after publication
+        # and accidentally sampled a different corpus and a unioned-document
+        # estimand. From 2026-08-08 onward fetch_ngrams stores the exact
+        # loaded stamps, matcher specification and group-qualified document
+        # keys inside the production score cache. This gate reconstructs
+        # every group share exactly and writes an append-only, label-free day
+        # attestation. A failure makes the enrichment job red but the final
+        # index remains recoverable through the independent morning lane.
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.precision_frame_v3 --record-latest
       - name: China monitor (V8; registered 2026-08-06, resumes from chunk cache)
         # Runner IPs are clean where the laptop's got heated; the
         # settled-chunk cache carries backfill progress across runs, so

@@ -15,7 +15,10 @@ methodology. Weekly commentary is the author's. See `methodology.md`.
 > **External precision status (2026-08-08):** blind-audit v2 was
 > [invalidated before coding](validation/blind_audit_500/V2_INVALID.md) after
 > a source-frame and estimand audit. No v2 labels or results exist, and no v3
-> has been frozen. The published `precision.json` remains an explicitly
+> sample has been frozen. Prospective, label-free v3
+> [source-frame collection](validation/precision_v3/PROTOCOL.md) begins with
+> the 2026-08-08 score day; a day attestation is acquisition evidence, not a
+> precision result. The published `precision.json` remains an explicitly
 > uncalibrated machine/founder diagnostic, not an independent human result.
 
 ## Architecture
