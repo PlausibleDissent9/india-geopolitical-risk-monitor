@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "status": "target_only",
+  "purpose": "Machine-readable proof gates for any future benchmark-specific IGRM advantage claim.",
+  "claim_policy": {
+    "default": "unlicensed",
+    "overall_superiority_claim_allowed": false,
+    "rule": "A narrow claim may be considered only after every registered gate for its benchmark and dimension is complete on frozen evidence, independently reviewed, and publicly reported with negative results.",
+    "required_comparison_properties": [
+      "same construct or an explicit construct distinction",
+      "same geography and time interval where comparison requires them",
+      "declared baseline version and vintage",
+      "preregistered primary outcome and decision rule",
+      "independent evaluator and blinded task materials where applicable",
+      "power or precision target and minimally important effect",
+      "multiplicity, exclusion, missing-data and stopping rules",
+      "uncertainty and missingness reported",
+      "rights-permitted replication materials",
+      "negative and null results retained in a permanent loss register"
+    ]
+  },
+  "benchmarks": [
+    {
+      "id": "gpr",
+      "name": "Caldara-Iacoviello Geopolitical Risk Index",
+      "canonical_source": "https://www.matteoiacoviello.com/gpr.htm",
+      "strength": "Academic legitimacy, long history, country series, vintages and a citable paper.",
+      "igrm_target": "Deeper India decomposition and traceability from evidence through events to exposure.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Complete externally coded construct study for the production-linked IGRM frame.",
+        "Publish equal-period, version-pinned comparison with uncertainty and construct differences.",
+        "Obtain independent methods review and immutable, citable data vintages."
+      ]
+    },
+    {
+      "id": "acled_conflict_index",
+      "name": "ACLED Conflict Index",
+      "canonical_source": "https://acleddata.com/general-guide/about-conflict-index",
+      "strength": "Event coding, actor and geographic detail, and frequent updates.",
+      "igrm_target": "Connect coded events to India-specific exposure and downstream evidence.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Run blinded event inclusion, timing, actor and location error study.",
+        "Publish geographic, event-class and source-coverage audit.",
+        "Benchmark update latency on the same eligible event frame."
+      ]
+    },
+    {
+      "id": "icrg",
+      "name": "International Country Risk Guide",
+      "canonical_source": "https://www.prsgroup.com/wp-content/uploads/2018/01/icrgmethodology.pdf",
+      "strength": "Decision-oriented political, economic and financial country-risk structure.",
+      "igrm_target": "Transparent and traceable India business-exposure scenarios.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Freeze realistic analyst tasks and evaluation rubric before recruitment.",
+        "Run randomized crossover study measuring accuracy, time and calibration.",
+        "Publish evidence-error and abstention outcomes, not satisfaction alone."
+      ]
+    },
+    {
+      "id": "epu",
+      "name": "Economic Policy Uncertainty Index",
+      "canonical_source": "https://www.nber.org/papers/w21633",
+      "strength": "Disciplined text-index construction, human audit and academic adoption.",
+      "igrm_target": "India-specific multi-source decomposition with exact evidence lineage.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Field independent precision and recall study matched to production contribution units.",
+        "Publish dictionary, source and normalization sensitivity across frozen vintages.",
+        "Demonstrate out-of-sample stability without retrospective term changes."
+      ]
+    },
+    {
+      "id": "wui",
+      "name": "World Uncertainty Index",
+      "canonical_source": "https://www.imf.org/en/publications/fandd/issues/2020/03/imf-launches-world-uncertainty-index-wui-furceri",
+      "strength": "A common source enabling a long and internationally comparable panel.",
+      "igrm_target": "Preserve explicit comparability while adding much deeper India detail.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Register a common country schema and comparable coverage denominator.",
+        "Test measurement invariance and language/source sensitivity.",
+        "Publish missing-country, missing-period and non-comparability flags."
+      ]
+    },
+    {
+      "id": "global_peace_index",
+      "name": "Global Peace Index",
+      "canonical_source": "https://www.visionofhumanity.org/understanding-the-global-peace-index-methodology/",
+      "strength": "Public reach, indicator architecture and published weighting robustness.",
+      "igrm_target": "Higher-frequency evidence with transparent sensitivity and India drill-down.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Publish full weighting, normalization and missing-layer sensitivity.",
+        "Run public comprehension study on units, limits and uncertainty.",
+        "Benchmark revision latency and evidence traceability on matched observations."
+      ]
+    },
+    {
+      "id": "fragile_states_index",
+      "name": "Fragile States Index",
+      "canonical_source": "https://fragilestatesindex.org/methodology/",
+      "strength": "Mixed quantitative, content-analysis and expert-review workflow.",
+      "igrm_target": "Source-level provenance and signed expert disagreement rather than opaque consensus.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Register expert selection, conflicts, compensation and adjudication rules.",
+        "Audit coder agreement, revisions and dissent preservation.",
+        "Independently reproduce all rights-permitted quantitative transformations."
+      ]
+    },
+    {
+      "id": "inform_risk",
+      "name": "INFORM Risk Index",
+      "canonical_source": "https://drmkc.jrc.ec.europa.eu/inform-index/INFORM-Risk/Methodology",
+      "strength": "Separation of hazard/exposure, vulnerability and coping capacity.",
+      "igrm_target": "A live India exposure and capacity graph at route, sector and state level.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Audit graph edge precision, coverage, effective dates and quantitative denominators.",
+        "Publish sensitivity to missing edges and alternative exposure mappings.",
+        "Pass registered researcher, business and policy decision tasks."
+      ]
+    },
+    {
+      "id": "gscpi",
+      "name": "Global Supply Chain Pressure Index",
+      "canonical_source": "https://www.newyorkfed.org/research/policy/gscpi",
+      "strength": "Connection of shipping, airfreight and survey data to physical supply-chain pressure.",
+      "igrm_target": "Geopolitical attribution and India corridor, commodity and sector specificity.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Freeze transmission outcomes, horizons and naive/GSCPI baselines.",
+        "Run strictly out-of-sample comparison with no-lookahead enforcement.",
+        "Publish calibration, uncertainty and negative results by corridor and sector."
+      ]
+    },
+    {
+      "id": "baltic_dry_index",
+      "name": "Baltic Dry Index",
+      "canonical_source": "https://www.balticexchange.com/en/data-services/Methodology.html",
+      "strength": "A narrow, trusted and widely used real-economy freight signal.",
+      "igrm_target": "Explain India-relevant route and commodity transmission without diluting the physical measure.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Secure documented rights and reproducible vintage handling for physical inputs.",
+        "Audit India route, vessel-class and commodity coverage.",
+        "Benchmark timeliness and decision utility without recasting freight as geopolitical truth."
+      ]
+    },
+    {
+      "id": "worldwide_governance_indicators",
+      "name": "Worldwide Governance Indicators",
+      "canonical_source": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+      "strength": "Multi-source aggregation, uncertainty reporting and reproducibility materials.",
+      "igrm_target": "Fact-level provenance and explicit uncertainty across every output family.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Publish uncertainty semantics and calibration study for every summary output.",
+        "Complete independent authenticated release reproduction.",
+        "Audit source dependence, aggregation and missingness treatment."
+      ]
+    },
+    {
+      "id": "blackrock_geopolitical_risk_dashboard",
+      "name": "BlackRock Geopolitical Risk Dashboard",
+      "canonical_source": "https://www.blackrock.com/corporate/insights/blackrock-investment-institute/interactive-charts/geopolitical-risk-dashboard",
+      "strength": "Decision-focused investor experience and scenario communication.",
+      "igrm_target": "A public, evidence-linked and India-specific research and decision workflow.",
+      "claim_status": "unlicensed",
+      "claim_allowed": false,
+      "gates": [
+        "Run blinded task benchmark for correctness, time, calibration and citation errors.",
+        "Pass accessibility, mobile, low-bandwidth and comprehension evaluations.",
+        "Publish latency, abstention, reliability and correction performance."
+      ]
+    }
+  ]
+}
