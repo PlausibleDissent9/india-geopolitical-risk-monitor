@@ -10,7 +10,8 @@ No production package exists while the source window is open.  The commands
 are therefore safe to ship before any coder sees a row::
 
     python -m src.precision_audit_v3 --preflight v3a
-    python -m src.precision_audit_v3 --build v3a --output /private/path \
+    python -m src.precision_audit_v3 --build v3a \
+        --output /absolute/path/outside/repository/precision-v3a-private \
         --freeze-receipt validation/precision_v3/freeze_v3a.json
     python -m src.precision_audit_v3 --score /private/path c1.csv c2.csv \
         --coder-attestation c1-attestation.json \
@@ -643,7 +644,19 @@ def _pilot_rows(registration: dict[str, Any], root: Path) -> list[dict[str, str]
 
 
 def write_package(cohort_id: str, output: Path, root: Path = ROOT) -> Path:
-    """Build one immutable private coordinator/coder package atomically."""
+    """Build one private package atomically, always outside the repository."""
+    root = root.resolve()
+    output = output.resolve()
+    try:
+        output.relative_to(root)
+    except ValueError:
+        pass
+    else:
+        raise AuditV3Error(
+            "private coder package destination must be outside the repository: "
+            f"{output}"
+        )
+
     registration = _registration(root)
     cohort = _cohort(registration, cohort_id)
     rows, frame_manifest = build_frame(
@@ -651,7 +664,6 @@ def write_package(cohort_id: str, output: Path, root: Path = ROOT) -> Path:
     )
     selected, sample_meta = select_sample(rows, cohort)
 
-    output = output.resolve()
     if output.exists():
         raise AuditV3Error(f"refusing to overwrite package path: {output}")
     output.parent.mkdir(parents=True, exist_ok=True)

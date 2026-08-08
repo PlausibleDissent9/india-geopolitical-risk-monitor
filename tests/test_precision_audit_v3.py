@@ -464,6 +464,34 @@ def test_private_package_is_deterministic_hash_locked_and_scored_coder_specific(
         audit.verify_package(first)
 
 
+def test_private_package_refuses_every_destination_inside_the_repository(
+    tmp_path: Path,
+) -> None:
+    root = _fixture_root(tmp_path)
+    for destination in (
+        root / "coder-package",
+        root / "data" / "private" / "coder-package",
+    ):
+        with pytest.raises(audit.AuditV3Error, match="outside the repository"):
+            audit.write_package("v3a", destination, root)
+        assert not destination.exists()
+
+
+def test_private_package_refuses_a_symlink_that_resolves_into_the_repository(
+    tmp_path: Path,
+) -> None:
+    root = _fixture_root(tmp_path)
+    private_parent = root / "data" / "private"
+    private_parent.mkdir(parents=True)
+    link = tmp_path / "apparently-external"
+    link.symlink_to(private_parent, target_is_directory=True)
+    destination = link / "coder-package"
+
+    with pytest.raises(audit.AuditV3Error, match="outside the repository"):
+        audit.write_package("v3a", destination, root)
+    assert not (private_parent / "coder-package").exists()
+
+
 def test_abstentions_cannot_inflate_the_registered_pass_gate(tmp_path: Path) -> None:
     root = _fixture_root(tmp_path)
     package = audit.write_package("v3a", tmp_path / "package", root)
