@@ -1,4 +1,4 @@
-# Evidence-locked IGRM assistant — implementation contract v0.1.0
+# Evidence-locked IGRM assistant — implementation contract v0.2.0
 
 Status: **implemented safety core; no public endpoint; no model authorized**
 
@@ -43,14 +43,23 @@ field allowlist. It has no field through which to supply prose, literal numbers,
 dates, entity names, citations, calculations or denominators. The renderer never
 interpolates the user's text.
 
-## Implemented v0.1 surface
+## Implemented v0.2 surface
 
-`src/evidence_assistant.py` currently supports four bounded question classes:
+`src/evidence_assistant.py` currently supports six bounded question classes:
 
 1. latest 7-day headline;
 2. one channel's latest 7-day reading;
 3. a deterministic comparison of exactly two channel readings; and
-4. the instrument definition carried by `latest.json`.
+4. the instrument definition carried by `latest.json`;
+5. five displayed receipt entries for the latest available receipt day; and
+6. same-day receipt evidence for a current daily channel score, only when the
+   score and receipt payload dates are identical.
+
+The fifth class is deliberately separate from the current score. It names its
+own completed news day and describes the entries only as displayed evidence.
+The sixth class fails closed when the dates differ. Neither class uses or
+interprets the legacy displayed tier share, calls the displayed list complete,
+or presents its length as the score denominator.
 
 It refuses forecasting, price direction, investment advice, trading
 recommendations and hedging questions before reading a data payload. Questions
@@ -63,7 +72,9 @@ python -m src.evidence_assistant "What is the latest IGRM headline?"
 
 The returned JSON contains the answer, its completed news day, template ID,
 every fact ID and, for each fact, the source file, RFC 6901 pointer, source
-SHA-256, unit, denominator and public citation URL.
+SHA-256, verified scalar value, unit, denominator and public citation URL.
+Any future browser client must insert text fields with `textContent` (never raw
+HTML) and may link only the verifier-approved HTTP(S) URL facts.
 
 ## Typed fact contract
 
@@ -115,8 +126,8 @@ meet all of the following before deployment:
    additional payloads it exposes.
 2. Keep model output limited to the strict plan schema; publish no raw model
    prose, chain of thought or tool output.
-3. Add receipts only after their latest-day, display-cap, title-key and
-   score-denominator semantics are separate fact types.
+3. Expand receipts beyond the five-entry template only with registered
+   pagination; never turn a display limit into a substantive denominator.
 4. Add historical answers only with explicit date-window and missing-data
    facts; never silently substitute the latest vintage.
 5. Add business-exposure answers only from the registered sector mapping and

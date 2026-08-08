@@ -21,6 +21,13 @@ def _root_with_latest(tmp_path: Path) -> Path:
     return tmp_path
 
 
+def _root_with_latest_and_receipts(tmp_path: Path) -> Path:
+    root = _root_with_latest(tmp_path)
+    target = root / "docs" / "data" / "receipts.json"
+    target.write_bytes((ROOT / "docs" / "data" / "receipts.json").read_bytes())
+    return root
+
+
 def test_latest_answer_is_value_exact_and_fact_level_citable() -> None:
     payload_path = ROOT / "docs" / "data" / "latest.json"
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
@@ -68,6 +75,150 @@ def test_two_channel_comparison_is_a_registered_derivation() -> None:
     assert shipping["label"] in answer.text
     assert f"{difference:.1f} points" in answer.text
     assert "not comparable probabilities of risk" in answer.text
+
+
+def test_latest_available_receipts_are_dated_display_evidence_only() -> None:
+    receipts = json.loads(
+        (ROOT / "docs" / "data" / "receipts.json").read_text(encoding="utf-8")
+    )
+    expected = receipts["channels"]["shipping"]["articles"][:5]
+    answer = ea.answer_question("Show shipping evidence")
+    public = answer.to_dict()
+
+    assert answer.status == "answered"
+    assert answer.as_of == receipts["date"]
+    assert "latest available displayed receipt entries" in answer.text
+    assert "not a complete article set" in answer.text
+    assert "source-quality statistic" in answer.text
+    assert "score denominator" in answer.text
+    assert len(answer.evidence) == 2 + 5 * ea.RECEIPT_ENTRIES_PER_ANSWER
+    for article in expected:
+        assert article["title"] in answer.text
+        assert article["domain"] in answer.text
+        assert article["url"] in {item["value"] for item in public["evidence"]}
+    forbidden = ("spike_quality", "tier12", "n_matched", "all articles")
+    assert not any(term in answer.text.lower() for term in forbidden)
+
+
+@pytest.mark.parametrize(
+    ("channel", "question"),
+    [
+        ("pakistan_west", "Show Pakistan evidence"),
+        ("china_east", "Show China evidence"),
+        ("gulf_energy", "Show Gulf evidence"),
+        ("us_trade", "Show US trade evidence"),
+        ("shipping", "Show shipping evidence"),
+    ],
+)
+def test_each_channel_has_a_complete_finite_receipt_plan(
+    channel: str,
+    question: str,
+) -> None:
+    plan = ea.plan_question(question)
+    parsed = ea.parse_plan({
+        "schema_version": plan.schema_version,
+        "intent": plan.intent,
+        "template_id": plan.template_id,
+        "fact_ids": list(plan.fact_ids),
+    })
+    answer = ea.answer_question(question)
+
+    assert parsed.fact_ids == ea._receipt_fact_ids(channel)
+    assert not any(fact_id.startswith("latest.") for fact_id in parsed.fact_ids)
+    assert answer.status == "answered"
+    assert answer.fact_ids == parsed.fact_ids
+    assert len(answer.evidence) == 2 + 5 * ea.RECEIPT_ENTRIES_PER_ANSWER
+
+
+def test_current_score_evidence_refuses_the_real_cross_date_join() -> None:
+    latest = json.loads(
+        (ROOT / "docs" / "data" / "latest.json").read_text(encoding="utf-8")
+    )
+    receipts = json.loads(
+        (ROOT / "docs" / "data" / "receipts.json").read_text(encoding="utf-8")
+    )
+    assert latest["date"] != receipts["date"], "fixture must exercise the guard"
+
+    answer = ea.answer_question("Why is the current shipping score here?")
+    assert answer.status == "refused"
+    assert answer.refusal_code == "evidence_date_mismatch"
+    assert "not from the same completed news day" in answer.text
+    assert answer.evidence == ()
+
+
+def test_current_score_evidence_answers_only_after_exact_date_alignment(
+    tmp_path: Path,
+) -> None:
+    root = _root_with_latest_and_receipts(tmp_path)
+    latest = json.loads(
+        (root / "docs" / "data" / "latest.json").read_text(encoding="utf-8")
+    )
+    path = root / "docs" / "data" / "receipts.json"
+    receipts = json.loads(path.read_text(encoding="utf-8"))
+    receipts["date"] = latest["date"]
+    compact = latest["date"].replace("-", "")
+    for article in receipts["channels"]["shipping"]["articles"][:5]:
+        article["date"] = compact
+    path.write_text(json.dumps(receipts), encoding="utf-8")
+
+    answer = ea.answer_question("Why is the current shipping score here?", root)
+    expected = latest["channels"]["shipping"]["score"]
+    assert answer.status == "answered"
+    assert answer.as_of == latest["date"]
+    assert f"was {expected:.1f}" in answer.text
+    assert "Same-day displayed receipt entries" in answer.text
+    assert "not a complete score denominator" in answer.text
+
+
+@pytest.mark.parametrize(
+    ("mutation", "expected_code"),
+    [
+        ("unsafe_url", "fact_url_invalid"),
+        ("domain_mismatch", "receipt_domain_url_mismatch"),
+        ("wrong_day", "fact_date_mismatch"),
+    ],
+)
+def test_malformed_receipt_evidence_is_never_rendered(
+    tmp_path: Path,
+    mutation: str,
+    expected_code: str,
+) -> None:
+    root = _root_with_latest_and_receipts(tmp_path)
+    path = root / "docs" / "data" / "receipts.json"
+    receipts = json.loads(path.read_text(encoding="utf-8"))
+    article = receipts["channels"]["shipping"]["articles"][0]
+    if mutation == "unsafe_url":
+        article["url"] = "javascript:alert(1)"
+    elif mutation == "domain_mismatch":
+        article["domain"] = "attacker.example"
+    else:
+        article["date"] = "20260805"
+    path.write_text(json.dumps(receipts), encoding="utf-8")
+
+    plan = ea.plan_question("Show shipping evidence")
+    catalog = ea.build_receipt_catalog(root)
+    with pytest.raises(ea.EvidenceError, match=expected_code):
+        ea.render_plan(plan, catalog, root)
+    public = ea.answer_question("Show shipping evidence", root)
+    assert public.status == "refused"
+    assert public.refusal_code == "evidence_unavailable"
+    assert public.evidence == ()
+
+
+def test_receipt_plan_fails_closed_when_fewer_than_five_entries_exist(
+    tmp_path: Path,
+) -> None:
+    root = _root_with_latest_and_receipts(tmp_path)
+    path = root / "docs" / "data" / "receipts.json"
+    receipts = json.loads(path.read_text(encoding="utf-8"))
+    receipts["channels"]["shipping"]["articles"] = receipts["channels"][
+        "shipping"
+    ]["articles"][:4]
+    path.write_text(json.dumps(receipts), encoding="utf-8")
+
+    answer = ea.answer_question("Show shipping evidence", root)
+    assert answer.status == "refused"
+    assert answer.refusal_code == "evidence_unavailable"
 
 
 @pytest.mark.parametrize("question", [

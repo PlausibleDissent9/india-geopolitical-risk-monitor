@@ -21,10 +21,14 @@ from dataclasses import asdict, dataclass
 from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any, Union
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 LATEST_SOURCE = PurePosixPath("docs", "data", "latest.json").as_posix()
 LATEST_CITATION = "https://igrm.in/data/latest.json"
+RECEIPTS_SOURCE = PurePosixPath("docs", "data", "receipts.json").as_posix()
+RECEIPTS_CITATION = "https://igrm.in/data/receipts.json"
+RECEIPT_ENTRIES_PER_ANSWER = 5
 PLAN_SCHEMA_VERSION = "1.0.0"
 ANSWER_SCHEMA_VERSION = "1.0.0"
 
@@ -136,6 +140,15 @@ def _fact_specs() -> dict[str, FactSpec]:
             "registered channel label",
             LATEST_CITATION,
         )
+        specs[f"{base}.score"] = FactSpec(
+            LATEST_SOURCE,
+            f"{pointer}/score",
+            "number",
+            "percentile, 0-100",
+            "that channel's matched-news share for one completed day ranked "
+            "against its own trailing 730 completed days",
+            LATEST_CITATION,
+        )
         specs[f"{base}.score7"] = FactSpec(
             LATEST_SOURCE,
             f"{pointer}/score7",
@@ -145,6 +158,68 @@ def _fact_specs() -> dict[str, FactSpec]:
             "against its own trailing 730 completed days",
             LATEST_CITATION,
         )
+    specs["receipts.date"] = FactSpec(
+        RECEIPTS_SOURCE,
+        "/date",
+        "date",
+        "ISO-8601 completed news day",
+        "one completed UTC news day",
+        RECEIPTS_CITATION,
+    )
+    for channel in CHANNELS:
+        base = f"receipts.channels.{channel}"
+        pointer = f"/channels/{channel}"
+        specs[f"{base}.label"] = FactSpec(
+            RECEIPTS_SOURCE,
+            f"{pointer}/label",
+            "label",
+            "text",
+            "channel label carried by the receipt payload",
+            RECEIPTS_CITATION,
+        )
+        for index in range(RECEIPT_ENTRIES_PER_ANSWER):
+            article_base = f"{base}.displayed.{index}"
+            article_pointer = f"{pointer}/articles/{index}"
+            for field, value_kind, unit, denominator in (
+                (
+                    "date",
+                    "compact_date",
+                    "YYYYMMDD completed news day",
+                    "date attached to one displayed receipt entry",
+                ),
+                (
+                    "title",
+                    "title",
+                    "text",
+                    "title of one displayed receipt entry; not a score input count",
+                ),
+                (
+                    "domain",
+                    "domain",
+                    "hostname label",
+                    "publisher domain on one displayed receipt entry",
+                ),
+                (
+                    "url",
+                    "url",
+                    "HTTP(S) URL",
+                    "source link on one displayed receipt entry",
+                ),
+                (
+                    "lane",
+                    "lane",
+                    "registered receipt-lane code",
+                    "retrieval lane on one displayed receipt entry",
+                ),
+            ):
+                specs[f"{article_base}.{field}"] = FactSpec(
+                    RECEIPTS_SOURCE,
+                    f"{article_pointer}/{field}",
+                    value_kind,
+                    unit,
+                    denominator,
+                    RECEIPTS_CITATION,
+                )
     return specs
 
 
@@ -212,14 +287,22 @@ def _iso_day(value: object, field: str) -> str:
     return value
 
 
-def build_latest_catalog(root: Path = ROOT) -> dict[str, Fact]:
-    """Build the finite latest-reading fact catalog from one payload vintage."""
-    raw, document, digest = _read_source(root, LATEST_SOURCE)
+def _build_source_catalog(root: Path, source_path: str) -> dict[str, Fact]:
+    raw, document, digest = _read_source(root, source_path)
     del raw
-    as_of = _iso_day(document.get("date"), "latest.date")
+    as_of = _iso_day(document.get("date"), f"{source_path}:date")
     facts: dict[str, Fact] = {}
     for fact_id, spec in FACT_SPECS.items():
-        value = _pointer(document, spec.pointer)
+        if spec.source_path != source_path:
+            continue
+        try:
+            value = _pointer(document, spec.pointer)
+        except EvidenceError as exc:
+            if source_path == RECEIPTS_SOURCE and exc.code == "pointer_missing":
+                # A channel can have fewer than the finite display allowance.
+                # The corresponding plan then fails closed at fact lookup.
+                continue
+            raise
         facts[fact_id] = Fact(
             fact_id=fact_id,
             source_path=spec.source_path,
@@ -233,6 +316,16 @@ def build_latest_catalog(root: Path = ROOT) -> dict[str, Fact]:
             source_sha256=digest,
         )
     return facts
+
+
+def build_latest_catalog(root: Path = ROOT) -> dict[str, Fact]:
+    """Build the finite latest-reading fact catalog from one payload vintage."""
+    return _build_source_catalog(root, LATEST_SOURCE)
+
+
+def build_receipt_catalog(root: Path = ROOT) -> dict[str, Fact]:
+    """Build only displayed receipt-entry facts, never pool-quality claims."""
+    return _build_source_catalog(root, RECEIPTS_SOURCE)
 
 
 def _verify_fact_snapshot(
@@ -269,8 +362,10 @@ def _verify_fact_snapshot(
     actual = _pointer(document, fact.pointer)
     if type(actual) is not type(fact.value) or actual != fact.value:
         raise EvidenceError("fact_value_mismatch", fact.fact_id)
-    if fact.value_kind == "date" and fact.value != fact.as_of:
-        raise EvidenceError("fact_date_mismatch", fact.fact_id)
+    if fact.value_kind == "date":
+        if fact.value != fact.as_of:
+            raise EvidenceError("fact_date_mismatch", fact.fact_id)
+        return
     if fact.value_kind == "number":
         numeric_value = fact.value
         if isinstance(numeric_value, bool) or not isinstance(
@@ -281,8 +376,44 @@ def _verify_fact_snapshot(
             raise EvidenceError("fact_nonfinite", fact.fact_id)
         if not 0 <= float(numeric_value) <= 100:
             raise EvidenceError("fact_range_invalid", fact.fact_id)
-    elif not isinstance(fact.value, str):
+        return
+    if not isinstance(fact.value, str):
         raise EvidenceError("fact_type_mismatch", fact.fact_id)
+    if any(ord(char) < 32 and char not in "\t\n\r" for char in fact.value):
+        raise EvidenceError("fact_text_invalid", fact.fact_id)
+    if fact.value_kind == "compact_date":
+        if not re.fullmatch(r"\d{8}", fact.value):
+            raise EvidenceError("fact_date_mismatch", fact.fact_id)
+        try:
+            compact = date(
+                int(fact.value[:4]), int(fact.value[4:6]), int(fact.value[6:])
+            ).isoformat()
+        except ValueError as exc:
+            raise EvidenceError("fact_date_mismatch", fact.fact_id) from exc
+        if compact != fact.as_of:
+            raise EvidenceError("fact_date_mismatch", fact.fact_id)
+    elif fact.value_kind == "title":
+        if not fact.value.strip() or len(fact.value) > 500:
+            raise EvidenceError("fact_text_invalid", fact.fact_id)
+    elif fact.value_kind == "domain":
+        if (
+            not fact.value
+            or len(fact.value) > 253
+            or any(char.isspace() for char in fact.value)
+        ):
+            raise EvidenceError("fact_domain_invalid", fact.fact_id)
+    elif fact.value_kind == "url":
+        parsed = urlparse(fact.value)
+        if (
+            parsed.scheme not in {"http", "https"}
+            or not parsed.netloc
+            or parsed.username is not None
+            or parsed.password is not None
+        ):
+            raise EvidenceError("fact_url_invalid", fact.fact_id)
+    elif fact.value_kind == "lane":
+        if fact.value not in {"corpus", "corpus-extended", "artlist"}:
+            raise EvidenceError("fact_lane_invalid", fact.fact_id)
 
 
 def verify_fact(fact: Fact, root: Path = ROOT) -> None:
@@ -308,6 +439,9 @@ _TEMPLATE_IDS = {
     "channel_reading",
     "channel_comparison",
     "instrument_scope",
+    "receipt_evidence",
+    "current_receipt_evidence",
+    "refusal_evidence_unavailable",
     "refusal_forbidden",
     "refusal_unsupported",
 }
@@ -326,7 +460,7 @@ def parse_plan(raw: Mapping[str, object]) -> Plan:
         raise EvidenceError("plan_intent_invalid", repr(intent))
     if not isinstance(template_id, str) or template_id not in _TEMPLATE_IDS:
         raise EvidenceError("plan_template_invalid", repr(template_id))
-    if not isinstance(fact_ids, list) or len(fact_ids) > 8:
+    if not isinstance(fact_ids, list) or len(fact_ids) > 32:
         raise EvidenceError("plan_facts_invalid", repr(fact_ids))
     if any(not isinstance(item, str) or len(item) > 96 for item in fact_ids):
         raise EvidenceError("plan_facts_invalid", repr(fact_ids))
@@ -355,6 +489,36 @@ def _channel_fact_ids(channel: str) -> tuple[str, str]:
     return f"{base}.label", f"{base}.score7"
 
 
+def _receipt_article_fact_ids(channel: str) -> tuple[str, ...]:
+    ids: list[str] = []
+    for index in range(RECEIPT_ENTRIES_PER_ANSWER):
+        base = f"receipts.channels.{channel}.displayed.{index}"
+        ids.extend(
+            f"{base}.{field}" for field in ("date", "title", "domain", "url", "lane")
+        )
+    return tuple(ids)
+
+
+def _receipt_fact_ids(channel: str) -> tuple[str, ...]:
+    return (
+        "receipts.date",
+        f"receipts.channels.{channel}.label",
+        *_receipt_article_fact_ids(channel),
+    )
+
+
+def _current_receipt_fact_ids(channel: str) -> tuple[str, ...]:
+    base = f"latest.channels.{channel}"
+    return (
+        "latest.date",
+        f"{base}.label",
+        f"{base}.score",
+        "latest.definition",
+        "receipts.date",
+        *_receipt_article_fact_ids(channel),
+    )
+
+
 def plan_question(question: str) -> Plan:
     """Deterministic planner used until a separately reviewed classifier exists."""
     normalized = " ".join(question.strip().lower().split())
@@ -367,6 +531,10 @@ def plan_question(question: str) -> Plan:
         channel for channel, patterns in _CHANNEL_PATTERNS.items()
         if any(re.search(pattern, normalized) for pattern in patterns)
     ]
+    receipt_request = bool(
+        re.search(r"\b(evidence|headlines?|sources?|articles?|receipts?|why)\b", normalized)
+    )
+    current_request = bool(re.search(r"\b(current|today|why|score)\b", normalized))
     comparison = bool(re.search(r"\b(compare|versus|vs\.?|higher|lower)\b", normalized))
     if comparison and len(channels) == 2:
         first_label, first_score = _channel_fact_ids(channels[0])
@@ -383,6 +551,21 @@ def plan_question(question: str) -> Plan:
                 second_score,
                 "latest.definition",
             ),
+        )
+    if len(channels) == 1 and receipt_request:
+        channel = channels[0]
+        if current_request:
+            return Plan(
+                PLAN_SCHEMA_VERSION,
+                "current_receipt_evidence",
+                "current_receipt_evidence",
+                _current_receipt_fact_ids(channel),
+            )
+        return Plan(
+            PLAN_SCHEMA_VERSION,
+            "receipt_evidence",
+            "receipt_evidence",
+            _receipt_fact_ids(channel),
         )
     if len(channels) == 1:
         label, score = _channel_fact_ids(channels[0])
@@ -455,6 +638,21 @@ def _validate_plan_shape(plan: Plan) -> None:
         if not valid:
             raise EvidenceError("plan_shape_invalid", plan.template_id)
         return
+    if plan.template_id == "receipt_evidence":
+        valid = plan.intent == "receipt_evidence" and any(
+            plan.fact_ids == _receipt_fact_ids(channel) for channel in CHANNELS
+        )
+        if not valid:
+            raise EvidenceError("plan_shape_invalid", plan.template_id)
+        return
+    if plan.template_id == "current_receipt_evidence":
+        valid = plan.intent == "current_receipt_evidence" and any(
+            plan.fact_ids == _current_receipt_fact_ids(channel)
+            for channel in CHANNELS
+        )
+        if not valid:
+            raise EvidenceError("plan_shape_invalid", plan.template_id)
+        return
     raise EvidenceError("plan_shape_invalid", plan.template_id)
 
 
@@ -471,9 +669,32 @@ def _number(fact: Fact) -> float:
     return float(value)
 
 
+def _displayed_receipt_entries(
+    facts: Sequence[Fact], start: int
+) -> list[tuple[str, str]]:
+    entries: list[tuple[str, str]] = []
+    width = 5
+    for offset in range(start, len(facts), width):
+        group = facts[offset:offset + width]
+        if len(group) != width:
+            raise EvidenceError("plan_shape_invalid", "receipt entry width")
+        # date, title, domain, URL and lane were all verified. Bind the
+        # displayed publisher label to the actual URL host as well.
+        title, domain, url = _text(group[1]), _text(group[2]), _text(group[3])
+        hostname = (urlparse(url).hostname or "").lower().rstrip(".")
+        normalized_domain = domain.lower().rstrip(".")
+        if hostname != normalized_domain and not hostname.endswith(
+            "." + normalized_domain
+        ):
+            raise EvidenceError("receipt_domain_url_mismatch", group[3].fact_id)
+        entries.append((title, domain))
+    return entries
+
+
 def _evidence(facts: Sequence[Fact]) -> tuple[dict[str, Any], ...]:
     return tuple({
         "fact_id": fact.fact_id,
+        "value": fact.value,
         "source": fact.source_path,
         "pointer": fact.pointer,
         "source_sha256": fact.source_sha256,
@@ -509,8 +730,9 @@ def render_plan(
             "refused",
             "unsupported_question",
             "This evidence-locked assistant can currently report the latest "
-            "headline, a channel reading, a two-channel comparison, or the "
-            "instrument's scope. It refuses questions outside those facts.",
+            "headline, a channel reading, a two-channel comparison, displayed "
+            "receipt evidence, or the instrument's scope. It refuses "
+            "questions outside those facts.",
             None,
             plan.template_id,
             (),
@@ -556,6 +778,31 @@ def render_plan(
             f"{score_b:.1f}; {relation}. These are separate within-channel "
             "press-salience percentiles, not comparable probabilities of risk."
         )
+    elif plan.template_id == "receipt_evidence":
+        label = _text(facts[1])
+        entries = _displayed_receipt_entries(facts, 2)
+        rendered = "; ".join(
+            f"“{title}” ({domain})" for title, domain in entries
+        )
+        text = (
+            f"The latest available displayed receipt entries for {label} are "
+            f"dated {as_of}: {rendered}. These {len(entries)} entries are "
+            "presentation evidence, not a complete article set, a source-"
+            "quality statistic, or the score denominator."
+        )
+    elif plan.template_id == "current_receipt_evidence":
+        label = _text(facts[1])
+        score = _number(facts[2])
+        entries = _displayed_receipt_entries(facts, 5)
+        rendered = "; ".join(
+            f"“{title}” ({domain})" for title, domain in entries
+        )
+        text = (
+            f"The completed-day press-salience tape for {label} was "
+            f"{score:.1f} on {as_of}. Same-day displayed receipt entries: "
+            f"{rendered}. These {len(entries)} links are not a complete score "
+            "denominator or a causal explanation of the reading."
+        )
     elif plan.template_id == "instrument_scope":
         text = _text(facts[1])
     else:  # pragma: no cover - guarded by _validate_plan_shape
@@ -575,8 +822,41 @@ def render_plan(
 
 def answer_question(question: str, root: Path = ROOT) -> Answer:
     plan = plan_question(question)
-    catalog = {} if plan.template_id.startswith("refusal_") else build_latest_catalog(root)
-    return render_plan(plan, catalog, root)
+    if plan.template_id.startswith("refusal_"):
+        return render_plan(plan, {}, root)
+    try:
+        catalog: dict[str, Fact] = {}
+        if any(fact_id.startswith("latest.") for fact_id in plan.fact_ids):
+            catalog.update(build_latest_catalog(root))
+        if any(fact_id.startswith("receipts.") for fact_id in plan.fact_ids):
+            catalog.update(build_receipt_catalog(root))
+        return render_plan(plan, catalog, root)
+    except EvidenceError as exc:
+        if plan.template_id not in {"receipt_evidence", "current_receipt_evidence"}:
+            raise
+        if exc.code == "date_join_mismatch":
+            code = "evidence_date_mismatch"
+            text = (
+                "The current score and available receipt evidence are not "
+                "from the same completed news day, so the assistant will not "
+                "present the articles as evidence for that score."
+            )
+        else:
+            code = "evidence_unavailable"
+            text = (
+                "Receipt evidence could not be verified against its registered "
+                "source facts, so no headline or link is displayed."
+            )
+        return Answer(
+            ANSWER_SCHEMA_VERSION,
+            "refused",
+            code,
+            text,
+            None,
+            "refusal_evidence_unavailable",
+            (),
+            (),
+        )
 
 
 def main(argv: Sequence[str] | None = None) -> None:
