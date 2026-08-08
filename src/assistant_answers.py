@@ -36,7 +36,7 @@ SITE_DATA = ROOT / "docs" / "data"
 CHANNEL_LABELS = {
     "pakistan_west": "Pakistan",
     "china_east": "China",
-    "gulf_energy": "the Gulf",
+    "gulf_energy": "Gulf energy",
     "us_trade": "US trade",
     "shipping": "shipping",
 }
