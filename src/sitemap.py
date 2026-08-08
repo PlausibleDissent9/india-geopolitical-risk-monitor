@@ -55,6 +55,8 @@ PRIORITY: dict[str, str] = {
     # The vintages panel is the one asset a later entrant cannot rebuild
     # after the fact; its page ranks with the data surfaces it explains.
     "vintages.html": "0.8",
+    # The ask surface is the front door for non-technical readers.
+    "ask.html": "0.8",
 }
 
 

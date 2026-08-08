@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ask IGRM, India Geopolitical Risk Monitor</title>
+<meta name="description" content="Ask questions in plain text and get evidence-locked answers: a deterministic planner routes your phrasing to answers pre-verified against source bytes, with the evidence ledger for every value. No language model writes any of this text.">
+<link rel="canonical" href="https://igrm.in/ask.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a3324'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=79731829">
+<script src="labels.js?v=7ba70543"></script>
+<style>
+#chat-log { display: flex; flex-direction: column; gap: .6rem; margin: 1rem 0; }
+.msg { max-width: 46rem; padding: .55rem .8rem; border-radius: .6rem; }
+.msg.you { align-self: flex-end; border: 1px solid currentColor; opacity: .85; }
+.msg.igrm { align-self: flex-start; border-left: 3px solid #8a3324; padding-left: .8rem; }
+.msg.igrm.refused { border-left-color: #666; font-style: italic; }
+.msg details { margin-top: .4rem; font-size: .85em; opacity: .8; }
+#ask-row { display: flex; gap: .5rem; margin: 1rem 0; }
+#ask-input { flex: 1; padding: .55rem .8rem; font: inherit; }
+.chip { display: inline-block; margin: .15rem; padding: .2rem .6rem; border: 1px solid currentColor; border-radius: 1rem; cursor: pointer; font-size: .85em; opacity: .75; }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="./">India Geopolitical Risk Monitor</a></h1>
+  <nav class="masthead">
+    <a href="start.html">Start here</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="validation.html">Validation</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="history.html">1979&ndash;2019</a>
+    <a href="maps.html">Maps</a>
+    <a href="data.html">Data</a>
+    <a href="notes.html">Notes</a>
+    <a href="divergence.html">Divergence</a>
+  </nav>
+  <p class="definition">Ask in your own words. A deterministic planner &mdash; the same routing
+  rules as the repository's evidence-locked assistant, no language model &mdash; reads your
+  phrasing and returns an answer that was verified against its source bytes (hash, JSON pointer,
+  type, unit, date) before this page was published. Every value carries its evidence ledger. A
+  question outside the registered space, or one the verifier cannot fully ground, gets a refusal
+  with a stable code &mdash; never improvised prose. Your text stays in your browser: nothing is
+  sent anywhere.</p>
+</header>
+
+<main>
+<div id="load-error" role="alert" hidden></div>
+<div id="chat-log" aria-live="polite"></div>
+<div id="ask-row">
+  <input id="ask-input" type="text" placeholder="e.g. why is the shipping score where it is? / compare china and pakistan" aria-label="ask a question">
+  <button id="ask-send" type="button">Ask</button>
+</div>
+<p class="chart-note">Things it can answer <span id="counts" data-fill>&mdash;</span>:</p>
+<p id="chips"></p>
+<p class="chart-note">Refusals are part of the product: forecasts, advice, and superiority
+questions return the assistant's registered refusals, published like everything else in
+<a href="data/assistant_answers.json">data/assistant_answers.json</a>. The construction
+contract is in that payload's <code>_meta</code>.</p>
+</main>
+
+<footer>
+  <p><a href="data/assistant_answers.json">assistant_answers.json</a> &middot;
+  <a href="codebook.html">Codebook</a> &middot;
+  <a href="vintages.html">Vintages</a></p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  /* The planner below mirrors src/evidence_assistant.py:plan_question's
+     routing (channel patterns, receipt/current/comparison cues) and maps
+     any phrasing onto the registered question whose pre-verified answer
+     ships in the payload. Deterministic by construction: if the routing
+     here and the Python routing ever disagree, the answer shown is still
+     one of the pre-verified ones -- the page cannot invent text. */
+  var CHANNELS = {
+    pakistan_west: /\bpakistan\b|\bkashmir\b|\bloc\b/,
+    china_east: /\bchina\b|\bladakh\b|\btaiwan\b|\blac\b/,
+    gulf_energy: /\bgulf\b|\bhormuz\b|\biran\b|\benergy\b|\boil\b/,
+    us_trade: /\bus trade\b|\btariff\b|\bunited states\b|\bwashington\b|\bus\b/,
+    shipping: /\bshipping\b|\bred sea\b|\bsuez\b|\bmaritime\b|\bfreight\b/
+  };
+  var LABEL = { pakistan_west: "Pakistan", china_east: "China",
+    gulf_energy: "the Gulf", us_trade: "US trade", shipping: "shipping" };
+  var byQuestion = {}, meta = null;
+
+  function route(text) {
+    var t = " " + text.trim().toLowerCase().replace(/\s+/g, " ") + " ";
+    var hits = Object.keys(CHANNELS).filter(function (c) { return CHANNELS[c].test(t); });
+    var receipts = /\b(evidence|headlines?|sources?|articles?|receipts?|why)\b/.test(t);
+    var current = /\b(current|today|why|score)\b/.test(t);
+    var compare = /\b(compare|versus|vs\.?|higher|lower|and)\b/.test(t);
+    if (compare && hits.length === 2) {
+      return "Compare " + LABEL[hits[0]] + " versus " + LABEL[hits[1]];
+    }
+    if (hits.length === 1 && receipts && current) {
+      return "Why is the current " + LABEL[hits[0]] + " score here?";
+    }
+    if (hits.length === 1 && receipts) { return "Show " + LABEL[hits[0]] + " evidence"; }
+    if (hits.length === 1 && current) {
+      return "Why is the current " + LABEL[hits[0]] + " score here?";
+    }
+    if (/\b(will|forecast|predict|tomorrow|next week)\b/.test(t)) {
+      return "Will the index rise tomorrow?";
+    }
+    if (/\b(hedge|invest|buy|sell|portfolio|advice)\b/.test(t)) {
+      return "Should I hedge my portfolio against this?";
+    }
+    if (/\b(better|beat|outperform|superior)\b/.test(t)) {
+      return "Is IGRM better than the GPR index?";
+    }
+    return null;
+  }
+
+  function bubble(cls, text) {
+    var d = document.createElement("div");
+    d.className = "msg " + cls;
+    d.textContent = text;
+    document.getElementById("chat-log").appendChild(d);
+    d.scrollIntoView({ block: "nearest" });
+    return d;
+  }
+
+  function respond(text) {
+    if (!text.trim()) { return; }
+    bubble("you", text);
+    var canonical = route(text);
+    var a = canonical && byQuestion[canonical];
+    if (!a) {
+      bubble("igrm refused",
+        "REFUSED (question_outside_registered_space): this page answers only " +
+        "the registered question set shown below; it will not improvise. " +
+        "The payloads on the Data page answer everything else.");
+      return;
+    }
+    var b = bubble(a.status === "answered" ? "igrm" : "igrm refused",
+      a.status === "answered" ? a.text : "REFUSED (" + a.refusal_code + "): " + a.text);
+    if (a.status === "answered" && a.evidence && a.evidence.length) {
+      var det = document.createElement("details");
+      var sum = document.createElement("summary");
+      sum.textContent = "evidence ledger (" + a.evidence.length + " verified facts)";
+      det.appendChild(sum);
+      var ul = document.createElement("ul");
+      a.evidence.forEach(function (e) {
+        var li = document.createElement("li");
+        li.textContent = Object.keys(e).sort().map(function (k) {
+          return k + ": " + String(e[k]);
+        }).join(" · ");
+        ul.appendChild(li);
+      });
+      det.appendChild(ul);
+      b.appendChild(det);
+    }
+  }
+
+  fetch("data/assistant_answers.json").then(function (r) {
+    if (!r.ok) { throw new Error("payload fetch failed: " + r.status); }
+    return r.json();
+  }).then(function (p) {
+    meta = p._meta;
+    p.answers.forEach(function (a) { byQuestion[a.question] = a; });
+    document.getElementById("counts").textContent =
+      "(" + meta.n_answered + " answered, " + meta.n_refused +
+      " refused, as generated " + meta.generated + ")";
+    var chips = document.getElementById("chips");
+    p.answers.forEach(function (a) {
+      var c = document.createElement("span");
+      c.className = "chip";
+      c.textContent = a.question;
+      c.addEventListener("click", function () { respond(a.question); });
+      chips.appendChild(c);
+    });
+    bubble("igrm", "Ask about any channel's current score, its evidence, or a " +
+      "comparison. Every answer was verified before publication; refusals " +
+      "come with their codes.");
+    var input = document.getElementById("ask-input");
+    function go() { respond(input.value); input.value = ""; input.focus(); }
+    document.getElementById("ask-send").addEventListener("click", go);
+    input.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") { go(); }
+    });
+  }).catch(function (e) {
+    var err = document.getElementById("load-error");
+    err.hidden = false;
+    err.textContent = "This page refuses to render without its payload: " + e.message;
+  });
+}());
+</script>
+</body>
+</html>
