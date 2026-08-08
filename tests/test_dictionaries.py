@@ -1,7 +1,6 @@
 """
-CI enforcement of the dictionary rules (IGRM_MAX_SPEC.md section V.1 and
-methodology.md section 2), across the primary, robustness-variant, and
-placebo dictionaries.
+CI enforcement of the dictionary rules (methodology.md section 2), across the
+primary, robustness-variant, and placebo dictionaries.
 
 The ex-ante rule is the load-bearing one: a spike at a known episode must
 be DETECTED by structural terms, never baked in by naming the event.

@@ -42,6 +42,8 @@ def _fixture(
             "date": "2026-08-08",
             "generated": "2026-08-08T10:00:00Z",
             "score": 61.5,
+            "unit": "salience_percentile_points",
+            "denominator": "registered_test_frame",
         },
     )
 
@@ -147,7 +149,7 @@ def _fixture(
     _write_json(
         contract,
         {
-            "schema_version": "1.0.0",
+            "schema_version": "2.0.0",
             "effective": "2026-08-08",
             "default_policy": "deny",
             "allowed_claim_classes": [
@@ -168,6 +170,17 @@ def _fixture(
                         "descriptive_current",
                         "descriptive_historical",
                         "methodology",
+                    ],
+                    "allowed_value_types": [
+                        "boolean",
+                        "integer",
+                        "number",
+                        "null",
+                    ],
+                    "allowed_units": ["salience_percentile_points"],
+                    "allowed_denominators": ["registered_test_frame"],
+                    "allowed_uncertainty_meaning_codes": [
+                        "synthetic_test_uncertainty"
                     ],
                     "min_facts": 1,
                     "max_facts": 1,
@@ -210,7 +223,7 @@ def _fixture(
         "transforms": transforms,
     }
     bundle: dict[str, Any] = {
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "claim_id": "test.claim.001",
         "claim_class": "descriptive_current",
         "template_id": "direct_fact_v1",
@@ -240,11 +253,13 @@ def _fixture(
                 "observed_at": "2026-08-08T10:00:00Z",
                 "observed_at_pointer": "/generated",
                 "unit": "salience_percentile_points",
+                "unit_pointer": "/unit",
                 "denominator": "registered_test_frame",
+                "denominator_pointer": "/denominator",
                 "rights_use": "publish_derived_value",
                 "uncertainty": {
                     "status": "not_estimated",
-                    "meaning": "A deterministic test value with no inferential interval.",
+                    "meaning_code": "synthetic_test_uncertainty",
                     "lower": None,
                     "upper": None,
                 },
@@ -294,6 +309,21 @@ def test_complete_bundle_is_eligible_without_emitting_its_value(tmp_path: Path) 
         "source_ids": ["test_source"],
     }
     assert "61.5" not in json.dumps(result)
+
+
+def test_unwired_v1_contract_and_bundle_are_explicitly_refused(tmp_path: Path) -> None:
+    bundle, paths = _fixture(tmp_path)
+    bundle["schema_version"] = "1.0.0"
+    _resign(bundle)
+    _refuses(bundle, paths, "bundle_schema_unsupported")
+
+    bundle, paths = _fixture(tmp_path / "contract")
+    contract = json.loads(paths["contract"].read_text())
+    contract["schema_version"] = "1.0.0"
+    _write_json(paths["contract"], contract)
+    bundle["policy"]["claim_contract_sha256"] = _sha(paths["contract"])
+    _resign(bundle)
+    _refuses(bundle, paths, "claim_contract_schema_unsupported")
 
 
 @pytest.mark.parametrize("field", ["prose", "citation", "model_output", "confidence"])
@@ -432,6 +462,182 @@ def test_evidence_bytes_pointer_type_and_value_are_reverified(tmp_path: Path) ->
     _refuses(bundle, paths, "fact_value_source_mismatch")
 
 
+def test_direct_fact_rejects_prose_even_when_exactly_bound_to_evidence(
+    tmp_path: Path,
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    advisory = (
+        "India's geopolitical risk is elevated and investors should reduce "
+        "shipping exposure ahead of an expected escalation."
+    )
+    _write_json(
+        paths["evidence"],
+        {
+            "date": "2026-08-08",
+            "generated": "2026-08-08T10:00:00Z",
+            "score": advisory,
+            "unit": "salience_percentile_points",
+            "denominator": "registered_test_frame",
+        },
+    )
+    fact = bundle["facts"][0]
+    fact["source_sha256"] = _sha(paths["evidence"])
+    fact["value"] = advisory
+    fact["value_type"] = "string"
+    _resign(bundle)
+
+    _refuses(bundle, paths, "fact_value_type_unlicensed")
+
+
+def test_direct_fact_contract_cannot_register_an_unbounded_string_channel(
+    tmp_path: Path,
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    contract = json.loads(paths["contract"].read_text())
+    contract["templates"][0]["allowed_value_types"].append("string")
+    _write_json(paths["contract"], contract)
+    bundle["policy"]["claim_contract_sha256"] = _sha(paths["contract"])
+    _resign(bundle)
+
+    _refuses(bundle, paths, "claim_template_value_types_invalid")
+
+
+def test_template_semantic_allowlists_accept_only_machine_codes(tmp_path: Path) -> None:
+    bundle, paths = _fixture(tmp_path)
+    contract = json.loads(paths["contract"].read_text())
+    contract["templates"][0]["allowed_units"].append(
+        "India risk is elevated and investors should sell shipping exposure."
+    )
+    _write_json(paths["contract"], contract)
+    bundle["policy"]["claim_contract_sha256"] = _sha(paths["contract"])
+    _resign(bundle)
+
+    _refuses(bundle, paths, "claim_template_semantic_codes_invalid")
+
+
+def test_false_unit_and_denominator_labels_refuse_even_with_a_valid_value(
+    tmp_path: Path,
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    bundle["facts"][0]["unit"] = "percentage_of_articles"
+    _resign(bundle)
+    _refuses(bundle, paths, "fact_unit_source_mismatch")
+
+    bundle, paths = _fixture(tmp_path / "denominator")
+    bundle["facts"][0]["denominator"] = "daily_brief_score_pool"
+    _resign(bundle)
+    _refuses(bundle, paths, "fact_denominator_source_mismatch")
+
+
+@pytest.mark.parametrize(
+    ("field", "reason"),
+    [
+        ("unit", "fact_unit_invalid"),
+        ("denominator", "fact_denominator_invalid"),
+    ],
+)
+def test_semantic_labels_cannot_carry_matching_whitespace_prose(
+    tmp_path: Path, field: str, reason: str
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    advisory = "India risk is elevated and investors should reduce shipping exposure."
+    evidence = json.loads(paths["evidence"].read_text())
+    evidence[field] = advisory
+    _write_json(paths["evidence"], evidence)
+    bundle["facts"][0]["source_sha256"] = _sha(paths["evidence"])
+    bundle["facts"][0][field] = advisory
+    _resign(bundle)
+
+    _refuses(bundle, paths, reason)
+
+
+@pytest.mark.parametrize(
+    ("field", "reason"),
+    [
+        ("unit", "fact_unit_unlicensed"),
+        ("denominator", "fact_denominator_unlicensed"),
+    ],
+)
+def test_identifier_shaped_semantic_labels_still_require_registration(
+    tmp_path: Path, field: str, reason: str
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    advisory_code = "india_risk_is_elevated_sell_shipping"
+    evidence = json.loads(paths["evidence"].read_text())
+    evidence[field] = advisory_code
+    _write_json(paths["evidence"], evidence)
+    bundle["facts"][0]["source_sha256"] = _sha(paths["evidence"])
+    bundle["facts"][0][field] = advisory_code
+    _resign(bundle)
+
+    _refuses(bundle, paths, reason)
+
+
+@pytest.mark.parametrize(
+    ("field", "pointer_field", "reason"),
+    [
+        ("unit", "unit_pointer", "fact_unit_pointer_missing"),
+        ("denominator", "denominator_pointer", "fact_denominator_pointer_missing"),
+    ],
+)
+def test_semantic_labels_must_exist_inside_the_hashed_evidence(
+    tmp_path: Path, field: str, pointer_field: str, reason: str
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    evidence = json.loads(paths["evidence"].read_text())
+    del evidence[field]
+    _write_json(paths["evidence"], evidence)
+    bundle["facts"][0]["source_sha256"] = _sha(paths["evidence"])
+    bundle["facts"][0][pointer_field] = f"/{field}"
+    _resign(bundle)
+
+    _refuses(bundle, paths, reason)
+
+
+@pytest.mark.parametrize(
+    ("pointer_field", "source_field", "reason"),
+    [
+        ("json_pointer", "score", "fact_pointer_invalid"),
+        ("unit_pointer", "unit", "fact_unit_pointer_invalid"),
+        (
+            "denominator_pointer",
+            "denominator",
+            "fact_denominator_pointer_invalid",
+        ),
+        (
+            "effective_date_pointer",
+            "date",
+            "fact_effective_date_pointer_invalid",
+        ),
+        ("observed_at_pointer", "generated", "fact_observed_at_pointer_invalid"),
+    ],
+)
+def test_structural_pointers_cannot_carry_whitespace_prose(
+    tmp_path: Path, pointer_field: str, source_field: str, reason: str
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    prose_key = "India risk is elevated and this pointer carries prose"
+    evidence = json.loads(paths["evidence"].read_text())
+    evidence[prose_key] = evidence[source_field]
+    _write_json(paths["evidence"], evidence)
+    bundle["facts"][0]["source_sha256"] = _sha(paths["evidence"])
+    bundle["facts"][0][pointer_field] = f"/{prose_key}"
+    _resign(bundle)
+
+    _refuses(bundle, paths, reason)
+
+
+def test_source_path_cannot_carry_whitespace_prose(tmp_path: Path) -> None:
+    bundle, paths = _fixture(tmp_path)
+    prose_path = paths["root"] / "data" / "India risk is elevated.json"
+    prose_path.write_bytes(paths["evidence"].read_bytes())
+    bundle["facts"][0]["source_path"] = "data/India risk is elevated.json"
+    bundle["facts"][0]["source_sha256"] = _sha(prose_path)
+    _resign(bundle)
+
+    _refuses(bundle, paths, "fact_source_path_invalid")
+
+
 def test_json_pointer_decoding_and_strict_json_are_enforced(tmp_path: Path) -> None:
     bundle, paths = _fixture(tmp_path)
     _write_json(
@@ -440,6 +646,8 @@ def test_json_pointer_decoding_and_strict_json_are_enforced(tmp_path: Path) -> N
             "a~1": 61.5,
             "date": "2026-08-08",
             "generated": "2026-08-08T10:00:00Z",
+            "unit": "salience_percentile_points",
+            "denominator": "registered_test_frame",
         },
     )
     bundle["facts"][0]["source_sha256"] = _sha(paths["evidence"])
@@ -491,6 +699,8 @@ def test_temporal_join_freshness_and_future_observation_are_enforced(
             "date": "2026-08-07",
             "generated": "2026-08-08T10:00:00Z",
             "score": 61.5,
+            "unit": "salience_percentile_points",
+            "denominator": "registered_test_frame",
         },
     )
     bundle["facts"][0]["source_sha256"] = _sha(paths["evidence"])
@@ -510,6 +720,8 @@ def test_temporal_join_freshness_and_future_observation_are_enforced(
             "date": "2026-08-08",
             "generated": "2026-08-08T13:00:00Z",
             "score": 61.5,
+            "unit": "salience_percentile_points",
+            "denominator": "registered_test_frame",
         },
     )
     bundle["facts"][0]["source_sha256"] = _sha(paths["evidence"])
@@ -534,7 +746,7 @@ def test_numeric_uncertainty_is_typed_and_bounded(tmp_path: Path) -> None:
     bundle, paths = _fixture(tmp_path)
     bundle["facts"][0]["uncertainty"] = {
         "status": "not_applicable",
-        "meaning": "Incorrectly claims uncertainty is irrelevant.",
+        "meaning_code": "synthetic_test_uncertainty",
         "lower": None,
         "upper": None,
     }
@@ -544,12 +756,34 @@ def test_numeric_uncertainty_is_typed_and_bounded(tmp_path: Path) -> None:
     bundle, paths = _fixture(tmp_path / "interval")
     bundle["facts"][0]["uncertainty"] = {
         "status": "interval",
-        "meaning": "A deliberately incompatible interval.",
+        "meaning_code": "synthetic_test_uncertainty",
         "lower": 70.0,
         "upper": 80.0,
     }
     _resign(bundle)
     _refuses(bundle, paths, "fact_uncertainty_interval_invalid")
+
+
+def test_uncertainty_meaning_code_cannot_carry_advisory_prose(tmp_path: Path) -> None:
+    bundle, paths = _fixture(tmp_path)
+    bundle["facts"][0]["uncertainty"]["meaning_code"] = (
+        "India's geopolitical risk is elevated and investors should reduce exposure."
+    )
+    _resign(bundle)
+
+    _refuses(bundle, paths, "fact_uncertainty_meaning_code_invalid")
+
+
+def test_identifier_shaped_uncertainty_code_still_requires_registration(
+    tmp_path: Path,
+) -> None:
+    bundle, paths = _fixture(tmp_path)
+    bundle["facts"][0]["uncertainty"]["meaning_code"] = (
+        "india_risk_is_elevated_sell_shipping"
+    )
+    _resign(bundle)
+
+    _refuses(bundle, paths, "fact_uncertainty_meaning_code_unlicensed")
 
 
 def test_transform_registration_and_implementation_bytes_are_locked(
@@ -596,6 +830,12 @@ def test_forbidden_claim_classes_have_no_template(
 
 
 def test_committed_registry_is_deny_by_default_and_external_sources_are_pending() -> None:
+    """Trip CI deliberately when the founder makes the first signed approval.
+
+    That approval commit must update these initial-state assertions alongside
+    its signed artifact; an unexpected green transition would hide a policy
+    change at the trust boundary.
+    """
     registry_path = ROOT / "governance" / "source_rights_registry.json"
     signers_path = ROOT / "governance" / "rights_signers.json"
     registry = json.loads(
@@ -636,6 +876,7 @@ def test_committed_contract_forbids_high_risk_claims_and_transform_hash_is_exact
     _, strict_contract, _ = guard._read_json(contract_path, "unreadable")
     guard._validate_claim_contract(strict_contract)
     assert contract["default_policy"] == "deny"
+    assert contract["schema_version"] == "2.0.0"
     assert {
         "causal",
         "forecast",
@@ -647,6 +888,17 @@ def test_committed_contract_forbids_high_risk_claims_and_transform_hash_is_exact
     assert set(contract["allowed_claim_classes"]).isdisjoint(
         contract["forbidden_claim_classes"]
     )
+    assert len(contract["templates"]) == 1
+    assert contract["templates"][0]["template_id"] == "direct_fact_v1"
+    assert contract["templates"][0]["allowed_value_types"] == [
+        "boolean",
+        "integer",
+        "number",
+        "null",
+    ]
+    assert contract["templates"][0]["allowed_units"] == []
+    assert contract["templates"][0]["allowed_denominators"] == []
+    assert contract["templates"][0]["allowed_uncertainty_meaning_codes"] == []
 
     registry_path = ROOT / "governance" / "transformation_registry.json"
     transforms = json.loads(registry_path.read_text())

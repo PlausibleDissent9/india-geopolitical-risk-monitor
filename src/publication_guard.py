@@ -7,9 +7,10 @@ construct and validate a bundle before it may rely on this guard.
 The guard is deliberately offline. It uses ``cryptography`` only for detached
 Ed25519 signature verification and otherwise relies on the standard library.
 It verifies the exact policy bytes, source-rights decision, local evidence
-bytes, JSON pointer, scalar type and value, unit, denominator, uncertainty,
-temporal join, freshness, registered transformation and final bundle hash. No
-prose field is accepted in the bundle schema.
+bytes, JSON pointer, template-licensed scalar type and value, evidence-bound
+unit and denominator, uncertainty, temporal join, freshness, registered
+transformation and final bundle hash. No prose field is accepted in the bundle
+schema.
 """
 
 from __future__ import annotations
@@ -41,6 +42,10 @@ JsonScalar = Union[str, int, float, bool, None]
 
 _ID = re.compile(r"^[a-z][a-z0-9_.:-]{2,127}$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_MACHINE_PATH = re.compile(r"^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*$")
+_MACHINE_POINTER = re.compile(r"^(?:/(?:[A-Za-z0-9_.:-]|~[01])+)+$")
+_CLAIM_CONTRACT_SCHEMA_VERSION = "2.0.0"
+_BUNDLE_SCHEMA_VERSION = "2.0.0"
 _RIGHTS_USES = {
     "cite_metadata",
     "model_processing",
@@ -62,6 +67,7 @@ _AUTHORITY_CLASSES = {
     "research_dataset",
 }
 _UNCERTAINTY = {"categorical", "interval", "not_applicable", "not_estimated"}
+_DIRECT_FACT_VALUE_TYPES = {"boolean", "integer", "number", "null"}
 
 
 class PublicationGuardError(ValueError):
@@ -195,36 +201,56 @@ def _same_scalar(left: object, right: object) -> bool:
     return _scalar_kind(left) == _scalar_kind(right) and left == right
 
 
-def _pointer(document: object, pointer: str) -> object:
+def _json_pointer(value: object, code: str) -> str:
+    pointer = _text(value, code)
+    if len(pointer) > 512 or not _MACHINE_POINTER.fullmatch(pointer):
+        _fail(code)
+    return pointer
+
+
+def _pointer(
+    document: object,
+    pointer: str,
+    *,
+    invalid_code: str = "fact_pointer_invalid",
+    missing_code: str = "fact_pointer_missing",
+) -> object:
     if pointer == "":
         return document
     if not pointer.startswith("/"):
-        _fail("fact_pointer_invalid")
+        _fail(invalid_code)
     current = document
     for encoded in pointer[1:].split("/"):
         if re.search(r"~(?![01])", encoded):
-            _fail("fact_pointer_invalid")
+            _fail(invalid_code)
         token = encoded.replace("~1", "/").replace("~0", "~")
         if isinstance(current, dict):
             if token not in current:
-                _fail("fact_pointer_missing")
+                _fail(missing_code)
             current = current[token]
         elif isinstance(current, list):
             if not token.isdigit() or (len(token) > 1 and token.startswith("0")):
-                _fail("fact_pointer_invalid")
+                _fail(invalid_code)
             index = int(token)
             if index >= len(current):
-                _fail("fact_pointer_missing")
+                _fail(missing_code)
             current = current[index]
         else:
-            _fail("fact_pointer_missing")
+            _fail(missing_code)
     return current
 
 
 def _safe_evidence_file(root: Path, relative: object) -> Path:
     text = _text(relative, "fact_source_path_invalid")
     candidate_rel = Path(text)
-    if candidate_rel.is_absolute() or ".." in candidate_rel.parts or "\\" in text:
+    if (
+        len(text) > 512
+        or not _MACHINE_PATH.fullmatch(text)
+        or candidate_rel.is_absolute()
+        or "." in candidate_rel.parts
+        or ".." in candidate_rel.parts
+        or "\\" in text
+    ):
         _fail("fact_source_path_invalid")
 
     root_resolved = root.resolve()
@@ -525,7 +551,9 @@ def _validate_claim_contract(document: dict[str, Any]) -> tuple[set[str], set[st
         },
         "claim_contract_fields_invalid",
     )
-    if contract["schema_version"] != "1.0.0" or contract["default_policy"] != "deny":
+    if contract["schema_version"] != _CLAIM_CONTRACT_SCHEMA_VERSION:
+        _fail("claim_contract_schema_unsupported")
+    if contract["default_policy"] != "deny":
         _fail("claim_contract_policy_invalid")
     _day(contract["effective"], "claim_contract_effective_invalid")
     allowed_raw = _list(contract["allowed_claim_classes"], "claim_classes_invalid")
@@ -544,6 +572,10 @@ def _validate_claim_contract(document: dict[str, Any]) -> tuple[set[str], set[st
     expected = {
         "template_id",
         "claim_classes",
+        "allowed_value_types",
+        "allowed_units",
+        "allowed_denominators",
+        "allowed_uncertainty_meaning_codes",
         "min_facts",
         "max_facts",
         "required_transformations",
@@ -555,11 +587,34 @@ def _validate_claim_contract(document: dict[str, Any]) -> tuple[set[str], set[st
         if template_id in templates:
             _fail("claim_template_duplicate")
         classes = _list(template["claim_classes"], "claim_template_classes_invalid")
+        value_types = _list(
+            template["allowed_value_types"], "claim_template_value_types_invalid"
+        )
+        semantic_code_fields = (
+            "allowed_units",
+            "allowed_denominators",
+            "allowed_uncertainty_meaning_codes",
+        )
+        for field in semantic_code_fields:
+            codes = _list(template[field], "claim_template_semantic_codes_invalid")
+            if any(not isinstance(code, str) for code in codes):
+                _fail("claim_template_semantic_codes_invalid")
+            if len(codes) != len(set(codes)):
+                _fail("claim_template_semantic_codes_invalid")
+            for code in codes:
+                _identifier(code, "claim_template_semantic_codes_invalid")
         transforms = _list(
             template["required_transformations"], "claim_template_transforms_invalid"
         )
         minimum = template["min_facts"]
         maximum = template["max_facts"]
+        if (
+            not value_types
+            or any(not isinstance(item, str) for item in value_types)
+            or len(value_types) != len(set(value_types))
+            or any(item not in _DIRECT_FACT_VALUE_TYPES for item in value_types)
+        ):
+            _fail("claim_template_value_types_invalid")
         if (
             not classes
             or any(not isinstance(item, str) for item in classes)
@@ -629,16 +684,25 @@ def _validate_transform_registry(
     return result
 
 
-def _validate_uncertainty(raw: object, value: JsonScalar, value_kind: str) -> None:
+def _validate_uncertainty(
+    raw: object,
+    value: JsonScalar,
+    value_kind: str,
+    allowed_meaning_codes: set[str],
+) -> None:
     uncertainty = _object(
         raw,
-        {"status", "meaning", "lower", "upper"},
+        {"status", "meaning_code", "lower", "upper"},
         "fact_uncertainty_fields_invalid",
     )
     status = uncertainty["status"]
     if status not in _UNCERTAINTY:
         _fail("fact_uncertainty_status_invalid")
-    _text(uncertainty["meaning"], "fact_uncertainty_meaning_invalid")
+    meaning_code = _identifier(
+        uncertainty["meaning_code"], "fact_uncertainty_meaning_code_invalid"
+    )
+    if meaning_code not in allowed_meaning_codes:
+        _fail("fact_uncertainty_meaning_code_unlicensed")
     lower = uncertainty["lower"]
     upper = uncertainty["upper"]
     if status == "interval":
@@ -704,7 +768,7 @@ def validate_claim_bundle(
         },
         "bundle_fields_invalid",
     )
-    if document["schema_version"] != "1.0.0":
+    if document["schema_version"] != _BUNDLE_SCHEMA_VERSION:
         _fail("bundle_schema_unsupported")
     claim_id = _identifier(document["claim_id"], "claim_id_invalid")
     claim_class = _text(document["claim_class"], "claim_class_invalid")
@@ -794,7 +858,9 @@ def validate_claim_bundle(
         "observed_at",
         "observed_at_pointer",
         "unit",
+        "unit_pointer",
         "denominator",
+        "denominator_pointer",
         "rights_use",
         "uncertainty",
     }
@@ -881,21 +947,52 @@ def validate_claim_bundle(
 
         evidence_path = _safe_evidence_file(root, fact["source_path"])
         expected_sha = _digest(fact["source_sha256"], "fact_source_digest_invalid")
-        raw_bytes, evidence, actual_sha = _read_json(
+        _, evidence, actual_sha = _read_json(
             evidence_path, "fact_source_json_invalid"
         )
-        if hashlib.sha256(raw_bytes).hexdigest() != actual_sha or actual_sha != expected_sha:
+        if actual_sha != expected_sha:
             _fail("fact_source_digest_mismatch")
-        pointer = _text(fact["json_pointer"], "fact_pointer_invalid")
+        pointer = _json_pointer(fact["json_pointer"], "fact_pointer_invalid")
         source_value = _pointer(evidence, pointer)
         value = cast(JsonScalar, fact["value"])
         value_kind = _scalar_kind(value)
         if fact["value_type"] != value_kind:
             _fail("fact_value_type_mismatch")
+        if value_kind not in template["allowed_value_types"]:
+            _fail("fact_value_type_unlicensed")
         if not _same_scalar(value, source_value):
             _fail("fact_value_source_mismatch")
 
-        effective_pointer = _text(
+        unit = _identifier(fact["unit"], "fact_unit_invalid")
+        unit_pointer = _json_pointer(
+            fact["unit_pointer"], "fact_unit_pointer_invalid"
+        )
+        source_unit = _pointer(
+            evidence,
+            unit_pointer,
+            invalid_code="fact_unit_pointer_invalid",
+            missing_code="fact_unit_pointer_missing",
+        )
+        if not isinstance(source_unit, str) or source_unit != unit:
+            _fail("fact_unit_source_mismatch")
+        if unit not in template["allowed_units"]:
+            _fail("fact_unit_unlicensed")
+        denominator = _identifier(fact["denominator"], "fact_denominator_invalid")
+        denominator_pointer = _json_pointer(
+            fact["denominator_pointer"], "fact_denominator_pointer_invalid"
+        )
+        source_denominator = _pointer(
+            evidence,
+            denominator_pointer,
+            invalid_code="fact_denominator_pointer_invalid",
+            missing_code="fact_denominator_pointer_missing",
+        )
+        if not isinstance(source_denominator, str) or source_denominator != denominator:
+            _fail("fact_denominator_source_mismatch")
+        if denominator not in template["allowed_denominators"]:
+            _fail("fact_denominator_unlicensed")
+
+        effective_pointer = _json_pointer(
             fact["effective_date_pointer"], "fact_effective_date_pointer_invalid"
         )
         source_effective = _pointer(evidence, effective_pointer)
@@ -904,7 +1001,7 @@ def validate_claim_bundle(
         effective = _day(source_effective, "fact_effective_date_invalid")
         if temporal_policy == "same_effective_date" and effective != as_of:
             _fail("fact_temporal_join_invalid")
-        observed_pointer = _text(
+        observed_pointer = _json_pointer(
             fact["observed_at_pointer"], "fact_observed_at_pointer_invalid"
         )
         source_observed = _pointer(evidence, observed_pointer)
@@ -918,9 +1015,12 @@ def validate_claim_bundle(
             if age_days < 0 or age_days > source["max_current_age_days"]:
                 _fail("fact_current_evidence_stale")
 
-        _text(fact["unit"], "fact_unit_invalid")
-        _text(fact["denominator"], "fact_denominator_invalid")
-        _validate_uncertainty(fact["uncertainty"], value, value_kind)
+        _validate_uncertainty(
+            fact["uncertainty"],
+            value,
+            value_kind,
+            set(template["allowed_uncertainty_meaning_codes"]),
+        )
 
     expected_bundle_sha = _digest(document["bundle_sha256"], "bundle_digest_invalid")
     actual_bundle_sha = _bundle_digest(document)

@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "2.0.0",
   "effective": "2026-08-08",
   "default_policy": "deny",
   "allowed_claim_classes": [
@@ -26,6 +26,15 @@
         "descriptive_historical",
         "methodology"
       ],
+      "allowed_value_types": [
+        "boolean",
+        "integer",
+        "number",
+        "null"
+      ],
+      "allowed_units": [],
+      "allowed_denominators": [],
+      "allowed_uncertainty_meaning_codes": [],
       "min_facts": 1,
       "max_facts": 1,
       "required_transformations": [

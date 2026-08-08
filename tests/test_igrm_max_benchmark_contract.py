@@ -12,6 +12,30 @@ def _load() -> dict:
     return json.loads(CONTRACT.read_text(encoding="utf-8"))
 
 
+def _spec_benchmark_names() -> list[str]:
+    spec = (ROOT / "IGRM_MAX_SPEC.md").read_text(encoding="utf-8")
+    heading = "## VIII. Benchmark contract: what “outperform” must mean"
+    assert spec.count(heading) == 1
+    lines = spec.split(heading, 1)[1].splitlines()
+    header = (
+        "| Benchmark | Strength to absorb | IGRM Max target | Required proof before "
+        "any advantage claim |"
+    )
+    assert lines.count(header) == 1
+    header_index = lines.index(header)
+    assert lines[header_index + 1] == "|---|---|---|---|"
+
+    names: list[str] = []
+    for line in lines[header_index + 2 :]:
+        if not line.startswith("|"):
+            break
+        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        assert len(cells) == 4
+        names.append(cells[0])
+    assert names
+    return names
+
+
 def test_benchmark_contract_is_target_only_and_fail_closed() -> None:
     contract = _load()
     policy = contract["claim_policy"]
@@ -67,6 +91,5 @@ def test_benchmark_roster_and_gates_are_complete() -> None:
 
 
 def test_spec_and_machine_contract_name_the_same_benchmarks() -> None:
-    spec = (ROOT / "IGRM_MAX_SPEC.md").read_text(encoding="utf-8")
-    for row in _load()["benchmarks"]:
-        assert row["name"] in spec
+    contract_names = [row["name"] for row in _load()["benchmarks"]]
+    assert _spec_benchmark_names() == contract_names

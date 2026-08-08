@@ -73,9 +73,11 @@ research object instead of a disposable daily score.
 At the effective date of this specification, the mature public core is a
 five-channel press-salience series with research and diagnostic layers. IGRM-E,
 IGRM-X, IGRM-T, IGRM-C and IGRM-Q below are a target architecture, not finished
-instruments. There is no complete external precision/recall result, comprehensive
-event frame, declared exposure universe, public assistant, licensed forecast,
-government adoption or minted research DOI.
+instruments. The public evidence-locked assistant is already part of the served
+surface, under its existing closed truth boundary; no public lane may claim the
+new publication guard until it completes the wiring gates below. There is no
+complete external precision/recall result, comprehensive event frame, declared
+exposure universe, licensed forecast, government adoption or minted research DOI.
 
 IGRM Max is not intended to replace official intelligence, field reporting,
 company due diligence or professional emergency judgment. It will not issue
@@ -462,6 +464,12 @@ One person may cover several functions during the build phase, but no high-impac
 event, construct change, label adjudication or material correction may depend on
 unreviewed single-person judgment. Dual control, reviewer identity and dissent are
 recorded.
+
+For calibration labels specifically, the founder personally makes every ruling,
+as required by `GOVERNANCE.md`. A separate human reviews the evidence and process
+and records agreement or dissent; registration and public use remain blocked
+while dissent is unresolved. That review neither delegates nor substitutes the
+founder's ground-truth authority, and a machine may not fill either role.
 
 The plan progresses through founder/fractional expert build, paid independent
 coding and pilot operations, then durable engineering/editorial coverage. Vendor

@@ -1,4 +1,4 @@
-# IGRM Max publication guard — implementation contract v0.1.0
+# IGRM Max publication guard — implementation contract v0.2.0
 
 Status: **validator and governance registries implemented; no existing public
 lane may claim coverage from this guard until that lane is explicitly wired**
@@ -23,11 +23,14 @@ does not authorize a model to write any claim.
 - approved upstream sources for every derived source;
 - signed source-authority and independence-group classifications rather than
   publisher-name inference;
-- a non-symlinked repository evidence file and exact SHA-256;
+- a machine-safe, non-symlinked repository evidence path and exact SHA-256;
 - strict JSON without duplicate keys;
-- an RFC 6901 pointer, scalar type and exact source value;
-- unit and denominator;
-- typed uncertainty, including a required status for every numeric value;
+- a machine-safe RFC 6901 pointer, template-licensed scalar type and exact
+  source value;
+- unit and denominator, each resolved through a required pointer inside the same
+  hashed evidence bytes and licensed by a finite per-template code list;
+- typed uncertainty, including a required status and per-template licensed
+  `meaning_code` for every value;
 - effective and observation timestamps resolved from registered pointers inside
   the evidence bytes, plus a same-effective-date join and current-evidence age;
 - a registered transformation version and implementation-file hash;
@@ -36,6 +39,17 @@ does not authorize a model to write any claim.
 
 Any mismatch yields a stable refusal code. The guard performs no network access
 and emits no fact value in its success response.
+
+## Wire-contract version
+
+Claim-contract documents and claim bundles use schema `2.0.0`. This is a
+deliberate breaking change from the initial unwired v1 validator: v2 adds required
+template value types and evidence pointers for unit and denominator, renames the
+free-text uncertainty `meaning` field to the machine-code `meaning_code`, and
+adds finite per-template semantic allowlists while restricting paths and pointers
+to machine-safe grammars. No public lane or published bundle consumed v1. The
+validator refuses v1 rather than treating any of the new requirements as optional
+defaults.
 
 ## Governance files
 
@@ -70,10 +84,22 @@ unreviewed GDELT, UCDP, PortWatch, Yahoo, Wikimedia or other input.
 
 ## Initial supported claim surface
 
-The only registered template is `direct_fact_v1`: one verified scalar, without
-interpretation, under a descriptive-current, descriptive-historical or
-methodology claim class. Forecasts, causal claims, investment advice, policy
-directives, security assurances and superiority claims have no licensed template.
+The only registered template is `direct_fact_v1`: one verified non-string JSON
+scalar (`boolean`, `integer`, `number` or `null`), without interpretation, under
+a descriptive-current, descriptive-historical or methodology claim class. It
+cannot carry categorical or free-form text. A future categorical string requires
+a separate registered enum/template with a finite value set and adverse tests;
+free-form prose remains outside the bundle schema. Forecasts, causal claims,
+investment advice, policy directives, security assurances and superiority claims
+have no licensed template.
+
+All other bundle strings are closed types: bounded identifiers, enumerations,
+dates/timestamps, digests, machine-safe paths or pointers, or values that must
+match a byte-locked registry. `unit`, `denominator` and uncertainty
+`meaning_code` must be both bounded identifiers and members of their template's
+finite, byte-locked allowlists. The committed allowlists are empty because no
+lane is wired. A future renderer must register its codes and separately reviewed
+display language in the same change; the bundle cannot carry that prose.
 
 This narrow start is deliberate. A new template must land with its renderer,
 fact shape, transformation registration, adverse tests and the publishing surface
