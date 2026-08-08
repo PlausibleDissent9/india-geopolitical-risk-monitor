@@ -1,0 +1,149 @@
+{
+ "schema_version": "3.0.0",
+ "audit_id": "igrm-external-precision-v3-2026-08-08",
+ "status": "PREREGISTERED_NO_SAMPLE_NO_LABELS",
+ "registered_at": "2026-08-08T10:33:23Z",
+ "source_collection": {
+  "attestation_directory": "data/raw/precision_v3_days",
+  "production_cache_directory": "data/raw/ngram_days",
+  "calendar_start": "2026-08-08",
+  "calendar_end": "2026-11-05",
+  "required_day_status": "ELIGIBLE_SOURCE_DAY_NO_LABELS",
+  "failure_day_status": "FRAME_FAILURE_NO_LABELS",
+  "required_samples_located": 48,
+  "required_samples_loaded": 48,
+  "missing_day_rule": "A missing or ineligible calendar day makes its named cohort incomplete; it is recorded as a frame failure when the daily lane reaches it and is never silently excluded or replaced.",
+  "regime_rule": "Dictionary, production matcher and canonical matcher-specification hashes must remain identical across both cohorts."
+ },
+ "cohorts": [
+  {
+   "cohort_id": "v3a",
+   "role": "initial_prospective_production_frame_audit",
+   "window_start": "2026-08-08",
+   "window_end": "2026-09-18",
+   "calendar_days": 42,
+   "sample_per_channel": 500,
+   "selection_seed": "eeeab5c50ce7a79f5d175cf968214efaa2f66b350c186942a215b87bc150d08b",
+   "labels_may_begin_after": "2026-09-19"
+  },
+  {
+   "cohort_id": "v3b",
+   "role": "out_of_time_holdout_replication",
+   "window_start": "2026-09-19",
+   "window_end": "2026-11-05",
+   "calendar_days": 48,
+   "sample_per_channel": 500,
+   "selection_seed": "c4cd8242e15695ac3b806eabb56a5bf7eca6c7431c257eca69ba157cd57ae5bf",
+   "labels_may_begin_after": "2026-11-06"
+  }
+ ],
+ "registered_files": [
+  {
+   "path": "validation/precision_v3/PROTOCOL.md",
+   "sha256": "45fe409c3d3380b4d56d7fd919b2bdf4c9fd0dc17e2f201d5f00dd188c99351a",
+   "role": "study_protocol"
+  },
+  {
+   "path": "validation/precision_v3/CODING_MANUAL.md",
+   "sha256": "ebd99d02d1dd6b16dfa2483302e302a8824955b198e83d6dcef8940bee252a1e",
+   "role": "coder_instructions"
+  },
+  {
+   "path": "auditor/RUBRIC.md",
+   "sha256": "2f285c9ffbc96d43946dbf9b53cd9fa688c2353be2c05e9df02ab5be8db38d17",
+   "role": "channel_specific_label_rubric"
+  },
+  {
+   "path": "dictionaries.json",
+   "sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
+   "role": "production_dictionary_regime"
+  },
+  {
+   "path": "src/fetch_ngrams.py",
+   "sha256": "0cbf9e9837e5d6bb51ddb558a4cd3397953907e9a4ba44133292fd7441629e39",
+   "role": "production_matcher_and_source_evidence_writer"
+  },
+  {
+   "path": "src/precision_frame_v3.py",
+   "sha256": "24489988b16bc9476029c2c58abd9ee296ba9d270ea56ced0bb69dc877f0e250",
+   "role": "prospective_day_attestation_builder"
+  },
+  {
+   "path": "src/precision_audit_v3.py",
+   "sha256": "973563a96e2e84aff5f769dacae562e957df2fb202889bdfb685f23cbbd97634",
+   "role": "frame_rebuilder_sampler_packet_builder_and_scorer"
+  }
+ ],
+ "sampling": {
+  "primary_unit": "completed score day, channel, query group, production document key",
+  "algorithm": "sha256_rank_v1",
+  "probability_design": "Within each channel, sort every eligible contribution by SHA-256 of the frozen seed, channel and frame id; take the first 500 without replacement, or census the channel if N is below 500.",
+  "multiplicity": "A document that contributes to two production query groups enters the population twice. The contribution instances remain separate in the primary sample.",
+  "coder_order": "The same audit ids are independently SHA-256-ranked into two coder-specific orders.",
+  "no_replacement": true,
+  "no_seed_search": true,
+  "sample_draw_after_window_only": true,
+  "external_freeze_receipt": "The rights-safe package/frame/sample/sheet hash receipt must be publicly committed before either coder receives any package file."
+ },
+ "coding": {
+  "primary_coders": 2,
+  "primary_independence": "No role in IGRM design, dictionaries, rubric, sampling, assistant, website or prior labels; all relationships and recruitment sources disclosed.",
+  "payment": "Fixed before coding and independent of agreement, ON share, pass/fail, publication or publicity.",
+  "labels": [
+   "ON",
+   "OFF",
+   "ABSTAIN"
+  ],
+  "confidence": [
+   "HIGH",
+   "MEDIUM",
+   "LOW"
+  ],
+  "adjudication": "A distinct masked third reviewer may examine disagreements after both primary sheets are hash-locked. Adjudication is secondary and cannot replace either coder-specific primary.",
+  "coder_attestation": "Each primary coder returns a private hash-bound process declaration with a distinct opaque coder id, Git-anchored freeze receipt, ordered access/completion times, independence, outcome-independent compensation, pilot-first ordering, no collaboration, no LLM/classifier labelling and no viewing of IGRM outputs or prior labels during scoring.",
+  "pilot": {
+   "source_path": "data/raw/receipt_days/2026-08-07-extended.json",
+   "source_sha256": "8fbe366a173309498bc187aa0bbd4de18271f01227eafde972b4e9f520afb6bf",
+   "selection_seed": "d9a3d528180671a6e47212139120e05d870fbfbfd056bc22381bb70e7db9ddb0",
+   "per_channel": 4,
+   "status": "unscored_pre_window_training_only"
+  }
+ },
+ "estimands": {
+  "primary": "For each coder and channel separately, ON divided by ON plus OFF among the sampled group-qualified contribution instances in the named cohort.",
+  "firm_label_interval": "Wilson 95 percent interval, descriptive because ABSTAIN is non-random missingness.",
+  "missingness_robust_interval": "Exact finite-population 95 percent interval with every ABSTAIN counted as OFF.",
+  "inter_coder": "Raw agreement and binary Gwet AC1 on unique evidence identities with firm labels from both coders.",
+  "not_estimated": [
+   "recall",
+   "typical-day precision",
+   "historical precision",
+   "story-level precision",
+   "event truth",
+   "risk accuracy",
+   "causal impact",
+   "forecasting performance",
+   "superiority over another index"
+  ]
+ },
+ "quality_gates": {
+  "per_coder_channel": "At least 400 firm labels; firm-label Wilson 95 percent lower bound at least 0.80; and exact finite-population 95 percent lower bound at least 0.80 when every ABSTAIN is OFF.",
+  "per_channel_reliability": "At least 400 unique-evidence firm overlaps, non-constant pooled labels, zero within-coder repeat conflicts, raw agreement at least 0.90 and Gwet AC1 at least 0.70.",
+  "overall": "All ten coder-channel precision gates and all five channel reliability gates pass conjunctively.",
+  "publication": "Every channel, abstention, access failure, disagreement, repeat conflict, deviation and failed or inconclusive gate publishes regardless of direction."
+ },
+ "rights_and_release": {
+  "private_packet": "Coder packets may contain third-party titles and URLs for private external-audit use; this registration grants no redistribution or relicensing right.",
+  "public_result": "A separate source-by-source rights review decides whether public rows contain title, URL, domain/date only, or hashes only.",
+  "article_bodies": "Never copied into the package.",
+  "verification": "The public result binds to the private package and returned coder files by SHA-256 without making restricted evidence public."
+ },
+ "attestation": {
+  "v3_source_day_available_when_registered": false,
+  "v3_sample_drawn_when_registered": false,
+  "v3_label_seen_when_registered": false,
+  "v1_or_v2_labels_reused": false,
+  "maintainer_eligible_as_coder": false,
+  "comparison_claim_authorized": false
+ }
+}

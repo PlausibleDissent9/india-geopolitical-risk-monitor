@@ -152,8 +152,11 @@ jobs:
         # loaded stamps, matcher specification and group-qualified document
         # keys inside the production score cache. This gate reconstructs
         # every group share exactly and writes an append-only, label-free day
-        # attestation. A failure makes the enrichment job red but the final
-        # index remains recoverable through the independent morning lane.
+        # attestation. An ineligible source day is preserved as a permanent
+        # FRAME_FAILURE record: it invalidates that cohort without hiding the
+        # calendar day or preventing the later holdout from being collected.
+        # Tool/runtime failures still make the job red; the final index remains
+        # recoverable through the independent morning lane.
         if: github.event.inputs.backfill != 'true'
         timeout-minutes: 5
         run: python -m src.precision_frame_v3 --record-latest

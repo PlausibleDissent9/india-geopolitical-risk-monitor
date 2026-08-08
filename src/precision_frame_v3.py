@@ -284,16 +284,83 @@ def build_day_attestation(
     }
 
 
-def record_day(
+def build_failure_attestation(
     day: date,
+    error: FrameValidationError,
     root: Path = ROOT,
-    *,
-    require_live_hashes: bool = True,
-) -> Path:
-    """Write one append-only attestation; refuse to revise an existing day."""
-    payload = build_day_attestation(
-        day, root, require_live_hashes=require_live_hashes
-    )
+) -> dict[str, Any]:
+    """Preserve an ineligible calendar day without laundering it as absent.
+
+    A failed day never enters a precision population.  Recording it lets the
+    append-only calendar continue, so a v3a failure cannot silently erase the
+    later, disjoint v3b holdout.  The observed source bytes are still pinned
+    whenever they exist.
+    """
+    if not WINDOW_START <= day <= WINDOW_END:
+        raise FrameValidationError(
+            f"{day} is outside the prospective window "
+            f"{WINDOW_START}..{WINDOW_END}"
+        )
+    source_path = root / "data" / "raw" / "ngram_days" / f"{day}.json"
+    source_sha: str | None = None
+    observed: dict[str, Any] | None = None
+    try:
+        raw, payload = _read_object(source_path)
+    except FrameValidationError:
+        payload = None
+    if payload is not None:
+        source_sha = _sha256(raw)
+        evidence = payload.get("_matcher_evidence")
+        observed = {
+            "date": payload.get("date"),
+            "n_docs_sampled": payload.get("n_docs_sampled"),
+            "n_samples_located": payload.get("n_samples"),
+            "n_samples_loaded": payload.get("n_samples_loaded"),
+            "partial": payload.get("partial"),
+            "missing_stamps": (
+                evidence.get("missing_stamps") if isinstance(evidence, dict) else None
+            ),
+            "matcher_specs_sha256": (
+                evidence.get("matcher_specs_sha256")
+                if isinstance(evidence, dict)
+                else None
+            ),
+            "dictionaries_sha256": (
+                evidence.get("dictionaries_sha256")
+                if isinstance(evidence, dict)
+                else None
+            ),
+            "production_matcher_sha256": (
+                evidence.get("production_matcher_sha256")
+                if isinstance(evidence, dict)
+                else None
+            ),
+        }
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "study": "igrm-external-precision-v3-prospective-frame",
+        "status": "FRAME_FAILURE_NO_LABELS",
+        "day": day.isoformat(),
+        "prospective_window": {
+            "start": WINDOW_START.isoformat(),
+            "end": WINDOW_END.isoformat(),
+        },
+        "source_cache": source_path.relative_to(root).as_posix(),
+        "source_cache_sha256": source_sha,
+        "failure_reason": str(error),
+        "observed": observed,
+        "labels_seen": False,
+        "precision_estimated": False,
+        "claim_limit": (
+            "Recorded frame failure only; this day is ineligible for its cohort "
+            "and is not a sample, precision estimate, validation result, or "
+            "superiority claim."
+        ),
+    }
+
+
+def _record_payload(day: date, payload: dict[str, Any], root: Path) -> Path:
+    """Write one eligible or failed calendar attestation exactly once."""
     encoded = (json.dumps(payload, indent=1, sort_keys=True) + "\n").encode()
     destination = root / "data" / "raw" / "precision_v3_days" / f"{day}.json"
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -319,28 +386,45 @@ def record_day(
         "dictionaries_sha256",
         "production_matcher_sha256",
     )
+    allowed_statuses = {
+        "ELIGIBLE_SOURCE_DAY_NO_LABELS",
+        "FRAME_FAILURE_NO_LABELS",
+    }
     for prior_path in prior_paths:
         _, prior = _read_object(prior_path)
         if prior.get("day") != prior_path.stem:
             raise FrameValidationError(f"prior attestation day mismatch: {prior_path}")
-        if prior.get("status") != "ELIGIBLE_SOURCE_DAY_NO_LABELS":
-            raise FrameValidationError(f"prior attestation is ineligible: {prior_path}")
-        if any(prior.get(field) != payload.get(field) for field in regime_fields):
+        if prior.get("status") not in allowed_statuses:
+            raise FrameValidationError(f"prior attestation status is invalid: {prior_path}")
+        if (
+            prior.get("status") == "ELIGIBLE_SOURCE_DAY_NO_LABELS"
+            and payload.get("status") == "ELIGIBLE_SOURCE_DAY_NO_LABELS"
+            and any(prior.get(field) != payload.get(field) for field in regime_fields)
+        ):
             raise FrameValidationError(
                 "production matcher or dictionary regime changed inside v3"
             )
         source_relpath = prior.get("source_cache")
+        source_sha_expected = prior.get("source_cache_sha256")
         if not isinstance(source_relpath, str):
             raise FrameValidationError(f"prior source path is invalid: {prior_path}")
         source_path = (root / source_relpath).resolve()
         resolved_root = root.resolve()
         if resolved_root not in source_path.parents:
             raise FrameValidationError(f"prior source path escapes root: {prior_path}")
+        if source_sha_expected is None:
+            if source_path.exists():
+                raise FrameValidationError(
+                    f"previously missing source cache appeared after failure: {source_path}"
+                )
+            continue
+        if not isinstance(source_sha_expected, str):
+            raise FrameValidationError(f"prior source hash is invalid: {prior_path}")
         try:
             source_sha = _sha256(source_path.read_bytes())
         except OSError as exc:
             raise FrameValidationError(f"prior source cache is missing: {source_path}") from exc
-        if source_sha != prior.get("source_cache_sha256"):
+        if source_sha != source_sha_expected:
             raise FrameValidationError(f"prior source cache changed: {source_path}")
     fd, temp_name = tempfile.mkstemp(prefix=f".{day}.", dir=destination.parent)
     try:
@@ -364,6 +448,35 @@ def record_day(
         if os.path.exists(temp_name):
             os.unlink(temp_name)
     return destination
+
+
+def record_day(
+    day: date,
+    root: Path = ROOT,
+    *,
+    require_live_hashes: bool = True,
+) -> Path:
+    """Write one eligible attestation; refuse an ineligible or revised day."""
+    payload = build_day_attestation(
+        day, root, require_live_hashes=require_live_hashes
+    )
+    return _record_payload(day, payload, root)
+
+
+def record_day_outcome(
+    day: date,
+    root: Path = ROOT,
+    *,
+    require_live_hashes: bool = True,
+) -> Path:
+    """Record either eligibility or an immutable frame failure for the day."""
+    try:
+        payload = build_day_attestation(
+            day, root, require_live_hashes=require_live_hashes
+        )
+    except FrameValidationError as exc:
+        payload = build_failure_attestation(day, exc, root)
+    return _record_payload(day, payload, root)
 
 
 def _latest_day(root: Path) -> date:
@@ -398,8 +511,14 @@ def main() -> None:
     if args.check_day:
         print(json.dumps(build_day_attestation(day), indent=1, sort_keys=True))
         return
-    destination = record_day(day)
-    print(f"[precision-v3] recorded eligible source day {day}: {destination}")
+    if args.record_latest:
+        destination = record_day_outcome(day)
+    else:
+        destination = record_day(day)
+    _, recorded = _read_object(destination)
+    print(
+        f"[precision-v3] recorded {recorded['status']} for {day}: {destination}"
+    )
 
 
 if __name__ == "__main__":

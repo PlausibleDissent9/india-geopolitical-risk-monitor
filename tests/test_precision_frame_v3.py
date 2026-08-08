@@ -256,6 +256,38 @@ def test_day_attestations_are_append_only(tmp_path: Path) -> None:
     assert destination.read_bytes() == original
 
 
+def test_frame_failure_is_immutable_but_does_not_break_the_later_calendar(
+    tmp_path: Path,
+) -> None:
+    failed_source = _write_source_cache(tmp_path)
+    payload = json.loads(failed_source.read_text())
+    payload["partial"] = True
+    failed_source.write_text(json.dumps(payload), encoding="utf-8")
+
+    failed_path = frame.record_day_outcome(
+        DAY, tmp_path, require_live_hashes=False
+    )
+    failed = json.loads(failed_path.read_text())
+    assert failed["status"] == "FRAME_FAILURE_NO_LABELS"
+    assert failed["source_cache_sha256"] == _sha(failed_source.read_bytes())
+    assert failed["observed"]["partial"] is True
+    assert failed["labels_seen"] is False
+    assert failed["precision_estimated"] is False
+
+    next_day = date(2026, 8, 9)
+    _write_source_cache(tmp_path, next_day)
+    eligible_path = frame.record_day(
+        next_day, tmp_path, require_live_hashes=False
+    )
+    eligible = json.loads(eligible_path.read_text())
+    assert eligible["status"] == "ELIGIBLE_SOURCE_DAY_NO_LABELS"
+
+    payload["partial"] = False
+    failed_source.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(frame.FrameValidationError, match="existing v3 day"):
+        frame.record_day_outcome(DAY, tmp_path, require_live_hashes=False)
+
+
 def test_source_window_refuses_gaps_and_regime_changes(tmp_path: Path) -> None:
     _write_source_cache(tmp_path)
     frame.record_day(DAY, tmp_path, require_live_hashes=False)
@@ -312,4 +344,6 @@ def test_public_surfaces_distinguish_frame_collection_from_a_result() -> None:
         text = " ".join(raw.split())
         assert "source-frame collection" in text, path
         assert "not a precision result" in text or "no v3 sample" in text, path
+        assert "42" in text and "v3a" in text, path
+        assert "48" in text and "v3b" in text, path
         assert "no v3 exists yet" not in text, path
