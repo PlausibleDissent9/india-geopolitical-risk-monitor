@@ -10,6 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css?v=044019ad">
+<link rel="stylesheet" href="maps.css?v=f55c2d2c">
 </head>
 <body class="site-page layout-dashboard" data-page="maps.html" data-root=".">
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -39,9 +40,6 @@
     <div class="page-heading-copy">
       <p class="page-kicker">Research</p>
       <h1 id="page-title">Maps</h1>
-      <p class="page-deck">Where India's press-recorded events point: which partner countries,
-  and which Indian states. Everything here is a count of events the world's press recorded,
-  from the GDELT Events stream since 2017. Counts and shares, never causes.</p>
     </div>
     <dl class="page-meta" aria-label="Publication context">
       <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
@@ -50,6 +48,136 @@
   </section>
   <main id="main-content" class="page-content" tabindex="-1">
     <!--site-shell:content-start-->
+    <section class="map-studio" id="map-studio" aria-labelledby="map-studio-title">
+      <header class="map-commandbar">
+        <div class="map-command-title">
+          <p class="eyebrow">Atlas · published observations</p>
+          <h2 id="map-studio-title">India's geopolitical event geography</h2>
+          <p>Explore press-recorded event aggregates without turning attention into exposure, severity or causation.</p>
+        </div>
+        <div class="map-command-actions">
+          <div class="map-segmented" role="tablist" aria-label="Map scope">
+            <button type="button" role="tab" data-map-scope="world" aria-selected="true">World</button>
+            <button type="button" role="tab" data-map-scope="india" aria-selected="false">India</button>
+          </div>
+          <label class="map-search">
+            <span>Find a place</span>
+            <input id="map-search" type="search" list="map-search-options" autocomplete="off" placeholder="Country or state">
+            <datalist id="map-search-options"></datalist>
+          </label>
+          <a class="map-status-link" href="status.html">Pipeline status</a>
+          <button class="map-share" id="map-share" type="button">Copy view link</button>
+        </div>
+      </header>
+
+      <div class="map-controlrail" aria-label="Map controls">
+        <div class="map-control-group">
+          <span class="map-control-label">Measure</span>
+          <div class="map-pills" id="map-metrics">
+            <button type="button" data-map-metric="conflict" aria-pressed="true">Conflict share</button>
+            <button type="button" data-map-metric="volume" aria-pressed="false">Event volume</button>
+            <button type="button" data-map-metric="tone" aria-pressed="false">Goldstein mean</button>
+            <button type="button" data-map-metric="protest" aria-pressed="false">Protest share</button>
+          </div>
+        </div>
+        <div class="map-control-group">
+          <span class="map-control-label">Window</span>
+          <div class="map-pills" id="map-windows">
+            <button type="button" data-map-window="recent" aria-pressed="true">Trailing 365 days</button>
+            <button type="button" data-map-window="all" aria-pressed="false">2017–present</button>
+          </div>
+        </div>
+        <div class="map-legend" aria-live="polite">
+          <span id="map-legend-low">Lower</span>
+          <span class="map-legend-ramp" aria-hidden="true"></span>
+          <span id="map-legend-high">Higher</span>
+          <small id="map-legend-note">Loading scale…</small>
+        </div>
+      </div>
+
+      <div class="map-workspace">
+        <section class="map-stage" aria-labelledby="map-canvas-title">
+          <div class="map-stage-head">
+            <div>
+              <p class="map-stage-kicker" id="map-stage-kicker">Loading registered geometry</p>
+              <h3 id="map-canvas-title">World partner view</h3>
+            </div>
+            <div class="map-stage-status" id="map-status" role="status">Loading published payloads…</div>
+          </div>
+          <div class="map-canvas-shell" id="map-canvas-shell">
+            <svg id="atlas-map" role="img" aria-labelledby="map-canvas-title map-canvas-desc" tabindex="0">
+              <desc id="map-canvas-desc">Interactive map of press-recorded India-partner or Indian-state events. Use search or the ranked table as accessible alternatives.</desc>
+              <defs>
+                <pattern id="map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+                  <path d="M 32 0 L 0 0 0 32" class="map-grid-line"></path>
+                </pattern>
+                <filter id="map-selected-glow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="2.4" result="blur"></feGaussianBlur>
+                  <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+                </filter>
+              </defs>
+              <rect class="map-grid-fill" width="100%" height="100%" fill="url(#map-grid)"></rect>
+              <g id="map-feature-layer"></g>
+            </svg>
+            <div class="map-tooltip" id="map-tooltip" role="status" hidden></div>
+            <div class="map-zoom" aria-label="Map zoom controls">
+              <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
+              <button type="button" data-map-zoom="out" aria-label="Zoom out">−</button>
+              <button type="button" data-map-zoom="reset">Reset</button>
+            </div>
+            <p class="map-canvas-help">Drag to pan · wheel or buttons to zoom · arrows move between mapped places</p>
+          </div>
+        </section>
+
+        <aside class="map-inspector" aria-labelledby="map-inspector-title">
+          <div class="map-inspector-state"><span class="status-dot neutral" aria-hidden="true"></span><span id="map-inspector-state">No place selected</span></div>
+          <h3 id="map-inspector-title">Select a place</h3>
+          <p class="map-inspector-summary" id="map-inspector-summary">Choose a map feature, search result or ranked row to inspect the underlying aggregate.</p>
+          <dl class="map-facts" id="map-facts">
+            <div><dt>Events, selected window</dt><dd id="map-fact-events">—</dd></div>
+            <div><dt>Conflict share</dt><dd id="map-fact-conflict">—</dd></div>
+            <div><dt id="map-fact-third-label">Goldstein mean</dt><dd id="map-fact-third">—</dd></div>
+            <div><dt>Coverage basis</dt><dd id="map-fact-coverage">—</dd></div>
+          </dl>
+          <div class="map-evidence-card">
+            <p class="eyebrow">Evidence boundary</p>
+            <p id="map-evidence-note">These are GDELT event-stream aggregates. They are not a census of events, a risk score, or an exposure path.</p>
+            <a id="map-data-link" href="data/map_relations.json">Inspect source payload <span aria-hidden="true">↗</span></a>
+          </div>
+        </aside>
+      </div>
+
+      <div class="map-lower-grid">
+        <section class="map-ranking" aria-labelledby="map-ranking-title">
+          <div class="map-section-head">
+            <div><p class="eyebrow">Ranked inspection</p><h3 id="map-ranking-title">Highest selected measure</h3></div>
+            <p id="map-ranking-note">A ranking of the displayed aggregate, not a risk league table.</p>
+          </div>
+          <div class="table-scroll"><table>
+            <thead><tr><th>Place</th><th class="num">Events</th><th class="num">Selected measure</th></tr></thead>
+            <tbody id="map-ranking-body"><tr><td colspan="3">Loading…</td></tr></tbody>
+          </table></div>
+        </section>
+        <aside class="map-layer-ledger" aria-labelledby="map-layer-title">
+          <p class="eyebrow">Layer ledger</p>
+          <h3 id="map-layer-title">What the Atlas can—and cannot—draw</h3>
+          <ul>
+            <li><span class="layer-state live">Published</span><strong>Partner-country aggregates</strong><small>India-partner press-recorded counts, conflict share and Goldstein mean.</small></li>
+            <li><span class="layer-state live">Published</span><strong>Indian-state aggregates</strong><small>Located press-recorded counts, conflict share and protest share.</small></li>
+            <li><span class="layer-state pending">Rights pending</span><strong>Major-port and commodity marginals</strong><small>Official tables validate internally, but no port×commodity cells or paths exist.</small></li>
+            <li><span class="layer-state unavailable">Unavailable</span><strong>Firm dependency edges</strong><small>No production source currently authorizes a comprehensive real dependency graph.</small></li>
+          </ul>
+        </aside>
+      </div>
+
+      <footer class="map-provenance">
+        <p id="map-provenance-line">Loading data vintage and coverage…</p>
+        <p>Boundary depiction uses self-hosted Natural Earth geometry with India's official national-boundary point of view. Counts and shares, never causes.</p>
+      </footer>
+      <noscript><p class="hardline">This interactive map needs JavaScript. The underlying aggregates remain available in <a href="data/map_relations.json">map_relations.json</a> and <a href="data/map_states.json">map_states.json</a>.</p></noscript>
+    </section>
+
+    <template id="legacy-map-reference">
     <h2>India relations: the world by cooperation and conflict</h2>
 <p class="chart-note">Color: share of classified India-partner events in the trailing 365
 days that are conflictual (CAMEO QuadClass 3 or 4 as a share of classified events).
@@ -259,6 +387,8 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
   } catch (e) { console.error("india map:", e); }
 })();
 </script>
+    </template>
+    <script src="maps.js?v=2c094f3f" defer></script>
     <!--site-shell:content-end-->
   </main>
   <footer class="site-footer">

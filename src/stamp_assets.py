@@ -71,6 +71,7 @@ QUOTES = "\"'()"
 ASSETS = [
     "fonts.css",
     "tokens.css",
+    "maps.css",
     "site.css",
     "style.css",
     "vendor/chart.umd.min.js",
@@ -83,6 +84,7 @@ ASSETS = [
     "sensors.js",
     "dna.js",
     "shock.js",
+    "maps.js",
     "app.js",
 ]
 
