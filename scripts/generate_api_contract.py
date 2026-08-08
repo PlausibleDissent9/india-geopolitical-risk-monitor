@@ -78,9 +78,11 @@ DESCRIPTIONS = {
         "series mixes DOC API counts with splice-linked NGrams-bridge "
         "days and a mean across that boundary inherits the linking "
         "constant's uncertainty.",
-    "validation.json": "The pre-registered validation record: hit rate "
-        "against the 21-episode list, cross-source and placebo checks, "
-        "robustness under alternate specifications.",
+    "validation.json": "The registered episode-detection record: 24 of 29 "
+        "events under the +/-3-day corresponding-channel criterion (the "
+        "original pre-registered tranche was 18 of 21; the later registered "
+        "tranche was 6 of 8), plus baselines, cross-source comparisons, "
+        "placebo checks and robustness under alternate specifications.",
 }
 
 # Endpoints intentionally excluded from the data-API contract because they

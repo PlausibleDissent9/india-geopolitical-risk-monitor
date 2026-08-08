@@ -39,10 +39,12 @@ notes/*.md (author-written) ──> published to the site weekly
 
 Live at https://plausibledissent9.github.io/india-geopolitical-risk-monitor/
 with daily data since 2017-01-01, frozen v1.0.0 dictionaries, and a
-pre-registered validation hit rate of **18/21 (86%)**. During the July
-2026 DOC-API disruption the recent tail is computed from GDELT's Web
-NGrams feed at the maintainer's direction, ratio-spliced on overlap days
-(methodology changelog v1.0.1).
+registered corresponding-channel episode-detection record of **24/29**:
+18/21 in the original pre-registered tranche and 6/8 in the later registered
+tranche. Strict-start, naive and chance baselines publish beside that result.
+During the July 2026 DOC-API disruption the recent tail is computed from
+GDELT's Web NGrams feed at the maintainer's direction, ratio-spliced on
+overlap days (methodology changelog v1.0.1).
 
 ## Operations
 

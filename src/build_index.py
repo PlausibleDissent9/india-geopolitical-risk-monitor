@@ -82,8 +82,8 @@ def build_scores7(
     percentile transform. Seven days is the minimal window that
     cancels global press volume's weekly periodicity; the daily series
     remains fully published as the tape (episodes, receipts, alerts
-    all stay daily). Verified on real onsets before signing: Pahalgam
-    read 99.5 on the 7-day the morning after the attack."""
+    all stay daily). This smoothing choice is a presentation rule, not
+    independent validation or evidence of forecasting performance."""
     v = volume.copy()
     v.index = pd.to_datetime(v.index)
     v = v.sort_index()
@@ -188,8 +188,8 @@ def write_site_outputs(
             "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): "
             "composite7/score7, the trailing-7-day mean share through "
             "the identical percentile transform -- persistent salience, "
-            "robust to single-day news-cycle noise, verified to reach "
-            "99.5 the morning after a real onset (Pahalgam). The daily "
+            "less sensitive to single-day news-cycle noise. This smoothing "
+            "rule is not a validation or forecasting result. The daily "
             "composite/score fields are the tape: same construction on "
             "single days, where episodes, receipts, and alerts live.",
             "percentile of the channel's own trailing 730 days, 0-100",

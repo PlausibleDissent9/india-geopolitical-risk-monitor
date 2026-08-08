@@ -58,9 +58,9 @@ with the divergence stated explicitly. Baker, Bloom and Davis (2016)
 established the newspaper-share method for economic policy uncertainty.
 This index differs in three ways: it is India-specific and
 category-decomposed; its dictionaries are frozen ex ante with a
-CI-enforced ban on retrospective event names; and its detection claims
-are validated against a pre-registered episode list rather than
-illustrated anecdotally.
+CI-enforced ban on retrospective event names; and its detector is evaluated
+on registered episode lists with strict, naive and chance baselines rather
+than justified by selected anecdotes.
 
 ## 3. Construction [DRAFTED]
 

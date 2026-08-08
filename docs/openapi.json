@@ -907,11 +907,11 @@
   "/data/latest.json": {
    "get": {
     "operationId": "get_data_latest_json",
-    "description": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, robust to single-day news-cycle noise, verified to reach 99.5 the morning after a real onset (Pahalgam). The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
+    "description": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, less sensitive to single-day news-cycle noise. This smoothing rule is not a validation or forecasting result. The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
     "x-igrm-stability": "stable",
     "responses": {
      "200": {
-      "description": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, robust to single-day news-cycle noise, verified to reach 99.5 the morning after a real onset (Pahalgam). The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
+      "description": "Today's IGRM scores. HEADLINE (founder-signed 2026-08-06): composite7/score7, the trailing-7-day mean share through the identical percentile transform -- persistent salience, less sensitive to single-day news-cycle noise. This smoothing rule is not a validation or forecasting result. The daily composite/score fields are the tape: same construction on single days, where episodes, receipts, and alerts live.",
       "content": {
        "application/json": {
         "schema": {
@@ -2450,11 +2450,11 @@
   "/data/validation.json": {
    "get": {
     "operationId": "get_data_validation_json",
-    "description": "The pre-registered validation record: hit rate against the 21-episode list, cross-source and placebo checks, robustness under alternate specifications.",
+    "description": "The registered episode-detection record: 24 of 29 events under the +/-3-day corresponding-channel criterion (the original pre-registered tranche was 18 of 21; the later registered tranche was 6 of 8), plus baselines, cross-source comparisons, placebo checks and robustness under alternate specifications.",
     "x-igrm-stability": "stable",
     "responses": {
      "200": {
-      "description": "The pre-registered validation record: hit rate against the 21-episode list, cross-source and placebo checks, robustness under alternate specifications.",
+      "description": "The registered episode-detection record: 24 of 29 events under the +/-3-day corresponding-channel criterion (the original pre-registered tranche was 18 of 21; the later registered tranche was 6 of 8), plus baselines, cross-source comparisons, placebo checks and robustness under alternate specifications.",
       "content": {
        "application/json": {
         "schema": {
