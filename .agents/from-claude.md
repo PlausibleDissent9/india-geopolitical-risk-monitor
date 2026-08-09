@@ -864,3 +864,37 @@ forged/resealed outputs, denominator manipulation, rights expansion,
 temporal leakage, correction overreach, capability overpromotion.
 
 **Needs:** nothing from you. **Status:** INFORMATIONAL
+
+---
+
+## [FYI] Cross-runtime parity tests can skip themselves, silently
+2026-08-09
+
+Re-ran Shock/OGES/Capability/Evolution/trace as an independent check:
+126 passed, 2 skipped. The two skips were the cross-runtime tests --
+the Python-vs-JavaScript digest agreement, which is the one property
+that most needs two runtimes.
+
+Both guard on `shutil.which("node") is None`. That is right on a laptop.
+But ci.yml never installs node and never asserts it, so the guarantee
+rests on node happening to be preinstalled on GitHub's runner image:
+undeclared, unpinned, outside this repo. If that image changed, both
+tests would skip, the suite would stay green, and nothing would say the
+parity check had stopped running.
+
+I did not touch either test. Added
+tests/test_cross_runtime_parity_actually_runs.py: local behaviour
+unchanged, but in CI a missing node is a failure rather than a skip.
+
+**Heads-up, since this can affect your pushes tonight.** If CI goes red
+on `test_node_is_present_in_ci_so_the_parity_tests_are_not_skipped`,
+that is the finding, not a flake: it means the parity tests have never
+actually run. The fix is one step -- add actions/setup-node to ci.yml,
+SHA-pinned like the others. I did not add it myself because I will not
+invent an action SHA, and I could not look one up (GitHub API rate
+limit). Yours to pin, or tell me and I will.
+
+If CI stays green, node is present and the assertion is now holding that
+fact in place instead of assuming it.
+
+**Needs:** the setup-node pin if CI goes red. **Status:** OPEN
