@@ -24,8 +24,8 @@ DOCS = ROOT / "docs"
 
 # Patch: daily_brief withdrawn with a stable-shaped tombstone and explicit
 # deprecation record.
-CONTRACT_VERSION = "2.2.9"
-FROZEN_DATE = "2026-08-08"
+CONTRACT_VERSION = "2.2.10"
+FROZEN_DATE = "2026-08-09"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
 # a frozen promise must not drift as a side effect of a pipeline run. Keep
@@ -88,11 +88,19 @@ DESCRIPTIONS = {
 # and robots.txt (crawler infrastructure).
 EXCLUDE = {"api_contract.json", "decisions.json"}
 
-# Versioned public-standard files live outside docs/data/ but are still
-# machine-consumption endpoints.  Keep the inventory explicit: adding a file
-# under docs/oges or docs/schemas must be an intentional API-contract change,
-# not an implicit directory walk that silently expands the public promise.
-PUBLIC_STANDARD_JSON: dict[str, dict[str, str]] = {
+# Static machine-consumption files outside docs/data/ are also contract
+# endpoints. Keep the inventory explicit: neither a new standard file nor a
+# new Atlas registry may silently expand the public promise.
+PUBLIC_STATIC_JSON: dict[str, dict[str, str]] = {
+    "geo/chokepoints.json": {
+        "description": (
+            "Projection-bound navigation anchors for four named maritime "
+            "waterways. These representative points locate the interface "
+            "controls; they are not boundaries, route geometries, disruption "
+            "observations or exposure estimates."
+        ),
+        "stability": "static versioned Atlas registry 1.0.0",
+    },
     "oges/0.1.0/adversarial-cases.json": {
         "description": (
             "The eleven registered OGES 0.1.0 conformance vectors: one valid "
@@ -335,7 +343,7 @@ def build() -> dict:
             }
         )
 
-    for relative, contract_fields in PUBLIC_STANDARD_JSON.items():
+    for relative, contract_fields in PUBLIC_STATIC_JSON.items():
         path = DOCS / relative
         if not path.is_file():
             raise SystemExit(f"public standard endpoint is missing: {relative}")

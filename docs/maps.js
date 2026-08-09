@@ -44,16 +44,31 @@
     episodes: "data/episodes.json",
     status: "data/status.json"
   };
+  var MARITIME_INPUTS = {
+    observations: "data/chokepoints.json",
+    geometry: "geo/chokepoints.json"
+  };
+  var MARITIME_KEYS = ["hormuz", "bab_el_mandeb", "suez", "malacca"];
   var MISSIONS = {
     partner: { scope: "world", metric: "conflict", window: "recent", entity: null, tab: "selection" },
     border: { scope: "world", metric: "conflict", window: "recent", entity: "PAK", tab: "selection" },
     states: { scope: "india", metric: "volume", window: "recent", entity: null, tab: "selection" },
-    audit: { scope: "world", metric: "volume", window: "all", entity: null, tab: "evidence" }
+    audit: { scope: "world", metric: "volume", window: "all", entity: null, tab: "evidence" },
+    maritime: { scope: "world", metric: "volume", window: "recent", entity: null, tab: "maritime" }
   };
 
   var dom = {
     svg: document.getElementById("atlas-map"),
     layer: document.getElementById("map-feature-layer"),
+    chokepointLayer: document.getElementById("map-chokepoint-layer"),
+    chokepointToggle: document.getElementById("map-chokepoints-toggle"),
+    chokepointTimebar: document.getElementById("map-chokepoint-timebar"),
+    chokepointTime: document.getElementById("map-chokepoint-time"),
+    chokepointPlay: document.getElementById("map-chokepoint-play"),
+    chokepointWeek: document.getElementById("map-chokepoint-week"),
+    chokepointFirstWeek: document.getElementById("map-chokepoint-first-week"),
+    chokepointLastWeek: document.getElementById("map-chokepoint-last-week"),
+    chokepointList: document.getElementById("map-chokepoint-list"),
     shell: document.getElementById("map-canvas-shell"),
     tooltip: document.getElementById("map-tooltip"),
     status: document.getElementById("map-status"),
@@ -86,6 +101,20 @@
     episodeTape: document.getElementById("map-episode-tape"),
     laneHealth: document.getElementById("map-lane-health"),
     alignmentNote: document.getElementById("map-alignment-note"),
+    maritime: {
+      title: document.getElementById("map-maritime-title"),
+      summary: document.getElementById("map-maritime-summary"),
+      week: document.getElementById("map-maritime-week"),
+      salience: document.getElementById("map-maritime-salience"),
+      transits: document.getElementById("map-maritime-transits"),
+      gap: document.getElementById("map-maritime-gap"),
+      coverage: document.getElementById("map-maritime-coverage"),
+      spark: document.getElementById("map-maritime-spark-lines"),
+      cutoff: document.getElementById("map-maritime-cutoff"),
+      salienceSource: document.getElementById("map-maritime-source-salience"),
+      transitsSource: document.getElementById("map-maritime-source-transits"),
+      rights: document.getElementById("map-maritime-rights")
+    },
     commandOpen: document.getElementById("map-command-open"),
     commandDialog: document.getElementById("map-command-dialog"),
     commandQuery: document.getElementById("map-command-query"),
@@ -112,7 +141,16 @@
     operations: {},
     inspectorTab: "selection",
     commandItems: [],
-    commandActive: 0
+    commandActive: 0,
+    chokepointsVisible: true,
+    chokepointWeeks: [],
+    chokepointWeekIndex: 0,
+    selectedChokepoint: "hormuz",
+    chokepointMarkers: new Map(),
+    chokepointTimer: null,
+    maritime: null,
+    maritimeGeometry: null,
+    maritimeWorldGeometry: null
   };
 
   function escapeHtml(value) {
@@ -184,6 +222,336 @@
       throw new Error("Registered geometry has no valid viewBox");
     }
     return { x: values[0], y: values[1], width: values[2], height: values[3] };
+  }
+
+  function exactKeys(value, expected) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+    var actual = Object.keys(value).sort();
+    var wanted = expected.slice().sort();
+    return actual.length === wanted.length && actual.every(function (key, index) {
+      return key === wanted[index];
+    });
+  }
+
+  function sha256(value) {
+    return /^[a-f0-9]{64}$/.test(String(value || ""));
+  }
+
+  function validPercentile(value) {
+    return value == null || (Number.isFinite(Number(value)) && Number(value) >= 0 && Number(value) <= 100);
+  }
+
+  function validRightsDecision(value) {
+    if (!value || typeof value !== "object" || Array.isArray(value) ||
+        typeof value.source_id !== "string" || !value.source_id.trim() ||
+        typeof value.provider !== "string" || !value.provider.trim() ||
+        typeof value.decision_id !== "string" || !value.decision_id.trim() ||
+        !["review_required", "approved"].includes(value.decision_state)) return false;
+    if (value.decision_state === "approved") {
+      return typeof value.signer_id === "string" && Boolean(value.signer_id.trim()) &&
+        sha256(value.decision_artifact_sha256) && isoDay(value.reviewed_on);
+    }
+    return true;
+  }
+
+  function validSourceVintage(value) {
+    return value && typeof value === "object" && !Array.isArray(value) &&
+      typeof value.input === "string" && value.input.startsWith("data/raw/") &&
+      sha256(value.input_sha256) && isoDay(value.max_observed_date) &&
+      validRightsDecision(value.rights);
+  }
+
+  function domainMatches(actual, expected) {
+    return Array.isArray(actual) && actual.length === 2 &&
+      actual.every(function (value, index) {
+        return Number.isFinite(Number(value)) && Number(value) === Number(expected[index]);
+      });
+  }
+
+  function validMaritimeGeometry(payload, worldGeometry) {
+    if (!payload || typeof payload !== "object" || !payload._meta ||
+        payload._meta.partial !== false || !isoDay(payload._meta.generated) ||
+        !worldGeometry || typeof worldGeometry !== "object" || !worldGeometry._meta ||
+        typeof worldGeometry._meta.projection_id !== "string" ||
+        payload._meta.projection_id !== worldGeometry._meta.projection_id ||
+        payload._meta.world_geometry_reference !== SCOPE.world.geometryUrl ||
+        payload._meta.world_view_box !== worldGeometry.viewBox ||
+        !domainMatches(payload._meta.longitude_domain, worldGeometry._meta.longitude_domain) ||
+        !domainMatches(payload._meta.latitude_domain, worldGeometry._meta.latitude_domain) ||
+        !exactKeys(payload.chokepoints, MARITIME_KEYS)) return false;
+    var lonDomain = payload._meta.longitude_domain.map(Number);
+    var latDomain = payload._meta.latitude_domain.map(Number);
+    try { parseViewBox(worldGeometry.viewBox); } catch (_error) { return false; }
+    return Object.values(payload.chokepoints).every(function (point) {
+      var lon = Number(point && point.longitude);
+      var lat = Number(point && point.latitude);
+      return point && typeof point.label === "string" && point.label.trim() &&
+        Number.isFinite(lon) && lon >= lonDomain[0] && lon <= lonDomain[1] &&
+        Number.isFinite(lat) && lat >= latDomain[0] && lat <= latDomain[1];
+    });
+  }
+
+  function validMaritimeObservations(payload, geometry) {
+    var meta = payload && payload._meta;
+    if (!payload || typeof payload !== "object" || !meta || meta.partial !== false ||
+        !isoDay(meta.generated) || !isoDay(meta.knowledge_cutoff) || meta.generated < meta.knowledge_cutoff ||
+        typeof meta.manifest_version !== "string" || !meta.manifest_version.trim() ||
+        typeof meta.week_rule !== "string" || !meta.week_rule.includes("Monday-labelled") ||
+        !meta.week_rule.includes("never interpolated") ||
+        typeof meta.transform_version !== "string" || !meta.transform_version.trim() ||
+        typeof meta.salience_source !== "string" || !meta.salience_source.trim() ||
+        typeof meta.transits_source !== "string" || !meta.transits_source.trim() ||
+        !meta.transform || meta.transform.implementation !== "src/chokepoints.py" ||
+        !sha256(meta.transform.implementation_sha256) ||
+        typeof meta.transform.dictionary !== "string" || !sha256(meta.transform.dictionary_sha256) ||
+        !meta.source_vintages || !validSourceVintage(meta.source_vintages.salience) ||
+        !validSourceVintage(meta.source_vintages.transits) || !sha256(meta.rights_registry_sha256) ||
+        !exactKeys(payload.chokepoints, MARITIME_KEYS) || !geometry ||
+        !exactKeys(geometry.chokepoints, MARITIME_KEYS)) return false;
+    return MARITIME_KEYS.every(function (key) {
+      var row = payload.chokepoints[key];
+      var point = geometry.chokepoints[key];
+      if (!row || typeof row !== "object" || row.label !== point.label ||
+          !Array.isArray(row.weeks) || !Array.isArray(row.salience_pct) ||
+          !Array.isArray(row.transits_pct) || row.weeks.length < 26 ||
+          row.weeks.length !== row.salience_pct.length ||
+          row.weeks.length !== row.transits_pct.length ||
+          row.n_weeks !== row.weeks.length || row.n_joint_weeks !== row.weeks.length ||
+          !Number.isInteger(row.missing_joint_weeks) || row.missing_joint_weeks < 0 ||
+          !Number.isFinite(Number(row.spearman_weekly)) || Number(row.spearman_weekly) < -1 ||
+          Number(row.spearman_weekly) > 1 || !Number.isFinite(Number(row.latest_gap))) return false;
+      var prior = null;
+      var calculatedMissing = 0;
+      for (var index = 0; index < row.weeks.length; index += 1) {
+        var week = row.weeks[index];
+        if (!isoDay(week) || new Date(week + "T00:00:00Z").getUTCDay() !== 1 ||
+            !validPercentile(row.salience_pct[index]) || !validPercentile(row.transits_pct[index]) ||
+            row.salience_pct[index] == null || row.transits_pct[index] == null) return false;
+        if (prior) {
+          var delta = (Date.parse(week + "T00:00:00Z") - Date.parse(prior + "T00:00:00Z")) / 86400000;
+          if (delta <= 0 || delta % 7 !== 0) return false;
+          calculatedMissing += delta / 7 - 1;
+        }
+        prior = week;
+      }
+      var last = row.weeks.length - 1;
+      return row.weeks[last] === meta.knowledge_cutoff &&
+        calculatedMissing === row.missing_joint_weeks &&
+        Math.abs(Number(row.latest_gap) -
+          (Number(row.salience_pct[last]) - Number(row.transits_pct[last]))) < 0.051;
+    });
+  }
+
+  function projectWorld(longitude, latitude) {
+    if (!state.maritimeWorldGeometry || !state.maritimeGeometry) return null;
+    var view = parseViewBox(state.maritimeWorldGeometry.viewBox);
+    var meta = state.maritimeGeometry._meta;
+    var lonDomain = meta.longitude_domain.map(Number);
+    var latDomain = meta.latitude_domain.map(Number);
+    return {
+      x: view.x + (Number(longitude) - lonDomain[0]) / (lonDomain[1] - lonDomain[0]) * view.width,
+      y: view.y + (latDomain[1] - Number(latitude)) / (latDomain[1] - latDomain[0]) * view.height
+    };
+  }
+
+  function maritimeObservation(key, week) {
+    if (!state.maritime || !state.maritime.chokepoints[key]) return null;
+    var row = state.maritime.chokepoints[key];
+    var index = row.weeks.indexOf(week);
+    if (index < 0) return null;
+    return { salience: row.salience_pct[index], transits: row.transits_pct[index] };
+  }
+
+  function hasJointObservation(point) {
+    return Boolean(point) && Number.isFinite(Number(point.salience)) &&
+      Number.isFinite(Number(point.transits));
+  }
+
+  function percentileText(value) {
+    return value == null || !Number.isFinite(Number(value)) ? "—" : Number(value).toFixed(1) + "th";
+  }
+
+  function currentChokepointWeek() {
+    return state.chokepointWeeks[state.chokepointWeekIndex] || null;
+  }
+
+  function stopMaritimePlayback() {
+    if (state.chokepointTimer) window.clearInterval(state.chokepointTimer);
+    state.chokepointTimer = null;
+    if (dom.chokepointPlay) {
+      dom.chokepointPlay.setAttribute("aria-pressed", "false");
+      dom.chokepointPlay.textContent = "Play history";
+    }
+  }
+
+  function maritimePath(key, field) {
+    var row = state.maritime.chokepoints[key];
+    var points = state.chokepointWeeks.map(function (week, index) {
+      var observation = maritimeObservation(key, week);
+      var value = observation ? observation[field] : null;
+      return value == null ? null : {
+        x: state.chokepointWeeks.length === 1 ? 0 : index / (state.chokepointWeeks.length - 1) * 280,
+        y: 79 - Number(value) / 100 * 76
+      };
+    });
+    var segments = [];
+    var active = [];
+    points.forEach(function (point) {
+      if (point) active.push(point);
+      else if (active.length) { segments.push(active); active = []; }
+    });
+    if (active.length) segments.push(active);
+    return segments.map(function (segment) {
+      return segment.map(function (point, index) {
+        return (index ? "L" : "M") + point.x.toFixed(2) + " " + point.y.toFixed(2);
+      }).join(" ");
+    }).join(" ");
+  }
+
+  function renderMaritimeSpark() {
+    if (!state.maritime || !dom.maritime.spark) return;
+    dom.maritime.spark.replaceChildren();
+    var selected = state.selectedChokepoint;
+    [["salience", "map-maritime-line salience"], ["transits", "map-maritime-line transits"]].forEach(function (entry) {
+      var path = svgElement("path", { d: maritimePath(selected, entry[0]), class: entry[1] });
+      dom.maritime.spark.appendChild(path);
+    });
+    var weekIndex = state.chokepointWeekIndex;
+    if (state.chokepointWeeks.length > 1) {
+      var x = weekIndex / (state.chokepointWeeks.length - 1) * 280;
+      dom.maritime.spark.appendChild(svgElement("line", {
+        x1: x, x2: x, y1: 1, y2: 81, class: "map-maritime-cursor"
+      }));
+    }
+  }
+
+  function renderMaritimeList() {
+    if (!state.maritime || !dom.chokepointList) return;
+    var week = currentChokepointWeek();
+    dom.chokepointList.replaceChildren();
+    MARITIME_KEYS.forEach(function (key) {
+      var row = state.maritime.chokepoints[key];
+      var point = maritimeObservation(key, week);
+      var joint = hasJointObservation(point);
+      var item = document.createElement("li");
+      var button = htmlElement("button", key === state.selectedChokepoint ? "is-selected" : "");
+      button.type = "button";
+      button.setAttribute("aria-pressed", key === state.selectedChokepoint ? "true" : "false");
+      button.append(
+        htmlElement("b", "", row.label),
+        htmlElement("span", joint ? "" : "is-gap", joint
+          ? "Press " + percentileText(point.salience) + " · transit " + percentileText(point.transits)
+          : "No joint observation in this published week")
+      );
+      button.addEventListener("click", function () { selectChokepoint(key, { focus: false }); });
+      item.appendChild(button);
+      dom.chokepointList.appendChild(item);
+    });
+  }
+
+  function renderMaritimeMarkers() {
+    if (!dom.chokepointLayer) return;
+    dom.chokepointLayer.replaceChildren();
+    state.chokepointMarkers = new Map();
+    if (!state.maritime || !state.maritimeGeometry || state.scope !== "world" || !state.chokepointsVisible) return;
+    var week = currentChokepointWeek();
+    MARITIME_KEYS.forEach(function (key) {
+      var anchor = state.maritimeGeometry.chokepoints[key];
+      var projected = projectWorld(anchor.longitude, anchor.latitude);
+      if (!projected) return;
+      var point = maritimeObservation(key, week);
+      var joint = hasJointObservation(point);
+      var group = svgElement("g", {
+        class: "map-chokepoint" + (joint ? "" : " is-gap") +
+          (key === state.selectedChokepoint ? " is-selected" : ""),
+        transform: "translate(" + projected.x.toFixed(2) + " " + projected.y.toFixed(2) + ")",
+        role: "button",
+        tabindex: key === state.selectedChokepoint ? "0" : "-1",
+        "aria-pressed": key === state.selectedChokepoint ? "true" : "false",
+        "aria-label": anchor.label + ", " + week + ", " +
+          (joint ? "press " + percentileText(point.salience) + ", transit " + percentileText(point.transits) : "no joint observation")
+      });
+      group.append(svgElement("circle", { r: 10, class: "map-chokepoint-halo" }),
+        svgElement("circle", { r: joint ? 3.7 : 3.1, class: "map-chokepoint-core" }));
+      var title = svgElement("title");
+      title.textContent = group.getAttribute("aria-label");
+      group.appendChild(title);
+      group.addEventListener("click", function (event) {
+        event.stopPropagation();
+        selectChokepoint(key, { focus: true });
+      });
+      group.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectChokepoint(key, { focus: true });
+        }
+        if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"].includes(event.key)) {
+          event.preventDefault();
+          var direction = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : -1;
+          var index = MARITIME_KEYS.indexOf(key);
+          selectChokepoint(MARITIME_KEYS[(index + direction + MARITIME_KEYS.length) % MARITIME_KEYS.length], { focus: true });
+        }
+      });
+      dom.chokepointLayer.appendChild(group);
+      state.chokepointMarkers.set(key, group);
+    });
+  }
+
+  function renderMaritimeInspector() {
+    if (!state.maritime || !dom.maritime.title) return;
+    var key = state.selectedChokepoint;
+    var row = state.maritime.chokepoints[key];
+    var week = currentChokepointWeek();
+    var point = maritimeObservation(key, week);
+    var joint = hasJointObservation(point);
+    dom.maritime.title.textContent = row.label;
+    dom.maritime.summary.textContent = joint
+      ? "Two separately ranked weekly observations share this date. Their difference is descriptive, not a disruption or causal estimate."
+      : "No valid joint observation exists for this waterway in the selected published week; IGRM does not interpolate or carry values forward.";
+    dom.maritime.week.textContent = week || "—";
+    dom.maritime.salience.textContent = point ? percentileText(point.salience) : "—";
+    dom.maritime.transits.textContent = point ? percentileText(point.transits) : "—";
+    dom.maritime.gap.textContent = joint ? (Number(point.salience) - Number(point.transits)).toFixed(1) + " pp" : "—";
+    dom.maritime.coverage.textContent = number(row.n_joint_weeks) + " joint weeks · " +
+      number(row.missing_joint_weeks) + " explicit gaps";
+    renderMaritimeSpark();
+    renderMaritimeList();
+  }
+
+  function renderMaritimeFrame() {
+    if (!state.maritime || !state.chokepointWeeks.length) return;
+    var week = currentChokepointWeek();
+    dom.chokepointTime.value = String(state.chokepointWeekIndex);
+    dom.chokepointWeek.textContent = week;
+    renderMaritimeMarkers();
+    renderMaritimeInspector();
+  }
+
+  function selectChokepoint(key, options) {
+    if (!state.maritime || !MARITIME_KEYS.includes(key)) return;
+    state.selectedChokepoint = key;
+    renderMaritimeFrame();
+    showInspectorTab("maritime");
+    if (options && options.focus) {
+      var marker = state.chokepointMarkers.get(key);
+      if (marker) marker.focus();
+      else dom.maritime.title.focus();
+    }
+  }
+
+  function refuseMaritime(message) {
+    stopMaritimePlayback();
+    if (dom.chokepointLayer) dom.chokepointLayer.replaceChildren();
+    if (dom.chokepointToggle) {
+      dom.chokepointToggle.disabled = true;
+      dom.chokepointToggle.setAttribute("aria-pressed", "false");
+    }
+    if (dom.chokepointTime) dom.chokepointTime.disabled = true;
+    if (dom.chokepointPlay) dom.chokepointPlay.disabled = true;
+    if (dom.chokepointWeek) dom.chokepointWeek.textContent = "Maritime payload refused";
+    if (dom.chokepointList) dom.chokepointList.replaceChildren(htmlElement("li", "", message));
+    if (dom.maritime.summary) dom.maritime.summary.textContent = message + " The rest of Atlas remains available.";
+    if (dom.maritime.rights) dom.maritime.rights.textContent = "Unavailable · manifest refused";
   }
 
   function setStatus(text, mode) {
@@ -516,6 +884,7 @@
       }));
     }
     resetViewBox();
+    renderMaritimeMarkers();
     dom.title.textContent = config.title;
     dom.kicker.textContent = config.kicker;
     dom.dataLink.href = config.dataUrl;
@@ -566,6 +935,17 @@
       button.title = restricted ? "This measure is published only for 2017–present" : "";
       button.setAttribute("aria-pressed", button.dataset.mapWindow === state.window ? "true" : "false");
     });
+    var maritimeAvailable = Boolean(state.maritime && state.maritimeGeometry && state.maritimeWorldGeometry);
+    var maritimeVisible = state.scope === "world" && maritimeAvailable;
+    if (dom.chokepointTimebar) dom.chokepointTimebar.hidden = !maritimeVisible;
+    if (dom.chokepointToggle) {
+      dom.chokepointToggle.disabled = !maritimeVisible;
+      dom.chokepointToggle.setAttribute("aria-pressed", maritimeVisible && state.chokepointsVisible ? "true" : "false");
+      dom.chokepointToggle.title = state.scope !== "world"
+        ? "Maritime anchors are available only in the world view"
+        : maritimeAvailable ? "Show or hide the published maritime evidence anchors" : "Maritime manifest unavailable";
+    }
+    if (!maritimeVisible) stopMaritimePlayback();
   }
 
   function populateSearch() {
@@ -595,7 +975,7 @@
   }
 
   function showInspectorTab(tab) {
-    if (!["selection", "episodes", "evidence"].includes(tab)) return;
+    if (!["selection", "maritime", "episodes", "evidence"].includes(tab)) return;
     state.inspectorTab = tab;
     document.querySelectorAll("[data-inspector-tab]").forEach(function (button) {
       var active = button.dataset.inspectorTab === tab;
@@ -627,7 +1007,11 @@
       if (target) setSelected(target, { zoom: Boolean(mission.entity), focus: false });
       else resetViewBox();
     }
-    showInspectorTab(mission.tab);
+    if (missionId === "maritime" && state.maritime) {
+      state.chokepointsVisible = true;
+      renderMaritimeFrame();
+      selectChokepoint(state.selectedChokepoint, { focus: false });
+    } else showInspectorTab(mission.tab);
   }
 
   function clearMission() {
@@ -743,10 +1127,31 @@
       { id: "border", label: "Border watch", detail: "Focus Pakistan in the published partner frame", kind: "Workspace", run: function () { applyMission("border"); } },
       { id: "states", label: "India states", detail: "Located event volume inside India", kind: "Workspace", run: function () { applyMission("states"); } },
       { id: "audit", label: "Evidence audit", detail: "Open pipeline and date-alignment evidence", kind: "Workspace", run: function () { applyMission("audit"); } },
+      { id: "maritime", label: "Maritime watch", detail: "Replay four separately ranked waterway observations", kind: "Workspace", run: function () { applyMission("maritime"); } },
       { id: "episodes", label: "Latest episodes", detail: "Open the detector tape", kind: "Panel", run: function () { showInspectorTab("episodes"); } },
       { id: "atlas", label: "Atlas overview", detail: "Open capability and maturity ledger", kind: "Route", href: "atlas.html" },
       { id: "methodology", label: "Methodology", detail: "Definitions, limits and transformations", kind: "Route", href: "methodology.html" }
     ];
+    if (state.maritime) {
+      MARITIME_KEYS.forEach(function (key) {
+        commands.push({
+          id: "maritime:" + key,
+          label: state.maritime.chokepoints[key].label,
+          detail: "Published weekly press-salience and transit-call percentiles",
+          kind: "Waterway",
+          run: function () {
+            if (state.scope !== "world") {
+              state.scope = "world";
+              state.metric = "volume";
+              state.window = "recent";
+              renderGeometry();
+            }
+            state.chokepointsVisible = true;
+            selectChokepoint(key, { focus: false });
+          }
+        });
+      });
+    }
     Object.keys(SCOPE).forEach(function (scope) {
       var payload = state.payloads[scope];
       if (!payload) return;
@@ -860,6 +1265,7 @@
         state.window = "recent";
         state.selected = null;
         renderGeometry();
+        showInspectorTab("selection");
       });
     });
     document.querySelectorAll("[data-map-metric]").forEach(function (button) {
@@ -906,6 +1312,36 @@
       }
       window.setTimeout(function () { dom.share.textContent = "Copy view link"; }, 1800);
     });
+    if (dom.chokepointToggle) {
+      dom.chokepointToggle.addEventListener("click", function () {
+        if (dom.chokepointToggle.disabled || state.scope !== "world") return;
+        state.chokepointsVisible = !state.chokepointsVisible;
+        dom.chokepointToggle.setAttribute("aria-pressed", state.chokepointsVisible ? "true" : "false");
+        renderMaritimeMarkers();
+      });
+    }
+    if (dom.chokepointTime) {
+      dom.chokepointTime.addEventListener("input", function () {
+        stopMaritimePlayback();
+        state.chokepointWeekIndex = clamp(Number(dom.chokepointTime.value), 0, state.chokepointWeeks.length - 1);
+        renderMaritimeFrame();
+      });
+    }
+    if (dom.chokepointPlay) {
+      dom.chokepointPlay.addEventListener("click", function () {
+        if (dom.chokepointPlay.disabled) return;
+        if (state.chokepointTimer) {
+          stopMaritimePlayback();
+          return;
+        }
+        dom.chokepointPlay.setAttribute("aria-pressed", "true");
+        dom.chokepointPlay.textContent = "Pause history";
+        state.chokepointTimer = window.setInterval(function () {
+          state.chokepointWeekIndex = (state.chokepointWeekIndex + 1) % state.chokepointWeeks.length;
+          renderMaritimeFrame();
+        }, 420);
+      });
+    }
 
     dom.svg.addEventListener("wheel", function (event) {
       event.preventDefault();
@@ -1011,10 +1447,59 @@
     }
   }
 
+  async function initializeMaritime() {
+    try {
+      var resources = await Promise.all([
+        getJson(MARITIME_INPUTS.observations),
+        getJson(MARITIME_INPUTS.geometry),
+        getJson(SCOPE.world.geometryUrl)
+      ]);
+      if (!validMaritimeGeometry(resources[1], resources[2])) {
+        throw new Error("Published maritime anchor geometry or projection contract is invalid");
+      }
+      if (!validMaritimeObservations(resources[0], resources[1])) {
+        throw new Error("Published maritime observation manifest is partial, unaligned, or missing provenance");
+      }
+      state.maritime = resources[0];
+      state.maritimeGeometry = resources[1];
+      state.maritimeWorldGeometry = resources[2];
+      state.chokepointWeeks = Array.from(new Set(MARITIME_KEYS.flatMap(function (key) {
+        return state.maritime.chokepoints[key].weeks;
+      }))).sort();
+      if (!state.chokepointWeeks.length ||
+          state.chokepointWeeks[state.chokepointWeeks.length - 1] !== state.maritime._meta.knowledge_cutoff) {
+        throw new Error("Published maritime union frame does not end at its knowledge cutoff");
+      }
+      state.chokepointWeekIndex = state.chokepointWeeks.length - 1;
+      dom.chokepointTime.min = "0";
+      dom.chokepointTime.max = String(state.chokepointWeeks.length - 1);
+      dom.chokepointTime.value = String(state.chokepointWeekIndex);
+      dom.chokepointTime.disabled = false;
+      dom.chokepointPlay.disabled = false;
+      dom.chokepointFirstWeek.textContent = state.chokepointWeeks[0];
+      dom.chokepointLastWeek.textContent = state.chokepointWeeks[state.chokepointWeeks.length - 1];
+      dom.maritime.cutoff.textContent = state.maritime._meta.knowledge_cutoff + " · manifest " +
+        state.maritime._meta.manifest_version;
+      dom.maritime.salienceSource.textContent = state.maritime._meta.source_vintages.salience.max_observed_date +
+        " · " + state.maritime._meta.source_vintages.salience.rights.provider;
+      dom.maritime.transitsSource.textContent = state.maritime._meta.source_vintages.transits.max_observed_date +
+        " · " + state.maritime._meta.source_vintages.transits.rights.provider;
+      dom.maritime.rights.textContent = "GDELT: " +
+        state.maritime._meta.source_vintages.salience.rights.decision_state + " · PortWatch: " +
+        state.maritime._meta.source_vintages.transits.rights.decision_state;
+      updateControls();
+      renderMaritimeFrame();
+    } catch (error) {
+      refuseMaritime("Maritime evidence unavailable · manifest refused");
+      console.error("atlas maritime:", error);
+    }
+  }
+
   async function initialize() {
     bindControls();
     showInspectorTab("selection");
     initializeOperations();
+    initializeMaritime();
     try {
       var resources = await Promise.all([
         getJson(SCOPE.world.geometryUrl),

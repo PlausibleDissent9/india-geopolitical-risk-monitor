@@ -39,6 +39,7 @@ ADM1_FILE = "ne_10m_admin_1_states_provinces.geojson"
 
 WORLD_W, WORLD_H = 1000.0, 520.0
 WORLD_LAT_MAX, WORLD_LAT_MIN = 85.0, -60.0
+WORLD_PROJECTION_ID = "igrm-equirectangular-wgs84-v1"
 INDIA_W, INDIA_H = 620.0, 700.0
 
 
@@ -142,7 +143,17 @@ def build_world() -> None:
         if code not in countries:
             x, y = project(lon, lat)
             countries[code] = {"name": name, "pt": [round(x, 1), round(y, 1)]}
-    out = {"viewBox": f"0 0 {WORLD_W:.0f} {WORLD_H:.0f}", "countries": countries}
+    out = {
+        "_meta": {
+            "projection_id": WORLD_PROJECTION_ID,
+            "longitude_domain": [-180.0, 180.0],
+            "latitude_domain": [WORLD_LAT_MIN, WORLD_LAT_MAX],
+            "what": ("Self-hosted Natural Earth country geometry in the exact "
+                     "projection frame declared here."),
+        },
+        "viewBox": f"0 0 {WORLD_W:.0f} {WORLD_H:.0f}",
+        "countries": countries,
+    }
     GEO.mkdir(parents=True, exist_ok=True)
     p = GEO / "world.json"
     p.write_text(json.dumps(out), encoding="utf-8")

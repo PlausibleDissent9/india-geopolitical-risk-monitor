@@ -2,7 +2,7 @@
  "openapi": "3.1.0",
  "info": {
   "title": "India Geopolitical Risk Monitor (IGRM)",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "summary": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
   "description": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.\n\nAn analytical field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the date recorded here, before removal in the next major version. Operational or personal material served by mistake may be withdrawn immediately, with the removal recorded here.\n\nauth: none\ncors: Access-Control-Allow-Origin: *\nrate_limit: none stated; ordinary politeness (poll daily, not per-request)\nrefresh: daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)",
   "license": {
@@ -14,7 +14,7 @@
   },
   "x-citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "x-igrm-contract": "https://igrm.in/data/api_contract.json",
-  "x-igrm-frozen-date": "2026-08-08"
+  "x-igrm-frozen-date": "2026-08-09"
  },
  "externalDocs": {
   "url": "https://igrm.in/codebook.html"
@@ -210,11 +210,11 @@
   "/data/chokepoints.json": {
    "get": {
     "operationId": "get_data_chokepoints_json",
-    "description": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history.",
+    "description": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history. This is a descriptive comparison, not a disruption, causal, probability, or exposure estimate.",
     "x-igrm-stability": "stable",
     "responses": {
      "200": {
-      "description": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history.",
+      "description": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history. This is a descriptive comparison, not a disruption, causal, probability, or exposure estimate.",
       "content": {
        "application/json": {
         "schema": {
@@ -2825,6 +2825,33 @@
           "description",
           "guid"
          ]
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/geo/chokepoints.json": {
+   "get": {
+    "operationId": "get_geo_chokepoints_json",
+    "description": "Projection-bound navigation anchors for four named maritime waterways. These representative points locate the interface controls; they are not boundaries, route geometries, disruption observations or exposure estimates.",
+    "x-igrm-stability": "static versioned Atlas registry 1.0.0",
+    "responses": {
+     "200": {
+      "description": "Projection-bound navigation anchors for four named maritime waterways. These representative points locate the interface controls; they are not boundaries, route geometries, disruption observations or exposure estimates.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "chokepoints"
+         ],
+         "properties": {
+          "_meta": {},
+          "chokepoints": {}
+         }
         }
        }
       }

@@ -1,10 +1,54 @@
 {
  "_meta": {
-  "what": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history.",
-  "salience_source": "GDELT DOC API timelinevol, dictionaries.json v1.1.0 shipping.chokepoints",
+  "what": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history. This is a descriptive comparison, not a disruption, causal, probability, or exposure estimate.",
+  "manifest_version": "1.0.0",
+  "partial": false,
+  "generated": "2026-08-09",
+  "knowledge_cutoff": "2026-07-27",
+  "week_rule": "Monday-labelled W-MON weekly means; absent joint weeks are omitted, never interpolated",
+  "transform_version": "weekly-percentile-v1.2.0",
+  "transform": {
+   "implementation": "src/chokepoints.py",
+   "implementation_sha256": "54821adef56f8a54998361baa51c6dcf8dc4669a01aecbd90eb42f0dfa124aec",
+   "dictionary": "dictionaries.json shipping.chokepoints",
+   "dictionary_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40"
+  },
+  "salience_source": "GDELT DOC API timelinevol, dictionaries.json shipping.chokepoints",
   "transits_source": "IMF PortWatch (portwatch.imf.org), n_total daily transit calls, weekly mean",
-  "generated": "2026-08-07",
-  "license": "CC BY 4.0",
+  "source_vintages": {
+   "salience": {
+    "input": "data/raw/chokepoint_salience.csv",
+    "input_sha256": "edee86f76a09cd5ead4bffe764403e766373dfbbeee5394aaa76c96a180c439f",
+    "max_observed_date": "2026-08-07",
+    "rights": {
+     "source_id": "gdelt_doc_api",
+     "provider": "The GDELT Project",
+     "decision_state": "review_required",
+     "decision_id": "pending:gdelt_doc_api",
+     "signer_id": null,
+     "decision_artifact_sha256": null,
+     "reviewed_on": null,
+     "terms_url": null
+    }
+   },
+   "transits": {
+    "input": "data/raw/portwatch_chokepoints.csv",
+    "input_sha256": "60b68a98ef40ab5445b5db0a6a78876da9cb76f498cf035603a5199c980776b6",
+    "max_observed_date": "2026-08-02",
+    "rights": {
+     "source_id": "imf_portwatch",
+     "provider": "International Monetary Fund",
+     "decision_state": "review_required",
+     "decision_id": "pending:imf_portwatch",
+     "signer_id": null,
+     "decision_artifact_sha256": null,
+     "reviewed_on": null,
+     "terms_url": "https://www.imf.org/external/terms.htm"
+    }
+   }
+  },
+  "rights_registry_sha256": "970268fb437ea3f54ad3c4943ca2bc20343d1c4a2408fbbbaf6d3f3f325767a2",
+  "license": "CC BY 4.0 for IGRM-authored derived percentiles and metadata; upstream provider terms govern source data",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/chokepoints.json"
@@ -1199,7 +1243,9 @@
    ],
    "spearman_weekly": -0.3,
    "latest_gap": 95.0,
-   "n_weeks": 393
+   "n_weeks": 393,
+   "n_joint_weeks": 393,
+   "missing_joint_weeks": 2
   },
   "bab_el_mandeb": {
    "label": "Bab el-Mandeb",
@@ -2390,7 +2436,9 @@
    ],
    "spearman_weekly": -0.54,
    "latest_gap": 98.4,
-   "n_weeks": 393
+   "n_weeks": 393,
+   "n_joint_weeks": 393,
+   "missing_joint_weeks": 2
   },
   "suez": {
    "label": "Suez Canal",
@@ -3581,7 +3629,9 @@
    ],
    "spearman_weekly": -0.17,
    "latest_gap": 67.7,
-   "n_weeks": 393
+   "n_weeks": 393,
+   "n_joint_weeks": 393,
+   "missing_joint_weeks": 2
   },
   "malacca": {
    "label": "Strait of Malacca",
@@ -4769,7 +4819,9 @@
    ],
    "spearman_weekly": 0.22,
    "latest_gap": 8.7,
-   "n_weeks": 392
+   "n_weeks": 392,
+   "n_joint_weeks": 392,
+   "missing_joint_weeks": 3
   }
  }
 }
