@@ -33,7 +33,31 @@ concurrency:
 jobs:
   batch:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    # 80, raised from 55 on 2026-08-10. The old number could not fit this
+    # lane's own two steps once the in-lane gate grew. Measured from #79,
+    # which was cancelled:
+    #
+    #   Fetch batch        24.4 min   (its own step cap is 45)
+    #   Commit progress    30.3 min   cancelled at the 55-minute job cap
+    #
+    # 24.4 + 30.3 = 54.7. The job needed 60+ and had 55, so a run that
+    # fetched normally could not finish committing. The fetch step alone is
+    # allowed 45, and the commit step is publish_push.sh running a full
+    # committed CI gate -- ~20-30 min on a hosted runner tonight against
+    # the ~5.2 the lane caps were budgeted for. 45 + 30 does not fit in 55
+    # under any weather.
+    #
+    # 80 = 45 (the fetch step's own cap) + 30 (measured commit) + 5 slack.
+    # This lane has its own concurrency group and re-triggers itself while
+    # progressing, so a longer cap starves nothing else.
+    #
+    # SEPARATE FROM THE CAP, and not fixed by it: #79's own guard reported
+    # "batch landed no series and the fetch failed. Upstream is refusing
+    # us; V5 is stalled rather than merely unfinished." That is the guard
+    # working. A bigger cap lets the lane commit what it did land and say
+    # so honestly instead of dying mid-commit; it does not make Wikimedia
+    # answer.
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
