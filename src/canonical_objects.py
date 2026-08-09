@@ -450,7 +450,7 @@ def _require_exact_provenance(
         _fail("provenance_source_mismatch")
 
 
-def _validate_rights(
+def _validate_rights_state(
     root: Path,
     rights_path: Path,
     signers_path: Path,
@@ -485,6 +485,25 @@ def _validate_rights(
         )
     except publication_guard.PublicationGuardError as exc:
         _fail("rights_registry_invalid", exc.code)
+
+
+def _validate_rights(
+    root: Path,
+    rights_path: Path,
+    signers_path: Path,
+) -> tuple[dict[str, dict[str, Any]], str, str]:
+    """Return the legacy rights snapshot used by adjacent engines.
+
+    Registry effective dates and signer rows are required by canonical release
+    validation, but callers such as MaxStateJoin rely on this stable three-item
+    interface.  Keep that compatibility boundary explicit rather than silently
+    widening a private tuple shared across engines.
+    """
+
+    rights, _, rights_sha, signers_sha, _, _ = _validate_rights_state(
+        root, rights_path, signers_path
+    )
+    return rights, rights_sha, signers_sha
 
 
 def _load_release_signers(
@@ -1095,7 +1114,7 @@ def load_validated_release(
         rights_signers_sha,
         rights_registry_effective,
         rights_signers_effective,
-    ) = _validate_rights(root, rights_registry_path, rights_signers_path)
+    ) = _validate_rights_state(root, rights_registry_path, rights_signers_path)
     release_signers, release_signers_sha = _load_release_signers(
         root, release_signers_path
     )

@@ -28,7 +28,7 @@ GAP_SCHEMA = ROOT / "governance/schemas/gap-atom.schema.json"
 # able to redefine the denominator or relabel evidence without changing this
 # reviewed implementation as well.
 EXPECTED_REGISTRY_SHA256 = (
-    "3bc005cb3acefc930232e49bb442d0062f994632be49c385d4214847db35e55f"
+    "e0ef39f99381102216178e1bfc53363d39c43e86f5eac04e82d1343ba2c4b82f"
 )
 EXPECTED_LAUNCH_SHA256 = (
     "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc"
@@ -307,9 +307,9 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
         or
         registry.get("schema_version") != "0.2.0"
         or registry.get("registry_id") != "igrm-max-capability-attestation"
-        or registry.get("revision") != 5
+        or registry.get("revision") != 6
         or registry.get("predecessor_registry_sha256")
-        != "3bf153b5dc642effa4cf6e4823689849e1efb820ec4ccd3c62dc80ffcec1108b"
+        != "3bc005cb3acefc930232e49bb442d0062f994632be49c385d4214847db35e55f"
         or registry.get("authority_status") != "repository_review_only_unsigned"
         or tuple(registry.get("state_order", [])) != STATE_ORDER
     ):

@@ -30,7 +30,7 @@ def test_profile_is_exact_public_draft_not_an_adoption_claim() -> None:
         "standard_id": "oges",
         "standard_version": "0.1.0",
         "profile_sha256": conformance.PROFILE_SHA256,
-        "validator_sha256": "84b3e0a5e2ecd28c911ac7941501ef42b920a7394059e6f58727f4db07854d1c",
+        "validator_sha256": "3d07e0e8e14537e61b3a5559fba1f56c114ec32151c09066abba64f184d2e934",
         "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
         "required_object_types": [
             "evidence_item",
