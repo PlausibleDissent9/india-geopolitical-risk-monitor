@@ -35,8 +35,10 @@ from __future__ import annotations
 import gzip
 import io
 import json
+import os
 import re
 import sys
+import time
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -76,6 +78,14 @@ def _domain(url: str) -> str:
 
 CORPUS_CACHE = ROOT / "data" / "raw" / "receipt_days"
 
+# Wall clock for one scan pass, well inside the workflow step's own cap.
+# The extended pass reads up to 1440 minute-files and the step that runs
+# it allows 60 minutes for FIVE commands, of which this is the first.
+# Measured 2026-08-09: the step hit exactly 60.2 minutes in daily #99 and
+# again in #102, so the pass had been consuming the entire step budget and
+# the four commands after it never ran.
+SCAN_DEADLINE_S = int(os.environ.get("IGRM_RECEIPTS_DEADLINE_S", str(30 * 60)))
+
 
 def _cache_path(day: date, extended: bool) -> Path:
     suffix = "-extended" if extended else ""
@@ -90,6 +100,10 @@ def _cache_load(day: date, extended: bool) -> dict[str, Any] | None:
     raw["india"] = set(raw["india"])
     raw["matched"] = {g: set(v) for g, v in raw["matched"].items()}
     raw["scored_stamps"] = set(raw.get("scored_stamps") or [])
+    raw["done_stamps"] = set(raw.get("done_stamps") or [])
+    # Caches written before partial scans existed carry no completeness
+    # flag and were, by construction, whole passes.
+    raw["complete"] = bool(raw.get("complete", True))
     return raw
 
 
@@ -99,6 +113,8 @@ def _cache_save(day: date, corpus: dict[str, Any], extended: bool) -> None:
     ser["india"] = sorted(corpus["india"])
     ser["matched"] = {g: sorted(v) for g, v in corpus["matched"].items()}
     ser["scored_stamps"] = sorted(corpus.get("scored_stamps") or [])
+    ser["done_stamps"] = sorted(corpus.get("done_stamps") or [])
+    ser["complete"] = bool(corpus.get("complete", True))
     _cache_path(day, extended).write_text(json.dumps(ser), encoding="utf-8")
 
 
@@ -113,15 +129,29 @@ def collect_corpus(day: date, specs: dict[str, dict],
     Returns None if no files exist (feed gap -> caller falls back).
     Cached per day and mode (data/raw/receipt_days); delete the cache
     file to force a fresh scan."""
+    # A partial pass is banked and resumed rather than discarded. The pass
+    # used to save only after the whole loop, so a run that could not
+    # finish inside the step's cap banked NOTHING and the next run began
+    # again at the first file -- which is why receipts stopped advancing
+    # entirely once the day's corpus outgrew the budget, rather than
+    # advancing slowly. Progress has to survive the axe to converge.
+    resume: dict[str, Any] | None = None
     cached = _cache_load(day, extended)
     if cached is not None:
         # A cache written for a different registered dictionary version
         # would silently misattribute matches; the group keys must agree.
         if set(cached["matched"]) == set(specs):
-            print(f"[receipts-ngrams] corpus cache hit for {day}"
-                  f"{' (extended)' if extended else ''}")
-            return cached
-        print("[receipts-ngrams] corpus cache stale (dictionary change); rescanning")
+            if cached.get("complete", True):
+                print(f"[receipts-ngrams] corpus cache hit for {day}"
+                      f"{' (extended)' if extended else ''}")
+                return cached
+            resume = cached
+            print(f"[receipts-ngrams] resuming partial scan for {day}: "
+                  f"{len(cached.get('done_stamps') or [])} minute-files "
+                  "already read")
+        else:
+            print("[receipts-ngrams] corpus cache stale (dictionary change); "
+                  "rescanning")
     if extended:
         stamps = _day_minute_files(day, samples=1440)
         scored = scoring_stamps(stamps, day)
@@ -138,8 +168,28 @@ def collect_corpus(day: date, specs: dict[str, dict],
     india: set[str] = set()
     matched: dict[str, set[str]] = {g: set() for g in specs}
     meta: dict[str, dict[str, str]] = {}  # doc key -> {url, title, date}
+    done: set[str] = set()
 
+    if resume is not None:
+        total_en = int(resume.get("n_docs_sampled") or 0)
+        india = set(resume["india"])
+        matched = {g: set(v) for g, v in resume["matched"].items()}
+        meta = dict(resume.get("meta") or {})
+        done = set(resume.get("done_stamps") or [])
+        # scored_stamps stays derived from the FULL day, not the remainder:
+        # it records which files the estimator sampled, which does not
+        # change because this pass was interrupted.
+        stamps = [s for s in stamps if s not in done]
+
+    deadline = time.monotonic() + SCAN_DEADLINE_S
+    out_of_time = False
     for ts, toc_gz, ng_gz in prefetch_pairs(stamps):
+        if time.monotonic() > deadline:
+            print(f"[receipts-ngrams] budget spent after {len(done)} "
+                  "minute-files; banking progress for the next run")
+            out_of_time = True
+            break
+        done.add(ts)
         if not toc_gz or not ng_gz:
             continue
         toc_en: dict[str, dict[str, str]] = {}
@@ -188,9 +238,13 @@ def collect_corpus(day: date, specs: dict[str, dict],
 
     if total_en == 0:
         return None
-    corpus = {"n_docs_sampled": total_en, "n_samples": len(stamps),
+    # n_samples is the number of minute-files actually READ, across this
+    # pass and any it resumed. The published sentence says "Drawn from {n}
+    # minute-files", so it has to count what was read, not what was listed.
+    corpus = {"n_docs_sampled": total_en, "n_samples": len(done),
               "extended": extended, "scored_stamps": scored,
-              "india": india, "matched": matched, "meta": meta}
+              "india": india, "matched": matched, "meta": meta,
+              "done_stamps": done, "complete": not out_of_time}
     _cache_save(day, corpus, extended)
     return corpus
 
