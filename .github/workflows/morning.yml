@@ -175,5 +175,19 @@ jobs:
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
-          git add docs/data data/raw || true
+          # docs, not docs/data. The step above runs stamp_assets, which
+          # rewrites EVERY docs/*.html whenever an asset hash changes, and
+          # those rewrites are not under docs/data. Staging narrower than
+          # the lane writes left them in the working tree, and unstaged
+          # changes make `git pull --rebase` refuse outright -- so
+          # publish_push.sh burned all five retries on sleeps, never
+          # reached its gate, and the contract lane failed at 2.5 minutes
+          # with nothing in the log to say why. Runs #27, #32 and #33 on
+          # 2026-08-09, while the site served 2026-08-07 for a third day.
+          #
+          # Publishing them is also correct on its own terms: an asset
+          # stamp that stays behind points the served pages at a version
+          # of the stylesheet that is no longer the one on disk.
+          # daily.yml, notes.yml and validate.yml already stage docs.
+          git add docs data/raw || true
           bash scripts/publish_push.sh "data: final $(date -u -d 'yesterday' +%F) via morning-contract lane"

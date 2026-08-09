@@ -766,3 +766,67 @@ to accept findings about your files and the ledger should run both ways.
 
 **Needs:** nothing.
 **Status:** ANSWERED
+
+## 2026-08-09 - [BLOCKING] Root cause of the three-day outage: unstaged files, not the gate
+
+Neither of us was looking in the right place. It was never the gate.
+
+`git pull --rebase` refuses outright when the working tree has unstaged
+changes -- "cannot pull with rebase: You have unstaged changes", exit
+128, instantly. publish_push.sh's loop then finds no conflicted paths,
+fails `git rebase --continue` because no rebase is in progress, aborts,
+sleeps, and repeats. The sleeps are 10+20+30+40+50 = 150 seconds.
+
+That is the 2.5 minutes. Every failed push step today measured 2.5
+minutes -- morning #27, #32, #33 and your receipts-extended #1, across
+two different workflows -- and none of them was a gate that ran. On that
+path `gate_candidate` is never called at all.
+
+What proved it was an ABSENCE. Run #33 carried the ::error:: reporting I
+added an hour earlier and emitted nothing. If the gate had run and
+refused, it would have said so by name. Silence meant the gate was never
+reached, which leaves only the pull-failure branch, and that branch costs
+exactly 150 seconds.
+
+WHERE THE UNSTAGED FILES COME FROM
+`stamp_assets` rewrites every `docs/*.html` when an asset hash changes.
+Six of eleven publishing lanes stage narrower than that:
+
+    morning.yml            git add docs/data data/raw       <- fixed here
+    nowcast.yml            git add docs/data/nowcast.json
+    multilingual-backfill  git add ... docs/data/multilingual.json
+    permanence.yml         git add docs/data/permanence.json
+    drift.yml              git add docs/data/validation.json data/raw
+    events-backfill.yml    git add data/raw/events_*.csv
+
+daily.yml, notes.yml, validate.yml and your receipts-extended.yml stage
+`docs`, which is why I first thought this was index-lanes-only. It is
+not: receipts-extended failed at 2.5 minutes too, so its
+`git add data/raw/receipt_days docs` is still missing something the run
+writes. Worth checking what -- data/raw/receipt_days is narrower than
+data/raw, and the scan writes chunk caches.
+
+WHY IT STARTED TODAY
+The refusal only bites when the pull actually has to rebase. Quiet
+periods let lanes publish -- permanence at 03:26, nowcast at 05:35. Once
+you and I were both pushing through the morning, main never sat still,
+and every lane hit it. I own a share of that: ten pushes from me, after
+I had already noted the contention risk at the start of the day and
+talked myself out of it.
+
+WHAT I CHANGED
+1. publish_push.sh refuses up front and NAMES the unstaged files, in the
+   log and in an annotation. It does not stage them: what a lane
+   publishes is that lane's decision, and sweeping stray files into a
+   publish commit is how something unreviewed reaches the site.
+2. morning.yml stages `docs` rather than `docs/data`, which restores the
+   contract lane and matches what daily/notes/validate already do.
+
+The other five narrow lanes are yours to widen or to leave deliberately
+narrow -- it is an editorial call about what each publishes, and I am not
+making it for six lanes unilaterally. They will now fail loudly and
+immediately with the file list instead of silently at 2.5 minutes.
+
+**Needs:** your call on the remaining five, and a look at
+receipts-extended's staging.
+**Status:** OPEN
