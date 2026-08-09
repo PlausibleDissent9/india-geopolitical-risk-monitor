@@ -1,0 +1,108 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:event_semantic_lineage",
+  "version": "0.1.0",
+  "effective": "2026-08-10",
+  "status": "synthetic_nonproduction_contract_only",
+  "base_event_ledger": {
+    "extension_id": "oges:extension:event_ledger",
+    "version": "0.1.0",
+    "profile_path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
+    "profile_sha256": "602c1d1711206763f0474410d0e86aa7e09719497680c0667360fd6c6ff1d8fb"
+  },
+  "normative_files": [
+    {
+      "kind": "common_schema",
+      "path": "schemas/common.schema.json",
+      "sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"
+    },
+    {
+      "kind": "claim_proposition_schema",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/claim-proposition.schema.json",
+      "sha256": "11626d0783fe4db1444e964887828c9fa0ffce9cf9e3f34e35e601ac4882dc75"
+    },
+    {
+      "kind": "competition_set_schema",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/competition-set.schema.json",
+      "sha256": "23090a3e19c8109ad650a25aab6f3b50f6da44417d68793a34667c3f57f0d703"
+    },
+    {
+      "kind": "lineage_operation_schema",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/lineage-operation.schema.json",
+      "sha256": "63b8963b32bd40ca0c69789d42902891ada2c3111627267cf3f949e6b5e70a77"
+    },
+    {
+      "kind": "bundle_schema",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/event-semantic-lineage-bundle.schema.json",
+      "sha256": "686deb02acc83229fd9d249bb47a34f984acf873f793ca2c961ebaf6dbf17589"
+    },
+    {
+      "kind": "replay_schema",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/event-semantic-lineage-replay.schema.json",
+      "sha256": "62eee6e986bfd5cd27256bd95ce51c55e5c8b964f99033717ef01efef7338321"
+    },
+    {
+      "kind": "predicate_registry",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/predicate-registry.json",
+      "sha256": "7c168cd3a29f128a28c2957485c4a0082ebc3b5d4727ecea35059e91ccb5723b"
+    },
+    {
+      "kind": "semantic_authority_registry",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/semantic-authority-registry.json",
+      "sha256": "a7d19c8b0c632244d478d056f06e6800536f636849a9df1ef982d3e529f01df8"
+    },
+    {
+      "kind": "lineage_reason_registry",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/lineage-reason-registry.json",
+      "sha256": "9fb6b17bebc6a6de98dbdcc3c53643f85e436c983642c6a6fe5b982a97b996bf"
+    },
+    {
+      "kind": "semantic_release_signer_registry",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/semantic-release-signers.json",
+      "sha256": "788d625d8e71f6910293326c60d9e75747fbeb9c788ddc8eba96ad1b4933f9b1"
+    },
+    {
+      "kind": "specification",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/SPEC.md",
+      "sha256": "c6e305990efebd0b562665bea09bce3519fc27bf7ca7a1cb05b89975d290e52c"
+    },
+    {
+      "kind": "adversarial_cases",
+      "path": "standard/oges/extensions/event-semantic-lineage/0.1.0/adversarial-cases.json",
+      "sha256": "b06003f262c9d2f30a7ca97e6bb525b6d3bb0a652dbf9a109f21772fd1986daa"
+    },
+    {
+      "kind": "test_suite",
+      "path": "tests/test_event_semantic_lineage.py",
+      "sha256": "1e167608e328235559541b8a34995c6fad691effb089fa60e4137a5d606fb6e3"
+    }
+  ],
+  "reference_implementation": {
+    "path": "src/event_semantic_lineage.py",
+    "sha256": "581c0417bbbdf4750aed5372686ebe405a6ddecf906b3bbbc76855667b45a1f7"
+  },
+  "trust_boundary": {
+    "accepted_bundle_class": "synthetic_nonproduction",
+    "production_trust": false,
+    "truth_selection_authority": false,
+    "event_authority": false,
+    "public_value_route": false
+  },
+  "product_compiler_boundary": {
+    "status": "unavailable",
+    "reason_code": "product_compiler_contract_not_bound",
+    "product_compilation_ref": null,
+    "affected_manifest_ids": []
+  },
+  "meaning_boundary": {
+    "pass_means": "The synthetic sidecar preserves registered proposition, attribution, complete competition-set and signed lineage-operation invariants over an exact validated Event Ledger bundle.",
+    "pass_does_not_mean": [
+      "a ClaimProposition, attribution, Claim or Event is true",
+      "a CompetitionSet selects truth or contains exhaustive alternatives",
+      "a LineageOperation is substantively correct",
+      "a hash-bound unverified span was checked against source bytes",
+      "a ProductCompilation or product correction closure was validated",
+      "the extension creates a public value route or production capability"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:event-semantic-lineage:lineage-reasons",
+  "default_policy": "deny",
+  "reasons": [
+    {
+      "reason_code": "reason:official_correction",
+      "allowed_topologies": ["merge", "split", "supersede"],
+      "eligible_evidence_types": ["official_document", "official_statement"],
+      "eligible_verification_statuses": ["official_record"],
+      "required_rights_use": "cite_metadata"
+    }
+  ]
+}

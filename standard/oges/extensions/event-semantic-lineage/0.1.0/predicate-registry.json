@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:event-semantic-lineage:predicates",
+  "default_policy": "deny",
+  "opposition_rules": [
+    {
+      "opposition_rule_id": "opposition:affirm_deny_identical_arguments_v1",
+      "left_stance": "affirms",
+      "right_stance": "denies",
+      "requires_identical_ordered_arguments": true
+    }
+  ],
+  "predicates": [
+    {
+      "predicate_id": "predicate:actor_action_object_v1",
+      "ordered_arguments": [
+        {
+          "position": 0,
+          "name_id": "argument:actor",
+          "argument_type": "entity_ref",
+          "semantic_role": "context",
+          "allowed_value_ids": null
+        },
+        {
+          "position": 1,
+          "name_id": "argument:action",
+          "argument_type": "registered_term",
+          "semantic_role": "answer",
+          "allowed_value_ids": [
+            "action:reviews_restriction",
+            "action:restricts"
+          ]
+        },
+        {
+          "position": 2,
+          "name_id": "argument:object",
+          "argument_type": "entity_ref",
+          "semantic_role": "context",
+          "allowed_value_ids": null
+        }
+      ],
+      "opposition_rule_id": "opposition:affirm_deny_identical_arguments_v1"
+    }
+  ]
+}

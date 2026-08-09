@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:event-semantic-lineage:release-signers",
+  "default_policy": "deny",
+  "signers": [
+    {
+      "signer_id": "signer:oges.fixture.semantic_release",
+      "role": "semantic_availability_signer",
+      "effective_from": "2026-08-10T00:00:00Z",
+      "revoked_at": null,
+      "trust_class": "synthetic_nonproduction_public_test_vector",
+      "public_key_ed25519_base64": "A4H6LvUiUhV2yQguLQwha5nDDHbnjOSKi2PBqeSPth0="
+    }
+  ]
+}

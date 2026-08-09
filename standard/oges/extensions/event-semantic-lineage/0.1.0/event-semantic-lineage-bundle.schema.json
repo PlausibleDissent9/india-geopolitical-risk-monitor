@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-event-semantic-lineage-bundle-0.1.0.json",
+  "title": "OGES Event Ledger semantic-lineage sidecar bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "profile_sha256",
+    "trust_class",
+    "production_trust",
+    "base_event_ledger",
+    "product_compiler_boundary",
+    "snapshots"
+  ],
+  "properties": {
+    "object_type": {"const": "event_semantic_lineage_bundle"},
+    "schema_version": {"const": "0.1.0"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "trust_class": {"const": "synthetic_nonproduction"},
+    "production_trust": {"const": false},
+    "base_event_ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle_file_sha256", "bundle_record_sha256", "profile_sha256"],
+      "properties": {
+        "bundle_file_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "bundle_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "product_compiler_boundary": {"$ref": "#/$defs/productClosure"},
+    "snapshots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sequence",
+          "release_id",
+          "release_manifest_record_sha256",
+          "knowledge_available_at",
+          "semantic_receipt",
+          "claim_propositions",
+          "competition_sets",
+          "lineage_operations",
+          "archive_counts",
+          "source_count_units"
+        ],
+        "properties": {
+          "sequence": {"type": "integer", "minimum": 1},
+          "release_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+          "release_manifest_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+          "knowledge_available_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+          "semantic_receipt": {"$ref": "#/$defs/semanticReceipt"},
+          "claim_propositions": {
+            "type": "array",
+            "items": {"$ref": "https://igrm.in/schemas/oges-event-semantic-lineage-claim-proposition-0.1.0.json"}
+          },
+          "competition_sets": {
+            "type": "array",
+            "items": {"$ref": "https://igrm.in/schemas/oges-event-semantic-lineage-competition-set-0.1.0.json"}
+          },
+          "lineage_operations": {
+            "type": "array",
+            "items": {"$ref": "https://igrm.in/schemas/oges-event-semantic-lineage-operation-0.1.0.json"}
+          },
+          "archive_counts": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["claim_propositions", "competition_sets", "lineage_operations"],
+            "properties": {
+              "claim_propositions": {"type": "integer", "minimum": 0},
+              "competition_sets": {"type": "integer", "minimum": 0},
+              "lineage_operations": {"type": "integer", "minimum": 0}
+            }
+          },
+          "source_count_units": {"$ref": "#/$defs/sourceCountUnits"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sourceCountUnits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregate_source_rows",
+        "deduplicated_source_events",
+        "canonical_geopolitical_events",
+        "detected_salience_episodes"
+      ],
+      "properties": {
+        "aggregate_source_rows": {"type": ["integer", "null"], "minimum": 0},
+        "deduplicated_source_events": {"type": ["integer", "null"], "minimum": 0},
+        "canonical_geopolitical_events": {"type": ["integer", "null"], "minimum": 0},
+        "detected_salience_episodes": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "semanticReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_type",
+        "schema_version",
+        "receipt_id",
+        "record_sha256",
+        "sequence",
+        "previous_receipt_record_sha256",
+        "snapshot_sha256",
+        "semantic_available_at",
+        "profile_sha256",
+        "base_bundle_file_sha256",
+        "base_bundle_record_sha256",
+        "base_release_id",
+        "base_release_manifest_record_sha256",
+        "signer_registry_sha256",
+        "signer_id",
+        "trust_class",
+        "statement_sha256",
+        "signature_ed25519_base64"
+      ],
+      "properties": {
+        "object_type": {"const": "semantic_availability_receipt"},
+        "schema_version": {"const": "0.1.0"},
+        "receipt_id": {"type": "string", "pattern": "^sar:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "previous_receipt_record_sha256": {
+          "oneOf": [
+            {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+            {"type": "null"}
+          ]
+        },
+        "snapshot_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "semantic_available_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_bundle_file_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_bundle_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_release_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "base_release_manifest_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "signer_registry_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "signer_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "trust_class": {"const": "synthetic_nonproduction_public_test_vector"},
+        "statement_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "signature_ed25519_base64": {"type": "string", "pattern": "^[A-Za-z0-9+/]{86}==$"}
+      }
+    },
+    "productClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason_code", "product_compilation_ref", "affected_manifest_ids"],
+      "properties": {
+        "status": {"const": "unavailable"},
+        "reason_code": {"const": "product_compiler_contract_not_bound"},
+        "product_compilation_ref": {"type": "null"},
+        "affected_manifest_ids": {"type": "array", "maxItems": 0}
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:event-semantic-lineage:authorities",
+  "default_policy": "deny",
+  "authorization_statement": {
+    "statement_id": "statement:lineage_operation_authorization_v1",
+    "trust_class": "synthetic_nonproduction_public_test_vector",
+    "signed_projection": "typed_canonical_statement_v1"
+  },
+  "locators": [
+    {
+      "locator_id": "locator:content.verified_utf8_byte_span_v1",
+      "unit": "utf8_byte",
+      "bounds": "required_half_open",
+      "locator_evidence_class": "verified_source_bytes",
+      "allowed_actor_kinds": ["explicit_unknown", "named_entity"]
+    },
+    {
+      "locator_id": "locator:content.unverified_utf8_byte_span_v1",
+      "unit": "utf8_byte",
+      "bounds": "required_half_open",
+      "locator_evidence_class": "hash_bound_locator_unverified_span",
+      "allowed_actor_kinds": ["explicit_unknown", "named_entity"]
+    },
+    {
+      "locator_id": "locator:evidence.publisher_entity_id_v1",
+      "unit": "metadata_field",
+      "bounds": "forbidden",
+      "locator_evidence_class": "verified_evidence_metadata",
+      "allowed_actor_kinds": ["publisher_only"]
+    }
+  ],
+  "authorities": [
+    {
+      "authority_id": "person:oges.fixture.coder",
+      "authority_kind": "human",
+      "roles": [
+        "claim_attribution_extractor",
+        "lineage_coder"
+      ],
+      "allowed_locator_ids": [
+        "locator:content.verified_utf8_byte_span_v1",
+        "locator:content.unverified_utf8_byte_span_v1",
+        "locator:evidence.publisher_entity_id_v1"
+      ],
+      "effective_from": "2026-08-08T00:00:00Z",
+      "revoked_at": null,
+      "signer_id": "signer:oges.fixture.semantic_lineage_coder",
+      "trust_class": "synthetic_nonproduction_public_test_vector",
+      "public_key_ed25519_base64": "kFZXmmpej7Zqoc15dp+Z1VdDK27czLNwXGLgr6My0yU="
+    },
+    {
+      "authority_id": "person:oges.fixture.adjudicator",
+      "authority_kind": "human",
+      "roles": ["lineage_adjudicator"],
+      "allowed_locator_ids": [],
+      "effective_from": "2026-08-08T00:00:00Z",
+      "revoked_at": null,
+      "signer_id": "signer:oges.fixture.semantic_lineage_adjudicator",
+      "trust_class": "synthetic_nonproduction_public_test_vector",
+      "public_key_ed25519_base64": "ti5uxksm/bUQ/fsGGQGKNxkoP/uZ6ybUacD0c5pb3F8="
+    },
+    {
+      "authority_id": "person:oges.fixture.viewer",
+      "authority_kind": "human",
+      "roles": ["evidence_viewer"],
+      "allowed_locator_ids": [],
+      "effective_from": "2026-08-08T00:00:00Z",
+      "revoked_at": "2026-08-08T23:00:00Z",
+      "signer_id": "signer:oges.fixture.semantic_lineage_viewer",
+      "trust_class": "synthetic_nonproduction_public_test_vector",
+      "public_key_ed25519_base64": "JjvgN6c28hA/aWIoy1Xft7qrnddFeMu08fZrv7J1JDY="
+    }
+  ]
+}

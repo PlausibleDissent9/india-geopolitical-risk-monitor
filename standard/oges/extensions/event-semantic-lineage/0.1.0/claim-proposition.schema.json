@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-event-semantic-lineage-claim-proposition-0.1.0.json",
+  "title": "OGES Event Ledger ClaimProposition overlay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "proposition_id",
+    "record_sha256",
+    "claim_ref",
+    "event_ref",
+    "predicate_id",
+    "ordered_arguments",
+    "stance",
+    "position_sha256",
+    "competition_sha256",
+    "known_at",
+    "attributions",
+    "truth_selected",
+    "event_state_effect"
+  ],
+  "properties": {
+    "object_type": {"const": "claim_proposition"},
+    "schema_version": {"const": "0.1.0"},
+    "proposition_id": {
+      "type": "string",
+      "pattern": "^prp:[a-z0-9][a-z0-9._:-]{2,123}$"
+    },
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "claim_ref": {"$ref": "#/$defs/claimRef"},
+    "event_ref": {"$ref": "#/$defs/eventRef"},
+    "predicate_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "ordered_arguments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/typedArgument"}
+    },
+    "stance": {"enum": ["affirms", "denies", "questions"]},
+    "position_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "competition_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "known_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+    "attributions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/attribution"}
+    },
+    "truth_selected": {"const": false},
+    "event_state_effect": {"const": "none"}
+  },
+  "$defs": {
+    "claimRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"const": "claim"},
+        "object_id": {"type": "string", "pattern": "^clm:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "eventRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"const": "event"},
+        "object_id": {"type": "string", "pattern": "^evt:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "entityRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"const": "entity"},
+        "object_id": {"type": "string", "pattern": "^ent:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "evidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"const": "evidence_item"},
+        "object_id": {"type": "string", "pattern": "^evd:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "typedArgument": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["position", "name_id", "argument_type", "value"],
+          "properties": {
+            "position": {"type": "integer", "minimum": 0},
+            "name_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+            "argument_type": {"const": "entity_ref"},
+            "value": {"$ref": "#/$defs/entityRef"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["position", "name_id", "argument_type", "value"],
+          "properties": {
+            "position": {"type": "integer", "minimum": 0},
+            "name_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+            "argument_type": {"const": "registered_term"},
+            "value": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["position", "name_id", "argument_type", "value"],
+          "properties": {
+            "position": {"type": "integer", "minimum": 0},
+            "name_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+            "argument_type": {"const": "utc_datetime"},
+            "value": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"}
+          }
+        }
+      ]
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_kind",
+        "actor_entity_ref",
+        "evidence_ref",
+        "asserted_at",
+        "content_span_sha256",
+        "locator_evidence_class",
+        "locator",
+        "extraction_authority"
+      ],
+      "properties": {
+        "actor_kind": {"enum": ["named_entity", "publisher_only", "explicit_unknown"]},
+        "actor_entity_ref": {
+          "oneOf": [
+            {"$ref": "#/$defs/entityRef"},
+            {"type": "null"}
+          ]
+        },
+        "evidence_ref": {"$ref": "#/$defs/evidenceRef"},
+        "asserted_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "content_span_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "locator_evidence_class": {
+          "enum": [
+            "verified_source_bytes",
+            "verified_evidence_metadata",
+            "hash_bound_locator_unverified_span"
+          ]
+        },
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["locator_id", "start", "end", "unit", "locator_sha256"],
+          "properties": {
+            "locator_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+            "start": {"type": ["integer", "null"], "minimum": 0},
+            "end": {"type": ["integer", "null"], "minimum": 1},
+            "unit": {"enum": ["utf8_byte", "metadata_field"]},
+            "locator_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+          }
+        },
+        "extraction_authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["authority_kind", "authority_id"],
+          "properties": {
+            "authority_kind": {"enum": ["human", "registered_deterministic_method", "model", "agent"]},
+            "authority_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"}
+          }
+        }
+      }
+    }
+  }
+}

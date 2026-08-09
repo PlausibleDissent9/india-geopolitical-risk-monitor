@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-event-semantic-lineage-replay-0.1.0.json",
+  "title": "OGES Event Ledger semantic-lineage replay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "trust_class",
+    "production_trust",
+    "query",
+    "selected_release",
+    "proof",
+    "active_sets",
+    "active_counts",
+    "claim_proposition_refs",
+    "competition_sets",
+    "applied_lineage_operation_refs",
+    "pending_lineage_operation_refs",
+    "source_count_units",
+    "product_compiler_boundary",
+    "truth_selected",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "event_semantic_lineage_replay"},
+    "schema_version": {"const": "0.1.0"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "trust_class": {"const": "synthetic_nonproduction"},
+    "production_trust": {"const": false},
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["knowledge_cutoff", "valid_on", "selection_rule"],
+      "properties": {
+        "knowledge_cutoff": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "valid_on": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/date"},
+        "selection_rule": {
+          "const": "latest_authenticated_semantic_receipt_then_exact_bound_base_release_then_known_and_valid_lineage_operations"
+        }
+      }
+    },
+    "selected_release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence",
+        "release_id",
+        "manifest_record_sha256",
+        "base_available_at",
+        "semantic_available_at",
+        "semantic_receipt_id",
+        "semantic_receipt_record_sha256"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "release_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "manifest_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_available_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "semantic_available_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "semantic_receipt_id": {"type": "string", "pattern": "^sar:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "semantic_receipt_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verification_method",
+        "semantic_profile_sha256",
+        "semantic_runtime_sha256",
+        "semantic_bundle_file_sha256",
+        "semantic_bundle_record_sha256",
+        "semantic_snapshot_sha256",
+        "semantic_receipt_record_sha256",
+        "base_profile_sha256",
+        "base_runtime_sha256",
+        "base_bundle_file_sha256",
+        "base_bundle_record_sha256",
+        "query_sha256"
+      ],
+      "properties": {
+        "verification_method": {"const": "full_offline_recomputation_v1"},
+        "semantic_profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "semantic_runtime_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "semantic_bundle_file_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "semantic_bundle_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "semantic_snapshot_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "semantic_receipt_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_runtime_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_bundle_file_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "base_bundle_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "query_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "active_sets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "episode", "claim"],
+      "properties": {
+        "event": {"type": "array", "items": {"$ref": "#/$defs/objectRef"}},
+        "episode": {"type": "array", "items": {"$ref": "#/$defs/objectRef"}},
+        "claim": {"type": "array", "items": {"$ref": "#/$defs/objectRef"}}
+      }
+    },
+    "active_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "episode", "claim"],
+      "properties": {
+        "event": {"type": "integer", "minimum": 0},
+        "episode": {"type": "integer", "minimum": 0},
+        "claim": {"type": "integer", "minimum": 0}
+      }
+    },
+    "claim_proposition_refs": {"type": "array", "items": {"$ref": "#/$defs/propositionRef"}},
+    "competition_sets": {
+      "type": "array",
+      "items": {"$ref": "https://igrm.in/schemas/oges-event-semantic-lineage-competition-set-0.1.0.json"}
+    },
+    "applied_lineage_operation_refs": {"type": "array", "items": {"$ref": "#/$defs/operationRef"}},
+    "pending_lineage_operation_refs": {"type": "array", "items": {"$ref": "#/$defs/operationRef"}},
+    "source_count_units": {"$ref": "#/$defs/sourceCountUnits"},
+    "product_compiler_boundary": {"$ref": "#/$defs/productClosure"},
+    "truth_selected": {"const": false},
+    "limitations": {
+      "type": "array",
+      "minItems": 6,
+      "items": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "objectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"enum": ["event", "episode", "claim"]},
+        "object_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "propositionRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposition_id", "record_sha256"],
+      "properties": {
+        "proposition_id": {"type": "string", "pattern": "^prp:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "operationRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_id", "record_sha256"],
+      "properties": {
+        "operation_id": {"type": "string", "pattern": "^lin:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "sourceCountUnits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregate_source_rows",
+        "deduplicated_source_events",
+        "canonical_geopolitical_events",
+        "detected_salience_episodes"
+      ],
+      "properties": {
+        "aggregate_source_rows": {"type": ["integer", "null"], "minimum": 0},
+        "deduplicated_source_events": {"type": ["integer", "null"], "minimum": 0},
+        "canonical_geopolitical_events": {"type": ["integer", "null"], "minimum": 0},
+        "detected_salience_episodes": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "productClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason_code", "product_compilation_ref", "affected_manifest_ids"],
+      "properties": {
+        "status": {"const": "unavailable"},
+        "reason_code": {"const": "product_compiler_contract_not_bound"},
+        "product_compilation_ref": {"type": "null"},
+        "affected_manifest_ids": {"type": "array", "maxItems": 0}
+      }
+    }
+  }
+}
