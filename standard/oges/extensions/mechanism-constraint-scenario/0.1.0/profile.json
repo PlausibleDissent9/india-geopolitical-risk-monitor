@@ -5,15 +5,15 @@
   "effective": "2026-08-09",
   "status": "public_draft_contract_only_synthetic_fixtures",
   "bound_files": [
-    {"kind": "specification", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/SPEC.md", "sha256": "b91b0e8292a3e1848e6a382f8fcc8f0dd30b6fbd4072a10367ea5ac6c8c2c999"},
+    {"kind": "specification", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/SPEC.md", "sha256": "e036fd3a28225ab40a2fecadaf408ee5cd9dce7a295949481a68a906b048516d"},
     {"kind": "base_oges_profile", "path": "standard/oges/0.1.0/profile.json", "sha256": "27e434e5490e5bba2ce27c1bdc139c44ef72631cfe76907859b27145ba9f5a94"},
     {"kind": "constraint_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/constraint.schema.json", "sha256": "7f71aa3ade3af7ed4f5a224737f153f0ad1f204caf50dc7b81b589db7950c3b8"},
-    {"kind": "hypothesis_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/mechanism-hypothesis.schema.json", "sha256": "64e006123982f58a7e23b45ba1561560c93123bec22251fb7f996945dc63d822"},
-    {"kind": "request_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-request.schema.json", "sha256": "854251a3a90dd032e2392310d74c6ff6837830c47b55746648112621d8cf0098"},
-    {"kind": "execution_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-execution.schema.json", "sha256": "8c7e20b643be3f9cdbc9bec6e51f54081830d6e0c2f2b5b7873f6ffaad28a93f"},
+    {"kind": "hypothesis_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/mechanism-hypothesis.schema.json", "sha256": "215f8b6de2de2f92dd4e7b3117820ad1a49650ea6b45adc1589cc259eb003222"},
+    {"kind": "request_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-request.schema.json", "sha256": "f438d98c2ddefc9b3510cba6d6c2e1c25fd9fc1bfa33e1465d500bbf94504d0e"},
+    {"kind": "execution_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-execution.schema.json", "sha256": "9ac0cca982407fde76cea6a8fa6da3e4a2f749d2d163dd3c98cb6084fd7798a9"},
     {"kind": "operator_registry", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/operator-registry.json", "sha256": "a9acaf76830dd14843b18bf0d2e84210f2a45a72fd4354419a01ea624aa1a891"},
     {"kind": "predicate_registry", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/predicate-registry.json", "sha256": "6ac40eeb6d79da6b52d79ce98e44d2f3cf66311c23083ea72fcd46021458394a"},
-    {"kind": "adversarial_cases", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/adversarial-cases.json", "sha256": "8dc63c57abfa87ef59e9b4b9fb422e25598c8c536bd11c7f9c1e7d72994ada55"},
+    {"kind": "adversarial_cases", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/adversarial-cases.json", "sha256": "8b2e178a59392191a38aae77a945bedc6a4abfeb0dc198a88afd6939224ba56f"},
     {"kind": "shock_registry", "path": "governance/shock_compiler_registry.json", "sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad"},
     {"kind": "shock_scenario_schema", "path": "schemas/shock-scenario.schema.json", "sha256": "01c242e74ba84b77f94e0772d6c08606fc6e2c70408074a71e7cf6fb712e914d"},
     {"kind": "shock_compilation_schema", "path": "schemas/shock-compilation.schema.json", "sha256": "f5391b08f226d1292213a63c07e742798d47690a5f94c9164f9b095a7416abe1"},
@@ -25,16 +25,17 @@
   ],
   "reference_implementation": {
     "path": "src/scenario_proof.py",
-    "sha256": "1fd434b4e61eeefef82adc7a57f544ac49b38fbc12e982a0a7b5b230eef3e232"
+    "sha256": "af21d70aeddb53a6e63f5fa806f9d19e8b1d5d20936fe07fdf340f714efe8b4c"
   },
   "conformance_test": {
     "path": "tests/test_scenario_proof.py",
-    "sha256": "b5bc379782cf9b1f91b8661353ef683dbc7922d6d0c64ea5b8c3b8a97e942dd2"
+    "sha256": "a6b19eeb52e4efc750eb728a653ff9d611e075b0ec21e49355f032c54d7d465c"
   },
   "claim_boundary": [
     "A proof classifies only registered hypothetical intervals and structural predicates after exact Shock Compiler recomputation.",
     "Constraint satisfaction is not real-world feasibility, capacity, advice, optimization or a recommended response.",
     "Mechanism compatibility is not support, confirmation, causal identification, probability, real-world falsification or completeness of rivals.",
+    "Pre-scenario registration time is self-declared and not an independently timestamped prospective registration.",
     "Repository-authored synthetic fixtures keep capability maturity contract_only and do not constitute authenticated execution evidence.",
     "Non-synthetic public rendering retains the existing claim-bundle gate."
   ]

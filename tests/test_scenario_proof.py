@@ -400,6 +400,57 @@ def test_stale_inputs_are_visible_and_never_called_satisfied(tmp_path: Path) -> 
     for row in result["constraints"]:
         assert row["readiness"] == "stale_inputs"
         assert row["scenario_feasibility_status"] == "indeterminate_input_unavailable"
+    assert all(
+        row["scenario_compatibility_status"] == "indeterminate_missing_registered_result"
+        for row in result["hypotheses"]
+    )
+    constraint_falsifiers = [
+        falsifier
+        for row in result["hypotheses"]
+        for falsifier in row["falsifiers"]
+        if falsifier["constraint_id"] is not None
+    ]
+    assert constraint_falsifiers
+    assert all(row["status"] == "not_evaluable" for row in constraint_falsifiers)
+
+
+def test_unknown_freshness_makes_constraint_falsifier_unevaluable() -> None:
+    result = scenario_proof._falsifier_result(
+        {
+            "falsifier_id": "falsifier:scenario.fixture.unknown-freshness",
+            "predicate_id": "predicate:scenario.constraint_interval_relation_equals",
+            "expected_value": "all_registered_values_satisfy",
+            "constraint_id": "constraint:scenario.fixture.unknown-freshness",
+        },
+        {"quantification_status": "bounded_range", "gap_codes": []},
+        {
+            "constraint:scenario.fixture.unknown-freshness": {
+                "readiness": "unknown_freshness",
+                "interval_relation": "all_registered_values_satisfy",
+            }
+        },
+    )
+    assert result["status"] == "not_evaluable"
+
+
+def test_pre_scenario_registration_time_is_explicitly_self_declared(
+    fixture: shock_compiler_fixture.ShockFixture,
+) -> None:
+    compilation = _compile(fixture)
+    request = _mutate_request(
+        _request(compilation, fixture),
+        lambda row: row["hypotheses"][0].update(
+            registered_at="2000-01-01T00:00:00Z",
+            registration_timing="self_declared_pre_scenario",
+        ),
+    )
+    result = _execute(fixture, compilation, request)
+    hypothesis = next(
+        row
+        for row in result["hypotheses"]
+        if row["hypothesis_id"] == "hypothesis:scenario.fixture.alternative"
+    )
+    assert hypothesis["registration_timing"] == "self_declared_pre_scenario"
 
 
 def _make_asymmetric_rival_set(row: dict[str, Any]) -> None:
@@ -440,8 +491,14 @@ def _make_asymmetric_rival_set(row: dict[str, Any]) -> None:
             "scenario_proof_time_invalid",
         ),
         (
-            lambda row: row["hypotheses"][0].update(registration_timing="prospective"),
+            lambda row: row["hypotheses"][0].update(
+                registration_timing="self_declared_pre_scenario"
+            ),
             "scenario_proof_registration_timing_invalid",
+        ),
+        (
+            lambda row: row["hypotheses"][0].update(registered_at="2030-01-01T00:00:00Z"),
+            "scenario_proof_time_invalid",
         ),
         (
             lambda row: row.update(recommendation="buy inventory"),
@@ -472,6 +529,19 @@ def test_supplied_compilation_is_recomputed_before_any_proof(
     with pytest.raises(shock_compiler.ShockCompilerError) as exc:
         _execute(fixture, tampered, request)
     assert exc.value.code == "shock_output_semantic_mismatch"
+
+
+def test_runtime_shock_registry_must_equal_profile_bound_registry(tmp_path: Path) -> None:
+    fixture = shock_compiler_fixture.build_fixture(tmp_path / "registry-drift")
+    registry_path = _paths(fixture)["shock_registry_path"]
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["effective"] = "2026-08-07"
+    registry_path.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
+    compilation = _compile(fixture)
+    request = _request(compilation, fixture)
+    with pytest.raises(scenario_proof.ScenarioProofError) as exc:
+        _execute(fixture, compilation, request)
+    assert exc.value.code == "scenario_proof_shock_registry_drift"
 
 
 def test_resealed_output_mutation_fails_full_recomputation(
@@ -516,10 +586,10 @@ def test_profile_binds_every_normative_byte_and_preserves_shock_1_0() -> None:
 
 def test_adversarial_case_registry_is_complete_and_capability_is_not_overpromoted() -> None:
     cases = json.loads((ROOT / EXTENSION / "adversarial-cases.json").read_text())
-    assert len(cases["cases"]) == 20
-    assert len({row["case_id"] for row in cases["cases"]}) == 20
+    assert len(cases["cases"]) == 22
+    assert len({row["case_id"] for row in cases["cases"]}) == 22
     capability = json.loads((ROOT / "governance/capability_attestation_registry.json").read_text())
     rules = {row["capability_id"]: row for row in capability["capability_rules"]}
     assert set(rules["constraint_feasibility"]["levels"]) == {"contract_only"}
-    assert set(rules["hypothesis_falsification"]["levels"]) == {"contract_only"}
+    assert "hypothesis_falsification" not in rules
     assert "execution_receipt" not in json.dumps(rules["constraint_feasibility"], sort_keys=True)

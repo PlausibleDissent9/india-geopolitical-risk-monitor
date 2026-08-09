@@ -64,6 +64,7 @@ _REQUEST_LIMITATIONS = sorted(
         "mechanism_compatibility_not_support_or_causality",
         "no_forecast_probability_recommendation_or_optimization",
         "non_synthetic_rendering_requires_claim_bundle",
+        "pre_scenario_registration_time_is_self_declared_not_independently_timestamped",
     )
 )
 _EXECUTION_LIMITATIONS = sorted(
@@ -73,6 +74,7 @@ _EXECUTION_LIMITATIONS = sorted(
         "mechanism_status_is_not_support_confirmation_or_causality",
         "no_real_world_feasibility_forecast_advice_or_optimization",
         "non_synthetic_rendering_requires_claim_bundle",
+        "pre_scenario_registration_time_is_self_declared_not_independently_timestamped",
     )
 )
 _GUARDRAILS = {
@@ -360,7 +362,11 @@ def _validate_request(
         if row["path_id"] not in path_ids:
             _fail("scenario_proof_hypothesis_path_missing")
         registered_at = _utc(row["registered_at"], "scenario_proof_time_invalid")
-        expected_timing = "prospective" if registered_at <= scenario_created else "retrospective"
+        if registered_at > request_created:
+            _fail("scenario_proof_time_invalid")
+        expected_timing = (
+            "self_declared_pre_scenario" if registered_at <= scenario_created else "retrospective"
+        )
         if row["registration_timing"] != expected_timing:
             _fail("scenario_proof_registration_timing_invalid")
         rivals = row["rival_hypothesis_ids"]
@@ -612,7 +618,7 @@ def _falsifier_result(
     else:
         constraint = constraints[falsifier["constraint_id"]]
         actual = constraint["interval_relation"]
-        if actual == "not_evaluable":
+        if constraint["readiness"] != "current_inputs" or actual == "not_evaluable":
             status = "not_evaluable"
         else:
             status = "triggered" if actual == expected else "not_triggered"
@@ -771,6 +777,12 @@ def execute_scenario_proof(
         request_validator,
         execution_validator,
     ) = _profile()
+    _, _, runtime_shock_registry_sha = _read_json(
+        shock_registry_path,
+        "scenario_proof_shock_registry_invalid",
+    )
+    if runtime_shock_registry_sha != hashes["shock_registry"]:
+        _fail("scenario_proof_shock_registry_drift")
     shock_compiler.validate_shock_compilation(
         compilation,
         manifest_path,
@@ -783,6 +795,8 @@ def execute_scenario_proof(
         release_signers_path=release_signers_path,
         shock_registry_path=shock_registry_path,
     )
+    if compilation["contract"]["compiler_registry_sha256"] != hashes["shock_registry"]:
+        _fail("scenario_proof_shock_registry_drift")
     _validate_request(request, scenario, compilation, request_validator, predicates)
     implementation_sha = cast(str, profile["reference_implementation"]["sha256"])
     document = event_ledger_extension.seal_record(

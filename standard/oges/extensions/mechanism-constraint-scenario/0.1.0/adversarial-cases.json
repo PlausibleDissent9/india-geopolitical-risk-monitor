@@ -19,8 +19,10 @@
     {"case_id": "scenario_or_compilation_retargeted", "expected_status": "refused", "expected_reason": "scenario_proof_binding_mismatch"},
     {"case_id": "release_or_rights_drift", "expected_status": "refused", "expected_reason": "shock_output_semantic_mismatch"},
     {"case_id": "release_after_evaluation_as_of", "expected_status": "refused", "expected_reason": "scenario_proof_time_invalid"},
+    {"case_id": "hypothesis_registered_after_request", "expected_status": "refused", "expected_reason": "scenario_proof_time_invalid"},
     {"case_id": "execution_resealed_after_mutation", "expected_status": "refused", "expected_reason": "scenario_proof_execution_mismatch"},
     {"case_id": "profile_or_registry_hash_drift", "expected_status": "refused", "expected_reason": "scenario_proof_profile_digest_mismatch"},
+    {"case_id": "runtime_shock_registry_differs_from_profile", "expected_status": "refused", "expected_reason": "scenario_proof_shock_registry_drift"},
     {"case_id": "capability_overpromotion", "expected_status": "refused", "expected_reason": "unsigned_synthetic_evidence_forbidden"}
   ]
 }

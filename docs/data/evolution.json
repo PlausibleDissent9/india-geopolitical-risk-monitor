@@ -20,9 +20,9 @@
       "event_ledger": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18",
       "product_route_set": "747d5a8886e7dc2355537d45e364480ca4451418bbce5642628fa5256be9d968",
       "api_endpoint_set": "239ce5065c90299d6e6ae226e2ed3a229d6d33f9ca491582ef8824c96dd084a6",
-      "capability_attestation_registry": "9e21b1586a72270de4cb480e84655151d3d97b23dc5c99cb0720594caeee0675",
+      "capability_attestation_registry": "cba9c3c21db7f82fea1358d64329edf2e61881a24ef5b28c15f0c312292d19b5",
       "max_launch_contract": "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc",
-      "capability_attestation_implementation": "54bc19f170a1287e7daff4cc6a4cd3fc27e377804ee3f50cc07a67b730c7b762",
+      "capability_attestation_implementation": "db41ce07fc47328c343ce01d2f50beedcac3ec896a40b869f6193f5dfedf34d5",
       "capability_attestation_schema": "33d58dc86cec7b1f9bcdb87c09a822c652b0584827ea7840001c4c190cecce1c",
       "gap_atom_schema": "61128a377f0bc0f0f018530cb92f07411264145247768380a72381f747a34190"
     }
@@ -285,8 +285,8 @@
       "denominator_status": "proposed_launch_scope_not_founder_authorized",
       "scope_authority": "proposed_unsigned",
       "state_counts": {
-        "target_only": 20,
-        "contract_only": 18,
+        "target_only": 21,
+        "contract_only": 17,
         "synthetic_verified": 0,
         "real_bounded": 0,
         "externally_validated": 0,
@@ -481,22 +481,13 @@
     {
       "capability_id": "hypothesis_falsification",
       "requirement": "Competing hypotheses state supporting, contradicting and potentially falsifying evidence.",
-      "computed_state": "contract_only",
-      "evidence": [
-        {
-          "artifact_id": "scenario_proof_profile",
-          "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json",
-          "evidence_class": "contract",
-          "expected_sha256": "5d5dc09040a83f7e9c8460a3f079f7387efc327a63934ff99868e557391dd878",
-          "observed_sha256": "5d5dc09040a83f7e9c8460a3f079f7387efc327a63934ff99868e557391dd878",
-          "status": "verified"
-        }
-      ],
+      "computed_state": "target_only",
+      "evidence": [],
       "counterevidence": [
-        "unregistered_evidence_bundle:synthetic_verified"
+        "unregistered_evidence_bundle:contract_only"
       ],
-      "next_state": "synthetic_verified",
-      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
       "risk_class": "R2_product_or_data_expansion",
       "authority_class": "human_scope_review_required"
     },
@@ -829,8 +820,8 @@
           "artifact_id": "scenario_proof_profile",
           "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "5d5dc09040a83f7e9c8460a3f079f7387efc327a63934ff99868e557391dd878",
-          "observed_sha256": "5d5dc09040a83f7e9c8460a3f079f7387efc327a63934ff99868e557391dd878",
+          "expected_sha256": "8c0478d5ebb3c8b3676c3ab8a17721f3f093364032638d4638605da735464331",
+          "observed_sha256": "8c0478d5ebb3c8b3676c3ab8a17721f3f093364032638d4638605da735464331",
           "status": "verified"
         }
       ],
@@ -1163,20 +1154,20 @@
       "authority_class": "human_scope_review_required"
     },
     {
-      "gap_id": "gap:hypothesis_falsification:synthetic_verified",
+      "gap_id": "gap:hypothesis_falsification:contract_only",
       "capability_id": "hypothesis_falsification",
-      "observed_state": "contract_only",
-      "target_state": "synthetic_verified",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
       "measured_denominator": {
         "registered_evidence": 0,
         "verified_evidence": 0
       },
       "failure_ids": [
-        "unregistered_evidence_bundle:synthetic_verified"
+        "unregistered_evidence_bundle:contract_only"
       ],
       "risk_class": "R2_product_or_data_expansion",
-      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
-      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
       "post_release_observation": "recompute_after_each_committed_artifact_change",
       "authority_class": "human_scope_review_required"
     },

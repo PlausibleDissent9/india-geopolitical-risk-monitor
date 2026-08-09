@@ -68,8 +68,8 @@ def test_public_report_refuses_event_values_until_source_rights_are_signed() -> 
     assert capability["denominator_status"] == ("proposed_launch_scope_not_founder_authorized")
     assert capability["scope_authority"] == "proposed_unsigned"
     assert capability["state_counts"] == {
-        "target_only": 20,
-        "contract_only": 18,
+        "target_only": 21,
+        "contract_only": 17,
         "synthetic_verified": 0,
         "real_bounded": 0,
         "externally_validated": 0,

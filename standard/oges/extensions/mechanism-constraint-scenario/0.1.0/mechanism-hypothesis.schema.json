@@ -24,7 +24,7 @@
     "epistemic_status": {"const": "candidate_not_established"},
     "causal_status": {"const": "not_identified"},
     "registered_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
-    "registration_timing": {"enum": ["prospective", "retrospective"]},
+    "registration_timing": {"enum": ["self_declared_pre_scenario", "retrospective"]},
     "rival_hypothesis_ids": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/nonEmptyIdArray"},
     "falsifiers": {
       "type": "array",

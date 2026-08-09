@@ -50,17 +50,24 @@ makes a hypothesis incompatible with the compiled scenario; an unevaluable
 predicate makes it indeterminate. Otherwise it is compatible with the compiled
 scenario but not supported.
 
+A constraint-relation falsifier is unevaluable whenever its source path is
+stale, has unknown freshness or abstained upstream. A stale structural value
+therefore cannot produce a categorical mechanism-compatibility conclusion.
+
 Those words are a hard claim boundary. Compatibility is not evidence for a
 mechanism, causal identification, real-world falsification, probability,
 ranking, optimality, advice or completeness of the rival set.
 
-Every hypothesis carries a computed registration-timing class. A hypothesis
-registered after the scenario was created is `retrospective`; it cannot be
-presented as a prospective test merely because its record was later sealed.
+Every hypothesis carries a computed registration-timing class and its declared
+registration time must not postdate the request. A hypothesis registered after
+the scenario was created is `retrospective`. An earlier unauthenticated time is
+only `self_declared_pre_scenario`; version 0.1.0 has no independent timestamped
+registration receipt and therefore never licenses a `prospective` claim.
 
 ## Proof boundary
 
 The reference implementation validates every hash-bound profile artifact,
+requires the runtime Shock registry to equal the profile-bound registry,
 recomputes the Shock compilation, evaluates deny-by-default operators and
 predicates, emits a typed-canonical execution and validates any supplied
 execution through full recomputation. A failed input emits no partial proof.

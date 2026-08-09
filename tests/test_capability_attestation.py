@@ -49,8 +49,8 @@ def test_all_38_launch_capabilities_are_measured_and_none_is_complete_by_asserti
         "denominator_status": "proposed_launch_scope_not_founder_authorized",
         "scope_authority": "proposed_unsigned",
         "state_counts": {
-            "target_only": 20,
-            "contract_only": 18,
+            "target_only": 21,
+            "contract_only": 17,
             "synthetic_verified": 0,
             "real_bounded": 0,
             "externally_validated": 0,
@@ -92,6 +92,20 @@ def test_nary_trace_evidence_stops_at_contract_only() -> None:
     }
     assert proof["next_state"] == "synthetic_verified"
     assert proof["counterevidence"] == ["unregistered_evidence_bundle:synthetic_verified"]
+
+
+def test_scenario_proof_attests_constraints_but_not_full_evidence_falsification() -> None:
+    rows = _by_id(ca.build_report())
+    constraint = rows["constraint_feasibility"]
+    assert constraint["computed_state"] == "contract_only"
+    assert {row["artifact_id"] for row in constraint["evidence"]} == {
+        "shock_contract",
+        "scenario_proof_profile",
+    }
+    hypothesis = rows["hypothesis_falsification"]
+    assert hypothesis["computed_state"] == "target_only"
+    assert hypothesis["evidence"] == []
+    assert hypothesis["counterevidence"] == ["unregistered_evidence_bundle:contract_only"]
 
 
 def test_unsigned_fabricated_receipt_cannot_promote_with_rehashed_registry(

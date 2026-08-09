@@ -32,7 +32,8 @@
         {"contains": {"const": "hypothetical_scenario_feasibility_not_real_world_feasibility"}},
         {"contains": {"const": "mechanism_compatibility_not_support_or_causality"}},
         {"contains": {"const": "no_forecast_probability_recommendation_or_optimization"}},
-        {"contains": {"const": "non_synthetic_rendering_requires_claim_bundle"}}
+        {"contains": {"const": "non_synthetic_rendering_requires_claim_bundle"}},
+        {"contains": {"const": "pre_scenario_registration_time_is_self_declared_not_independently_timestamped"}}
       ]
     }
   },

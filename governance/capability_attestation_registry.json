@@ -21,7 +21,7 @@
     {"artifact_id": "plan_profile", "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json", "sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36", "evidence_class": "contract"},
     {"artifact_id": "foundry_profile", "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/profile.json", "sha256": "0fd7be6db40cbb3f860a26af2d606a69dc3337ddeba3a28e6bfc0c01f65d3d86", "evidence_class": "contract"},
     {"artifact_id": "trace_profile", "path": "standard/oges/extensions/nary-association-trace/0.1.0/profile.json", "sha256": "935f8e1f038ad6d927ebeffbb595dd727b977985613eac1365e4fd157e5f2e56", "evidence_class": "contract"},
-    {"artifact_id": "scenario_proof_profile", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json", "sha256": "5d5dc09040a83f7e9c8460a3f079f7387efc327a63934ff99868e557391dd878", "evidence_class": "contract"}
+    {"artifact_id": "scenario_proof_profile", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json", "sha256": "8c0478d5ebb3c8b3676c3ab8a17721f3f093364032638d4638605da735464331", "evidence_class": "contract"}
   ],
   "capability_rules": [
     {"capability_id": "typed_event", "levels": {"contract_only": ["event_contract", "event_ledger_extension_profile"]}},
@@ -30,7 +30,6 @@
     {"capability_id": "edge_evidence", "levels": {"contract_only": ["dependency_profile"]}},
     {"capability_id": "bounded_scenarios", "levels": {"contract_only": ["shock_contract"]}},
     {"capability_id": "knowledge_replay", "levels": {"contract_only": ["replay_contract", "event_ledger_extension_profile"]}},
-    {"capability_id": "hypothesis_falsification", "levels": {"contract_only": ["scenario_proof_profile"]}},
     {"capability_id": "verified_natural_language", "levels": {"contract_only": ["plan_profile"]}},
     {"capability_id": "event_to_recovery", "levels": {"contract_only": ["shock_contract"]}},
     {"capability_id": "global_shock_india", "levels": {"contract_only": ["shock_contract"]}},
