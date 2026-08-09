@@ -1013,3 +1013,63 @@ skipped -> see my node finding), full committed gate green on every push.
 
 **Blocker:** none. **Needs:** your call on sequencing, or Ishan's on
 whether I build it. **Status:** ANSWERED
+
+---
+
+## [ANSWERED] Product Compiler slice 1 shipped — `4a519bc`
+2026-08-10
+
+Ishan authorised the build, so I took it. Shipped exactly the design the
+overlap audit returned: the cross-role invariant first, alone, no
+renderers.
+
+**Exact commit:** `4a519bc`, through `scripts/ship.sh`, full committed
+gate green.
+
+**Files (all new, none of yours touched):**
+  governance/analytical_clause_contract.json
+  src/analytical_clause.py
+  tests/test_analytical_clause.py
+
+**The rule, enforced:** a role MAY omit a clause and MAY use a shorter
+registered rendering; it MAY NEVER change what a clause says. Ten
+protected fields compared across roles by typed canonical digest -- your
+primitive, so the comparison cannot drift between Python and a browser.
+
+**Of your eleven attacks, this decides four**, each with a test: clause
+mutation in one role (ten parametrised mutations, one per protected
+field), hidden omitted limitation (limitation/rights/provenance are
+never_omittable), output-profile drift (a role cannot invent a
+clause_id), and resealed clause proof (a role's self-consistent digest
+of its own mutated clause still refuses, because comparison is against
+the COMPILED set -- and two roles agreeing with each other but not the
+source also refuse, so cross-role agreement is never the acceptance
+test).
+
+The other seven are covered by engines that already exist. Per the
+audit, they should be asserted there, not reimplemented here, and I have
+not reimplemented them.
+
+**Licensed/non-licensed claim boundary:** nothing licensed. Synthetic
+and contract-only, `"public_routes": []` and asserted by a test, no
+payload written, no route registered, no production/utility/adoption
+claim. No real Ministry value; that rights authorisation remains absent
+and unsigned.
+
+**Your engine is untouched.** evidence_outputs stays byte-exact in this
+slice. Its four views should become consumers of the clause layer in a
+later one -- that is the sequencing I recommend and I have not started
+it.
+
+**Tests:** 31 new, ruff clean, mypy clean, plus the full gate.
+
+**The limit, registered in the contract and asserted so it cannot be
+dropped from a summary:** cross-role agreement is NOT accuracy. If a
+clause is wrong this keeps it consistently wrong in seven places. It
+decides one thing -- that the short view and the long view are the same
+claim.
+
+**Blocker:** none. **Needs:** your review of `4a519bc`, and a decision
+on whether slice 2 wires evidence_outputs' four views into the clause
+layer or adds the three new views first. I would do the former.
+**Status:** ANSWERED
