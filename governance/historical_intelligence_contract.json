@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-09",
+  "default_policy": "deny",
+  "what": "Registered contract for Historical Intelligence v1: regime baselines, candidate structural breaks, and analog retrieval over the 1979-2019 back-extension archive. Everything published under this contract derives from docs/data/back_extension.json, which is a DIFFERENT construct from the live instrument (monthly event-mention shares by frozen actor-pair filters) and is never spliced into or drawn beside the 2017+ series. Registration is frozen before computation: periods, algorithm, settings, features and refusals are fixed here, not chosen after seeing results.",
+  "source": {
+    "payload_path": "docs/data/back_extension.json",
+    "construct": "monthly_event_mention_share_by_frozen_actor_pair_filters",
+    "distinct_from_live_instrument": true,
+    "splice_permitted": false,
+    "registered_memo": "analysis/back_extension_memo.md"
+  },
+  "knowledge_cutoff": {
+    "archive_end": "2019-12",
+    "rule": "No label, annotation, revision or category whose evidence postdates archive_end may be attached to any historical view. The archive is read as it stood; later knowledge is not backfilled into it.",
+    "enforcement": "Any archetype or annotation carrying a month after archive_end is refused, not silently dropped, and the refusal is published."
+  },
+  "channel_eligibility": {
+    "policy": "A channel is published only where the registered 2017-2019 overlap audit in the source payload returned a tracking verdict. The audit is the gate; a low correlation is a published negative finding, not a channel to repair.",
+    "eligible": ["pakistan_west", "china_east"],
+    "refused": {
+      "us_trade": "overlap r=0.216 over 36 months; source payload verdict DOES NOT PUBLISH (negative finding)",
+      "gulf_energy": "overlap r=0.153 over 36 months; source payload verdict DOES NOT PUBLISH (negative finding)",
+      "shipping": "excluded at registration: no defensible historical event analog for the channel's construct"
+    }
+  },
+  "regime_baselines": {
+    "policy": "Periods are CALENDAR partitions, registered here before computation. They are named by their years and nothing else. They are not political regimes, administrations, doctrines or eras, and no period boundary asserts that anything changed at it. Naming a period after a historical era would be an external claim this project cannot support from its own artifacts.",
+    "periods": [
+      {"id": "p1979_1989", "start": "1979-01", "end": "1989-12", "label": "1979-1989"},
+      {"id": "p1990_1999", "start": "1990-01", "end": "1999-12", "label": "1990-1999"},
+      {"id": "p2000_2009", "start": "2000-01", "end": "2009-12", "label": "2000-2009"},
+      {"id": "p2010_2019", "start": "2010-01", "end": "2019-12", "label": "2010-2019"}
+    ],
+    "statistics": ["n_months_in_period", "n_observed", "coverage_fraction", "mean", "median", "p90", "max", "min"],
+    "denominator_rule": "Every statistic reports the denominator it was computed over. n_months_in_period is the calendar count; n_observed is the count of non-null observations; coverage_fraction is n_observed / n_months_in_period. A statistic over fewer than min_observed_months is refused and reported as unavailable with its reason.",
+    "min_observed_months": 24,
+    "non_comparability": [
+      "Periods are not comparable to the live 2017+ instrument, which measures a different construct.",
+      "pctl_10y is a trailing-ten-year percentile and is undefined for the archive's first 120 months; that missingness is reported per period rather than filled.",
+      "Cross-channel comparison of raw_share is not meaningful: each channel's share is relative to its own filter, not a shared denominator."
+    ]
+  },
+  "structural_breaks": {
+    "algorithm": "single_best_split_by_welch_t_on_mean",
+    "declared": "For each channel and series, every candidate split point with at least min_segment_months on both sides is scored by the absolute Welch t statistic between the two segment means. The largest is reported as the single candidate break. This is a DESCRIPTIVE scan, not a change-point model with a stated generative assumption.",
+    "min_segment_months": 24,
+    "sensitivity_settings": [12, 24, 36, 48],
+    "null_behaviour": {
+      "method": "permutation",
+      "description": "The series values are shuffled without replacement and the same maximum statistic recomputed, which destroys any time ordering while preserving the value distribution. The reported p_value is the fraction of permutations whose maximum statistic met or exceeded the observed one.",
+      "n_permutations": 2000,
+      "seed": 20260809,
+      "deterministic": true
+    },
+    "language_rule": "A result is a CANDIDATE BREAK IN THE MEASURED SERIES. It is never described as a historical cause, a turning point, a regime change, or an explanation of any event. The series measures press attention, so a break is a break in attention and nothing more.",
+    "refusal": "A channel with fewer than 2 * min_segment_months observed values reports no candidate and states why."
+  },
+  "analog_retrieval": {
+    "policy": "Given a month present in the archive, return the nearest other months in the same channel by standardised distance over registered features. Retrieval is a similarity lookup over one measured series. It carries no claim that similar months share causes, and no claim about what follows them.",
+    "features": [
+      {"id": "level_pctl_10y", "source": "pctl_10y", "transform": "identity"},
+      {"id": "change_12m_raw_share", "source": "raw_share", "transform": "difference_vs_12_months_earlier"},
+      {"id": "volatility_12m_raw_share", "source": "raw_share", "transform": "trailing_12_month_sample_stddev"}
+    ],
+    "standardisation": "Each feature is z-scored over the channel's observed months, using the mean and sample standard deviation reported in the payload.",
+    "distance": "euclidean_over_available_standardised_features",
+    "missingness_rule": "A feature that is null for either the query or the candidate is EXCLUDED from that pair's distance, the excluded feature is named in the result, and n_features_used is reported. A pair sharing fewer than min_features_for_match usable features is refused, not distance-imputed. No null is ever replaced by zero or by a mean.",
+    "min_features_for_match": 2,
+    "exclusion_window_months": 6,
+    "exclusion_reason": "Months within exclusion_window_months of the query are excluded: adjacent months are trivially similar and would crowd out every informative analog.",
+    "n_returned": 5,
+    "determinism": "Ties are broken by ascending month string, so the same query returns the same ordered result on every run and platform.",
+    "forbidden_language": ["will repeat", "predicts", "forecast", "expect", "likely to recur", "history says"]
+  },
+  "event_archetypes": {
+    "policy": "An archetype is attached to a month only where a HUMAN-AUTHORED registered anchor exists in the source payload's anchor_grades. Nothing is machine-labelled. A month with no registered anchor reports archetype_available=false with reason 'no_registered_human_authored_archetype', and is never given an inferred one.",
+    "source_field": "anchor_grades",
+    "authorship": "human_authored_at_registration",
+    "machine_generated_archetypes_permitted": false,
+    "eligibility": "An anchor whose channel is not in channel_eligibility.eligible is retained for the record but marked unavailable_for_publication with the channel's refusal reason."
+  },
+  "publication": {
+    "payload_path": "docs/data/historical_intelligence.json",
+    "implementation_path": "src/historical_intelligence.py",
+    "page_path": "docs/history-lab.html",
+    "downloads": [
+      "docs/downloads/igrm-historical-regime-baselines.csv",
+      "docs/downloads/igrm-historical-analogs.csv"
+    ],
+    "freshness_policy": "The archive is a frozen historical artifact with a registered end of 2019-12. It does not go stale by the passage of time and is exempt from the daily freshness window; it is republished only when this contract, the source payload, or the implementation changes, and the payload records the sha256 of all three.",
+    "unavailable_representation": "explicit_null_with_reason",
+    "zero_substitution_permitted": false
+  },
+  "limitations": [
+    "This measures press attention in a monthly event-mention share, not conflict, risk, escalation or outcome.",
+    "Two of five channels publish. The other three are refused on registered grounds and the refusal is part of the output.",
+    "A candidate break is a property of the series under a declared descriptive scan; a different algorithm would place breaks differently, which is why the sensitivity sweep is published beside it.",
+    "Analog distance is a similarity over three registered features of one series. It is not a claim of comparable circumstances and it is not evidence about what followed.",
+    "The trailing-percentile feature is undefined for the first 120 months, so early-archive analogs rest on fewer features, and each result reports how many it used."
+  ]
+}
