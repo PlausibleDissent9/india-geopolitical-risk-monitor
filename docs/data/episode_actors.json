@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Per-episode driver decomposition from the GDELT Events dyad layer: partners whose India-pair event counts in the episode window most exceed their trailing 90-day baseline rate, with the window's cooperation-conflict split. Counts of press-recorded events; association, not causation.",
-  "generated": "2026-08-08",
+  "generated": "2026-08-09",
   "baseline_days": 90,
   "window_pad_days": 1,
   "license": "CC BY 4.0",
@@ -5018,17 +5018,17 @@
      "conflict": 17
     },
     {
-     "partner": "GHA",
-     "n": 10,
-     "excess": 8.2,
-     "coop": 10,
-     "conflict": 0
-    },
-    {
      "partner": "ASA",
      "n": 9,
      "excess": 8.2,
      "coop": 9,
+     "conflict": 0
+    },
+    {
+     "partner": "GHA",
+     "n": 10,
+     "excess": 8.2,
+     "coop": 10,
      "conflict": 0
     },
     {
@@ -7665,17 +7665,17 @@
      "conflict": 13
     },
     {
-     "partner": "DNK",
-     "n": 27,
-     "excess": 25.6,
-     "coop": 27,
-     "conflict": 0
-    },
-    {
      "partner": "JOR",
      "n": 28,
      "excess": 25.6,
      "coop": 28,
+     "conflict": 0
+    },
+    {
+     "partner": "DNK",
+     "n": 27,
+     "excess": 25.6,
+     "coop": 27,
      "conflict": 0
     },
     {
@@ -14052,18 +14052,18 @@
      "conflict": 18
     },
     {
-     "partner": "ESP",
-     "n": 13,
-     "excess": 10.1,
-     "coop": 11,
-     "conflict": 2
-    },
-    {
      "partner": "OMN",
      "n": 23,
      "excess": 10.1,
      "coop": 23,
      "conflict": 0
+    },
+    {
+     "partner": "ESP",
+     "n": 13,
+     "excess": 10.1,
+     "coop": 11,
+     "conflict": 2
     },
     {
      "partner": "AFR",
@@ -14389,18 +14389,18 @@
      "conflict": 2
     },
     {
-     "partner": "JPN",
-     "n": 27,
-     "excess": 11.0,
-     "coop": 19,
-     "conflict": 8
-    },
-    {
      "partner": "SEA",
      "n": 14,
      "excess": 11.0,
      "coop": 12,
      "conflict": 2
+    },
+    {
+     "partner": "JPN",
+     "n": 27,
+     "excess": 11.0,
+     "coop": 19,
+     "conflict": 8
     }
    ]
   },
@@ -17598,17 +17598,17 @@
      "conflict": 6
     },
     {
-     "partner": "VNM",
-     "n": 8,
-     "excess": 6.9,
-     "coop": 8,
-     "conflict": 0
-    },
-    {
      "partner": "PRY",
      "n": 7,
      "excess": 6.9,
      "coop": 7,
+     "conflict": 0
+    },
+    {
+     "partner": "VNM",
+     "n": 8,
+     "excess": 6.9,
+     "coop": 8,
      "conflict": 0
     }
    ]
@@ -25597,10 +25597,10 @@
      "conflict": 3
     },
     {
-     "partner": "PRT",
-     "n": 9,
+     "partner": "WAF",
+     "n": 7,
      "excess": 7.0,
-     "coop": 9,
+     "coop": 7,
      "conflict": 0
     }
    ]
@@ -27860,18 +27860,18 @@
      "conflict": 41
     },
     {
-     "partner": "BGD",
-     "n": 43,
-     "excess": 15.5,
-     "coop": 35,
-     "conflict": 8
-    },
-    {
      "partner": "UKR",
      "n": 21,
      "excess": 15.5,
      "coop": 21,
      "conflict": 0
+    },
+    {
+     "partner": "BGD",
+     "n": 43,
+     "excess": 15.5,
+     "coop": 35,
+     "conflict": 8
     },
     {
      "partner": "MUS",
@@ -32382,11 +32382,11 @@
      "conflict": 25
     },
     {
-     "partner": "FRA",
+     "partner": "JPN",
      "n": 62,
      "excess": 19.1,
-     "coop": 56,
-     "conflict": 6
+     "coop": 60,
+     "conflict": 2
     }
    ]
   },
@@ -33258,18 +33258,18 @@
      "conflict": 3
     },
     {
-     "partner": "MYS",
-     "n": 21,
-     "excess": 17.4,
-     "coop": 17,
-     "conflict": 4
-    },
-    {
      "partner": "ZAF",
      "n": 20,
      "excess": 17.4,
      "coop": 10,
      "conflict": 10
+    },
+    {
+     "partner": "MYS",
+     "n": 21,
+     "excess": 17.4,
+     "coop": 17,
+     "conflict": 4
     },
     {
      "partner": "LBY",
@@ -35331,11 +35331,11 @@
      "conflict": 41
     },
     {
-     "partner": "ARG",
+     "partner": "MAR",
      "n": 17,
      "excess": 14.9,
-     "coop": 17,
-     "conflict": 0
+     "coop": 13,
+     "conflict": 4
     }
    ]
   },
@@ -35949,18 +35949,18 @@
      "conflict": 0
     },
     {
-     "partner": "BRN",
-     "n": 19,
-     "excess": 12.4,
-     "coop": 19,
-     "conflict": 0
-    },
-    {
      "partner": "NGA",
      "n": 17,
      "excess": 12.4,
      "coop": 16,
      "conflict": 1
+    },
+    {
+     "partner": "BRN",
+     "n": 19,
+     "excess": 12.4,
+     "coop": 19,
+     "conflict": 0
     },
     {
      "partner": "AUT",
@@ -36158,17 +36158,17 @@
      "conflict": 7
     },
     {
-     "partner": "THA",
-     "n": 23,
-     "excess": 14.6,
-     "coop": 23,
-     "conflict": 0
-    },
-    {
      "partner": "BRA",
      "n": 22,
      "excess": 14.6,
      "coop": 22,
+     "conflict": 0
+    },
+    {
+     "partner": "THA",
+     "n": 23,
+     "excess": 14.6,
+     "coop": 23,
      "conflict": 0
     },
     {
@@ -36990,11 +36990,11 @@
      "conflict": 8
     },
     {
-     "partner": "KHM",
-     "n": 9,
+     "partner": "CHE",
+     "n": 20,
      "excess": 6.5,
-     "coop": 7,
-     "conflict": 2
+     "coop": 19,
+     "conflict": 1
     }
    ]
   },
@@ -43035,11 +43035,11 @@
      "conflict": 0
     },
     {
-     "partner": "IRQ",
+     "partner": "SEA",
      "n": 5,
      "excess": 2.1,
-     "coop": 1,
-     "conflict": 4
+     "coop": 5,
+     "conflict": 0
     }
    ]
   },

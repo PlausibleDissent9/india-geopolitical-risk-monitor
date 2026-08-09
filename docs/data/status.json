@@ -9,16 +9,16 @@
   "n_alignment_checks": 2,
   "n_aligned": 1,
   "n_not_aligned_or_unavailable": 1,
-  "generated": "2026-08-09T08:18:00Z"
+  "generated": "2026-08-09T15:33:57Z"
  },
  "sources": [
   {
    "key": "gdelt_salience",
    "name": "GDELT salience store",
    "role": "daily channel volumes \u2014 every score derives from this",
-   "latest_data": "2026-08-07",
+   "latest_data": "2026-08-08",
    "expect_within_days": 2,
-   "age_days": 2,
+   "age_days": 1,
    "ok": true
   },
   {
@@ -54,7 +54,7 @@
    "role": "inputs to event-study and priced-risk panels (beside, never inside)",
    "latest_data": null,
    "expect_within_days": 4,
-   "output_generated": "2026-08-08",
+   "output_generated": "2026-08-09",
    "ok": false,
    "note": "maximum market-input date is not present in committed evidence; the separately shown output build date is not an input-freshness claim"
   },
@@ -109,8 +109,8 @@
    "key": "daily_publish",
    "name": "Daily publish",
    "evidence": "docs/data/latest.json",
-   "last": "2026-08-08",
-   "measured_day": "2026-08-07"
+   "last": "2026-08-09",
+   "measured_day": "2026-08-08"
   },
   {
    "key": "receipts",
@@ -170,7 +170,7 @@
     "label": "Final score day",
     "evidence": "docs/data/latest.json",
     "field": "date",
-    "date": "2026-08-07"
+    "date": "2026-08-08"
    },
    "observed": {
     "label": "Receipts evidence day",
@@ -182,7 +182,7 @@
    "publish_blocking": false,
    "aligned": false,
    "status": "lagging",
-   "day_difference": 1
+   "day_difference": 2
   },
   {
    "key": "aptness_to_receipts",
