@@ -8,9 +8,10 @@ truth-selection authority.
 
 ## Additive boundary
 
-This profile is a sidecar over a fully validated OGES Event Ledger extension
-bundle. It does not create a second Claim, Episode or Event store. The base
-extension remains solely responsible for EvidenceItem-to-Claim roles, Event
+This profile is a sidecar over an OGES Event Ledger extension bundle that passes
+its registered schema, integrity, signature, rights and replay checks. It does
+not create a second Claim, Episode or Event store. The base extension remains
+solely responsible for EvidenceItem-to-Claim roles, Event
 promotion, Episode proposal limits, complete authenticated releases, rights at
 release time, count units, append-only one-to-one corrections and bitemporal
 replay. Their schemas and implementation are pinned and unchanged.
