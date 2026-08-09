@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1.0",
   "contract_id": "igrm:analytical-clause:0.1.0",
-  "what": "The closed vocabulary and the invariant that lets one analytical result be shown to different audiences without any audience being told something different. An audience profile may omit a clause or use a shorter registered rendering. It may never change what a clause says.",
+  "what": "The single closed AnalyticalClause vocabulary and the invariant that lets one atomic analytical result be referenced by every registered audience without changing any semantic field.",
   "canonicalization_profile_id": "igrm-typed-canonical-f64-v1",
   "status": "synthetic_contract_only",
   "public_routes": [],
@@ -14,37 +14,52 @@
     "priority_language",
     "offline"
   ],
-  "protected_fields": [
-    "citation",
-    "denominator",
-    "epistemic_type",
-    "missingness",
-    "observed_period",
-    "proof_binding",
-    "rights_state",
-    "uncertainty",
+  "analytical_clause_fields": [
+    "object_type",
+    "schema_version",
+    "clause_id",
+    "record_sha256",
+    "kind",
+    "value",
     "unit",
-    "value"
+    "denominator",
+    "observed_period",
+    "epistemic_type",
+    "uncertainty",
+    "missingness",
+    "citation",
+    "rights_state",
+    "proof_binding"
   ],
-  "protected_field_rule": "Every field listed above is compared across every pair of roles that carry the same clause_id, by typed canonical digest. Divergence in any one of them is a refusal, not a rendering difference. Shortening prose is a rendering decision; changing a denominator is a different claim.",
+  "protected_field_rule": "Every AnalyticalClause field except record_sha256 is protected. The record digest is recomputed over the complete typed record with only record_sha256 omitted. There is no protected-field allowlist and no unprotected clause extension point.",
+  "role_reference_fields": [
+    "clause_id",
+    "clause_record_sha256"
+  ],
+  "role_reference_rule": "A role carries exact clause references only. It may not carry a copied clause payload, editable protected fields, rendering prose, a local proof claim, or an unregistered literal.",
   "clause_kinds": {
     "measurement": {
       "never_omittable": false,
-      "why": "A role may legitimately carry fewer measurements than another."
+      "why": "A future registered profile may omit a whole atomic measurement, never rewrite it."
     },
     "limitation": {
       "never_omittable": true,
-      "why": "The failure mode this contract exists to prevent: a shorter audience view that keeps the number and drops what the number cannot support. A limitation is not editorial trimming."
+      "why": "A shorter audience view may not keep a fact while dropping what it cannot support."
     },
     "rights": {
       "never_omittable": true,
-      "why": "Rights state travels with the claim or the claim cannot be republished."
+      "why": "Exact evidence use and release-rights identity travel with the analytical set."
     },
     "provenance": {
       "never_omittable": true,
-      "why": "A claim without its proof binding is unverifiable, and an unverifiable claim in a short view is exactly the one that gets quoted."
+      "why": "Exact source records and proof binding are mandatory in every role projection."
     }
   },
+  "mandatory_guardrail_ids": [
+    "guardrail:bounded_no_path_not_absence",
+    "guardrail:no_forecast_or_advice",
+    "guardrail:structural_path_not_causation"
+  ],
   "epistemic_types": [
     "measured",
     "derived",
@@ -57,30 +72,54 @@
     "suppressed",
     "not_applicable"
   ],
-  "rendering_rule": "registered_deterministic_templates_no_model_generation",
-  "rendering_lengths": [
-    "full",
-    "short"
+  "rendering_rule": "v0.1_emits_exact_clause_refs_only_no_prose_or_shortening",
+  "omission_rule": "The source-bound v0.1 profile is deny-by-default and registers no omissions. Every role partition must therefore include the complete clause denominator and carry an empty omitted set.",
+  "additive_bundle_objects": [
+    "source_bound_clause_bundle",
+    "cross_role_clause_proof_bundle"
   ],
-  "omission_rule": "The clause_id set of any role must be a subset of the compiled clause_id set. A role may not introduce a clause_id that was not compiled, and may not omit a clause whose kind is never_omittable.",
+  "claim_boundary": "The proof establishes only that all seven registered roles reference the same incumbent AnalyticalClause records from one recomputed source bundle. It does not establish prose equivalence, source truth, causal validity, publication approval, production authentication, ProductManifest closure, or correction blast.",
+  "product_manifest_future_seam": "Unavailable in v0.1. A future ProductManifest must bind exact clause and artifact references, a deterministic closed selection_scope and query, a candidate-universe receipt, and the complete manifest-set denominator. Correction blast must derive predecessor reverse dependencies UNION scopes matching predecessor or successor; this contract does not guess or authorize that closure.",
   "refusal_codes": [
     "clause_contract_digest_mismatch",
     "clause_duplicate_id",
-    "clause_kind_unregistered",
     "clause_epistemic_type_unregistered",
+    "clause_json_duplicate_key",
+    "clause_kind_unregistered",
+    "clause_mandatory_omitted",
     "clause_missingness_unregistered",
+    "clause_path_binding_invalid",
     "clause_protected_field_divergence",
     "clause_protected_field_missing",
-    "clause_rendering_length_unregistered",
+    "clause_record_digest_mismatch",
+    "clause_ref_invalid",
+    "clause_role_proof_digest_mismatch",
+    "clause_role_proof_invalid",
+    "clause_role_proof_recompile_mismatch",
     "clause_role_unregistered",
+    "clause_source_binding_invalid",
+    "clause_source_bundle_digest_mismatch",
+    "clause_source_bundle_recompile_mismatch",
+    "clause_source_profile_drift",
+    "clause_source_profile_invalid",
+    "clause_source_profile_not_effective",
+    "clause_source_release_refused",
+    "clause_source_release_unregistered",
+    "clause_structure_invalid",
+    "clause_typed_canonical_invalid",
     "clause_unknown_id_in_role",
-    "clause_mandatory_omitted",
+    "clause_upstream_binding_invalid",
+    "clause_upstream_refused",
+    "clause_value_absent_despite_presence",
     "clause_value_present_despite_missingness",
-    "clause_value_absent_despite_presence"
+    "clause_coverage_binding_invalid"
   ],
   "limitations": [
     "clause_identity_is_not_source_truth",
     "cross_role_agreement_is_not_accuracy",
+    "bounded_no_path_is_not_absence",
+    "structural_path_is_not_causation",
+    "no_forecast_or_advice",
     "synthetic_contract_only_no_production_claim"
   ]
 }

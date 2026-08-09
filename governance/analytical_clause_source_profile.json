@@ -1,0 +1,57 @@
+{
+  "schema_version": "0.1.0",
+  "profile_id": "igrm:analytical-clause-source-binding:0.1.0",
+  "effective": "2026-08-08",
+  "status": "synthetic_contract_only",
+  "default_policy": "deny",
+  "allowed_release": {
+    "release_id": "rel:oges.fixture.2026-08-08",
+    "release_signer_id": "signer:oges.fixture.release"
+  },
+  "normative_files": [
+    {"kind": "adversarial_vectors", "path": "governance/analytical_clause_adversarial_vectors.json", "sha256": "511d2aa84df9443584ab3bc67183659f8b4fa4ddeada54dad81f4d57d882bac1"},
+    {"kind": "analytical_clause_contract", "path": "governance/analytical_clause_contract.json", "sha256": "813324670306fa67f5fd81db51ec0c15a10a3844f870948a7633616c70a33940"},
+    {"kind": "analytical_clause_runtime", "path": "src/analytical_clause.py", "sha256": "063b1a7668148fb6cc0b9768d46698fbcff96a558cd71d6f40fe50eef30cc50e"},
+    {"kind": "canonical_runtime", "path": "src/canonical_objects.py", "sha256": "3d07e0e8e14537e61b3a5559fba1f56c114ec32151c09066abba64f184d2e934"},
+    {"kind": "canonical_schema_registry", "path": "governance/canonical_schema_registry.json", "sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66"},
+    {"kind": "exposure_projection_registry", "path": "governance/exposure_projection_registry.json", "sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66"},
+    {"kind": "exposure_runtime", "path": "src/exposure_graph.py", "sha256": "a6e0c9af3309336c28016bdf7e293e315772306b4db1056f49da54d9fc683780"},
+    {"kind": "exposure_schema", "path": "schemas/exposure-traversal.schema.json", "sha256": "ad0ff5d1988f05b0368bef4bb69e1f916357f19b14c0066f00be1a1553491f69"},
+    {"kind": "synthetic_fixture_runtime", "path": "src/oges_fixture.py", "sha256": "12fb4b0205b3fe65b3793a9b5e005138c13466b0bcd37ebbd0c6102b6d0eeee6"},
+    {"kind": "typed_canonical_runtime", "path": "src/event_ledger.py", "sha256": "66d2ec85f88a87c1cacc4c03a0ae271c24a4decb9d52557c6ffedf10d859977a"},
+    {"kind": "typed_record_runtime", "path": "src/event_ledger_extension.py", "sha256": "b094c40abb1455f27b81ff468204a9eff17bed9de3a7e83360afc2015d6c16e7"}
+  ],
+  "query_profiles": [
+    {"query_id": "query:analytical_clause.fixture.path_found", "event_id": "evt:oges.fixture.policy.001", "target_entity_id": "ent:commodity.synthetic_crude", "max_hops": 4, "max_paths": 25},
+    {"query_id": "query:analytical_clause.fixture.no_path", "event_id": "evt:oges.fixture.policy.001", "target_entity_id": "ent:country.synthetic_india", "max_hops": 4, "max_paths": 25}
+  ],
+  "dynamic_binding_rules": {
+    "edge_instances": "derive_every_paths_hops_occurrence",
+    "edge_membership": "exact_edge_id_and_record_sha256_in_hop_and_object_evidence",
+    "coverage_instances": "derive_every_unique_traversal_coverage_row",
+    "coverage_membership": "exact_universe_release_id_record_sha256_and_covered_entity_id",
+    "role_payload": "exact_clause_refs_only",
+    "omissions": "none_registered_deny",
+    "caller_authored_semantics": "refuse",
+    "verification": "reopen_recompute_and_require_byte_equality"
+  },
+  "trust_boundary": {
+    "trust_class": "self_hashed_unauthenticated_synthetic_compilation",
+    "signed": false,
+    "authenticated": false,
+    "synthetic": true,
+    "contract_only": true,
+    "production_authority": false,
+    "public_authority": false,
+    "caller_authority_accepted": false,
+    "record_sha256_is_authentication": false
+  },
+  "product_manifest_boundary": {
+    "status": "unavailable",
+    "reason_code": "product_manifest_and_correction_scope_not_bound",
+    "product_manifest_ref": null,
+    "artifact_refs": [],
+    "correction_blast_available": false
+  },
+  "claim_boundary": "Same incumbent atomic clause record across all seven registered roles after exact source replay. No prose equivalence, source truth, causal validity, publication approval, production authentication, ProductManifest closure, or correction blast claim."
+}
