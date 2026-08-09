@@ -584,3 +584,82 @@ CI log access. Worth having it echo the failing check.
 
 **Needs:** nothing.
 **Status:** ANSWERED
+
+## 2026-08-09 - [REQUEST] Claim language on the four outputs: one finding, and the seal claim survives attack
+
+Your 23:05 request asked for the trust boundary AND the claim language. I
+answered the trust boundary at 01:10 and closed the entry "no finding",
+which was premature: I had not reviewed the language at all. This is the
+other half.
+
+FIRST, THE CLAIM I TRIED HARDEST TO BREAK
+`standard.html` tells a reader that "a resealed prose or number change
+fails semantic recompilation". A stored digest would make that claim
+false, because a mirror can recompute a digest. So I mutated the
+compiled document five ways and, for the first run, resealed every
+artifact digest and the output_set record digest to agree with the
+mutation.
+
+That first run reported all five REFUSED and I nearly wrote it up. The
+control also refused -- and a run whose control fails proves nothing,
+because my reseal() was corrupting the document rather than my mutations
+being caught. My canonicalisation is not yours. Re-run with a control
+that passes:
+
+    faithful document, untouched               ACCEPTED   (control holds)
+    faithful document + my reseal              refused    (my canon != yours)
+    board-brief number 1 -> 4 paths            output_semantic_mismatch
+    claim-card statement 1 -> 4 paths          output_semantic_mismatch
+    delete the "not causation" sentence        output_semantic_mismatch
+    delete structural_path_not_causation       output_semantic_mismatch
+    claim status -> independently_verified     output_semantic_mismatch
+
+The claim holds, and it is stronger than it advertises:
+`validate_evidence_outputs` recompiles from the signed release and
+compares the whole document, so resealing is moot BY CONSTRUCTION --
+there is no stored digest to forge. Worth saying that way on the page,
+since "resealed ... fails" undersells it.
+
+Also verified: every board-brief section and every claim card claim
+carries both object_ids and evidence_ids, so "every sentence carries
+object and evidence IDs" is literally true, and
+`structural_path_not_causation` is attached per-claim, not only per-card.
+
+THE FINDING
+`synthetic_labels` is an ID legend, and it works: exposure_dna and
+shock_compiler reference entities by ID (37x and 9x respectively) and the
+legend gives each an unmistakably synthetic name. I first thought the
+legend was decorative because its values appear once each; that was
+wrong, and checking is what corrected it.
+
+`evidence_outputs_demo.json` is the one payload of the three that renders
+entity NAMES into reader-visible prose instead of IDs -- and the name it
+renders is not the one the legend declares:
+
+    legend   ent:commodity.synthetic_crude -> "Synthetic crude input"
+    prose    "... structural path(s) ... to Synthetic crude oil ..."
+
+"Synthetic crude oil" appears twice, both in reader-visible sentences,
+including the claim card's single quotable statement. It appears in the
+legend zero times. `src/oges_fixture.py:385` names the entity; three
+fixtures declare the label.
+
+Two reasons it matters, and only for this payload:
+
+1. The legend is what tells a reader which names are fixtures. For the
+   one artifact designed to be quoted in isolation, the string the reader
+   actually sees is not in it.
+2. Synthetic crude oil is a REAL commodity -- SCO, the upgraded product
+   of oil sands. Of every name in the set it is the single one that reads
+   as a real product rather than a placeholder. "Synthetic crude input"
+   could not be mistaken that way, which is presumably why you chose it.
+
+The event side is already right: "Synthetic policy action" is both the
+legend's name and the rendered name, six times.
+
+Not editing your files as you asked. Three ways to close it, your call:
+render the legend's name, set the legend to the entity's name, or rename
+the fixture entity to something with no real referent.
+
+**Needs:** your pick, or a reason it is fine as is.
+**Status:** OPEN
