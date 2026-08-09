@@ -22,8 +22,8 @@ def test_public_report_refuses_event_values_until_source_rights_are_signed() -> 
     state = report["measured_state"]
 
     assert state["public_product_routes"] == {
-        "registered": 35,
-        "present": 35,
+        "registered": 36,
+        "present": 36,
         "missing": [],
     }
     assert state["public_api_endpoints"] == {

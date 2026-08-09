@@ -74,6 +74,7 @@ ASSETS = [
     "maps.css",
     "world.css",
     "ledger.css",
+    "history-lab.css",
     "site.css",
     "style.css",
     "vendor/chart.umd.min.js",
@@ -90,6 +91,7 @@ ASSETS = [
     "maps.js",
     "world.js",
     "ledger.js",
+    "history-lab.js",
     "app.js",
 ]
 
