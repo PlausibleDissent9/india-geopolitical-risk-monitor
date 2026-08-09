@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
 <link rel="stylesheet" href="site.css?v=044019ad">
-<link rel="stylesheet" href="maps.css?v=64f60c25">
+<link rel="stylesheet" href="maps.css?v=7ffa5aa1">
 </head>
 <body class="site-page layout-dashboard" data-page="maps.html" data-root=".">
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -80,17 +80,18 @@
           <button type="button" data-map-mission="states" aria-pressed="false"><span>03</span>India states</button>
           <button type="button" data-map-mission="audit" aria-pressed="false"><span>04</span>Evidence audit</button>
           <button type="button" data-map-mission="maritime" aria-pressed="false"><span>05</span>Maritime watch</button>
+          <button type="button" data-map-mission="replay" aria-pressed="false"><span>06</span>Attention replay</button>
         </div>
         <div class="map-publication-clock"><span class="status-dot neutral" aria-hidden="true"></span><span><b>Published observation mode</b><small id="map-publication-day">Loading data day…</small></span></div>
       </div>
 
-      <section class="map-pulsebar" aria-labelledby="map-pulse-title">
+      <section class="map-pulsebar" aria-labelledby="map-pulse-title" data-current-context>
         <div class="map-pulse-heading"><span id="map-pulse-title">IGRM-A persistent salience</span><small>7-day channel readings · not risk</small></div>
         <div class="map-pulse-channels" id="map-pulse-channels" aria-live="polite"><span class="map-loading-line">Loading signed latest payload…</span></div>
         <a href="methodology.html">Method</a>
       </section>
 
-      <div class="map-controlrail" aria-label="Map controls">
+      <div class="map-controlrail" aria-label="Map controls" data-current-context>
         <div class="map-control-group">
           <span class="map-control-label">Measure</span>
           <div class="map-pills" id="map-metrics">
@@ -128,6 +129,7 @@
             </div>
             <div class="map-stage-status" id="map-status" role="status">Loading published payloads…</div>
           </div>
+          <div class="map-replay-isolation" id="map-replay-isolation" role="note" hidden><strong>Replay isolation</strong><span>The current 7-day pulse, current partner colors, map controls and current ranking are withheld in this workspace. Only the dated daily channel state below is replayed.</span></div>
           <div class="map-canvas-shell" id="map-canvas-shell">
             <svg id="atlas-map" role="img" aria-labelledby="map-canvas-title map-canvas-desc" tabindex="0">
               <desc id="map-canvas-desc">Interactive map of press-recorded India-partner or Indian-state events. Use search or the ranked table as accessible alternatives.</desc>
@@ -142,6 +144,7 @@
               </defs>
               <rect class="map-grid-fill" width="100%" height="100%" fill="url(#map-grid)"></rect>
               <g id="map-feature-layer"></g>
+              <g id="map-replay-layer" aria-label="Five IGRM channel interface anchors" style="display:none"></g>
               <g id="map-chokepoint-layer" aria-label="Published maritime chokepoint observations"></g>
             </svg>
             <div class="map-tooltip" id="map-tooltip" role="status" hidden></div>
@@ -160,11 +163,20 @@
             <label><span class="sr-only">Select maritime observation week</span><input id="map-chokepoint-time" type="range" min="0" max="0" value="0" disabled></label>
             <div class="map-timebar-scale"><span id="map-chokepoint-first-week">—</span><span>Monday-labelled published observations · missing weeks remain gaps</span><span id="map-chokepoint-last-week">—</span></div>
           </section>
+          <section class="map-timebar map-replay-timebar" id="map-replay-timebar" aria-labelledby="map-replay-timebar-title" hidden>
+            <div class="map-timebar-head">
+              <div><span class="map-control-label" id="map-replay-timebar-title">Attention Replay</span><strong id="map-replay-date">Loading published daily frame…</strong></div>
+              <button type="button" id="map-replay-play" aria-pressed="false" disabled>Play daily history</button>
+            </div>
+            <label><span class="sr-only">Select published Attention Replay date</span><input id="map-replay-time" type="range" min="0" max="0" value="0" aria-valuetext="Loading published date domain" disabled></label>
+            <div class="map-timebar-scale"><span id="map-replay-first-date">—</span><span>Published daily index · nulls and absent dates remain gaps · no interpolation</span><span id="map-replay-last-date">—</span></div>
+          </section>
         </section>
 
         <aside class="map-inspector" aria-label="Atlas inspector">
           <div class="map-inspector-tabs" role="tablist" aria-label="Atlas inspector">
             <button type="button" role="tab" data-inspector-tab="selection" aria-selected="true" aria-controls="map-panel-selection">Selection</button>
+            <button type="button" role="tab" data-inspector-tab="replay" aria-selected="false" aria-controls="map-panel-replay">Replay</button>
             <button type="button" role="tab" data-inspector-tab="maritime" aria-selected="false" aria-controls="map-panel-maritime">Maritime</button>
             <button type="button" role="tab" data-inspector-tab="episodes" aria-selected="false" aria-controls="map-panel-episodes">Episodes</button>
             <button type="button" role="tab" data-inspector-tab="evidence" aria-selected="false" aria-controls="map-panel-evidence">Evidence</button>
@@ -183,6 +195,24 @@
               <p class="eyebrow">Evidence boundary</p>
               <p id="map-evidence-note">These are GDELT event-stream aggregates. They are not a census of events, a risk score, or an exposure path.</p>
               <a id="map-data-link" href="data/map_relations.json">Inspect source payload <span aria-hidden="true">↗</span></a>
+            </div>
+          </section>
+          <section id="map-panel-replay" data-inspector-panel="replay" role="tabpanel" hidden>
+            <div class="map-inspector-state"><span class="status-dot neutral" aria-hidden="true"></span><span id="map-replay-state">Loading exact history domain…</span></div>
+            <div class="map-panel-heading"><p class="eyebrow">Daily state replay</p><h3 id="map-replay-title" tabindex="-1">Attention Replay</h3><p id="map-replay-summary">Scrub the published daily series without inventing values between observations.</p></div>
+            <dl class="map-facts map-replay-facts">
+              <div><dt>Published date</dt><dd id="map-replay-panel-date">—</dd></div>
+              <div><dt>Daily composite</dt><dd id="map-replay-composite">—</dd></div>
+              <div><dt>Selected channel</dt><dd id="map-replay-channel-value">—</dd></div>
+              <div><dt>Observation state</dt><dd id="map-replay-channel-state">—</dd></div>
+            </dl>
+            <p class="map-replay-boundary">The five map points are interface anchors only. They are not event locations, geographic concentrations, dependency nodes, routes, or exposure paths.</p>
+            <ul class="map-replay-channel-list" id="map-replay-channel-list"><li>Loading channel history…</li></ul>
+            <div class="map-replay-section"><p class="eyebrow">Active detector windows</p><ol class="map-replay-episode-list" id="map-replay-episodes"><li>Loading exact start/end overlaps…</li></ol></div>
+            <div class="map-evidence-card">
+              <p class="eyebrow">Date-specific receipt boundary</p>
+              <p id="map-replay-evidence">Checking whether retained article evidence exists for this exact channel-date…</p>
+              <a id="map-replay-evidence-link" href="data/receipts_archive.json" hidden>Inspect retained archive payload <span aria-hidden="true">↗</span></a>
             </div>
           </section>
           <section id="map-panel-maritime" data-inspector-panel="maritime" role="tabpanel" hidden>
@@ -219,7 +249,7 @@
         </aside>
       </div>
 
-      <div class="map-lower-grid">
+      <div class="map-lower-grid" data-current-context>
         <section class="map-ranking" aria-labelledby="map-ranking-title">
           <div class="map-section-head">
             <div><p class="eyebrow">Ranked inspection</p><h3 id="map-ranking-title">Highest selected measure</h3></div>
@@ -236,6 +266,7 @@
           <ul>
             <li><span class="layer-state live">Published</span><strong>Partner-country aggregates</strong><small>India-partner press-recorded counts, conflict share and Goldstein mean.</small></li>
             <li><span class="layer-state live">Published</span><strong>Indian-state aggregates</strong><small>Located press-recorded counts, conflict share and protest share.</small></li>
+            <li><span class="layer-state live">Published</span><strong>Attention Replay</strong><small>Five daily channel series on one exact history index; explicit gaps and inclusive detector-window overlays.</small></li>
             <li><span class="layer-state pending">Derived · review pending</span><strong>Maritime paired percentiles</strong><small>Four waterway display anchors and replayable joint weeks; GDELT and IMF rights decisions remain review-required.</small></li>
             <li><span class="layer-state pending">Rights pending</span><strong>Major-port and commodity marginals</strong><small>Official tables validate internally, but no port×commodity cells or paths exist.</small></li>
             <li><span class="layer-state unavailable">Unavailable</span><strong>Firm dependency edges</strong><small>No production source currently authorizes a comprehensive real dependency graph.</small></li>
@@ -243,11 +274,15 @@
         </aside>
       </div>
 
-      <footer class="map-provenance">
+      <footer class="map-provenance" data-current-context>
         <p id="map-provenance-line">Loading data vintage and coverage…</p>
         <p>Boundary depiction uses self-hosted Natural Earth geometry with India's official national-boundary point of view. Counts and shares, never causes.</p>
       </footer>
-      <noscript><p class="hardline">This interactive map needs JavaScript. The underlying aggregates remain available in <a href="data/map_relations.json">map_relations.json</a>, <a href="data/map_states.json">map_states.json</a> and the <a href="data/chokepoints.json">maritime evidence manifest</a>.</p></noscript>
+      <footer class="map-provenance map-replay-provenance" id="map-replay-provenance" hidden>
+        <p id="map-replay-provenance-line">Loading replay history provenance…</p>
+        <p>Daily values come from the published history index. Channel points are projection-bound interface anchors; detector overlaps follow the published inclusive start/end windows and do not attribute causes.</p>
+      </footer>
+      <noscript><p class="hardline">This interactive map needs JavaScript. The underlying aggregates remain available in <a href="data/map_relations.json">map_relations.json</a>, <a href="data/map_states.json">map_states.json</a>, <a href="data/history.json">daily attention history</a> and the <a href="data/chokepoints.json">maritime evidence manifest</a>.</p></noscript>
 
       <dialog class="map-command-dialog" id="map-command-dialog" aria-labelledby="map-command-title">
         <form method="dialog" class="map-command-shell">
@@ -470,7 +505,8 @@ function drawMap(wrapId, geo, keyName, fillFor, titleFor, onPick) {
 })();
 </script>
     </template>
-    <script src="maps.js?v=34d1777c" defer></script>
+    <script src="maps_replay.js?v=a26b01cb" defer></script>
+    <script src="maps.js?v=f340671b" defer></script>
     <!--site-shell:content-end-->
   </main>
   <footer class="site-footer">

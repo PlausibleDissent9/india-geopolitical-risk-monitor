@@ -84,6 +84,7 @@ ASSETS = [
     "sensors.js",
     "dna.js",
     "shock.js",
+    "maps_replay.js",
     "maps.js",
     "app.js",
 ]

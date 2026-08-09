@@ -92,6 +92,14 @@ EXCLUDE = {"api_contract.json", "decisions.json"}
 # endpoints. Keep the inventory explicit: neither a new standard file nor a
 # new Atlas registry may silently expand the public promise.
 PUBLIC_STATIC_JSON: dict[str, dict[str, str]] = {
+    "geo/channel_anchors.json": {
+        "description": (
+            "Projection-bound interface anchors for the five registered IGRM "
+            "attention channels. They position replay controls and are not "
+            "event locations, centroids, dependency nodes, routes or exposure paths."
+        ),
+        "stability": "static versioned Atlas registry 1.0.0",
+    },
     "geo/chokepoints.json": {
         "description": (
             "Projection-bound navigation anchors for four named maritime "

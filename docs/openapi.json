@@ -2861,6 +2861,33 @@
     }
    }
   },
+  "/geo/channel_anchors.json": {
+   "get": {
+    "operationId": "get_geo_channel_anchors_json",
+    "description": "Projection-bound interface anchors for the five registered IGRM attention channels. They position replay controls and are not event locations, centroids, dependency nodes, routes or exposure paths.",
+    "x-igrm-stability": "static versioned Atlas registry 1.0.0",
+    "responses": {
+     "200": {
+      "description": "Projection-bound interface anchors for the five registered IGRM attention channels. They position replay controls and are not event locations, centroids, dependency nodes, routes or exposure paths.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "channels"
+         ],
+         "properties": {
+          "_meta": {},
+          "channels": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/geo/chokepoints.json": {
    "get": {
     "operationId": "get_geo_chokepoints_json",

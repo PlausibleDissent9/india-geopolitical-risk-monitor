@@ -166,6 +166,7 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
 }
 .map-pills button { min-height: 28px; padding: 0 9px; }
 .map-pills button[hidden] { display: none; }
+[data-current-context][hidden] { display: none; }
 .map-legend {
   display: grid;
   grid-template-columns: auto minmax(80px, 1fr) auto;
@@ -264,6 +265,13 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
   stroke-width: 2;
   filter: url(#map-selected-glow);
 }
+#map-feature-layer.is-replay-base .map-feature {
+  fill: #17222b !important;
+  stroke: rgba(190, 211, 222, 0.18);
+  opacity: 0.72;
+  pointer-events: none;
+  filter: none;
+}
 .map-national-outline {
   pointer-events: none;
   fill: none;
@@ -337,6 +345,36 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
 .map-chokepoint.is-selected .map-chokepoint-core { fill: #f6d98c; }
 .map-chokepoint.is-gap .map-chokepoint-halo { fill: transparent; stroke-dasharray: 2.4 2.4; }
 .map-chokepoint.is-gap .map-chokepoint-core { fill: #53626e; }
+
+.map-replay-anchor { cursor: pointer; outline: none; }
+.map-replay-halo,
+.map-replay-core { vector-effect: non-scaling-stroke; }
+.map-replay-halo {
+  fill: rgba(103, 198, 180, 0.1);
+  stroke: rgba(103, 198, 180, 0.46);
+  stroke-width: 1;
+}
+.map-replay-core {
+  fill: rgba(18, 103, 91, 0.92);
+  stroke: #b7eee4;
+  stroke-width: 1.2;
+}
+.map-replay-glyph {
+  fill: #f5fbfa;
+  font: 700 6px ui-monospace, SFMono-Regular, Menlo, monospace;
+  pointer-events: none;
+}
+.map-replay-anchor:hover .map-replay-halo,
+.map-replay-anchor:focus .map-replay-halo { stroke: #fff2c7; stroke-width: 1.8; }
+.map-replay-anchor.is-selected .map-replay-halo {
+  fill: transparent;
+  stroke: #f6d98c;
+  stroke-dasharray: 2.8 1.5;
+  stroke-width: 2.2;
+}
+.map-replay-anchor.is-selected .map-replay-core { fill: #263f49; stroke: #f6d98c; stroke-width: 2; }
+.map-replay-anchor.is-gap .map-replay-halo { fill: transparent; stroke-dasharray: 2 2; }
+.map-replay-anchor.is-gap .map-replay-core { fill: #26313a; stroke: #7b8a95; }
 
 .map-timebar {
   display: grid;
@@ -493,6 +531,7 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
   border-top: 1px solid var(--map-rule);
   background: #070c12;
 }
+.map-provenance[hidden] { display: none; }
 .map-provenance p { max-width: 72ch; margin: 0; color: #6e7d89; font-size: 0.62rem; line-height: 1.5; }
 
 .map-room-label {
@@ -638,7 +677,7 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
 
 .map-inspector-tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(64px, 1fr));
   gap: 3px;
   margin: -9px -8px 20px;
   padding: 3px;
@@ -682,6 +721,71 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
 }
 .map-alignment-note.aligned { border-color: rgba(103, 198, 180, 0.24); background: rgba(103, 198, 180, 0.05); color: #91cbbf; }
 .map-panel-link { color: #8ed9ca; font-size: 0.68rem; }
+
+.map-replay-facts { margin-bottom: 12px; }
+.map-replay-isolation {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px 12px;
+  margin: 0 0 10px;
+  padding: 9px 11px;
+  border: 1px solid rgba(246, 217, 140, 0.32);
+  border-radius: 8px;
+  background: rgba(246, 217, 140, 0.06);
+  color: #c7b786;
+  font-size: 0.61rem;
+  line-height: 1.45;
+}
+.map-replay-isolation[hidden] { display: none; }
+.map-replay-isolation strong { color: #f6d98c; text-transform: uppercase; letter-spacing: 0.08em; }
+.map-replay-boundary {
+  margin: 0 0 14px;
+  padding: 10px 11px;
+  border: 1px solid rgba(215, 164, 59, 0.26);
+  border-radius: 8px;
+  background: rgba(215, 164, 59, 0.055);
+  color: #c5b68e;
+  font-size: 0.64rem;
+  line-height: 1.5;
+}
+.map-replay-channel-list,
+.map-replay-episode-list { display: grid; gap: 5px; margin: 0; padding: 0; list-style: none; }
+.map-replay-channel-list { margin-bottom: 18px; }
+.map-replay-channel-list button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 8px;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid var(--map-rule);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #d5dfe2;
+  text-align: left;
+}
+.map-replay-channel-list button.is-selected {
+  border: 2px solid #f6d98c;
+  background: rgba(246, 217, 140, 0.07);
+}
+.map-replay-channel-list b { overflow: hidden; font-size: 0.66rem; text-overflow: ellipsis; white-space: nowrap; }
+.map-replay-channel-list span { color: #71818d; font-size: 0.57rem; }
+.map-replay-channel-list .is-gap { color: #b9a77f; }
+.map-replay-selected-label {
+  grid-row: 1 / 3;
+  grid-column: 2;
+  align-self: center;
+  color: #f6d98c;
+  font: 650 0.54rem ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.map-replay-section { margin: 0 0 18px; }
+.map-replay-section > .eyebrow { margin-bottom: 7px; }
+.map-replay-episode-list li { border-top: 1px solid var(--map-rule); }
+.map-replay-episode-list a { display: grid; gap: 2px; padding: 9px 0; color: #dbe4e7; }
+.map-replay-episode-list b { font-size: 0.65rem; }
+.map-replay-episode-list span { color: #83919b; font-size: 0.58rem; }
+.map-replay-episode-list small { color: #b9a77f; font-size: 0.54rem; }
+.map-replay-empty { padding: 10px 0; color: #778691; font-size: 0.62rem; line-height: 1.45; }
 
 .map-maritime-facts { margin-bottom: 16px; }
 .map-maritime-spark {
@@ -854,7 +958,10 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
   .map-canvas-help { display: none; }
   .map-inspector { overflow: visible; border-top: 1px solid var(--map-rule); }
   .map-inspector-tabs { margin-inline: 0; overflow-x: auto; }
-  .map-inspector-tabs button { min-width: 74px; }
+  .map-inspector-tabs { display: flex; max-width: 100%; }
+  .map-inspector-tabs button { flex: 0 0 78px; min-width: 78px; }
+  .map-replay-channel-list button { max-width: 100%; }
+  .map-replay-isolation { grid-template-columns: 1fr; }
   .map-inspector h3 { font-size: 1.45rem; }
   .map-lower-grid { display: block; }
   .map-ranking { border-right: 0; border-bottom: 1px solid var(--map-rule); }
@@ -866,5 +973,6 @@ body[data-page="maps.html"] .page-heading .page-meta { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .map-feature { transition: none; }
+  .map-feature,
+  .map-replay-anchor { transition: none; }
 }

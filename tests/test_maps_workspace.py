@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 HTML = (DOCS / "maps.html").read_text(encoding="utf-8")
 JS = (DOCS / "maps.js").read_text(encoding="utf-8")
+REPLAY_JS = (DOCS / "maps_replay.js").read_text(encoding="utf-8")
 CSS = (DOCS / "maps.css").read_text(encoding="utf-8")
 
 
@@ -31,14 +32,17 @@ def test_maps_workspace_is_the_primary_interactive_surface() -> None:
 def test_maps_assets_are_external_and_content_versioned() -> None:
     assert re.search(r'href="maps\.css\?v=[0-9a-f]{8}"', HTML)
     assert re.search(r'src="maps\.js\?v=[0-9a-f]{8}"', HTML)
+    assert re.search(r'src="maps_replay\.js\?v=[0-9a-f]{8}"', HTML)
     assert "https://" not in CSS
     assert "http://" not in CSS
     assert "https://" not in JS
     assert JS.count("http://") == 1
     assert '"http://www.w3.org/2000/svg"' in JS
+    assert "https://" not in REPLAY_JS
+    assert "http://" not in REPLAY_JS
 
 
-def test_maps_load_only_the_nine_registered_public_inputs() -> None:
+def test_maps_load_only_the_twelve_registered_public_inputs() -> None:
     expected = {
         "geo/world.json",
         "data/map_relations.json",
@@ -49,6 +53,9 @@ def test_maps_load_only_the_nine_registered_public_inputs() -> None:
         "data/status.json",
         "data/chokepoints.json",
         "geo/chokepoints.json",
+        "data/history.json",
+        "data/receipts_archive.json",
+        "geo/channel_anchors.json",
     }
     declared = set(re.findall(r'"((?:geo|data)/[^"]+\.json)"', JS))
     assert declared == expected
@@ -79,9 +86,11 @@ def test_observation_room_adds_workspaces_command_search_and_truth_panels() -> N
         'data-map-mission="states"',
         'data-map-mission="audit"',
         'data-map-mission="maritime"',
+        'data-map-mission="replay"',
         'id="map-command-dialog"',
         'data-inspector-tab="selection"',
         'data-inspector-tab="maritime"',
+        'data-inspector-tab="replay"',
         'data-inspector-tab="episodes"',
         'data-inspector-tab="evidence"',
         'id="map-pulse-channels"',

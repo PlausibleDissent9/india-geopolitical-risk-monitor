@@ -48,18 +48,28 @@
     observations: "data/chokepoints.json",
     geometry: "geo/chokepoints.json"
   };
+  var REPLAY_INPUTS = {
+    history: "data/history.json",
+    episodes: "data/episodes.json",
+    receipts: "data/receipts_archive.json",
+    geometry: "geo/channel_anchors.json"
+  };
+  var REPLAY = globalThis.IGRM_ATLAS_REPLAY;
   var MARITIME_KEYS = ["hormuz", "bab_el_mandeb", "suez", "malacca"];
   var MISSIONS = {
     partner: { scope: "world", metric: "conflict", window: "recent", entity: null, tab: "selection" },
     border: { scope: "world", metric: "conflict", window: "recent", entity: "PAK", tab: "selection" },
     states: { scope: "india", metric: "volume", window: "recent", entity: null, tab: "selection" },
     audit: { scope: "world", metric: "volume", window: "all", entity: null, tab: "evidence" },
-    maritime: { scope: "world", metric: "volume", window: "recent", entity: null, tab: "maritime" }
+    maritime: { scope: "world", metric: "volume", window: "recent", entity: null, tab: "maritime" },
+    replay: { scope: "world", metric: "volume", window: "recent", entity: null, tab: "replay" }
   };
 
   var dom = {
     svg: document.getElementById("atlas-map"),
+    canvasDesc: document.getElementById("map-canvas-desc"),
     layer: document.getElementById("map-feature-layer"),
+    replayLayer: document.getElementById("map-replay-layer"),
     chokepointLayer: document.getElementById("map-chokepoint-layer"),
     chokepointToggle: document.getElementById("map-chokepoints-toggle"),
     chokepointTimebar: document.getElementById("map-chokepoint-timebar"),
@@ -69,6 +79,15 @@
     chokepointFirstWeek: document.getElementById("map-chokepoint-first-week"),
     chokepointLastWeek: document.getElementById("map-chokepoint-last-week"),
     chokepointList: document.getElementById("map-chokepoint-list"),
+    replayTimebar: document.getElementById("map-replay-timebar"),
+    replayTime: document.getElementById("map-replay-time"),
+    replayPlay: document.getElementById("map-replay-play"),
+    replayDate: document.getElementById("map-replay-date"),
+    replayFirstDate: document.getElementById("map-replay-first-date"),
+    replayLastDate: document.getElementById("map-replay-last-date"),
+    replayIsolation: document.getElementById("map-replay-isolation"),
+    replayProvenance: document.getElementById("map-replay-provenance"),
+    replayProvenanceLine: document.getElementById("map-replay-provenance-line"),
     shell: document.getElementById("map-canvas-shell"),
     tooltip: document.getElementById("map-tooltip"),
     status: document.getElementById("map-status"),
@@ -115,6 +134,19 @@
       transitsSource: document.getElementById("map-maritime-source-transits"),
       rights: document.getElementById("map-maritime-rights")
     },
+    replay: {
+      state: document.getElementById("map-replay-state"),
+      title: document.getElementById("map-replay-title"),
+      summary: document.getElementById("map-replay-summary"),
+      date: document.getElementById("map-replay-panel-date"),
+      composite: document.getElementById("map-replay-composite"),
+      channelValue: document.getElementById("map-replay-channel-value"),
+      channelState: document.getElementById("map-replay-channel-state"),
+      list: document.getElementById("map-replay-channel-list"),
+      episodes: document.getElementById("map-replay-episodes"),
+      evidence: document.getElementById("map-replay-evidence"),
+      evidenceLink: document.getElementById("map-replay-evidence-link")
+    },
     commandOpen: document.getElementById("map-command-open"),
     commandDialog: document.getElementById("map-command-dialog"),
     commandQuery: document.getElementById("map-command-query"),
@@ -150,7 +182,15 @@
     chokepointTimer: null,
     maritime: null,
     maritimeGeometry: null,
-    maritimeWorldGeometry: null
+    maritimeWorldGeometry: null,
+    replay: null,
+    replayGeometry: null,
+    replayWorldGeometry: null,
+    replayDateIndex: 0,
+    replayChannel: "pakistan_west",
+    replayMarkers: new Map(),
+    replayTimer: null,
+    replayLinkErrors: []
   };
 
   function escapeHtml(value) {
@@ -554,6 +594,215 @@
     if (dom.maritime.rights) dom.maritime.rights.textContent = "Unavailable · manifest refused";
   }
 
+  function currentReplayDate() {
+    if (!state.replay) return null;
+    return state.replay.history.dates[state.replayDateIndex] || null;
+  }
+
+  function replayScoreText(value) {
+    return value == null || !Number.isFinite(Number(value)) ? "Gap" : Number(value).toFixed(1);
+  }
+
+  function projectReplayWorld(longitude, latitude) {
+    if (!state.replayWorldGeometry || !state.replayGeometry) return null;
+    var view = parseViewBox(state.replayWorldGeometry.viewBox);
+    var meta = state.replayGeometry._meta;
+    var lon = meta.longitude_domain.map(Number);
+    var lat = meta.latitude_domain.map(Number);
+    return {
+      x: view.x + (Number(longitude) - lon[0]) / (lon[1] - lon[0]) * view.width,
+      y: view.y + (lat[1] - Number(latitude)) / (lat[1] - lat[0]) * view.height
+    };
+  }
+
+  function stopReplayPlayback() {
+    if (state.replayTimer) window.clearInterval(state.replayTimer);
+    state.replayTimer = null;
+    if (dom.replayPlay) {
+      dom.replayPlay.setAttribute("aria-pressed", "false");
+      dom.replayPlay.textContent = "Play daily history";
+    }
+  }
+
+  function selectReplayChannel(channel, options) {
+    if (!state.replay || !REPLAY.CHANNELS.includes(channel)) return;
+    state.replayChannel = channel;
+    state.replayLinkErrors = [];
+    renderReplayFrame();
+    showInspectorTab("replay");
+    if (options && options.focus) {
+      var marker = state.replayMarkers.get(channel);
+      if (marker) marker.focus();
+      else if (dom.replay.title) dom.replay.title.focus();
+    }
+  }
+
+  function renderReplayMarkers() {
+    if (!dom.replayLayer) return;
+    dom.replayLayer.replaceChildren();
+    state.replayMarkers = new Map();
+    if (!state.replay || !state.replayGeometry || state.scope !== "world" || state.mission !== "replay") return;
+    var date = currentReplayDate();
+    REPLAY.CHANNELS.forEach(function (channel) {
+      var anchor = state.replayGeometry.channels[channel];
+      var point = projectReplayWorld(anchor.longitude, anchor.latitude);
+      var observation = REPLAY.observation(state.replay.history, date, channel);
+      if (!point || !observation) return;
+      var gap = observation.isGap;
+      var selected = channel === state.replayChannel;
+      var radius = gap ? 6 : 6 + Number(observation.value) / 100 * 7;
+      var group = svgElement("g", {
+        class: "map-replay-anchor" + (gap ? " is-gap" : "") + (selected ? " is-selected" : ""),
+        transform: "translate(" + point.x.toFixed(2) + " " + point.y.toFixed(2) + ")",
+        role: "button",
+        tabindex: selected ? "0" : "-1",
+        "aria-pressed": selected ? "true" : "false",
+        "aria-label": anchor.label + " interface anchor, " + date + ", " +
+          (gap ? "published value unavailable, gap" : "daily attention score " + replayScoreText(observation.value))
+      });
+      group.append(
+        svgElement("circle", { r: radius + 6, class: "map-replay-halo" }),
+        svgElement("circle", { r: radius, class: "map-replay-core" }),
+        svgElement("text", { x: 0, y: 1.8, class: "map-replay-glyph", "text-anchor": "middle" })
+      );
+      group.querySelector("text").textContent = gap ? "—" : selected ? "✓" : String(Math.round(Number(observation.value)));
+      var title = svgElement("title");
+      title.textContent = group.getAttribute("aria-label") + ". Interface anchor only; not an event location or exposure path.";
+      group.appendChild(title);
+      group.addEventListener("click", function (event) {
+        event.stopPropagation();
+        selectReplayChannel(channel, { focus: true });
+      });
+      group.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectReplayChannel(channel, { focus: true });
+        } else if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"].includes(event.key)) {
+          event.preventDefault();
+          var direction = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : -1;
+          var index = REPLAY.CHANNELS.indexOf(channel);
+          selectReplayChannel(REPLAY.CHANNELS[(index + direction + REPLAY.CHANNELS.length) % REPLAY.CHANNELS.length], { focus: true });
+        }
+      });
+      dom.replayLayer.appendChild(group);
+      state.replayMarkers.set(channel, group);
+    });
+  }
+
+  function renderReplayChannelList(date) {
+    if (!dom.replay.list) return;
+    dom.replay.list.replaceChildren();
+    REPLAY.CHANNELS.forEach(function (channel) {
+      var observation = REPLAY.observation(state.replay.history, date, channel);
+      var selected = channel === state.replayChannel;
+      var item = htmlElement("li");
+      var button = htmlElement("button", selected ? "is-selected" : "");
+      button.type = "button";
+      button.setAttribute("aria-pressed", selected ? "true" : "false");
+      button.append(
+        htmlElement("b", "", state.replay.history.labels[channel]),
+        htmlElement("span", observation && observation.isGap ? "is-gap" : "", observation && observation.isGap
+          ? "Gap · no zero or interpolation"
+          : "Daily score " + replayScoreText(observation && observation.value)),
+        htmlElement("strong", "map-replay-selected-label", selected ? "✓ Selected" : "Select")
+      );
+      button.addEventListener("click", function () { selectReplayChannel(channel, { focus: false }); });
+      item.appendChild(button);
+      dom.replay.list.appendChild(item);
+    });
+  }
+
+  function renderReplayEpisodes(date) {
+    if (!dom.replay.episodes) return;
+    var episodes = REPLAY.activeEpisodes(state.replay.episodes, date);
+    dom.replay.episodes.replaceChildren();
+    if (!episodes.length) {
+      dom.replay.episodes.appendChild(htmlElement("li", "map-replay-empty", "No published detector episode is active on this date."));
+      return;
+    }
+    episodes.forEach(function (episode) {
+      var item = htmlElement("li");
+      var link = document.createElement("a");
+      link.href = "episode.html?channel=" + encodeURIComponent(episode.channel) +
+        "&start=" + encodeURIComponent(episode.start);
+      link.append(
+        htmlElement("b", "", state.replay.history.labels[episode.channel]),
+        htmlElement("span", "", episode.start + " → " + episode.end + " · published detector window"),
+        htmlElement("small", "", "Algorithmic overlap only · no causal attribution")
+      );
+      item.appendChild(link);
+      dom.replay.episodes.appendChild(item);
+    });
+  }
+
+  function renderReplayEvidence(date) {
+    if (!dom.replay.evidence || !dom.replay.evidenceLink) return;
+    var receipt = REPLAY.receiptEvidence(state.replay.receipts, state.replayChannel, date);
+    if (receipt.available) {
+      dom.replay.evidence.textContent = number(receipt.nMatched) + " matched URLs are recorded for this channel-date; " +
+        number(receipt.nShown) + " bounded representatives are retained in the archive. This does not make the archive a full evidence census.";
+      dom.replay.evidenceLink.hidden = false;
+    } else {
+      dom.replay.evidence.textContent = "Retained article receipts are unavailable for this channel-date. " +
+        "IGRM does not substitute or deep-link the latest day.";
+      dom.replay.evidenceLink.hidden = true;
+    }
+  }
+
+  function renderReplayInspector() {
+    if (!state.replay || !dom.replay.title) return;
+    var date = currentReplayDate();
+    var observation = REPLAY.observation(state.replay.history, date, state.replayChannel);
+    var label = state.replay.history.labels[state.replayChannel];
+    dom.replay.state.textContent = state.replayLinkErrors.length
+      ? "Deep link refused · canonical published state shown"
+      : "Published daily observation · exact history index";
+    dom.replay.title.textContent = label;
+    dom.replay.summary.textContent = observation.isGap
+      ? "The channel value is explicitly unavailable on this published date. The Atlas renders a gap and does not insert zero, interpolate, or carry a value forward."
+      : "Daily within-channel attention percentile from the published history. The map point is an interface anchor—not an event location, centroid, dependency node, route, or exposure path.";
+    dom.replay.date.textContent = date;
+    dom.replay.composite.textContent = replayScoreText(observation.composite);
+    dom.replay.channelValue.textContent = observation.isGap ? "—" : replayScoreText(observation.value);
+    dom.replay.channelState.textContent = observation.isGap ? "Published gap" : "Observed daily score";
+    renderReplayChannelList(date);
+    renderReplayEpisodes(date);
+    renderReplayEvidence(date);
+  }
+
+  function renderReplayFrame(options) {
+    if (!state.replay) return;
+    var date = currentReplayDate();
+    if (!date) return;
+    var range = REPLAY.rangeState(state.replay.history, date);
+    dom.replayTime.value = String(range.value);
+    dom.replayTime.setAttribute("aria-valuetext", range.valueText);
+    dom.replayDate.textContent = date + (date === state.replay.cutoff ? " · latest completed news day" : "");
+    dom.publicationDay.textContent = "Replayed data day " + date + " · cutoff " + state.replay.cutoff;
+    var presentation = REPLAY.presentation(date, Boolean(options && options.playbackTick));
+    if (presentation && presentation.statusText) setStatus(presentation.statusText, "ready");
+    if (presentation && dom.canvasDesc) dom.canvasDesc.textContent = presentation.canvasDescription;
+    renderReplayMarkers();
+    renderReplayInspector();
+    updateUrl();
+  }
+
+  function refuseReplay(message) {
+    stopReplayPlayback();
+    if (dom.replayLayer) dom.replayLayer.replaceChildren();
+    if (dom.replayTime) dom.replayTime.disabled = true;
+    if (dom.replayPlay) dom.replayPlay.disabled = true;
+    if (dom.replayDate) dom.replayDate.textContent = "Attention Replay payload refused";
+    if (dom.replay.state) dom.replay.state.textContent = "Source bundle refused · no replay state rendered";
+    if (dom.replay.summary) dom.replay.summary.textContent = message + " The rest of Atlas remains available.";
+    if (dom.replay.list) dom.replay.list.replaceChildren(htmlElement("li", "map-replay-empty", message));
+    if (dom.replay.episodes) dom.replay.episodes.replaceChildren(htmlElement("li", "map-replay-empty", "No replay state rendered."));
+    if (dom.replay.evidence) dom.replay.evidence.textContent = "Unavailable · replay inputs refused";
+    if (dom.replay.evidenceLink) dom.replay.evidenceLink.hidden = true;
+    if (dom.canvasDesc) dom.canvasDesc.textContent = "Attention Replay unavailable. No dated replay state is rendered; current analytical layers remain withheld.";
+    setStatus("Attention Replay unavailable · source bundle refused", "error");
+  }
+
   function setStatus(text, mode) {
     dom.status.textContent = text;
     dom.status.classList.remove("ready", "error");
@@ -718,13 +967,17 @@
       var active = featureCode === code;
       element.classList.toggle("is-selected", active);
       element.setAttribute("aria-pressed", active ? "true" : "false");
-      element.setAttribute("tabindex", active ? "0" : "-1");
+      element.setAttribute("tabindex", active && state.mission !== "replay" ? "0" : "-1");
+      if (state.mission === "replay") element.setAttribute("aria-hidden", "true");
+      else element.removeAttribute("aria-hidden");
     });
     var element = state.features.get(code);
     if (options && options.focus && element) element.focus();
     if (options && options.zoom) zoomToFeature(element);
     renderInspector(code, row, geometry.name || row.name || code);
-    setPublishedStatus();
+    if (state.mission === "replay" && state.replay) {
+      setStatus("Replay " + currentReplayDate() + " · published daily index", "ready");
+    } else setPublishedStatus();
     updateUrl();
   }
 
@@ -758,6 +1011,15 @@
     next.searchParams.set("window", state.window);
     if (state.selected) next.searchParams.set("entity", state.selected);
     else next.searchParams.delete("entity");
+    if (state.mission === "replay" && state.replay) {
+      next.searchParams.set("mode", "replay");
+      next.searchParams.set("date", currentReplayDate());
+      next.searchParams.set("channel", state.replayChannel);
+    } else {
+      next.searchParams.delete("mode");
+      next.searchParams.delete("date");
+      next.searchParams.delete("channel");
+    }
     window.history.replaceState(null, "", next.pathname + "?" + next.searchParams.toString());
   }
 
@@ -885,6 +1147,7 @@
     }
     resetViewBox();
     renderMaritimeMarkers();
+    renderReplayMarkers();
     dom.title.textContent = config.title;
     dom.kicker.textContent = config.kicker;
     dom.dataLink.href = config.dataUrl;
@@ -935,9 +1198,56 @@
       button.title = restricted ? "This measure is published only for 2017–present" : "";
       button.setAttribute("aria-pressed", button.dataset.mapWindow === state.window ? "true" : "false");
     });
+    var replayMode = state.mission === "replay";
+    var replayAvailable = Boolean(state.replay && state.replayGeometry && state.replayWorldGeometry);
+    var replayVisibility = REPLAY
+      ? REPLAY.workspaceVisibility(replayMode, replayAvailable)
+      : { hideCurrentContext: replayMode, showReplaySurface: false };
+    var replayVisible = state.scope === "world" && replayVisibility.showReplaySurface;
+    if (dom.replayTimebar) dom.replayTimebar.hidden = !replayVisible;
+    if (dom.replayLayer) dom.replayLayer.style.display = replayVisible ? "" : "none";
+    if (dom.replayIsolation) dom.replayIsolation.hidden = !replayVisible;
+    if (dom.replayProvenance) dom.replayProvenance.hidden = !replayVisible;
+    document.querySelectorAll("[data-current-context]").forEach(function (element) {
+      element.hidden = replayVisibility.hideCurrentContext;
+    });
+    dom.layer.classList.toggle("is-replay-base", replayVisibility.hideCurrentContext);
+    dom.layer.setAttribute("aria-hidden", replayVisibility.hideCurrentContext ? "true" : "false");
+    state.features.forEach(function (element, code) {
+      if (replayMode) {
+        element.setAttribute("aria-hidden", "true");
+        element.setAttribute("tabindex", "-1");
+      } else {
+        element.removeAttribute("aria-hidden");
+        element.setAttribute("tabindex", code === state.selected ? "0" : "-1");
+      }
+    });
+    dom.title.textContent = replayMode
+      ? replayAvailable ? "Daily Attention Replay" : "Attention Replay unavailable"
+      : currentConfig().title;
+    dom.kicker.textContent = replayMode
+      ? replayAvailable ? "Published history · isolated from current aggregates" : "Source bundle refused · current aggregates withheld"
+      : currentConfig().kicker;
+    if (dom.canvasDesc) {
+      var replayPresentation = replayMode && REPLAY
+        ? REPLAY.presentation(state.replay ? currentReplayDate() : null, Boolean(state.replayTimer))
+        : null;
+      dom.canvasDesc.textContent = replayPresentation
+        ? replayPresentation.canvasDescription
+        : "Interactive map of press-recorded India-partner or Indian-state events. Use search or the ranked table as accessible alternatives.";
+    }
+    if (replayMode && !replayAvailable) {
+      dom.publicationDay.textContent = "Replay unavailable · no dated state rendered";
+    }
+    if (!replayMode && state.operations.latest) {
+      dom.publicationDay.textContent = "Data day " + state.operations.latest.date +
+        " · generated " + state.operations.latest._meta.generated;
+    }
+    if (!replayVisible) stopReplayPlayback();
     var maritimeAvailable = Boolean(state.maritime && state.maritimeGeometry && state.maritimeWorldGeometry);
-    var maritimeVisible = state.scope === "world" && maritimeAvailable;
+    var maritimeVisible = state.scope === "world" && maritimeAvailable && !replayMode;
     if (dom.chokepointTimebar) dom.chokepointTimebar.hidden = !maritimeVisible;
+    if (dom.chokepointLayer) dom.chokepointLayer.style.display = maritimeVisible ? "" : "none";
     if (dom.chokepointToggle) {
       dom.chokepointToggle.disabled = !maritimeVisible;
       dom.chokepointToggle.setAttribute("aria-pressed", maritimeVisible && state.chokepointsVisible ? "true" : "false");
@@ -975,7 +1285,7 @@
   }
 
   function showInspectorTab(tab) {
-    if (!["selection", "maritime", "episodes", "evidence"].includes(tab)) return;
+    if (!["selection", "replay", "maritime", "episodes", "evidence"].includes(tab)) return;
     state.inspectorTab = tab;
     document.querySelectorAll("[data-inspector-tab]").forEach(function (button) {
       var active = button.dataset.inspectorTab === tab;
@@ -1007,7 +1317,11 @@
       if (target) setSelected(target, { zoom: Boolean(mission.entity), focus: false });
       else resetViewBox();
     }
-    if (missionId === "maritime" && state.maritime) {
+    if (missionId === "replay") {
+      if (state.replay) renderReplayFrame();
+      updateControls();
+      showInspectorTab("replay");
+    } else if (missionId === "maritime" && state.maritime) {
       state.chokepointsVisible = true;
       renderMaritimeFrame();
       selectChokepoint(state.selectedChokepoint, { focus: false });
@@ -1128,6 +1442,7 @@
       { id: "states", label: "India states", detail: "Located event volume inside India", kind: "Workspace", run: function () { applyMission("states"); } },
       { id: "audit", label: "Evidence audit", detail: "Open pipeline and date-alignment evidence", kind: "Workspace", run: function () { applyMission("audit"); } },
       { id: "maritime", label: "Maritime watch", detail: "Replay four separately ranked waterway observations", kind: "Workspace", run: function () { applyMission("maritime"); } },
+      { id: "replay", label: "Attention Replay", detail: "Scrub the exact published daily five-channel history", kind: "Workspace", run: function () { applyMission("replay"); } },
       { id: "episodes", label: "Latest episodes", detail: "Open the detector tape", kind: "Panel", run: function () { showInspectorTab("episodes"); } },
       { id: "atlas", label: "Atlas overview", detail: "Open capability and maturity ledger", kind: "Route", href: "atlas.html" },
       { id: "methodology", label: "Methodology", detail: "Definitions, limits and transformations", kind: "Route", href: "methodology.html" }
@@ -1342,6 +1657,37 @@
         }, 420);
       });
     }
+    if (dom.replayTime) {
+      dom.replayTime.addEventListener("input", function () {
+        if (!state.replay) return;
+        stopReplayPlayback();
+        state.replayDateIndex = clamp(Number(dom.replayTime.value), 0, state.replay.history.dates.length - 1);
+        state.replayLinkErrors = [];
+        renderReplayFrame();
+      });
+    }
+    if (dom.replayPlay) {
+      dom.replayPlay.addEventListener("click", function () {
+        if (dom.replayPlay.disabled || !state.replay) return;
+        if (state.replayTimer) {
+          stopReplayPlayback();
+          setStatus("Replay " + currentReplayDate() + " · published daily index", "ready");
+          return;
+        }
+        dom.replayPlay.setAttribute("aria-pressed", "true");
+        dom.replayPlay.textContent = "Pause daily history";
+        state.replayTimer = window.setInterval(function () {
+          if (state.replayDateIndex >= state.replay.history.dates.length - 1) {
+            stopReplayPlayback();
+            setStatus("Replay " + currentReplayDate() + " · published daily index", "ready");
+            return;
+          }
+          state.replayDateIndex += 1;
+          state.replayLinkErrors = [];
+          renderReplayFrame({ playbackTick: true });
+        }, window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1200 : 520);
+      });
+    }
 
     dom.svg.addEventListener("wheel", function (event) {
       event.preventDefault();
@@ -1495,11 +1841,67 @@
     }
   }
 
+  async function initializeReplay() {
+    try {
+      if (!REPLAY) throw new Error("Attention Replay validation core is unavailable");
+      var resources = await Promise.all([
+        getJson(REPLAY_INPUTS.history),
+        getJson(REPLAY_INPUTS.episodes),
+        getJson(REPLAY_INPUTS.receipts),
+        getJson(REPLAY_INPUTS.geometry),
+        getJson(SCOPE.world.geometryUrl)
+      ]);
+      if (!REPLAY.validHistory(resources[0]) ||
+          !REPLAY.validEpisodes(resources[1], resources[0]) ||
+          !REPLAY.validReceiptsArchive(resources[2]) ||
+          !REPLAY.validAnchors(resources[3], resources[4], resources[0])) {
+        throw new Error("Published Attention Replay inputs are partial, mismatched, or structurally invalid");
+      }
+      var deepLink = REPLAY.resolveDeepLink(
+        resources[0],
+        params.get("mode") === "replay" ? params.get("date") : null,
+        params.get("mode") === "replay" ? params.get("channel") : null
+      );
+      state.replay = {
+        history: resources[0],
+        episodes: resources[1],
+        receipts: resources[2],
+        cutoff: deepLink.cutoff
+      };
+      state.replayGeometry = resources[3];
+      state.replayWorldGeometry = resources[4];
+      state.replayDateIndex = resources[0].dates.indexOf(deepLink.date);
+      state.replayChannel = deepLink.channel;
+      state.replayLinkErrors = deepLink.errors;
+      var range = REPLAY.rangeState(resources[0], deepLink.date);
+      dom.replayTime.min = String(range.min);
+      dom.replayTime.max = String(range.max);
+      dom.replayTime.value = String(range.value);
+      dom.replayTime.setAttribute("aria-valuetext", range.valueText);
+      dom.replayTime.disabled = false;
+      dom.replayPlay.disabled = false;
+      dom.replayFirstDate.textContent = resources[0].dates[0];
+      dom.replayLastDate.textContent = deepLink.cutoff;
+      dom.replayProvenanceLine.textContent = "History payload generated " + resources[0]._meta.generated +
+        " · " + number(resources[0].dates.length) + " exact published dates · completed-news-day cutoff " + deepLink.cutoff + ".";
+      updateControls();
+      if (params.get("mode") === "replay") applyMission("replay");
+    } catch (error) {
+      refuseReplay("Attention Replay unavailable · source bundle refused.");
+      if (params.get("mode") === "replay") {
+        state.mission = "replay";
+        showInspectorTab("replay");
+      }
+      console.error("atlas replay:", error);
+    }
+  }
+
   async function initialize() {
     bindControls();
     showInspectorTab("selection");
     initializeOperations();
     initializeMaritime();
+    initializeReplay();
     try {
       var resources = await Promise.all([
         getJson(SCOPE.world.geometryUrl),
@@ -1517,7 +1919,9 @@
       validMetric();
       renderGeometry();
       var meta = currentPayload()._meta || {};
-      setPublishedStatus();
+      if (state.mission === "replay" && state.replay) {
+        setStatus("Replay " + currentReplayDate() + " · published daily index", "ready");
+      } else setPublishedStatus();
       dom.provenance.textContent = "Payload generated " + (meta.generated || "unknown") +
         " · " + Object.keys(state.payloads.world.partners).length + " partner aggregates · " +
         Object.keys(state.payloads.india.states).length + " state aggregates · " +

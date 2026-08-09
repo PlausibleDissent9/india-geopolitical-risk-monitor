@@ -1166,6 +1166,16 @@
    "stability": "stable"
   },
   {
+   "path": "geo/channel_anchors.json",
+   "format": "json",
+   "description": "Projection-bound interface anchors for the five registered IGRM attention channels. They position replay controls and are not event locations, centroids, dependency nodes, routes or exposure paths.",
+   "frozen_fields": [
+    "_meta",
+    "channels"
+   ],
+   "stability": "static versioned Atlas registry 1.0.0"
+  },
+  {
    "path": "geo/chokepoints.json",
    "format": "json",
    "description": "Projection-bound navigation anchors for four named maritime waterways. These representative points locate the interface controls; they are not boundaries, route geometries, disruption observations or exposure estimates.",
