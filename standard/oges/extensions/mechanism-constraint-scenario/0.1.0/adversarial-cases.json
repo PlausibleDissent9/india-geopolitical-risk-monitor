@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:scenario_proof",
+  "cases": [
+    {"case_id": "valid_signed_synthetic_scenario_proof", "expected_status": "pass", "expected_reason": null},
+    {"case_id": "threshold_equal_upper_bound", "expected_status": "pass", "expected_reason": null},
+    {"case_id": "threshold_below_lower_bound", "expected_status": "pass", "expected_reason": null},
+    {"case_id": "threshold_inside_interval", "expected_status": "pass", "expected_reason": null},
+    {"case_id": "unit_or_denominator_mismatch", "expected_status": "refused", "expected_reason": "scenario_proof_constraint_measure_mismatch"},
+    {"case_id": "upstream_abstention", "expected_status": "pass", "expected_reason": null},
+    {"case_id": "stale_or_unknown_input_laundered", "expected_status": "refused", "expected_reason": "scenario_proof_execution_mismatch"},
+    {"case_id": "corner_witness_mutated", "expected_status": "refused", "expected_reason": "scenario_proof_execution_mismatch"},
+    {"case_id": "unregistered_predicate", "expected_status": "refused", "expected_reason": "scenario_proof_request_schema_invalid"},
+    {"case_id": "self_or_orphan_rival", "expected_status": "refused", "expected_reason": "scenario_proof_rival_invalid"},
+    {"case_id": "asymmetric_rival", "expected_status": "refused", "expected_reason": "scenario_proof_rival_asymmetric"},
+    {"case_id": "orphan_constraint_falsifier", "expected_status": "refused", "expected_reason": "scenario_proof_falsifier_constraint_missing"},
+    {"case_id": "mechanism_support_or_causal_field", "expected_status": "refused", "expected_reason": "scenario_proof_request_schema_invalid"},
+    {"case_id": "probability_forecast_recommendation_or_winner", "expected_status": "refused", "expected_reason": "scenario_proof_request_schema_invalid"},
+    {"case_id": "scenario_or_compilation_retargeted", "expected_status": "refused", "expected_reason": "scenario_proof_binding_mismatch"},
+    {"case_id": "release_or_rights_drift", "expected_status": "refused", "expected_reason": "shock_output_semantic_mismatch"},
+    {"case_id": "release_after_evaluation_as_of", "expected_status": "refused", "expected_reason": "scenario_proof_time_invalid"},
+    {"case_id": "execution_resealed_after_mutation", "expected_status": "refused", "expected_reason": "scenario_proof_execution_mismatch"},
+    {"case_id": "profile_or_registry_hash_drift", "expected_status": "refused", "expected_reason": "scenario_proof_profile_digest_mismatch"},
+    {"case_id": "capability_overpromotion", "expected_status": "refused", "expected_reason": "unsigned_synthetic_evidence_forbidden"}
+  ]
+}

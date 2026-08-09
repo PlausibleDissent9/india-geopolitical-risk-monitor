@@ -1,0 +1,47 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:scenario-proof:operators",
+  "default_policy": "deny",
+  "operators": [
+    {
+      "operator_id": "operator:scenario.verify_shock_compilation",
+      "version": "1.0.0",
+      "input_kind": "signed_release_scenario_and_compilation",
+      "output_kind": "recomputed_shock_compilation",
+      "delegate_method_id": "method:igrm.shock_compiler",
+      "claim_boundary": "Exact deterministic recompilation only; no source-truth or real-world feasibility claim."
+    },
+    {
+      "operator_id": "operator:scenario.evaluate_upper_bound",
+      "version": "1.0.0",
+      "input_kind": "registered_interval_and_hypothetical_threshold",
+      "output_kind": "registered_interval_relation",
+      "delegate_method_id": null,
+      "claim_boundary": "Classifies a registered hypothetical interval against an exact threshold; not advice."
+    },
+    {
+      "operator_id": "operator:scenario.certify_monotone_corners",
+      "version": "1.0.0",
+      "input_kind": "registered_shock_transform_inputs",
+      "output_kind": "analytical_corner_certificate",
+      "delegate_method_id": "method:igrm.shock_compiler",
+      "claim_boundary": "Certifies deterministic interval corners; not a probability distribution or confidence interval."
+    },
+    {
+      "operator_id": "operator:scenario.evaluate_registered_falsifier",
+      "version": "1.0.0",
+      "input_kind": "registered_predicate_and_recomputed_result",
+      "output_kind": "scenario_compatibility_result",
+      "delegate_method_id": null,
+      "claim_boundary": "Compatibility with the compiled hypothetical scenario only; no causal support or real-world falsification."
+    },
+    {
+      "operator_id": "operator:scenario.preserve_symmetric_rivals",
+      "version": "1.0.0",
+      "input_kind": "registered_hypothesis_set",
+      "output_kind": "symmetric_rival_graph",
+      "delegate_method_id": null,
+      "claim_boundary": "Preserves declared rivals without ranking them or claiming the set is complete."
+    }
+  ]
+}

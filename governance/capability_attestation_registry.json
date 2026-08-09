@@ -1,8 +1,8 @@
 {
   "schema_version": "0.2.0",
   "registry_id": "igrm-max-capability-attestation",
-  "revision": 7,
-  "predecessor_registry_sha256": "e0ef39f99381102216178e1bfc53363d39c43e86f5eac04e82d1343ba2c4b82f",
+  "revision": 8,
+  "predecessor_registry_sha256": "3985d98d72cb57a15c6e10da9414b0e19fe97ba0a83836b65b109e2edddce816",
   "authority_status": "repository_review_only_unsigned",
   "effective": "2026-08-09",
   "launch_contract": {
@@ -20,7 +20,8 @@
     {"artifact_id": "join_contract", "path": "governance/max_state_join_registry.json", "sha256": "e21c08240ca62c7b03a140b80a2a783c3933211b3a05fda7e236c8923ee4f7be", "evidence_class": "contract"},
     {"artifact_id": "plan_profile", "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json", "sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36", "evidence_class": "contract"},
     {"artifact_id": "foundry_profile", "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/profile.json", "sha256": "0fd7be6db40cbb3f860a26af2d606a69dc3337ddeba3a28e6bfc0c01f65d3d86", "evidence_class": "contract"},
-    {"artifact_id": "trace_profile", "path": "standard/oges/extensions/nary-association-trace/0.1.0/profile.json", "sha256": "935f8e1f038ad6d927ebeffbb595dd727b977985613eac1365e4fd157e5f2e56", "evidence_class": "contract"}
+    {"artifact_id": "trace_profile", "path": "standard/oges/extensions/nary-association-trace/0.1.0/profile.json", "sha256": "935f8e1f038ad6d927ebeffbb595dd727b977985613eac1365e4fd157e5f2e56", "evidence_class": "contract"},
+    {"artifact_id": "scenario_proof_profile", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json", "sha256": "5d5dc09040a83f7e9c8460a3f079f7387efc327a63934ff99868e557391dd878", "evidence_class": "contract"}
   ],
   "capability_rules": [
     {"capability_id": "typed_event", "levels": {"contract_only": ["event_contract", "event_ledger_extension_profile"]}},
@@ -29,6 +30,7 @@
     {"capability_id": "edge_evidence", "levels": {"contract_only": ["dependency_profile"]}},
     {"capability_id": "bounded_scenarios", "levels": {"contract_only": ["shock_contract"]}},
     {"capability_id": "knowledge_replay", "levels": {"contract_only": ["replay_contract", "event_ledger_extension_profile"]}},
+    {"capability_id": "hypothesis_falsification", "levels": {"contract_only": ["scenario_proof_profile"]}},
     {"capability_id": "verified_natural_language", "levels": {"contract_only": ["plan_profile"]}},
     {"capability_id": "event_to_recovery", "levels": {"contract_only": ["shock_contract"]}},
     {"capability_id": "global_shock_india", "levels": {"contract_only": ["shock_contract"]}},
@@ -36,7 +38,7 @@
     {"capability_id": "declared_universe_partition", "levels": {"contract_only": ["dependency_profile", "foundry_profile"]}},
     {"capability_id": "dependency_flow_reconciliation", "levels": {"contract_only": ["dependency_profile", "foundry_profile", "trace_profile"]}},
     {"capability_id": "proof_carrying_clauses", "levels": {"contract_only": ["plan_profile", "trace_profile"]}},
-    {"capability_id": "constraint_feasibility", "levels": {"contract_only": ["shock_contract"]}},
+    {"capability_id": "constraint_feasibility", "levels": {"contract_only": ["shock_contract", "scenario_proof_profile"]}},
     {"capability_id": "role_invariant_outputs", "levels": {"contract_only": ["join_contract"]}},
     {"capability_id": "prompt_injection_boundary", "levels": {"contract_only": ["plan_profile"]}},
     {"capability_id": "contradiction_preservation", "levels": {"contract_only": ["event_ledger_extension_profile"]}}

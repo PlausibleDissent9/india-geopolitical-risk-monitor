@@ -1,4 +1,5 @@
 """Adversarial checks for computed IGRM Max capability maturity."""
+
 from __future__ import annotations
 
 import hashlib
@@ -14,9 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def _copy_bound_tree(tmp_path: Path) -> Path:
     root = tmp_path / "repo"
-    registry = json.loads(
-        (ROOT / ca.REGISTRY_RELATIVE).read_text(encoding="utf-8")
-    )
+    registry = json.loads((ROOT / ca.REGISTRY_RELATIVE).read_text(encoding="utf-8"))
     paths = {
         registry["launch_contract"]["path"],
         "governance/capability_attestation_registry.json",
@@ -41,9 +40,7 @@ def _by_id(report: dict[str, object]) -> dict[str, dict[str, object]]:
 
 def test_all_38_launch_capabilities_are_measured_and_none_is_complete_by_assertion() -> None:
     report = ca.build_report()
-    launch = json.loads(
-        (ROOT / "design/igrm_max_launch_contract.json").read_text(encoding="utf-8")
-    )
+    launch = json.loads((ROOT / "design/igrm_max_launch_contract.json").read_text(encoding="utf-8"))
     expected_ids = [row["id"] for row in launch["required_capabilities"]]
     rows = report["capabilities"]
     assert [row["capability_id"] for row in rows] == expected_ids
@@ -52,8 +49,8 @@ def test_all_38_launch_capabilities_are_measured_and_none_is_complete_by_asserti
         "denominator_status": "proposed_launch_scope_not_founder_authorized",
         "scope_authority": "proposed_unsigned",
         "state_counts": {
-            "target_only": 21,
-            "contract_only": 17,
+            "target_only": 20,
+            "contract_only": 18,
             "synthetic_verified": 0,
             "real_bounded": 0,
             "externally_validated": 0,
@@ -72,9 +69,7 @@ def test_foundry_evidence_stops_at_contract_only() -> None:
     assert foundry["computed_state"] == "contract_only"
     assert {row["evidence_class"] for row in foundry["evidence"]} == {"contract"}
     assert foundry["next_state"] == "synthetic_verified"
-    assert foundry["counterevidence"] == [
-        "unregistered_evidence_bundle:synthetic_verified"
-    ]
+    assert foundry["counterevidence"] == ["unregistered_evidence_bundle:synthetic_verified"]
     assert rows["dependency_flow_reconciliation"]["computed_state"] == "contract_only"
     assert rows["edge_evidence"]["computed_state"] == "contract_only"
 
@@ -96,9 +91,7 @@ def test_nary_trace_evidence_stops_at_contract_only() -> None:
         "trace_profile",
     }
     assert proof["next_state"] == "synthetic_verified"
-    assert proof["counterevidence"] == [
-        "unregistered_evidence_bundle:synthetic_verified"
-    ]
+    assert proof["counterevidence"] == ["unregistered_evidence_bundle:synthetic_verified"]
 
 
 def test_unsigned_fabricated_receipt_cannot_promote_with_rehashed_registry(
@@ -214,9 +207,7 @@ def test_event_ledger_extension_profile_is_contract_only_evidence(
         "contradiction_preservation",
     ):
         assert rows[capability_id]["computed_state"] == "target_only"
-        assert rows[capability_id]["counterevidence"] == [
-            "event_ledger_extension_profile"
-        ]
+        assert rows[capability_id]["counterevidence"] == ["event_ledger_extension_profile"]
     assert rows["open_conformance"]["computed_state"] == "contract_only"
 
 
@@ -244,9 +235,7 @@ def test_coordinated_launch_and_registry_substitution_is_refused(
     launch_path.write_text(json.dumps(launch), encoding="utf-8")
     registry_path = root / ca.REGISTRY_RELATIVE
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
-    registry["launch_contract"]["sha256"] = hashlib.sha256(
-        launch_path.read_bytes()
-    ).hexdigest()
+    registry["launch_contract"]["sha256"] = hashlib.sha256(launch_path.read_bytes()).hexdigest()
     registry["capability_rules"][0]["capability_id"] = "placeholder_capability"
     registry_path.write_text(json.dumps(registry), encoding="utf-8")
     with pytest.raises(ca.CapabilityAttestationError) as exc:
@@ -261,9 +250,7 @@ def test_unrelated_rule_bundle_cannot_be_relabelled_as_capability_evidence(
     path = root / ca.REGISTRY_RELATIVE
     registry = json.loads(path.read_text(encoding="utf-8"))
     rule = next(
-        row
-        for row in registry["capability_rules"]
-        if row["capability_id"] == "knowledge_replay"
+        row for row in registry["capability_rules"] if row["capability_id"] == "knowledge_replay"
     )
     rule["levels"]["contract_only"] = ["shock_contract"]
     path.write_text(json.dumps(registry), encoding="utf-8")

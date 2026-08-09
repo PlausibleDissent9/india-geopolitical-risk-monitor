@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:scenario-proof:predicates",
+  "default_policy": "deny",
+  "predicates": [
+    {
+      "predicate_id": "predicate:scenario.path_quantification_status_equals",
+      "allowed_expected_values": ["abstained", "bounded_range"],
+      "constraint_required": false,
+      "evaluation_source": "shock_compilation.paths[].quantification_status"
+    },
+    {
+      "predicate_id": "predicate:scenario.path_gap_code_present",
+      "allowed_expected_values": [
+        "gap:shock.edge_interval_required",
+        "gap:shock.edge_magnitude_unavailable",
+        "gap:shock.edge_unit_unsupported",
+        "gap:shock.multi_hop_transform_unregistered",
+        "gap:shock.stale_edge",
+        "gap:shock.unknown_freshness_policy"
+      ],
+      "constraint_required": false,
+      "evaluation_source": "shock_compilation.paths[].gap_codes"
+    },
+    {
+      "predicate_id": "predicate:scenario.constraint_interval_relation_equals",
+      "allowed_expected_values": [
+        "all_registered_values_satisfy",
+        "no_registered_values_satisfy",
+        "mixed_within_registered_interval",
+        "not_evaluable"
+      ],
+      "constraint_required": true,
+      "evaluation_source": "scenario_proof.constraints[].interval_relation"
+    }
+  ]
+}
