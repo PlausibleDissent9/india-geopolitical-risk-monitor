@@ -1,0 +1,86 @@
+{
+  "schema_version": "0.1.0",
+  "contract_id": "igrm:analytical-clause:0.1.0",
+  "what": "The closed vocabulary and the invariant that lets one analytical result be shown to different audiences without any audience being told something different. An audience profile may omit a clause or use a shorter registered rendering. It may never change what a clause says.",
+  "canonicalization_profile_id": "igrm-typed-canonical-f64-v1",
+  "status": "synthetic_contract_only",
+  "public_routes": [],
+  "roles": [
+    "research",
+    "board",
+    "newsroom",
+    "public",
+    "api",
+    "priority_language",
+    "offline"
+  ],
+  "protected_fields": [
+    "citation",
+    "denominator",
+    "epistemic_type",
+    "missingness",
+    "observed_period",
+    "proof_binding",
+    "rights_state",
+    "uncertainty",
+    "unit",
+    "value"
+  ],
+  "protected_field_rule": "Every field listed above is compared across every pair of roles that carry the same clause_id, by typed canonical digest. Divergence in any one of them is a refusal, not a rendering difference. Shortening prose is a rendering decision; changing a denominator is a different claim.",
+  "clause_kinds": {
+    "measurement": {
+      "never_omittable": false,
+      "why": "A role may legitimately carry fewer measurements than another."
+    },
+    "limitation": {
+      "never_omittable": true,
+      "why": "The failure mode this contract exists to prevent: a shorter audience view that keeps the number and drops what the number cannot support. A limitation is not editorial trimming."
+    },
+    "rights": {
+      "never_omittable": true,
+      "why": "Rights state travels with the claim or the claim cannot be republished."
+    },
+    "provenance": {
+      "never_omittable": true,
+      "why": "A claim without its proof binding is unverifiable, and an unverifiable claim in a short view is exactly the one that gets quoted."
+    }
+  },
+  "epistemic_types": [
+    "measured",
+    "derived",
+    "registered_refusal"
+  ],
+  "missingness_states": [
+    "present",
+    "source_blank",
+    "source_missing",
+    "suppressed",
+    "not_applicable"
+  ],
+  "rendering_rule": "registered_deterministic_templates_no_model_generation",
+  "rendering_lengths": [
+    "full",
+    "short"
+  ],
+  "omission_rule": "The clause_id set of any role must be a subset of the compiled clause_id set. A role may not introduce a clause_id that was not compiled, and may not omit a clause whose kind is never_omittable.",
+  "refusal_codes": [
+    "clause_contract_digest_mismatch",
+    "clause_duplicate_id",
+    "clause_kind_unregistered",
+    "clause_epistemic_type_unregistered",
+    "clause_missingness_unregistered",
+    "clause_protected_field_divergence",
+    "clause_protected_field_missing",
+    "clause_rendering_length_unregistered",
+    "clause_role_unregistered",
+    "clause_unknown_id_in_role",
+    "clause_mandatory_omitted",
+    "clause_value_present_despite_missingness",
+    "clause_value_absent_despite_presence"
+  ],
+  "limitations": [
+    "clause_identity_is_not_source_truth",
+    "cross_role_agreement_is_not_accuracy",
+    "synthetic_contract_only_no_production_claim"
+  ]
+}
