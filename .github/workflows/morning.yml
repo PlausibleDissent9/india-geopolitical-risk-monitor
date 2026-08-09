@@ -168,6 +168,50 @@ jobs:
         run: |
           python -m src.stamp_meta || true
           python -m src.stamp_assets || true
+      - name: Derived lanes (recompute from the committed stores)
+        if: steps.guard.outputs.skip != 'true'
+        # THE CONTRACT LANE COULD NOT SATISFY ITS OWN GATE WITHOUT THIS.
+        #
+        # This lane advanced latest.json and regenerated nothing that
+        # derives from it. The gate it runs before pushing rebuilds those
+        # payloads and compares them against the committed copies --
+        # test_assistant_answers rebuilds assistant_answers.json,
+        # test_status_alignment recomputes the alignment block,
+        # test_monthly rebuilds the monthly view. A candidate carrying a
+        # new day and yesterday's derived payloads fails those by
+        # construction, so the fallback lane refused every publish it
+        # attempted while the daily was down -- exactly when it is the
+        # only lane left. 2026-08-09, runs #27 through #34, three days
+        # served stale.
+        #
+        # These are the daily's derived lanes, in the daily's order,
+        # which that workflow documents as load-bearing: provenance
+        # builds the instrument record, publish_shares needs it for the
+        # source column, monthly reads the shares CSV publish_shares
+        # writes. Nothing here touches the network -- they read the
+        # committed stores -- so they are safe in a lane whose whole job
+        # is to publish quickly from what is already banked. Measured at
+        # roughly two minutes inside daily #102, against a 45-minute cap.
+        #
+        # Deliberately NOT continue-on-error, unlike the daily's copy. If
+        # a derived payload cannot be rebuilt the candidate is incoherent
+        # and the gate refuses it anyway, and a visible step failure
+        # naming the generator beats a gate refusal that has to be traced
+        # back to one -- which is the lesson of this entire day.
+        run: |
+          python -m src.provenance
+          python -m src.publish_shares
+          python -m src.splice_sensitivity
+          python -m src.monthly
+          python -m src.blind_spot
+          python -m src.detection_baselines
+          python -m src.negative_results
+          python -m src.episode_actors
+          python -m src.exposure
+          python -m src.predictability
+          python -m src.outlet_drift
+          python -m src.assistant_answers
+          python -m src.status_data
       - name: Commit and push
         if: steps.guard.outputs.skip != 'true'
         env:
