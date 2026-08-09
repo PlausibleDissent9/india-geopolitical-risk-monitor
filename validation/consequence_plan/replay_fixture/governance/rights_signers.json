@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "signers": [
+    {
+      "signer_id": "signer:oges.fixture.rights",
+      "name": "OGES public test-vector rights signer",
+      "role": "test-only rights reviewer",
+      "public_key_ed25519_base64": "VheFUIRW9j0f1DzMhKE2Qb5eLc1q3lT6BaGz+R7Ef0I=",
+      "effective": "2026-08-08",
+      "revoked_on": null
+    }
+  ]
+}

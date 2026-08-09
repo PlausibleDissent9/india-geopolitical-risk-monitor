@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "signers": [
+    {
+      "signer_id": "signer:oges.fixture.release",
+      "name": "OGES public test-vector release signer",
+      "role": "canonical_release_signer",
+      "public_key_ed25519_base64": "AFAoWj8l1Wmn4fQFOF5tLEafQGhjQdpP39xhwBbKFx0=",
+      "effective": "2026-08-08",
+      "revoked_on": null
+    }
+  ]
+}

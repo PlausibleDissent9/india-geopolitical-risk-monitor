@@ -1,0 +1,67 @@
+{
+  "object_type": "universe_release",
+  "schema_version": "1.0.0",
+  "universe_release_id": "unv:oges.fixture.commodities.1",
+  "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef",
+  "lifecycle": {
+    "revision": 1,
+    "state": "active",
+    "supersedes_id": null,
+    "superseded_by": null,
+    "correction_id": null
+  },
+  "universe_id": "universe:oges.fixture.commodities",
+  "version": "1.0.0",
+  "name": "OGES synthetic commodity frame",
+  "entity_type": "commodity",
+  "reference_date": "2026-08-08",
+  "denominator_definition": "Every commodity in the one-row synthetic frame.",
+  "inclusion_rule": {
+    "rule_id": "rule:oges.fixture.commodity_universe",
+    "version": "1.0.0",
+    "implementation_path": "rules/commodity_universe.py",
+    "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+    "documentation_path": "rules/commodity_universe.md"
+  },
+  "frame_artifact": {
+    "path": "frames/commodity_frame.json",
+    "sha256": "d1ecbe706b644f116ded7ea5d19bcc15183cae7817a195f3d16a3d29786bd93e",
+    "format": "igrm_universe_frame_v1"
+  },
+  "source_evidence_ids": [
+    "evd:oges.fixture.official.001"
+  ],
+  "members": [
+    {
+      "entity_id": "ent:commodity.synthetic_crude",
+      "status": "included",
+      "reason_code": "reason:oges.fixture.in_frame",
+      "assessed_on": "2026-08-08"
+    }
+  ],
+  "counts": {
+    "total_eligible": 1,
+    "included": 1,
+    "excluded": 0,
+    "unmappable": 0,
+    "stale": 0
+  },
+  "provenance": {
+    "created_at": "2026-08-08T12:00:00Z",
+    "created_by": "system:oges.fixture_builder",
+    "reviewed_by": [],
+    "adjudication_status": "unreviewed",
+    "source_ids": [
+      "oges_fixture_source"
+    ],
+    "evidence_ids": [
+      "evd:oges.fixture.official.001"
+    ],
+    "method": {
+      "method_id": "rule:oges.fixture.commodity_universe",
+      "version": "1.0.0",
+      "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+      "run_id": "run:oges.fixture.001"
+    }
+  }
+}

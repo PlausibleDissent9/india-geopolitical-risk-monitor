@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/canonical-release.schema.json",
+  "title": "IGRM canonical object release manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "release_id",
+    "record_sha256",
+    "generated_at",
+    "effective_date",
+    "schema_registry_sha256",
+    "method_registry_sha256",
+    "rights_registry_sha256",
+    "rights_signers_sha256",
+    "release_signers_sha256",
+    "release_signer_id",
+    "release_signature_path",
+    "rights_snapshot",
+    "objects",
+    "counts"
+  ],
+  "properties": {
+    "object_type": {"const": "canonical_release"},
+    "schema_version": {"const": "1.0.0"},
+    "release_id": {
+      "type": "string",
+      "pattern": "^rel:[a-z0-9][a-z0-9._:-]{2,123}$"
+    },
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "effective_date": {"$ref": "common.schema.json#/$defs/date"},
+    "schema_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "method_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "rights_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "rights_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "release_signature_path": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+\\.sig$"
+    },
+    "rights_snapshot": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "decision_id",
+          "decision_artifact_sha256",
+          "signer_id",
+          "independence_group",
+          "authority_class"
+        ],
+        "properties": {
+          "source_id": {"$ref": "common.schema.json#/$defs/stableId"},
+          "decision_id": {"type": "string", "minLength": 1, "maxLength": 200},
+          "decision_artifact_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+          "signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+          "independence_group": {"$ref": "common.schema.json#/$defs/stableId"},
+          "authority_class": {"type": "string", "minLength": 1, "maxLength": 100}
+        }
+      }
+    },
+    "objects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_type", "object_id", "path", "file_sha256", "record_sha256"],
+        "properties": {
+          "object_type": {
+            "type": "string",
+            "enum": ["evidence_item", "entity", "event", "exposure_edge", "universe_release"]
+          },
+          "object_id": {"$ref": "common.schema.json#/$defs/stableId"},
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+\\.json$"
+          },
+          "file_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+          "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_item", "entity", "event", "exposure_edge", "universe_release"],
+      "properties": {
+        "evidence_item": {"type": "integer", "minimum": 0},
+        "entity": {"type": "integer", "minimum": 0},
+        "event": {"type": "integer", "minimum": 0},
+        "exposure_edge": {"type": "integer", "minimum": 0},
+        "universe_release": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

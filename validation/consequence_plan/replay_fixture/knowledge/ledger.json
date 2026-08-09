@@ -1,0 +1,86 @@
+{
+  "object_type": "knowledge_replay_ledger",
+  "schema_version": "1.0.0",
+  "ledger_id": "kld:oges.fixture.2026-08-09",
+  "record_sha256": "1c6f409cb02eeb23c4a5859b1b34a48c3ab2276662e4cb4e1ea4f84f22e4e9c6",
+  "created_at": "2026-08-09T15:00:00Z",
+  "replay_registry_sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef",
+  "availability_signers_sha256": "4f470731932c1d910909f76dec6e7357c12583923f72c70bbb101ca7018b29c9",
+  "ledger_signer_id": "signer:knowledge.ledger.fixture",
+  "ledger_signature_path": "knowledge/ledger.sig",
+  "entries": [
+    {
+      "sequence": 1,
+      "snapshot_kind": "complete",
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "manifest_path": "canonical/releases/0001.json",
+      "manifest_file_sha256": "4ba1ddf66f9ebf8afd0ea68119f7f23737d3462a01443b767191e5507c3ff1f1",
+      "manifest_record_sha256": "8a9fb51b2a08b9d5f000df110a098218121bad3baec89b091bb7e542f5a70e8a",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "effective_date": "2026-08-08",
+      "available_at": "2026-08-08T14:00:00Z",
+      "receipt_path": "knowledge/receipts/0001.json",
+      "receipt_file_sha256": "5c4b04d601b15b2bbea06880cbc1f530d5727bf5dc63e16a74f06804570f0f74",
+      "governance": {
+        "canonical_schema_registry": {
+          "path": "governance/canonical_schema_registry.json",
+          "sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66"
+        },
+        "canonical_method_registry": {
+          "path": "governance/canonical_method_registry.json",
+          "sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720"
+        },
+        "source_rights_registry": {
+          "path": "governance/source_rights_registry.json",
+          "sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf"
+        },
+        "rights_signers": {
+          "path": "governance/rights_signers.json",
+          "sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e"
+        },
+        "release_signers": {
+          "path": "governance/release_signers.json",
+          "sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+        }
+      }
+    },
+    {
+      "sequence": 2,
+      "snapshot_kind": "complete",
+      "release_id": "rel:oges.fixture.2026-08-09",
+      "manifest_path": "canonical/releases/0002.json",
+      "manifest_file_sha256": "50d04a8c8a9352f9be961866590270b6208ad11a95cbedf81c7fe343a06baa87",
+      "manifest_record_sha256": "b92e58bdf19aa8fbe795f22ce32501edc2934f57e218a985ca9c081ba01036b7",
+      "generated_at": "2026-08-09T13:00:00Z",
+      "effective_date": "2026-08-09",
+      "available_at": "2026-08-09T14:00:00Z",
+      "receipt_path": "knowledge/receipts/0002.json",
+      "receipt_file_sha256": "84e33c90c391341fb637f5ca012594ec56e014fc97f64c6b1e7b751bc2bc58a9",
+      "governance": {
+        "canonical_schema_registry": {
+          "path": "governance/canonical_schema_registry.json",
+          "sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66"
+        },
+        "canonical_method_registry": {
+          "path": "governance/canonical_method_registry.json",
+          "sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720"
+        },
+        "source_rights_registry": {
+          "path": "governance/source_rights_registry.json",
+          "sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf"
+        },
+        "rights_signers": {
+          "path": "governance/rights_signers.json",
+          "sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e"
+        },
+        "release_signers": {
+          "path": "governance/release_signers.json",
+          "sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
+        }
+      }
+    }
+  ],
+  "counts": {
+    "releases": 2
+  }
+}

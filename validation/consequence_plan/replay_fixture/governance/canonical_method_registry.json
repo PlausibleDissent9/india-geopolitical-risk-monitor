@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "methods": [
+    {
+      "method_id": "method:oges.fixture.direct",
+      "version": "1.0.0",
+      "implementation_path": "methods/direct.py",
+      "implementation_sha256": "e4b4604bf403651b295467aed576d8f20514ae575be35d842cfddb7437b926db",
+      "allowed_object_types": [
+        "evidence_item",
+        "entity"
+      ],
+      "effective": "2026-08-08",
+      "superseded_on": null
+    },
+    {
+      "method_id": "rule:oges.fixture.event",
+      "version": "1.0.0",
+      "implementation_path": "methods/event.py",
+      "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+      "allowed_object_types": [
+        "event"
+      ],
+      "effective": "2026-08-08",
+      "superseded_on": null
+    },
+    {
+      "method_id": "rule:oges.fixture.commodity_universe",
+      "version": "1.0.0",
+      "implementation_path": "rules/commodity_universe.py",
+      "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+      "allowed_object_types": [
+        "universe_release"
+      ],
+      "effective": "2026-08-08",
+      "superseded_on": null
+    },
+    {
+      "method_id": "method:oges.fixture.exposure",
+      "version": "1.0.0",
+      "implementation_path": "methods/exposure.py",
+      "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+      "allowed_object_types": [
+        "exposure_edge"
+      ],
+      "effective": "2026-08-08",
+      "superseded_on": null
+    }
+  ]
+}

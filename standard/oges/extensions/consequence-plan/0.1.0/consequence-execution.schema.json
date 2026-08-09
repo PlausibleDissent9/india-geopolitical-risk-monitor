@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-consequence-execution-0.1.0.json",
+  "title": "OGES Consequence Execution 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["object_type", "schema_version", "integrity", "plan_binding", "contract", "engine", "inputs", "step_proofs", "temporal", "universe", "trust_class", "publication_eligible", "execution_status", "result", "refusal", "limitations"],
+  "properties": {
+    "object_type": {"const": "oges_consequence_execution"},
+    "schema_version": {"const": "0.1.0"},
+    "integrity": {"$ref": "#/$defs/integrity"},
+    "plan_binding": {"$ref": "#/$defs/planBinding"},
+    "contract": {"$ref": "#/$defs/contract"},
+    "engine": {"$ref": "#/$defs/engine"},
+    "inputs": {"type": "array", "maxItems": 2, "items": {"$ref": "#/$defs/input"}},
+    "step_proofs": {"type": "array", "minItems": 0, "maxItems": 3, "items": {"$ref": "#/$defs/stepProof"}},
+    "temporal": {"$ref": "#/$defs/temporal"},
+    "universe": {"$ref": "#/$defs/universe"},
+    "trust_class": {"enum": ["legacy_unverified", "synthetic_nonproduction", "production_signed_release"]},
+    "publication_eligible": {"type": "boolean"},
+    "execution_status": {"enum": ["succeeded", "refused"]},
+    "result": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/result"}]},
+    "refusal": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/refusal"}]},
+    "limitations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$"}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "contract": {"type": "object", "additionalProperties": false, "required": ["base_oges_profile_sha256", "extension_profile_sha256", "plan_schema_sha256", "execution_schema_sha256", "operator_registry_sha256", "output_profile_registry_sha256", "source_registry_sha256", "fact_catalog_sha256", "typed_canonical_fixture_sha256"], "properties": {"base_oges_profile_sha256": {"$ref": "#/$defs/sha256"}, "extension_profile_sha256": {"$ref": "#/$defs/sha256"}, "plan_schema_sha256": {"$ref": "#/$defs/sha256"}, "execution_schema_sha256": {"$ref": "#/$defs/sha256"}, "operator_registry_sha256": {"$ref": "#/$defs/sha256"}, "output_profile_registry_sha256": {"$ref": "#/$defs/sha256"}, "source_registry_sha256": {"$ref": "#/$defs/sha256"}, "fact_catalog_sha256": {"$ref": "#/$defs/sha256"}, "typed_canonical_fixture_sha256": {"$ref": "#/$defs/sha256"}}},
+    "integrity": {"type": "object", "additionalProperties": false, "required": ["profile_id", "value_sha256"], "properties": {"profile_id": {"const": "igrm-typed-canonical-f64-v1"}, "value_sha256": {"$ref": "#/$defs/sha256"}}},
+    "planBinding": {"type": "object", "additionalProperties": false, "required": ["plan_id", "plan_integrity_sha256", "plan_file_sha256"], "properties": {"plan_id": {"type": "string"}, "plan_integrity_sha256": {"$ref": "#/$defs/sha256"}, "plan_file_sha256": {"$ref": "#/$defs/sha256"}}},
+    "engine": {"type": "object", "additionalProperties": false, "required": ["method_id", "version", "implementation_sha256", "executed_at"], "properties": {"method_id": {"const": "method:igrm.consequence_plan"}, "version": {"const": "0.1.0"}, "implementation_sha256": {"$ref": "#/$defs/sha256"}, "executed_at": {"type": "string", "format": "date-time"}}},
+    "input": {"type": "object", "additionalProperties": false, "required": ["binding_id", "binding_kind", "file_sha256", "source_registry_id", "artifact_id", "source_as_of", "rights_state", "computed_evidence_class"], "properties": {"binding_id": {"type": "string"}, "binding_kind": {"enum": ["registered_payload", "signed_replay_ledger"]}, "file_sha256": {"$ref": "#/$defs/sha256"}, "source_registry_id": {"type": "string"}, "artifact_id": {"type": "string"}, "source_as_of": {"type": ["string", "null"], "format": "date"}, "rights_state": {"enum": ["review_required", "synthetic_fixture", "verified_signed"]}, "computed_evidence_class": {"enum": ["legacy_unverified_payload", "verified_signed_replay_ledger"]}}},
+    "stepProof": {"type": "object", "additionalProperties": false, "required": ["step_id", "operator_id", "operator_version", "implementation_sha256", "input_digests", "input_kinds", "output_digest", "output_kind", "status"], "properties": {"step_id": {"type": "string"}, "operator_id": {"type": "string"}, "operator_version": {"const": "1.0.0"}, "implementation_sha256": {"$ref": "#/$defs/sha256"}, "input_digests": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/sha256"}}, "input_kinds": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$"}}, "output_digest": {"$ref": "#/$defs/sha256"}, "output_kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$"}, "status": {"const": "verified"}}},
+    "temporal": {"type": "object", "additionalProperties": false, "required": ["knowledge_cutoff", "valid_on", "actual_source_as_of", "time_policy"], "properties": {"knowledge_cutoff": {"type": ["string", "null"], "format": "date-time"}, "valid_on": {"type": ["string", "null"], "format": "date"}, "actual_source_as_of": {"type": ["string", "null"], "format": "date"}, "time_policy": {"enum": ["source_effective_date_equality", "separate_knowledge_and_valid_time", "not_applicable_registered_refusal"]}}},
+    "universe": {"type": "object", "additionalProperties": false, "required": ["status", "universe_release_id", "record_sha256", "member_count"], "properties": {"status": {"enum": ["not_applicable_registered_denominator_text_only", "not_applicable_structural_replay", "bound"]}, "universe_release_id": {"type": ["string", "null"]}, "record_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "member_count": {"type": ["integer", "null"], "minimum": 0}}},
+    "refusal": {"type": "object", "additionalProperties": false, "required": ["stage", "code"], "properties": {"stage": {"enum": ["plan", "contract", "source", "rights", "operator", "render", "proof"]}, "code": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$"}}}
+    ,"result": {"type": "object", "additionalProperties": false, "required": ["output_kind", "output_profile_id", "output"], "properties": {"output_kind": {"enum": ["descriptive_registered_answer", "structural_replay_report", "registered_refusal"]}, "output_profile_id": {"enum": ["legacy_registered_answer", "structural_replay_report", "registered_refusal"]}, "output": {"type": "object"}}}
+  },
+  "allOf": [
+    {"if": {"properties": {"execution_status": {"const": "succeeded"}}}, "then": {"properties": {"result": {"type": "object"}, "refusal": {"type": "null"}}}},
+    {"if": {"properties": {"execution_status": {"const": "refused"}}}, "then": {"properties": {"result": {"type": "null"}, "refusal": {"$ref": "#/$defs/refusal"}, "publication_eligible": {"const": false}}}}
+  ]
+}

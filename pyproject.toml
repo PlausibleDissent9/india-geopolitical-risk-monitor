@@ -43,6 +43,7 @@ packages = ["src"]
 target-version = "py39"
 line-length = 100
 src = ["src", "tests"]
+extend-exclude = ["validation/consequence_plan/replay_fixture"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]

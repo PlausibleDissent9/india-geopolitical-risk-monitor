@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1.0",
+  "default_policy": "deny",
+  "profiles": [
+    {
+      "output_profile_id": "legacy_registered_answer",
+      "output_kinds": ["descriptive_registered_answer", "registered_refusal"],
+      "renderer": "src/evidence_assistant.py:render_plan",
+      "allowed_template_ids": ["latest_headline", "channel_reading", "channel_comparison", "instrument_scope", "receipt_evidence", "current_receipt_evidence"],
+      "required_rights_uses": ["publish_derived_value", "cite_metadata"],
+      "publication_rule": "deny_until_sources_have_signed_rights"
+    },
+    {
+      "output_profile_id": "structural_replay_report",
+      "output_kinds": ["structural_replay_report"],
+      "renderer": "src/knowledge_replay.py:replay",
+      "allowed_template_ids": [],
+      "required_rights_uses": [],
+      "publication_rule": "signed_release_required"
+    },
+    {
+      "output_profile_id": "registered_refusal",
+      "output_kinds": ["registered_refusal"],
+      "renderer": "src/evidence_assistant.py:render_plan",
+      "allowed_template_ids": ["refusal_forbidden", "refusal_unsupported"],
+      "required_rights_uses": [],
+      "publication_rule": "refusal_only"
+    }
+  ]
+}

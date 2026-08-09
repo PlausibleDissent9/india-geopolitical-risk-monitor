@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/max-state-join.schema.json",
+  "title": "IGRM Max cross-engine governed-state join",
+  "description": "A sealed certificate that every joined IGRM Max engine output describes one release, one set of object identities, one rights position and one temporal boundary. Agreement is not accuracy, and the computed evidence class and licensed maturity level are never accepted from an input.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "release",
+    "contract",
+    "method",
+    "engines",
+    "identity",
+    "rights",
+    "temporal",
+    "coverage",
+    "result",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "max_state_join"},
+    "schema_version": {"const": "1.0.0"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release": {"$ref": "#/$defs/releaseIdentity"},
+    "contract": {"$ref": "#/$defs/contractIdentity"},
+    "method": {"$ref": "#/$defs/methodIdentity"},
+    "engines": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/engine"}
+    },
+    "identity": {"$ref": "#/$defs/identity"},
+    "rights": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 512,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/rightsPosition"}
+    },
+    "temporal": {"$ref": "#/$defs/temporal"},
+    "coverage": {
+      "type": "array",
+      "maxItems": 512,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/coverage"}
+    },
+    "result": {"$ref": "#/$defs/result"},
+    "limitations": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 12, "maxLength": 400}
+    }
+  },
+  "$defs": {
+    "releaseIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_id",
+        "record_sha256",
+        "generated_at",
+        "effective_date",
+        "release_signer_id",
+        "schema_registry_sha256",
+        "method_registry_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "release_signers_sha256"
+      ],
+      "properties": {
+        "release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "effective_date": {"$ref": "common.schema.json#/$defs/date"},
+        "release_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "schema_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "method_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "release_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "contractIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output_schema_id",
+        "output_schema_sha256",
+        "common_schema_sha256",
+        "join_registry_sha256"
+      ],
+      "properties": {
+        "output_schema_id": {
+          "const": "https://igrm.in/schemas/max-state-join.schema.json"
+        },
+        "output_schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "common_schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "join_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "methodIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_sha256"],
+      "properties": {
+        "method_id": {"const": "method:igrm.max_state_join"},
+        "version": {"const": "1.0.0"},
+        "implementation_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine_id",
+        "object_type",
+        "method_id",
+        "method_version",
+        "record_sha256",
+        "carries_release_identity"
+      ],
+      "properties": {
+        "engine_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$"},
+        "object_type": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$"},
+        "method_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "method_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "carries_release_identity": {"type": "boolean"}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bindings_examined", "distinct_identifiers", "collisions"],
+      "properties": {
+        "bindings_examined": {"type": "integer", "minimum": 1},
+        "distinct_identifiers": {"type": "integer", "minimum": 1},
+        "collisions": {
+          "description": "Always empty in a sealed join: a surviving collision is a refusal, never a reported field.",
+          "type": "array",
+          "maxItems": 0,
+          "items": false
+        }
+      }
+    },
+    "rightsPosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "decision_id",
+        "decision_artifact_sha256",
+        "signer_id"
+      ],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+        "decision_id": {"type": "string", "minLength": 3, "maxLength": 128},
+        "decision_artifact_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "signer_id": {"$ref": "common.schema.json#/$defs/stableId"}
+      }
+    },
+    "temporal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_generated_at", "knowledge_cutoffs"],
+      "properties": {
+        "release_generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "knowledge_cutoffs": {
+          "description": "Every distinct knowledge cutoff the joined engines used. None may be later than the release generation time.",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {"$ref": "common.schema.json#/$defs/utcDateTime"}
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["population_key", "denominator"],
+      "properties": {
+        "population_key": {"type": "string", "minLength": 3, "maxLength": 200},
+        "denominator": {"type": "integer", "minimum": 0}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "evidence_class",
+        "licensed_maturity",
+        "public_claim_state",
+        "numeric_fusion_performed",
+        "forecast_performed",
+        "probability_assigned",
+        "causal_attribution_performed",
+        "recommendation_generated",
+        "scalar_score_computed"
+      ],
+      "properties": {
+        "status": {"const": "one_governed_state"},
+        "evidence_class": {
+          "description": "Computed from the joined rights positions and the release source records. Never accepted from an input.",
+          "enum": ["synthetic_nonproduction", "observed"]
+        },
+        "licensed_maturity": {
+          "description": "The digital-twin maturity level the registered policy licenses for this evidence class. A synthetic world is L0.",
+          "enum": ["L0", "L1", "L2", "L3", "L4", "L5"]
+        },
+        "public_claim_state": {
+          "enum": ["contract_conformance_only", "requires_claim_bundle"]
+        },
+        "numeric_fusion_performed": {"const": false},
+        "forecast_performed": {"const": false},
+        "probability_assigned": {"const": false},
+        "causal_attribution_performed": {"const": false},
+        "recommendation_generated": {"const": false},
+        "scalar_score_computed": {"const": false}
+      }
+    }
+  }
+}

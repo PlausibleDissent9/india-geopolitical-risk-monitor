@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/sensor-fusion.schema.json",
+  "title": "IGRM semantically separated sensor-fusion matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "release",
+    "contract",
+    "method",
+    "query",
+    "event",
+    "lanes",
+    "excluded_evidence",
+    "counts",
+    "coverage",
+    "result",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "sensor_fusion"},
+    "schema_version": {"const": "1.0.0"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release": {"$ref": "#/$defs/releaseIdentity"},
+    "contract": {"$ref": "#/$defs/contractIdentity"},
+    "method": {"$ref": "#/$defs/methodIdentity"},
+    "query": {"$ref": "#/$defs/query"},
+    "event": {"$ref": "#/$defs/eventIdentity"},
+    "lanes": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/lane"}
+    },
+    "excluded_evidence": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/excludedEvidence"}
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registered_lanes",
+        "present_lanes",
+        "absent_lanes",
+        "event_evidence_links",
+        "eligible_observations",
+        "excluded_observations"
+      ],
+      "properties": {
+        "registered_lanes": {"const": 8},
+        "present_lanes": {"type": "integer", "minimum": 0, "maximum": 8},
+        "absent_lanes": {"type": "integer", "minimum": 0, "maximum": 8},
+        "event_evidence_links": {"type": "integer", "minimum": 1},
+        "eligible_observations": {"type": "integer", "minimum": 0},
+        "excluded_observations": {"type": "integer", "minimum": 0}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "denominator",
+        "observed_lane_ids",
+        "missing_lane_ids",
+        "fraction"
+      ],
+      "properties": {
+        "denominator": {"const": "eight_registered_semantic_lanes"},
+        "observed_lane_ids": {"$ref": "#/$defs/laneIdArray"},
+        "missing_lane_ids": {"$ref": "#/$defs/laneIdArray"},
+        "fraction": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "semantic_join", "numeric_fusion_performed"],
+      "properties": {
+        "status": {"enum": ["matrix_complete", "matrix_partial"]},
+        "semantic_join": {"const": "collation_only"},
+        "numeric_fusion_performed": {"const": false}
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$"}
+    }
+  },
+  "$defs": {
+    "laneId": {
+      "type": "string",
+      "enum": [
+        "official",
+        "news",
+        "coded_event",
+        "physical_transmission",
+        "trade_transmission",
+        "energy_transmission",
+        "market_transmission",
+        "public_attention"
+      ]
+    },
+    "laneIdArray": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/laneId"},
+      "uniqueItems": true
+    },
+    "releaseIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_id",
+        "record_sha256",
+        "generated_at",
+        "effective_date",
+        "release_signer_id",
+        "schema_registry_sha256",
+        "method_registry_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "release_signers_sha256"
+      ],
+      "properties": {
+        "release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "effective_date": {"$ref": "common.schema.json#/$defs/date"},
+        "release_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "schema_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "method_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "release_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "contractIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "schema_version",
+        "schema_sha256",
+        "common_schema_sha256",
+        "fusion_registry_sha256",
+        "lane_registry_sha256"
+      ],
+      "properties": {
+        "schema_id": {"const": "https://igrm.in/schemas/sensor-fusion.schema.json"},
+        "schema_version": {"const": "1.0.0"},
+        "schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "common_schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "fusion_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "lane_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "methodIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_sha256"],
+      "properties": {
+        "method_id": {"const": "method:igrm.sensor_fusion"},
+        "version": {"const": "1.0.0"},
+        "implementation_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "window_start",
+        "window_end",
+        "knowledge_cutoff",
+        "selection_rule",
+        "join_policy"
+      ],
+      "properties": {
+        "event_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "window_start": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "window_end": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "knowledge_cutoff": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "selection_rule": {"const": "event_linked_release_evidence_observed_in_window_and_retrieved_by_cutoff"},
+        "join_policy": {"const": "collate_only_never_average_or_convert"}
+      }
+    },
+    "eventIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "record_sha256",
+        "lifecycle_state",
+        "record_status",
+        "publication_phase",
+        "starts_at",
+        "first_known_at",
+        "last_verified_at"
+      ],
+      "properties": {
+        "event_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "lifecycle_state": {"$ref": "common.schema.json#/$defs/recordState"},
+        "record_status": {"enum": ["candidate", "confirmed", "disputed", "withdrawn"]},
+        "publication_phase": {"enum": ["provisional", "final"]},
+        "starts_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "first_known_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "last_verified_at": {"$ref": "common.schema.json#/$defs/utcDateTime"}
+      }
+    },
+    "lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lane_id",
+        "label",
+        "semantic_definition",
+        "state",
+        "observation_count",
+        "source_ids",
+        "observations"
+      ],
+      "properties": {
+        "lane_id": {"$ref": "#/$defs/laneId"},
+        "label": {"type": "string", "minLength": 1, "maxLength": 120},
+        "semantic_definition": {"type": "string", "minLength": 40, "maxLength": 500},
+        "state": {"enum": ["present", "absent"]},
+        "observation_count": {"type": "integer", "minimum": 0},
+        "source_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+        "observations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/observation"}
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "record_sha256",
+        "source_id",
+        "source_role",
+        "evidence_type",
+        "event_link_roles",
+        "verification_status",
+        "observed_at",
+        "effective_start",
+        "effective_end",
+        "retrieved_at",
+        "content_sha256",
+        "rights_decision_id",
+        "rights_use",
+        "privacy_class"
+      ],
+      "properties": {
+        "evidence_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "source_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "source_role": {"type": "string", "minLength": 1, "maxLength": 120},
+        "evidence_type": {"type": "string", "minLength": 1, "maxLength": 120},
+        "event_link_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["official_confirmation", "corroborates", "allegation", "contradicts", "context", "correction"]}
+        },
+        "verification_status": {"enum": ["unverified", "single_source", "independently_corroborated", "official_record", "disputed", "withdrawn"]},
+        "observed_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "effective_start": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "effective_end": {"$ref": "common.schema.json#/$defs/nullableDateTime"},
+        "retrieved_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "content_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_decision_id": {"type": "string", "minLength": 1, "maxLength": 200},
+        "rights_use": {"type": "string", "minLength": 1, "maxLength": 120},
+        "privacy_class": {"enum": ["public", "public_with_redactions", "restricted", "prohibited"]}
+      }
+    },
+    "excludedEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "record_sha256", "source_id", "lane_id", "reason"],
+      "properties": {
+        "evidence_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "source_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "lane_id": {"$ref": "#/$defs/laneId"},
+        "reason": {"enum": ["inactive_evidence", "retrieved_after_knowledge_cutoff", "outside_observation_window"]}
+      }
+    }
+  }
+}

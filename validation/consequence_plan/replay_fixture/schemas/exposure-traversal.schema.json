@@ -1,0 +1,521 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/exposure-traversal.schema.json",
+  "title": "IGRM canonical-release exposure traversal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "release",
+    "contract",
+    "method",
+    "query",
+    "event",
+    "target",
+    "projection_counts",
+    "paths",
+    "coverage",
+    "object_evidence",
+    "evidence",
+    "rights",
+    "result",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "exposure_traversal"},
+    "schema_version": {"const": "1.0.0"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_id",
+        "record_sha256",
+        "effective_date",
+        "release_signer_id",
+        "schema_registry_sha256",
+        "method_registry_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "release_signers_sha256"
+      ],
+      "properties": {
+        "release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "effective_date": {"$ref": "common.schema.json#/$defs/date"},
+        "release_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "schema_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "method_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "release_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "schema_version",
+        "schema_sha256",
+        "common_schema_sha256",
+        "projection_registry_sha256"
+      ],
+      "properties": {
+        "schema_id": {"const": "https://igrm.in/schemas/exposure-traversal.schema.json"},
+        "schema_version": {"const": "1.0.0"},
+        "schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "common_schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "projection_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_sha256"],
+      "properties": {
+        "method_id": {"const": "method:igrm.exposure_graph_projection"},
+        "version": {"const": "1.0.0"},
+        "implementation_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "target_entity_id",
+        "max_hops",
+        "max_paths",
+        "selection_rule",
+        "temporal_basis",
+        "event_edge_temporal_relation"
+      ],
+      "properties": {
+        "event_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "target_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "max_hops": {"type": "integer", "minimum": 1, "maximum": 6},
+        "max_paths": {"type": "integer", "minimum": 1, "maximum": 100},
+        "selection_rule": {"const": "bounded_breadth_first_stored_direction_simple_paths"},
+        "temporal_basis": {"const": "canonical_release_effective_date"},
+        "event_edge_temporal_relation": {"const": "event_entities_to_release_effective_graph"}
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "record_sha256",
+        "lifecycle_state",
+        "record_status",
+        "publication_phase",
+        "starts_at",
+        "ends_at",
+        "first_known_at",
+        "last_verified_at",
+        "evidence_links",
+        "entry_entities"
+      ],
+      "properties": {
+        "event_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "lifecycle_state": {"const": "active"},
+        "record_status": {"enum": ["candidate", "confirmed", "disputed"]},
+        "publication_phase": {"enum": ["provisional", "final"]},
+        "starts_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "ends_at": {"$ref": "common.schema.json#/$defs/nullableDateTime"},
+        "first_known_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "last_verified_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "evidence_links": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/eventEvidenceLink"}
+        },
+        "entry_entities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/entryEntity"}
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_id",
+        "record_sha256",
+        "entity_type",
+        "lifecycle_state",
+        "effective_on_release"
+      ],
+      "properties": {
+        "entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "entity_type": {"$ref": "#/$defs/entityType"},
+        "lifecycle_state": {"$ref": "common.schema.json#/$defs/recordState"},
+        "effective_on_release": {"type": "boolean"}
+      }
+    },
+    "projection_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_records_total",
+        "entity_records_effective",
+        "universe_records_total",
+        "universe_records_eligible",
+        "edge_records_total",
+        "edge_records_projected",
+        "edge_records_lifecycle_excluded",
+        "edge_records_temporal_excluded"
+      ],
+      "properties": {
+        "entity_records_total": {"type": "integer", "minimum": 0},
+        "entity_records_effective": {"type": "integer", "minimum": 0},
+        "universe_records_total": {"type": "integer", "minimum": 0},
+        "universe_records_eligible": {"type": "integer", "minimum": 0},
+        "edge_records_total": {"type": "integer", "minimum": 0},
+        "edge_records_projected": {"type": "integer", "minimum": 0},
+        "edge_records_lifecycle_excluded": {"type": "integer", "minimum": 0},
+        "edge_records_temporal_excluded": {"type": "integer", "minimum": 0}
+      }
+    },
+    "paths": {
+      "type": "array",
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/exposurePath"}
+    },
+    "coverage": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/coverage"}
+    },
+    "object_evidence": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/objectEvidence"}
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/evidenceBinding"}
+    },
+    "rights": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/rightsBinding"}
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "returned_paths", "truncated"],
+      "properties": {
+        "status": {"enum": ["paths_found", "no_path"]},
+        "returned_paths": {"type": "integer", "minimum": 0, "maximum": 100},
+        "truncated": {"type": "boolean"}
+      }
+    },
+    "limitations": {
+      "allOf": [
+        {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+        {"contains": {"const": "structural_connection_not_causation"}},
+        {"contains": {"const": "exposure_not_realized_loss"}},
+        {"contains": {"const": "magnitude_values_not_rendered"}},
+        {"contains": {"const": "stored_edge_direction_only"}},
+        {"contains": {"const": "event_status_not_ground_truth"}}
+      ]
+    }
+  },
+  "$defs": {
+    "entityType": {
+      "type": "string",
+      "enum": [
+        "country",
+        "government_actor",
+        "organization",
+        "ministry",
+        "state_or_ut",
+        "district",
+        "sector",
+        "company",
+        "critical_asset",
+        "route",
+        "chokepoint",
+        "port",
+        "border_crossing",
+        "commodity",
+        "technology",
+        "treaty",
+        "sanction_regime",
+        "market_instrument"
+      ]
+    },
+    "eventEvidenceLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "role", "asserted_at"],
+      "properties": {
+        "evidence_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "role": {
+          "enum": [
+            "official_confirmation",
+            "corroborates",
+            "allegation",
+            "contradicts",
+            "context",
+            "correction"
+          ]
+        },
+        "asserted_at": {"$ref": "common.schema.json#/$defs/utcDateTime"}
+      }
+    },
+    "entryEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_id",
+        "record_sha256",
+        "entity_type",
+        "lifecycle_state",
+        "effective_on_release",
+        "roles",
+        "location_evidence_ids"
+      ],
+      "properties": {
+        "entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "entity_type": {"$ref": "#/$defs/entityType"},
+        "lifecycle_state": {"$ref": "common.schema.json#/$defs/recordState"},
+        "effective_on_release": {"type": "boolean"},
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "actor",
+              "target",
+              "affected",
+              "location_primary",
+              "location_origin",
+              "location_destination",
+              "location_affected",
+              "location_claimed"
+            ]
+          }
+        },
+        "location_evidence_ids": {"$ref": "common.schema.json#/$defs/idArray"}
+      }
+    },
+    "universeCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total_eligible", "included", "excluded", "unmappable", "stale"],
+      "properties": {
+        "total_eligible": {"type": "integer", "minimum": 1},
+        "included": {"type": "integer", "minimum": 0},
+        "excluded": {"type": "integer", "minimum": 0},
+        "unmappable": {"type": "integer", "minimum": 0},
+        "stale": {"type": "integer", "minimum": 0}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "universe_release_id",
+        "record_sha256",
+        "entity_type",
+        "reference_date",
+        "covered_entity_id",
+        "member_status",
+        "counts"
+      ],
+      "properties": {
+        "universe_release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "entity_type": {"$ref": "#/$defs/entityType"},
+        "reference_date": {"$ref": "common.schema.json#/$defs/date"},
+        "covered_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "member_status": {"const": "included"},
+        "counts": {"$ref": "#/$defs/universeCounts"}
+      }
+    },
+    "hop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edge_id",
+        "record_sha256",
+        "source_entity_id",
+        "target_entity_id",
+        "edge_type",
+        "exposure_direction",
+        "quantification_status",
+        "effective_start",
+        "effective_end",
+        "observed_at",
+        "coverage",
+        "evidence_ids",
+        "limitation_codes"
+      ],
+      "properties": {
+        "edge_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "source_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "target_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "edge_type": {
+          "enum": [
+            "import_dependence",
+            "export_dependence",
+            "freight_dependence",
+            "energy_dependence",
+            "supplier_concentration",
+            "ownership",
+            "operational_presence",
+            "border_proximity",
+            "treaty_obligation",
+            "sanctions_reach",
+            "cyber_dependency",
+            "policy_jurisdiction",
+            "input_dependency",
+            "route_dependency",
+            "technology_dependency"
+          ]
+        },
+        "exposure_direction": {
+          "enum": [
+            "inbound_to_india",
+            "outbound_from_india",
+            "bidirectional",
+            "jurisdictional",
+            "non_directional"
+          ]
+        },
+        "quantification_status": {"enum": ["quantified", "qualitative", "unknown"]},
+        "effective_start": {"$ref": "common.schema.json#/$defs/date"},
+        "effective_end": {"$ref": "common.schema.json#/$defs/nullableDate"},
+        "observed_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "coverage": {"$ref": "#/$defs/coverage"},
+        "evidence_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+        "limitation_codes": {"$ref": "common.schema.json#/$defs/idArray"}
+      }
+    },
+    "exposurePath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_entity_id",
+        "entry_roles",
+        "entity_ids",
+        "edge_ids",
+        "hops",
+        "limitation_codes"
+      ],
+      "properties": {
+        "entry_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "entry_roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/entryRole"}},
+        "entity_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+        "edge_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+        "hops": {"type": "array", "maxItems": 6, "items": {"$ref": "#/$defs/hop"}},
+        "limitation_codes": {"$ref": "common.schema.json#/$defs/idArray"}
+      }
+    },
+    "entryRole": {
+      "type": "string",
+      "enum": [
+        "actor",
+        "target",
+        "affected",
+        "location_primary",
+        "location_origin",
+        "location_destination",
+        "location_affected",
+        "location_claimed"
+      ]
+    },
+    "objectEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256", "evidence_ids"],
+      "properties": {
+        "object_type": {"enum": ["event", "entity", "exposure_edge", "universe_release"]},
+        "object_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "evidence_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+      }
+    },
+    "evidenceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "record_sha256",
+        "source_id",
+        "rights_use",
+        "rights_decision_id",
+        "content_sha256",
+        "content_availability",
+        "privacy_class",
+        "verification_status"
+      ],
+      "properties": {
+        "evidence_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "source_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "rights_use": {
+          "enum": [
+            "cite_metadata",
+            "model_processing",
+            "publish_derived_value",
+            "publish_extract",
+            "redistribute_full_record"
+          ]
+        },
+        "rights_decision_id": {"type": "string", "minLength": 1, "maxLength": 200},
+        "content_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "content_availability": {"enum": ["full_bytes", "public_extract", "hash_metadata_only", "restricted"]},
+        "privacy_class": {"enum": ["public", "public_with_redactions", "restricted", "prohibited"]},
+        "verification_status": {
+          "enum": [
+            "unverified",
+            "single_source",
+            "independently_corroborated",
+            "official_record",
+            "disputed",
+            "withdrawn"
+          ]
+        }
+      }
+    },
+    "rightsBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "decision_id",
+        "decision_artifact_sha256",
+        "signer_id",
+        "independence_group",
+        "authority_class"
+      ],
+      "properties": {
+        "source_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "decision_id": {"type": "string", "minLength": 1, "maxLength": 200},
+        "decision_artifact_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "independence_group": {"$ref": "common.schema.json#/$defs/stableId"},
+        "authority_class": {"type": "string", "minLength": 1, "maxLength": 100}
+      }
+    }
+  }
+}

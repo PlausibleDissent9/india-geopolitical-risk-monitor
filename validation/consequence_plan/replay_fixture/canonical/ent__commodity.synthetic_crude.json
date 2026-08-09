@@ -1,0 +1,56 @@
+{
+  "object_type": "entity",
+  "schema_version": "1.0.0",
+  "entity_id": "ent:commodity.synthetic_crude",
+  "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2",
+  "lifecycle": {
+    "revision": 1,
+    "state": "active",
+    "supersedes_id": null,
+    "superseded_by": null,
+    "correction_id": null
+  },
+  "entity_type": "commodity",
+  "canonical_name": "Synthetic crude oil",
+  "aliases": [],
+  "identifiers": [
+    {
+      "scheme": "oges_fixture",
+      "value": "commodity.synthetic_crude",
+      "effective_start": null,
+      "effective_end": null,
+      "evidence_ids": [
+        "evd:oges.fixture.official.001"
+      ]
+    }
+  ],
+  "parent_entity_ids": [],
+  "jurisdiction_entity_ids": [],
+  "geometry": {
+    "artifact_path": null,
+    "artifact_sha256": null,
+    "geometry_type": "none",
+    "precision": "not_applicable"
+  },
+  "effective_start": null,
+  "effective_end": null,
+  "identity_status": "authoritative",
+  "provenance": {
+    "created_at": "2026-08-08T12:00:00Z",
+    "created_by": "system:oges.fixture_builder",
+    "reviewed_by": [],
+    "adjudication_status": "unreviewed",
+    "source_ids": [
+      "oges_fixture_source"
+    ],
+    "evidence_ids": [
+      "evd:oges.fixture.official.001"
+    ],
+    "method": {
+      "method_id": "method:oges.fixture.direct",
+      "version": "1.0.0",
+      "implementation_sha256": "e4b4604bf403651b295467aed576d8f20514ae575be35d842cfddb7437b926db",
+      "run_id": "run:oges.fixture.001"
+    }
+  }
+}

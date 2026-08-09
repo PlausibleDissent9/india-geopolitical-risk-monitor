@@ -1,0 +1,39 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:consequence_plan",
+  "version": "0.1.0",
+  "effective": "2026-08-09",
+  "status": "public_draft_synthetic_reference_no_adoption_claim",
+  "base_standard": {
+    "version": "0.1.0",
+    "profile_path": "standard/oges/0.1.0/profile.json",
+    "profile_sha256": "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2"
+  },
+  "specification": {
+    "path": "standard/oges/extensions/consequence-plan/0.1.0/SPEC.md",
+    "sha256": "9b1a9a368ad352fcd040f73521658b7f07fc07ecdebbffee6c70c78656bbafbd"
+  },
+  "normative_files": [
+    {"kind": "plan_schema", "path": "standard/oges/extensions/consequence-plan/0.1.0/consequence-plan.schema.json", "sha256": "dbc75eff40be4d1605e959c21ee1a7dccaaeecf3872e122fba88078c59848d9a"},
+    {"kind": "execution_schema", "path": "standard/oges/extensions/consequence-plan/0.1.0/consequence-execution.schema.json", "sha256": "cca3cadcbf7bc1d01fdde22ab58917fdca1c9d791ef36b24bdcf73d01676c98f"},
+    {"kind": "operator_registry", "path": "standard/oges/extensions/consequence-plan/0.1.0/operator-registry.json", "sha256": "a5e4740bb25038bbaa9e317c95b5b3544742a7b22cd99613ddd054492e9ebb3a"},
+    {"kind": "output_profile_registry", "path": "standard/oges/extensions/consequence-plan/0.1.0/output-profile-registry.json", "sha256": "4b76ca4c9a5b02ed4901f2689b41df5006f4cbc15169dd23207a1c78a7162579"},
+    {"kind": "source_registry", "path": "standard/oges/extensions/consequence-plan/0.1.0/source-registry.json", "sha256": "b68d1fa3437f929e3fffecc9d9aaf8f3f72da0b5c0c17684004cf7c49bea1695"},
+    {"kind": "fact_catalog", "path": "standard/oges/extensions/consequence-plan/0.1.0/fact-catalog.json", "sha256": "11401c94ff4b66a76cb757e1e6cfd9f5eeef7869cb9c198a94d25cb8f1b2dc5b"},
+    {"kind": "typed_canonical_fixture", "path": "validation/event_ledger_canonicalization.json", "sha256": "405c30bfc8668bc5842d6e33e5e31660c0f0f18b0fd8fa40929621eb061c5442"},
+    {"kind": "adversarial_cases", "path": "standard/oges/extensions/consequence-plan/0.1.0/adversarial-cases.json", "sha256": "060e8dc638be686dbb448fad9d36df5539d8567e280c093ba8391d5cfe2d80d4"}
+  ],
+  "reference_implementation": {
+    "path": "src/consequence_plan.py",
+    "sha256": "4ba82b67f932119c9e10f3e691fc92cd99ac9fee012707b497064d83503ce9c8"
+  },
+  "profiles": ["legacy_assistant_answer", "knowledge_replay_query", "registered_refusal"],
+  "production_endpoint": false,
+  "claim_boundary": [
+    "Conformance proves exact registered execution or refusal only.",
+    "It does not establish source truth, consequence, causality, completeness, forecast skill, probability, recommendation or risk score.",
+    "Current assistant payloads remain rights-unverified and are not publication eligible.",
+    "The reference replay is synthetic and non-production.",
+    "An execution envelope is self-hashed but not authenticated until included in an independently signed release."
+  ]
+}

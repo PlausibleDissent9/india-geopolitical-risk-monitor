@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "oges_fixture_source",
+  "name": "OGES synthetic official source",
+  "provider": "OGES conformance fixture",
+  "role": "official_test_evidence",
+  "authority_class": "official_primary",
+  "independence_group": "oges_fixture_provider",
+  "decision_id": "oges-fixture-decision-2026-08-08",
+  "decision_owner": "OGES public test vector",
+  "signer_id": "signer:oges.fixture.rights",
+  "reviewed_on": "2026-08-08",
+  "review_due": "2027-08-08",
+  "access_url": "https://example.test/oges-fixture/source",
+  "terms_url": "https://example.test/oges-fixture/terms",
+  "access_basis": "synthetic_test_authorization",
+  "lineage_policy": "primary",
+  "max_current_age_days": 30,
+  "permitted_uses": [
+    "cite_metadata"
+  ],
+  "statement": "Synthetic authorization for one metadata-only test release."
+}

@@ -1,0 +1,15 @@
+{
+  "object_type": "universe_frame",
+  "schema_version": "1.0.0",
+  "record_sha256": "330af249b90ce10f520479debba590cbf174f2bb6c6620ef7fdbbe712a7fb67d",
+  "universe_id": "universe:oges.fixture.commodities",
+  "entity_type": "commodity",
+  "reference_date": "2026-08-08",
+  "source_evidence_id": "evd:oges.fixture.official.001",
+  "source_version": "synthetic-v1",
+  "extraction_query": "all rows in the one-row synthetic source frame",
+  "extracted_at": "2026-08-08T11:30:00Z",
+  "entity_ids": [
+    "ent:commodity.synthetic_crude"
+  ]
+}

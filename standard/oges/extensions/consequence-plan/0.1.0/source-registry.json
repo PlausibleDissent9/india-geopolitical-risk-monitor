@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1.0",
+  "default_policy": "deny",
+  "sources": [
+    {
+      "source_registry_id": "source:igrm.latest_payload",
+      "artifact_id": "artifact:igrm.latest_json",
+      "binding_kind": "registered_payload",
+      "path": "docs/data/latest.json",
+      "rights_state": "review_required",
+      "permitted_uses": []
+    },
+    {
+      "source_registry_id": "source:igrm.receipts_payload",
+      "artifact_id": "artifact:igrm.receipts_json",
+      "binding_kind": "registered_payload",
+      "path": "docs/data/receipts.json",
+      "rights_state": "review_required",
+      "permitted_uses": []
+    },
+    {
+      "source_registry_id": "source:fixture.knowledge_replay_v1",
+      "artifact_id": "artifact:fixture.knowledge_replay_ledger_v1",
+      "binding_kind": "signed_replay_ledger",
+      "path": "validation/consequence_plan/replay_fixture/knowledge/ledger.json",
+      "registered_file_sha256": "14ed4bb73afbcf9261c685a526ae1a3cd9933f58540bd47b9088dc27c03739f3",
+      "fixture_root": "validation/consequence_plan/replay_fixture",
+      "replay_registry_path": "governance/knowledge_replay_registry.json",
+      "knowledge_signers_path": "governance/knowledge_replay_signers.json",
+      "rights_state": "synthetic_fixture",
+      "permitted_uses": []
+    }
+  ]
+}

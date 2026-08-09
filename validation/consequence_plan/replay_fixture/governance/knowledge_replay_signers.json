@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "signers": [
+    {
+      "signer_id": "signer:knowledge.availability.fixture",
+      "name": "Knowledge availability public test-vector signer",
+      "roles": [
+        "knowledge_availability_signer"
+      ],
+      "public_key_ed25519_base64": "597spwEb99vS7MnxguXcggqd40NR+4F5H8/FD+RFILM=",
+      "effective": "2026-08-08",
+      "revoked_on": null
+    },
+    {
+      "signer_id": "signer:knowledge.ledger.fixture",
+      "name": "Knowledge ledger public test-vector signer",
+      "roles": [
+        "knowledge_ledger_signer"
+      ],
+      "public_key_ed25519_base64": "Tb0efwGHUirwi/NMVN9ryRKeHxLOwZLPZeaOMZhBcKo=",
+      "effective": "2026-08-08",
+      "revoked_on": null
+    }
+  ]
+}

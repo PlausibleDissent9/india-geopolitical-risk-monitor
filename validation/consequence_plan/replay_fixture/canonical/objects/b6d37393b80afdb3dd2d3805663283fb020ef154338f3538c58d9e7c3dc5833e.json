@@ -1,0 +1,78 @@
+{
+  "object_type": "exposure_edge",
+  "schema_version": "1.0.0",
+  "edge_id": "edg:oges.fixture.origin_crude.001",
+  "record_sha256": "2cf03fae03288b3db6fe09e0320704878c11c82c0fb714658788995433c74708",
+  "lifecycle": {
+    "revision": 1,
+    "state": "active",
+    "supersedes_id": null,
+    "superseded_by": null,
+    "correction_id": null
+  },
+  "source_entity_id": "ent:country.synthetic_origin",
+  "target_entity_id": "ent:commodity.synthetic_crude",
+  "edge_type": "import_dependence",
+  "exposure_direction": "inbound_to_india",
+  "quantification_status": "quantified",
+  "magnitude": {
+    "value": 12.5,
+    "unit": "percent_of_import_volume",
+    "denominator": "total synthetic crude-oil import volume in the period",
+    "period_start": "2026-01-01",
+    "period_end": "2026-06-30",
+    "currency": null,
+    "price_basis": null,
+    "uncertainty": {
+      "status": "interval",
+      "meaning": "Synthetic test interval.",
+      "lower": 10.0,
+      "upper": 15.0,
+      "category": null
+    }
+  },
+  "derivation_type": "calculated",
+  "effective_start": "2026-06-30",
+  "effective_end": null,
+  "observed_at": "2026-08-08T10:00:00Z",
+  "coverage_basis": {
+    "universe_release_id": "unv:oges.fixture.commodities.1",
+    "covered_entity_id": "ent:commodity.synthetic_crude",
+    "member_status": "included"
+  },
+  "evidence_ids": [
+    "evd:oges.fixture.official.001"
+  ],
+  "method": {
+    "method_id": "method:oges.fixture.exposure",
+    "version": "1.0.0",
+    "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+    "run_id": "run:oges.fixture.001"
+  },
+  "confidence": {
+    "status": "categorical",
+    "meaning": "Synthetic evidence confidence, not a probability.",
+    "lower": null,
+    "upper": null,
+    "category": "test_only"
+  },
+  "limitation_codes": [],
+  "provenance": {
+    "created_at": "2026-08-08T12:00:00Z",
+    "created_by": "system:oges.fixture_builder",
+    "reviewed_by": [],
+    "adjudication_status": "unreviewed",
+    "source_ids": [
+      "oges_fixture_source"
+    ],
+    "evidence_ids": [
+      "evd:oges.fixture.official.001"
+    ],
+    "method": {
+      "method_id": "method:oges.fixture.exposure",
+      "version": "1.0.0",
+      "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+      "run_id": "run:oges.fixture.001"
+    }
+  }
+}

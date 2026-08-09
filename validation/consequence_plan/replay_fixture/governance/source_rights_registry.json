@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "sources": [
+    {
+      "source_id": "oges_fixture_source",
+      "name": "OGES synthetic official source",
+      "provider": "OGES conformance fixture",
+      "role": "official_test_evidence",
+      "authority_class": "official_primary",
+      "independence_group": "oges_fixture_provider",
+      "lineage_policy": "primary",
+      "decision_state": "approved",
+      "decision_id": "oges-fixture-decision-2026-08-08",
+      "decision_owner": "OGES public test vector",
+      "signer_id": "signer:oges.fixture.rights",
+      "decision_artifact_path": "governance/rights_decisions/oges_fixture_source.json",
+      "decision_artifact_sha256": "072f57a4db318e9fb18ad2326e5153a2856c6b3a159f5a92dfb6c21b312d3590",
+      "decision_signature_path": "governance/rights_decisions/oges_fixture_source.sig",
+      "reviewed_on": "2026-08-08",
+      "review_due": "2027-08-08",
+      "access_url": "https://example.test/oges-fixture/source",
+      "terms_url": "https://example.test/oges-fixture/terms",
+      "access_basis": "synthetic_test_authorization",
+      "geographic_coverage": "One synthetic test frame",
+      "historical_coverage": "One synthetic date",
+      "retrieval_target": "One deterministic metadata-only fixture",
+      "outage_fallback": "Fail closed",
+      "cost_owner": "Synthetic test owner",
+      "reproducibility_tier": "open_synthetic_fixture",
+      "max_current_age_days": 30,
+      "permitted_uses": [
+        "cite_metadata"
+      ],
+      "notes": "Public test vector only; never a real legal or source decision."
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1.0",
+  "default_policy": "deny",
+  "dependencies": [
+    {"path": "src/event_ledger.py", "sha256": "66d2ec85f88a87c1cacc4c03a0ae271c24a4decb9d52557c6ffedf10d859977a", "role": "typed_canonical_encoder"},
+    {"path": "src/evidence_assistant.py", "sha256": "5b7f41ad7ed510609fd7ab3debf3a73fdb5f7464d8a31fdfc7ed777ea1521b3e", "role": "legacy_answer_engine"},
+    {"path": "src/knowledge_replay.py", "sha256": "3ef7790be23349350b3d87195709a5d438c443a85a077c4662f64fb3b79fd7b8", "role": "signed_replay_engine"},
+    {"path": "validation/event_ledger_canonicalization.json", "sha256": "405c30bfc8668bc5842d6e33e5e31660c0f0f18b0fd8fa40929621eb061c5442", "role": "cross_runtime_typed_fixture"}
+  ],
+  "operators": [
+    {
+      "operator_id": "op:igrm.select_registered_facts",
+      "version": "1.0.0",
+      "implementation_path": "src/consequence_plan.py",
+      "implementation_sha256": "4ba82b67f932119c9e10f3e691fc92cd99ac9fee012707b497064d83503ce9c8",
+      "input_kind_sequences": [["registered_payload", "registered_fact_reference_set"], ["registered_payload", "registered_payload", "registered_fact_reference_set"]],
+      "output_kinds": ["integrity_verified_payload_fact_set"],
+      "required_rights_uses": [],
+      "time_rule": "source_effective_date_from_opened_bytes",
+      "max_cardinality": 32
+    },
+    {
+      "operator_id": "op:igrm.assert_same_effective_date",
+      "version": "1.0.0",
+      "implementation_path": "src/consequence_plan.py",
+      "implementation_sha256": "4ba82b67f932119c9e10f3e691fc92cd99ac9fee012707b497064d83503ce9c8",
+      "input_kind_sequences": [["integrity_verified_payload_fact_set"]],
+      "output_kinds": ["same_effective_date_fact_set", "registered_refusal"],
+      "required_rights_uses": [],
+      "time_rule": "exact_source_effective_date_equality_or_registered_refusal",
+      "max_cardinality": 32
+    },
+    {
+      "operator_id": "op:igrm.render_registered_template",
+      "version": "1.0.0",
+      "implementation_path": "src/consequence_plan.py",
+      "implementation_sha256": "4ba82b67f932119c9e10f3e691fc92cd99ac9fee012707b497064d83503ce9c8",
+      "input_kind_sequences": [["same_effective_date_fact_set"], ["registered_refusal"]],
+      "output_kinds": ["descriptive_registered_answer", "registered_refusal"],
+      "required_rights_uses": ["publish_derived_value", "cite_metadata"],
+      "time_rule": "preserve_verified_source_effective_date_or_refusal",
+      "max_cardinality": 1
+    },
+    {
+      "operator_id": "op:igrm.select_signed_replay_state",
+      "version": "1.0.0",
+      "implementation_path": "src/consequence_plan.py",
+      "implementation_sha256": "4ba82b67f932119c9e10f3e691fc92cd99ac9fee012707b497064d83503ce9c8",
+      "input_kind_sequences": [["verified_signed_replay_ledger", "registered_replay_request"]],
+      "output_kinds": ["bitemporal_state_selection"],
+      "required_rights_uses": [],
+      "time_rule": "knowledge_cutoff_and_valid_on_remain_distinct",
+      "max_cardinality": 1000
+    },
+    {
+      "operator_id": "op:igrm.render_structural_replay",
+      "version": "1.0.0",
+      "implementation_path": "src/consequence_plan.py",
+      "implementation_sha256": "4ba82b67f932119c9e10f3e691fc92cd99ac9fee012707b497064d83503ce9c8",
+      "input_kind_sequences": [["bitemporal_state_selection"]],
+      "output_kinds": ["structural_replay_report"],
+      "required_rights_uses": [],
+      "time_rule": "preserve_replay_query_and_selected_receipt_time",
+      "max_cardinality": 1
+    },
+    {
+      "operator_id": "op:igrm.emit_registered_refusal",
+      "version": "1.0.0",
+      "implementation_path": "src/consequence_plan.py",
+      "implementation_sha256": "4ba82b67f932119c9e10f3e691fc92cd99ac9fee012707b497064d83503ce9c8",
+      "input_kind_sequences": [["registered_refusal_code"]],
+      "output_kinds": ["registered_refusal"],
+      "required_rights_uses": [],
+      "time_rule": "not_applicable",
+      "max_cardinality": 1
+    }
+  ]
+}

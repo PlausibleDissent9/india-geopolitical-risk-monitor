@@ -1,0 +1,9 @@
+{
+  "schema_version": "0.1.0",
+  "catalog_id": "igrm-evidence-assistant-facts-v1",
+  "implementation_path": "src/evidence_assistant.py",
+  "implementation_sha256": "5b7f41ad7ed510609fd7ab3debf3a73fdb5f7464d8a31fdfc7ed777ea1521b3e",
+  "fact_count": 149,
+  "canonical_fact_specs_sha256": "77b8e55d43cfad792815587779907e7d4e6f72a4ec0ca59e0c811f7262a1fca7",
+  "boundary": "Identifiers and registered source/pointer/type/unit/denominator/citation metadata only; no fact values."
+}

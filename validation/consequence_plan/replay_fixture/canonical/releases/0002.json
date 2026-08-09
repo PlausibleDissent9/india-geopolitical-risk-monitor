@@ -1,0 +1,90 @@
+{
+  "object_type": "canonical_release",
+  "schema_version": "1.0.0",
+  "release_id": "rel:oges.fixture.2026-08-09",
+  "record_sha256": "b92e58bdf19aa8fbe795f22ce32501edc2934f57e218a985ca9c081ba01036b7",
+  "generated_at": "2026-08-09T13:00:00Z",
+  "effective_date": "2026-08-09",
+  "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
+  "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+  "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+  "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+  "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3",
+  "release_signer_id": "signer:oges.fixture.release",
+  "release_signature_path": "canonical/releases/0002.sig",
+  "rights_snapshot": [
+    {
+      "source_id": "oges_fixture_source",
+      "decision_id": "oges-fixture-decision-2026-08-08",
+      "decision_artifact_sha256": "072f57a4db318e9fb18ad2326e5153a2856c6b3a159f5a92dfb6c21b312d3590",
+      "signer_id": "signer:oges.fixture.rights",
+      "independence_group": "oges_fixture_provider",
+      "authority_class": "official_primary"
+    }
+  ],
+  "objects": [
+    {
+      "object_type": "entity",
+      "object_id": "ent:commodity.synthetic_crude",
+      "path": "canonical/objects/5ad5b97d422d8cd117075a90767bbdb24609c159fd1fad080a89946e9cccbec3.json",
+      "file_sha256": "5ad5b97d422d8cd117075a90767bbdb24609c159fd1fad080a89946e9cccbec3",
+      "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2"
+    },
+    {
+      "object_type": "entity",
+      "object_id": "ent:country.synthetic_india",
+      "path": "canonical/objects/c92e76b7153dd213e495019e4f488477c82703d1961e34525b75557a35d3ba1c.json",
+      "file_sha256": "c92e76b7153dd213e495019e4f488477c82703d1961e34525b75557a35d3ba1c",
+      "record_sha256": "cfb572e0a3b419ed7b8490067f0f2813d3d515c55d56b7b7d256279e090fbb9b"
+    },
+    {
+      "object_type": "entity",
+      "object_id": "ent:country.synthetic_origin",
+      "path": "canonical/objects/99be22f0b375dd576fc2afa0bb403ed18f839edda3ee1938c9a6ad5e9a6231db.json",
+      "file_sha256": "99be22f0b375dd576fc2afa0bb403ed18f839edda3ee1938c9a6ad5e9a6231db",
+      "record_sha256": "d1bdfbdbf915e67238c5f16bdde3ae6da05c1812a2abf62402e5444c366530ec"
+    },
+    {
+      "object_type": "event",
+      "object_id": "evt:oges.fixture.policy.002",
+      "path": "canonical/objects/843aec9be5dbcac01897b4308311f13e19f1ef1018ea2f9d5a90f61e1400699a.json",
+      "file_sha256": "843aec9be5dbcac01897b4308311f13e19f1ef1018ea2f9d5a90f61e1400699a",
+      "record_sha256": "48dce02f570d36dfba32114b91b663dbddba82f7b09a4e7b630881122e427122"
+    },
+    {
+      "object_type": "evidence_item",
+      "object_id": "evd:oges.fixture.correction.002",
+      "path": "canonical/objects/6a1605348bbf43d3220e4e57e59e1058869e10901e1c529859964a6ea34b24ff.json",
+      "file_sha256": "6a1605348bbf43d3220e4e57e59e1058869e10901e1c529859964a6ea34b24ff",
+      "record_sha256": "ad4eec87fc06c8867ca4bea63734c3fec60f733d15809337c5bf8ecc799a4bc3"
+    },
+    {
+      "object_type": "evidence_item",
+      "object_id": "evd:oges.fixture.official.001",
+      "path": "canonical/objects/d160a5f01d48d97c2ec90faaeca1e040d92482c7bc78ba27c312aa7c407b3096.json",
+      "file_sha256": "d160a5f01d48d97c2ec90faaeca1e040d92482c7bc78ba27c312aa7c407b3096",
+      "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b"
+    },
+    {
+      "object_type": "exposure_edge",
+      "object_id": "edg:oges.fixture.origin_crude.001",
+      "path": "canonical/objects/b6d37393b80afdb3dd2d3805663283fb020ef154338f3538c58d9e7c3dc5833e.json",
+      "file_sha256": "b6d37393b80afdb3dd2d3805663283fb020ef154338f3538c58d9e7c3dc5833e",
+      "record_sha256": "2cf03fae03288b3db6fe09e0320704878c11c82c0fb714658788995433c74708"
+    },
+    {
+      "object_type": "universe_release",
+      "object_id": "unv:oges.fixture.commodities.1",
+      "path": "canonical/objects/e257a19ce9645e606970ba008b8b1cef0f95f0ed5ad221d8a8bf0abc192dd0f9.json",
+      "file_sha256": "e257a19ce9645e606970ba008b8b1cef0f95f0ed5ad221d8a8bf0abc192dd0f9",
+      "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef"
+    }
+  ],
+  "counts": {
+    "entity": 3,
+    "event": 1,
+    "evidence_item": 2,
+    "exposure_edge": 1,
+    "universe_release": 1
+  }
+}

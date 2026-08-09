@@ -1,0 +1,55 @@
+{
+  "object_type": "evidence_item",
+  "schema_version": "1.0.0",
+  "evidence_id": "evd:oges.fixture.official.001",
+  "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+  "lifecycle": {
+    "revision": 1,
+    "state": "active",
+    "supersedes_id": null,
+    "superseded_by": null,
+    "correction_id": null
+  },
+  "source_id": "oges_fixture_source",
+  "source_record_id": "official-001",
+  "retrieval_id": "ret:oges.fixture.001",
+  "evidence_type": "official_document",
+  "title": "Synthetic official action",
+  "publisher_entity_id": null,
+  "authors": [],
+  "language": "en",
+  "published_at": "2026-08-08T09:00:00Z",
+  "observed_at": "2026-08-08T09:00:00Z",
+  "effective_start": "2026-08-08T09:00:00Z",
+  "effective_end": null,
+  "retrieved_at": "2026-08-08T10:00:00Z",
+  "geography_entity_ids": [
+    "ent:country.synthetic_origin"
+  ],
+  "public_url": "https://example.test/oges-fixture/official-001",
+  "artifact_path": null,
+  "content_sha256": "4cd387cee0d680f2c088ab21feea092221f36b3b7ae34e9fc0cd13354565c5c7",
+  "artifact_sha256": null,
+  "content_availability": "hash_metadata_only",
+  "rights_use": "cite_metadata",
+  "rights_decision_id": "oges-fixture-decision-2026-08-08",
+  "privacy_class": "public",
+  "verification_status": "official_record",
+  "extraction_method": "provider_api",
+  "provenance": {
+    "created_at": "2026-08-08T12:00:00Z",
+    "created_by": "system:oges.fixture_builder",
+    "reviewed_by": [],
+    "adjudication_status": "unreviewed",
+    "source_ids": [
+      "oges_fixture_source"
+    ],
+    "evidence_ids": [],
+    "method": {
+      "method_id": "method:oges.fixture.direct",
+      "version": "1.0.0",
+      "implementation_sha256": "e4b4604bf403651b295467aed576d8f20514ae575be35d842cfddb7437b926db",
+      "run_id": "run:oges.fixture.001"
+    }
+  }
+}

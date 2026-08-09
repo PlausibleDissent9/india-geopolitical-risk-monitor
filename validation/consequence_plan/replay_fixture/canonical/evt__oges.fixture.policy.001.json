@@ -1,0 +1,93 @@
+{
+  "object_type": "event",
+  "schema_version": "1.0.0",
+  "event_id": "evt:oges.fixture.policy.001",
+  "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282",
+  "lifecycle": {
+    "revision": 1,
+    "state": "active",
+    "supersedes_id": null,
+    "superseded_by": null,
+    "correction_id": null
+  },
+  "canonical_label": "Synthetic policy action",
+  "event_class": "policy_action",
+  "secondary_classes": [],
+  "record_status": "confirmed",
+  "publication_phase": "final",
+  "direction": "neutral",
+  "starts_at": "2026-08-08T09:00:00Z",
+  "ends_at": null,
+  "temporal_precision": "hour",
+  "first_known_at": "2026-08-08T10:00:00Z",
+  "last_verified_at": "2026-08-08T11:00:00Z",
+  "actor_entity_ids": [
+    "ent:country.synthetic_origin"
+  ],
+  "target_entity_ids": [],
+  "affected_entity_ids": [
+    "ent:commodity.synthetic_crude"
+  ],
+  "locations": [
+    {
+      "entity_id": "ent:country.synthetic_origin",
+      "role": "primary",
+      "precision": "country",
+      "evidence_ids": [
+        "evd:oges.fixture.official.001"
+      ]
+    }
+  ],
+  "intensity": {
+    "status": "not_estimated",
+    "scheme": null,
+    "value": null,
+    "unit": null,
+    "denominator": null,
+    "uncertainty": {
+      "status": "not_estimated",
+      "meaning": "No event-intensity estimate is licensed.",
+      "lower": null,
+      "upper": null,
+      "category": null
+    }
+  },
+  "evidence_links": [
+    {
+      "evidence_id": "evd:oges.fixture.official.001",
+      "role": "official_confirmation",
+      "asserted_at": "2026-08-08T09:00:00Z"
+    }
+  ],
+  "coding": {
+    "rule_id": "rule:oges.fixture.event",
+    "rule_version": "1.0.0",
+    "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+    "status": "human_coded",
+    "coder_ids": [
+      "person:oges.fixture.coder"
+    ],
+    "adjudicator_ids": [],
+    "limitation_codes": []
+  },
+  "provenance": {
+    "created_at": "2026-08-08T12:00:00Z",
+    "created_by": "system:oges.fixture_builder",
+    "reviewed_by": [
+      "person:oges.fixture.coder"
+    ],
+    "adjudication_status": "single_reviewed",
+    "source_ids": [
+      "oges_fixture_source"
+    ],
+    "evidence_ids": [
+      "evd:oges.fixture.official.001"
+    ],
+    "method": {
+      "method_id": "rule:oges.fixture.event",
+      "version": "1.0.0",
+      "implementation_sha256": "6c66b0ec9a86502a7885f090942e2dc5f16eeb188c02794a783935f3e4c4c73c",
+      "run_id": "run:oges.fixture.001"
+    }
+  }
+}

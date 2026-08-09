@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1.0",
+  "fixture_class": "synthetic_nonproduction",
+  "cases": [
+    {"id": "valid_legacy_headline_parity", "expected": "succeeded"},
+    {"id": "valid_registered_refusal_parity", "expected": "succeeded"},
+    {"id": "valid_signed_replay_parity", "expected": "succeeded"},
+    {"id": "duplicate_json_key", "expected": "json_duplicate_key"},
+    {"id": "plan_self_hash_mismatch", "expected": "plan_integrity_mismatch"},
+    {"id": "unknown_operator", "expected": "plan_schema_refused"},
+    {"id": "operator_implementation_drift", "expected": "operator_implementation_drift"},
+    {"id": "graph_type_mismatch", "expected": "plan_graph_invalid"},
+    {"id": "unknown_fact_id", "expected": "plan_schema_refused"},
+    {"id": "duplicate_fact_id", "expected": "plan_schema_refused"},
+    {"id": "literal_value_smuggling", "expected": "plan_schema_refused"},
+    {"id": "literal_url_smuggling", "expected": "plan_schema_refused"},
+    {"id": "artifact_changed_after_compile", "expected": "source_bytes_drift"},
+    {"id": "mixed_source_effective_date", "expected": "evidence_date_mismatch"},
+    {"id": "unregistered_two_source_join", "expected": "plan_graph_invalid"},
+    {"id": "rights_use_escalation", "expected": "plan_contract_drift"},
+    {"id": "replay_unsigned", "expected": "knowledge_replay_refusal"},
+    {"id": "replay_expired_signer", "expected": "knowledge_replay_refusal"},
+    {"id": "replay_cutoff_before_first_receipt", "expected": "knowledge_replay_refusal"},
+    {"id": "replay_cutoff_after_ledger_close", "expected": "knowledge_replay_refusal"},
+    {"id": "coverage_without_universe_release", "expected": "plan_schema_refused"},
+    {"id": "model_selector_claims_authority", "expected": "planner_unregistered"},
+    {"id": "source_path_traversal", "expected": "source_path_invalid"},
+    {"id": "typed_canonical_cross_runtime_boundary", "expected": "typed_canonical_invalid"}
+  ]
+}

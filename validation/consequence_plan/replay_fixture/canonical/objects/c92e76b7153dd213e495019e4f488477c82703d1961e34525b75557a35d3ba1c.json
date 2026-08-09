@@ -1,0 +1,56 @@
+{
+  "object_type": "entity",
+  "schema_version": "1.0.0",
+  "entity_id": "ent:country.synthetic_india",
+  "record_sha256": "cfb572e0a3b419ed7b8490067f0f2813d3d515c55d56b7b7d256279e090fbb9b",
+  "lifecycle": {
+    "revision": 1,
+    "state": "active",
+    "supersedes_id": null,
+    "superseded_by": null,
+    "correction_id": null
+  },
+  "entity_type": "country",
+  "canonical_name": "Synthetic India",
+  "aliases": [],
+  "identifiers": [
+    {
+      "scheme": "oges_fixture",
+      "value": "country.synthetic_india",
+      "effective_start": null,
+      "effective_end": null,
+      "evidence_ids": [
+        "evd:oges.fixture.official.001"
+      ]
+    }
+  ],
+  "parent_entity_ids": [],
+  "jurisdiction_entity_ids": [],
+  "geometry": {
+    "artifact_path": null,
+    "artifact_sha256": null,
+    "geometry_type": "none",
+    "precision": "not_applicable"
+  },
+  "effective_start": null,
+  "effective_end": null,
+  "identity_status": "authoritative",
+  "provenance": {
+    "created_at": "2026-08-08T12:00:00Z",
+    "created_by": "system:oges.fixture_builder",
+    "reviewed_by": [],
+    "adjudication_status": "unreviewed",
+    "source_ids": [
+      "oges_fixture_source"
+    ],
+    "evidence_ids": [
+      "evd:oges.fixture.official.001"
+    ],
+    "method": {
+      "method_id": "method:oges.fixture.direct",
+      "version": "1.0.0",
+      "implementation_sha256": "e4b4604bf403651b295467aed576d8f20514ae575be35d842cfddb7437b926db",
+      "run_id": "run:oges.fixture.001"
+    }
+  }
+}

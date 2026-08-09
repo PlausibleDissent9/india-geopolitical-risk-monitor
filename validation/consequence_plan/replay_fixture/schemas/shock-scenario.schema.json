@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/shock-scenario.schema.json",
+  "title": "IGRM bounded shock-scenario input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "scenario_id",
+    "created_at",
+    "release",
+    "knowledge_cutoff",
+    "event_id",
+    "target_entity_id",
+    "shock_subject_entity_id",
+    "purpose",
+    "shock",
+    "substitutions",
+    "buffers",
+    "traversal",
+    "guardrails",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "shock_scenario"},
+    "schema_version": {"const": "1.0.0"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "scenario_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "created_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "release": {"$ref": "#/$defs/releaseBinding"},
+    "knowledge_cutoff": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+    "event_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "target_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "shock_subject_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+    "purpose": {"const": "bounded_stress_test"},
+    "shock": {"$ref": "#/$defs/shock"},
+    "substitutions": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/substitution"}
+    },
+    "buffers": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/buffer"}
+    },
+    "traversal": {"$ref": "#/$defs/traversal"},
+    "guardrails": {"$ref": "#/$defs/guardrails"},
+    "limitations": {
+      "allOf": [
+        {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+        {"contains": {"const": "scenario_values_are_hypothetical_assumptions"}},
+        {"contains": {"const": "not_a_forecast"}},
+        {"contains": {"const": "not_a_probability_distribution"}},
+        {"contains": {"const": "not_causal_attribution"}},
+        {"contains": {"const": "not_advice_or_recommendation"}}
+      ]
+    }
+  },
+  "$defs": {
+    "releaseBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_id", "record_sha256", "generated_at", "effective_date"],
+      "properties": {
+        "release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "effective_date": {"$ref": "common.schema.json#/$defs/date"}
+      }
+    },
+    "closedInterval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "upper", "unit"],
+      "properties": {
+        "lower": {"type": "number", "minimum": 0},
+        "upper": {"type": "number", "exclusiveMinimum": 0},
+        "unit": {"type": "string", "minLength": 1, "maxLength": 120}
+      }
+    },
+    "assumptionIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assumption_id", "status", "origin", "evidence_id"],
+      "properties": {
+        "assumption_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "status": {"const": "hypothetical"},
+        "origin": {"const": "user_supplied"},
+        "evidence_id": {"type": "null"}
+      }
+    },
+    "shock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assumption",
+        "quantity",
+        "magnitude",
+        "duration",
+        "effective_start",
+        "effective_end"
+      ],
+      "properties": {
+        "assumption": {"$ref": "#/$defs/assumptionIdentity"},
+        "quantity": {"const": "subject_flow_reduction"},
+        "magnitude": {
+          "allOf": [
+            {"$ref": "#/$defs/closedInterval"},
+            {"properties": {"unit": {"const": "percent_of_subject_flow_reduced"}}}
+          ]
+        },
+        "duration": {
+          "allOf": [
+            {"$ref": "#/$defs/closedInterval"},
+            {
+              "properties": {
+                "lower": {"type": "integer", "minimum": 1},
+                "upper": {"type": "integer", "minimum": 1},
+                "unit": {"const": "days"}
+              }
+            }
+          ]
+        },
+        "effective_start": {"$ref": "common.schema.json#/$defs/date"},
+        "effective_end": {"$ref": "common.schema.json#/$defs/date"}
+      }
+    },
+    "substitution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assumption", "applies_to_edge_id", "fraction_of_gross_effect"],
+      "properties": {
+        "assumption": {"$ref": "#/$defs/assumptionIdentity"},
+        "applies_to_edge_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "fraction_of_gross_effect": {
+          "allOf": [
+            {"$ref": "#/$defs/closedInterval"},
+            {
+              "properties": {
+                "upper": {"type": "number", "maximum": 100},
+                "unit": {"const": "percent_of_gross_affected_share_substituted"}
+              }
+            }
+          ]
+        }
+      }
+    },
+    "buffer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assumption", "applies_to_target_entity_id", "duration_offset"],
+      "properties": {
+        "assumption": {"$ref": "#/$defs/assumptionIdentity"},
+        "applies_to_target_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "duration_offset": {
+          "allOf": [
+            {"$ref": "#/$defs/closedInterval"},
+            {
+              "properties": {
+                "lower": {"type": "integer", "minimum": 0},
+                "upper": {"type": "integer", "minimum": 0},
+                "unit": {"const": "days"}
+              }
+            }
+          ]
+        }
+      }
+    },
+    "traversal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_hops", "max_paths"],
+      "properties": {
+        "max_hops": {"type": "integer", "minimum": 1, "maximum": 6},
+        "max_paths": {"type": "integer", "minimum": 1, "maximum": 100}
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "forecast_performed",
+        "probability_assigned",
+        "causal_attribution_performed",
+        "recommendation_generated",
+        "cross_unit_aggregation_performed"
+      ],
+      "properties": {
+        "forecast_performed": {"const": false},
+        "probability_assigned": {"const": false},
+        "causal_attribution_performed": {"const": false},
+        "recommendation_generated": {"const": false},
+        "cross_unit_aggregation_performed": {"const": false}
+      }
+    }
+  }
+}

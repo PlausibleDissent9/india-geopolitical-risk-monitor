@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-consequence-plan-0.1.0.json",
+  "title": "OGES Consequence Plan 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["object_type", "schema_version", "plan_id", "integrity", "compiled_at", "profile_id", "planner", "request", "source_bindings", "steps", "output_profile_id", "contract", "guardrails"],
+  "properties": {
+    "object_type": {"const": "oges_consequence_plan"},
+    "schema_version": {"const": "0.1.0"},
+    "plan_id": {"type": "string", "pattern": "^plan:[a-z0-9][a-z0-9_.:-]{2,127}$"},
+    "integrity": {"$ref": "#/$defs/integrity"},
+    "compiled_at": {"type": "string", "format": "date-time"},
+    "profile_id": {"enum": ["legacy_assistant_answer", "knowledge_replay_query", "registered_refusal"]},
+    "planner": {"$ref": "#/$defs/planner"},
+    "request": {"$ref": "#/$defs/request"},
+    "source_bindings": {"type": "array", "minItems": 0, "maxItems": 2, "items": {"$ref": "#/$defs/binding"}},
+    "steps": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"$ref": "#/$defs/step"}},
+    "output_profile_id": {"enum": ["legacy_registered_answer", "structural_replay_report", "registered_refusal"]},
+    "contract": {"$ref": "#/$defs/contract"},
+    "guardrails": {"$ref": "#/$defs/guardrails"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nullableDay": {"type": ["string", "null"], "format": "date"},
+    "nullableDateTime": {"type": ["string", "null"], "format": "date-time"},
+    "nullableId": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+    "integrity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profile_id", "value_sha256"],
+      "properties": {"profile_id": {"const": "igrm-typed-canonical-f64-v1"}, "value_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "planner": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "planner_id", "version", "implementation_sha256", "candidate_only"],
+      "properties": {
+        "kind": {"enum": ["registered_deterministic", "verified_model_selector", "compatibility_adapter"]},
+        "planner_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "candidate_only": {"type": "boolean"}
+      }
+    },
+    "request": {
+      "type": "object", "additionalProperties": false,
+      "required": ["intent_id", "fact_ids", "knowledge_cutoff", "valid_on", "object_type", "object_id", "refusal_code"],
+      "properties": {
+        "intent_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+        "fact_ids": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"}},
+        "knowledge_cutoff": {"$ref": "#/$defs/nullableDateTime"},
+        "valid_on": {"$ref": "#/$defs/nullableDay"},
+        "object_type": {"type": ["string", "null"], "enum": [null, "evidence_item", "entity", "event", "exposure_edge", "universe_release"]},
+        "object_id": {"$ref": "#/$defs/nullableId"},
+        "refusal_code": {"type": ["string", "null"], "enum": [null, "forecast_or_advice", "unsupported_question"]}
+      }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["binding_id", "binding_kind", "source_registry_id", "source_registry_sha256", "artifact_id", "expected_file_sha256"],
+      "properties": {
+        "binding_id": {"type": "string", "pattern": "^binding:[a-z0-9][a-z0-9_.:-]{1,95}$"},
+        "binding_kind": {"enum": ["registered_payload", "signed_replay_ledger"]},
+        "source_registry_id": {"type": "string", "pattern": "^source:[a-z0-9][a-z0-9_.:-]{1,95}$"},
+        "source_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "artifact_id": {"type": "string", "pattern": "^artifact:[a-z0-9][a-z0-9_.:-]{1,95}$"},
+        "expected_file_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "step": {
+      "type": "object", "additionalProperties": false,
+      "required": ["step_id", "operator_id", "operator_version", "input_refs", "output_ref"],
+      "properties": {
+        "step_id": {"type": "string", "pattern": "^step:[a-z0-9][a-z0-9_.:-]{1,95}$"},
+        "operator_id": {"type": "string", "pattern": "^op:igrm\\.[a-z0-9_]+$"},
+        "operator_version": {"const": "1.0.0"},
+        "input_refs": {"type": "array", "minItems": 1, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "pattern": "^(binding|request|step):[a-z0-9][a-z0-9_.:-]{1,95}$"}},
+        "output_ref": {"type": "string", "pattern": "^step:[a-z0-9][a-z0-9_.:-]{1,95}:output$"}
+      }
+    },
+    "contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["base_oges_profile_sha256", "extension_profile_sha256", "plan_schema_sha256", "execution_schema_sha256", "operator_registry_sha256", "output_profile_registry_sha256", "source_registry_sha256", "fact_catalog_sha256", "typed_canonical_fixture_sha256"],
+      "properties": {
+        "base_oges_profile_sha256": {"$ref": "#/$defs/sha256"}, "extension_profile_sha256": {"$ref": "#/$defs/sha256"}, "plan_schema_sha256": {"$ref": "#/$defs/sha256"}, "execution_schema_sha256": {"$ref": "#/$defs/sha256"}, "operator_registry_sha256": {"$ref": "#/$defs/sha256"}, "output_profile_registry_sha256": {"$ref": "#/$defs/sha256"}, "source_registry_sha256": {"$ref": "#/$defs/sha256"}, "fact_catalog_sha256": {"$ref": "#/$defs/sha256"}, "typed_canonical_fixture_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "guardrails": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_authored_fact", "literal_fact_value", "literal_citation", "free_text_renderer", "unregistered_operator", "general_cross_source_join", "causal_attribution", "forecast", "probability", "recommendation", "scalar_score"],
+      "properties": {
+        "model_authored_fact": {"const": false}, "literal_fact_value": {"const": false}, "literal_citation": {"const": false}, "free_text_renderer": {"const": false}, "unregistered_operator": {"const": false}, "general_cross_source_join": {"const": false}, "causal_attribution": {"const": false}, "forecast": {"const": false}, "probability": {"const": false}, "recommendation": {"const": false}, "scalar_score": {"const": false}
+      }
+    }
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/evidence-output-set.schema.json",
+  "title": "IGRM deterministic four-output compilation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "release",
+    "contract",
+    "method",
+    "query",
+    "source_index",
+    "outputs",
+    "result",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "evidence_output_set"},
+    "schema_version": {"const": "1.0.0"},
+    "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "release": {"$ref": "#/$defs/releaseIdentity"},
+    "contract": {"$ref": "#/$defs/contractIdentity"},
+    "method": {"$ref": "#/$defs/methodIdentity"},
+    "query": {"$ref": "#/$defs/query"},
+    "source_index": {"$ref": "#/$defs/sourceIndex"},
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "research_package",
+        "board_brief",
+        "newsroom_claim_card",
+        "offline_audit_bundle"
+      ],
+      "properties": {
+        "research_package": {"$ref": "#/$defs/researchPackage"},
+        "board_brief": {"$ref": "#/$defs/boardBrief"},
+        "newsroom_claim_card": {"$ref": "#/$defs/claimCard"},
+        "offline_audit_bundle": {"$ref": "#/$defs/auditBundle"}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "output_count",
+        "model_authored_facts",
+        "forecast_performed",
+        "probability_assigned",
+        "causal_attribution_performed",
+        "recommendation_generated",
+        "scalar_score_computed"
+      ],
+      "properties": {
+        "status": {"enum": ["compiled", "compiled_no_structural_path"]},
+        "output_count": {"const": 4},
+        "model_authored_facts": {"const": false},
+        "forecast_performed": {"const": false},
+        "probability_assigned": {"const": false},
+        "causal_attribution_performed": {"const": false},
+        "recommendation_generated": {"const": false},
+        "scalar_score_computed": {"const": false}
+      }
+    },
+    "limitations": {
+      "allOf": [
+        {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+        {"contains": {"const": "event_status_not_ground_truth"}},
+        {"contains": {"const": "structural_path_not_causation"}},
+        {"contains": {"const": "no_forecast_probability_or_advice"}},
+        {"contains": {"const": "bounded_traversal_not_complete_exposure"}},
+        {"contains": {"const": "source_metadata_not_source_content"}}
+      ]
+    }
+  },
+  "$defs": {
+    "releaseIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_id",
+        "record_sha256",
+        "generated_at",
+        "effective_date",
+        "release_signer_id",
+        "schema_registry_sha256",
+        "method_registry_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "release_signers_sha256"
+      ],
+      "properties": {
+        "release_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "generated_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "effective_date": {"$ref": "common.schema.json#/$defs/date"},
+        "release_signer_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "schema_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "method_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "release_signers_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "contractIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "schema_sha256",
+        "common_schema_sha256",
+        "output_registry_sha256",
+        "exposure_projection_registry_sha256"
+      ],
+      "properties": {
+        "schema_id": {"const": "https://igrm.in/schemas/evidence-output-set.schema.json"},
+        "schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "common_schema_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "output_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "exposure_projection_registry_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "methodIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_sha256", "rendering_rule"],
+      "properties": {
+        "method_id": {"const": "method:igrm.evidence_outputs"},
+        "version": {"const": "1.0.0"},
+        "implementation_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "rendering_rule": {"const": "registered_deterministic_templates_no_model_generation"}
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "target_entity_id", "max_hops", "max_paths"],
+      "properties": {
+        "event_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "target_entity_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "max_hops": {"type": "integer", "minimum": 1, "maximum": 6},
+        "max_paths": {"type": "integer", "minimum": 1, "maximum": 100}
+      }
+    },
+    "objectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"enum": ["evidence_item", "entity", "event", "exposure_edge", "universe_release"]},
+        "object_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "evidenceCitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "record_sha256",
+        "source_id",
+        "title",
+        "public_url",
+        "published_at",
+        "observed_at",
+        "verification_status",
+        "content_availability",
+        "rights_use"
+      ],
+      "properties": {
+        "evidence_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "source_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 500},
+        "public_url": {"type": ["string", "null"], "format": "uri"},
+        "published_at": {"anyOf": [{"$ref": "common.schema.json#/$defs/utcDateTime"}, {"type": "null"}]},
+        "observed_at": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "verification_status": {"type": "string", "minLength": 1, "maxLength": 80},
+        "content_availability": {"type": "string", "minLength": 1, "maxLength": 80},
+        "rights_use": {"type": "string", "minLength": 1, "maxLength": 80}
+      }
+    },
+    "sourceIndex": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event",
+        "target",
+        "objects",
+        "evidence",
+        "structural_paths",
+        "traversal_record_sha256",
+        "traversal_truncated"
+      ],
+      "properties": {
+        "event": {"$ref": "#/$defs/objectRef"},
+        "target": {"$ref": "#/$defs/objectRef"},
+        "objects": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/objectRef"}},
+        "evidence": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceCitation"}},
+        "structural_paths": {"type": "integer", "minimum": 0, "maximum": 100},
+        "traversal_record_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "traversal_truncated": {"type": "boolean"}
+      }
+    },
+    "artifactIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["filename", "media_type", "sha256", "bytes"],
+      "properties": {
+        "filename": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{1,119}$"},
+        "media_type": {"type": "string", "minLength": 1, "maxLength": 100},
+        "sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["section_id", "heading", "text", "object_ids", "evidence_ids"],
+      "properties": {
+        "section_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "heading": {"type": "string", "minLength": 1, "maxLength": 120},
+        "text": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "object_ids": {"$ref": "common.schema.json#/$defs/idArray"},
+        "evidence_ids": {"$ref": "common.schema.json#/$defs/idArray"}
+      }
+    },
+    "researchPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "artifact", "title", "as_of", "object_index", "evidence", "coverage", "citation", "limitations"],
+      "properties": {
+        "output_id": {"const": "output:research_package"},
+        "artifact": {"$ref": "#/$defs/artifactIdentity"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 300},
+        "as_of": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "object_index": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/objectRef"}},
+        "evidence": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceCitation"}},
+        "coverage": {"type": "object"},
+        "citation": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "limitations": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+      }
+    },
+    "boardBrief": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "artifact", "title", "as_of", "review_status", "sections", "limitations"],
+      "properties": {
+        "output_id": {"const": "output:board_brief"},
+        "artifact": {"$ref": "#/$defs/artifactIdentity"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 300},
+        "as_of": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "review_status": {"const": "draft_requires_human_review"},
+        "sections": {"type": "array", "minItems": 3, "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/section"}},
+        "limitations": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "statement", "scope", "object_ids", "evidence_ids", "status", "limitations"],
+      "properties": {
+        "claim_id": {"$ref": "common.schema.json#/$defs/stableId"},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 800},
+        "scope": {"enum": ["release_record", "release_structure"]},
+        "object_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+        "evidence_ids": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"},
+        "status": {"const": "compiled_from_registered_fields"},
+        "limitations": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+      }
+    },
+    "claimCard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "artifact", "title", "as_of", "claims", "evidence", "correction_route", "limitations"],
+      "properties": {
+        "output_id": {"const": "output:newsroom_claim_card"},
+        "artifact": {"$ref": "#/$defs/artifactIdentity"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 300},
+        "as_of": {"$ref": "common.schema.json#/$defs/utcDateTime"},
+        "claims": {"type": "array", "minItems": 1, "maxItems": 4, "uniqueItems": true, "items": {"$ref": "#/$defs/claim"}},
+        "evidence": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceCitation"}},
+        "correction_route": {"const": "https://igrm.in/corrections.html"},
+        "limitations": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+      }
+    },
+    "auditBundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "artifact", "format", "bundle_manifest_sha256", "file_count", "canonical_validation_supported", "external_verifier_required", "excluded_evidence_content", "limitations"],
+      "properties": {
+        "output_id": {"const": "output:offline_audit_bundle"},
+        "artifact": {"$ref": "#/$defs/artifactIdentity"},
+        "format": {"const": "deterministic_zip_store_v1"},
+        "bundle_manifest_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+        "file_count": {"type": "integer", "minimum": 1},
+        "canonical_validation_supported": {"const": true},
+        "external_verifier_required": {"const": true},
+        "excluded_evidence_content": {"type": "array", "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/stableId"}},
+        "limitations": {"$ref": "common.schema.json#/$defs/nonEmptyIdArray"}
+      }
+    }
+  }
+}
