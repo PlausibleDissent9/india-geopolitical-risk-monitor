@@ -997,3 +997,85 @@ are an annotation, never a filter, and enter no score. `top_themes[]`
 gives each code with the share of themed matched articles carrying it;
 codes stay raw GDELT identifiers for auditability. `n_themed` vs
 `n_matched` discloses the join rate. Trailing 30 days.
+
+## docs/data/historical_intelligence.json {#historical-intelligence}
+
+Registered readings of the 1979–2019 back-extension
+(`back_extension.json`), and of nothing else. **The archive is a different
+construct from the live 2017+ index and is never spliced to it**: it counts
+actor-pair event mentions, not press salience, so no statistic here is
+comparable to a published IGRM score. Eligibility is inherited from the
+source payload's `overlap_audit` verdicts, not re-decided here:
+`pakistan_west` (r = 0.893 over 36 overlap months) and `china_east`
+(r = 0.848) are marked `tracks`; `us_trade` (r = 0.216) and `gulf_energy`
+(r = 0.153) carry the verdict `DOES NOT PUBLISH (negative finding)`, and
+`shipping` was excluded at registration for having no defensible historical
+event analog for its construct. Each refusal is published in
+`channel_eligibility.refused` with its reason rather than omitted. Frozen:
+the archive ends 2019-12, and the payload is exempt from the freshness clock
+for that reason, not because it is unmaintained.
+
+`regime_baselines.rows[]` — mean, median, p90, min and max per channel,
+series and registered period. **Periods are the four calendar decades
+1979-1989, 1990-1999, 2000-2009 and 2010-2019 and are explicitly not
+political regimes**; the word names a slice of the calendar. Every row
+carries its own denominators: `n_months_in_period` (calendar count),
+`n_observed` (non-null count) and `coverage_fraction` = `n_observed` /
+`n_months_in_period`. A period with fewer than `min_observed_months` (24)
+observations is refused — `available: false` with `unavailable_reason` —
+never computed over whatever happened to be there.
+`regime_baselines.non_comparability` carries three standing warnings,
+including that `pctl_10y` is undefined for the archive's first 120 months
+and that cross-channel comparison of `raw_share` is not meaningful, each
+channel's share being relative to its own filter rather than a shared
+denominator.
+
+`structural_breaks.rows[]` — a **descriptive scan, not a change-point
+model**. Every split with at least `min_segment_months` on both sides is
+scored by the absolute Welch *t* between segment means, and the largest is
+reported as the single candidate. The null is a seeded permutation
+(`n_permutations` 2000, `seed` 20260809, deterministic): values are shuffled
+without replacement, which destroys time ordering while preserving the value
+distribution, and `p_value` is the fraction of permutations whose maximum
+statistic met or exceeded the observed one. `sensitivity_sweep[]` repeats
+the scan at minimum segment lengths 12, 24, 36 and 48;
+`stable_across_all_settings` and `distinct_candidates_across_settings`
+report whether the answer survives the setting. It frequently does not —
+`pakistan_west` returns 1980-01 and 1984-01 across the sweep and is
+published as unstable. `structural_breaks.language_rule` binds the prose: a
+result is a candidate break in the measured series, never a historical
+cause, a turning point, a regime change, or an explanation of any event. The
+series measures attention, so a break is a break in attention and nothing
+more.
+
+`analog_retrieval.by_channel.<ch>.<YYYY-MM>` — the nearest other months in
+the same channel by Euclidean distance over standardised registered features
+(`level_pctl_10y`, `change_12m_raw_share`, `volatility_12m_raw_share`),
+excluding a ±`exclusion_window_months` (6) neighbourhood of the query so
+adjacency is not mistaken for similarity. **Missingness is named, never
+filled**: a feature null on either side of a pair is dropped from that pair's
+distance, reported in `features_excluded_as_null`, and counted in
+`n_features_used`; a pair sharing fewer than `min_features_for_match` (2)
+usable features is refused rather than distance-imputed. No null is ever
+replaced by zero or by a mean. Retrieval is a similarity lookup over one
+measured series: it carries no claim that similar months share causes, and
+no claim about what follows them.
+
+`event_archetypes.rows[]` — an archetype is attached to a month only where a
+**human-authored** registered anchor exists in the source payload's
+`anchor_grades`. `machine_generated_permitted` is `false`; a month with no
+registered anchor reports `available: false` with reason
+`no_registered_human_authored_archetype` and is never given an inferred one.
+A knowledge-cutoff rule (`_meta.knowledge_cutoff`, `archive_end` 2019-12)
+refuses any label, annotation or category whose evidence postdates the
+archive, and publishes the refusal rather than dropping it silently, so
+present-day categories cannot leak backwards into a historical view.
+
+`_meta` carries `contract_sha256`, `source_sha256` and
+`implementation_sha256`, so a citation can pin the registration, the input
+and the code that produced the numbers. Regeneration is byte-identical and
+CI asserts it. Rendered for humans at `docs/history-lab.html`; flat
+downloads at `downloads/igrm-historical-regime-baselines.csv` and
+`downloads/igrm-historical-analogs.csv`. Registered in
+`governance/historical_intelligence_contract.json`. Nothing in this payload
+is a forecast, and no field states or implies what happens next.

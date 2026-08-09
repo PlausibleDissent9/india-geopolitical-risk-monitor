@@ -75,8 +75,23 @@ def _render_md_page(src, slug: str, title: str, description: str) -> None:
     # what the codebook's Researcher quick-start had been rendering as:
     # stray backticks around five giant headings, on the one section a
     # new user reads first. Found 2026-08-07.
+    # attr_list, so a heading can carry an EXPLICIT anchor:
+    #
+    #     ## docs/data/historical_intelligence.json {#historical-intelligence}
+    #
+    # Without it these pages had no heading ids at all, and every deep link
+    # into them was dead on arrival -- methodology.html's own intro says
+    # "changelog at the end" and links #changelog, which resolved to
+    # nothing, as did the homepage's link to #splice-audit.
+    #
+    # Explicit ids rather than the `toc` extension's auto-slugs: a slug is
+    # derived from the heading text, so rewording a heading silently breaks
+    # every link to it, which is the failure being fixed. This repo already
+    # prefers an explicit registry over a glob wherever a link has to hold
+    # (see stamp_assets' ASSETS list). tests/test_page_anchors.py fails if
+    # any internal fragment link stops resolving.
     body = markdown.markdown(src.read_text(encoding="utf-8"),
-                             extensions=["tables", "fenced_code"])
+                             extensions=["tables", "fenced_code", "attr_list"])
     (DOCS / f"{slug}.html").write_text(
         PAGE_SHELL.format(
             site=SITE_URL, body=body, slug=slug, title=title,

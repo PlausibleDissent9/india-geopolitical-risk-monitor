@@ -1280,6 +1280,81 @@ are an annotation, never a filter, and enter no score. <code>top_themes[]</code>
 gives each code with the share of themed matched articles carrying it;
 codes stay raw GDELT identifiers for auditability. <code>n_themed</code> vs
 <code>n_matched</code> discloses the join rate. Trailing 30 days.</p>
+<h2 id="historical-intelligence">docs/data/historical_intelligence.json</h2>
+<p>Registered readings of the 1979–2019 back-extension
+(<code>back_extension.json</code>), and of nothing else. <strong>The archive is a different
+construct from the live 2017+ index and is never spliced to it</strong>: it counts
+actor-pair event mentions, not press salience, so no statistic here is
+comparable to a published IGRM score. Eligibility is inherited from the
+source payload's <code>overlap_audit</code> verdicts, not re-decided here:
+<code>pakistan_west</code> (r = 0.893 over 36 overlap months) and <code>china_east</code>
+(r = 0.848) are marked <code>tracks</code>; <code>us_trade</code> (r = 0.216) and <code>gulf_energy</code>
+(r = 0.153) carry the verdict <code>DOES NOT PUBLISH (negative finding)</code>, and
+<code>shipping</code> was excluded at registration for having no defensible historical
+event analog for its construct. Each refusal is published in
+<code>channel_eligibility.refused</code> with its reason rather than omitted. Frozen:
+the archive ends 2019-12, and the payload is exempt from the freshness clock
+for that reason, not because it is unmaintained.</p>
+<p><code>regime_baselines.rows[]</code> — mean, median, p90, min and max per channel,
+series and registered period. <strong>Periods are the four calendar decades
+1979-1989, 1990-1999, 2000-2009 and 2010-2019 and are explicitly not
+political regimes</strong>; the word names a slice of the calendar. Every row
+carries its own denominators: <code>n_months_in_period</code> (calendar count),
+<code>n_observed</code> (non-null count) and <code>coverage_fraction</code> = <code>n_observed</code> /
+<code>n_months_in_period</code>. A period with fewer than <code>min_observed_months</code> (24)
+observations is refused — <code>available: false</code> with <code>unavailable_reason</code> —
+never computed over whatever happened to be there.
+<code>regime_baselines.non_comparability</code> carries three standing warnings,
+including that <code>pctl_10y</code> is undefined for the archive's first 120 months
+and that cross-channel comparison of <code>raw_share</code> is not meaningful, each
+channel's share being relative to its own filter rather than a shared
+denominator.</p>
+<p><code>structural_breaks.rows[]</code> — a <strong>descriptive scan, not a change-point
+model</strong>. Every split with at least <code>min_segment_months</code> on both sides is
+scored by the absolute Welch <em>t</em> between segment means, and the largest is
+reported as the single candidate. The null is a seeded permutation
+(<code>n_permutations</code> 2000, <code>seed</code> 20260809, deterministic): values are shuffled
+without replacement, which destroys time ordering while preserving the value
+distribution, and <code>p_value</code> is the fraction of permutations whose maximum
+statistic met or exceeded the observed one. <code>sensitivity_sweep[]</code> repeats
+the scan at minimum segment lengths 12, 24, 36 and 48;
+<code>stable_across_all_settings</code> and <code>distinct_candidates_across_settings</code>
+report whether the answer survives the setting. It frequently does not —
+<code>pakistan_west</code> returns 1980-01 and 1984-01 across the sweep and is
+published as unstable. <code>structural_breaks.language_rule</code> binds the prose: a
+result is a candidate break in the measured series, never a historical
+cause, a turning point, a regime change, or an explanation of any event. The
+series measures attention, so a break is a break in attention and nothing
+more.</p>
+<p><code>analog_retrieval.by_channel.&lt;ch&gt;.&lt;YYYY-MM&gt;</code> — the nearest other months in
+the same channel by Euclidean distance over standardised registered features
+(<code>level_pctl_10y</code>, <code>change_12m_raw_share</code>, <code>volatility_12m_raw_share</code>),
+excluding a ±<code>exclusion_window_months</code> (6) neighbourhood of the query so
+adjacency is not mistaken for similarity. <strong>Missingness is named, never
+filled</strong>: a feature null on either side of a pair is dropped from that pair's
+distance, reported in <code>features_excluded_as_null</code>, and counted in
+<code>n_features_used</code>; a pair sharing fewer than <code>min_features_for_match</code> (2)
+usable features is refused rather than distance-imputed. No null is ever
+replaced by zero or by a mean. Retrieval is a similarity lookup over one
+measured series: it carries no claim that similar months share causes, and
+no claim about what follows them.</p>
+<p><code>event_archetypes.rows[]</code> — an archetype is attached to a month only where a
+<strong>human-authored</strong> registered anchor exists in the source payload's
+<code>anchor_grades</code>. <code>machine_generated_permitted</code> is <code>false</code>; a month with no
+registered anchor reports <code>available: false</code> with reason
+<code>no_registered_human_authored_archetype</code> and is never given an inferred one.
+A knowledge-cutoff rule (<code>_meta.knowledge_cutoff</code>, <code>archive_end</code> 2019-12)
+refuses any label, annotation or category whose evidence postdates the
+archive, and publishes the refusal rather than dropping it silently, so
+present-day categories cannot leak backwards into a historical view.</p>
+<p><code>_meta</code> carries <code>contract_sha256</code>, <code>source_sha256</code> and
+<code>implementation_sha256</code>, so a citation can pin the registration, the input
+and the code that produced the numbers. Regeneration is byte-identical and
+CI asserts it. Rendered for humans at <code>docs/history-lab.html</code>; flat
+downloads at <code>downloads/igrm-historical-regime-baselines.csv</code> and
+<code>downloads/igrm-historical-analogs.csv</code>. Registered in
+<code>governance/historical_intelligence_contract.json</code>. Nothing in this payload
+is a forecast, and no field states or implies what happens next.</p>
 </div>
       <!--site-shell:content-end-->
     </main>
