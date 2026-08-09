@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-event-ledger-replay-0.1.0.json",
+  "title": "OGES Event Ledger bitemporal extension replay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "trust_class",
+    "production_trust",
+    "query",
+    "selected_release",
+    "events",
+    "claims",
+    "episodes",
+    "correction_impacts",
+    "count_units",
+    "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "event_ledger_extension_replay"},
+    "schema_version": {"const": "0.1.0"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "trust_class": {"const": "synthetic_nonproduction"},
+    "production_trust": {"const": false},
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["knowledge_cutoff", "valid_on", "selection_rule"],
+      "properties": {
+        "knowledge_cutoff": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "valid_on": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/date"},
+        "selection_rule": {"const": "latest_separately_receipted_complete_release_at_or_before_cutoff"}
+      }
+    },
+    "selected_release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sequence", "release_id", "manifest_record_sha256", "available_at"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "release_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "manifest_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "available_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"}
+      }
+    },
+    "events": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/eventState"}},
+    "claims": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/claimState"}},
+    "episodes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/episodeState"}},
+    "correction_impacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["correction_id", "record_sha256", "known_at", "valid_from"],
+        "properties": {
+          "correction_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+          "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+          "known_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+          "valid_from": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"}
+        }
+      }
+    },
+    "count_units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregate_source_rows",
+        "deduplicated_source_events",
+        "canonical_geopolitical_events",
+        "detected_salience_episodes"
+      ],
+      "properties": {
+        "aggregate_source_rows": {"type": ["integer", "null"], "minimum": 0},
+        "deduplicated_source_events": {"type": ["integer", "null"], "minimum": 0},
+        "canonical_geopolitical_events": {"type": "integer", "minimum": 0},
+        "detected_salience_episodes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$"}
+    }
+  },
+  "$defs": {
+    "eventState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "record_sha256", "lifecycle_state", "record_status", "effective_on_valid_date"],
+      "properties": {
+        "event_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "lifecycle_state": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/recordState"},
+        "record_status": {"enum": ["candidate", "confirmed", "disputed", "withdrawn"]},
+        "effective_on_valid_date": {"type": "boolean"}
+      }
+    },
+    "claimState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "record_sha256", "assertion_state", "subject_event_id", "effective_on_valid_date"],
+      "properties": {
+        "claim_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "assertion_state": {
+          "enum": ["allegation", "coded_inference", "official_confirmation", "observed_disruption", "disputed", "superseded"]
+        },
+        "subject_event_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "effective_on_valid_date": {"type": "boolean"}
+      }
+    },
+    "episodeState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["episode_id", "record_sha256", "episode_kind", "episode_state", "effective_on_valid_date", "event_effect"],
+      "properties": {
+        "episode_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "episode_kind": {"enum": ["detector_salience_window", "cross_source_cluster"]},
+        "episode_state": {
+          "enum": ["clustering_proposal", "detector_window_open", "detector_window_closed", "human_adjudicated", "disputed", "superseded"]
+        },
+        "effective_on_valid_date": {"type": "boolean"},
+        "event_effect": {"const": "relationship_only_never_promotion"}
+      }
+    }
+  }
+}

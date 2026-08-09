@@ -72,8 +72,8 @@ def test_public_report_refuses_event_values_until_source_rights_are_signed() -> 
     )
     assert capability["scope_authority"] == "proposed_unsigned"
     assert capability["state_counts"] == {
-        "target_only": 22,
-        "contract_only": 16,
+        "target_only": 21,
+        "contract_only": 17,
         "synthetic_verified": 0,
         "real_bounded": 0,
         "externally_validated": 0,

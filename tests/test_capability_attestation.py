@@ -52,8 +52,8 @@ def test_all_38_launch_capabilities_are_measured_and_none_is_complete_by_asserti
         "denominator_status": "proposed_launch_scope_not_founder_authorized",
         "scope_authority": "proposed_unsigned",
         "state_counts": {
-            "target_only": 22,
-            "contract_only": 16,
+            "target_only": 21,
+            "contract_only": 17,
             "synthetic_verified": 0,
             "real_bounded": 0,
             "externally_validated": 0,
@@ -103,6 +103,26 @@ def test_missing_artifact_lowers_state_instead_of_shrinking_denominator(
     assert row["computed_state"] == "target_only"
     assert row["counterevidence"] == ["replay_contract"]
     assert report["summary"]["capability_denominator"] == 38
+
+
+def test_event_ledger_extension_profile_is_contract_only_evidence(
+    tmp_path: Path,
+) -> None:
+    root = _copy_bound_tree(tmp_path)
+    profile = root / "standard/oges/extensions/event-ledger/0.1.0/profile.json"
+    profile.write_bytes(profile.read_bytes() + b"\n")
+    rows = _by_id(ca.build_report(root))
+    for capability_id in (
+        "typed_event",
+        "epistemic_status",
+        "knowledge_replay",
+        "contradiction_preservation",
+    ):
+        assert rows[capability_id]["computed_state"] == "target_only"
+        assert rows[capability_id]["counterevidence"] == [
+            "event_ledger_extension_profile"
+        ]
+    assert rows["open_conformance"]["computed_state"] == "contract_only"
 
 
 def test_launch_contract_denominator_is_hash_bound(tmp_path: Path) -> None:
@@ -196,11 +216,11 @@ def test_test_source_bytes_cannot_claim_synthetic_verification(
     assert exc.value.code == "capability_registry_drift"
 
 
-def test_semantically_unsupported_event_claims_stay_below_contract() -> None:
+def test_semantically_supported_event_claims_do_not_exceed_contract() -> None:
     rows = _by_id(ca.build_report())
     assert rows["typed_event"]["computed_state"] == "contract_only"
     assert rows["epistemic_status"]["computed_state"] == "contract_only"
-    assert rows["contradiction_preservation"]["computed_state"] == "target_only"
+    assert rows["contradiction_preservation"]["computed_state"] == "contract_only"
     assert rows["signed_release_provenance"]["computed_state"] == "target_only"
 
 

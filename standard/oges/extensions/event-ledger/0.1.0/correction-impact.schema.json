@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-event-ledger-correction-impact-0.1.0.json",
+  "title": "OGES Event Ledger CorrectionImpact extension object",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "correction_id",
+    "record_sha256",
+    "known_at",
+    "valid_from",
+    "reason_code",
+    "transitions",
+    "blast_radius"
+  ],
+  "properties": {
+    "object_type": {"const": "correction_impact"},
+    "schema_version": {"const": "0.1.0"},
+    "correction_id": {"type": "string", "pattern": "^cor:[a-z0-9][a-z0-9._:-]{2,123}$"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "known_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+    "valid_from": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+    "reason_code": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,95}$"},
+    "transitions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["change_kind", "predecessor", "successor"],
+        "properties": {
+          "change_kind": {"const": "supersede"},
+          "predecessor": {"$ref": "#/$defs/objectRef"},
+          "successor": {"$ref": "#/$defs/objectRef"}
+        }
+      }
+    },
+    "blast_radius": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["affected_objects", "affected_product_ids", "affected_release_ids", "counts"],
+      "properties": {
+        "affected_objects": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/objectRef"}},
+        "affected_product_ids": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/idArray"},
+        "affected_release_ids": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/idArray"},
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["objects", "products", "releases"],
+          "properties": {
+            "objects": {"type": "integer", "minimum": 1},
+            "products": {"type": "integer", "minimum": 1},
+            "releases": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "objectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"enum": ["event", "claim", "episode"]},
+        "object_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    }
+  }
+}

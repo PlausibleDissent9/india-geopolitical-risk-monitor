@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:event-ledger:product-dependencies",
+  "default_policy": "deny",
+  "products": [
+    {
+      "product_id": "product:global_event_episode_ledger",
+      "dependent_object_types": ["event", "claim", "episode"]
+    },
+    {
+      "product_id": "product:knowledge_replay",
+      "dependent_object_types": ["event", "claim", "episode"]
+    }
+  ]
+}

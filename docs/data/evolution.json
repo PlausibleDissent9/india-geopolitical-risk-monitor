@@ -20,9 +20,9 @@
       "event_ledger": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18",
       "product_route_set": "747d5a8886e7dc2355537d45e364480ca4451418bbce5642628fa5256be9d968",
       "api_endpoint_set": "239ce5065c90299d6e6ae226e2ed3a229d6d33f9ca491582ef8824c96dd084a6",
-      "capability_attestation_registry": "8b41600670d163096742ed5f2567b525f96aacfebbcc8eacad388f7beca5855d",
+      "capability_attestation_registry": "45fb5b893554c7d977c58e4e063fcd3bb41691dd06d9ff54dec0ccae7b41c525",
       "max_launch_contract": "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc",
-      "capability_attestation_implementation": "648fa247b0ce747f625e5603f9c5990b4166721ee9eb134e0aaf3fd7476bbbeb",
+      "capability_attestation_implementation": "573c2cd7ed62243acd86f60ae9fcf3463756cfe8fe52bc03de76a9c46e9a7ca0",
       "capability_attestation_schema": "33d58dc86cec7b1f9bcdb87c09a822c652b0584827ea7840001c4c190cecce1c",
       "gap_atom_schema": "61128a377f0bc0f0f018530cb92f07411264145247768380a72381f747a34190"
     }
@@ -285,8 +285,8 @@
       "denominator_status": "proposed_launch_scope_not_founder_authorized",
       "scope_authority": "proposed_unsigned",
       "state_counts": {
-        "target_only": 22,
-        "contract_only": 16,
+        "target_only": 21,
+        "contract_only": 17,
         "synthetic_verified": 0,
         "real_bounded": 0,
         "externally_validated": 0,
@@ -307,6 +307,14 @@
           "evidence_class": "contract",
           "expected_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
           "observed_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
+          "status": "verified"
+        },
+        {
+          "artifact_id": "event_ledger_extension_profile",
+          "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
           "status": "verified"
         }
       ],
@@ -329,6 +337,14 @@
           "evidence_class": "contract",
           "expected_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
           "observed_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
+          "status": "verified"
+        },
+        {
+          "artifact_id": "event_ledger_extension_profile",
+          "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
           "status": "verified"
         }
       ],
@@ -443,6 +459,14 @@
           "evidence_class": "contract",
           "expected_sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef",
           "observed_sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef",
+          "status": "verified"
+        },
+        {
+          "artifact_id": "event_ledger_extension_profile",
+          "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
           "status": "verified"
         }
       ],
@@ -693,13 +717,22 @@
     {
       "capability_id": "contradiction_preservation",
       "requirement": "Conflicting source claims remain visible, attributable and unresolved until a registered resolution rule or authoritative correction changes their state.",
-      "computed_state": "target_only",
-      "evidence": [],
-      "counterevidence": [
-        "unregistered_evidence_bundle:contract_only"
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "event_ledger_extension_profile",
+          "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "status": "verified"
+        }
       ],
-      "next_state": "contract_only",
-      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
       "risk_class": "R2_product_or_data_expansion",
       "authority_class": "human_scope_review_required"
     },
@@ -1333,20 +1366,20 @@
       "authority_class": "human_scope_review_required"
     },
     {
-      "gap_id": "gap:contradiction_preservation:contract_only",
+      "gap_id": "gap:contradiction_preservation:synthetic_verified",
       "capability_id": "contradiction_preservation",
-      "observed_state": "target_only",
-      "target_state": "contract_only",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
       "measured_denominator": {
         "registered_evidence": 0,
         "verified_evidence": 0
       },
       "failure_ids": [
-        "unregistered_evidence_bundle:contract_only"
+        "unregistered_evidence_bundle:synthetic_verified"
       ],
       "risk_class": "R2_product_or_data_expansion",
-      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
-      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
       "post_release_observation": "recompute_after_each_committed_artifact_change",
       "authority_class": "human_scope_review_required"
     },

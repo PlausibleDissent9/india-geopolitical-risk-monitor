@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-event-ledger-episode-0.1.0.json",
+  "title": "OGES Event Ledger Episode extension object",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "episode_id",
+    "record_sha256",
+    "revision",
+    "supersedes_episode_id",
+    "episode_kind",
+    "episode_state",
+    "valid_from",
+    "valid_to",
+    "known_at",
+    "formation",
+    "claim_members",
+    "event_links"
+  ],
+  "properties": {
+    "object_type": {"const": "episode"},
+    "schema_version": {"const": "0.1.0"},
+    "episode_id": {"type": "string", "pattern": "^epi:[a-z0-9][a-z0-9._:-]{2,123}$"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "revision": {"type": "integer", "minimum": 1},
+    "supersedes_episode_id": {
+      "oneOf": [
+        {"type": "string", "pattern": "^epi:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        {"type": "null"}
+      ]
+    },
+    "episode_kind": {"enum": ["detector_salience_window", "cross_source_cluster"]},
+    "episode_state": {
+      "enum": [
+        "clustering_proposal",
+        "detector_window_open",
+        "detector_window_closed",
+        "human_adjudicated",
+        "disputed",
+        "superseded"
+      ]
+    },
+    "valid_from": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+    "valid_to": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/nullableDateTime"},
+    "known_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+    "formation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_kind", "authority_id", "implementation_sha256", "proposal_confidence"],
+      "properties": {
+        "authority_kind": {
+          "enum": ["model_clustering_proposal", "registered_deterministic_method", "named_human_authority"]
+        },
+        "authority_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "implementation_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/nullableSha256"},
+        "proposal_confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "claim_members": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/objectRef"}
+    },
+    "event_links": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["event_id", "record_sha256", "role"],
+        "properties": {
+          "event_id": {"type": "string", "pattern": "^evt:[a-z0-9][a-z0-9._:-]{2,123}$"},
+          "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+          "role": {"enum": ["candidate_member", "member", "related"]}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "objectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"const": "claim"},
+        "object_id": {"type": "string", "pattern": "^clm:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    }
+  }
+}

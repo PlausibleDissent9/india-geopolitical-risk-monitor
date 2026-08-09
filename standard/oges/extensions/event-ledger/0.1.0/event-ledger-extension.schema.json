@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/oges-event-ledger-extension-0.1.0.json",
+  "title": "OGES Event Ledger append-only extension bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "record_sha256",
+    "profile_sha256",
+    "trust_class",
+    "production_trust",
+    "base_ledger",
+    "snapshots"
+  ],
+  "properties": {
+    "object_type": {"const": "event_ledger_extension_bundle"},
+    "schema_version": {"const": "0.1.0"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "trust_class": {"const": "synthetic_nonproduction"},
+    "production_trust": {"const": false},
+    "base_ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_path",
+        "ledger_path",
+        "ledger_file_sha256",
+        "replay_registry_path",
+        "replay_registry_sha256",
+        "knowledge_signers_path"
+      ],
+      "properties": {
+        "root_path": {"$ref": "#/$defs/safeRelativePath"},
+        "ledger_path": {"$ref": "#/$defs/safeJsonPath"},
+        "ledger_file_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "replay_registry_path": {"$ref": "#/$defs/safeJsonPath"},
+        "replay_registry_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "knowledge_signers_path": {"$ref": "#/$defs/safeJsonPath"}
+      }
+    },
+    "snapshots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/snapshot"}
+    }
+  },
+  "$defs": {
+    "safeRelativePath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[A-Za-z0-9._/-]+$"
+    },
+    "safeJsonPath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+\\.json$"
+    },
+    "countUnits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregate_source_rows",
+        "deduplicated_source_events",
+        "canonical_geopolitical_events",
+        "detected_salience_episodes"
+      ],
+      "properties": {
+        "aggregate_source_rows": {"type": ["integer", "null"], "minimum": 0},
+        "deduplicated_source_events": {"type": ["integer", "null"], "minimum": 0},
+        "canonical_geopolitical_events": {"type": "integer", "minimum": 0},
+        "detected_salience_episodes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence",
+        "release_id",
+        "release_manifest_record_sha256",
+        "knowledge_available_at",
+        "claims",
+        "episodes",
+        "correction_impacts",
+        "counts",
+        "count_units"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "release_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "release_manifest_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "knowledge_available_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "claims": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://igrm.in/schemas/oges-event-ledger-claim-0.1.0.json"}
+        },
+        "episodes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://igrm.in/schemas/oges-event-ledger-episode-0.1.0.json"}
+        },
+        "correction_impacts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://igrm.in/schemas/oges-event-ledger-correction-impact-0.1.0.json"}
+        },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["claims", "episodes", "correction_impacts"],
+          "properties": {
+            "claims": {"type": "integer", "minimum": 0},
+            "episodes": {"type": "integer", "minimum": 0},
+            "correction_impacts": {"type": "integer", "minimum": 0}
+          }
+        },
+        "count_units": {"$ref": "#/$defs/countUnits"}
+      }
+    }
+  }
+}
