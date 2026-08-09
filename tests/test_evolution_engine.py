@@ -65,6 +65,27 @@ def test_public_report_refuses_event_values_until_source_rights_are_signed() -> 
     assert ledger["canonical_geopolitical_event_count"] is None
     assert "no source-derived" in ledger["current_boundary"]
     assert "freshness_ledger" not in state
+    capability = state["max_capability_attestation"]
+    assert capability["capability_denominator"] == 38
+    assert capability["denominator_status"] == (
+        "proposed_launch_scope_not_founder_authorized"
+    )
+    assert capability["scope_authority"] == "proposed_unsigned"
+    assert capability["state_counts"] == {
+        "target_only": 22,
+        "contract_only": 16,
+        "synthetic_verified": 0,
+        "real_bounded": 0,
+        "externally_validated": 0,
+        "operational": 0,
+    }
+    assert capability["gap_atoms"] == 38
+    assert len(report["capability_attestations"]) == 38
+    assert len(report["gap_atoms"]) == 38
+    assert not any(
+        row["computed_state"] == "operational"
+        for row in report["capability_attestations"]
+    )
 
 
 def test_layer_registry_requires_truthful_publication_and_no_world_score() -> None:

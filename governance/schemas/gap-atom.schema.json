@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/gap-atom-0.1.0.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["gap_id", "capability_id", "observed_state", "target_state", "measured_denominator", "failure_ids", "risk_class", "acceptance_test", "rollback", "post_release_observation", "authority_class"],
+  "properties": {
+    "gap_id": {"type": "string", "pattern": "^gap:[a-z0-9_]+:[a-z_]+$"},
+    "capability_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,95}$"},
+    "observed_state": {"enum": ["target_only", "contract_only", "synthetic_verified", "real_bounded", "externally_validated"]},
+    "target_state": {"enum": ["contract_only", "synthetic_verified", "real_bounded", "externally_validated", "operational"]},
+    "measured_denominator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registered_evidence", "verified_evidence"],
+      "properties": {
+        "registered_evidence": {"type": "integer", "minimum": 0},
+        "verified_evidence": {"type": "integer", "minimum": 0}
+      }
+    },
+    "failure_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 3}},
+    "risk_class": {"enum": ["R2_product_or_data_expansion", "R3_method_claim_rights_or_security_boundary", "R4_external_outcome"]},
+    "acceptance_test": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,159}$"},
+    "rollback": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,159}$"},
+    "post_release_observation": {"const": "recompute_after_each_committed_artifact_change"},
+    "authority_class": {"enum": ["human_scope_review_required", "founder_or_named_human_authority_required", "independent_external_evidence_required"]}
+  }
+}

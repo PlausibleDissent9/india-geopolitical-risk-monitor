@@ -19,7 +19,12 @@
       "historical_intelligence_implementation": "355287f23a8373881c2e84032350422c7d135a7fab7abaff2625b72c91dc0612",
       "event_ledger": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18",
       "product_route_set": "747d5a8886e7dc2355537d45e364480ca4451418bbce5642628fa5256be9d968",
-      "api_endpoint_set": "239ce5065c90299d6e6ae226e2ed3a229d6d33f9ca491582ef8824c96dd084a6"
+      "api_endpoint_set": "239ce5065c90299d6e6ae226e2ed3a229d6d33f9ca491582ef8824c96dd084a6",
+      "capability_attestation_registry": "8b41600670d163096742ed5f2567b525f96aacfebbcc8eacad388f7beca5855d",
+      "max_launch_contract": "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc",
+      "capability_attestation_implementation": "648fa247b0ce747f625e5603f9c5990b4166721ee9eb134e0aaf3fd7476bbbeb",
+      "capability_attestation_schema": "33d58dc86cec7b1f9bcdb87c09a822c652b0584827ea7840001c4c190cecce1c",
+      "gap_atom_schema": "61128a377f0bc0f0f018530cb92f07411264145247768380a72381f747a34190"
     }
   },
   "authority": {
@@ -274,8 +279,1348 @@
       "deduplicated_source_event_count": null,
       "canonical_geopolitical_event_count": null,
       "current_boundary": "The implementation validates the candidate frame, but no source-derived event-ledger values are public until every required signed rights decision passes."
+    },
+    "max_capability_attestation": {
+      "capability_denominator": 38,
+      "denominator_status": "proposed_launch_scope_not_founder_authorized",
+      "scope_authority": "proposed_unsigned",
+      "state_counts": {
+        "target_only": 22,
+        "contract_only": 16,
+        "synthetic_verified": 0,
+        "real_bounded": 0,
+        "externally_validated": 0,
+        "operational": 0
+      },
+      "gap_atoms": 38
     }
   },
+  "capability_attestations": [
+    {
+      "capability_id": "typed_event",
+      "requirement": "A geopolitical event is a typed and versioned object, not a headline.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "event_contract",
+          "path": "governance/event_ledger_contract.json",
+          "evidence_class": "contract",
+          "expected_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
+          "observed_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "epistemic_status",
+      "requirement": "Rumor, allegation, coded inference, official confirmation and realized disruption are distinct machine states.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "event_contract",
+          "path": "governance/event_ledger_contract.json",
+          "evidence_class": "contract",
+          "expected_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
+          "observed_sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "source_semantics",
+      "requirement": "News, official records, events, physical transmission, trade, energy, markets and public attention retain separate meanings.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "oges_profile",
+          "path": "standard/oges/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2",
+          "observed_sha256": "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "india_dependency_traversal",
+      "requirement": "Events traverse registered India dependency edges across routes, ports, commodities, sectors, states, firms and policy authority.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "edge_evidence",
+      "requirement": "Every public link states what is known, effective date, source, rights state, coverage denominator and uncertainty.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "dependency_profile",
+          "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "c3e813f6ebfc6abfb5d5ccca5a5fb61fd72a8d35fff6d23b3ccf2b0147526361",
+          "observed_sha256": "c3e813f6ebfc6abfb5d5ccca5a5fb61fd72a8d35fff6d23b3ccf2b0147526361",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "time_varying_exposure",
+      "requirement": "Covered entities expose time-varying fingerprints, stale edges, unknowns and declared-universe coverage.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "bounded_scenarios",
+      "requirement": "Users can vary duration and magnitude and receive paths, assumptions, missing links and ranges rather than a made-up forecast.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "shock_contract",
+          "path": "governance/shock_compiler_registry.json",
+          "evidence_class": "contract",
+          "expected_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "observed_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "knowledge_replay",
+      "requirement": "A past cutoff reconstructs the exact then-available knowledge state and prevents hindsight in research.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "replay_contract",
+          "path": "governance/knowledge_replay_registry.json",
+          "evidence_class": "contract",
+          "expected_sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef",
+          "observed_sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "hypothesis_falsification",
+      "requirement": "Competing hypotheses state supporting, contradicting and potentially falsifying evidence.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "causal_boundary",
+      "requirement": "Observed post-event changes remain separate from defensible attribution.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "four_outputs",
+      "requirement": "One evidence graph can generate a research package, board brief, newsroom claim card and institutional offline audit bundle.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "verified_natural_language",
+      "requirement": "Open-ended questions compile from facts and transformations; an unsupported required clause forces abstention.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "plan_profile",
+          "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
+          "observed_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "research_subsets",
+      "requirement": "Researchers generate exact citable subsets and manifests.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "forecast_separation",
+      "requirement": "Statistical and AI forecasts live outside descriptive instruments and publish calibration and losses.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "benchmark_losses",
+      "requirement": "Benchmark Lab publishes registered wins and losses against the full benchmark contract, never an overall superiority shortcut.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R4_external_outcome",
+      "authority_class": "independent_external_evidence_required"
+    },
+    {
+      "capability_id": "multilingual_access",
+      "requirement": "Major Indian-language question understanding and bounded public explanations preserve the same fact ledger.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "event_to_recovery",
+      "requirement": "The system keeps event, exposure, transmission, response and recovery as separate connected layers.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "shock_contract",
+          "path": "governance/shock_compiler_registry.json",
+          "evidence_class": "contract",
+          "expected_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "observed_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "blinded_utility",
+      "requirement": "Usefulness is tested through frozen blinded decision tasks, not page views or testimonials.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R4_external_outcome",
+      "authority_class": "independent_external_evidence_required"
+    },
+    {
+      "capability_id": "global_shock_india",
+      "requirement": "A global shock can be evaluated against India-specific exposure and the architecture is country-portable.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "shock_contract",
+          "path": "governance/shock_compiler_registry.json",
+          "evidence_class": "contract",
+          "expected_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "observed_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "open_conformance",
+      "requirement": "External systems can test compatible evidence bundles against a public standard and adversarial fixtures.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "oges_profile",
+          "path": "standard/oges/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2",
+          "observed_sha256": "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "declared_universe_partition",
+      "requirement": "Each Atlas universe reconciles included, excluded, unmappable, stale and unknown members to an authenticated source frame so coverage cannot be improved by silently shrinking the denominator.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "dependency_profile",
+          "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "c3e813f6ebfc6abfb5d5ccca5a5fb61fd72a8d35fff6d23b3ccf2b0147526361",
+          "observed_sha256": "c3e813f6ebfc6abfb5d5ccca5a5fb61fd72a8d35fff6d23b3ccf2b0147526361",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "dependency_flow_reconciliation",
+      "requirement": "Quantified dependency flows retain original units, denominator, capacity and time basis and either reconcile within a registered tolerance or refuse publication.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "dependency_profile",
+          "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "c3e813f6ebfc6abfb5d5ccca5a5fb61fd72a8d35fff6d23b3ccf2b0147526361",
+          "observed_sha256": "c3e813f6ebfc6abfb5d5ccca5a5fb61fd72a8d35fff6d23b3ccf2b0147526361",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "contradiction_preservation",
+      "requirement": "Conflicting source claims remain visible, attributable and unresolved until a registered resolution rule or authoritative correction changes their state.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "uncertainty_decomposition",
+      "requirement": "Source, mapping, model, temporal and missingness uncertainty are carried separately; the system may not launder them into one unsupported confidence number.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "proof_carrying_clauses",
+      "requirement": "Every reader-visible analytical clause identifies the exact objects, evidence, transformation and release from which it compiled, and semantic recompile rejects plausible resealed mutations.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "plan_profile",
+          "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
+          "observed_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "constraint_feasibility",
+      "requirement": "Resilience scenarios check capacity, route, inventory, timing and substitution constraints before presenting a path as feasible and show which constraint or missing input blocks an answer.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "shock_contract",
+          "path": "governance/shock_compiler_registry.json",
+          "evidence_class": "contract",
+          "expected_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "observed_sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "substitution_capacity_lag",
+      "requirement": "Scenario results represent substitution ceilings, activation lags, inventory buffers and recovery timing as ranges or unknowns rather than instant frictionless replacement.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "role_invariant_outputs",
+      "requirement": "Researcher, board, newsroom, API and offline-audit products share one fact ledger; audience changes presentation but cannot change facts, dates, uncertainty or evidence lineage.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "join_contract",
+          "path": "governance/max_state_join_registry.json",
+          "evidence_class": "contract",
+          "expected_sha256": "e21c08240ca62c7b03a140b80a2a783c3933211b3a05fda7e236c8923ee4f7be",
+          "observed_sha256": "e21c08240ca62c7b03a140b80a2a783c3933211b3a05fda7e236c8923ee4f7be",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "value_of_information",
+      "requirement": "The system ranks data and mapping gaps by registered decision relevance and expected uncertainty reduction without pretending the ranking is a substantive policy recommendation.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R2_product_or_data_expansion",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "capability_id": "federated_signed_modules",
+      "requirement": "External modules have scoped authority, signed bytes, revocation, conflicts, coverage and correction lineage and cannot expand the central release's rights or truth claims.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "restricted_evidence_boundary",
+      "requirement": "Restricted evidence stays encrypted and access-controlled; public outputs expose only rights-permitted metadata or derived values and retain an auditable access and redaction decision.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "signed_release_provenance",
+      "requirement": "Every production release binds exact source, code, policy, schema, registry and artifact hashes to an authenticated release statement obtained outside the bundle.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "publication_quorum",
+      "requirement": "No model, bot or single maintainer can both create and authorize a production release, high-impact correction or expansion of public claim authority.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "secure_build_supply_chain",
+      "requirement": "Builds use least-privilege tokens, immutable dependencies, secret and malware scanning, an SBOM, provenance attestations and an exact-green-commit publication gate.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "prompt_injection_boundary",
+      "requirement": "Untrusted source text and user prompts cannot grant tools, cross privacy boundaries, alter evidence authority, access signing secrets or bypass clause-level refusal.",
+      "computed_state": "contract_only",
+      "evidence": [
+        {
+          "artifact_id": "plan_profile",
+          "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
+          "observed_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
+          "status": "verified"
+        }
+      ],
+      "counterevidence": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "next_state": "synthetic_verified",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_synthetic_verified",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "incident_recovery",
+      "requirement": "Backups, restore procedures, key revocation, correction publication and incident disclosure are exercised and measured; an untested plan does not count as operational resilience.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "institutional_memory",
+      "requirement": "Decisions, assumptions, dissent, incidents, corrections and unresolved questions are versioned alongside evidence so later users can replay institutional reasoning without hindsight.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "capability_id": "evaluation_exchange",
+      "requirement": "Frozen blinded tasks, baselines, raw or rights-safe results, scoring code, abstentions and losses are independently rerunnable and permanently retained beside any reported win.",
+      "computed_state": "target_only",
+      "evidence": [],
+      "counterevidence": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "next_state": "contract_only",
+      "next_gate": "verify_complete_registered_evidence_bundle_for_contract_only",
+      "risk_class": "R4_external_outcome",
+      "authority_class": "independent_external_evidence_required"
+    }
+  ],
+  "gap_atoms": [
+    {
+      "gap_id": "gap:typed_event:synthetic_verified",
+      "capability_id": "typed_event",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:epistemic_status:synthetic_verified",
+      "capability_id": "epistemic_status",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:source_semantics:synthetic_verified",
+      "capability_id": "source_semantics",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:india_dependency_traversal:contract_only",
+      "capability_id": "india_dependency_traversal",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:edge_evidence:synthetic_verified",
+      "capability_id": "edge_evidence",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:time_varying_exposure:contract_only",
+      "capability_id": "time_varying_exposure",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:bounded_scenarios:synthetic_verified",
+      "capability_id": "bounded_scenarios",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:knowledge_replay:synthetic_verified",
+      "capability_id": "knowledge_replay",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:hypothesis_falsification:contract_only",
+      "capability_id": "hypothesis_falsification",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:causal_boundary:contract_only",
+      "capability_id": "causal_boundary",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:four_outputs:contract_only",
+      "capability_id": "four_outputs",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:verified_natural_language:synthetic_verified",
+      "capability_id": "verified_natural_language",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:research_subsets:contract_only",
+      "capability_id": "research_subsets",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:forecast_separation:contract_only",
+      "capability_id": "forecast_separation",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:benchmark_losses:contract_only",
+      "capability_id": "benchmark_losses",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R4_external_outcome",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "independent_external_evidence_required"
+    },
+    {
+      "gap_id": "gap:multilingual_access:contract_only",
+      "capability_id": "multilingual_access",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:event_to_recovery:synthetic_verified",
+      "capability_id": "event_to_recovery",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:blinded_utility:contract_only",
+      "capability_id": "blinded_utility",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R4_external_outcome",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "independent_external_evidence_required"
+    },
+    {
+      "gap_id": "gap:global_shock_india:synthetic_verified",
+      "capability_id": "global_shock_india",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:open_conformance:synthetic_verified",
+      "capability_id": "open_conformance",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:declared_universe_partition:synthetic_verified",
+      "capability_id": "declared_universe_partition",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:dependency_flow_reconciliation:synthetic_verified",
+      "capability_id": "dependency_flow_reconciliation",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:contradiction_preservation:contract_only",
+      "capability_id": "contradiction_preservation",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:uncertainty_decomposition:contract_only",
+      "capability_id": "uncertainty_decomposition",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:proof_carrying_clauses:synthetic_verified",
+      "capability_id": "proof_carrying_clauses",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:constraint_feasibility:synthetic_verified",
+      "capability_id": "constraint_feasibility",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:substitution_capacity_lag:contract_only",
+      "capability_id": "substitution_capacity_lag",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:role_invariant_outputs:synthetic_verified",
+      "capability_id": "role_invariant_outputs",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:value_of_information:contract_only",
+      "capability_id": "value_of_information",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R2_product_or_data_expansion",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "human_scope_review_required"
+    },
+    {
+      "gap_id": "gap:federated_signed_modules:contract_only",
+      "capability_id": "federated_signed_modules",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:restricted_evidence_boundary:contract_only",
+      "capability_id": "restricted_evidence_boundary",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:signed_release_provenance:contract_only",
+      "capability_id": "signed_release_provenance",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:publication_quorum:contract_only",
+      "capability_id": "publication_quorum",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:secure_build_supply_chain:contract_only",
+      "capability_id": "secure_build_supply_chain",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:prompt_injection_boundary:synthetic_verified",
+      "capability_id": "prompt_injection_boundary",
+      "observed_state": "contract_only",
+      "target_state": "synthetic_verified",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:synthetic_verified"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_synthetic_verified_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_contract_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:incident_recovery:contract_only",
+      "capability_id": "incident_recovery",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:institutional_memory:contract_only",
+      "capability_id": "institutional_memory",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "founder_or_named_human_authority_required"
+    },
+    {
+      "gap_id": "gap:evaluation_exchange:contract_only",
+      "capability_id": "evaluation_exchange",
+      "observed_state": "target_only",
+      "target_state": "contract_only",
+      "measured_denominator": {
+        "registered_evidence": 0,
+        "verified_evidence": 0
+      },
+      "failure_ids": [
+        "unregistered_evidence_bundle:contract_only"
+      ],
+      "risk_class": "R4_external_outcome",
+      "acceptance_test": "all_registered_contract_only_evidence_matches_and_class_gate_passes",
+      "rollback": "retain_target_only_and_remove_stronger_public_claims",
+      "post_release_observation": "recompute_after_each_committed_artifact_change",
+      "authority_class": "independent_external_evidence_required"
+    }
+  ],
   "strategic_programs": [
     {
       "program_id": "global_event_episode_ledger",

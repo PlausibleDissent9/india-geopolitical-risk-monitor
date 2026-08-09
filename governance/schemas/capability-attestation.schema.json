@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/capability-attestation-0.1.0.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["capability_id", "requirement", "computed_state", "evidence", "counterevidence", "next_state", "next_gate", "risk_class", "authority_class"],
+  "properties": {
+    "capability_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,95}$"},
+    "requirement": {"type": "string", "minLength": 20},
+    "computed_state": {"enum": ["target_only", "contract_only", "synthetic_verified", "real_bounded", "externally_validated", "operational"]},
+    "evidence": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/evidence"}},
+    "counterevidence": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 3}},
+    "next_state": {"type": ["string", "null"], "enum": [null, "contract_only", "synthetic_verified", "real_bounded", "externally_validated", "operational"]},
+    "next_gate": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_]{2,159}$"},
+    "risk_class": {"enum": ["R2_product_or_data_expansion", "R3_method_claim_rights_or_security_boundary", "R4_external_outcome"]},
+    "authority_class": {"enum": ["human_scope_review_required", "founder_or_named_human_authority_required", "independent_external_evidence_required"]}
+  },
+  "$defs": {
+    "sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "path", "evidence_class", "expected_sha256", "observed_sha256", "status"],
+      "properties": {
+        "artifact_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,95}$"},
+        "path": {"type": "string", "minLength": 3},
+        "evidence_class": {"enum": ["contract", "implementation", "adversarial_test", "execution_receipt", "real_bounded_data", "rights_decision", "external_validation", "operational_record"]},
+        "expected_sha256": {"$ref": "#/$defs/sha"},
+        "observed_sha256": {"$ref": "#/$defs/sha"},
+        "status": {"enum": ["verified", "missing", "hash_mismatch"]}
+      }
+    }
+  }
+}

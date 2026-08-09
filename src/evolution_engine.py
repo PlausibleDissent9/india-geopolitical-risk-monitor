@@ -17,6 +17,8 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, NoReturn, cast
 
+from src import capability_attestation
+
 ROOT = Path(__file__).resolve().parents[1]
 ENGINE_PATH = ROOT / "governance" / "evolution_engine.json"
 LAYER_PATH = ROOT / "governance" / "global_atlas_layers.json"
@@ -316,6 +318,7 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
     )
     catalog, _ = _read(CATALOG_PATH, "product_catalog_unreadable")
     contract, _ = _read(CONTRACT_PATH, "api_contract_unreadable")
+    capability_report = capability_attestation.build_report(root)
     _validate_engine(engine)
     layer_rows = _validate_layers(layers)
 
@@ -521,6 +524,21 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
                 "api_endpoint_set": canonical_sha256(
                     sorted(cast(str, row["path"]) for row in endpoints)
                 ),
+                "capability_attestation_registry": capability_report["_meta"][
+                    "registry_sha256"
+                ],
+                "max_launch_contract": capability_report["_meta"][
+                    "launch_contract_sha256"
+                ],
+                "capability_attestation_implementation": capability_report["_meta"][
+                    "implementation_sha256"
+                ],
+                "capability_attestation_schema": capability_report["_meta"][
+                    "attestation_schema_sha256"
+                ],
+                "gap_atom_schema": capability_report["_meta"][
+                    "gap_schema_sha256"
+                ],
             },
         },
         "authority": {
@@ -592,7 +610,10 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
                     "event-ledger values are public until every required signed rights decision passes."
                 ),
             },
+            "max_capability_attestation": capability_report["summary"],
         },
+        "capability_attestations": capability_report["capabilities"],
+        "gap_atoms": capability_report["gap_atoms"],
         "strategic_programs": programs,
         "priority_queue": [
             {
