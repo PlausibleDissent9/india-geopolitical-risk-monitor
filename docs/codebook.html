@@ -332,7 +332,7 @@ event counts remain unavailable even after rights approval.</p>
 </tr>
 <tr>
 <td><code>release_lineage</code></td>
-<td>No public vintage exists while blocked. Every authorized release is predecessor-bound, complete-state hashed and carries a typed date/episode delta. CI refuses removal or byte changes to any predecessor and permits only the next sequential vintage; the delta is recomputed from predecessor bytes. <code>released_at</code> must follow every bound evidence/knowledge date, increase strictly, and remain within five minutes of the verifier clock</td>
+<td>No public vintage exists while blocked. Every authorized release is predecessor-bound, complete-state hashed, carries a typed date/episode delta and requires a detached Ed25519 signature from a separately pinned release trust root. Source-rights approval alone cannot sign a public vintage; an agent-created key or self-declared role has no authority. CI replays every first-parent commit that ever changed the archive, refuses removal or byte changes to any predecessor and permits only the next sequential vintage, so an innocent tip cannot hide an earlier rewrite. The delta is recomputed from predecessor bytes. <code>released_at</code> must follow every bound evidence/knowledge date, increase strictly, and remain within five minutes of the verifier clock</td>
 </tr>
 </tbody>
 </table>

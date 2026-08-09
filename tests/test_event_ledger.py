@@ -2,12 +2,18 @@
 
 from __future__ import annotations
 
+import base64
 import csv
+import hashlib
 import json
+import subprocess
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from typing import Any
 
 import pytest
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from src import event_ledger
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +33,69 @@ def _write_csv(path: Path, rows: list[dict[str, str]], fields: tuple[str, ...]) 
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _release_signer(
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    role: str = "founder_release_approver",
+) -> tuple[str, Ed25519PrivateKey]:
+    signer_id = "test_human_release_signer"
+    private_key = Ed25519PrivateKey.generate()
+    public_key = base64.b64encode(
+        private_key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+    ).decode("ascii")
+    monkeypatch.setattr(
+        event_ledger,
+        "TRUSTED_RELEASE_SIGNERS",
+        {
+            signer_id: {
+                "role": role,
+                "public_key_ed25519_base64": public_key,
+                "effective": "2026-08-01",
+                "revoked_on": None,
+            }
+        },
+    )
+    return signer_id, private_key
+
+
+def _release_signature(
+    unsigned: dict[str, Any], signer: tuple[str, Ed25519PrivateKey]
+) -> dict[str, str]:
+    signer_id, private_key = signer
+    trust = event_ledger.TRUSTED_RELEASE_SIGNERS[signer_id]
+    statement = event_ledger._release_signature_bytes(unsigned)
+    return {
+        "schema_version": "1.0.0",
+        "algorithm": "Ed25519",
+        "signer_id": signer_id,
+        "signer_role": trust["role"],
+        "public_key_ed25519_base64": trust["public_key_ed25519_base64"],
+        "signed_payload_sha256": hashlib.sha256(statement).hexdigest(),
+        "signature_ed25519_base64": base64.b64encode(
+            private_key.sign(statement)
+        ).decode("ascii"),
+    }
+
+
+def _signed_release(
+    candidate: dict[str, Any],
+    rights: dict[str, Any],
+    previous: dict[str, Any] | None,
+    released_at: str,
+    signer: tuple[str, Ed25519PrivateKey],
+) -> dict[str, Any]:
+    unsigned = event_ledger._unsigned_authorized_public_artifact(
+        candidate, rights, previous, released_at
+    )
+    return event_ledger._authorized_public_artifact(
+        candidate,
+        rights,
+        previous,
+        released_at,
+        _release_signature(unsigned, signer),
+    )
 
 
 def test_public_artifact_fails_closed_until_signed_source_rights_exist() -> None:
@@ -264,6 +333,11 @@ def test_public_page_and_javascript_fail_closed_on_the_same_boundaries() -> None
     assert 'payload.canonical_event_layer.model_promotion !== "prohibited"' in js
     assert '!sha256(meta.artifact_integrity_sha256)' in js
     assert '!utcSecond(meta.released_at)' in js
+    assert "var TRUSTED_RELEASE_SIGNERS = Object.freeze({});" in js
+    assert "async function verifyAuthorizedRelease(payload)" in js
+    assert 'delete content._meta.release_signature' in js
+    assert 'crypto.subtle.importKey(' in js
+    assert 'if (mode === "authorized") await verifyAuthorizedRelease(payload);' in js
     assert '"Artifact-integrity SHA-256: "' in js
     assert "value !== null" in js
     assert "replaceChildren" in js
@@ -329,11 +403,17 @@ def test_release_identity_binds_every_published_candidate_branch(
     )
 
 
-def test_previously_observed_day_cannot_be_laundered_into_unavailable() -> None:
+def test_previously_observed_day_cannot_be_laundered_into_unavailable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "test"}
-    previous = event_ledger._authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T00:00:00Z"
+    previous = _signed_release(
+        candidate,
+        rights,
+        None,
+        "2026-08-09T00:00:00Z",
+        _release_signer(monkeypatch),
     )
     changed = json.loads(json.dumps(candidate))
     series = changed["aggregate_historical_series"]
@@ -420,8 +500,9 @@ def test_authorized_archive_head_survives_blocked_status_and_detects_tamper(
 ) -> None:
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "test"}
-    release = event_ledger._authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T00:00:00Z"
+    signer = _release_signer(monkeypatch)
+    release = _signed_release(
+        candidate, rights, None, "2026-08-09T00:00:00Z", signer
     )
     vintage_dir = tmp_path / "vintages"
     vintage_dir.mkdir()
@@ -441,7 +522,7 @@ def test_authorized_archive_head_survives_blocked_status_and_detects_tamper(
     _write_json(archive, tampered)
     with pytest.raises(event_ledger.EventLedgerError) as exc:
         event_ledger._authorized_history()
-    assert exc.value.code == "authorized_release_integrity_invalid"
+    assert exc.value.code == "authorized_release_content_digest_invalid"
 
 
 def test_blocked_build_still_rejects_a_malformed_authorized_archive(
@@ -456,6 +537,80 @@ def test_blocked_build_still_rejects_a_malformed_authorized_archive(
     with pytest.raises(event_ledger.EventLedgerError) as exc:
         event_ledger.build()
     assert exc.value.code == "authorized_release_shape_invalid"
+
+
+def test_unsigned_or_self_pinned_release_cannot_enter_authorized_history(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    candidate = event_ledger._build_candidate()
+    rights = {"authorized": True, "snapshot": "forged-but-self-consistent"}
+    unsigned = event_ledger._unsigned_authorized_public_artifact(
+        candidate, rights, None, "2026-08-09T00:00:00Z"
+    )
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_public_artifact(
+            candidate, rights, None, "2026-08-09T00:00:00Z"
+        )
+    assert exc.value.code == "authorized_release_signature_required"
+
+    attacker = _release_signer(monkeypatch)
+    forged = event_ledger._authorized_public_artifact(
+        candidate,
+        rights,
+        None,
+        "2026-08-09T00:00:00Z",
+        _release_signature(unsigned, attacker),
+    )
+    monkeypatch.setattr(event_ledger, "TRUSTED_RELEASE_SIGNERS", {})
+    vintage_dir = tmp_path / "vintages"
+    vintage_dir.mkdir()
+    _write_json(vintage_dir / f"{forged['_meta']['release_id']}.json", forged)
+    monkeypatch.setattr(event_ledger, "VINTAGE_DIR", vintage_dir)
+
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_history()
+    assert exc.value.code == "authorized_release_signer_untrusted"
+
+
+def test_agent_role_cannot_become_release_authority(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    candidate = event_ledger._build_candidate()
+    rights = {"authorized": True, "snapshot": "agent-forgery"}
+    unsigned = event_ledger._unsigned_authorized_public_artifact(
+        candidate, rights, None, "2026-08-09T00:00:00Z"
+    )
+    agent = _release_signer(monkeypatch, role="agent")
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_public_artifact(
+            candidate,
+            rights,
+            None,
+            "2026-08-09T00:00:00Z",
+            _release_signature(unsigned, agent),
+        )
+    assert exc.value.code == "authorized_release_signer_untrusted"
+
+
+def test_release_signer_must_be_active_at_the_release_time(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    candidate = event_ledger._build_candidate()
+    rights = {"authorized": True, "snapshot": "expired-release-key"}
+    unsigned = event_ledger._unsigned_authorized_public_artifact(
+        candidate, rights, None, "2026-08-09T00:00:00Z"
+    )
+    signer = _release_signer(monkeypatch)
+    event_ledger.TRUSTED_RELEASE_SIGNERS[signer[0]]["revoked_on"] = "2026-08-09"
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_public_artifact(
+            candidate,
+            rights,
+            None,
+            "2026-08-09T00:00:00Z",
+            _release_signature(unsigned, signer),
+        )
+    assert exc.value.code == "authorized_release_signer_untrusted"
 
 
 def test_archive_transition_refuses_rewrite_removal_and_multiple_additions() -> None:
@@ -485,21 +640,63 @@ def test_archive_transition_refuses_rewrite_removal_and_multiple_additions() -> 
     assert exc.value.code == "authorized_release_append_sequence_invalid"
 
 
-def test_release_time_must_follow_evidence_predecessor_and_wall_clock() -> None:
+def test_full_history_scan_catches_penultimate_rewrite_below_innocent_tip(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    archive = tmp_path / event_ledger.VINTAGE_RELATIVE
+    archive.mkdir(parents=True)
+    vintage = archive / "event-ledger-v1-aaaaaaaaaaaaaaaa.json"
+
+    def git(*args: str) -> None:
+        subprocess.run(
+            ["git", *args],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+    git("init", "-q")
+    git("config", "user.name", "Archive Test")
+    git("config", "user.email", "archive-test.invalid")
+    vintage.write_bytes(b"original\n")
+    git("add", vintage.relative_to(tmp_path).as_posix())
+    git("commit", "-qm", "introduce immutable vintage")
+    vintage.write_bytes(b"rewritten\n")
+    git("add", vintage.relative_to(tmp_path).as_posix())
+    git("commit", "-qm", "rewrite penultimate vintage")
+    (tmp_path / "README.md").write_text("innocent tip\n", encoding="utf-8")
+    git("add", "README.md")
+    git("commit", "-qm", "innocent tip")
+
+    monkeypatch.setattr(event_ledger, "ROOT", tmp_path)
+    monkeypatch.setattr(event_ledger, "VINTAGE_DIR", archive)
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._validate_archive_append_only()
+    assert exc.value.code == "authorized_release_archive_rewritten"
+
+
+def test_release_time_must_follow_evidence_predecessor_and_wall_clock(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "v1"}
 
     with pytest.raises(event_ledger.EventLedgerError) as exc:
-        event_ledger._authorized_public_artifact(
+        event_ledger._unsigned_authorized_public_artifact(
             candidate, rights, None, "2000-01-01T00:00:00Z"
         )
     assert exc.value.code == "authorized_release_precedes_evidence"
 
-    v1 = event_ledger._authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T00:00:00Z"
+    v1 = _signed_release(
+        candidate,
+        rights,
+        None,
+        "2026-08-09T00:00:00Z",
+        _release_signer(monkeypatch),
     )
     with pytest.raises(event_ledger.EventLedgerError) as exc:
-        event_ledger._authorized_public_artifact(
+        event_ledger._unsigned_authorized_public_artifact(
             candidate,
             {"authorized": True, "snapshot": "v2"},
             v1,
@@ -509,7 +706,7 @@ def test_release_time_must_follow_evidence_predecessor_and_wall_clock() -> None:
 
     future = (datetime.now(timezone.utc) + timedelta(minutes=10)).replace(microsecond=0)
     with pytest.raises(event_ledger.EventLedgerError) as exc:
-        event_ledger._authorized_public_artifact(
+        event_ledger._unsigned_authorized_public_artifact(
             candidate,
             {"authorized": True, "snapshot": "future"},
             v1,
@@ -522,14 +719,18 @@ def test_recomputed_archive_tamper_cannot_erase_the_published_delta(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     candidate = event_ledger._build_candidate()
-    release = event_ledger._authorized_public_artifact(
+    release = _signed_release(
         candidate,
         {"authorized": True, "snapshot": "test"},
         None,
         "2026-08-09T00:00:00Z",
+        _release_signer(monkeypatch),
     )
     release["boundary"]["purpose"] = "rewritten after publication"
     release["release_lineage"]["delta"]["added_dates"] = []
+    release["_meta"]["release_content_sha256"] = (
+        event_ledger._release_content_integrity(release)
+    )
     release["_meta"]["artifact_integrity_sha256"] = event_ledger._artifact_integrity(
         release
     )
@@ -540,4 +741,4 @@ def test_recomputed_archive_tamper_cannot_erase_the_published_delta(
 
     with pytest.raises(event_ledger.EventLedgerError) as exc:
         event_ledger._authorized_history()
-    assert exc.value.code == "authorized_release_delta_invalid"
+    assert exc.value.code == "authorized_release_signature_invalid"

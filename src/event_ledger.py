@@ -23,6 +23,8 @@ Standalone::
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import csv
 import hashlib
 import json
@@ -35,6 +37,9 @@ from collections.abc import Iterable
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, NoReturn, cast
+
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 from src import evolution_engine, publication_guard
 
@@ -68,7 +73,16 @@ ALLOWED_RIGHTS_SIGNER_ROLES = frozenset(
 # exact Ed25519 public key. Merely inserting a key into a mutable registry must
 # never create publication authority.
 TRUSTED_RIGHTS_SIGNERS: dict[str, str] = {}
-REGISTERED_CONTRACT_SHA256 = "8bc851f9519a3b99cd76b78a93ae7ebd4b108d328ca1faa830f7cecd56e8a40b"
+ALLOWED_RELEASE_SIGNER_ROLES = frozenset(
+    {"founder_release_approver", "external_release_approver"}
+)
+# This is a separate trust root from source-rights authorization.  A release
+# signer attests the exact public vintage after all source decisions and
+# transformations have been bound.  It remains empty until a human-reviewed
+# commit pins an ID, role and exact Ed25519 public key.  The private key must
+# never enter this repository or an agent session.
+TRUSTED_RELEASE_SIGNERS: dict[str, dict[str, str]] = {}
+REGISTERED_CONTRACT_SHA256 = "05280f359b76c7863d24f87705b3aafa971addc2d603baff0291cc0eb5550e8a"
 VINTAGE_NAME = re.compile(r"^event-ledger-v([1-9][0-9]*)-([0-9a-f]{16})\.json$")
 VINTAGE_RELATIVE = Path("docs/data/vintages/event-ledger")
 MAX_RELEASE_CLOCK_SKEW = timedelta(minutes=5)
@@ -288,21 +302,57 @@ def _enforce_archive_transition(
             _fail("authorized_release_append_sequence_invalid", untracked[0])
 
 
+def _enforce_archive_history(
+    transitions: Iterable[tuple[dict[str, bytes], dict[str, bytes]]]
+) -> None:
+    """Replay every committed archive transition, not merely HEAD^..HEAD."""
+
+    for parent, current in transitions:
+        _enforce_archive_transition(parent, current, current)
+
+
 def _validate_archive_append_only() -> None:
     try:
-        ancestry = subprocess.run(
-            ["git", "rev-list", "--parents", "-n", "1", "HEAD"],
+        commits = subprocess.run(
+            [
+                "git",
+                "log",
+                "--first-parent",
+                "--reverse",
+                "--format=%H",
+                "--",
+                str(VINTAGE_RELATIVE),
+            ],
             cwd=ROOT,
             check=True,
             capture_output=True,
             text=True,
-        ).stdout.split()
+        ).stdout.splitlines()
     except (OSError, subprocess.CalledProcessError) as exc:
         raise EventLedgerError("event_ledger_archive_history_unavailable") from exc
-    if not ancestry:
-        _fail("event_ledger_archive_history_unavailable")
+
+    transitions: list[tuple[dict[str, bytes], dict[str, bytes]]] = []
+    for commit in commits:
+        try:
+            ancestry = subprocess.run(
+                ["git", "rev-list", "--parents", "-n", "1", commit],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.split()
+        except (OSError, subprocess.CalledProcessError) as exc:
+            raise EventLedgerError(
+                "event_ledger_archive_history_unavailable", commit
+            ) from exc
+        if not ancestry or ancestry[0] != commit:
+            _fail("event_ledger_archive_history_unavailable", commit)
+        parent = _git_vintage_snapshot(ancestry[1]) if len(ancestry) > 1 else {}
+        current = _git_vintage_snapshot(commit)
+        transitions.append((parent, current))
+    _enforce_archive_history(transitions)
+
     head = _git_vintage_snapshot("HEAD")
-    parent = _git_vintage_snapshot(ancestry[1]) if len(ancestry) > 1 else {}
     working: dict[str, bytes] = {}
     if VINTAGE_DIR.exists():
         for path in VINTAGE_DIR.glob("*.json"):
@@ -311,7 +361,9 @@ def _validate_archive_append_only() -> None:
                 working[relative] = path.read_bytes()
             except OSError as exc:
                 raise EventLedgerError("authorized_release_archive_unreadable", relative) from exc
-    _enforce_archive_transition(parent, head, working)
+    # A worktree may contain only one next sequential vintage.  Every already
+    # committed transition was independently replayed above.
+    _enforce_archive_transition(head, head, working)
 
 
 def _validate_candidate_baseline(
@@ -686,7 +738,16 @@ def _validate_contract(value: Any) -> dict[str, Any]:
         != sorted(TRUSTED_RIGHTS_SIGNERS)
         or release_gate.get("allowed_signer_roles")
         != sorted(ALLOWED_RIGHTS_SIGNER_ROLES)
+        or release_gate.get("trusted_release_signer_ids")
+        != sorted(TRUSTED_RELEASE_SIGNERS)
+        or release_gate.get("allowed_release_signer_roles")
+        != sorted(ALLOWED_RELEASE_SIGNER_ROLES)
+        or release_gate.get("detached_release_signature_required") is not True
+        or release_gate.get("release_signer_separate_from_rights_signer") is not True
         or not isinstance(release_gate.get("trust_root_change_authority"), str)
+        or not isinstance(
+            release_gate.get("release_trust_root_change_authority"), str
+        )
         or len(prohibited) < 7
     ):
         _fail("contract_canonical_or_replay_boundary_invalid")
@@ -1025,6 +1086,125 @@ def _artifact_integrity(value: dict[str, Any]) -> str:
     return _sha_projection(clone)
 
 
+def _release_content_integrity(value: dict[str, Any]) -> str:
+    """Hash release content without either self-hash or signature envelope."""
+
+    clone = json.loads(json.dumps(value, ensure_ascii=False, allow_nan=False))
+    meta = clone.get("_meta")
+    if not isinstance(meta, dict):
+        _fail("authorized_release_meta_invalid")
+    meta.pop("artifact_integrity_sha256", None)
+    meta.pop("release_content_sha256", None)
+    meta.pop("release_signature", None)
+    return _sha_projection(clone)
+
+
+def _release_signature_statement(value: dict[str, Any]) -> dict[str, Any]:
+    meta = value.get("_meta")
+    if not isinstance(meta, dict):
+        _fail("authorized_release_meta_invalid")
+    return {
+        "schema_version": "igrm-event-ledger-release-signature-v1",
+        "release_id": meta.get("release_id"),
+        "vintage_number": meta.get("vintage_number"),
+        "release_content_sha256": meta.get("release_content_sha256"),
+        "release_state_sha256": meta.get("release_state_sha256"),
+        "predecessor_release_integrity_sha256": meta.get(
+            "predecessor_release_integrity_sha256"
+        ),
+        "released_at": meta.get("released_at"),
+        "knowledge_cutoff": meta.get("knowledge_cutoff"),
+    }
+
+
+def _release_signature_bytes(value: dict[str, Any]) -> bytes:
+    try:
+        return json.dumps(
+            _release_signature_statement(value),
+            ensure_ascii=False,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    except (TypeError, ValueError) as exc:
+        raise EventLedgerError("authorized_release_signature_statement_invalid") from exc
+
+
+def _verify_release_signature(value: dict[str, Any]) -> None:
+    meta = value.get("_meta")
+    if not isinstance(meta, dict):
+        _fail("authorized_release_meta_invalid")
+    content_sha = meta.get("release_content_sha256")
+    if (
+        not isinstance(content_sha, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", content_sha)
+        or _release_content_integrity(value) != content_sha
+    ):
+        _fail("authorized_release_content_digest_invalid")
+    envelope = meta.get("release_signature")
+    if not isinstance(envelope, dict) or set(envelope) != {
+        "schema_version",
+        "algorithm",
+        "signer_id",
+        "signer_role",
+        "public_key_ed25519_base64",
+        "signed_payload_sha256",
+        "signature_ed25519_base64",
+    }:
+        _fail("authorized_release_signature_missing")
+    signer_id = envelope.get("signer_id")
+    trusted = (
+        TRUSTED_RELEASE_SIGNERS.get(signer_id)
+        if isinstance(signer_id, str)
+        else None
+    )
+    public_key_text = envelope.get("public_key_ed25519_base64")
+    role = envelope.get("signer_role")
+    statement = _release_signature_bytes(value)
+    trusted_active = False
+    if isinstance(trusted, dict) and set(trusted) == {
+        "role",
+        "public_key_ed25519_base64",
+        "effective",
+        "revoked_on",
+    }:
+        effective = _day(trusted.get("effective"), "release_signer_effective_invalid")
+        revoked_raw = trusted.get("revoked_on")
+        revoked = (
+            _day(revoked_raw, "release_signer_revoked_invalid")
+            if revoked_raw is not None
+            else None
+        )
+        release_day = _released_at(meta.get("released_at")).date()
+        trusted_active = effective <= release_day and (
+            revoked is None or release_day < revoked
+        )
+    if (
+        envelope.get("schema_version") != "1.0.0"
+        or envelope.get("algorithm") != "Ed25519"
+        or not isinstance(trusted, dict)
+        or not trusted_active
+        or trusted.get("public_key_ed25519_base64") != public_key_text
+        or trusted.get("role") != role
+        or role not in ALLOWED_RELEASE_SIGNER_ROLES
+        or not isinstance(public_key_text, str)
+        or not isinstance(envelope.get("signature_ed25519_base64"), str)
+    ):
+        _fail("authorized_release_signer_untrusted")
+    if envelope.get("signed_payload_sha256") != hashlib.sha256(statement).hexdigest():
+        _fail("authorized_release_signature_invalid")
+    try:
+        public_key = base64.b64decode(public_key_text, validate=True)
+        signature = base64.b64decode(
+            cast(str, envelope["signature_ed25519_base64"]), validate=True
+        )
+        if len(public_key) != 32 or len(signature) != 64:
+            _fail("authorized_release_signature_invalid")
+        Ed25519PublicKey.from_public_bytes(public_key).verify(signature, statement)
+    except (binascii.Error, InvalidSignature, ValueError) as exc:
+        raise EventLedgerError("authorized_release_signature_invalid") from exc
+
+
 def _verify_authorized_release(
     value: dict[str, Any],
     expected_vintage: int,
@@ -1043,6 +1223,7 @@ def _verify_authorized_release(
         or not isinstance(lineage, dict)
     ):
         _fail("authorized_release_shape_invalid")
+    _verify_release_signature(value)
     integrity = meta.get("artifact_integrity_sha256")
     if (
         not isinstance(integrity, str)
@@ -1224,36 +1405,17 @@ def _release_delta(
     }
 
 
-def _authorized_public_artifact(
+def _unsigned_authorized_public_artifact(
     candidate: dict[str, Any],
     rights: dict[str, Any],
     previous: dict[str, Any] | None,
-    released_at: str | None = None,
+    released_at: str,
 ) -> dict[str, Any]:
     release_basis = {
         "measurement_state_sha256": candidate["_meta"]["measurement_state_sha256"],
         "rights_gate": rights,
     }
     release_state_sha = _sha_projection(release_basis)
-    if (
-        previous is not None
-        and previous["_meta"].get("release_state_sha256") == release_state_sha
-    ):
-        previous_meta = cast(dict[str, Any], previous["_meta"])
-        previous_lineage = cast(dict[str, Any], previous["release_lineage"])
-        prior_integrity = previous_lineage.get(
-            "predecessor_release_integrity_sha256"
-        )
-        if prior_integrity is not None and not isinstance(prior_integrity, str):
-            _fail("authorized_release_chain_invalid")
-        _verify_authorized_release(
-            previous,
-            cast(int, previous_meta["vintage_number"]),
-            prior_integrity,
-        )
-        return previous
-    if released_at is None:
-        _fail("release_time_required")
     release_time = _released_at(released_at)
     previous_meta = cast(dict[str, Any], previous["_meta"]) if previous else {}
     vintage = int(previous_meta.get("vintage_number", 0)) + 1
@@ -1294,19 +1456,77 @@ def _authorized_public_artifact(
         "future_release_rule": candidate["candidate_lineage_policy"]["future_release_rule"],
     }
     released.pop("candidate_lineage_policy", None)
+    release_meta = cast(dict[str, Any], released["_meta"])
+    release_meta["release_content_sha256"] = _release_content_integrity(released)
+    _verify_release_time(
+        release_meta,
+        cast(dict[str, Any], previous["_meta"]) if previous is not None else None,
+    )
+    return released
+
+
+def _authorized_public_artifact(
+    candidate: dict[str, Any],
+    rights: dict[str, Any],
+    previous: dict[str, Any] | None,
+    released_at: str | None = None,
+    release_signature: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    release_state_sha = _sha_projection(
+        {
+            "measurement_state_sha256": candidate["_meta"][
+                "measurement_state_sha256"
+            ],
+            "rights_gate": rights,
+        }
+    )
+    if (
+        previous is not None
+        and previous["_meta"].get("release_state_sha256") == release_state_sha
+    ):
+        previous_meta = cast(dict[str, Any], previous["_meta"])
+        previous_lineage = cast(dict[str, Any], previous["release_lineage"])
+        prior_integrity = previous_lineage.get(
+            "predecessor_release_integrity_sha256"
+        )
+        if prior_integrity is not None and not isinstance(prior_integrity, str):
+            _fail("authorized_release_chain_invalid")
+        _verify_authorized_release(
+            previous,
+            cast(int, previous_meta["vintage_number"]),
+            prior_integrity,
+        )
+        return previous
+    if released_at is None:
+        _fail("release_time_required")
+    released = _unsigned_authorized_public_artifact(
+        candidate, rights, previous, released_at
+    )
+    if release_signature is None:
+        _fail("authorized_release_signature_required")
+    cast(dict[str, Any], released["_meta"])["release_signature"] = json.loads(
+        json.dumps(release_signature, ensure_ascii=False, allow_nan=False)
+    )
     cast(dict[str, Any], released["_meta"])["artifact_integrity_sha256"] = (
         _artifact_integrity(released)
     )
+    release_meta = cast(dict[str, Any], released["_meta"])
+    predecessor_integrity = release_meta.get(
+        "predecessor_release_integrity_sha256"
+    )
     _verify_authorized_release(
         released,
-        vintage,
+        cast(int, release_meta["vintage_number"]),
         predecessor_integrity,
         predecessor_release=previous,
     )
     return released
 
 
-def build(released_at: str | None = None) -> dict[str, Any]:
+def build(
+    released_at: str | None = None,
+    release_signature: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     _validate_archive_append_only()
     history = _authorized_history()
     candidate = _build_candidate()
@@ -1317,7 +1537,9 @@ def build(released_at: str | None = None) -> dict[str, Any]:
     if not rights["authorized"]:
         return _blocked_public_artifact(candidate, rights)
     previous = history[-1] if history else None
-    return _authorized_public_artifact(candidate, rights, previous, released_at)
+    return _authorized_public_artifact(
+        candidate, rights, previous, released_at, release_signature
+    )
 
 
 def _encoded(value: object) -> bytes:

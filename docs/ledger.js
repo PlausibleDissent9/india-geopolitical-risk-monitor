@@ -2,6 +2,9 @@
   "use strict";
 
   var DATA_URL = "data/event_ledger.json";
+  // This trust root is deliberately independent from source-rights signers
+  // and empty until a human-reviewed commit pins an exact release key.
+  var TRUSTED_RELEASE_SIGNERS = Object.freeze({});
   var UNIT_IDS = [
     "aggregate_source_rows",
     "deduplicated_source_events",
@@ -58,6 +61,25 @@
       !Number.isNaN(Date.parse(value));
   }
   function sha256(value) { return typeof value === "string" && /^[0-9a-f]{64}$/.test(value); }
+  function canonical(value) {
+    if (Array.isArray(value)) return "[" + value.map(canonical).join(",") + "]";
+    if (object(value)) return "{" + Object.keys(value).sort().map(function (key) {
+      return JSON.stringify(key) + ":" + canonical(value[key]);
+    }).join(",") + "}";
+    return JSON.stringify(value);
+  }
+  function hex(bytes) {
+    return Array.from(new Uint8Array(bytes)).map(function (value) {
+      return value.toString(16).padStart(2, "0");
+    }).join("");
+  }
+  function base64Bytes(value) {
+    var decoded = atob(value);
+    return Uint8Array.from(decoded, function (character) { return character.charCodeAt(0); });
+  }
+  function digest(value) {
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical(value))).then(hex);
+  }
   function exactKeys(value, keys) {
     if (!object(value)) return false;
     var actual = Object.keys(value).sort();
@@ -201,6 +223,58 @@
       fail("Release and claim boundaries are incomplete");
     }
     return "authorized";
+  }
+
+  async function verifyAuthorizedRelease(payload) {
+    var meta = payload._meta;
+    var envelope = meta.release_signature;
+    if (!object(envelope) || !exactKeys(envelope, [
+      "schema_version", "algorithm", "signer_id", "signer_role",
+      "public_key_ed25519_base64", "signed_payload_sha256",
+      "signature_ed25519_base64"
+    ])) fail("Authorized release signature is missing");
+    var trusted = TRUSTED_RELEASE_SIGNERS[envelope.signer_id];
+    if (!object(trusted) || trusted.role !== envelope.signer_role ||
+        trusted.public_key_ed25519_base64 !== envelope.public_key_ed25519_base64 ||
+        !isoDate(trusted.effective) || trusted.effective > meta.released_at.slice(0, 10) ||
+        (trusted.revoked_on !== null &&
+          (!isoDate(trusted.revoked_on) || meta.released_at.slice(0, 10) >= trusted.revoked_on))) {
+      fail("Authorized release signer is not pinned by this client");
+    }
+    var content = JSON.parse(JSON.stringify(payload));
+    delete content._meta.artifact_integrity_sha256;
+    delete content._meta.release_content_sha256;
+    delete content._meta.release_signature;
+    if (await digest(content) !== meta.release_content_sha256) {
+      fail("Authorized release content digest is invalid");
+    }
+    var artifact = JSON.parse(JSON.stringify(payload));
+    delete artifact._meta.artifact_integrity_sha256;
+    if (await digest(artifact) !== meta.artifact_integrity_sha256) {
+      fail("Authorized release artifact digest is invalid");
+    }
+    var statement = {
+      schema_version: "igrm-event-ledger-release-signature-v1",
+      release_id: meta.release_id,
+      vintage_number: meta.vintage_number,
+      release_content_sha256: meta.release_content_sha256,
+      release_state_sha256: meta.release_state_sha256,
+      predecessor_release_integrity_sha256: meta.predecessor_release_integrity_sha256,
+      released_at: meta.released_at,
+      knowledge_cutoff: meta.knowledge_cutoff
+    };
+    var statementBytes = new TextEncoder().encode(canonical(statement));
+    if (hex(await crypto.subtle.digest("SHA-256", statementBytes)) !== envelope.signed_payload_sha256) {
+      fail("Authorized release signed-payload digest is invalid");
+    }
+    var key = await crypto.subtle.importKey(
+      "raw", base64Bytes(envelope.public_key_ed25519_base64),
+      { name: "Ed25519" }, false, ["verify"]
+    );
+    if (!await crypto.subtle.verify(
+      { name: "Ed25519" }, key,
+      base64Bytes(envelope.signature_ed25519_base64), statementBytes
+    )) fail("Authorized release signature is invalid");
   }
 
   function renderUnits() {
@@ -399,8 +473,9 @@
 
   fetch(DATA_URL, { cache: "no-store" })
     .then(function (response) { if (!response.ok) fail("Ledger payload unavailable"); return response.json(); })
-    .then(function (payload) {
+    .then(async function (payload) {
       var mode = validate(payload);
+      if (mode === "authorized") await verifyAuthorizedRelease(payload);
       state.payload = payload;
       if (mode === "blocked") renderBlocked(); else render();
     })
