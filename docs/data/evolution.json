@@ -9,11 +9,14 @@
     "codebook": "https://igrm.in/codebook.html",
     "source": "https://igrm.in/data/evolution.json",
     "input_sha256": {
-      "engine_registry": "db072efa1ae0a1c87415b3ca73768c2b3ad7f6681748f24dff73c96e83d4f665",
+      "engine_registry": "232ceab2c0466e1f8636f3f4639761814e099b8a4b627481a68c928d8edd871c",
       "global_layer_registry": "f5adcb1326637cc73347b48b0f8ab0d68c79b4989f7497b9d66c8be408616bb1",
       "world_geometry_member_set": "f680a626c04d45a735b96650a148d72881652f06fe9d9d97dfaece8a33ef3201",
       "map_relation_member_set": "ce04ef05f80b88a0050f0d4c6f7ec8e8b107c167c65b7386fac90e9ba75eaef2",
       "historical_proxy_domain": "d6ac966a8ae3c58f6cbb3c56b07e4d7a370feb53d5d41015831f20556015fc46",
+      "historical_intelligence": "10363d0f796ff0ecc353df895ab0595683ca97974af21bfbc8ba44e90cac1f81",
+      "historical_intelligence_contract": "c75ea9d5f0224739157a92c982d52f87fec2bf1161550a4d971b95c4f3ad9752",
+      "historical_intelligence_implementation": "355287f23a8373881c2e84032350422c7d135a7fab7abaff2625b72c91dc0612",
       "event_ledger": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18",
       "product_route_set": "747d5a8886e7dc2355537d45e364480ca4451418bbce5642628fa5256be9d968",
       "api_endpoint_set": "239ce5065c90299d6e6ae226e2ed3a229d6d33f9ca491582ef8824c96dd084a6"
@@ -250,6 +253,13 @@
       "source_start": "1979-01",
       "source_end": "2019-12",
       "published_proxy_channels": 2,
+      "capability_state": "released_v1_bounded",
+      "registered_calendar_periods": 4,
+      "baseline_rows": 16,
+      "structural_break_diagnostic_rows": 2,
+      "analog_queries": 984,
+      "analog_queries_available": 960,
+      "human_authored_archetype_rows": 9,
       "current_operating_program": "historical_intelligence_activation",
       "current_boundary": "The two published monthly proxies are different constructs from the live index and are not spliced into it."
     },
@@ -287,9 +297,9 @@
     },
     {
       "program_id": "historical_intelligence_activation",
-      "state": "specified",
+      "state": "released_v1_bounded",
       "objective": "Turn the 1979-present record into regime baselines, analog search, structural-break diagnostics, event archetypes and knowledge-cutoff replay rather than one archival chart.",
-      "proof": "Each new historical use states its construct and comparability boundary and is evaluated against a simpler baseline."
+      "proof": "Historical Intelligence v1 publishes registered calendar baselines, permutation-null candidate break diagnostics, missingness-aware analog retrieval and human-authored archetypes over the two eligible 1979-2019 proxy channels. It refuses three unsupported channels, does not splice to the live instrument, and carries exact source, contract and implementation hashes."
     },
     {
       "program_id": "india_strategic_census",
@@ -363,7 +373,7 @@
     {
       "candidate_id": "historical_intelligence_activation",
       "risk_class": "R2_product_or_data_expansion",
-      "state": "specified",
+      "state": "released",
       "target_dimensions": [
         "utility",
         "coverage",
@@ -372,9 +382,15 @@
       "evidence": {
         "source_start": "1979-01",
         "source_end": "2019-12",
-        "published_proxy_channels": 2
+        "published_proxy_channels": 2,
+        "registered_calendar_periods": 4,
+        "baseline_rows": 16,
+        "structural_break_diagnostic_rows": 2,
+        "analog_queries": 984,
+        "analog_queries_available": 960,
+        "human_authored_archetype_rows": 9
       },
-      "next_gate": "Register regime baselines, structural-break diagnostics, event archetypes and analog retrieval with explicit non-comparability tests."
+      "next_gate": "Measure the released bounded History Lab after publication, preserve its non-comparability boundary, and require a separately registered general comparability certificate before any cross-construct chart or delta."
     },
     {
       "candidate_id": "total_product_quality",

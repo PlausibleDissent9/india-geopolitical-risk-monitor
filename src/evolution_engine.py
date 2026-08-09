@@ -23,6 +23,13 @@ LAYER_PATH = ROOT / "governance" / "global_atlas_layers.json"
 WORLD_PATH = ROOT / "docs" / "geo" / "world.json"
 RELATIONS_PATH = ROOT / "docs" / "data" / "map_relations.json"
 HISTORY_PATH = ROOT / "docs" / "data" / "back_extension.json"
+HISTORICAL_INTELLIGENCE_PATH = (
+    ROOT / "docs" / "data" / "historical_intelligence.json"
+)
+HISTORICAL_INTELLIGENCE_CONTRACT_PATH = (
+    ROOT / "governance" / "historical_intelligence_contract.json"
+)
+HISTORICAL_INTELLIGENCE_IMPLEMENTATION_PATH = ROOT / "src" / "historical_intelligence.py"
 EVENT_LEDGER_PATH = ROOT / "docs" / "data" / "event_ledger.json"
 CATALOG_PATH = ROOT / "docs" / "data" / "product_catalog.json"
 CONTRACT_PATH = ROOT / "docs" / "data" / "api_contract.json"
@@ -86,6 +93,13 @@ def _read(path: Path, code: str) -> tuple[dict[str, Any], str]:
     if not isinstance(value, dict):
         _fail(code)
     return cast(dict[str, Any], value), hashlib.sha256(raw).hexdigest()
+
+
+def _file_sha256(path: Path, code: str) -> str:
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError as exc:
+        raise EvolutionError(code) from exc
 
 
 def canonical_sha256(value: object) -> str:
@@ -180,9 +194,22 @@ def _validate_engine(engine: dict[str, Any]) -> None:
         or boundary.get("automatic_publication") != "not_authorized"
     ):
         _fail("automation_boundary_invalid")
-    _unique_rows(
+    programs = _unique_rows(
         engine.get("strategic_programs"), "program_id", "strategic_programs_invalid"
     )
+    history_program = next(
+        (
+            row
+            for row in programs
+            if row["program_id"] == "historical_intelligence_activation"
+        ),
+        None,
+    )
+    if (
+        not isinstance(history_program, dict)
+        or history_program.get("state") != "released_v1_bounded"
+    ):
+        _fail("historical_intelligence_program_state_stale")
 
 
 def _validate_layers(layers: dict[str, Any]) -> list[dict[str, Any]]:
@@ -270,7 +297,20 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
     layers, layers_sha = _read(LAYER_PATH, "layer_registry_unreadable")
     world, _ = _read(WORLD_PATH, "world_geometry_unreadable")
     relations, _ = _read(RELATIONS_PATH, "map_relations_unreadable")
-    history, _ = _read(HISTORY_PATH, "historical_proxy_unreadable")
+    history, historical_proxy_sha = _read(
+        HISTORY_PATH, "historical_proxy_unreadable"
+    )
+    historical_intelligence, historical_intelligence_sha = _read(
+        HISTORICAL_INTELLIGENCE_PATH, "historical_intelligence_unreadable"
+    )
+    _, historical_intelligence_contract_sha = _read(
+        HISTORICAL_INTELLIGENCE_CONTRACT_PATH,
+        "historical_intelligence_contract_unreadable",
+    )
+    historical_intelligence_implementation_sha = _file_sha256(
+        HISTORICAL_INTELLIGENCE_IMPLEMENTATION_PATH,
+        "historical_intelligence_implementation_unreadable",
+    )
     event_ledger, event_ledger_sha = _read(
         EVENT_LEDGER_PATH, "event_ledger_unreadable"
     )
@@ -324,6 +364,58 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
             _fail("historical_series_invalid")
         starts.append(months[0])
         ends.append(months[-1])
+
+    historical_meta = historical_intelligence.get("_meta")
+    historical_eligibility = historical_intelligence.get("channel_eligibility")
+    historical_baselines = historical_intelligence.get("regime_baselines")
+    historical_breaks = historical_intelligence.get("structural_breaks")
+    historical_analogs = historical_intelligence.get("analog_retrieval")
+    historical_archetypes = historical_intelligence.get("event_archetypes")
+    if (
+        not isinstance(historical_meta, dict)
+        or historical_meta.get("schema") != "igrm-historical-intelligence-v1"
+        or historical_meta.get("source_path")
+        != "docs/data/back_extension.json"
+        or historical_meta.get("source_sha256") != historical_proxy_sha
+        or historical_meta.get("contract_path")
+        != "governance/historical_intelligence_contract.json"
+        or historical_meta.get("contract_sha256")
+        != historical_intelligence_contract_sha
+        or historical_meta.get("implementation_path")
+        != "src/historical_intelligence.py"
+        or historical_meta.get("implementation_sha256")
+        != historical_intelligence_implementation_sha
+        or not isinstance(historical_eligibility, dict)
+        or historical_eligibility.get("eligible")
+        != ["pakistan_west", "china_east"]
+        or not isinstance(historical_eligibility.get("refused"), dict)
+        or set(historical_eligibility["refused"])
+        != {"us_trade", "gulf_energy", "shipping"}
+        or not isinstance(historical_baselines, dict)
+        or not isinstance(historical_baselines.get("registered_periods"), list)
+        or len(historical_baselines["registered_periods"]) != 4
+        or not isinstance(historical_baselines.get("rows"), list)
+        or len(historical_baselines["rows"]) != 16
+        or not isinstance(historical_breaks, dict)
+        or not isinstance(historical_breaks.get("rows"), list)
+        or len(historical_breaks["rows"]) != 2
+        or not isinstance(historical_analogs, dict)
+        or not isinstance(historical_analogs.get("by_channel"), dict)
+        or set(historical_analogs["by_channel"])
+        != {"pakistan_west", "china_east"}
+        or not isinstance(historical_archetypes, dict)
+        or historical_archetypes.get("machine_generated_permitted") is not False
+        or not isinstance(historical_archetypes.get("rows"), list)
+    ):
+        _fail("historical_intelligence_capability_invalid")
+    analog_rows = [
+        row
+        for channel in cast(dict[str, Any], historical_analogs["by_channel"]).values()
+        if isinstance(channel, dict)
+        for row in channel.values()
+        if isinstance(row, dict)
+    ]
+    analog_available = sum(row.get("available") is True for row in analog_rows)
 
     event_meta = event_ledger.get("_meta")
     event_frame = event_ledger.get("frame")
@@ -419,6 +511,9 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
                         for key, series in sorted(historical_series.items())
                     }
                 ),
+                "historical_intelligence": historical_intelligence_sha,
+                "historical_intelligence_contract": historical_intelligence_contract_sha,
+                "historical_intelligence_implementation": historical_intelligence_implementation_sha,
                 "event_ledger": event_ledger_sha,
                 "product_route_set": canonical_sha256(
                     sorted(cast(str, row["path"]) for row in routes)
@@ -463,6 +558,19 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
                 "source_start": min(starts),
                 "source_end": max(ends),
                 "published_proxy_channels": len(historical_series),
+                "capability_state": "released_v1_bounded",
+                "registered_calendar_periods": len(
+                    cast(list[Any], historical_baselines["registered_periods"])
+                ),
+                "baseline_rows": len(cast(list[Any], historical_baselines["rows"])),
+                "structural_break_diagnostic_rows": len(
+                    cast(list[Any], historical_breaks["rows"])
+                ),
+                "analog_queries": len(analog_rows),
+                "analog_queries_available": analog_available,
+                "human_authored_archetype_rows": len(
+                    cast(list[Any], historical_archetypes["rows"])
+                ),
                 "current_operating_program": "historical_intelligence_activation",
                 "current_boundary": (
                     "The two published monthly proxies are different constructs from the "
@@ -524,16 +632,31 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
             {
                 "candidate_id": "historical_intelligence_activation",
                 "risk_class": "R2_product_or_data_expansion",
-                "state": "specified",
+                "state": "released",
                 "target_dimensions": ["utility", "coverage", "reproducibility_citation"],
                 "evidence": {
                     "source_start": min(starts),
                     "source_end": max(ends),
                     "published_proxy_channels": len(historical_series),
+                    "registered_calendar_periods": len(
+                        cast(list[Any], historical_baselines["registered_periods"])
+                    ),
+                    "baseline_rows": len(
+                        cast(list[Any], historical_baselines["rows"])
+                    ),
+                    "structural_break_diagnostic_rows": len(
+                        cast(list[Any], historical_breaks["rows"])
+                    ),
+                    "analog_queries": len(analog_rows),
+                    "analog_queries_available": analog_available,
+                    "human_authored_archetype_rows": len(
+                        cast(list[Any], historical_archetypes["rows"])
+                    ),
                 },
                 "next_gate": (
-                    "Register regime baselines, structural-break diagnostics, event archetypes "
-                    "and analog retrieval with explicit non-comparability tests."
+                    "Measure the released bounded History Lab after publication, preserve its "
+                    "non-comparability boundary, and require a separately registered general "
+                    "comparability certificate before any cross-construct chart or delta."
                 ),
             },
             {

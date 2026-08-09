@@ -44,6 +44,15 @@ def test_public_report_refuses_event_values_until_source_rights_are_signed() -> 
     assert state["historical_intelligence"]["source_start"] == "1979-01"
     assert state["historical_intelligence"]["source_end"] == "2019-12"
     assert state["historical_intelligence"]["published_proxy_channels"] == 2
+    assert state["historical_intelligence"]["capability_state"] == (
+        "released_v1_bounded"
+    )
+    assert state["historical_intelligence"]["registered_calendar_periods"] == 4
+    assert state["historical_intelligence"]["baseline_rows"] == 16
+    assert state["historical_intelligence"]["structural_break_diagnostic_rows"] == 2
+    assert state["historical_intelligence"]["analog_queries"] == 984
+    assert state["historical_intelligence"]["analog_queries_available"] == 960
+    assert state["historical_intelligence"]["human_authored_archetype_rows"] == 9
     ledger = state["global_event_episode_ledger"]
     assert ledger["artifact_status"] == "public_release_blocked_rights_review"
     assert ledger["frame_start"] is None
@@ -95,6 +104,25 @@ def test_high_risk_class_cannot_acquire_automatic_authority(
     with pytest.raises(evolution_engine.EvolutionError) as exc:
         evolution_engine.build_report()
     assert exc.value.code == "high_risk_automatic_authority_forbidden"
+
+
+def test_static_program_cannot_call_released_history_merely_specified(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    engine = json.loads(evolution_engine.ENGINE_PATH.read_text(encoding="utf-8"))
+    program = next(
+        row
+        for row in engine["strategic_programs"]
+        if row["program_id"] == "historical_intelligence_activation"
+    )
+    program["state"] = "specified"
+    path = tmp_path / "evolution_engine.json"
+    _write_json(path, engine)
+    monkeypatch.setattr(evolution_engine, "ENGINE_PATH", path)
+
+    with pytest.raises(evolution_engine.EvolutionError) as exc:
+        evolution_engine.build_report()
+    assert exc.value.code == "historical_intelligence_program_state_stale"
 
 
 def test_unpublished_layer_cannot_smuggle_a_source_payload(
@@ -188,6 +216,42 @@ def test_released_observer_and_world_matrix_are_not_reported_as_pending() -> Non
     )
     assert world["state"] == "released"
     assert "after publication" in world["next_gate"]
+    history = next(
+        row
+        for row in report["priority_queue"]
+        if row["candidate_id"] == "historical_intelligence_activation"
+    )
+    assert history["state"] == "released"
+    assert "after publication" in history["next_gate"]
+    assert history["evidence"]["analog_queries_available"] == 960
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["source_sha", "contract_sha", "implementation_sha", "baseline_rows"],
+)
+def test_evolution_refuses_a_historical_capability_claim_without_exact_evidence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
+) -> None:
+    payload = json.loads(
+        evolution_engine.HISTORICAL_INTELLIGENCE_PATH.read_text(encoding="utf-8")
+    )
+    if mutation == "baseline_rows":
+        payload["regime_baselines"]["rows"] = []
+    else:
+        field = {
+            "source_sha": "source_sha256",
+            "contract_sha": "contract_sha256",
+            "implementation_sha": "implementation_sha256",
+        }[mutation]
+        payload["_meta"][field] = "0" * 64
+    path = tmp_path / "historical_intelligence.json"
+    _write_json(path, payload)
+    monkeypatch.setattr(evolution_engine, "HISTORICAL_INTELLIGENCE_PATH", path)
+
+    with pytest.raises(evolution_engine.EvolutionError) as exc:
+        evolution_engine.build_report()
+    assert exc.value.code == "historical_intelligence_capability_invalid"
 
 
 def test_hourly_workflow_observes_without_repository_authority() -> None:
