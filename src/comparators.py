@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -47,21 +48,60 @@ def _load_store() -> pd.DataFrame | None:
     return df.set_index("date").sort_index()
 
 
-def update(backfill: bool = False) -> pd.DataFrame:
+def update(
+    backfill: bool = False,
+    *,
+    deadline_monotonic: float | None = None,
+) -> pd.DataFrame:
     spec = _spec()
     terms = spec["shared_terms"]
     existing = _load_store()
     today = date.today()
     start = START if (backfill or existing is None) else today - timedelta(days=14)
-    cols = {}
+    merged = existing.copy() if existing is not None and not backfill else None
+    landed = 0
+    failed = 0
     for key, c in spec["countries"].items():
         print(f"[comparators] {key}: {start} -> {today}")
-        cols[key] = fetch_gdelt.fetch_channel(terms, start, today, c["anchor"])
-    fetched = pd.DataFrame(cols)
-    merged = (fetched.combine_first(existing)
-              if existing is not None and not backfill else fetched).sort_index()
-    STORE.parent.mkdir(parents=True, exist_ok=True)
-    merged.to_csv(STORE, index_label="date")
+        try:
+            series = fetch_gdelt.fetch_channel(
+                terms,
+                start,
+                today,
+                c["anchor"],
+                deadline_monotonic=deadline_monotonic,
+            )
+        except fetch_gdelt.AcquisitionDeadlineExceeded as exc:
+            print(f"[comparators] acquisition budget exhausted: {exc}")
+            failed += 1
+            break
+        except Exception as exc:  # noqa: BLE001 -- one country must bank others
+            print(f"[comparators] {key}: FAILED "
+                  f"({type(exc).__name__}: {exc})")
+            failed += 1
+            continue
+        if series.empty:
+            print(f"[comparators] {key}: no data returned")
+            failed += 1
+            continue
+
+        frame = series.to_frame(name=key)
+        frame.index = pd.Index(frame.index, name="date")
+        merged = frame.combine_first(merged) if merged is not None else frame
+        merged = merged.sort_index()
+        STORE.parent.mkdir(parents=True, exist_ok=True)
+        merged.to_csv(STORE, index_label="date")
+        landed += 1
+        print(f"[comparators] {key}: stored; {landed} country series landed")
+
+    if merged is None:
+        raise RuntimeError(
+            "[comparators] no country series landed and no prior store exists"
+        )
+    if landed == 0 and failed:
+        raise RuntimeError(
+            "[comparators] acquisition failed before any country series landed"
+        )
     return merged
 
 
@@ -113,9 +153,17 @@ def main() -> None:
     ap.add_argument("--backfill", action="store_true")
     ap.add_argument("--update", action="store_true")
     ap.add_argument("--publish", action="store_true")
+    ap.add_argument(
+        "--deadline-seconds",
+        type=float,
+        default=None,
+        help="hard acquisition budget; leaves workflow time to persist and publish",
+    )
     args = ap.parse_args()
     if args.backfill or args.update:
-        update(backfill=args.backfill)
+        deadline = (time.monotonic() + args.deadline_seconds
+                    if args.deadline_seconds is not None else None)
+        update(backfill=args.backfill, deadline_monotonic=deadline)
         publish()
     elif args.publish:
         publish()

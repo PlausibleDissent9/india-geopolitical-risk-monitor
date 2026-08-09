@@ -89,11 +89,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.maps_data
-      - name: Comparator tails (V3; ~8 requests, self-heals July gaps)
+      - name: Comparator tails (V3; bounded and country-checkpointed)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         timeout-minutes: 15
-        run: python -m src.comparators --update
+        run: python -m src.comparators --update --deadline-seconds 720
       - name: Stress gauge (V2-2; refuses until events history is complete)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
@@ -172,7 +172,7 @@ jobs:
         id: china
         continue-on-error: true
         timeout-minutes: 30
-        run: python -m src.country_monitor china
+        run: python -m src.country_monitor china --deadline-seconds 1500
       - name: China lane has produced nothing at all, and that is not a success
         # V8 is registered in countries/china.json, wired here, and has
         # never written docs/data/country_china.json -- data/raw holds no
@@ -208,21 +208,22 @@ jobs:
         continue-on-error: true
         timeout-minutes: 5
         run: python -m src.uncertainty
-      - name: Receipts at construction depth (ngrams corpus scan)
+      - name: Receipts at scoring depth (bounded daily evidence scan)
         # Runs after the pipeline step so latest.json already carries
         # today's date -- otherwise this would publish receipts one day
-        # stale, for the score the site showed yesterday. The corpus
-        # lane re-scans the same ~48 half-hourly ngrams files the day's
-        # scores were computed from (~1GB of public GCS objects, no
-        # credentials, no API rate limits) and publishes every matched
-        # article; on a feed gap it falls back to the bounded artlist
-        # lane inside the module, so the payload is never silently
-        # absent and _meta.method says which lane produced it.
+        # stale, for the score the site showed yesterday. This required
+        # lane re-scans the same ~48 half-hourly NGrams files the score
+        # used and publishes bounded, lane-labelled representatives. The
+        # every-available-file enrichment remains intact in the separate
+        # receipts-extended workflow; its much larger network budget can
+        # no longer hold the atomic daily publication hostage. On a feed
+        # gap the module falls back to bounded artlist evidence and
+        # _meta.method says which lane produced it.
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        timeout-minutes: 60
+        timeout-minutes: 25
         run: |
-          python -m src.receipts_ngrams --extended
+          python -m src.receipts_ngrams
           python -m src.receipts_archive
           python -m src.episode_attribution
           python -m src.spike_breadth

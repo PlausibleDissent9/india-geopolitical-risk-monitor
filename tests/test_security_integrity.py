@@ -56,7 +56,7 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
         "command": "bash scripts/gate.sh --committed",
         "push_paths_verified": 2,
     }
-    assert len(report["publishing_lanes"]) == 11
+    assert len(report["publishing_lanes"]) == 12
     assert report["controls"]["publisher_credential_isolation"] == {
         "status": "pass",
         "checkout_persist_credentials": False,

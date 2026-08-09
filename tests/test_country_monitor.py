@@ -96,3 +96,35 @@ def test_a_channel_still_missing_publishes_as_uncollected(tmp_path,
     assert payload["channels"]["b"]["score"] is None
     assert payload["n_channels_collected"] == 1
     assert payload["n_channels_registered"] == 2
+
+
+def test_country_update_banks_work_and_stops_at_acquisition_deadline(
+    tmp_path, monkeypatch,
+):
+    """The workflow must regain control before its 30-minute step axe."""
+    import pandas as pd
+    from src import country_monitor as cm
+
+    monkeypatch.setattr(cm, "_store_path", lambda name: tmp_path / f"{name}.csv")
+    spec = {"channels": {
+        "a": {"label": "A", "terms": ["x"]},
+        "b": {"label": "B", "terms": ["y"]},
+        "c": {"label": "C", "terms": ["z"]},
+    }}
+    monkeypatch.setattr(cm, "_fetch_dicts", lambda s: s["channels"])
+    idx = pd.date_range("2026-08-01", periods=3, freq="D")
+    seen: list[float | None] = []
+
+    def bounded_fetch(*args, deadline_monotonic=None, **kwargs):
+        seen.append(deadline_monotonic)
+        if len(seen) == 2:
+            raise cm.fetch_gdelt.AcquisitionDeadlineExceeded("spent")
+        return pd.Series([1.0, 2.0, 3.0], index=idx)
+
+    monkeypatch.setattr(cm.fetch_gdelt, "fetch_channel", bounded_fetch)
+    result = cm.update("testland", spec, deadline_monotonic=456.0)
+
+    assert result is not None
+    assert list(result.columns) == ["a"]
+    assert seen == [456.0, 456.0]
+    assert (tmp_path / "testland.csv").exists()

@@ -19,10 +19,10 @@
   "full_history_for_frozen_evidence": {
    "fetch_depth": 0,
    "status": "pass",
-   "workflow_count": 15
+   "workflow_count": 16
   },
   "immutable_workflow_actions": {
-   "action_references": 30,
+   "action_references": 32,
    "reviewed_action_identities": 2,
    "status": "pass"
   },
@@ -34,7 +34,7 @@
     "watchdog.yml"
    ],
    "status": "pass",
-   "workflow_count": 16
+   "workflow_count": 17
   },
   "publisher_credential_isolation": {
    "checkout_persist_credentials": false,
@@ -43,7 +43,7 @@
    "token_scope": "final_publication_step_only"
   },
   "publisher_environment_parity": {
-   "publishing_lane_count": 11,
+   "publishing_lane_count": 12,
    "requirement_sets": [
     "requirements.txt",
     "requirements-dev.txt"
@@ -70,6 +70,7 @@
   "notes.yml",
   "nowcast.yml",
   "permanence.yml",
+  "receipts-extended.yml",
   "validate.yml"
  ],
  "scope": {

@@ -19,8 +19,9 @@ would let the machine make a construct decision, which it never does.
 """
 from __future__ import annotations
 
+import argparse
 import json
-import sys
+import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -70,7 +71,12 @@ def _store_path(name: str) -> Path:
     return RAW / f"country_{name}_volume.csv"
 
 
-def update(name: str, spec: dict[str, Any]) -> pd.DataFrame | None:
+def update(
+    name: str,
+    spec: dict[str, Any],
+    *,
+    deadline_monotonic: float | None = None,
+) -> pd.DataFrame | None:
     """Incremental store update, PERSISTING EACH CHANNEL as it lands.
 
     This used to call fetch_gdelt.fetch_all() for every channel and
@@ -105,7 +111,17 @@ def update(name: str, spec: dict[str, Any]) -> pd.DataFrame | None:
               f"{' (revision window)' if have else ' (backfill)'}")
         try:
             series = fetch_gdelt.fetch_channel(
-                chspec["terms"], start, today, chspec.get("anchor"))
+                chspec["terms"],
+                start,
+                today,
+                chspec.get("anchor"),
+                deadline_monotonic=deadline_monotonic,
+            )
+        except fetch_gdelt.AcquisitionDeadlineExceeded as e:
+            print(f"[country] {name}/{ch}: acquisition budget exhausted "
+                  f"({e}); keeping what already landed")
+            failed += 1
+            break
         except Exception as e:  # noqa: BLE001 -- 429s are expected here
             print(f"[country] {name}/{ch}: FAILED ({type(e).__name__}: {e}); "
                   "keeping what already landed")
@@ -191,7 +207,18 @@ def publish(name: str, spec: dict[str, Any], vol: pd.DataFrame) -> None:
 
 
 def main() -> None:
-    want = [a.lower() for a in sys.argv[1:]]
+    ap = argparse.ArgumentParser()
+    ap.add_argument("countries", nargs="*")
+    ap.add_argument(
+        "--deadline-seconds",
+        type=float,
+        default=None,
+        help="hard acquisition budget; leaves workflow time to persist and publish",
+    )
+    args = ap.parse_args()
+    want = [a.lower() for a in args.countries]
+    deadline = (time.monotonic() + args.deadline_seconds
+                if args.deadline_seconds is not None else None)
     ran = 0
     for name, spec in discover().items():
         if want and name not in want:
@@ -202,11 +229,13 @@ def main() -> None:
                   "founder's signature registers it; nothing fetches "
                   "until then.")
             continue
-        vol = update(name, spec)
+        vol = update(name, spec, deadline_monotonic=deadline)
         publish(name, spec, vol)
         ran += 1
     if want and not ran:
-        sys.exit(f"[country] nothing ran for {want} (unknown or unsigned)")
+        raise SystemExit(
+            f"[country] nothing ran for {want} (unknown or unsigned)"
+        )
 
 
 if __name__ == "__main__":

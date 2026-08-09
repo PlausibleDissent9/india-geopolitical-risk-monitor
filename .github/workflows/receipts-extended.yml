@@ -1,0 +1,53 @@
+name: receipts-extended
+
+# The full-day evidence scan probes every minute and processes every available
+# Web NGrams file. It is valuable enrichment, but it is not allowed to hold the
+# atomic daily index publication hostage. The daily lane publishes the exact
+# scoring-depth evidence first; this independent lane upgrades that same day to
+# the broader, explicitly lane-labelled corpus view when the scan completes.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * *"  # 11:47 IST, clear of the morning contract and backup
+
+permissions:
+  contents: write
+
+concurrency:
+  group: igrm-receipts-extended-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Full-day receipts evidence scan
+        timeout-minutes: 155
+        run: |
+          python -m src.receipts_ngrams --extended
+          python -m src.receipts_archive
+          python -m src.episode_attribution
+          python -m src.spike_breadth
+          python -m src.syndication
+      - name: Stamp payload metadata and assets
+        run: |
+          python -m src.stamp_meta
+          python -m src.stamp_assets
+      - name: Publish exact extended-evidence candidate
+        env:
+          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add data/raw/receipt_days docs
+          bash scripts/publish_push.sh "receipts: extended evidence $(date -u +%F)"
