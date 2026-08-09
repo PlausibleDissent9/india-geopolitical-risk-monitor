@@ -260,8 +260,14 @@ async function loadHealth() {
   } catch { $("healthgrid").innerHTML = '<p class="empty">Health unavailable.</p>'; }
 }
 
-function md(t){return t.replace(/^### (.*)$/gm,"<h3>$1</h3>").replace(/^## (.*)$/gm,"<h2>$1</h2>")
-  .replace(/^# (.*)$/gm,"<h1>$1</h1>").replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" rel="noopener" target="_blank">$1</a>')
+// Demoted one level: the shared shell already emits this page's only <h1>
+// (<h1 id="page-title">), so a preview whose markdown opened with "# "
+// injected a second one at runtime and left the document with two top-level
+// headings. notes.html's renderer already maps "# " to <h2> for this reason;
+// this one had not. Order stays most-specific-first, or "###" would be
+// partly eaten by the "##" rule.
+function md(t){return t.replace(/^### (.*)$/gm,"<h4>$1</h4>").replace(/^## (.*)$/gm,"<h3>$1</h3>")
+  .replace(/^# (.*)$/gm,"<h2>$1</h2>").replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" rel="noopener" target="_blank">$1</a>')
   .replace(/^\* (.*)$/gm,"<li>$1</li>").replace(/\n{2,}/g,"<br><br>");}
 async function loadResearch() {
   try {
