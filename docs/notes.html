@@ -54,7 +54,16 @@
     </aside>
     <main id="main-content" class="page-content" tabindex="-1">
       <!--site-shell:content-start-->
-      <div id="archive"><p class="empty">No notes published yet.</p></div><script>
+      <div id="archive"><p class="empty">Loading notes&hellip;</p></div>
+<noscript><p class="empty">The weekly notes are the founder's own written
+commentary on what the index moved on that week; they are not generated, and
+nothing here is an input to any score. The archive above is assembled in your
+browser, but the notes themselves are published in full as ordinary text in
+<a href="data/notes.json">data/notes.json</a>, one entry per ISO week, newest
+last. <a href="feed.xml">The RSS feed</a> carries the same notes with dates and
+per-note links if you would rather subscribe than read the file. Nothing on
+this page exists only in the browser.</p></noscript>
+<script>
 "use strict";
 async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }

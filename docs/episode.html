@@ -47,7 +47,17 @@
   </section>
   <main id="main-content" class="page-content" tabindex="-1">
     <!--site-shell:content-start-->
-    <div id="body"><p class="empty">Loading episode&hellip;</p></div><script>
+    <div id="body"><p class="empty">Loading episode&hellip;</p></div>
+<noscript><p class="empty">This page assembles one episode's anatomy in your
+browser from several payloads, keyed by the <code>?ep=</code> in the address.
+Without JavaScript, the same material is published in full:
+<a href="data/episodes.json">data/episodes.json</a> (or
+<a href="data/episodes.csv">episodes.csv</a>) for the episode archive,
+<a href="data/event_study.json">data/event_study.json</a> for the event-study
+cells, and <a href="data/episode_actors.json">data/episode_actors.json</a> for
+the actor decomposition. The <a href="analysis.html">analysis page</a> lists
+episodes as ordinary links.</p></noscript>
+<script>
 "use strict";
 async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }

@@ -47,7 +47,15 @@
   </section>
   <main id="main-content" class="page-content" tabindex="-1">
     <!--site-shell:content-start-->
-    <div id="body"><p class="empty">Loading receipts&hellip;</p></div><script>
+    <div id="body"><p class="empty">Loading receipts&hellip;</p></div>
+<noscript><p class="empty">Receipts are assembled in your browser from the
+published payloads. Without JavaScript, read them directly:
+<a href="data/receipts.json">data/receipts.json</a> for the current day's
+matched articles per channel, and
+<a href="data/receipts_archive.json">data/receipts_archive.json</a> for the
+rolling recent archive. Both carry the matcher provenance, tier sort and
+syndication dedup described in the <a href="codebook.html">codebook</a>.</p></noscript>
+<script>
 "use strict";
 async function j(p) { try { const r = await fetch(p); return r.ok ? r.json() : null; } catch { return null; } }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }

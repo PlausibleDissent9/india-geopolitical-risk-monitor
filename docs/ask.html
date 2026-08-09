@@ -56,6 +56,13 @@
   <main id="main-content" class="page-content" tabindex="-1">
     <!--site-shell:content-start-->
     <div id="load-error" role="alert" hidden></div>
+<noscript><p class="empty">The question box matches what you type against a
+registered question space that is answered <em>at build time</em> &mdash; no
+model runs when you ask, and nothing is generated in the browser. So the whole
+answer set, including every refusal and each answer's evidence ledger, is
+already published as a file:
+<a href="data/assistant_answers.json">data/assistant_answers.json</a>. Reading
+it directly gives you exactly what this page would have shown.</p></noscript>
 <div id="chat-log" aria-live="polite"></div>
 <div id="ask-row">
   <input id="ask-input" type="text" placeholder="e.g. why is the shipping score where it is? / compare china and pakistan" aria-label="ask a question">
