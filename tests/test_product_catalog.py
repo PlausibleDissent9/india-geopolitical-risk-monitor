@@ -31,7 +31,7 @@ def test_catalog_accounts_for_every_served_page_and_protects_every_product() -> 
         "status": "pass",
         "catalog_version": "1.0.0",
         "pillar_count": 8,
-        "protected_route_count": 35,
+        "protected_route_count": 36,
         "excluded_route_count": 5,
     }
     assert result["route_floor_status"] in {

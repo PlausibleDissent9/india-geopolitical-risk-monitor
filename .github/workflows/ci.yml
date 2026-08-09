@@ -28,6 +28,10 @@ jobs:
         run: python -m src.security_integrity --write && git diff --exit-code -- docs/data/security_integrity.json
       - name: Public product catalog and route floor
         run: python -m src.product_catalog --check
+      - name: Continuous Evolution capability ledger matches registered denominators
+        run: python -m src.evolution_engine --check
+      - name: World State Matrix exposes every registered geometry-layer cell
+        run: python -m src.world_state --check
       - name: Knowledge replay synthetic conformance artifact is current
         run: python -m src.knowledge_replay_fixture && git diff --exit-code -- docs/data/knowledge_replay_demo.json
       - name: Sensor Fusion synthetic conformance artifact is current

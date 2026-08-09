@@ -1,0 +1,186 @@
+"""Adversarial checks for the bounded Continuous Evolution observer."""
+
+from __future__ import annotations
+
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pytest
+from src import evolution_engine
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _write_json(path: Path, value: object) -> None:
+    path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+
+
+def test_public_report_is_exact_and_exposes_the_real_denominators() -> None:
+    evolution_engine.check_report()
+    report = evolution_engine.build_report()
+    state = report["measured_state"]
+
+    assert state["public_product_routes"] == {
+        "registered": 34,
+        "present": 34,
+        "missing": [],
+    }
+    assert state["public_api_endpoints"] == {
+        "registered": 114,
+        "present": 114,
+        "missing": [],
+    }
+    atlas = state["global_atlas"]
+    assert atlas["country_area_geometries"] == 247
+    assert atlas["india_partner_event_context_observed"] == 193
+    assert atlas["india_partner_event_context_unavailable"] == 54
+    assert len(atlas["unavailable_geometry_ids"]) == 54
+    assert atlas["registered_layers"] == 15
+    assert atlas["published_layers"] == 2
+    assert atlas["registered_country_level_layers"] == 14
+    assert atlas["published_country_level_layers"] == 1
+    assert atlas["single_world_score"] == "prohibited"
+    assert state["historical_intelligence"]["source_start"] == "1979-01"
+    assert state["historical_intelligence"]["source_end"] == "2019-12"
+    assert state["historical_intelligence"]["published_proxy_channels"] == 2
+    assert "freshness_ledger" not in state
+
+
+def test_layer_registry_requires_truthful_publication_and_no_world_score() -> None:
+    registry = json.loads(
+        (ROOT / "governance" / "global_atlas_layers.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert registry["composition_policy"]["single_world_score"] == "prohibited"
+    assert registry["composition_policy"]["cross_domain_averaging"] == "prohibited"
+    assert len(registry["layers"]) == 15
+    assert len({row["layer_id"] for row in registry["layers"]}) == 15
+    for row in registry["layers"]:
+        if row["current_state"].startswith("published_"):
+            assert row["source_payload"]
+        else:
+            assert row["source_payload"] is None
+        assert row["missingness_rule"]
+        assert row["prohibited_interpretation"]
+        assert row["safety_rule"]
+
+
+def test_high_risk_class_cannot_acquire_automatic_authority(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    engine = json.loads(evolution_engine.ENGINE_PATH.read_text(encoding="utf-8"))
+    risk = next(
+        row
+        for row in engine["risk_classes"]
+        if row["risk_class"] == "R3_method_claim_rights_or_security_boundary"
+    )
+    risk["automatic_authority"] = "may_prepare_and_test"
+    path = tmp_path / "evolution_engine.json"
+    _write_json(path, engine)
+    monkeypatch.setattr(evolution_engine, "ENGINE_PATH", path)
+
+    with pytest.raises(evolution_engine.EvolutionError) as exc:
+        evolution_engine.build_report()
+    assert exc.value.code == "high_risk_automatic_authority_forbidden"
+
+
+def test_unpublished_layer_cannot_smuggle_a_source_payload(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    registry = json.loads(evolution_engine.LAYER_PATH.read_text(encoding="utf-8"))
+    row = next(
+        item
+        for item in registry["layers"]
+        if not item["current_state"].startswith("published_")
+    )
+    row["source_payload"] = "docs/data/latest.json"
+    path = tmp_path / "global_atlas_layers.json"
+    _write_json(path, registry)
+    monkeypatch.setattr(evolution_engine, "LAYER_PATH", path)
+
+    with pytest.raises(evolution_engine.EvolutionError) as exc:
+        evolution_engine.build_report()
+    assert exc.value.code == "unpublished_layer_source_must_be_null"
+
+
+def test_hourly_audit_is_read_only_and_separates_live_health() -> None:
+    audit = evolution_engine.build_runtime_audit(
+        datetime(2026, 8, 9, 12, 0, tzinfo=timezone.utc)
+    )
+    assert audit["audited_at"] == "2026-08-09T12:00:00Z"
+    assert audit["commit_publication_authority"] == "none"
+    assert audit["automatic_change_authority"] == "none"
+    assert audit["public_report_current"] is True
+    assert audit["current_freshness_ledger"]["payloads"] == 82
+    assert audit["runtime_input_sha256"].keys() == {"freshness"}
+    assert "freshness" not in audit["capability_input_sha256"]
+
+
+def test_hourly_workflow_observes_without_repository_authority() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "evolution.yml").read_text(
+        encoding="utf-8"
+    )
+    assert 'cron: "37 * * * *"' in workflow
+    assert "permissions:\n  contents: read" in workflow
+    assert "fetch-depth: 0" in workflow
+    assert "persist-credentials: false" in workflow
+    assert "python -m src.evolution_engine --audit" in workflow
+    assert "python -m src.evolution_engine --check" not in workflow
+    assert "git diff --exit-code" in workflow
+    for forbidden in ("git push", "git commit", "contents: write", "pull-requests: write"):
+        assert forbidden not in workflow
+
+
+def test_ci_enforces_the_public_capability_snapshot() -> None:
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "python -m src.evolution_engine --check" in ci
+
+
+def test_launch_contract_is_a_floor_and_history_is_an_active_program() -> None:
+    spec = (ROOT / "IGRM_MAX_SPEC.md").read_text(encoding="utf-8").lower()
+    design = (ROOT / "design" / "continuous_evolution.md").read_text(
+        encoding="utf-8"
+    ).lower()
+    assert "minimum capability floor" in spec
+    assert "not a capability ceiling" in spec
+    assert "1979" in spec
+    assert "structural break" in spec
+    assert "hourly" in design
+    assert "modify the repository or public site" in design
+    assert "regime" in design
+
+
+def test_category_architecture_and_independent_review_are_governing_surfaces() -> None:
+    architecture = (ROOT / "design" / "category_architecture.md").read_text(
+        encoding="utf-8"
+    ).lower()
+    review = (ROOT / "design" / "claude_adversarial_review_protocol.md").read_text(
+        encoding="utf-8"
+    ).lower()
+    review_words = " ".join(review.split())
+    engine = json.loads(evolution_engine.ENGINE_PATH.read_text(encoding="utf-8"))
+    program_ids = {row["program_id"] for row in engine["strategic_programs"]}
+
+    for plane in (
+        "evidence mesh",
+        "observation twin",
+        "global event and episode ledger",
+        "world state matrix",
+        "india consequence twin",
+        "mechanism and decision lab",
+        "proof-carrying product compiler",
+        "evolution and institution",
+    ):
+        assert plane in architecture
+    assert "unique events, active episodes and event observations as different counts" in architecture
+    assert "correction blast-radius" in architecture
+    assert "uncommitted working-tree state is not evidence" in review_words
+    assert "event, episode and observation counts interchanged" in review_words
+    assert {
+        "global_event_episode_ledger",
+        "observation_twin",
+        "proof_carrying_product_compiler",
+        "mechanism_decision_lab",
+    } <= program_ids

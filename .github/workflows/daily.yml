@@ -89,6 +89,10 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.maps_data
+      - name: World State Matrix (complete geometry-layer denominator)
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.world_state
       - name: Comparator tails (V3; bounded and country-checkpointed)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true

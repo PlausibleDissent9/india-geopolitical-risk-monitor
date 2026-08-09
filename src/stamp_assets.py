@@ -72,6 +72,7 @@ ASSETS = [
     "fonts.css",
     "tokens.css",
     "maps.css",
+    "world.css",
     "site.css",
     "style.css",
     "vendor/chart.umd.min.js",
@@ -86,6 +87,7 @@ ASSETS = [
     "shock.js",
     "maps_replay.js",
     "maps.js",
+    "world.js",
     "app.js",
 ]
 

@@ -70,6 +70,7 @@
     {"path": "receipts.html", "label": "Evidence receipts", "pillar_id": "core", "status": "live", "purpose": "Latest-day query-matched evidence representatives, lane status, denominators and source composition."},
     {"path": "vintages.html", "label": "Point-in-time vintages", "pillar_id": "core", "status": "live", "purpose": "Reconstruct what the published series showed at earlier publication times without hindsight leakage."},
     {"path": "atlas.html", "label": "IGRM Atlas", "pillar_id": "atlas", "status": "live", "purpose": "The integrated public hub for geography, detected episodes, sector salience, synthetic exposure fingerprints and bounded scenario compilation."},
+    {"path": "world.html", "label": "World State Matrix", "pillar_id": "atlas", "status": "live", "purpose": "A complete 247-country/area by fourteen-domain coverage matrix that publishes real observations and every unavailable cell without a world risk score."},
     {"path": "maps.html", "label": "Maps", "pillar_id": "atlas", "status": "live", "purpose": "India-partner and state-level press-recorded event geography, with explicit source and boundary limits."},
     {"path": "exposure.html", "label": "Sector exposure", "pillar_id": "atlas", "status": "live", "purpose": "A user-selected sector view over current channel readings, evidence and transparent computation."},
     {"path": "episode.html", "label": "Episode dossiers", "pillar_id": "atlas", "status": "live", "purpose": "A directory and detail view for detected episodes and their associated market-context cells."},
@@ -107,7 +108,7 @@
     "predictions.html", "products.html", "receipts.html",
     "replay.html", "research/forecasts.html", "research/history.html", "sensors.html", "shock.html", "standard.html",
     "start.html", "status.html", "validation.html", "viewer.html",
-    "vintages.html", "vs-gpr.html", "workbench.html"
+    "vintages.html", "vs-gpr.html", "workbench.html", "world.html"
   ],
   "excluded_routes": [
     {"path": "404.html", "protected": false, "reason": "System error route; linked contextually by the host, not promoted as a product."},

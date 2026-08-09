@@ -1,0 +1,45 @@
+name: continuous-evolution-scout
+
+on:
+  schedule:
+    # A deliberately off-peak minute. GitHub schedules are best-effort, so the
+    # public contract says hourly scout rather than an exact-minute SLA.
+    - cron: "37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: igrm-continuous-evolution-scout
+  cancel-in-progress: true
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Keep the repository-wide frozen-evidence invariant even though
+          # this observer does not itself resolve a historical registration.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Product routes still satisfy the public floor
+        run: python -m src.product_catalog --check
+
+      - name: Emit read-only hourly audit
+        run: |
+          python -m src.evolution_engine --audit \
+            | tee "$RUNNER_TEMP/igrm-evolution-audit.json"
+
+      - name: Observer changed no repository byte
+        run: git diff --exit-code
+
+      # The JSON is retained in the immutable workflow log.  No artifact
+      # action is needed, keeping the observer's action surface minimal.

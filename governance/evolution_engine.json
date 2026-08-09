@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0.0",
+  "engine_id": "igrm-continuous-evolution",
+  "effective": "2026-08-09",
+  "status": "public_design_contract_observer_live_promotion_not_live",
+  "objective": "Continuously discover, test, rank, release and evaluate improvements across data, methods, products, security, accessibility, reliability and public utility without allowing automated expansion to weaken IGRM's truth boundary.",
+  "launch_floor_policy": {
+    "october_contract_role": "minimum_capability_floor_not_ceiling",
+    "additive_improvements": "allowed_when_they_preserve_every_existing_invariant_and_receive_their_required_authority",
+    "capability_regression": "forbidden_without_a_versioned_deprecation_and_public_migration_window",
+    "method_regression": "forbidden",
+    "scope_reduction": "requires_a_new_founder_authorization_statement",
+    "principle": "The roadmap may expand continuously; achieved public capability may not silently shrink."
+  },
+  "cadence": [
+    {
+      "cadence_id": "hourly_scout",
+      "target": "Inspect registered evidence for source freshness, coverage gaps, contract drift, broken routes, performance regressions, security signals, competitor-capability gaps and unresolved user journeys.",
+      "publication": "Read-only audit artifact. It cannot change public code, data, methods or claims."
+    },
+    {
+      "cadence_id": "per_change_adversary",
+      "target": "Run semantic, provenance, rights, security, accessibility, responsive, performance and regression tests against each proposed change.",
+      "publication": "A change remains ineligible until every registered blocking gate passes."
+    },
+    {
+      "cadence_id": "daily_green_batch",
+      "target": "Release bounded improvements that passed their authority and exact-commit gates; publish the resulting capability and coverage delta.",
+      "publication": "Atomic release with rollback evidence. No quota to ship when nothing passed."
+    },
+    {
+      "cadence_id": "weekly_challenge",
+      "target": "Review the highest-impact gaps, user failures, benchmark losses, stale assumptions and rival-product capabilities.",
+      "publication": "Public improvement ledger and loss register update."
+    },
+    {
+      "cadence_id": "monthly_research_review",
+      "target": "Challenge constructs, weights, source frames, comparability, model performance and historical drift on frozen evidence.",
+      "publication": "Methods change only through a new version and its registered study or correction path."
+    },
+    {
+      "cadence_id": "quarterly_category_reset",
+      "target": "Re-evaluate whether IGRM is solving the right problems, add new capability families and retire superseded implementation paths without reducing the public floor.",
+      "publication": "New north-star version, denominator delta and explicit non-goals."
+    }
+  ],
+  "quality_dimensions": [
+    {
+      "dimension_id": "truth",
+      "question": "Did accuracy, calibration, construct validity, uncertainty or refusal behaviour improve?",
+      "minimum_evidence": "Adversarial tests or a registered external study appropriate to the claim."
+    },
+    {
+      "dimension_id": "coverage",
+      "question": "Did a declared source, language, country, entity, time or dependency denominator improve?",
+      "minimum_evidence": "Before/after numerator and unchanged or explicitly versioned denominator."
+    },
+    {
+      "dimension_id": "utility",
+      "question": "Can a named user complete a real task more accurately, quickly or transparently?",
+      "minimum_evidence": "Task definition and measured outcome; aesthetic preference alone is insufficient."
+    },
+    {
+      "dimension_id": "experience",
+      "question": "Did clarity, information architecture, interaction, accessibility, mobile use or low-bandwidth use improve?",
+      "minimum_evidence": "Rendered cross-viewport and assistive-technology checks."
+    },
+    {
+      "dimension_id": "reliability",
+      "question": "Did freshness, atomicity, recovery, observability, performance or service delivery improve?",
+      "minimum_evidence": "Operational measurement or tested failure/recovery path."
+    },
+    {
+      "dimension_id": "security_privacy",
+      "question": "Did attack surface, secret isolation, data minimization, abuse resistance or incident recovery improve?",
+      "minimum_evidence": "Threat-linked control plus a failing-then-passing adversarial test."
+    },
+    {
+      "dimension_id": "reproducibility_citation",
+      "question": "Can an independent user locate, verify, reproduce and cite more of the result?",
+      "minimum_evidence": "Authenticated artifact, exact procedure and isolated verification."
+    },
+    {
+      "dimension_id": "institutional_adoption",
+      "question": "Did external review, contribution, integration, documented use or continuity improve?",
+      "minimum_evidence": "External evidence; agents and the founder cannot self-manufacture adoption."
+    }
+  ],
+  "risk_classes": [
+    {
+      "risk_class": "R0_observe",
+      "examples": ["read-only audit", "candidate ranking", "test generation", "screenshot comparison"],
+      "automatic_authority": "may_run",
+      "release_authority": "none"
+    },
+    {
+      "risk_class": "R1_reversible_implementation",
+      "examples": ["broken link", "accessibility correction", "asset optimization", "copy correction already compelled by evidence"],
+      "automatic_authority": "may_prepare_and_test",
+      "release_authority": "exact-green-commit plus configured publisher"
+    },
+    {
+      "risk_class": "R2_product_or_data_expansion",
+      "examples": ["new public route", "new source adapter", "new country layer", "new assistant answer plan"],
+      "automatic_authority": "may_prepare_and_test",
+      "release_authority": "maintainer review, rights gate and exact-green-commit"
+    },
+    {
+      "risk_class": "R3_method_claim_rights_or_security_boundary",
+      "examples": ["score definition", "weight", "benchmark claim", "source-rights decision", "private-data handling", "release-key policy"],
+      "automatic_authority": "observe_and_propose_only",
+      "release_authority": "registered human or independent authority plus new version and exact-green-commit"
+    },
+    {
+      "risk_class": "R4_external_outcome",
+      "examples": ["citation", "award", "government adoption", "completed independent coding", "pilot outcome"],
+      "automatic_authority": "none",
+      "release_authority": "record authentic external evidence only"
+    }
+  ],
+  "candidate_state_machine": [
+    "observed",
+    "specified",
+    "implemented",
+    "adversarially_tested",
+    "authority_satisfied",
+    "release_eligible",
+    "released",
+    "post_release_measured",
+    "accepted_or_rolled_back"
+  ],
+  "automatic_refusals": [
+    "unsupported_public_fact",
+    "unregistered_source_or_rights_use",
+    "hidden_denominator_change",
+    "method_change_without_version",
+    "claim_strength_exceeds_evidence",
+    "capability_removed_without_deprecation",
+    "security_or_privacy_boundary_expanded_without_authority",
+    "test_asserts_an_uncommitted_surface",
+    "public_release_not_bound_to_an_exact_green_commit",
+    "post_release_measurement_missing"
+  ],
+  "strategic_programs": [
+    {
+      "program_id": "global_event_episode_ledger",
+      "state": "next_build",
+      "objective": "Create a point-in-time global event and episode census that separates observations, unique events and multi-event episodes and preserves hierarchy, lifecycle, disagreement and correction history.",
+      "proof": "A frozen source frame and country/time denominator reconcile; event, episode and observation counts remain distinct; syndication cannot manufacture corroboration; every revision replays and exposes its dependent-product blast radius."
+    },
+    {
+      "program_id": "observation_twin",
+      "state": "specified",
+      "objective": "Reconstruct exactly what each registered source and release could support at a knowledge cutoff without importing later evidence.",
+      "proof": "Vintage, outage, revision and contradiction tests refuse future leakage and reproduce historical source states from authenticated evidence."
+    },
+    {
+      "program_id": "global_consequence_engine",
+      "state": "in_progress",
+      "objective": "Expand Atlas from an India-partner event map into a complete-country, multi-domain geopolitical consequence system.",
+      "proof": "Every registered geometry renders; every layer publishes its denominator and unavailable members; real values require source and rights gates."
+    },
+    {
+      "program_id": "historical_intelligence_activation",
+      "state": "specified",
+      "objective": "Turn the 1979-present record into regime baselines, analog search, structural-break diagnostics, event archetypes and knowledge-cutoff replay rather than one archival chart.",
+      "proof": "Each new historical use states its construct and comparability boundary and is evaluated against a simpler baseline."
+    },
+    {
+      "program_id": "india_strategic_census",
+      "state": "in_progress",
+      "objective": "Maintain declared, versioned universes for India's external dependencies, capacities, buffers and unmapped gaps.",
+      "proof": "Every universe reconciles its complete input frame and independently sampled mappings."
+    },
+    {
+      "program_id": "total_product_quality",
+      "state": "in_progress",
+      "objective": "Bring every public page to one institutional design, accessibility, performance and evidence standard.",
+      "proof": "All protected routes pass cross-viewport, console, keyboard, screen-reader, low-bandwidth and claim-integrity checks."
+    },
+    {
+      "program_id": "measured_decision_utility",
+      "state": "protocol_required",
+      "objective": "Show whether IGRM helps researchers, businesses, journalists and public institutions make defined decisions better.",
+      "proof": "Preregistered blinded tasks, independent users, declared baselines and permanent losses."
+    },
+    {
+      "program_id": "proof_carrying_product_compiler",
+      "state": "specified",
+      "objective": "Compile research, board, newsroom, public, API and offline-audit products from one governed consequence chain.",
+      "proof": "Every visible clause resolves to the same claim and evidence bundle across products; orphan, stale, rights-incompatible or temporally invalid plans refuse."
+    },
+    {
+      "program_id": "mechanism_decision_lab",
+      "state": "protocol_required",
+      "objective": "Separate descriptive aftermath, compatible mechanisms, causal attribution and robust feasible options under uncertainty.",
+      "proof": "Registered mechanisms publish rival hypotheses, falsifiers and identifiability status; scenarios propagate intervals and respect stocks, flows, capacity, substitution and timing constraints."
+    }
+  ],
+  "current_automation_boundary": {
+    "hourly_observer": "being_implemented",
+    "automatic_code_change": "not_authorized",
+    "automatic_publication": "not_authorized",
+    "reason": "A self-modifying public research instrument without bounded authority, independent gates and rollback evidence would optimize visible motion rather than truth.",
+    "next_gate": "Ship a read-only hourly scout, public improvement ledger and measured promotion/rollback state before considering any bounded automatic release class."
+  }
+}

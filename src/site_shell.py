@@ -81,6 +81,7 @@ PAGES: dict[str, Page] = {
     "workbench.html": Page(
         "Research workbench", "Research infrastructure", "dashboard", "analysis"
     ),
+    "world.html": Page("World State Matrix", "IGRM Atlas · global denominator", "dashboard", "atlas"),
     "write.html": Page("Author console", "Operations", "onboarding"),
 }
 

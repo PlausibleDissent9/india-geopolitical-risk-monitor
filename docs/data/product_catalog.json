@@ -106,6 +106,13 @@
    "purpose": "The integrated public hub for geography, detected episodes, sector salience, synthetic exposure fingerprints and bounded scenario compilation."
   },
   {
+   "path": "world.html",
+   "label": "World State Matrix",
+   "pillar_id": "atlas",
+   "status": "live",
+   "purpose": "A complete 247-country/area by fourteen-domain coverage matrix that publishes real observations and every unavailable cell without a world risk score."
+  },
+  {
    "path": "maps.html",
    "label": "Maps",
    "pillar_id": "atlas",
@@ -337,7 +344,8 @@
   "viewer.html",
   "vintages.html",
   "vs-gpr.html",
-  "workbench.html"
+  "workbench.html",
+  "world.html"
  ],
  "excluded_routes": [
   {

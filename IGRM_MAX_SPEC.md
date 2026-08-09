@@ -2,7 +2,7 @@
 
 Status: **governing north-star specification; most capabilities are targets, not current claims**
 
-Effective: 2026-08-08
+Effective: 2026-08-09
 
 This document replaces the July 2026 “maximum version.” That design described a
 stronger press-salience index. The new objective is larger: build the most useful,
@@ -21,7 +21,7 @@ negative results. Ambition sets the test; evidence earns the claim.
 ## I. The objective
 
 IGRM Max is not one magic number and not a chatbot placed over a chart. It is a
-versioned measurement and decision-support system joining six things that other
+versioned measurement and decision-support system joining seven things that other
 products usually keep separate:
 
 1. **attention** — what India-relevant geopolitical subjects receive press and
@@ -34,7 +34,10 @@ products usually keep separate:
 5. **capacity and response** — what can absorb the shock and what institutions
    actually did; and
 6. **confidence** — how complete, current, corroborated and reproducible each
-   statement is.
+   statement is; and
+7. **evolution** — what failed, what users still cannot do, which denominator is
+   incomplete, which rival capability is better, and which verified change should
+   be attempted next.
 
 These layers stay separate. They may be viewed together, but an attention reading
 never silently becomes an event probability, an event count never becomes an
@@ -61,7 +64,7 @@ world evidence
   -> next world-state vintage
 ```
 
-The system has four irreducible engines:
+The system has five irreducible engines:
 
 1. **World-state ledger.** Rumours, allegations, official statements, observed
    actions, disruptions and recoveries remain different typed objects. Supporting,
@@ -78,6 +81,30 @@ The system has four irreducible engines:
    incidents and outcomes enter a permanent loss register. Models and methods are
    recalibrated against prospective evidence; favourable anecdotes cannot erase
    failed calls.
+5. **Continuous evolution engine.** Hourly read-only scouts inspect freshness,
+   coverage, user journeys, competitor capabilities, performance, security and
+   unresolved failures; every proposed change moves through a registered risk,
+   evidence, authority, release and post-release measurement state machine. The
+   October contract is a minimum capability floor, not a capability ceiling. Automated expansion may
+   never edit a method, rights decision, public claim or security boundary.
+
+The governing category architecture is
+`design/category_architecture.md`. It defines IGRM as an **open,
+proof-carrying geopolitical consequence system for India**. Its atomic analytical
+chain is:
+
+```text
+observation -> claim -> canonical event -> episode -> mechanism -> exposure
+  -> constraint -> feasible option -> outcome -> calibration or recorded loss
+```
+
+A parallel trust chain binds source frame, rights, coverage, independence,
+freshness, missingness, uncertainty and correction impact. The architecture is
+implemented across eight planes: Evidence Mesh, Observation Twin, Global Event
+and Episode Ledger, World State Matrix, India Consequence Twin, Mechanism and
+Decision Lab, Proof-Carrying Product Compiler, and Evolution and Institution.
+These are additive to every earlier IGRM Max promise; a new plane never licenses
+the removal of an achieved capability.
 
 The differentiator is **decision-grade state estimation under incomplete
 evidence**, not information density. IGRM should answer six questions together:
@@ -169,7 +196,8 @@ limitation. A polished answer is never allowed to outrun its evidence.
 
 ### The unit of advantage
 
-The moat is the **India exposure graph**, not a composite. One registered event
+The moat is the **India exposure graph plus its measured improvement loop**, not a
+composite. One registered event
 can connect to actors, locations, treaties, routes, ports, commodities, sectors,
 listed firms, states, policies and observed outcomes. That creates a reusable
 research object instead of a disposable daily score.
@@ -255,6 +283,18 @@ Every event receives a stable ID and typed fields:
 Models may propose candidates. They may not create public ground truth. High-impact
 events require a registered rule or human adjudication, and corrections never erase
 the earlier vintage.
+
+#### Global Event and Episode Ledger
+
+The ledger is the next capability after the World State Matrix. It separates a
+source observation, unique event and multi-event episode and publishes each count
+independently. Before any “world event count” is shown, it must freeze the source
+frame, country/time denominator, hierarchy and duplicate rules, episode boundary
+rules, state transitions, revision policy and per-country missingness. It must
+represent allegation, official position, confirmed action, realized disruption,
+response, recovery, disputed and superseded states without letting a model promote
+one to another. Its primary output is a point-in-time census with replayable
+changes, not a live-marker total whose denominator is unknown.
 
 ### C. India exposure graph
 
@@ -715,7 +755,11 @@ traversal with measurable coverage and a harder evidence boundary.
 ## IX. Execution program
 
 Nothing in the maximum version is sacrificed; sequencing prevents an attractive
-feature from outrunning the measurement beneath it.
+feature from outrunning the measurement beneath it. The registered launch
+denominator is a minimum capability floor. It does not freeze the roadmap, forbid
+an additive capability or define a permanent ceiling. A new capability may be
+added whenever it preserves every existing invariant and satisfies the authority
+appropriate to its risk; an achieved public capability may not silently vanish.
 
 The proposed launch denominator is registered in
 `design/igrm_max_launch_contract.json`: eight pillars, eighteen engines and
@@ -765,6 +809,10 @@ models cannot manufacture.
 - implement official-source and event candidate ingestion; and
 - expose missingness and corroboration as data.
 
+The first substrate product is the Global Event and Episode Ledger: cross-source
+candidate resolution, event hierarchy, episode lifecycle, source-independence
+graph, full census denominator, point-in-time replay and correction blast radius.
+
 ### Program 2 — build the India exposure graph
 
 - start with energy, shipping and trade corridors where public data is strongest;
@@ -805,22 +853,48 @@ models cannot manufacture.
 - commission an independent security, privacy and accessibility attack and publish
   the bounded findings and remediation state.
 
+### Program 6 — make improvement continuous and accountable
+
+- run an hourly read-only scout over registered freshness, coverage, integrity,
+  performance, security, accessibility and capability evidence;
+- maintain one public queue connecting every proposed improvement to a measured
+  gap, risk class, tests, authority, release and post-release outcome;
+- release only atomic green batches, with no quota that rewards visible churn;
+- challenge the roadmap weekly, constructs and models monthly, and the category
+  definition quarterly;
+- activate the 1979–present record through separately registered regime baselines,
+  structural breaks, event archetypes, analog retrieval and knowledge-cutoff
+  replay rather than leaving it as one archival chart; and
+- make regression, rollback, refusal and failed experiments as visible as shipped
+  features.
+
 ### First implementation slices
 
 1. Canonical scope, claim-eligibility and source-rights contracts with build-time
    validators and public coverage denominators.
-2. Machine-readable benchmark registry and proof-state scorecard.
-3. Versioned `Source`, `EvidenceItem`, `Claim`, `Event` and `ExposureEdge`
+2. World State Matrix and public coverage ledger over the complete registered
+   geometry × domain denominator.
+3. Global Event and Episode Ledger with separate event, episode and observation
+   counts, lifecycle, hierarchy, point-in-time replay and correction graph.
+4. Machine-readable benchmark registry and proof-state scorecard.
+5. Versioned `Source`, `EvidenceItem`, `Claim`, `Event` and `ExposureEdge`
    schemas with adversarial validation tests.
-4. Public source/rights/coverage catalog.
-5. Official-source event candidate lane with no model-written public facts.
-6. Energy–shipping–trade exposure graph pilot and exact evidence traversal.
-7. Event dossier generated from the canonical objects.
-8. Research export bundle with subset manifest and citation.
-9. Deterministic four-product compiler with semantic recompile and authenticated
+6. Public source/rights/coverage catalog.
+7. Official-source event candidate lane with no model-written public facts.
+8. Energy–shipping–trade exposure graph pilot and exact evidence traversal.
+9. Event dossier generated from the canonical objects.
+10. Research export bundle with subset manifest and citation.
+11. Deterministic four-product compiler with semantic recompile and authenticated
    offline verifier.
-10. Security integrity plane, threat model and exact-green-commit publication gate.
-11. Expanded assistant catalog, only after every preceding object is verifier-safe.
+12. Security integrity plane, threat model and exact-green-commit publication gate.
+13. Expanded assistant catalog, only after every preceding object is verifier-safe.
+14. Continuous Evolution observer, public improvement ledger and bounded
+   promotion/rollback state machine before any automatic release authority.
+
+Every slice receives the independent attacks in
+`design/claude_adversarial_review_protocol.md`. The reviewer does not approve its
+own implementation, inherit a builder's assumptions or treat missing tools as a
+pass.
 
 Each slice lands code, data/schema, documentation and the tests that assert the
 same committed surface. A feature is not complete because its UI exists; it is

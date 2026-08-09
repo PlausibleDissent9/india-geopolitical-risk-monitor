@@ -731,6 +731,45 @@
     }
    }
   },
+  "/data/evolution.json": {
+   "get": {
+    "operationId": "get_data_evolution_json",
+    "description": "Deterministic public state of the IGRM Continuous Evolution Engine: its authority boundary, measured capability denominators and highest-value registered improvement gaps. This is not evidence that improvements or external outcomes have occurred.",
+    "x-igrm-stability": "stable",
+    "responses": {
+     "200": {
+      "description": "Deterministic public state of the IGRM Continuous Evolution Engine: its authority boundary, measured capability denominators and highest-value registered improvement gaps. This is not evidence that improvements or external outcomes have occurred.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "authority",
+          "cadence",
+          "quality_dimensions",
+          "measured_state",
+          "strategic_programs",
+          "priority_queue",
+          "external_outcomes"
+         ],
+         "properties": {
+          "_meta": {},
+          "authority": {},
+          "cadence": {},
+          "quality_dimensions": {},
+          "measured_state": {},
+          "strategic_programs": {},
+          "priority_queue": {},
+          "external_outcomes": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/data/expert_shelf.json": {
    "get": {
     "operationId": "get_data_expert_shelf_json",
@@ -2827,6 +2866,41 @@
           "english_wikipedia_same_statistic": {},
           "language_gap": {},
           "channels_where_english_leads_on_both": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/data/world_state.json": {
+   "get": {
+    "operationId": "get_data_world_state_json",
+    "description": "Complete-country/area Atlas coverage matrix. Every registered geometry appears for every country-level layer; unavailable cells remain explicit. This is not a world risk score or a claim of complete measurement.",
+    "x-igrm-stability": "stable",
+    "responses": {
+     "200": {
+      "description": "Complete-country/area Atlas coverage matrix. Every registered geometry appears for every country-level layer; unavailable cells remain explicit. This is not a world risk score or a claim of complete measurement.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "denominator",
+          "layers",
+          "members",
+          "observations",
+          "non_country_layers"
+         ],
+         "properties": {
+          "_meta": {},
+          "denominator": {},
+          "layers": {},
+          "members": {},
+          "observations": {},
+          "non_country_layers": {}
          }
         }
        }

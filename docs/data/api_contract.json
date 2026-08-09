@@ -315,6 +315,22 @@
    "stability": "stable"
   },
   {
+   "path": "data/evolution.json",
+   "format": "json",
+   "description": "Deterministic public state of the IGRM Continuous Evolution Engine: its authority boundary, measured capability denominators and highest-value registered improvement gaps. This is not evidence that improvements or external outcomes have occurred.",
+   "frozen_fields": [
+    "_meta",
+    "authority",
+    "cadence",
+    "quality_dimensions",
+    "measured_state",
+    "strategic_programs",
+    "priority_queue",
+    "external_outcomes"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/expert_shelf.json",
    "format": "json",
    "description": "Latest publications from the registered think-tank roster (think_tanks.json), tagged to channels by the frozen dictionaries. Titles and links only. Institutions without public feeds are listed in the registry with that status.",
@@ -1149,6 +1165,20 @@
     "english_wikipedia_same_statistic",
     "language_gap",
     "channels_where_english_leads_on_both"
+   ],
+   "stability": "stable"
+  },
+  {
+   "path": "data/world_state.json",
+   "format": "json",
+   "description": "Complete-country/area Atlas coverage matrix. Every registered geometry appears for every country-level layer; unavailable cells remain explicit. This is not a world risk score or a claim of complete measurement.",
+   "frozen_fields": [
+    "_meta",
+    "denominator",
+    "layers",
+    "members",
+    "observations",
+    "non_country_layers"
    ],
    "stability": "stable"
   },

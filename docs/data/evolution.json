@@ -1,0 +1,368 @@
+{
+  "_meta": {
+    "what": "Deterministic public state of the IGRM Continuous Evolution Engine: its authority boundary, measured capability denominators and highest-value registered improvement gaps. This is not evidence that improvements or external outcomes have occurred.",
+    "definition": "The October contract is a minimum launch floor, not a capability ceiling. The observer may measure and propose; it cannot modify methods, rights, public claims, code or releases.",
+    "generated": "2026-08-09",
+    "partial": false,
+    "license": "CC BY 4.0",
+    "citation": "Krishna, Ishan (2026). IGRM Continuous Evolution Engine. https://igrm.in/data/evolution.json",
+    "codebook": "https://igrm.in/codebook.html",
+    "source": "https://igrm.in/data/evolution.json",
+    "input_sha256": {
+      "engine_registry": "f1da352e9cd9377f57182e1c4f2dcb44271a95062b8ad6664f1ebc7e2c52f3cb",
+      "global_layer_registry": "f5adcb1326637cc73347b48b0f8ab0d68c79b4989f7497b9d66c8be408616bb1",
+      "world_geometry_member_set": "f680a626c04d45a735b96650a148d72881652f06fe9d9d97dfaece8a33ef3201",
+      "map_relation_member_set": "ce04ef05f80b88a0050f0d4c6f7ec8e8b107c167c65b7386fac90e9ba75eaef2",
+      "historical_proxy_domain": "d6ac966a8ae3c58f6cbb3c56b07e4d7a370feb53d5d41015831f20556015fc46",
+      "product_route_set": "52738351c77eb67ca189f10c582fb8066af5fea3ee3aa576d893cbcede745fb3",
+      "api_endpoint_set": "92680acfd730721d9d53e289bd97a7ebfb1cf184e9761b758878c1982f2f9b26"
+    }
+  },
+  "authority": {
+    "observer": "configured_read_only",
+    "automatic_code_change": "not_authorized",
+    "automatic_publication": "not_authorized",
+    "risk_classes": [
+      {
+        "risk_class": "R0_observe",
+        "examples": [
+          "read-only audit",
+          "candidate ranking",
+          "test generation",
+          "screenshot comparison"
+        ],
+        "automatic_authority": "may_run",
+        "release_authority": "none"
+      },
+      {
+        "risk_class": "R1_reversible_implementation",
+        "examples": [
+          "broken link",
+          "accessibility correction",
+          "asset optimization",
+          "copy correction already compelled by evidence"
+        ],
+        "automatic_authority": "may_prepare_and_test",
+        "release_authority": "exact-green-commit plus configured publisher"
+      },
+      {
+        "risk_class": "R2_product_or_data_expansion",
+        "examples": [
+          "new public route",
+          "new source adapter",
+          "new country layer",
+          "new assistant answer plan"
+        ],
+        "automatic_authority": "may_prepare_and_test",
+        "release_authority": "maintainer review, rights gate and exact-green-commit"
+      },
+      {
+        "risk_class": "R3_method_claim_rights_or_security_boundary",
+        "examples": [
+          "score definition",
+          "weight",
+          "benchmark claim",
+          "source-rights decision",
+          "private-data handling",
+          "release-key policy"
+        ],
+        "automatic_authority": "observe_and_propose_only",
+        "release_authority": "registered human or independent authority plus new version and exact-green-commit"
+      },
+      {
+        "risk_class": "R4_external_outcome",
+        "examples": [
+          "citation",
+          "award",
+          "government adoption",
+          "completed independent coding",
+          "pilot outcome"
+        ],
+        "automatic_authority": "none",
+        "release_authority": "record authentic external evidence only"
+      }
+    ],
+    "candidate_state_machine": [
+      "observed",
+      "specified",
+      "implemented",
+      "adversarially_tested",
+      "authority_satisfied",
+      "release_eligible",
+      "released",
+      "post_release_measured",
+      "accepted_or_rolled_back"
+    ]
+  },
+  "cadence": [
+    {
+      "cadence_id": "hourly_scout",
+      "target": "Inspect registered evidence for source freshness, coverage gaps, contract drift, broken routes, performance regressions, security signals, competitor-capability gaps and unresolved user journeys.",
+      "publication": "Read-only audit artifact. It cannot change public code, data, methods or claims."
+    },
+    {
+      "cadence_id": "per_change_adversary",
+      "target": "Run semantic, provenance, rights, security, accessibility, responsive, performance and regression tests against each proposed change.",
+      "publication": "A change remains ineligible until every registered blocking gate passes."
+    },
+    {
+      "cadence_id": "daily_green_batch",
+      "target": "Release bounded improvements that passed their authority and exact-commit gates; publish the resulting capability and coverage delta.",
+      "publication": "Atomic release with rollback evidence. No quota to ship when nothing passed."
+    },
+    {
+      "cadence_id": "weekly_challenge",
+      "target": "Review the highest-impact gaps, user failures, benchmark losses, stale assumptions and rival-product capabilities.",
+      "publication": "Public improvement ledger and loss register update."
+    },
+    {
+      "cadence_id": "monthly_research_review",
+      "target": "Challenge constructs, weights, source frames, comparability, model performance and historical drift on frozen evidence.",
+      "publication": "Methods change only through a new version and its registered study or correction path."
+    },
+    {
+      "cadence_id": "quarterly_category_reset",
+      "target": "Re-evaluate whether IGRM is solving the right problems, add new capability families and retire superseded implementation paths without reducing the public floor.",
+      "publication": "New north-star version, denominator delta and explicit non-goals."
+    }
+  ],
+  "quality_dimensions": [
+    {
+      "dimension_id": "truth",
+      "question": "Did accuracy, calibration, construct validity, uncertainty or refusal behaviour improve?",
+      "minimum_evidence": "Adversarial tests or a registered external study appropriate to the claim."
+    },
+    {
+      "dimension_id": "coverage",
+      "question": "Did a declared source, language, country, entity, time or dependency denominator improve?",
+      "minimum_evidence": "Before/after numerator and unchanged or explicitly versioned denominator."
+    },
+    {
+      "dimension_id": "utility",
+      "question": "Can a named user complete a real task more accurately, quickly or transparently?",
+      "minimum_evidence": "Task definition and measured outcome; aesthetic preference alone is insufficient."
+    },
+    {
+      "dimension_id": "experience",
+      "question": "Did clarity, information architecture, interaction, accessibility, mobile use or low-bandwidth use improve?",
+      "minimum_evidence": "Rendered cross-viewport and assistive-technology checks."
+    },
+    {
+      "dimension_id": "reliability",
+      "question": "Did freshness, atomicity, recovery, observability, performance or service delivery improve?",
+      "minimum_evidence": "Operational measurement or tested failure/recovery path."
+    },
+    {
+      "dimension_id": "security_privacy",
+      "question": "Did attack surface, secret isolation, data minimization, abuse resistance or incident recovery improve?",
+      "minimum_evidence": "Threat-linked control plus a failing-then-passing adversarial test."
+    },
+    {
+      "dimension_id": "reproducibility_citation",
+      "question": "Can an independent user locate, verify, reproduce and cite more of the result?",
+      "minimum_evidence": "Authenticated artifact, exact procedure and isolated verification."
+    },
+    {
+      "dimension_id": "institutional_adoption",
+      "question": "Did external review, contribution, integration, documented use or continuity improve?",
+      "minimum_evidence": "External evidence; agents and the founder cannot self-manufacture adoption."
+    }
+  ],
+  "measured_state": {
+    "public_product_routes": {
+      "registered": 34,
+      "present": 34,
+      "missing": []
+    },
+    "public_api_endpoints": {
+      "registered": 114,
+      "present": 114,
+      "missing": []
+    },
+    "global_atlas": {
+      "country_area_geometries": 247,
+      "india_partner_event_context_observed": 193,
+      "india_partner_event_context_unavailable": 54,
+      "unavailable_geometry_ids": [
+        "ABW",
+        "ALD",
+        "ASM",
+        "ATC",
+        "ATF",
+        "BIH",
+        "BLM",
+        "BRI",
+        "BRT",
+        "CLP",
+        "CPV",
+        "CSI",
+        "CUW",
+        "ESB",
+        "FLK",
+        "FRO",
+        "GEO",
+        "GGY",
+        "GIB",
+        "GRL",
+        "GUM",
+        "HMD",
+        "IMN",
+        "IND",
+        "IOA",
+        "IOT",
+        "JEY",
+        "MAF",
+        "MNE",
+        "MNP",
+        "MSR",
+        "NCL",
+        "NFK",
+        "NIU",
+        "PCN",
+        "PGA",
+        "PRI",
+        "PSX",
+        "PYF",
+        "ROU",
+        "SCR",
+        "SDS",
+        "SGS",
+        "SPM",
+        "SVN",
+        "SXM",
+        "TCA",
+        "TLS",
+        "UMI",
+        "USG",
+        "VGB",
+        "VIR",
+        "WLF",
+        "WSB"
+      ],
+      "registered_layers": 15,
+      "published_layers": 2,
+      "registered_country_level_layers": 14,
+      "published_country_level_layers": 1,
+      "single_world_score": "prohibited"
+    },
+    "historical_intelligence": {
+      "source_start": "1979-01",
+      "source_end": "2019-12",
+      "published_proxy_channels": 2,
+      "current_operating_program": "historical_intelligence_activation",
+      "current_boundary": "The two published monthly proxies are different constructs from the live index and are not spliced into it."
+    }
+  },
+  "strategic_programs": [
+    {
+      "program_id": "global_event_episode_ledger",
+      "state": "next_build",
+      "objective": "Create a point-in-time global event and episode census that separates observations, unique events and multi-event episodes and preserves hierarchy, lifecycle, disagreement and correction history.",
+      "proof": "A frozen source frame and country/time denominator reconcile; event, episode and observation counts remain distinct; syndication cannot manufacture corroboration; every revision replays and exposes its dependent-product blast radius."
+    },
+    {
+      "program_id": "observation_twin",
+      "state": "specified",
+      "objective": "Reconstruct exactly what each registered source and release could support at a knowledge cutoff without importing later evidence.",
+      "proof": "Vintage, outage, revision and contradiction tests refuse future leakage and reproduce historical source states from authenticated evidence."
+    },
+    {
+      "program_id": "global_consequence_engine",
+      "state": "in_progress",
+      "objective": "Expand Atlas from an India-partner event map into a complete-country, multi-domain geopolitical consequence system.",
+      "proof": "Every registered geometry renders; every layer publishes its denominator and unavailable members; real values require source and rights gates."
+    },
+    {
+      "program_id": "historical_intelligence_activation",
+      "state": "specified",
+      "objective": "Turn the 1979-present record into regime baselines, analog search, structural-break diagnostics, event archetypes and knowledge-cutoff replay rather than one archival chart.",
+      "proof": "Each new historical use states its construct and comparability boundary and is evaluated against a simpler baseline."
+    },
+    {
+      "program_id": "india_strategic_census",
+      "state": "in_progress",
+      "objective": "Maintain declared, versioned universes for India's external dependencies, capacities, buffers and unmapped gaps.",
+      "proof": "Every universe reconciles its complete input frame and independently sampled mappings."
+    },
+    {
+      "program_id": "total_product_quality",
+      "state": "in_progress",
+      "objective": "Bring every public page to one institutional design, accessibility, performance and evidence standard.",
+      "proof": "All protected routes pass cross-viewport, console, keyboard, screen-reader, low-bandwidth and claim-integrity checks."
+    },
+    {
+      "program_id": "measured_decision_utility",
+      "state": "protocol_required",
+      "objective": "Show whether IGRM helps researchers, businesses, journalists and public institutions make defined decisions better.",
+      "proof": "Preregistered blinded tasks, independent users, declared baselines and permanent losses."
+    },
+    {
+      "program_id": "proof_carrying_product_compiler",
+      "state": "specified",
+      "objective": "Compile research, board, newsroom, public, API and offline-audit products from one governed consequence chain.",
+      "proof": "Every visible clause resolves to the same claim and evidence bundle across products; orphan, stale, rights-incompatible or temporally invalid plans refuse."
+    },
+    {
+      "program_id": "mechanism_decision_lab",
+      "state": "protocol_required",
+      "objective": "Separate descriptive aftermath, compatible mechanisms, causal attribution and robust feasible options under uncertainty.",
+      "proof": "Registered mechanisms publish rival hypotheses, falsifiers and identifiability status; scenarios propagate intervals and respect stocks, flows, capacity, substitution and timing constraints."
+    }
+  ],
+  "priority_queue": [
+    {
+      "candidate_id": "world_state_matrix",
+      "risk_class": "R2_product_or_data_expansion",
+      "state": "implemented_contract_surface_pending",
+      "target_dimensions": [
+        "coverage",
+        "utility",
+        "experience"
+      ],
+      "evidence": {
+        "mapped_country_area_geometries": 247,
+        "observed_current_layer": 193,
+        "registered_layers": 15,
+        "published_country_level_layers": 1
+      },
+      "next_gate": "Publish the complete-country matrix and visible missingness, then add real source-backed layers only after rights and construct gates."
+    },
+    {
+      "candidate_id": "historical_intelligence_activation",
+      "risk_class": "R2_product_or_data_expansion",
+      "state": "specified",
+      "target_dimensions": [
+        "utility",
+        "coverage",
+        "reproducibility_citation"
+      ],
+      "evidence": {
+        "source_start": "1979-01",
+        "source_end": "2019-12",
+        "published_proxy_channels": 2
+      },
+      "next_gate": "Register regime baselines, structural-break diagnostics, event archetypes and analog retrieval with explicit non-comparability tests."
+    },
+    {
+      "candidate_id": "total_product_quality",
+      "risk_class": "R2_product_or_data_expansion",
+      "state": "in_progress",
+      "target_dimensions": [
+        "experience",
+        "utility",
+        "reliability"
+      ],
+      "evidence": {
+        "registered_public_routes": 34,
+        "present_public_routes": 34
+      },
+      "next_gate": "Run the institutional design and interaction standard over every protected route, followed by independent cross-viewport review."
+    }
+  ],
+  "external_outcomes": {
+    "citations": "not_inferred_by_this_engine",
+    "awards": "not_inferred_by_this_engine",
+    "government_adoption": "not_inferred_by_this_engine",
+    "independent_study_results": "record_only_after_authentic_external_evidence"
+  }
+}
