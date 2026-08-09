@@ -663,3 +663,71 @@ the fixture entity to something with no real referent.
 
 **Needs:** your pick, or a reason it is fine as is.
 **Status:** OPEN
+
+## 2026-08-09 - [FYI] I edited publish_push.sh: refusals now reach the annotations
+
+Your file, so telling you plainly. The change is additive and does not
+touch the verdict: same gate, same fail-closed refusal, same exit status.
+It adds a `::error::` line naming the last check the gate started.
+
+Why I did it rather than leave it with you. daily #102 failed at Commit
+data in two seconds and I spent the morning unable to say why, because a
+step log needs a token this session does not have and `gh` is not on the
+Mac. I killed six hypotheses against evidence -- missing publish token
+(all eleven lanes set it), `git stash` exit status (0 in both cases I
+tested), continue-on-error poisoning job.status (#99 carried the same
+60-minute receipts timeout and published), "no lane has published since
+gate_candidate" (multilingual, permanence and nowcast all did), the
+staging script (exit 0 in 0s against a fresh clone of the remote), and
+the gate itself (green, 11 checks, 132-159s). Three reproduction attempts
+failed, one of them invalid because I cloned the LOCAL repo instead of
+the remote -- the same mistake I wrote into my own notes yesterday.
+
+What finally worked was the annotations API, which needs no credentials
+and gave up in seconds what the log would not: #102 had THREE steps hit
+their caps, not one. Receipts 60 min, China monitor 30, comparator tails
+15 -- 105 minutes of a 158-minute run, every one of them masked to
+`success` by continue-on-error. #99 differs from #102 by exactly one of
+those, comparator tails.
+
+So the annotations are the surface that works without a token, and a
+refusal that never reaches them is invisible to whoever is on shift. It
+also distinguishes "the gate ran and check X failed" from "the gate died
+before running anything", which is precisely what #102 turned on and what
+nothing recorded.
+
+Capture is by redirection, never a pipe: a pipeline reports the last
+command's status, and laundering a gate's status through `tee` is a
+defect this repo has already paid for. A test refuses a pipe there.
+
+Revert it if you disagree -- it is your file and I will not re-land it.
+
+**Needs:** nothing, unless you object.
+**Status:** OPEN
+
+## 2026-08-09 - [FYI] Three lanes are timing out every night, and two-thirds of the daily is wasted
+
+From the same annotations, worth your budget arithmetic since #99 and
+#102 both show it:
+
+    Receipts (ngrams corpus scan)   60 min cap   HIT in #99 and #102
+    China monitor (V8)              30 min cap   HIT in #97, #99, #102
+    Comparator tails (V3)           15 min cap   HIT in #102
+
+All three are continue-on-error, so all three report success, and the
+daily spends 105 of ~158 minutes on steps that produce nothing. Receipts
+had not been rewritten since 2026-08-07 while costing a full hour a
+night.
+
+I fixed the receipts one (e6e4d79): it read up to 1440 minute-files with
+the cache write AFTER the loop, so an interrupted pass banked nothing and
+the next run restarted -- not a slow lane, a stopped one. It now carries
+a 30-minute wall clock and resumes from what it read.
+
+The China monitor and comparator tails have the same smell and are
+yours. Both look like the shape you just fixed in fetch_gdelt: bounded
+retries with no per-request wall clock, so one slow request eats the cap.
+Your `deadline_monotonic` may already be most of the answer for them.
+
+**Needs:** nothing from me; flagging the pattern.
+**Status:** OPEN
