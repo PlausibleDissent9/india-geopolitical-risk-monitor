@@ -34,18 +34,20 @@ class FakeResponse:
         return self.raw[:limit]
 
 
+def _finding(priority: str = "P1") -> dict[str, str]:
+    return {
+        "priority": priority,
+        "title": "Missing refusal test",
+        "evidence": "The patch adds a network boundary without a timeout test.",
+        "recommendation": "Add a deterministic timeout refusal test.",
+    }
+
+
 def _review_document() -> dict[str, object]:
     return {
         "verdict": "changes_required",
         "confidence": "high",
-        "findings": [
-            {
-                "priority": "P1",
-                "title": "Missing refusal test",
-                "evidence": "The patch adds a network boundary without a timeout test.",
-                "recommendation": "Add a deterministic timeout refusal test.",
-            }
-        ],
+        "findings": [_finding()],
         "limitations": ["Static review only."],
     }
 
@@ -225,6 +227,7 @@ def test_valid_review_is_schema_checked_and_carries_no_provider_prose_or_key(tmp
 
     assert result["status"] == "untrusted_review_validated"
     assert result["verdict"] == "changes_required"
+    assert result["blocking_findings"] is True
     assert result["usage"] == {"prompt_tokens": 12, "completion_tokens": 20, "total_tokens": 32}
     assert result["authority"].startswith("advisory_only")
     assert "sealed-secret" not in json.dumps(result)
@@ -255,6 +258,95 @@ def test_model_cannot_expand_the_review_channel(
             key_loader=lambda service: "sealed-secret",
             open_request=lambda *args, **kwargs: FakeResponse(_completion(candidate)),
         )
+
+
+@pytest.mark.parametrize(
+    "candidate",
+    [
+        {**_review_document(), "verdict": "clear"},
+        {
+            **_review_document(),
+            "verdict": "clear",
+            "findings": [_finding("P2")],
+        },
+        {
+            **_review_document(),
+            "verdict": "clear",
+            "findings": [_finding("P3")],
+        },
+        {**_review_document(), "findings": []},
+        {**_review_document(), "verdict": "refuse"},
+        {
+            **_review_document(),
+            "verdict": "refuse",
+            "findings": [],
+            "limitations": [],
+        },
+    ],
+)
+def test_review_verdict_cannot_contradict_its_findings(
+    tmp_path: Path, candidate: dict[str, object]
+) -> None:
+    input_file = tmp_path / "candidate.diff"
+    input_file.write_text("+ safe change\n", encoding="utf-8")
+
+    with pytest.raises(
+        lab.ModelLabError, match="review_verdict_findings_inconsistent"
+    ):
+        lab.review(
+            input_file,
+            model_id="poolside/laguna-xs-2.1",
+            task="code_review",
+            key_loader=lambda service: "sealed-secret",
+            open_request=lambda *args, **kwargs: FakeResponse(_completion(candidate)),
+        )
+
+
+def test_nonblocking_findings_are_reported_without_a_blocking_headline(
+    tmp_path: Path,
+) -> None:
+    input_file = tmp_path / "candidate.diff"
+    input_file.write_text("+ safe change\n", encoding="utf-8")
+    candidate = _review_document()
+    candidate["findings"] = [_finding("P2")]
+
+    result = lab.review(
+        input_file,
+        model_id="poolside/laguna-xs-2.1",
+        task="code_review",
+        key_loader=lambda service: "sealed-secret",
+        open_request=lambda *args, **kwargs: FakeResponse(_completion(candidate)),
+    )
+    assert result["verdict"] == "changes_required"
+    assert result["blocking_findings"] is False
+
+
+def test_clear_and_refused_reviews_have_no_findings(tmp_path: Path) -> None:
+    input_file = tmp_path / "candidate.diff"
+    input_file.write_text("+ safe change\n", encoding="utf-8")
+    candidates = [
+        {**_review_document(), "verdict": "clear", "findings": []},
+        {
+            **_review_document(),
+            "verdict": "refuse",
+            "findings": [],
+            "limitations": ["Input was insufficient to complete the review."],
+        },
+    ]
+    results = [
+        lab.review(
+            input_file,
+            model_id="poolside/laguna-xs-2.1",
+            task="code_review",
+            key_loader=lambda service: "sealed-secret",
+            open_request=lambda *args, value=value, **kwargs: FakeResponse(
+                _completion(value)
+            ),
+        )
+        for value in candidates
+    ]
+    assert [result["verdict"] for result in results] == ["clear", "refuse"]
+    assert all(result["blocking_findings"] is False for result in results)
 
 
 def test_redirects_are_refused_before_authorization_can_move_hosts() -> None:

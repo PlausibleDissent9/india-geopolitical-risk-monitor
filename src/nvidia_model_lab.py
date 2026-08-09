@@ -307,6 +307,9 @@ def _prompt(task: str, text: str) -> list[dict[str, str]]:
         "low, medium, or high. findings is an array of at most 40 objects with exact "
         "keys priority, title, evidence, recommendation; priority is P0, P1, P2, or "
         "P3. limitations is an array of short strings. Do not wrap JSON in markdown."
+        " A clear verdict requires zero findings. changes_required requires at least "
+        "one finding. refuse means the review itself could not be completed, so it "
+        "requires zero findings and at least one limitation."
     )
     user = f"Task: {task}\n\nArtifact begins:\n{text}\nArtifact ends."
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
@@ -439,11 +442,21 @@ def _validated_review(document: Mapping[str, Any], max_findings: int) -> dict[st
             if not isinstance(value, str) or not 1 <= len(value) <= ceiling:
                 raise ModelLabError("review_finding_invalid")
         cleaned.append({key: finding[key] for key in ("priority", "title", "evidence", "recommendation")})
+    inconsistent = (
+        (verdict == "clear" and bool(cleaned))
+        or (verdict == "changes_required" and not cleaned)
+        or (verdict == "refuse" and (bool(cleaned) or not limitations))
+    )
+    if inconsistent:
+        raise ModelLabError("review_verdict_findings_inconsistent")
     return {
         "verdict": verdict,
         "confidence": confidence,
         "findings": cleaned,
         "limitations": limitations,
+        "blocking_findings": any(
+            finding["priority"] in {"P0", "P1"} for finding in cleaned
+        ),
     }
 
 
