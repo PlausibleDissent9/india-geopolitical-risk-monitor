@@ -21,7 +21,7 @@ from src.oges_fixture import OgesFixtureError, apply_operation, build_fixture
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_PATH = ROOT / "standard" / "oges" / "0.1.0" / "profile.json"
-PROFILE_SHA256 = "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2"
+PROFILE_SHA256 = "640e4d5e7439ad884e75524dc6e517416031ab2266ab1b70733e4f8cd70e124d"
 
 JsonValue = Union[dict[str, Any], list[Any], str, int, float, bool, None]
 

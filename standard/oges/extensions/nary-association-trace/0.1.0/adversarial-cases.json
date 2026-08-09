@@ -16,6 +16,8 @@
     {"case_id": "rights_missing", "expected_status": "refused", "expected_reason": "canonical_release_invalid"},
     {"case_id": "rights_expired", "expected_status": "refused", "expected_reason": "trace_rights_expired"},
     {"case_id": "rights_revoked", "expected_status": "refused", "expected_reason": "trace_rights_signer_inactive"},
+    {"case_id": "rights_future_decision", "expected_status": "refused", "expected_reason": "canonical_release_invalid"},
+    {"case_id": "rights_future_registry", "expected_status": "refused", "expected_reason": "trace_rights_registry_not_yet_effective"},
     {"case_id": "rights_wrong_use", "expected_status": "refused", "expected_reason": "canonical_release_invalid"},
     {"case_id": "rights_signer_role", "expected_status": "refused", "expected_reason": "trace_rights_signer_role_forbidden"},
     {"case_id": "invalid_temporal_ordering", "expected_status": "refused", "expected_reason": "trace_time_order_invalid"},

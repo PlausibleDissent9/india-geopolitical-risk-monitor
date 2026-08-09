@@ -31,7 +31,14 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _approved_rights(root: Path) -> tuple[Path, Path, dict[str, str]]:
+def _approved_rights(
+    root: Path,
+    *,
+    reviewed_on: str = "2026-08-09",
+    review_due: str = "2027-08-09",
+    rights_registry_effective: str = "2026-08-09",
+    signers_registry_effective: str = "2026-08-09",
+) -> tuple[Path, Path, dict[str, str]]:
     private = Ed25519PrivateKey.generate()
     public = private.public_key().public_bytes(
         encoding=serialization.Encoding.Raw,
@@ -42,7 +49,7 @@ def _approved_rights(root: Path) -> tuple[Path, Path, dict[str, str]]:
         signers_path,
         {
             "schema_version": "1.0.0",
-            "effective": "2026-08-09",
+            "effective": signers_registry_effective,
             "default_policy": "deny",
             "signers": [
                 {
@@ -71,8 +78,8 @@ def _approved_rights(root: Path) -> tuple[Path, Path, dict[str, str]]:
         "decision_artifact_path": "governance/rights_decisions/fixture_port.json",
         "decision_artifact_sha256": "0" * 64,
         "decision_signature_path": "governance/rights_decisions/fixture_port.sig",
-        "reviewed_on": "2026-08-09",
-        "review_due": "2027-08-09",
+        "reviewed_on": reviewed_on,
+        "review_due": review_due,
         "access_url": "https://example.gov.test/port-table",
         "terms_url": "https://example.gov.test/open-data-terms",
         "access_basis": "synthetic_open_data_fixture",
@@ -120,7 +127,7 @@ def _approved_rights(root: Path) -> tuple[Path, Path, dict[str, str]]:
         rights_path,
         {
             "schema_version": "1.0.0",
-            "effective": "2026-08-09",
+            "effective": rights_registry_effective,
             "default_policy": "deny",
             "sources": [source],
         },
@@ -161,9 +168,22 @@ def _method(root: Path) -> dict[str, str]:
     }
 
 
-def _valid_bundle(tmp_path: Path) -> tuple[Path, Path, Path, dict[str, Any]]:
+def _valid_bundle(
+    tmp_path: Path,
+    *,
+    reviewed_on: str = "2026-08-09",
+    review_due: str = "2027-08-09",
+    rights_registry_effective: str = "2026-08-09",
+    signers_registry_effective: str = "2026-08-09",
+) -> tuple[Path, Path, Path, dict[str, Any]]:
     root = _fixture_root(tmp_path)
-    rights_path, signers_path, source_rights = _approved_rights(root)
+    rights_path, signers_path, source_rights = _approved_rights(
+        root,
+        reviewed_on=reviewed_on,
+        review_due=review_due,
+        rights_registry_effective=rights_registry_effective,
+        signers_registry_effective=signers_registry_effective,
+    )
     artifact_sha = "a" * 64
     method = _method(root)
     labels = {
@@ -403,6 +423,23 @@ def test_valid_bundle_is_complete_lossless_and_not_an_edge(tmp_path: Path) -> No
         "not_applicable": 1,
     }
     assert result["claim_boundary"] == "structural_source_observations_not_dependency_edges"
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"reviewed_on": "2026-12-01", "review_due": "2027-12-01"},
+        {"rights_registry_effective": "2026-12-01"},
+        {"signers_registry_effective": "2026-12-01"},
+    ],
+)
+def test_future_rights_state_cannot_authorize_earlier_observations(
+    tmp_path: Path, kwargs: dict[str, str]
+) -> None:
+    root, rights, signers, bundle = _valid_bundle(tmp_path, **kwargs)
+    with pytest.raises(dep.DependencyObservationError) as exc:
+        _validate(root, rights, signers, bundle)
+    assert exc.value.code == "observation_rights_invalid"
 
 
 def test_schema_binds_every_value_status_to_its_measure(tmp_path: Path) -> None:

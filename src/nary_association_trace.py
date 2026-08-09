@@ -735,6 +735,15 @@ def _trace_rights(
         rights = publication_guard._validate_rights_registry(rights_document, root, signers)
     except publication_guard.PublicationGuardError as exc:
         raise NaryAssociationTraceError("trace_rights_registry_invalid") from exc
+    as_of_day = as_of.date()
+    if _day(
+        rights_document["effective"], "trace_rights_registry_effective_invalid"
+    ) > as_of_day:
+        _fail("trace_rights_registry_not_yet_effective")
+    if _day(
+        signer_document["effective"], "trace_rights_signers_effective_invalid"
+    ) > as_of_day:
+        _fail("trace_rights_signers_not_yet_effective")
     source = rights.get(source_id)
     if source is None or source["decision_state"] != "approved":
         _fail("trace_rights_missing")
@@ -742,17 +751,20 @@ def _trace_rights(
     permitted = set(source["permitted_uses"])
     if not required <= permitted:
         _fail("trace_rights_use_forbidden")
+    reviewed_on = _day(source["reviewed_on"], "trace_rights_reviewed_on_invalid")
+    if reviewed_on > as_of_day:
+        _fail("trace_rights_decision_not_yet_effective")
     review_due = _day(source["review_due"], "trace_rights_review_due_invalid")
-    if as_of.date() > review_due:
+    if as_of_day > review_due:
         _fail("trace_rights_expired")
     signer = signers.get(source["signer_id"])
     if signer is None:
         _fail("trace_rights_signer_inactive")
     signer_effective = _day(signer["effective"], "trace_rights_signer_effective_invalid")
     signer_revoked = signer["revoked_on"]
-    if signer_effective > as_of.date() or (
+    if signer_effective > as_of_day or (
         signer_revoked is not None
-        and as_of.date() >= _day(signer_revoked, "trace_rights_signer_revoked_invalid")
+        and as_of_day >= _day(signer_revoked, "trace_rights_signer_revoked_invalid")
     ):
         _fail("trace_rights_signer_inactive")
     if signer["role"] not in allowed_roles:

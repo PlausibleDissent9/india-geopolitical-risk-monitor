@@ -454,7 +454,14 @@ def _validate_rights(
     root: Path,
     rights_path: Path,
     signers_path: Path,
-) -> tuple[dict[str, dict[str, Any]], str, str]:
+) -> tuple[
+    dict[str, dict[str, Any]],
+    dict[str, dict[str, Any]],
+    str,
+    str,
+    date,
+    date,
+]:
     try:
         safe_signers = _path_inside_root(root, signers_path, "rights_signers_missing")
         safe_rights = _path_inside_root(root, rights_path, "rights_registry_missing")
@@ -466,7 +473,16 @@ def _validate_rights(
             safe_rights, "rights_registry_unreadable"
         )
         rights = publication_guard._validate_rights_registry(rights_doc, root, signers)
-        return rights, rights_sha, signers_sha
+        return (
+            rights,
+            signers,
+            rights_sha,
+            signers_sha,
+            _parse_date(rights_doc["effective"], "rights_registry_effective_invalid"),
+            _parse_date(
+                signers_doc["effective"], "rights_signers_effective_invalid"
+            ),
+        )
     except publication_guard.PublicationGuardError as exc:
         _fail("rights_registry_invalid", exc.code)
 
@@ -528,6 +544,7 @@ def _validate_evidence(
     release_effective: date,
     entities: Mapping[str, Mapping[str, Any]],
     rights: Mapping[str, Mapping[str, Any]],
+    rights_signers: Mapping[str, Mapping[str, Any]],
     methods: Mapping[tuple[str, str], Mapping[str, Any]],
 ) -> None:
     evidence_id = cast(str, document["evidence_id"])
@@ -541,10 +558,27 @@ def _validate_evidence(
         _fail("evidence_rights_decision_mismatch", evidence_id)
     if document["rights_use"] not in source["permitted_uses"]:
         _fail("evidence_rights_use_forbidden", evidence_id)
+    if release_generated.date() < _parse_date(
+        source["reviewed_on"], "evidence_rights_reviewed_invalid"
+    ):
+        _fail("evidence_rights_not_yet_effective", evidence_id)
     if release_generated.date() > _parse_date(
         source["review_due"], "evidence_rights_due_invalid"
     ):
         _fail("evidence_rights_expired", evidence_id)
+    rights_signer = rights_signers.get(source["signer_id"])
+    if rights_signer is None:
+        _fail("evidence_rights_signer_unregistered", evidence_id)
+    signer_effective = _parse_date(
+        rights_signer["effective"], "evidence_rights_signer_effective_invalid"
+    )
+    signer_revoked = rights_signer["revoked_on"]
+    if signer_effective > release_generated.date() or (
+        signer_revoked is not None
+        and release_generated.date()
+        >= _parse_date(signer_revoked, "evidence_rights_signer_revoked_invalid")
+    ):
+        _fail("evidence_rights_signer_inactive", evidence_id)
     if document["privacy_class"] == "prohibited":
         _fail("prohibited_evidence_in_release", evidence_id)
     if document["privacy_class"] == "restricted" and (
@@ -1054,9 +1088,14 @@ def load_validated_release(
 
     _, validators, registry_sha = _load_schema_registry(root, schema_registry_path)
     methods, method_registry_sha = _load_method_registry(root, method_registry_path)
-    rights, rights_sha, rights_signers_sha = _validate_rights(
-        root, rights_registry_path, rights_signers_path
-    )
+    (
+        rights,
+        rights_signers,
+        rights_sha,
+        rights_signers_sha,
+        rights_registry_effective,
+        rights_signers_effective,
+    ) = _validate_rights(root, rights_registry_path, rights_signers_path)
     release_signers, release_signers_sha = _load_release_signers(
         root, release_signers_path
     )
@@ -1081,6 +1120,10 @@ def load_validated_release(
     )
     if release_effective > generated.date():
         _fail("release_effective_after_generation")
+    if rights_registry_effective > generated.date():
+        _fail("release_rights_registry_not_yet_effective")
+    if rights_signers_effective > generated.date():
+        _fail("release_rights_signers_not_yet_effective")
     _verify_release_signature(
         manifest_bytes, manifest, root, release_signers, release_effective
     )
@@ -1146,6 +1189,7 @@ def load_validated_release(
             release_effective,
             entities,
             rights,
+            rights_signers,
             methods,
         )
     for row in entities.values():

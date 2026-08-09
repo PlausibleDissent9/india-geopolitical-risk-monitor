@@ -56,6 +56,8 @@ COVERED_CASES = {
     "rights_missing",
     "rights_expired",
     "rights_revoked",
+    "rights_future_decision",
+    "rights_future_registry",
     "rights_wrong_use",
     "rights_signer_role",
     "invalid_temporal_ordering",
@@ -778,6 +780,63 @@ def test_rights_missing_expired_revoked_wrong_use_and_role_fail_closed(
     wrong_role = _build_trace_fixture(tmp_path / "wrong-role")
     _update_signer_snapshot(wrong_role, role="unregistered trace signer")
     _refuses_execute(wrong_role, "trace_rights_signer_role_forbidden")
+
+
+def test_future_rights_state_cannot_authorize_earlier_trace_execution(
+    tmp_path: Path,
+) -> None:
+    fixture = _build_trace_fixture(tmp_path / "decision")
+    rights_path = fixture.root / "governance/source_rights_registry.json"
+    source = json.loads(rights_path.read_text(encoding="utf-8"))["sources"][0]
+    source["reviewed_on"] = "2026-12-01"
+    source["review_due"] = "2027-12-01"
+    _write_rights(fixture.foundry, fixture.root, source)
+    package = json.loads(fixture.foundry.package.read_text(encoding="utf-8"))
+    rights_sha = _sha(rights_path)
+    signers_sha = _sha(fixture.root / "governance/rights_signers.json")
+    for observation in package["dependency_bundle"]["observations"]:
+        observation["source"]["rights_decision_artifact_sha256"] = source[
+            "decision_artifact_sha256"
+        ]
+        observation["source"]["rights_registry_sha256"] = rights_sha
+        observation["source"]["rights_signers_sha256"] = signers_sha
+    _reframe(package["dependency_bundle"])
+    _write_package(fixture.foundry, package)
+    _refresh_trace(fixture)
+    _refuses_execute(fixture, "canonical_release_invalid")
+
+    with pytest.raises(trace.NaryAssociationTraceError) as exc:
+        trace._trace_rights(
+            root=fixture.root,
+            source_id=source["source_id"],
+            required_uses=(
+                "cite_metadata",
+                "publish_derived_value",
+                "publish_extract",
+            ),
+            allowed_roles={"test-only rights reviewer"},
+            as_of=trace._utc("2026-08-09T12:00:00Z", "test_time_invalid"),
+        )
+    assert exc.value.code == "trace_rights_decision_not_yet_effective"
+
+    fixture = _build_trace_fixture(tmp_path / "registry")
+    rights_path = fixture.root / "governance/source_rights_registry.json"
+    registry = json.loads(rights_path.read_text(encoding="utf-8"))
+    registry["effective"] = "2026-12-01"
+    _write_json(rights_path, registry)
+    with pytest.raises(trace.NaryAssociationTraceError) as exc:
+        trace._trace_rights(
+            root=fixture.root,
+            source_id=registry["sources"][0]["source_id"],
+            required_uses=(
+                "cite_metadata",
+                "publish_derived_value",
+                "publish_extract",
+            ),
+            allowed_roles={"test-only rights reviewer"},
+            as_of=trace._utc("2026-08-09T12:00:00Z", "test_time_invalid"),
+        )
+    assert exc.value.code == "trace_rights_registry_not_yet_effective"
 
 
 def test_foundry_and_execution_rights_snapshots_cannot_be_composed(

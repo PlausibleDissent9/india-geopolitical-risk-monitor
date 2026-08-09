@@ -784,6 +784,10 @@ def validate_claim_bundle(
     generated_at = _utc(document["generated_at"], "claim_generated_at_invalid")
     if generated_at.date() < as_of:
         _fail("claim_generated_before_as_of")
+    if _day(rights_doc["effective"], "rights_registry_effective_invalid") > generated_at.date():
+        _fail("rights_registry_not_yet_effective")
+    if _day(signers_doc["effective"], "signer_registry_effective_invalid") > generated_at.date():
+        _fail("rights_signers_not_yet_effective")
     temporal_policy = _text(document["temporal_policy"], "claim_temporal_policy_invalid")
     if temporal_policy not in temporal_policies:
         _fail("claim_temporal_policy_unlicensed")
@@ -879,8 +883,21 @@ def validate_claim_bundle(
             _fail("fact_source_unregistered")
         if source["decision_state"] != "approved":
             _fail("fact_source_not_approved")
+        if generated_at.date() < _day(
+            source["reviewed_on"], "rights_source_reviewed_invalid"
+        ):
+            _fail("fact_source_rights_not_yet_effective")
         if generated_at.date() > _day(source["review_due"], "rights_source_due_invalid"):
             _fail("fact_source_rights_expired")
+        source_signer = signers.get(source["signer_id"])
+        if source_signer is None:
+            _fail("fact_source_rights_signer_unregistered")
+        if _day(source_signer["effective"], "signer_effective_invalid") > generated_at.date() or (
+            source_signer["revoked_on"] is not None
+            and generated_at.date()
+            >= _day(source_signer["revoked_on"], "signer_revoked_invalid")
+        ):
+            _fail("fact_source_rights_signer_inactive")
         rights_use = fact["rights_use"]
         if rights_use not in source["permitted_uses"]:
             _fail("fact_rights_use_forbidden")
@@ -939,10 +956,25 @@ def validate_claim_bundle(
                 _fail("fact_upstream_source_not_approved")
             if rights_use not in upstream["permitted_uses"]:
                 _fail("fact_upstream_rights_use_forbidden")
+            if generated_at.date() < _day(
+                upstream["reviewed_on"], "rights_source_reviewed_invalid"
+            ):
+                _fail("fact_upstream_source_rights_not_yet_effective")
             if generated_at.date() > _day(
                 upstream["review_due"], "rights_source_due_invalid"
             ):
                 _fail("fact_upstream_source_rights_expired")
+            upstream_signer = signers.get(upstream["signer_id"])
+            if upstream_signer is None:
+                _fail("fact_upstream_source_rights_signer_unregistered")
+            if _day(
+                upstream_signer["effective"], "signer_effective_invalid"
+            ) > generated_at.date() or (
+                upstream_signer["revoked_on"] is not None
+                and generated_at.date()
+                >= _day(upstream_signer["revoked_on"], "signer_revoked_invalid")
+            ):
+                _fail("fact_upstream_source_rights_signer_inactive")
             source_ids.add(upstream_id)
 
         evidence_path = _safe_evidence_file(root, fact["source_path"])

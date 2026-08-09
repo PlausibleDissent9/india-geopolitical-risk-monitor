@@ -17,7 +17,7 @@ from src.knowledge_replay_fixture import (
 
 ROOT = Path(__file__).resolve().parents[1]
 EXTENSION = Path("standard/oges/extensions/event-ledger/0.1.0")
-BASE_OGES_PROFILE_SHA256 = "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2"
+BASE_OGES_PROFILE_SHA256 = "640e4d5e7439ad884e75524dc6e517416031ab2266ab1b70733e4f8cd70e124d"
 
 COVERED_CASES = {
     "evidence_verification_is_not_claim_truth",

@@ -7,7 +7,7 @@
   "base_standard": {
     "version": "0.1.0",
     "profile_path": "standard/oges/0.1.0/profile.json",
-    "profile_sha256": "73d4347bf7b3a42f509b37e3ad7518423a57c2e645c91bd35b8b6859acf009c2"
+    "profile_sha256": "640e4d5e7439ad884e75524dc6e517416031ab2266ab1b70733e4f8cd70e124d"
   },
   "specification": {
     "path": "standard/oges/extensions/dependency-observation/0.1.0/SPEC.md",
@@ -42,7 +42,7 @@
   ],
   "reference_implementation": {
     "path": "src/dependency_observation.py",
-    "sha256": "1d560e6847f4d42a924c846187f53ab6031d95486af86796f5dad74c53c93af4"
+    "sha256": "4a8a27378930c3258df5ce4e760303000b07784e94d939233ecf5ca3c91ab964"
   },
   "required_rights_uses": [
     "cite_metadata",

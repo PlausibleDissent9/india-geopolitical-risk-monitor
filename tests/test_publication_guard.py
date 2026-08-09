@@ -371,6 +371,56 @@ def test_unknown_pending_expired_and_unauthorized_sources_fail_closed(
     _refuses(bundle, paths, "fact_rights_use_forbidden")
 
 
+def test_future_rights_state_cannot_authorize_an_earlier_claim(
+    tmp_path: Path,
+) -> None:
+    bundle, paths = _fixture(tmp_path / "decision")
+    rights = json.loads(paths["rights"].read_text())
+    source = rights["sources"][0]
+    source["reviewed_on"] = "2026-12-01"
+    source["review_due"] = "2027-12-01"
+    private_key = Ed25519PrivateKey.generate()
+    public_key = private_key.public_key().public_bytes(
+        encoding=serialization.Encoding.Raw,
+        format=serialization.PublicFormat.Raw,
+    )
+    signers = json.loads(paths["signers"].read_text())
+    signers["signers"][0]["public_key_ed25519_base64"] = base64.b64encode(
+        public_key
+    ).decode()
+    _write_json(paths["signers"], signers)
+    decision_path = paths["root"] / source["decision_artifact_path"]
+    decision = json.loads(decision_path.read_text())
+    decision["reviewed_on"] = source["reviewed_on"]
+    decision["review_due"] = source["review_due"]
+    _write_json(decision_path, decision)
+    (paths["root"] / source["decision_signature_path"]).write_bytes(
+        private_key.sign(decision_path.read_bytes())
+    )
+    source["decision_artifact_sha256"] = _sha(decision_path)
+    _write_json(paths["rights"], rights)
+    bundle["policy"]["rights_registry_sha256"] = _sha(paths["rights"])
+    bundle["policy"]["rights_signers_sha256"] = _sha(paths["signers"])
+    _resign(bundle)
+    _refuses(bundle, paths, "fact_source_rights_not_yet_effective")
+
+    bundle, paths = _fixture(tmp_path / "rights-registry")
+    rights = json.loads(paths["rights"].read_text())
+    rights["effective"] = "2026-12-01"
+    _write_json(paths["rights"], rights)
+    bundle["policy"]["rights_registry_sha256"] = _sha(paths["rights"])
+    _resign(bundle)
+    _refuses(bundle, paths, "rights_registry_not_yet_effective")
+
+    bundle, paths = _fixture(tmp_path / "signers-registry")
+    signers = json.loads(paths["signers"].read_text())
+    signers["effective"] = "2026-12-01"
+    _write_json(paths["signers"], signers)
+    bundle["policy"]["rights_signers_sha256"] = _sha(paths["signers"])
+    _resign(bundle)
+    _refuses(bundle, paths, "rights_signers_not_yet_effective")
+
+
 def test_approved_rights_require_an_authentic_detached_signature(tmp_path: Path) -> None:
     bundle, paths = _fixture(tmp_path)
     rights = json.loads(paths["rights"].read_text())

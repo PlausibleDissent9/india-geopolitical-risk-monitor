@@ -534,15 +534,29 @@ def reference_status(
     source = rights.get(contract["source"]["source_id"])
     effective_as_of = as_of or _day(profile["effective"], "profile_effective_invalid")
     required = set(profile["required_rights_uses"])
+    registries_current = bool(
+        _day(rights_document["effective"], "rights_registry_effective_invalid")
+        <= effective_as_of
+        and _day(signer_document["effective"], "rights_signers_effective_invalid")
+        <= effective_as_of
+    )
     approved = source is not None and source["decision_state"] == "approved"
     uses_approved = bool(
         source is not None
         and approved
         and required <= set(source["permitted_uses"])
     )
-    decision_current = bool(
+    decision_started = bool(
         source is not None
         and uses_approved
+        and _day(source["reviewed_on"], "rights_reviewed_on_invalid")
+        <= effective_as_of
+    )
+    decision_current = bool(
+        source is not None
+        and registries_current
+        and uses_approved
+        and decision_started
         and effective_as_of <= _day(source["review_due"], "rights_review_due_invalid")
     )
     signer = signers.get(source["signer_id"]) if source is not None and approved else None
@@ -565,6 +579,10 @@ def reference_status(
     )
     if not approved or not uses_approved:
         reason = "exact_signed_rights_decision_absent"
+    elif not registries_current:
+        reason = "rights_registry_not_yet_effective"
+    elif not decision_started:
+        reason = "rights_decision_not_yet_effective"
     elif not decision_current:
         reason = "rights_decision_expired"
     elif not signer_current:

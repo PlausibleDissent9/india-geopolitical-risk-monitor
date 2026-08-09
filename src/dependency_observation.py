@@ -396,21 +396,27 @@ def _rights(
     source_id = source.get("source_id")
     if not isinstance(source_id, str):
         _fail("observation_rights_invalid")
+    as_of_day = as_of.date()
     row = rights.get(source_id)
     signer = signers.get(row["signer_id"]) if row is not None else None
     if (
-        row is None
+        _day(rights_document["effective"], "observation_rights_invalid") > as_of_day
+        or _day(signer_document["effective"], "observation_rights_invalid")
+        > as_of_day
+        or row is None
         or row["decision_state"] != "approved"
         or not set(required_uses).issubset(row["permitted_uses"])
         or source.get("rights_decision_id") != row["decision_id"]
         or source.get("rights_decision_artifact_sha256") != row["decision_artifact_sha256"]
         or source.get("rights_registry_sha256") != rights_sha
         or source.get("rights_signers_sha256") != signer_sha
-        or as_of.date() > _day(row["review_due"], "observation_rights_invalid")
+        or _day(row["reviewed_on"], "observation_rights_invalid") > as_of_day
+        or as_of_day > _day(row["review_due"], "observation_rights_invalid")
         or signer is None
+        or _day(signer["effective"], "observation_rights_invalid") > as_of_day
         or (
             signer["revoked_on"] is not None
-            and as_of.date() >= _day(signer["revoked_on"], "observation_rights_invalid")
+            and as_of_day >= _day(signer["revoked_on"], "observation_rights_invalid")
         )
     ):
         _fail("observation_rights_invalid")

@@ -1155,6 +1155,56 @@ def test_status_refuses_expired_rights_at_explicit_as_of(tmp_path: Path) -> None
     assert result["public_value_artifact_allowed"] is False
 
 
+def test_status_refuses_future_rights_decision_and_registries(
+    tmp_path: Path,
+) -> None:
+    decision_root = tmp_path / "decision"
+    decision_root.mkdir()
+    fixture = _build_fixture(decision_root)
+    rights_path = fixture.root / "governance/source_rights_registry.json"
+    source = json.loads(rights_path.read_text())["sources"][0]
+    source["reviewed_on"] = "2026-12-01"
+    source["review_due"] = "2027-12-01"
+    _write_rights(fixture, fixture.root, source)
+    result = foundry.reference_status(
+        root=fixture.root,
+        profile_path=fixture.profile,
+        as_of=date.fromisoformat("2026-08-09"),
+    )
+    assert result["reason"] == "rights_decision_not_yet_effective"
+    assert result["rights_authorized"] is False
+
+    rights_registry_root = tmp_path / "rights-registry"
+    rights_registry_root.mkdir()
+    fixture = _build_fixture(rights_registry_root)
+    rights_path = fixture.root / "governance/source_rights_registry.json"
+    registry = json.loads(rights_path.read_text())
+    registry["effective"] = "2026-12-01"
+    _write_json(rights_path, registry)
+    result = foundry.reference_status(
+        root=fixture.root,
+        profile_path=fixture.profile,
+        as_of=date.fromisoformat("2026-08-09"),
+    )
+    assert result["reason"] == "rights_registry_not_yet_effective"
+    assert result["rights_authorized"] is False
+
+    signers_registry_root = tmp_path / "signers-registry"
+    signers_registry_root.mkdir()
+    fixture = _build_fixture(signers_registry_root)
+    signers_path = fixture.root / "governance/rights_signers.json"
+    registry = json.loads(signers_path.read_text())
+    registry["effective"] = "2026-12-01"
+    _write_json(signers_path, registry)
+    result = foundry.reference_status(
+        root=fixture.root,
+        profile_path=fixture.profile,
+        as_of=date.fromisoformat("2026-08-09"),
+    )
+    assert result["reason"] == "rights_registry_not_yet_effective"
+    assert result["rights_authorized"] is False
+
+
 def test_status_refuses_revoked_signer_at_explicit_as_of(tmp_path: Path) -> None:
     fixture = _build_fixture(tmp_path)
     signers_path = fixture.root / "governance/rights_signers.json"

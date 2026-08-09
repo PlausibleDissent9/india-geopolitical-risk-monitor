@@ -834,6 +834,49 @@ def test_public_release_refuses_unapproved_or_mismatched_rights(tmp_path: Path) 
     _refuses(paths, "evidence_rights_decision_mismatch")
 
 
+def test_future_rights_state_cannot_authorize_an_earlier_release(
+    tmp_path: Path,
+) -> None:
+    paths = _fixture(tmp_path / "decision")
+    rights_path = paths["root"] / "governance/source_rights_registry.json"
+    rights = json.loads(rights_path.read_text())
+    source = rights["sources"][0]
+    source["reviewed_on"] = "2026-12-01"
+    source["review_due"] = "2027-12-01"
+    decision_path = paths["root"] / source["decision_artifact_path"]
+    _write_json(decision_path, _signed_decision_for(source))
+    (paths["root"] / source["decision_signature_path"]).write_bytes(
+        paths["rights_private_key"].sign(decision_path.read_bytes())
+    )
+    source["decision_artifact_sha256"] = _sha(decision_path)
+    _write_json(rights_path, rights)
+    manifest = json.loads(paths["manifest"].read_text())
+    manifest["rights_registry_sha256"] = _sha(rights_path)
+    manifest["rights_snapshot"] = _rights_snapshot(rights["sources"])
+    _write_manifest(paths, manifest)
+    _refuses(paths, "evidence_rights_not_yet_effective")
+
+    paths = _fixture(tmp_path / "rights-registry")
+    rights_path = paths["root"] / "governance/source_rights_registry.json"
+    rights = json.loads(rights_path.read_text())
+    rights["effective"] = "2026-12-01"
+    _write_json(rights_path, rights)
+    manifest = json.loads(paths["manifest"].read_text())
+    manifest["rights_registry_sha256"] = _sha(rights_path)
+    _write_manifest(paths, manifest)
+    _refuses(paths, "release_rights_registry_not_yet_effective")
+
+    paths = _fixture(tmp_path / "signers-registry")
+    signers_path = paths["root"] / "governance/rights_signers.json"
+    signers = json.loads(signers_path.read_text())
+    signers["effective"] = "2026-12-01"
+    _write_json(signers_path, signers)
+    manifest = json.loads(paths["manifest"].read_text())
+    manifest["rights_signers_sha256"] = _sha(signers_path)
+    _write_manifest(paths, manifest)
+    _refuses(paths, "release_rights_signers_not_yet_effective")
+
+
 def test_release_signature_and_policy_snapshots_cannot_be_rewritten(tmp_path: Path) -> None:
     paths = _fixture(tmp_path)
     paths["release_signature"].write_bytes(b"0" * 64)

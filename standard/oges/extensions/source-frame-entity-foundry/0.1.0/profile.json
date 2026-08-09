@@ -28,7 +28,7 @@
     {
       "kind": "dependency_profile",
       "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json",
-      "sha256": "1dcb5ee90562ef5f28b4776aa6e21267c5486c171df309aedabd40aa81553b8f"
+      "sha256": "28974a732c8801631f311494b28af7bdd3ce78c8beeb71aea9f1e85c0496b85b"
     },
     {
       "kind": "universe_release_schema",
@@ -48,11 +48,11 @@
   ],
   "reference_implementation": {
     "path": "src/source_frame_entity_foundry.py",
-    "sha256": "f1c761c53d43838f187cad8a45c47f1e2d174cdbd8f1fad8f4fefc5fbc0cf177"
+    "sha256": "159de4eb24422e08ccd47c06c9faa485279ccb1df6018bb328b7f9f4675803ba"
   },
   "conformance_test": {
     "path": "tests/test_source_frame_entity_foundry.py",
-    "sha256": "54bf13fae8b97f0a984b8c1db81c14f228264e0879f0b83a644f9b8682fb723f"
+    "sha256": "6ca214b946ae6c8df4b411b378b0e1fd2b3528b4919c738c6d8d9364c3089153"
   },
   "required_rights_uses": [
     "cite_metadata",
