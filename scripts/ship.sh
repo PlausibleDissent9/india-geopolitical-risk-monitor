@@ -20,5 +20,5 @@ if ! bash scripts/gate.sh --committed > "$OUT" 2>&1; then
   grep -E "FAILED|error:" "$OUT" | head -10
   exit 1
 fi
-git push origin main
+git push origin HEAD:main
 echo "ship: pushed $(git rev-parse --short HEAD) through a green gate"
