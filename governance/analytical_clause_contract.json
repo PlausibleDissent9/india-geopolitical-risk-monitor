@@ -112,7 +112,14 @@
     "clause_upstream_refused",
     "clause_value_absent_despite_presence",
     "clause_value_present_despite_missingness",
-    "clause_coverage_binding_invalid"
+    "clause_coverage_binding_invalid",
+    "clause_evidence_binding_invalid",
+    "clause_evidence_metadata_not_publishable",
+    "clause_evidence_temporal_invalid",
+    "clause_limitation_parity_invalid",
+    "clause_limitation_registry_invalid",
+    "clause_limitation_scope_invalid",
+    "clause_limitation_unregistered"
   ],
   "limitations": [
     "clause_identity_is_not_source_truth",

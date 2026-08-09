@@ -36,6 +36,27 @@
     {"case_id": "required_role_missing", "expected_status": "refused", "expected_reason": "clause_role_proof_invalid"},
     {"case_id": "caller_authored_rights_time_universe", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"},
     {"case_id": "every_clause_field_except_self_hash_mutated", "expected_status": "refused", "expected_reason": "every_mutation_refused"},
-    {"case_id": "same_universe_off_path_edge_substitution", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"}
+    {"case_id": "same_universe_off_path_edge_substitution", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"},
+    {"case_id": "event_label_from_wrong_record", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"},
+    {"case_id": "same_type_target_name_substitution", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"},
+    {"case_id": "evidence_metadata_from_wrong_record", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"},
+    {"case_id": "unreferenced_evidence_clause_injection", "expected_status": "refused", "expected_reason": "clause_evidence_binding_invalid"},
+    {"case_id": "traversal_evidence_union_mismatch", "expected_status": "refused", "expected_reason": "clause_evidence_binding_invalid"},
+    {"case_id": "citation_url_swapped", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"},
+    {"case_id": "publication_observation_dates_swapped", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"},
+    {"case_id": "future_evidence_timestamp", "expected_status": "refused", "expected_reason": "clause_source_release_refused"},
+    {"case_id": "generated_at_current_clock", "expected_status": "refused", "expected_reason": "clause_source_binding_invalid"},
+    {"case_id": "source_release_generated_at_splice", "expected_status": "refused", "expected_reason": "clause_source_binding_invalid"},
+    {"case_id": "limitation_id_deleted", "expected_status": "refused", "expected_reason": "clause_source_binding_invalid"},
+    {"case_id": "limitation_id_aliased", "expected_status": "refused", "expected_reason": "clause_source_binding_invalid"},
+    {"case_id": "limitation_scope_moved", "expected_status": "refused", "expected_reason": "clause_limitation_scope_invalid"},
+    {"case_id": "renderer_local_limitation_injection", "expected_status": "refused", "expected_reason": "clause_limitation_parity_invalid"},
+    {"case_id": "source_blank_not_coerced", "expected_status": "refused", "expected_reason": "clause_source_release_refused"},
+    {"case_id": "citation_metadata_not_publishable", "expected_status": "refused", "expected_reason": "clause_evidence_metadata_not_publishable"},
+    {"case_id": "arbitrary_query_tuple", "expected_status": "refused", "expected_reason": "clause_source_profile_invalid"},
+    {"case_id": "duplicate_registered_query_tuple", "expected_status": "refused", "expected_reason": "clause_source_profile_invalid"},
+    {"case_id": "limitation_registry_profile_drift", "expected_status": "refused", "expected_reason": "clause_source_profile_drift"},
+    {"case_id": "priority_language_role_missing", "expected_status": "refused", "expected_reason": "clause_role_proof_invalid"},
+    {"case_id": "coordinated_all_role_new_clause_mutation", "expected_status": "refused", "expected_reason": "clause_source_bundle_recompile_mismatch"}
   ]
 }

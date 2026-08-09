@@ -1,0 +1,150 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "igrm:analytical-clause-limitations:0.1.0",
+  "effective": "2026-08-08",
+  "default_policy": "deny",
+  "allowed_ids": [
+    "active_release_records_only",
+    "authenticate_external_verifier_before_execution",
+    "bounded_no_path_is_not_absence",
+    "bounded_paths_truncated",
+    "bounded_traversal_not_complete_exposure",
+    "bundle_excludes_unlicensed_source_content",
+    "citation_identifies_release_and_compilation_not_source_truth",
+    "claims_are_about_registered_release_records",
+    "clause_identity_is_not_source_truth",
+    "confidence_not_probability",
+    "conformance_does_not_establish_substantive_truth",
+    "cross_role_agreement_is_not_accuracy",
+    "draft_requires_human_review",
+    "event_entry_not_exposure_cause",
+    "event_status_not_ground_truth",
+    "exposure_not_realized_loss",
+    "guardrail:bounded_no_path_not_absence",
+    "guardrail:no_forecast_or_advice",
+    "guardrail:structural_path_not_causation",
+    "magnitude_values_not_rendered",
+    "no_forecast_or_advice",
+    "no_forecast_probability_or_advice",
+    "no_source_content_or_extracts",
+    "not_a_probability_severity_loss_or_recommendation",
+    "not_independent_truth_or_completeness_claims",
+    "object_index_is_query_bounded",
+    "path_search_bounded",
+    "source_metadata_not_source_content",
+    "stored_edge_direction_only",
+    "structural_connection_not_causation",
+    "structural_path_is_not_causation",
+    "structural_path_not_causation",
+    "structural_paths_do_not_measure_realized_effect",
+    "synthetic_contract_only_no_production_claim"
+  ],
+  "guardrail_ids": [
+    "guardrail:bounded_no_path_not_absence",
+    "guardrail:no_forecast_or_advice",
+    "guardrail:structural_path_not_causation"
+  ],
+  "compiler_bundle_ids": [
+    "bounded_no_path_is_not_absence",
+    "clause_identity_is_not_source_truth",
+    "cross_role_agreement_is_not_accuracy",
+    "no_forecast_or_advice",
+    "structural_path_is_not_causation",
+    "synthetic_contract_only_no_production_claim"
+  ],
+  "upstream_traversal_ids": [
+    "active_release_records_only",
+    "bounded_paths_truncated",
+    "confidence_not_probability",
+    "event_entry_not_exposure_cause",
+    "event_status_not_ground_truth",
+    "exposure_not_realized_loss",
+    "magnitude_values_not_rendered",
+    "path_search_bounded",
+    "stored_edge_direction_only",
+    "structural_connection_not_causation"
+  ],
+  "output_profiles": {
+    "scope:output.all_views": [
+      "bounded_traversal_not_complete_exposure",
+      "event_status_not_ground_truth",
+      "no_forecast_probability_or_advice",
+      "no_source_content_or_extracts",
+      "source_metadata_not_source_content",
+      "structural_path_not_causation"
+    ],
+    "scope:output.research_package": [
+      "citation_identifies_release_and_compilation_not_source_truth",
+      "object_index_is_query_bounded",
+      "structural_paths_do_not_measure_realized_effect"
+    ],
+    "scope:output.board_brief": [
+      "draft_requires_human_review",
+      "not_a_probability_severity_loss_or_recommendation",
+      "structural_path_not_causation"
+    ],
+    "scope:output.newsroom_claim_card": [
+      "claims_are_about_registered_release_records",
+      "not_independent_truth_or_completeness_claims",
+      "structural_path_not_causation"
+    ],
+    "scope:output.offline_audit_bundle": [
+      "authenticate_external_verifier_before_execution",
+      "bundle_excludes_unlicensed_source_content",
+      "conformance_does_not_establish_substantive_truth"
+    ],
+    "scope:claim.card.event_record": [
+      "event_status_not_ground_truth"
+    ],
+    "scope:claim.card.release_structure": [
+      "bounded_traversal_not_complete_exposure",
+      "structural_path_not_causation"
+    ]
+  },
+  "output_clause_ids": [
+    "authenticate_external_verifier_before_execution",
+    "bounded_traversal_not_complete_exposure",
+    "bundle_excludes_unlicensed_source_content",
+    "citation_identifies_release_and_compilation_not_source_truth",
+    "claims_are_about_registered_release_records",
+    "conformance_does_not_establish_substantive_truth",
+    "draft_requires_human_review",
+    "event_status_not_ground_truth",
+    "no_forecast_probability_or_advice",
+    "no_source_content_or_extracts",
+    "not_a_probability_severity_loss_or_recommendation",
+    "not_independent_truth_or_completeness_claims",
+    "object_index_is_query_bounded",
+    "source_metadata_not_source_content",
+    "structural_path_not_causation",
+    "structural_paths_do_not_measure_realized_effect"
+  ],
+  "limitation_scopes": {
+    "authenticate_external_verifier_before_execution": ["scope:output.offline_audit_bundle"],
+    "bounded_traversal_not_complete_exposure": ["scope:claim.card.release_structure", "scope:output.all_views"],
+    "bundle_excludes_unlicensed_source_content": ["scope:output.offline_audit_bundle"],
+    "citation_identifies_release_and_compilation_not_source_truth": ["scope:output.research_package"],
+    "claims_are_about_registered_release_records": ["scope:output.newsroom_claim_card"],
+    "conformance_does_not_establish_substantive_truth": ["scope:output.offline_audit_bundle"],
+    "draft_requires_human_review": ["scope:output.board_brief"],
+    "event_status_not_ground_truth": ["scope:claim.card.event_record", "scope:output.all_views"],
+    "no_forecast_probability_or_advice": ["scope:output.all_views"],
+    "no_source_content_or_extracts": ["scope:output.all_views"],
+    "not_a_probability_severity_loss_or_recommendation": ["scope:output.board_brief"],
+    "not_independent_truth_or_completeness_claims": ["scope:output.newsroom_claim_card"],
+    "object_index_is_query_bounded": ["scope:output.research_package"],
+    "source_metadata_not_source_content": ["scope:output.all_views"],
+    "structural_path_not_causation": ["scope:claim.card.release_structure", "scope:output.all_views", "scope:output.board_brief", "scope:output.newsroom_claim_card"],
+    "structural_paths_do_not_measure_realized_effect": ["scope:output.research_package"]
+  },
+  "evidence_output_parity_targets": {
+    "_LIMITATIONS": "scope:output.all_views",
+    "_RESEARCH_LIMITATIONS": "scope:output.research_package",
+    "_BRIEF_LIMITATIONS": "scope:output.board_brief",
+    "_CLAIM_LIMITATIONS": "scope:output.newsroom_claim_card",
+    "_AUDIT_LIMITATIONS": "scope:output.offline_audit_bundle",
+    "claim:card.event_record.limitations": "scope:claim.card.event_record",
+    "claim:card.release_structure.limitations": "scope:claim.card.release_structure"
+  },
+  "claim_boundary": "These registered literals and scope memberships describe the current evidence-output limitation surface for source-clause availability only. They do not make the renderer authoritative and do not establish output equivalence."
+}

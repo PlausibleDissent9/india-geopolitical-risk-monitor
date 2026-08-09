@@ -18,7 +18,7 @@ import argparse
 import hashlib
 import json
 from collections.abc import Mapping, Sequence
-from datetime import date
+from datetime import date, datetime
 from itertools import combinations
 from pathlib import Path, PurePosixPath
 from typing import Any, NoReturn, cast
@@ -31,6 +31,8 @@ CONTRACT_RELATIVE = Path("governance") / "analytical_clause_contract.json"
 CONTRACT_PATH = ROOT / CONTRACT_RELATIVE
 SOURCE_PROFILE_RELATIVE = Path("governance") / "analytical_clause_source_profile.json"
 SOURCE_PROFILE_PATH = ROOT / SOURCE_PROFILE_RELATIVE
+LIMITATION_REGISTRY_RELATIVE = Path("governance") / "analytical_clause_limitation_registry.json"
+LIMITATION_REGISTRY_PATH = ROOT / LIMITATION_REGISTRY_RELATIVE
 
 _VERSION = "0.1.0"
 _SOURCE_METHOD_ID = "method:igrm.analytical_clause_source_binding"
@@ -92,9 +94,36 @@ _CLAIM_LIMITATIONS = (
     "structural_path_is_not_causation",
     "synthetic_contract_only_no_production_claim",
 )
+_EVIDENCE_METADATA_FIELDS = (
+    "evidence.identity",
+    "evidence.source_id",
+    "evidence.title",
+    "evidence.public_url",
+    "evidence.published_at",
+    "evidence.observed_at",
+    "evidence.verification_status",
+    "evidence.content_availability",
+    "evidence.rights_use",
+    "evidence.privacy_class",
+    "evidence.rights_decision_id",
+)
+_REGISTERED_QUERY_IDS = (
+    "query:analytical_clause.fixture.path_found",
+    "query:analytical_clause.fixture.no_path",
+)
+_OUTPUT_SCOPE_IDS = (
+    "scope:output.all_views",
+    "scope:output.research_package",
+    "scope:output.board_brief",
+    "scope:output.newsroom_claim_card",
+    "scope:output.offline_audit_bundle",
+    "scope:claim.card.event_record",
+    "scope:claim.card.release_structure",
+)
 _PROFILE_PIN_KINDS = {
     "adversarial_vectors",
     "analytical_clause_contract",
+    "analytical_clause_limitations",
     "analytical_clause_runtime",
     "canonical_runtime",
     "canonical_schema_registry",
@@ -180,6 +209,16 @@ def _day(value: object, code: str) -> date:
     except ValueError:
         _fail(code)
     if parsed.isoformat() != value:
+        _fail(code)
+    return parsed
+
+
+def _instant(value: object, code: str) -> datetime:
+    if not isinstance(value, str) or not value.endswith("Z"):
+        _fail(code)
+    try:
+        parsed = datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError:
         _fail(code)
     return parsed
 
@@ -274,6 +313,131 @@ def load_contract(path: Path = CONTRACT_PATH) -> tuple[dict[str, Any], str]:
     }:
         _fail("clause_contract_digest_mismatch", str(path))
     return contract, digest
+
+
+def _closed_string_list(value: object, code: str) -> list[str]:
+    if (
+        not isinstance(value, list)
+        or any(not isinstance(item, str) or not item for item in value)
+        or value != sorted(set(value))
+    ):
+        _fail(code)
+    return cast(list[str], value)
+
+
+def _validate_limitation_registry(registry: Mapping[str, Any], *, release_effective: date) -> None:
+    expected = {
+        "schema_version",
+        "registry_id",
+        "effective",
+        "default_policy",
+        "allowed_ids",
+        "guardrail_ids",
+        "compiler_bundle_ids",
+        "upstream_traversal_ids",
+        "output_profiles",
+        "output_clause_ids",
+        "limitation_scopes",
+        "evidence_output_parity_targets",
+        "claim_boundary",
+    }
+    if (
+        set(registry) != expected
+        or registry.get("schema_version") != _VERSION
+        or registry.get("registry_id") != "igrm:analytical-clause-limitations:0.1.0"
+        or registry.get("default_policy") != "deny"
+        or _day(registry.get("effective"), "clause_limitation_registry_invalid") > release_effective
+    ):
+        _fail("clause_limitation_registry_invalid")
+    allowed = _closed_string_list(registry.get("allowed_ids"), "clause_limitation_registry_invalid")
+    guards = _closed_string_list(
+        registry.get("guardrail_ids"), "clause_limitation_registry_invalid"
+    )
+    compiler = _closed_string_list(
+        registry.get("compiler_bundle_ids"), "clause_limitation_registry_invalid"
+    )
+    upstream = _closed_string_list(
+        registry.get("upstream_traversal_ids"), "clause_limitation_registry_invalid"
+    )
+    output_ids = _closed_string_list(
+        registry.get("output_clause_ids"), "clause_limitation_registry_invalid"
+    )
+    if (
+        guards != sorted(_MANDATORY_GUARDS)
+        or compiler != sorted(_CLAIM_LIMITATIONS)
+        or len(output_ids) != 16
+    ):
+        _fail("clause_limitation_registry_invalid")
+    profiles = registry.get("output_profiles")
+    if not isinstance(profiles, dict) or set(profiles) != set(_OUTPUT_SCOPE_IDS):
+        _fail("clause_limitation_registry_invalid")
+    normalized_profiles: dict[str, list[str]] = {}
+    for scope_id, ids in profiles.items():
+        normalized_profiles[scope_id] = _closed_string_list(
+            ids, "clause_limitation_registry_invalid"
+        )
+    derived_ids = sorted(
+        {limitation_id for ids in normalized_profiles.values() for limitation_id in ids}
+    )
+    if derived_ids != output_ids or sum(map(len, normalized_profiles.values())) != 21:
+        _fail("clause_limitation_registry_invalid")
+    scopes = registry.get("limitation_scopes")
+    if not isinstance(scopes, dict) or set(scopes) != set(output_ids):
+        _fail("clause_limitation_scope_invalid")
+    for limitation_id, scope_ids in scopes.items():
+        observed_scopes = _closed_string_list(scope_ids, "clause_limitation_scope_invalid")
+        expected_scopes = sorted(
+            scope_id
+            for scope_id, profile_ids in normalized_profiles.items()
+            if limitation_id in profile_ids
+        )
+        if observed_scopes != expected_scopes:
+            _fail("clause_limitation_scope_invalid", limitation_id)
+    parity = registry.get("evidence_output_parity_targets")
+    expected_parity = {
+        "_LIMITATIONS": "scope:output.all_views",
+        "_RESEARCH_LIMITATIONS": "scope:output.research_package",
+        "_BRIEF_LIMITATIONS": "scope:output.board_brief",
+        "_CLAIM_LIMITATIONS": "scope:output.newsroom_claim_card",
+        "_AUDIT_LIMITATIONS": "scope:output.offline_audit_bundle",
+        "claim:card.event_record.limitations": "scope:claim.card.event_record",
+        "claim:card.release_structure.limitations": "scope:claim.card.release_structure",
+    }
+    if parity != expected_parity:
+        _fail("clause_limitation_registry_invalid")
+    vocabulary = set(guards) | set(compiler) | set(upstream) | set(output_ids)
+    if set(allowed) != vocabulary:
+        _fail("clause_limitation_registry_invalid")
+
+
+def load_limitation_registry(
+    expected_sha256: str,
+    *,
+    release_effective: date,
+) -> tuple[dict[str, Any], str]:
+    """Load the one deny-by-default limitation vocabulary pinned by the profile."""
+
+    registry, digest = _read_json(LIMITATION_REGISTRY_PATH, "clause_limitation_registry_invalid")
+    if digest != expected_sha256:
+        _fail("clause_source_profile_drift", "analytical_clause_limitations")
+    _validate_limitation_registry(registry, release_effective=release_effective)
+    return registry, digest
+
+
+def validate_limitation_parity(
+    registry: Mapping[str, Any], profiles: Mapping[str, Sequence[str]]
+) -> None:
+    """Compare extracted renderer literals to the registry without importing it."""
+
+    expected_profiles = registry.get("output_profiles")
+    if not isinstance(expected_profiles, dict) or set(profiles) != set(expected_profiles):
+        _fail("clause_limitation_parity_invalid")
+    for scope_id, expected_ids in expected_profiles.items():
+        observed = profiles.get(scope_id)
+        if not isinstance(observed, Sequence) or isinstance(observed, (str, bytes)):
+            _fail("clause_limitation_parity_invalid", scope_id)
+        if list(observed) != list(expected_ids):
+            _fail("clause_limitation_parity_invalid", scope_id)
 
 
 def seal_clause(clause: Mapping[str, Any]) -> dict[str, Any]:
@@ -416,6 +580,10 @@ def _validate_source_profile_document(
         "allowed_release",
         "normative_files",
         "query_profiles",
+        "registered_query_boundary",
+        "evidence_metadata_fields",
+        "citation_metadata_policy",
+        "limitation_vocabulary",
         "dynamic_binding_rules",
         "trust_boundary",
         "product_manifest_boundary",
@@ -440,6 +608,10 @@ def _validate_source_profile_document(
             "edge_membership": "exact_edge_id_and_record_sha256_in_hop_and_object_evidence",
             "coverage_instances": "derive_every_unique_traversal_coverage_row",
             "coverage_membership": "exact_universe_release_id_record_sha256_and_covered_entity_id",
+            "evidence_instances": "exact_union_of_traversal_object_evidence_evidence_ids",
+            "evidence_membership": "traversal_evidence_equals_union_and_exact_canonical_evidence_record",
+            "evidence_metadata": "exactly_once_each_registered_field_per_union_evidence_id",
+            "limitations": "one_deny_by_default_profile_pinned_vocabulary_with_exact_scope_sets",
             "role_payload": "exact_clause_refs_only",
             "omissions": "none_registered_deny",
             "caller_authored_semantics": "refuse",
@@ -471,10 +643,44 @@ def _validate_source_profile_document(
     if set(pins) != _PROFILE_PIN_KINDS:
         _fail("clause_source_profile_invalid")
 
+    if profile.get("registered_query_boundary") != {
+        "accepted_input": "exact_registered_query_id_only",
+        "registered_query_ids": list(_REGISTERED_QUERY_IDS),
+        "tuple_resolver": "none",
+        "caller_authored_event_target_bounds_or_selectors": False,
+        "unregistered_evidence_output_api_tuples": "refuse_without_claiming_coverage",
+    }:
+        _fail("clause_source_profile_invalid")
+    if tuple(profile.get("evidence_metadata_fields", ())) != _EVIDENCE_METADATA_FIELDS:
+        _fail("clause_source_profile_invalid")
+    if profile.get("citation_metadata_policy") != {
+        "privacy_classes": ["public"],
+        "rights_uses": ["cite_metadata"],
+        "public_with_redactions_field_receipt": "unavailable_refuse",
+        "public_url_semantics": "metadata_locator_not_content_permission",
+        "nullable_fields": ["evidence.public_url", "evidence.published_at"],
+        "source_blank_policy": "preserve_null_missingness_never_empty_string_or_zero",
+    }:
+        _fail("clause_source_profile_invalid")
+    limitation_vocabulary = profile.get("limitation_vocabulary")
+    if limitation_vocabulary != {
+        "registry_id": "igrm:analytical-clause-limitations:0.1.0",
+        "effective": "2026-08-08",
+        "default_policy": "deny",
+        "normative_file_kind": "analytical_clause_limitations",
+        "renderer_parity": "test_only_consumer_assertion_not_normative_input",
+        "output_unique_id_denominator": 16,
+        "output_scope_membership_denominator": 21,
+    }:
+        _fail("clause_source_profile_invalid")
+    if profile_day != _day(limitation_vocabulary["effective"], "clause_source_profile_invalid"):
+        _fail("clause_source_profile_invalid")
+
     queries_value = profile.get("query_profiles")
     if not isinstance(queries_value, list):
         _fail("clause_source_profile_invalid")
     queries: dict[str, Mapping[str, Any]] = {}
+    query_tuples: set[tuple[object, ...]] = set()
     for row in queries_value:
         if (
             not isinstance(row, dict)
@@ -496,11 +702,17 @@ def _validate_source_profile_document(
             or not 1 <= row["max_paths"] <= 100
         ):
             _fail("clause_source_profile_invalid")
+        query_tuple = (
+            row["event_id"],
+            row["target_entity_id"],
+            row["max_hops"],
+            row["max_paths"],
+        )
+        if query_tuple in query_tuples:
+            _fail("clause_source_profile_invalid")
+        query_tuples.add(query_tuple)
         queries[cast(str, row["query_id"])] = row
-    if set(queries) != {
-        "query:analytical_clause.fixture.path_found",
-        "query:analytical_clause.fixture.no_path",
-    }:
+    if tuple(queries) != _REGISTERED_QUERY_IDS:
         _fail("clause_source_profile_invalid")
     return pins, queries
 
@@ -521,6 +733,24 @@ def _bundle_kwargs(root: Path) -> dict[str, Path]:
         "rights_signers_path": root / "governance" / "rights_signers.json",
         "method_registry_path": root / "governance" / "canonical_method_registry.json",
         "release_signers_path": root / "governance" / "release_signers.json",
+    }
+
+
+def _release_identity(manifest: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: manifest[key]
+        for key in (
+            "release_id",
+            "record_sha256",
+            "generated_at",
+            "effective_date",
+            "release_signer_id",
+            "schema_registry_sha256",
+            "method_registry_sha256",
+            "rights_registry_sha256",
+            "rights_signers_sha256",
+            "release_signers_sha256",
+        )
     }
 
 
@@ -556,10 +786,95 @@ def _traversal_object_rows(
     return rows
 
 
+def _evidence_documents(
+    validated: canonical.ValidatedCanonicalRelease,
+    traversal: Mapping[str, Any],
+    citation_policy: Mapping[str, Any],
+) -> tuple[list[str], dict[str, Mapping[str, Any]]]:
+    union_ids = {
+        cast(str, evidence_id)
+        for row in traversal["object_evidence"]
+        for evidence_id in row["evidence_ids"]
+    }
+    traversal_rows: dict[str, Mapping[str, Any]] = {}
+    for row in traversal["evidence"]:
+        evidence_id = cast(str, row["evidence_id"])
+        if evidence_id in traversal_rows:
+            _fail("clause_evidence_binding_invalid", evidence_id)
+        traversal_rows[evidence_id] = row
+    if set(traversal_rows) != union_ids:
+        _fail("clause_evidence_binding_invalid", "traversal evidence denominator")
+    canonical_evidence = validated.objects["evidence_item"]
+    documents: dict[str, Mapping[str, Any]] = {}
+    release_generated = _instant(
+        validated.manifest["generated_at"], "clause_evidence_temporal_invalid"
+    )
+    binding_fields = (
+        "record_sha256",
+        "source_id",
+        "rights_use",
+        "rights_decision_id",
+        "content_sha256",
+        "content_availability",
+        "privacy_class",
+        "verification_status",
+    )
+    for evidence_id in sorted(union_ids):
+        document = canonical_evidence.get(evidence_id)
+        binding = traversal_rows[evidence_id]
+        if document is None or any(
+            binding.get(field) != document.get(field) for field in binding_fields
+        ):
+            _fail("clause_evidence_binding_invalid", evidence_id)
+        if (
+            document["privacy_class"] not in citation_policy["privacy_classes"]
+            or document["rights_use"] not in citation_policy["rights_uses"]
+        ):
+            _fail("clause_evidence_metadata_not_publishable", evidence_id)
+        title = document["title"]
+        public_url = document["public_url"]
+        published_at = document["published_at"]
+        observed_at = document["observed_at"]
+        if (
+            not isinstance(title, str)
+            or not title.strip()
+            or (public_url is not None and (not isinstance(public_url, str) or not public_url))
+            or (published_at is not None and not isinstance(published_at, str))
+            or not isinstance(observed_at, str)
+        ):
+            _fail("clause_evidence_binding_invalid", evidence_id)
+        if _instant(observed_at, "clause_evidence_temporal_invalid") > release_generated:
+            _fail("clause_evidence_temporal_invalid", evidence_id)
+        if (
+            published_at is not None
+            and _instant(published_at, "clause_evidence_temporal_invalid") > release_generated
+        ):
+            _fail("clause_evidence_temporal_invalid", evidence_id)
+        documents[evidence_id] = document
+    return sorted(union_ids), documents
+
+
 def _assert_source_ref(
     ref: Mapping[str, Any],
     traversal_rows: Mapping[str, Mapping[str, Any]],
+    release: Mapping[str, Any],
+    evidence_objects: Mapping[str, Mapping[str, Any]],
 ) -> None:
+    if ref.get("object_type") == "canonical_release":
+        if ref != {
+            "object_type": "canonical_release",
+            "object_id": release["release_id"],
+            "record_sha256": release["record_sha256"],
+        }:
+            _fail("clause_source_binding_invalid", cast(str, ref.get("object_id")))
+        return
+    if ref.get("object_type") == "evidence_item":
+        document = evidence_objects.get(cast(str, ref.get("object_id")))
+        if document is None or ref != _source_ref(
+            "evidence_item", cast(str, ref.get("object_id")), document
+        ):
+            _fail("clause_evidence_binding_invalid", cast(str, ref.get("object_id")))
+        return
     row = traversal_rows.get(cast(str, ref["object_id"]))
     if row is None or any(
         row.get(field) != ref.get(field) for field in ("object_type", "object_id", "record_sha256")
@@ -571,6 +886,9 @@ def _citations(
     source_refs: Sequence[Mapping[str, Any]],
     traversal: Mapping[str, Any],
     traversal_rows: Mapping[str, Mapping[str, Any]],
+    release: Mapping[str, Any],
+    evidence_objects: Mapping[str, Mapping[str, Any]],
+    evidence_ids_in_scope: set[str],
 ) -> list[dict[str, Any]]:
     evidence_by_id = {row["evidence_id"]: row for row in traversal["evidence"]}
     evidence_ids: set[str] = set()
@@ -578,31 +896,53 @@ def _citations(
         object_id = cast(str, ref["object_id"])
         if ref["object_type"] == "evidence_item":
             evidence_ids.add(object_id)
-            continue
-        _assert_source_ref(ref, traversal_rows)
-        evidence_ids.update(cast(Sequence[str], traversal_rows[object_id]["evidence_ids"]))
-    if not evidence_ids <= set(evidence_by_id):
-        _fail("clause_source_binding_invalid")
-    return [dict(evidence_by_id[evidence_id]) for evidence_id in sorted(evidence_ids)]
+        elif ref["object_type"] != "canonical_release":
+            evidence_ids.update(cast(Sequence[str], traversal_rows[object_id]["evidence_ids"]))
+        _assert_source_ref(ref, traversal_rows, release, evidence_objects)
+    if not evidence_ids <= set(evidence_by_id) or not evidence_ids <= evidence_ids_in_scope:
+        _fail("clause_evidence_binding_invalid")
+    citations: list[dict[str, Any]] = []
+    for evidence_id in sorted(evidence_ids):
+        binding = evidence_by_id[evidence_id]
+        document = evidence_objects.get(evidence_id)
+        if document is None or binding["record_sha256"] != document["record_sha256"]:
+            _fail("clause_evidence_binding_invalid", evidence_id)
+        citations.append(
+            {
+                "evidence_id": evidence_id,
+                "record_sha256": document["record_sha256"],
+                "source_id": document["source_id"],
+                "title": document["title"],
+                "public_url": document["public_url"],
+                "published_at": document["published_at"],
+                "observed_at": document["observed_at"],
+                "verification_status": document["verification_status"],
+                "content_availability": document["content_availability"],
+                "rights_use": document["rights_use"],
+            }
+        )
+    return citations
 
 
 def _rights_state(
-    citations: Sequence[Mapping[str, Any]], traversal: Mapping[str, Any]
+    citations: Sequence[Mapping[str, Any]],
+    traversal: Mapping[str, Any],
+    source_release: Mapping[str, Any],
 ) -> dict[str, Any]:
     rights = {row["source_id"]: row for row in traversal["rights"]}
     source_ids = {row["source_id"] for row in citations}
     if not source_ids <= set(rights):
         _fail("clause_source_binding_invalid")
-    release = traversal["release"]
     return {
         "status": "validated_signed_release_snapshot",
         "release_rights_identity": {
-            "release_id": release["release_id"],
-            "release_record_sha256": release["record_sha256"],
-            "release_signer_id": release["release_signer_id"],
-            "rights_registry_sha256": release["rights_registry_sha256"],
-            "rights_signers_sha256": release["rights_signers_sha256"],
-            "release_signers_sha256": release["release_signers_sha256"],
+            "release_id": source_release["release_id"],
+            "release_record_sha256": source_release["record_sha256"],
+            "release_generated_at": source_release["generated_at"],
+            "release_signer_id": source_release["release_signer_id"],
+            "rights_registry_sha256": source_release["rights_registry_sha256"],
+            "rights_signers_sha256": source_release["rights_signers_sha256"],
+            "release_signers_sha256": source_release["release_signers_sha256"],
         },
         "sources": [dict(rights[source_id]) for source_id in sorted(source_ids)],
         "publication_authority": "synthetic_contract_only_none",
@@ -631,8 +971,13 @@ def _make_clause(
     source_refs: Sequence[Mapping[str, Any]],
     path_bindings: Sequence[Mapping[str, Any]],
     coverage_binding: Mapping[str, Any] | None,
+    limitation_binding: Mapping[str, Any] | None,
     traversal: Mapping[str, Any],
     traversal_rows: Mapping[str, Mapping[str, Any]],
+    source_release: Mapping[str, Any],
+    evidence_objects: Mapping[str, Mapping[str, Any]],
+    evidence_ids_in_scope: set[str],
+    citation_policy: Mapping[str, Any],
     profile_sha256: str,
     runtime_sha256: str,
 ) -> dict[str, Any]:
@@ -640,13 +985,20 @@ def _make_clause(
         dict(ref)
         for ref in sorted(source_refs, key=lambda row: (row["object_type"], row["object_id"]))
     ]
-    citations = _citations(refs, traversal, traversal_rows)
+    citations = _citations(
+        refs,
+        traversal,
+        traversal_rows,
+        source_release,
+        evidence_objects,
+        evidence_ids_in_scope,
+    )
     query = dict(traversal["query"])
     proof_binding = {
         "proof_kind": "registered_exposure_traversal_recomputation",
         "source_field": source_field,
         "source_profile_sha256": profile_sha256,
-        "source_release_ref": dict(traversal["release"]),
+        "source_release_ref": dict(source_release),
         "query": {**query, "query_sha256": _typed_sha(query)},
         "upstream": {
             "record_sha256": traversal["record_sha256"],
@@ -657,6 +1009,8 @@ def _make_clause(
         "source_object_refs": refs,
         "path_bindings": [dict(row) for row in path_bindings],
         "coverage_binding": None if coverage_binding is None else dict(coverage_binding),
+        "limitation_binding": (None if limitation_binding is None else dict(limitation_binding)),
+        "citation_metadata_policy": dict(citation_policy),
         "compiler": {
             "method_id": _SOURCE_METHOD_ID,
             "implementation_sha256": runtime_sha256,
@@ -679,7 +1033,7 @@ def _make_clause(
         "uncertainty": uncertainty,
         "missingness": missingness,
         "citation": citations,
-        "rights_state": _rights_state(citations, traversal),
+        "rights_state": _rights_state(citations, traversal, source_release),
         "proof_binding": proof_binding,
     }
     return seal_clause(clause)
@@ -689,18 +1043,51 @@ def _compile_incumbent_clauses(
     query_id: str,
     traversal: Mapping[str, Any],
     validated: canonical.ValidatedCanonicalRelease,
+    profile: Mapping[str, Any],
     profile_sha256: str,
+    limitation_registry: Mapping[str, Any],
+    limitation_registry_sha256: str,
     runtime_sha256: str,
 ) -> list[dict[str, Any]]:
     by_id, evidence_objects = _object_maps(validated)
     traversal_rows = _traversal_object_rows(traversal)
+    source_release = _release_identity(validated.manifest)
+    if {key: value for key, value in source_release.items() if key != "generated_at"} != traversal[
+        "release"
+    ]:
+        _fail("clause_source_binding_invalid", "release identity")
+    evidence_ids, scoped_evidence = _evidence_documents(
+        validated, traversal, cast(Mapping[str, Any], profile["citation_metadata_policy"])
+    )
+    evidence_ids_in_scope = set(evidence_ids)
+    if any(
+        evidence_objects[evidence_id] != scoped_evidence[evidence_id]
+        for evidence_id in evidence_ids
+    ):
+        _fail("clause_evidence_binding_invalid")
+    allowed_limitations = set(limitation_registry["allowed_ids"])
+    observed_limitations = (
+        set(_MANDATORY_GUARDS)
+        | set(_CLAIM_LIMITATIONS)
+        | set(cast(Sequence[str], traversal["limitations"]))
+        | set(cast(Sequence[str], limitation_registry["output_clause_ids"]))
+    )
+    if not observed_limitations <= allowed_limitations:
+        _fail(
+            "clause_limitation_unregistered",
+            ",".join(sorted(observed_limitations - allowed_limitations)),
+        )
     release_day = traversal["release"]["effective_date"]
+    release_generated_at = source_release["generated_at"]
     event_id = cast(str, traversal["event"]["event_id"])
     target_id = cast(str, traversal["target"]["entity_id"])
     event_type, event_doc = by_id[event_id]
     target_type, target_doc = by_id[target_id]
     event_ref = _source_ref(event_type, event_id, event_doc)
     target_ref = _source_ref(target_type, target_id, target_doc)
+    release_ref = _source_ref(
+        "canonical_release", cast(str, source_release["release_id"]), source_release
+    )
     all_refs = [
         {key: row[key] for key in ("object_type", "object_id", "record_sha256")}
         for row in traversal["object_evidence"]
@@ -722,6 +1109,7 @@ def _compile_incumbent_clauses(
         refs: Sequence[Mapping[str, Any]] = (),
         path_bindings: Sequence[Mapping[str, Any]] = (),
         coverage_binding: Mapping[str, Any] | None = None,
+        limitation_binding: Mapping[str, Any] | None = None,
     ) -> None:
         state = missingness or ("present" if value is not None else "source_missing")
         clauses.append(
@@ -743,12 +1131,30 @@ def _compile_incumbent_clauses(
                 source_refs=refs,
                 path_bindings=path_bindings,
                 coverage_binding=coverage_binding,
+                limitation_binding=limitation_binding,
                 traversal=traversal,
                 traversal_rows=traversal_rows,
+                source_release=source_release,
+                evidence_objects=scoped_evidence,
+                evidence_ids_in_scope=evidence_ids_in_scope,
+                citation_policy=cast(Mapping[str, Any], profile["citation_metadata_policy"]),
                 profile_sha256=profile_sha256,
                 runtime_sha256=runtime_sha256,
             )
         )
+
+    def registered_limitation_binding(
+        limitation_id: str, applicable_scope_ids: Sequence[str]
+    ) -> dict[str, Any]:
+        if limitation_id not in allowed_limitations:
+            _fail("clause_limitation_unregistered", limitation_id)
+        return {
+            "registry_id": limitation_registry["registry_id"],
+            "registry_sha256": limitation_registry_sha256,
+            "effective": limitation_registry["effective"],
+            "limitation_id": limitation_id,
+            "applicable_scope_ids": sorted(applicable_scope_ids),
+        }
 
     for guard in _MANDATORY_GUARDS:
         add(
@@ -759,11 +1165,34 @@ def _compile_incumbent_clauses(
             denominator="all role projections",
             as_of=release_day,
             epistemic_type="registered_refusal",
-            refs=(event_ref, target_ref),
+            refs=(),
+            limitation_binding=registered_limitation_binding(guard, ("scope:role.all_registered",)),
+        )
+
+    limitation_scopes = cast(Mapping[str, Sequence[str]], limitation_registry["limitation_scopes"])
+    limitation_denominator = {
+        "unique_limitation_ids": len(limitation_registry["output_clause_ids"]),
+        "limitation_scope_memberships": sum(
+            len(scope_ids) for scope_ids in limitation_registry["output_profiles"].values()
+        ),
+    }
+    for limitation_id in limitation_registry["output_clause_ids"]:
+        scope_ids = limitation_scopes[limitation_id]
+        add(
+            f"output_limitation:{limitation_id}",
+            {"limitation_id": limitation_id, "applicable_scope_ids": list(scope_ids)},
+            limitation_id,
+            kind="limitation",
+            denominator=limitation_denominator,
+            as_of=release_generated_at,
+            epistemic_type="registered_refusal",
+            refs=(),
+            limitation_binding=registered_limitation_binding(limitation_id, scope_ids),
         )
 
     event_as_of = traversal["event"]["last_verified_at"]
     event_fields = (
+        ("event.canonical_label", event_doc["canonical_label"]),
         ("event.record_status", traversal["event"]["record_status"]),
         ("event.class", event_doc["event_class"]),
         ("event.starts_at", traversal["event"]["starts_at"]),
@@ -799,6 +1228,74 @@ def _compile_incumbent_clauses(
         as_of=release_day,
         refs=(target_ref,),
     )
+    add(
+        "target.canonical_name",
+        {"target_ref": target_ref, "field": "canonical_name"},
+        target_doc["canonical_name"],
+        denominator="one exact traversal target entity field",
+        as_of=release_day,
+        refs=(target_ref,),
+    )
+    add(
+        "release.generated_at",
+        release_ref,
+        release_generated_at,
+        kind="provenance",
+        denominator="one exact signed canonical release",
+        as_of=release_generated_at,
+        epistemic_type="derived",
+        refs=(release_ref,),
+    )
+
+    evidence_denominator = {
+        "evidence_items": len(evidence_ids),
+        "metadata_fields_per_evidence": len(_EVIDENCE_METADATA_FIELDS),
+        "evidence_metadata_clauses": len(evidence_ids) * len(_EVIDENCE_METADATA_FIELDS),
+    }
+    evidence_field_kinds = {
+        "evidence.identity": "provenance",
+        "evidence.source_id": "provenance",
+        "evidence.title": "provenance",
+        "evidence.public_url": "provenance",
+        "evidence.published_at": "provenance",
+        "evidence.observed_at": "provenance",
+        "evidence.verification_status": "provenance",
+        "evidence.content_availability": "rights",
+        "evidence.rights_use": "rights",
+        "evidence.privacy_class": "rights",
+        "evidence.rights_decision_id": "rights",
+    }
+    for evidence_id in evidence_ids:
+        document = scoped_evidence[evidence_id]
+        evidence_ref = _source_ref("evidence_item", evidence_id, document)
+        evidence_fields = {
+            "evidence.identity": evidence_ref,
+            "evidence.source_id": document["source_id"],
+            "evidence.title": document["title"],
+            "evidence.public_url": document["public_url"],
+            "evidence.published_at": document["published_at"],
+            "evidence.observed_at": document["observed_at"],
+            "evidence.verification_status": document["verification_status"],
+            "evidence.content_availability": document["content_availability"],
+            "evidence.rights_use": document["rights_use"],
+            "evidence.privacy_class": document["privacy_class"],
+            "evidence.rights_decision_id": document["rights_decision_id"],
+        }
+        if tuple(evidence_fields) != _EVIDENCE_METADATA_FIELDS:
+            _fail("clause_evidence_binding_invalid", evidence_id)
+        for field, value in evidence_fields.items():
+            missingness = "present" if value is not None else "source_missing"
+            add(
+                field,
+                {"evidence_ref": evidence_ref, "field": field},
+                value,
+                kind=evidence_field_kinds[field],
+                denominator=evidence_denominator,
+                as_of=document["observed_at"],
+                epistemic_type="derived",
+                missingness=missingness,
+                refs=(evidence_ref,),
+            )
 
     traversal_fields = (
         ("traversal.status", traversal["result"]["status"], None),
@@ -1137,6 +1634,7 @@ def _contract_binding(
         "clause_contract_id": contract["contract_id"],
         "clause_contract_sha256": contract_sha256,
         "analytical_clause_runtime_sha256": pins["analytical_clause_runtime"],
+        "analytical_clause_limitations_sha256": pins["analytical_clause_limitations"],
         "source_profile_sha256": profile_sha256,
         "canonical_schema_registry_sha256": manifest["schema_registry_sha256"],
         "canonical_runtime_sha256": pins["canonical_runtime"],
@@ -1166,6 +1664,9 @@ def _compile_source_bundle(
     contract_sha256: str,
     profile_sha256: str,
     pins: Mapping[str, str],
+    profile: Mapping[str, Any],
+    limitation_registry: Mapping[str, Any],
+    limitation_registry_sha256: str,
     query_id: str,
     traversal: Mapping[str, Any],
     validated: canonical.ValidatedCanonicalRelease,
@@ -1174,7 +1675,10 @@ def _compile_source_bundle(
         query_id,
         traversal,
         validated,
+        profile,
         profile_sha256,
+        limitation_registry,
+        limitation_registry_sha256,
         pins["analytical_clause_runtime"],
     )
     compile_clauses(clauses, contract)
@@ -1186,7 +1690,21 @@ def _compile_source_bundle(
         "coverage_rows": len(traversal["coverage"]),
         "object_evidence_rows": len(traversal["object_evidence"]),
         "evidence_rows": len(traversal["evidence"]),
+        "evidence_items": len(
+            {
+                evidence_id
+                for row in traversal["object_evidence"]
+                for evidence_id in row["evidence_ids"]
+            }
+        ),
+        "evidence_metadata_fields": len(_EVIDENCE_METADATA_FIELDS),
+        "evidence_metadata_clauses": len(traversal["evidence"]) * len(_EVIDENCE_METADATA_FIELDS),
         "rights_rows": len(traversal["rights"]),
+        "output_limitation_ids": len(limitation_registry["output_clause_ids"]),
+        "output_limitation_scope_memberships": sum(
+            len(scope_ids) for scope_ids in limitation_registry["output_profiles"].values()
+        ),
+        "guardrail_ids": len(_MANDATORY_GUARDS),
     }
     identity = {
         "release_record_sha256": traversal["release"]["record_sha256"],
@@ -1202,7 +1720,7 @@ def _compile_source_bundle(
         "contract": _contract_binding(
             contract, contract_sha256, profile_sha256, pins, validated.manifest
         ),
-        "source_release": dict(traversal["release"]),
+        "source_release": _release_identity(validated.manifest),
         "query": {"query_id": query_id, "query_sha256": _typed_sha(query), **query},
         "upstream": {
             "object_type": traversal["object_type"],
@@ -1299,6 +1817,9 @@ def compile_source_bound_clauses(
         raise AnalyticalClauseError("clause_source_release_refused", exc.code) from exc
     release_day = _day(validated.manifest["effective_date"], "clause_source_release_refused")
     profile, profile_sha, pins, queries = load_source_profile(release_effective=release_day)
+    limitation_registry, limitation_registry_sha = load_limitation_registry(
+        pins["analytical_clause_limitations"], release_effective=release_day
+    )
     contract, contract_sha = load_contract()
     if (
         pins["analytical_clause_contract"] != contract_sha
@@ -1352,12 +1873,22 @@ def compile_source_bound_clauses(
         contract_sha256=contract_sha,
         profile_sha256=profile_sha,
         pins=pins,
+        profile=profile,
+        limitation_registry=limitation_registry,
+        limitation_registry_sha256=limitation_registry_sha,
         query_id=query_id,
         traversal=traversal,
         validated=validated,
     )
     proof_bundle = _compile_role_proof_bundle(source_bundle, contract)
-    validate_source_bundle(source_bundle, contract, profile_sha, pins)
+    validate_source_bundle(
+        source_bundle,
+        contract,
+        profile_sha,
+        pins,
+        limitation_registry,
+        limitation_registry_sha,
+    )
     validate_role_proof_bundle(proof_bundle, source_bundle, contract)
     return source_bundle, proof_bundle
 
@@ -1367,6 +1898,8 @@ def validate_source_bundle(
     contract: Mapping[str, Any],
     profile_sha256: str,
     pins: Mapping[str, str],
+    limitation_registry: Mapping[str, Any],
+    limitation_registry_sha256: str,
 ) -> None:
     expected = (
         "object_type",
@@ -1391,6 +1924,7 @@ def validate_source_bundle(
             "clause_contract_id",
             "clause_contract_sha256",
             "analytical_clause_runtime_sha256",
+            "analytical_clause_limitations_sha256",
             "source_profile_sha256",
             "canonical_schema_registry_sha256",
             "canonical_runtime_sha256",
@@ -1408,6 +1942,7 @@ def validate_source_bundle(
         "clause_contract_id": contract["contract_id"],
         "clause_contract_sha256": _sha(CONTRACT_PATH),
         "analytical_clause_runtime_sha256": pins["analytical_clause_runtime"],
+        "analytical_clause_limitations_sha256": pins["analytical_clause_limitations"],
         "source_profile_sha256": profile_sha256,
         "canonical_schema_registry_sha256": pins["canonical_schema_registry"],
         "canonical_runtime_sha256": pins["canonical_runtime"],
@@ -1428,6 +1963,24 @@ def validate_source_bundle(
         or source_bundle["upstream"].get("recomputed") is not True
     ):
         _fail("clause_source_binding_invalid")
+    source_release = source_bundle["source_release"]
+    if not isinstance(source_release, dict) or set(source_release) != {
+        "release_id",
+        "record_sha256",
+        "generated_at",
+        "effective_date",
+        "release_signer_id",
+        "schema_registry_sha256",
+        "method_registry_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "release_signers_sha256",
+    }:
+        _fail("clause_source_binding_invalid", "source release")
+    if _instant(source_release["generated_at"], "clause_source_binding_invalid").date() < _day(
+        source_release["effective_date"], "clause_source_binding_invalid"
+    ):
+        _fail("clause_source_binding_invalid", "release chronology")
     _verify_digest(source_bundle, "clause_source_bundle_digest_mismatch")
     clauses = cast(Sequence[Mapping[str, Any]], source_bundle["clauses"])
     compiled = compile_clauses(clauses, contract)
@@ -1442,14 +1995,97 @@ def validate_source_bundle(
             "coverage_rows",
             "object_evidence_rows",
             "evidence_rows",
+            "evidence_items",
+            "evidence_metadata_fields",
+            "evidence_metadata_clauses",
             "rights_rows",
+            "output_limitation_ids",
+            "output_limitation_scope_memberships",
+            "guardrail_ids",
         }
         or denominator["clauses"] != len(compiled)
+        or denominator["evidence_items"] != denominator["evidence_rows"]
+        or denominator["evidence_metadata_fields"] != len(_EVIDENCE_METADATA_FIELDS)
+        or denominator["evidence_metadata_clauses"]
+        != denominator["evidence_items"] * len(_EVIDENCE_METADATA_FIELDS)
+        or denominator["output_limitation_ids"] != len(limitation_registry["output_clause_ids"])
+        or denominator["output_limitation_scope_memberships"]
+        != sum(len(scope_ids) for scope_ids in limitation_registry["output_profiles"].values())
+        or denominator["guardrail_ids"] != len(_MANDATORY_GUARDS)
     ):
         _fail("clause_source_binding_invalid")
-    guard_values = {clause["value"] for clause in clauses if clause["kind"] == "limitation"}
-    if guard_values != set(_MANDATORY_GUARDS):
+    if not set(source_bundle["limitations"]) <= set(limitation_registry["allowed_ids"]):
+        _fail("clause_limitation_unregistered")
+    limitation_clauses = [clause for clause in clauses if clause["kind"] == "limitation"]
+    guards = {
+        clause["value"]
+        for clause in limitation_clauses
+        if clause["proof_binding"]["source_field"].startswith("guardrail:")
+    }
+    output_limitations = {
+        clause["value"]: clause
+        for clause in limitation_clauses
+        if clause["value"] in limitation_registry["output_clause_ids"]
+    }
+    if guards != set(_MANDATORY_GUARDS) or set(output_limitations) != set(
+        limitation_registry["output_clause_ids"]
+    ):
         _fail("clause_source_binding_invalid")
+    for limitation_id, clause in output_limitations.items():
+        expected_limitation_binding = {
+            "registry_id": limitation_registry["registry_id"],
+            "registry_sha256": limitation_registry_sha256,
+            "effective": limitation_registry["effective"],
+            "limitation_id": limitation_id,
+            "applicable_scope_ids": limitation_registry["limitation_scopes"][limitation_id],
+        }
+        if clause["proof_binding"]["limitation_binding"] != expected_limitation_binding:
+            _fail("clause_limitation_scope_invalid", cast(str, limitation_id))
+    evidence_clauses = [
+        clause
+        for clause in clauses
+        if clause["proof_binding"]["source_field"] in _EVIDENCE_METADATA_FIELDS
+    ]
+    evidence_refs = {
+        cast(str, clause["proof_binding"]["source_object_refs"][0]["object_id"])
+        for clause in evidence_clauses
+    }
+    evidence_pairs = [
+        (
+            clause["proof_binding"]["source_object_refs"][0]["object_id"],
+            clause["proof_binding"]["source_field"],
+        )
+        for clause in evidence_clauses
+    ]
+    if (
+        len(evidence_clauses) != denominator["evidence_metadata_clauses"]
+        or len(evidence_refs) != denominator["evidence_items"]
+        or len(evidence_pairs) != len(set(evidence_pairs))
+        or any(
+            {field for evidence_id, field in evidence_pairs if evidence_id == expected_evidence_id}
+            != set(_EVIDENCE_METADATA_FIELDS)
+            for expected_evidence_id in evidence_refs
+        )
+    ):
+        _fail("clause_evidence_binding_invalid")
+    singleton_fields = (
+        "event.canonical_label",
+        "target.identity",
+        "target.canonical_name",
+        "release.generated_at",
+    )
+    if any(
+        sum(clause["proof_binding"]["source_field"] == field for clause in clauses) != 1
+        for field in singleton_fields
+    ):
+        _fail("clause_source_binding_invalid")
+    release_clause = next(
+        clause
+        for clause in clauses
+        if clause["proof_binding"]["source_field"] == "release.generated_at"
+    )
+    if release_clause["value"] != source_release["generated_at"]:
+        _fail("clause_source_binding_invalid", "release generated_at")
 
 
 def validate_role_proof_bundle(
@@ -1555,7 +2191,21 @@ def verify_source_bound_compilation(
             "clause_source_release_refused",
         )
     )
-    validate_source_bundle(source_bundle, contract, profile_sha, pins)
+    limitation_registry, limitation_registry_sha = load_limitation_registry(
+        pins["analytical_clause_limitations"],
+        release_effective=_day(
+            expected_source["source_release"]["effective_date"],
+            "clause_source_release_refused",
+        ),
+    )
+    validate_source_bundle(
+        source_bundle,
+        contract,
+        profile_sha,
+        pins,
+        limitation_registry,
+        limitation_registry_sha,
+    )
     validate_role_proof_bundle(proof_bundle, source_bundle, contract)
     if serialize_record(source_bundle) != serialize_record(expected_source):
         _fail("clause_source_bundle_recompile_mismatch")

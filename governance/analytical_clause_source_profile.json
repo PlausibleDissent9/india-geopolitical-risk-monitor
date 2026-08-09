@@ -9,9 +9,10 @@
     "release_signer_id": "signer:oges.fixture.release"
   },
   "normative_files": [
-    {"kind": "adversarial_vectors", "path": "governance/analytical_clause_adversarial_vectors.json", "sha256": "511d2aa84df9443584ab3bc67183659f8b4fa4ddeada54dad81f4d57d882bac1"},
-    {"kind": "analytical_clause_contract", "path": "governance/analytical_clause_contract.json", "sha256": "813324670306fa67f5fd81db51ec0c15a10a3844f870948a7633616c70a33940"},
-    {"kind": "analytical_clause_runtime", "path": "src/analytical_clause.py", "sha256": "063b1a7668148fb6cc0b9768d46698fbcff96a558cd71d6f40fe50eef30cc50e"},
+    {"kind": "adversarial_vectors", "path": "governance/analytical_clause_adversarial_vectors.json", "sha256": "f8016eeeb89838f0240a3af5cdfb2b5a5f0fadf4b76258a40085bbc846b4fefd"},
+    {"kind": "analytical_clause_contract", "path": "governance/analytical_clause_contract.json", "sha256": "70a42ef99d818ef0c07b8aa73f42fb24958c4307954a209b71a686d14bebd047"},
+    {"kind": "analytical_clause_limitations", "path": "governance/analytical_clause_limitation_registry.json", "sha256": "57d8c70e45d2f39370c7061773648d4b67cedf467e01876b52fa0f4d490f4776"},
+    {"kind": "analytical_clause_runtime", "path": "src/analytical_clause.py", "sha256": "d62e21c8318696385ca6dfa6dff38f530d43078a0562c1888a525dcb07425e9f"},
     {"kind": "canonical_runtime", "path": "src/canonical_objects.py", "sha256": "3d07e0e8e14537e61b3a5559fba1f56c114ec32151c09066abba64f184d2e934"},
     {"kind": "canonical_schema_registry", "path": "governance/canonical_schema_registry.json", "sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66"},
     {"kind": "exposure_projection_registry", "path": "governance/exposure_projection_registry.json", "sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66"},
@@ -25,11 +26,55 @@
     {"query_id": "query:analytical_clause.fixture.path_found", "event_id": "evt:oges.fixture.policy.001", "target_entity_id": "ent:commodity.synthetic_crude", "max_hops": 4, "max_paths": 25},
     {"query_id": "query:analytical_clause.fixture.no_path", "event_id": "evt:oges.fixture.policy.001", "target_entity_id": "ent:country.synthetic_india", "max_hops": 4, "max_paths": 25}
   ],
+  "registered_query_boundary": {
+    "accepted_input": "exact_registered_query_id_only",
+    "registered_query_ids": [
+      "query:analytical_clause.fixture.path_found",
+      "query:analytical_clause.fixture.no_path"
+    ],
+    "tuple_resolver": "none",
+    "caller_authored_event_target_bounds_or_selectors": false,
+    "unregistered_evidence_output_api_tuples": "refuse_without_claiming_coverage"
+  },
+  "evidence_metadata_fields": [
+    "evidence.identity",
+    "evidence.source_id",
+    "evidence.title",
+    "evidence.public_url",
+    "evidence.published_at",
+    "evidence.observed_at",
+    "evidence.verification_status",
+    "evidence.content_availability",
+    "evidence.rights_use",
+    "evidence.privacy_class",
+    "evidence.rights_decision_id"
+  ],
+  "citation_metadata_policy": {
+    "privacy_classes": ["public"],
+    "rights_uses": ["cite_metadata"],
+    "public_with_redactions_field_receipt": "unavailable_refuse",
+    "public_url_semantics": "metadata_locator_not_content_permission",
+    "nullable_fields": ["evidence.public_url", "evidence.published_at"],
+    "source_blank_policy": "preserve_null_missingness_never_empty_string_or_zero"
+  },
+  "limitation_vocabulary": {
+    "registry_id": "igrm:analytical-clause-limitations:0.1.0",
+    "effective": "2026-08-08",
+    "default_policy": "deny",
+    "normative_file_kind": "analytical_clause_limitations",
+    "renderer_parity": "test_only_consumer_assertion_not_normative_input",
+    "output_unique_id_denominator": 16,
+    "output_scope_membership_denominator": 21
+  },
   "dynamic_binding_rules": {
     "edge_instances": "derive_every_paths_hops_occurrence",
     "edge_membership": "exact_edge_id_and_record_sha256_in_hop_and_object_evidence",
     "coverage_instances": "derive_every_unique_traversal_coverage_row",
     "coverage_membership": "exact_universe_release_id_record_sha256_and_covered_entity_id",
+    "evidence_instances": "exact_union_of_traversal_object_evidence_evidence_ids",
+    "evidence_membership": "traversal_evidence_equals_union_and_exact_canonical_evidence_record",
+    "evidence_metadata": "exactly_once_each_registered_field_per_union_evidence_id",
+    "limitations": "one_deny_by_default_profile_pinned_vocabulary_with_exact_scope_sets",
     "role_payload": "exact_clause_refs_only",
     "omissions": "none_registered_deny",
     "caller_authored_semantics": "refuse",
@@ -53,5 +98,5 @@
     "artifact_refs": [],
     "correction_blast_available": false
   },
-  "claim_boundary": "Same incumbent atomic clause record across all seven registered roles after exact source replay. No prose equivalence, source truth, causal validity, publication approval, production authentication, ProductManifest closure, or correction blast claim."
+  "claim_boundary": "Same incumbent atomic source-availability and identity clause record across all seven registered roles after exact source replay. No renderer or output equivalence, source truth, causal validity, publication approval, production authentication, ProductManifest closure, or correction blast claim."
 }
