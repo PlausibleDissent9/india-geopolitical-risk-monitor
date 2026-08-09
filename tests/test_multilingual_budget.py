@@ -68,23 +68,28 @@ def worst_case_series_seconds(today: date | None = None) -> float:
 
 
 def test_the_last_series_started_can_still_finish():
+    """The acquisition deadline is now enforced inside every HTTP call.
+
+    The old arithmetic added a modeled retry path to the outer deadline but
+    omitted requests' 420-second read timeout. A request begun just before the
+    deadline could therefore run past the 45-minute step axe. The invariant is
+    now simpler and stronger: the workflow must leave cleanup margin after the
+    hard acquisition deadline, and the fetch stack must receive that deadline.
+    """
     budget = multilingual.DEADLINE_SECONDS
-    worst = worst_case_series_seconds()
     limit = _step_timeout_seconds()
-    assert budget + worst < limit, (
-        f"a series begun at the last second of the budget cannot finish: "
-        f"budget {budget/60:.0f}min + worst-case series {worst/60:.1f}min "
-        f"= {(budget+worst)/60:.1f}min against a {limit/60:.0f}min step "
-        "timeout. The run would be killed mid-fetch and lose that series, "
-        "which is the exact failure the bound exists to prevent. Lower "
-        "DEADLINE_SECONDS or raise the step timeout.")
+    assert budget + 5 * 60 <= limit, (
+        f"the hard acquisition deadline leaves under five minutes to stop, "
+        f"persist and publish: {budget/60:.0f}min budget against "
+        f"{limit/60:.0f}min step timeout")
+
+    source = (ROOT / "src" / "multilingual.py").read_text(encoding="utf-8")
+    assert "deadline_monotonic=deadline" in source
 
 
 def test_there_is_real_margin_not_a_rounding_error():
-    """Three minutes of slack is not slack: runner startup, a slow
-    import and one unmodelled retry eat it."""
-    slack = _step_timeout_seconds() - (multilingual.DEADLINE_SECONDS
-                                       + worst_case_series_seconds())
+    """The fetch stack, rather than a retry-cost estimate, owns the cutoff."""
+    slack = _step_timeout_seconds() - multilingual.DEADLINE_SECONDS
     assert slack >= 5 * 60, (
         f"only {slack/60:.1f} minutes of margin; require 5")
 

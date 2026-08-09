@@ -72,6 +72,36 @@ class QueryTooLongError(RuntimeError):
     """GDELT rejected the query's length; retrying cannot help."""
 
 
+class AcquisitionDeadlineExceeded(RuntimeError):
+    """The caller's acquisition budget expired before a safe retry.
+
+    This is distinct from an HTTP failure: callers such as the multilingual
+    backfill use it to stop cleanly, bank completed series, and leave enough
+    runner time for stamping and publication instead of being killed by the
+    workflow timeout while a 420-second request is still in flight.
+    """
+
+
+def _remaining_deadline_seconds(deadline_monotonic: float | None) -> float | None:
+    if deadline_monotonic is None:
+        return None
+    remaining = deadline_monotonic - time.monotonic()
+    if remaining <= 0:
+        raise AcquisitionDeadlineExceeded("acquisition deadline exhausted")
+    return remaining
+
+
+def _sleep_with_deadline(seconds: float, deadline_monotonic: float | None) -> None:
+    """Sleep only when the full pause fits inside the caller's budget."""
+    remaining = _remaining_deadline_seconds(deadline_monotonic)
+    if remaining is not None and seconds >= remaining:
+        raise AcquisitionDeadlineExceeded(
+            f"acquisition deadline leaves {remaining:.1f}s; refusing "
+            f"a {seconds:.1f}s retry pause"
+        )
+    time.sleep(seconds)
+
+
 def build_query(terms: list[str], anchor: str | None = None) -> str:
     """One valid GDELT query per channel.
 
@@ -105,6 +135,7 @@ def build_queries(terms: list[str], anchor: str | None = None) -> list[str]:
 def _fetch_chunk(
     query: str, start: date, end: date, mode: str = "timelinevol",
     retries: int = RETRIES,
+    deadline_monotonic: float | None = None,
 ) -> list[dict]:
     """Fetch one chunk, consulting the on-disk chunk cache first.
 
@@ -133,17 +164,31 @@ def _fetch_chunk(
     cache_path = CHUNK_CACHE_DIR / f"{key}.json"
     if settled and cache_path.exists():
         return json.loads(cache_path.read_text(encoding="utf-8"))
-    rows = _fetch_chunk_network(query, start, end, mode, retries)
+    rows = _fetch_chunk_network(
+        query, start, end, mode, retries,
+        deadline_monotonic=deadline_monotonic,
+    )
     if settled:
         CHUNK_CACHE_DIR.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(json.dumps(rows), encoding="utf-8")
-    time.sleep(SLEEP_S)
+    # This pause protects the *next* request. Do not throw away a successful
+    # response merely because its caller's budget expired while GDELT was
+    # computing it; return the complete chunk and let the next network entry
+    # enforce the deadline. Sleeping the remaining fraction prevents an
+    # immediate follow-up while still letting the caller persist this unit.
+    if deadline_monotonic is None:
+        time.sleep(SLEEP_S)
+    else:
+        remaining = max(0.0, deadline_monotonic - time.monotonic())
+        if remaining:
+            time.sleep(min(SLEEP_S, remaining))
     return rows
 
 
 def _fetch_chunk_network(
     query: str, start: date, end: date, mode: str = "timelinevol",
     retries: int = RETRIES,
+    deadline_monotonic: float | None = None,
 ) -> list[dict]:
     # Unreachable via _fetch_chunk (which refuses all offline
     # acquisition above), but kept as a guard for any direct caller:
@@ -161,7 +206,13 @@ def _fetch_chunk_network(
     last_err = None
     for attempt in range(1, retries + 1):
         try:
-            r = requests.get(API, params=params, timeout=TIMEOUT_S, headers=HEADERS)
+            remaining = _remaining_deadline_seconds(deadline_monotonic)
+            request_timeout = (
+                TIMEOUT_S if remaining is None else min(TIMEOUT_S, remaining)
+            )
+            r = requests.get(
+                API, params=params, timeout=request_timeout, headers=HEADERS
+            )
             if r.status_code == 429:
                 # Rate limited: wait the dedicated backoff, then retry.
                 raise RuntimeError(f"HTTP 429 rate limit: {r.text[:150]}")
@@ -177,20 +228,30 @@ def _fetch_chunk_network(
             return series[0].get("data", [])
         except QueryTooLongError:
             raise
+        except AcquisitionDeadlineExceeded:
+            raise
         except (ValueError, requests.RequestException, RuntimeError) as e:
             last_err = e
             # Longer wait if it was a rate-limit; escalating otherwise.
             if "429" in str(e):
-                time.sleep(RATE_LIMIT_BACKOFF_S * attempt)
+                _sleep_with_deadline(
+                    RATE_LIMIT_BACKOFF_S * attempt, deadline_monotonic
+                )
             else:
-                time.sleep(2 * attempt)
+                _sleep_with_deadline(2 * attempt, deadline_monotonic)
     raise RuntimeError(
         f"GDELT fetch failed after {retries} attempts for "
         f"{start}..{end}. Last error: {last_err}"
     )
 
 
-def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
+def _fetch_query_series(
+    query: str,
+    start: date,
+    end: date,
+    *,
+    deadline_monotonic: float | None = None,
+) -> pd.Series:
     """Daily volume series for one composed query over [start, end].
 
     Chunks split at a STABLE settle boundary: the most recent month-end
@@ -215,7 +276,12 @@ def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
         is_tail = bool(frames)
         try:
             rows = _fetch_chunk(query, cur, chunk_end,
-                                retries=2 if is_tail else RETRIES)
+                                retries=2 if is_tail else RETRIES,
+                                deadline_monotonic=deadline_monotonic)
+        except AcquisitionDeadlineExceeded:
+            # A caller deadline is an authority boundary, not an ordinary
+            # wide-chunk failure that may be retried as twelve yearly calls.
+            raise
         except RuntimeError:
             if frames:
                 # The historical range is already in hand; only the recent
@@ -237,7 +303,10 @@ def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
             sub = cur
             while sub <= chunk_end:
                 sub_end = min(date(sub.year, 12, 31), chunk_end)
-                rows.extend(_fetch_chunk(query, sub, sub_end))
+                rows.extend(_fetch_chunk(
+                    query, sub, sub_end,
+                    deadline_monotonic=deadline_monotonic,
+                ))
                 sub = sub_end + timedelta(days=1)
         if rows:
             df = pd.DataFrame(rows)
@@ -257,16 +326,24 @@ def _fetch_query_series(query: str, start: date, end: date) -> pd.Series:
 def fetch_channel(
     terms: list[str], start: date, end: date, anchor: str | None = None,
     query_suffix: str = "",
+    *,
+    deadline_monotonic: float | None = None,
 ) -> pd.Series:
     """Daily volume-intensity series for one channel over [start, end]:
     the SUM of its sub-query group shares (see QUERY_MAX_CHARS).
     query_suffix appends verbatim operators (e.g. " sourcelang:hin" for
     the V5 multilingual audit); the share stays relative to the matching
     corpus slice, so per-language series rank against their own history."""
-    parts = [
-        s for q in build_queries(terms, anchor)
-        if not (s := _fetch_query_series(q + query_suffix, start, end)).empty
-    ]
+    parts = []
+    for query in build_queries(terms, anchor):
+        series = _fetch_query_series(
+            query + query_suffix,
+            start,
+            end,
+            deadline_monotonic=deadline_monotonic,
+        )
+        if not series.empty:
+            parts.append(series)
     if not parts:
         return pd.Series(dtype=float, name="value")
     return pd.concat(parts, axis=1).fillna(0.0).sum(axis=1).sort_index()

@@ -194,7 +194,14 @@ def update(backfill: bool = False) -> pd.DataFrame | None:
             try:
                 series = fetch_gdelt.fetch_channel(
                     spec["terms"], start, today, spec.get("anchor"),
-                    query_suffix=f" sourcelang:{lg}")
+                    query_suffix=f" sourcelang:{lg}",
+                    deadline_monotonic=deadline,
+                )
+            except fetch_gdelt.AcquisitionDeadlineExceeded:
+                print(f"[multilingual] acquisition budget expired inside {key}; "
+                      "stopping cleanly before the workflow axe")
+                out_of_time = True
+                break
             except Exception as e:  # noqa: BLE001 -- 429s are expected
                 print(f"[multilingual] {key}: FAILED ({type(e).__name__}: "
                       f"{e}); keeping what already landed")
