@@ -117,10 +117,42 @@ git_push() {
 # served without one. So the refusal is emitted as a workflow ::error::
 # too, which puts the failing check in the annotations API where anyone
 # looking at a red publisher can read it directly.
+#
+# GATE ONCE PER CANDIDATE, NOT ONCE PER PUSH ATTEMPT.
+# The retry loop below calls this before every push, and a push is rejected
+# whenever main moved in the seconds since the rebase. On a busy night that
+# is often: two agents pushed roughly fifteen times in a few hours on
+# 2026-08-09, and nowcast #79 died at its 30-minute cap with 19.8 minutes
+# inside this step. The committed gate measured 7m32s locally that night --
+# against the ~5.2 minutes every lane's cap was originally budgeted for --
+# and a runner is slower than the machine it was measured on. Two gates do
+# not fit in thirty minutes.
+#
+# So a candidate is gated once. If HEAD is unchanged since the last green
+# gate IN THIS RUN, the push is retried without re-running it. Keyed on the
+# commit sha rather than the tree: a no-op rebase leaves the sha alone, and
+# anything that actually moves -- a real rebase, a new parent, an amended
+# tree -- changes it and is gated again. That is the conservative choice;
+# tree-keying would skip more and is harder to argue is safe, and this is
+# the publish path.
+#
+# What this does NOT do is weaken the guarantee. Every push is still
+# preceded by a green gate over exactly the bytes being pushed. It removes
+# only the case where those bytes were already proven green a minute ago.
+LAST_GREEN_COMMIT=""
+
 gate_candidate() {
   local commit tree log rc explanation
   commit=$(git rev-parse --verify HEAD) || return 1
   tree=$(git rev-parse --verify 'HEAD^{tree}') || return 1
+  # ${...:-} so the function stands alone under `set -u`: the memo is an
+  # optimisation, not a precondition, and a caller that never declared it
+  # should get the un-memoised behaviour rather than an unbound-variable
+  # crash on the publish path.
+  if [ -n "${LAST_GREEN_COMMIT:-}" ] && [ "$commit" = "${LAST_GREEN_COMMIT:-}" ]; then
+    echo "[publish] candidate $commit already passed the committed gate in this run; retrying the push without re-running it"
+    return 0
+  fi
   echo "[publish] verifying exact candidate commit=$commit tree=$tree"
   log="$(mktemp)"
   # Deliberately not piped into tee: a pipeline reports the LAST command's
@@ -147,6 +179,7 @@ gate_candidate() {
     return 1
   fi
   rm -f "$log"
+  LAST_GREEN_COMMIT="$commit"
   echo "[publish] exact candidate passed the committed CI gate"
 }
 
