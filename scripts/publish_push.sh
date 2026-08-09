@@ -75,15 +75,34 @@ git_push() {
 # runner state and tests the exact Git tree that will be published. If it is
 # red, losing this scheduled output is the safe result: availability pressure
 # must never become authority to publish unverified bytes.
+#
+# A refusal also has to be READABLE. gate.sh names each check as it starts
+# it, so the failing one is already in the step log -- but a step log needs
+# an authenticated token to fetch, and on 2026-08-09 that was the whole
+# distance between a three-day outage and a diagnosis. Run annotations are
+# served without one. So the refusal is emitted as a workflow ::error::
+# too, which puts the failing check in the annotations API where anyone
+# looking at a red publisher can read it directly.
 gate_candidate() {
-  local commit tree
+  local commit tree log rc failing
   commit=$(git rev-parse --verify HEAD) || return 1
   tree=$(git rev-parse --verify 'HEAD^{tree}') || return 1
   echo "[publish] verifying exact candidate commit=$commit tree=$tree"
-  if ! bash scripts/gate.sh --committed; then
+  log="$(mktemp)"
+  # Deliberately not piped into tee: a pipeline reports the LAST command's
+  # status, and laundering a gate's exit status through a pipe is the exact
+  # defect this repo has already paid for once.
+  bash scripts/gate.sh --committed > "$log" 2>&1
+  rc=$?
+  cat "$log"
+  if [ "$rc" -ne 0 ]; then
+    failing="$(grep '^-- ' "$log" | tail -1 | sed 's/^-- //')"
+    rm -f "$log"
+    echo "::error::publish refused: the committed CI gate is red on ${commit:0:8}. Last check started: ${failing:-unknown (gate failed before running any check)}"
     echo "[publish] SECURITY REFUSAL: candidate failed the committed CI gate"
     return 1
   fi
+  rm -f "$log"
   echo "[publish] exact candidate passed the committed CI gate"
 }
 

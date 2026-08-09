@@ -31,7 +31,7 @@
   "required_gate_command": "bash scripts/gate.sh --committed",
   "push_script": {
    "path": "scripts/publish_push.sh",
-   "sha256": "439d26f7dce6f5273266d27894687d1176f0bae3aa9f0d8c4c5c5c8c1ed73ba5"
+   "sha256": "a24dda4989fcbeb824ec739d728a29cd38b2ba0e80a4d53f4d9e42eeba99fade"
   },
   "gate_script": {
    "path": "scripts/gate.sh",
