@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "catalog_version": "1.0.0",
-  "effective": "2026-08-08",
+  "catalog_version": "1.1.0",
+  "effective": "2026-08-09",
   "status": "public_route_contract",
   "scope_boundary": "This catalog records public surfaces and their present maturity. A listed route is not evidence that the full 24 October launch outcome for its pillar is complete.",
   "primary_navigation": [
@@ -25,7 +25,7 @@
       "id": "atlas",
       "name": "IGRM Atlas",
       "current_state": "live_foundation_expansion_underway",
-      "current_boundary": "Maps, event geography, sector exposure and episode navigation are public; India Exposure DNA and the bounded Shock Compiler now have signed synthetic conformance foundations, while declared real firm-port-commodity-state universes remain an October objective."
+      "current_boundary": "Maps, event geography, sector exposure and episode navigation are public. The Global Event and Episode Ledger exposes a value-free rights-gate status only; no ledger counts or episodes are released. India Exposure DNA and the bounded Shock Compiler have signed synthetic conformance foundations, while authorized source-event identity, production canonical events and declared real firm-port-commodity-state universes remain October objectives."
     },
     {
       "id": "evidence_engine",
@@ -71,6 +71,7 @@
     {"path": "vintages.html", "label": "Point-in-time vintages", "pillar_id": "core", "status": "live", "purpose": "Reconstruct what the published series showed at earlier publication times without hindsight leakage."},
     {"path": "atlas.html", "label": "IGRM Atlas", "pillar_id": "atlas", "status": "live", "purpose": "The integrated public hub for geography, detected episodes, sector salience, synthetic exposure fingerprints and bounded scenario compilation."},
     {"path": "world.html", "label": "World State Matrix", "pillar_id": "atlas", "status": "live", "purpose": "A complete 247-country/area by fourteen-domain coverage matrix that publishes real observations and every unavailable cell without a world risk score."},
+    {"path": "ledger.html", "label": "Global Event and Episode Ledger", "pillar_id": "atlas", "status": "public_draft", "purpose": "A value-free public count-unit and rights-gate surface. Candidate aggregate and detector values remain withheld until all required source decisions are human-signed; unique and canonical events remain separately unavailable."},
     {"path": "maps.html", "label": "Maps", "pillar_id": "atlas", "status": "live", "purpose": "India-partner and state-level press-recorded event geography, with explicit source and boundary limits."},
     {"path": "exposure.html", "label": "Sector exposure", "pillar_id": "atlas", "status": "live", "purpose": "A user-selected sector view over current channel readings, evidence and transparent computation."},
     {"path": "episode.html", "label": "Episode dossiers", "pillar_id": "atlas", "status": "live", "purpose": "A directory and detail view for detected episodes and their associated market-context cells."},
@@ -104,7 +105,7 @@
     "analysis.html", "api.html", "ask.html", "atlas.html", "break.html", "codebook.html",
     "corrections.html", "data.html", "divergence.html", "dna.html", "embed.html",
     "episode.html", "explorer.html", "exposure.html", "history.html",
-    "index.html", "maps.html", "methodology.html", "notes.html",
+    "index.html", "ledger.html", "maps.html", "methodology.html", "notes.html",
     "predictions.html", "products.html", "receipts.html",
     "replay.html", "research/forecasts.html", "research/history.html", "sensors.html", "shock.html", "standard.html",
     "start.html", "status.html", "validation.html", "viewer.html",

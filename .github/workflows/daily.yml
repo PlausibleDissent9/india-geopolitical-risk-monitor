@@ -152,6 +152,18 @@ jobs:
           else
             python -m src.run_daily
           fi
+      - name: Global Event and Episode Ledger (aggregate observation foundation)
+        if: github.event.inputs.backfill != 'true'
+        # Events v1 is an auxiliary context lane. A failed candidate refresh
+        # retains the last value-safe public status/release and cannot suppress
+        # the core press-salience publication.
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python -m src.event_ledger
+      - name: Refresh the measured Continuous Evolution capability ledger
+        if: github.event.inputs.backfill != 'true'
+        timeout-minutes: 5
+        run: python -m src.evolution_engine --write
       - name: Preserve prospective precision-v3 production frame
         # The invalid v2 audit rebuilt its article frame after publication
         # and accidentally sampled a different corpus and a unioned-document

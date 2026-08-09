@@ -16,19 +16,19 @@ def _write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
 
 
-def test_public_report_is_exact_and_exposes_the_real_denominators() -> None:
+def test_public_report_refuses_event_values_until_source_rights_are_signed() -> None:
     evolution_engine.check_report()
     report = evolution_engine.build_report()
     state = report["measured_state"]
 
     assert state["public_product_routes"] == {
-        "registered": 34,
-        "present": 34,
+        "registered": 35,
+        "present": 35,
         "missing": [],
     }
     assert state["public_api_endpoints"] == {
-        "registered": 114,
-        "present": 114,
+        "registered": 115,
+        "present": 115,
         "missing": [],
     }
     atlas = state["global_atlas"]
@@ -44,6 +44,17 @@ def test_public_report_is_exact_and_exposes_the_real_denominators() -> None:
     assert state["historical_intelligence"]["source_start"] == "1979-01"
     assert state["historical_intelligence"]["source_end"] == "2019-12"
     assert state["historical_intelligence"]["published_proxy_channels"] == 2
+    ledger = state["global_event_episode_ledger"]
+    assert ledger["artifact_status"] == "public_release_blocked_rights_review"
+    assert ledger["frame_start"] is None
+    assert ledger["frame_end"] is None
+    assert ledger["calendar_days"] is None
+    assert ledger["observed_aggregate_days"] is None
+    assert ledger["legacy_unavailable_days"] is None
+    assert ledger["detected_salience_episodes"] is None
+    assert ledger["deduplicated_source_event_count"] is None
+    assert ledger["canonical_geopolitical_event_count"] is None
+    assert "no source-derived" in ledger["current_boundary"]
     assert "freshness_ledger" not in state
 
 

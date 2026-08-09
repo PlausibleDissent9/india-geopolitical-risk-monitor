@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "schema_version": "1.0.0",
+    "artifact_status": "public_release_blocked_rights_review",
+    "date": "2026-08-09",
+    "generated": "2026-08-09T00:00:00Z",
+    "generated_semantics": "Registered contract-effective time for a deterministic refusal artifact.",
+    "partial": true,
+    "partial_definition": "This endpoint emits no provider-derived values while any required signed rights decision is absent.",
+    "license": "CC BY 4.0 for IGRM-authored schema and refusal text only; this endpoint releases no upstream-derived values",
+    "citation": "Krishna, Ishan (2026). IGRM Global Event and Episode Ledger rights-gated release status. https://igrm.in/data/event_ledger.json",
+    "codebook": "https://igrm.in/codebook.html",
+    "source": "https://igrm.in/data/event_ledger.json",
+    "what": "A fail-closed publication status for the Global Event and Episode Ledger. It contains no source-derived counts.",
+    "contract_effective": "2026-08-09",
+    "rights_state": "blocked_unsigned_or_unapproved_source_decisions",
+    "canonical_release_state": "unavailable_no_production_canonical_release",
+    "refusal_state_sha256": "c1c506129b68698d4a33a4e9268c0e8c3245aabd062cae736b35504df07a15ee",
+    "status_id": "event-ledger-blocked-c1c506129b68698d"
+  },
+  "rights_gate": {
+    "authorized": false,
+    "blocked_source_ids": [
+      "gdelt_events_v1",
+      "gdelt_web_ngrams_v5",
+      "igrm_public_payloads",
+      "natural_earth"
+    ],
+    "required_sources": [
+      {
+        "source_id": "gdelt_events_v1",
+        "decision_state": "review_required",
+        "decision_id": "pending:gdelt_events_v1",
+        "required_uses": [
+          "cite_metadata",
+          "publish_derived_value"
+        ],
+        "authorized": false,
+        "signer_id": null,
+        "signer_trusted": false,
+        "review_due": null,
+        "review_current_as_of_release": false,
+        "decision_artifact_sha256": null
+      },
+      {
+        "source_id": "gdelt_web_ngrams_v5",
+        "decision_state": "review_required",
+        "decision_id": "pending:gdelt_web_ngrams_v5",
+        "required_uses": [
+          "cite_metadata",
+          "publish_derived_value"
+        ],
+        "authorized": false,
+        "signer_id": null,
+        "signer_trusted": false,
+        "review_due": null,
+        "review_current_as_of_release": false,
+        "decision_artifact_sha256": null
+      },
+      {
+        "source_id": "igrm_public_payloads",
+        "decision_state": "review_required",
+        "decision_id": "pending:igrm_public_payloads",
+        "required_uses": [
+          "cite_metadata",
+          "publish_derived_value"
+        ],
+        "authorized": false,
+        "signer_id": null,
+        "signer_trusted": false,
+        "review_due": null,
+        "review_current_as_of_release": false,
+        "decision_artifact_sha256": null
+      },
+      {
+        "source_id": "natural_earth",
+        "decision_state": "review_required",
+        "decision_id": "pending:natural_earth",
+        "required_uses": [
+          "cite_metadata",
+          "publish_derived_value"
+        ],
+        "authorized": false,
+        "signer_id": null,
+        "signer_trusted": false,
+        "review_due": null,
+        "review_current_as_of_release": false,
+        "decision_artifact_sha256": null
+      }
+    ],
+    "evaluated_as_of": "2026-08-09",
+    "trusted_signer_ids": [],
+    "allowed_signer_roles": [
+      "external_counsel_rights_approver",
+      "founder_rights_approver"
+    ],
+    "rights_registry_sha256": "970268fb437ea3f54ad3c4943ca2bc20343d1c4a2408fbbbaf6d3f3f325767a2",
+    "rights_signers_sha256": "3e0688e9d5e0bc52b1c497e15e1cc3fc2b232f76769a9a9708dde9ba31b72252"
+  },
+  "boundary": {
+    "publication_state": "blocked",
+    "candidate_validation_state": "validated_in_process_not_published",
+    "required_human_action": "Independent source-terms review and a human-signed decision for every required source; agents may not sign.",
+    "scope_note": "This refusal governs event_ledger.json and ledger.html. It neither licenses nor retracts pre-existing source-specific endpoints, whose rights decisions remain separate and pending.",
+    "prohibited_interpretations": [
+      "A global event census",
+      "A count of unique geopolitical events",
+      "A world risk, severity or probability score",
+      "Independent confirmation by multiple sources",
+      "Causal attribution",
+      "A forecast",
+      "A claim that missing countries or days have zero events",
+      "A like-for-like longitudinal comparison of raw row levels across unregistered provider corpus regimes"
+    ]
+  },
+  "frame": null,
+  "count_units": {
+    "aggregate_source_rows": {
+      "definition": "Counts of valid-layout rows in a named GDELT daily export after the published India-involvement filter, plus the valid-layout row denominator. Malformed rows rejected before parsing are not counted. Rows are not deduplicated by stable event identity.",
+      "public_available": false,
+      "value": null,
+      "blocked_reason": "signed_source_rights_decisions_absent"
+    },
+    "deduplicated_source_events": {
+      "definition": "Distinct upstream events after stable-ID deduplication and revision handling.",
+      "public_available": false,
+      "value": null,
+      "blocked_reason": "The current aggregate store does not retain GlobalEventID or raw-row revision lineage."
+    },
+    "canonical_geopolitical_events": {
+      "definition": "Cross-source resolved, typed and versioned geopolitical event objects that pass the canonical-release rights, method and signature gates.",
+      "public_available": false,
+      "value": null,
+      "blocked_reason": "No production canonical event release has been issued; source rights, method and release-signer registries remain fail-closed."
+    },
+    "detected_salience_episodes": {
+      "definition": "Threshold-defined windows in the five IGRM press-salience channels. An episode is a detector output, not a unique geopolitical event or an event census.",
+      "public_available": false,
+      "value": null,
+      "blocked_reason": "signed_source_rights_decisions_absent"
+    }
+  },
+  "aggregate_historical_series": null,
+  "episodes": null,
+  "canonical_event_layer": {
+    "available": false,
+    "event_count": null,
+    "target_states": [
+      "allegation",
+      "official_position",
+      "confirmed_action",
+      "realized_disruption",
+      "response",
+      "recovery",
+      "disputed",
+      "superseded"
+    ],
+    "model_promotion": "prohibited",
+    "requirements": [
+      "Stable source identifiers and raw evidence lineage",
+      "Cross-source resolution with declared independence groups",
+      "Role-eligible evidence for every lifecycle transition",
+      "Rights-approved source and decision snapshots",
+      "Registered executable methods or signed manual decisions",
+      "Externally verifiable signed release manifest",
+      "Point-in-time revision log and correction blast-radius graph"
+    ]
+  },
+  "release_lineage": {
+    "public_vintage_number": null,
+    "predecessor_release_integrity_sha256": null,
+    "state": "no_public_value_release"
+  }
+}

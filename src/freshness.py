@@ -93,10 +93,10 @@ EXEMPT: dict[str, str] = {
         "measurement; CI regenerates it whenever a registered control changes"
     ),
     "evolution.json": (
-        "a deterministic capability, authority and denominator contract, not a "
-        "daily measurement; the hourly evolution audit reads current freshness "
-        "separately and this report changes only when a registered capability, "
-        "route, layer or program changes"
+        "a deterministic capability, authority and denominator ledger, not a "
+        "source-freshness verdict; it is rebuilt with the event ledger so declared "
+        "coverage denominators stay exact; the hourly evolution audit reads current "
+        "freshness separately"
     ),
     "knowledge_replay_demo.json": (
         "a deterministic synthetic two-release conformance demonstration, not "

@@ -121,6 +121,42 @@ Array of episodes, each:
 | `peak_date`, `peak_value` | Day and value of the maximum raw share inside the episode; value in percent of corpus |
 | `n_spike_days` | Count of spike days in the cluster |
 
+## docs/data/event_ledger.json
+
+The Global Event & Episode Ledger is a count-unit firewall over the current
+event substrate. It must not be cited as a global event census. Its current
+public artifact is a **value-free refusal state**: GDELT Events, Web NGrams,
+IGRM first-party payloads and Natural Earth all remain `review_required` in the
+signed source-rights registry, so this endpoint emits no source-derived count,
+episode or geometry denominator. Candidate validation can run internally, but
+it cannot override that gate. This new compiled-endpoint gate neither licenses
+nor silently retracts existing source-specific endpoints; their separate rights
+decisions remain `review_required`. The retained GDELT event store also lacks raw rows, stable
+`GlobalEventID` values and revision lineage, so deduplicated and canonical
+event counts remain unavailable even after rights approval.
+
+| Field | Definition |
+|---|---|
+| `_meta.artifact_status` | Currently `public_release_blocked_rights_review`; an authorized future value release uses `public_observation_foundation` |
+| `rights_gate` | Exact rights-registry and signer-registry hashes, required source IDs and uses, decision states, and blocked IDs |
+| `frame` | `null` while blocked. An authorized release separates the 247-member display geometry, India-as-self/not-applicable, mapped members, reason-unresolved non-observations and provider codes that are unmappable |
+| `count_units.*.public_available` | Always `false` in the refusal artifact; value is `null`. Candidate computation is not public availability |
+| `count_units.aggregate_source_rows` | Future authorized counts use rows that passed the expected layout, not every provider-export row; malformed-row counts are not retained in the legacy store |
+| `count_units.deduplicated_source_events` | Unavailable because stable source-event identity and revision lineage were not retained |
+| `count_units.canonical_geopolitical_events` | Unavailable until cross-source resolution, rights, method and signed-release gates pass |
+| `count_units.detected_salience_episodes` | Rights-gated threshold-defined IGRM channel windows; detector output, not real-world event identity |
+| `aggregate_historical_series` | `null` while blocked. An authorized release defaults to India-row share of valid-layout rows; raw levels are secondary and cannot be treated as like-for-like across unregistered provider regimes |
+| `episodes` | `null` while blocked. An authorized release uses stable detector-window IDs, `provisional_open_window` until the three-day cluster gap is observed, and `canonical_event_ids: null` |
+| `canonical_event_layer` | Target lifecycle vocabulary and the non-negotiable requirements for a future production release |
+| `release_lineage` | No public vintage exists while blocked. Every authorized release is immutable, predecessor-bound, complete-state hashed and carries a typed date/episode delta |
+
+The current refusal artifact is `partial: true` because values are withheld.
+Inside an authorized release, `partial: false` would mean only that the declared
+calendar, aggregate-store and display-geometry partitions reconcile. It would
+not mean all geopolitical events, provider members, sources or canonical event
+states have been observed. The legacy unavailable-day register has no immutable
+retrieval receipts; those dates are not described as verified provider outages.
+
 ## docs/data/event_study.json
 
 | Field | Definition |

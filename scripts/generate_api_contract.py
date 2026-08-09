@@ -22,9 +22,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-# Patch: daily_brief withdrawn with a stable-shaped tombstone and explicit
-# deprecation record.
-CONTRACT_VERSION = "2.2.10"
+# Minor release: the additive event_ledger.json endpoint freezes the
+# observation/event/episode count-unit firewall without removing or renaming
+# any existing field.
+CONTRACT_VERSION = "2.3.0"
 FROZEN_DATE = "2026-08-09"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
@@ -47,6 +48,7 @@ DESCRIPTIONS = {
     "and end dates, and peak percentile, from the frozen 2sigma/90-day "
     "spike rule.",
     "episodes.csv": "The same detected episodes as CSV, one row per episode.",
+    "event_ledger.json": "Value-free Global Event and Episode Ledger publication status. Source-derived counts, detector windows and geometry denominators remain null until every required source-rights decision is human-signed; deduplicated and canonical events remain separately unavailable.",
     "event_study.csv": "Event-study outcome cells as CSV: India-specific "
     "relative outcomes plus labelled descriptive commodity returns, one "
     "row per channel x window x market series.",

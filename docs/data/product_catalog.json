@@ -2,8 +2,8 @@
  "_meta": {
   "what": "The no-capability-loss public product catalog: every user-facing HTML route, its locked IGRM Max pillar, present maturity and claim boundary, plus explicit non-product exclusions.",
   "definition": "This catalog records public surfaces and their present maturity. A listed route is not evidence that the full 24 October launch outcome for its pillar is complete.",
-  "catalog_version": "1.0.0",
-  "effective": "2026-08-08",
+  "catalog_version": "1.1.0",
+  "effective": "2026-08-09",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -30,7 +30,7 @@
    "id": "atlas",
    "name": "IGRM Atlas",
    "current_state": "live_foundation_expansion_underway",
-   "current_boundary": "Maps, event geography, sector exposure and episode navigation are public; India Exposure DNA and the bounded Shock Compiler now have signed synthetic conformance foundations, while declared real firm-port-commodity-state universes remain an October objective."
+   "current_boundary": "Maps, event geography, sector exposure and episode navigation are public. The Global Event and Episode Ledger exposes a value-free rights-gate status only; no ledger counts or episodes are released. India Exposure DNA and the bounded Shock Compiler have signed synthetic conformance foundations, while authorized source-event identity, production canonical events and declared real firm-port-commodity-state universes remain October objectives."
   },
   {
    "id": "evidence_engine",
@@ -111,6 +111,13 @@
    "pillar_id": "atlas",
    "status": "live",
    "purpose": "A complete 247-country/area by fourteen-domain coverage matrix that publishes real observations and every unavailable cell without a world risk score."
+  },
+  {
+   "path": "ledger.html",
+   "label": "Global Event and Episode Ledger",
+   "pillar_id": "atlas",
+   "status": "public_draft",
+   "purpose": "A value-free public count-unit and rights-gate surface. Candidate aggregate and detector values remain withheld until all required source decisions are human-signed; unique and canonical events remain separately unavailable."
   },
   {
    "path": "maps.html",
@@ -326,6 +333,7 @@
   "exposure.html",
   "history.html",
   "index.html",
+  "ledger.html",
   "maps.html",
   "methodology.html",
   "notes.html",

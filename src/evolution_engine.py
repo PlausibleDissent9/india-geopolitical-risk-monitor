@@ -23,6 +23,7 @@ LAYER_PATH = ROOT / "governance" / "global_atlas_layers.json"
 WORLD_PATH = ROOT / "docs" / "geo" / "world.json"
 RELATIONS_PATH = ROOT / "docs" / "data" / "map_relations.json"
 HISTORY_PATH = ROOT / "docs" / "data" / "back_extension.json"
+EVENT_LEDGER_PATH = ROOT / "docs" / "data" / "event_ledger.json"
 CATALOG_PATH = ROOT / "docs" / "data" / "product_catalog.json"
 CONTRACT_PATH = ROOT / "docs" / "data" / "api_contract.json"
 FRESHNESS_PATH = ROOT / "docs" / "data" / "freshness.json"
@@ -270,6 +271,9 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
     world, _ = _read(WORLD_PATH, "world_geometry_unreadable")
     relations, _ = _read(RELATIONS_PATH, "map_relations_unreadable")
     history, _ = _read(HISTORY_PATH, "historical_proxy_unreadable")
+    event_ledger, event_ledger_sha = _read(
+        EVENT_LEDGER_PATH, "event_ledger_unreadable"
+    )
     catalog, _ = _read(CATALOG_PATH, "product_catalog_unreadable")
     contract, _ = _read(CONTRACT_PATH, "api_contract_unreadable")
     _validate_engine(engine)
@@ -321,6 +325,61 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
         starts.append(months[0])
         ends.append(months[-1])
 
+    event_meta = event_ledger.get("_meta")
+    event_frame = event_ledger.get("frame")
+    count_units = event_ledger.get("count_units")
+    rights_gate = event_ledger.get("rights_gate")
+    if not isinstance(event_meta, dict) or not isinstance(count_units, dict):
+        _fail("event_ledger_boundary_invalid")
+    event_public_state = event_meta.get("artifact_status")
+    if event_public_state == "public_release_blocked_rights_review":
+        if (
+            event_meta.get("partial") is not True
+            or event_frame is not None
+            or event_ledger.get("aggregate_historical_series") is not None
+            or event_ledger.get("episodes") is not None
+            or not isinstance(rights_gate, dict)
+            or rights_gate.get("authorized") is not False
+            or not rights_gate.get("blocked_source_ids")
+            or any(
+                not isinstance(row, dict)
+                or row.get("public_available") is not False
+                or row.get("value") is not None
+                for row in count_units.values()
+            )
+        ):
+            _fail("event_ledger_rights_refusal_invalid")
+        event_calendar_days = None
+        event_observed_days = None
+        event_unavailable_days = None
+        detected_episodes = None
+    elif event_public_state == "public_observation_foundation":
+        if (
+            event_meta.get("partial") is not False
+            or not isinstance(event_frame, dict)
+            or event_frame.get("calendar_partition_complete") is not True
+            or event_frame.get("aggregate_store_date_sets_equal") is not True
+            or not isinstance(rights_gate, dict)
+            or rights_gate.get("authorized") is not True
+        ):
+            _fail("event_ledger_boundary_invalid")
+        event_observed_days = event_frame.get("observed_aggregate_days")
+        event_unavailable_days = event_frame.get("legacy_unavailable_days")
+        event_calendar_days = event_frame.get("calendar_days")
+        detected_episodes = len(cast(list[object], event_ledger.get("episodes")))
+        if (
+            isinstance(event_observed_days, bool)
+            or not isinstance(event_observed_days, int)
+            or isinstance(event_unavailable_days, bool)
+            or not isinstance(event_unavailable_days, int)
+            or isinstance(event_calendar_days, bool)
+            or not isinstance(event_calendar_days, int)
+            or event_observed_days + event_unavailable_days != event_calendar_days
+        ):
+            _fail("event_ledger_denominator_invalid")
+    else:
+        _fail("event_ledger_denominator_invalid")
+
     observed_layers = [row for row in layer_rows if _published_layer_state(row)]
     country_layers = [row for row in layer_rows if row["country_level"] is True]
     observed_country_layers = [row for row in country_layers if _published_layer_state(row)]
@@ -360,6 +419,7 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
                         for key, series in sorted(historical_series.items())
                     }
                 ),
+                "event_ledger": event_ledger_sha,
                 "product_route_set": canonical_sha256(
                     sorted(cast(str, row["path"]) for row in routes)
                 ),
@@ -409,9 +469,42 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
                     "live index and are not spliced into it."
                 ),
             },
+            "global_event_episode_ledger": {
+                "artifact_status": event_public_state,
+                "frame_start": event_frame["start"] if isinstance(event_frame, dict) else None,
+                "frame_end": event_frame["end"] if isinstance(event_frame, dict) else None,
+                "calendar_days": event_calendar_days,
+                "observed_aggregate_days": event_observed_days,
+                "legacy_unavailable_days": event_unavailable_days,
+                "detected_salience_episodes": detected_episodes,
+                "deduplicated_source_event_count": None,
+                "canonical_geopolitical_event_count": None,
+                "current_boundary": (
+                    "The implementation validates the candidate frame, but no source-derived "
+                    "event-ledger values are public until every required signed rights decision passes."
+                ),
+            },
         },
         "strategic_programs": programs,
         "priority_queue": [
+            {
+                "candidate_id": "global_event_episode_ledger",
+                "risk_class": "R2_product_or_data_expansion",
+                "state": "implementation_ready_publication_rights_blocked",
+                "target_dimensions": ["truth", "coverage", "utility", "reproducibility_citation"],
+                "evidence": {
+                    "calendar_days": event_calendar_days,
+                    "observed_aggregate_days": event_observed_days,
+                    "upstream_file_unavailable_days": event_unavailable_days,
+                    "detected_salience_episodes": detected_episodes,
+                    "deduplicated_source_event_count": None,
+                    "canonical_geopolitical_event_count": None,
+                },
+                "next_gate": (
+                    "Obtain human-signed source-rights decisions, then retain stable source IDs and "
+                    "raw revision lineage before publishing any unique or canonical event count."
+                ),
+            },
             {
                 "candidate_id": "world_state_matrix",
                 "risk_class": "R2_product_or_data_expansion",

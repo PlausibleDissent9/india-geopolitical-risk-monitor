@@ -33,6 +33,7 @@ EXPECTED_LAYOUTS = {
         "analysis.html",
         "atlas.html",
         "explorer.html",
+        "ledger.html",
         "maps.html",
         "validation.html",
         "workbench.html",
@@ -79,7 +80,7 @@ def _parse(relative: str) -> tuple[str, StructureParser]:
 
 def test_all_public_routes_have_an_owned_layout() -> None:
     routes = {str(path.relative_to(DOCS)) for path in DOCS.rglob("*.html")}
-    assert len(routes) == 39
+    assert len(routes) == 40
     expected_shell = set().union(*EXPECTED_LAYOUTS.values())
     assert set(site_shell.PAGES) == expected_shell
     assert routes == expected_shell | {"index.html", "embed.html"}
@@ -101,7 +102,7 @@ def test_every_shell_route_has_one_semantic_shell() -> None:
         assert parser.count("main") == 1, relative
         assert parser.count(id_="theme-toggle") == 1, relative
         assert 'id="main-content"' in text, relative
-        assert "data-latest-date" in text, relative
+        assert page.data_attribute in text, relative
         assert re.search(
             r'<script src="(?:\.\./|/)?site\.js\?v=[0-9a-f]{8}"></script>',
             text,

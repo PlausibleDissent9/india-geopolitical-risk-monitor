@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0.0",
+  "contract_version": "1.0.0",
+  "effective": "2026-08-09",
+  "status": "rights_gated_release_candidate",
+  "name": "IGRM Global Event and Episode Ledger contract",
+  "purpose": "Separate aggregate source rows, deduplicated source events, canonical geopolitical events and detector-defined salience episodes so that no one number can silently stand in for all four.",
+  "frame": {
+    "geographic_subject": "Rows in the GDELT Events v1 daily exports that involve India as an actor or action geography; global export-row counts are retained only as a coverage denominator.",
+    "time_start": "2017-01-01",
+    "time_end_policy": "Latest date present identically in the national, India-partner dyad and Indian-state aggregate stores.",
+    "calendar_partition": "Every UTC calendar day from time_start through time_end must be either observed in all three aggregate stores or listed once in the legacy unavailable-day register. The legacy register has no retrieval receipts and must not be described as verified provider unavailability.",
+    "country_area_frame": "Every member of docs/geo/world.json is a display-geometry member. India is not_applicable_self for an India-partner dyad; provider codes outside the geometry are unmappable; absence from the mapped projection has unresolved reason and is not an analytical coverage failure.",
+    "source_frame": "GDELT Events v1 daily export files. The current store retains aggregates, not raw rows or GlobalEventID values.",
+    "rights_state": "blocked_until_signed_source_decisions",
+    "rights_boundary": "No source-derived count, episode, geometry denominator or historical series may be newly emitted by docs/data/event_ledger.json or rendered by docs/ledger.html until the signed source-rights registry authorizes cite_metadata and publish_derived_value for every required source.",
+    "legacy_endpoint_boundary": "This gate neither licenses nor retracts pre-existing source-specific endpoints such as episodes.json, map_relations.json or world_state.json. Their separate rights decisions remain review_required; readers must not infer that the Event Ledger refusal authorizes them."
+  },
+  "candidate_baseline": {
+    "git_commit": "4ca6901e9bd1bd07ea7f9c006194a8ce01410347",
+    "events_daily_path": "data/raw/events_daily.csv",
+    "events_daily_sha256": "056734294946c6b2b1f541f13496292ca83bbd0cedd87fb4851109bff729b3b2",
+    "events_dyads_path": "data/raw/events_dyads.csv",
+    "events_dyads_sha256": "bb8e8853a67b4db8f2f7cf3f9bcbd2893143decc1e5f7866e5425b659cba58f0",
+    "events_states_path": "data/raw/events_states.csv",
+    "events_states_sha256": "235b52266ed622194b28cdb9a18f7f932e5433854cf6d898cec7f8c2e7756080",
+    "unavailable_register_path": "data/raw/events_unavailable_days.json",
+    "unavailable_register_sha256": "dc2d64de78cff73af1750ca57e528a26877507ed951171a40b0a53e34804f3d8",
+    "successor_rule": "Every candidate must retain every UTC day observed in the pinned baseline daily store. A blocked publication interval cannot reset this floor."
+  },
+  "count_units": [
+    {
+      "id": "aggregate_source_rows",
+      "candidate_available": true,
+      "definition": "Counts of valid-layout rows in a named GDELT daily export after the published India-involvement filter, plus the valid-layout row denominator. Malformed rows rejected before parsing are not counted. Rows are not deduplicated by stable event identity."
+    },
+    {
+      "id": "deduplicated_source_events",
+      "candidate_available": false,
+      "definition": "Distinct upstream events after stable-ID deduplication and revision handling.",
+      "unavailable_reason": "The current aggregate store does not retain GlobalEventID or raw-row revision lineage."
+    },
+    {
+      "id": "canonical_geopolitical_events",
+      "candidate_available": false,
+      "definition": "Cross-source resolved, typed and versioned geopolitical event objects that pass the canonical-release rights, method and signature gates.",
+      "unavailable_reason": "No production canonical event release has been issued; source rights, method and release-signer registries remain fail-closed."
+    },
+    {
+      "id": "detected_salience_episodes",
+      "candidate_available": true,
+      "definition": "Threshold-defined windows in the five IGRM press-salience channels. An episode is a detector output, not a unique geopolitical event or an event census."
+    }
+  ],
+  "episode_rules": {
+    "identity": "episode:<channel>:<start>",
+    "membership": "Use the committed detector output exactly; do not merge overlapping channel windows or reinterpret them as one real-world event.",
+    "boundary": "Start, end and peak date are inclusive ISO dates; peak must lie inside the window and n_spike_days cannot exceed calendar window length.",
+    "revision": "A changed detector window changes the release digest. Historical revisions require a later dated release; this first public event-ledger artifact does not claim a pre-existing revision history.",
+    "lifecycle": "Detector windows are provisional_open_window until the press-salience detector has observed the full three-day clustering gap after their last spike; only then are they detector_window_closed. Neither state is an allegation, confirmation, disruption or recovery state."
+  },
+  "canonical_event_target_states": [
+    "allegation",
+    "official_position",
+    "confirmed_action",
+    "realized_disruption",
+    "response",
+    "recovery",
+    "disputed",
+    "superseded"
+  ],
+  "canonical_event_gate": {
+    "current_state": "unavailable_no_production_canonical_release",
+    "model_promotion": "prohibited",
+    "requirements": [
+      "Stable source identifiers and raw evidence lineage",
+      "Cross-source resolution with declared independence groups",
+      "Role-eligible evidence for every lifecycle transition",
+      "Rights-approved source and decision snapshots",
+      "Registered executable methods or signed manual decisions",
+      "Externally verifiable signed release manifest",
+      "Point-in-time revision log and correction blast-radius graph"
+    ]
+  },
+  "public_release_gate": {
+    "required_source_ids": ["gdelt_events_v1", "gdelt_web_ngrams_v5", "igrm_public_payloads", "natural_earth"],
+    "required_permitted_uses": ["cite_metadata", "publish_derived_value"],
+    "unsigned_behavior": "Publish a value-free refusal artifact; never publish candidate counts.",
+    "human_signature_required": true,
+    "agent_signature_prohibited": true,
+    "trusted_signer_ids": [],
+    "allowed_signer_roles": ["external_counsel_rights_approver", "founder_rights_approver"],
+    "trust_root_change_authority": "A human-reviewed code change must pin the signer ID and exact Ed25519 public key before any signed decision can authorize this endpoint. An agent-created key or role string never establishes trust."
+  },
+  "historical_series_policy": {
+    "current_capability": "current_release_historical_aggregate_series",
+    "permitted_claim": "After rights approval, a user may inspect the historical aggregate row series included in the current release and the release-bound detector episode set.",
+    "prohibited_claim": "A date-indexed backfill is not point-in-time knowledge replay. Only immutable predecessor-bound public vintages may support release-as-known-at replay.",
+    "future_release_rule": "Each authorized release must be stored immutably, bind its predecessor release-state digest and publish a typed date and episode delta. A previously observed day may never be laundered into unavailable."
+  },
+  "prohibited_interpretations": [
+    "A global event census",
+    "A count of unique geopolitical events",
+    "A world risk, severity or probability score",
+    "Independent confirmation by multiple sources",
+    "Causal attribution",
+    "A forecast",
+    "A claim that missing countries or days have zero events",
+    "A like-for-like longitudinal comparison of raw row levels across unregistered provider corpus regimes"
+  ]
+}

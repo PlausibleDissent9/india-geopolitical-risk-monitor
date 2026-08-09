@@ -9,13 +9,14 @@
     "codebook": "https://igrm.in/codebook.html",
     "source": "https://igrm.in/data/evolution.json",
     "input_sha256": {
-      "engine_registry": "38aac18d6a385423f879d967c2c6eadec195d2dd80faf67568f9e59710a83b9d",
+      "engine_registry": "db072efa1ae0a1c87415b3ca73768c2b3ad7f6681748f24dff73c96e83d4f665",
       "global_layer_registry": "f5adcb1326637cc73347b48b0f8ab0d68c79b4989f7497b9d66c8be408616bb1",
       "world_geometry_member_set": "f680a626c04d45a735b96650a148d72881652f06fe9d9d97dfaece8a33ef3201",
       "map_relation_member_set": "ce04ef05f80b88a0050f0d4c6f7ec8e8b107c167c65b7386fac90e9ba75eaef2",
       "historical_proxy_domain": "d6ac966a8ae3c58f6cbb3c56b07e4d7a370feb53d5d41015831f20556015fc46",
-      "product_route_set": "52738351c77eb67ca189f10c582fb8066af5fea3ee3aa576d893cbcede745fb3",
-      "api_endpoint_set": "92680acfd730721d9d53e289bd97a7ebfb1cf184e9761b758878c1982f2f9b26"
+      "event_ledger": "b79a19c83e41f665dc2eb9169aa7ebf0f117a41ce282192326c83d6c4e9bd3f8",
+      "product_route_set": "7ef8b07125f9363cef28cc984bcdaa325cac51fe754676e9951d90cd0e462e9c",
+      "api_endpoint_set": "b82508bbe30fed9fcb723118eb8dfe912a5717a59870396a03a6d5c2286944bf"
     }
   },
   "authority": {
@@ -170,13 +171,13 @@
   ],
   "measured_state": {
     "public_product_routes": {
-      "registered": 34,
-      "present": 34,
+      "registered": 35,
+      "present": 35,
       "missing": []
     },
     "public_api_endpoints": {
-      "registered": 114,
-      "present": 114,
+      "registered": 115,
+      "present": 115,
       "missing": []
     },
     "global_atlas": {
@@ -251,14 +252,26 @@
       "published_proxy_channels": 2,
       "current_operating_program": "historical_intelligence_activation",
       "current_boundary": "The two published monthly proxies are different constructs from the live index and are not spliced into it."
+    },
+    "global_event_episode_ledger": {
+      "artifact_status": "public_release_blocked_rights_review",
+      "frame_start": null,
+      "frame_end": null,
+      "calendar_days": null,
+      "observed_aggregate_days": null,
+      "legacy_unavailable_days": null,
+      "detected_salience_episodes": null,
+      "deduplicated_source_event_count": null,
+      "canonical_geopolitical_event_count": null,
+      "current_boundary": "The implementation validates the candidate frame, but no source-derived event-ledger values are public until every required signed rights decision passes."
     }
   },
   "strategic_programs": [
     {
       "program_id": "global_event_episode_ledger",
-      "state": "next_build",
-      "objective": "Create a point-in-time global event and episode census that separates observations, unique events and multi-event episodes and preserves hierarchy, lifecycle, disagreement and correction history.",
-      "proof": "A frozen source frame and country/time denominator reconcile; event, episode and observation counts remain distinct; syndication cannot manufacture corroboration; every revision replays and exposes its dependent-product blast radius."
+      "state": "candidate_validated_publication_blocked_until_signed_source_rights",
+      "objective": "Authorize and release the aggregate-row and detector-episode foundation, then extend it into a point-in-time global event and episode census that preserves source identity, hierarchy, lifecycle, disagreement and correction history.",
+      "proof": "The candidate validator reconciles the source frame without publishing its values; the public status binds the exact blocked rights snapshot; any authorized successor must keep event, episode and observation units distinct and expose a predecessor-bound revision delta."
     },
     {
       "program_id": "observation_twin",
@@ -311,6 +324,26 @@
   ],
   "priority_queue": [
     {
+      "candidate_id": "global_event_episode_ledger",
+      "risk_class": "R2_product_or_data_expansion",
+      "state": "implementation_ready_publication_rights_blocked",
+      "target_dimensions": [
+        "truth",
+        "coverage",
+        "utility",
+        "reproducibility_citation"
+      ],
+      "evidence": {
+        "calendar_days": null,
+        "observed_aggregate_days": null,
+        "upstream_file_unavailable_days": null,
+        "detected_salience_episodes": null,
+        "deduplicated_source_event_count": null,
+        "canonical_geopolitical_event_count": null
+      },
+      "next_gate": "Obtain human-signed source-rights decisions, then retain stable source IDs and raw revision lineage before publishing any unique or canonical event count."
+    },
+    {
       "candidate_id": "world_state_matrix",
       "risk_class": "R2_product_or_data_expansion",
       "state": "released",
@@ -353,8 +386,8 @@
         "reliability"
       ],
       "evidence": {
-        "registered_public_routes": 34,
-        "present_public_routes": 34
+        "registered_public_routes": 35,
+        "present_public_routes": 35
       },
       "next_gate": "Run the institutional design and interaction standard over every protected route, followed by independent cross-viewport review."
     }

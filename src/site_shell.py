@@ -34,6 +34,9 @@ class Page:
     layout: str
     active: str = ""
     drop_duplicate_heading: bool = False
+    data_label: str = "Data day"
+    data_attribute: str = "data-latest-date"
+    data_placeholder: str = "See latest published payload"
 
 
 # Every shell-bearing public route appears exactly once. index.html owns the
@@ -55,6 +58,15 @@ PAGES: dict[str, Page] = {
     "explorer.html": Page("Outcomes explorer", "Research", "dashboard", "analysis"),
     "exposure.html": Page("Your exposure", "Evidence utility", "evidence", "atlas", True),
     "history.html": Page("1979–2019 historical proxy", "Research", "article", "analysis"),
+    "ledger.html": Page(
+        "Global Event & Episode Ledger",
+        "IGRM Atlas · event intelligence",
+        "dashboard",
+        "atlas",
+        data_label="Ledger frame",
+        data_attribute="data-ledger-date",
+        data_placeholder="Read the current machine artifact",
+    ),
     "maps.html": Page("Observation Room", "IGRM Atlas", "dashboard", "atlas"),
     "methodology.html": Page("Methodology", "Method", "article", "methodology", True),
     "notes.html": Page("Weekly notes", "Research notes", "article", "notes"),
@@ -344,7 +356,7 @@ def _page_heading(page: Page, prefix: str, definition: str, definition_id: str) 
       <h1 id="page-title">{escape(page.title)}</h1>{deck}
     </div>
     <dl class="page-meta" aria-label="Publication context">
-      <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
+      <div><dt>{escape(page.data_label)}</dt><dd {escape(page.data_attribute)}>{escape(page.data_placeholder)}</dd></div>
       <div><dt>Freshness</dt><dd><a href="{_href(prefix, "status.html")}">Source-by-source status</a></dd></div>
     </dl>
   </section>"""
