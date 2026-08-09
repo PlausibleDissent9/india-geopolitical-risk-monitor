@@ -65,6 +65,14 @@ MAX_AGE_DAYS: dict[str, int] = {
     "alt_specs.json": 10,
     "priced_risk.json": 10,
     "multilingual.json": 30,  # V5 still backfilling
+    # Both of these inherited DEFAULT_MAX_AGE_DAYS (3) while their lanes run
+    # WEEKLY, so each was stale four days out of every seven and the audit
+    # only said so once the clock crossed a midnight. A three-day promise
+    # over a seven-day lane is not a tight standard, it is a false one.
+    # Numbers below are the cadence plus slack, read off the crons.
+    "robustness_series.json": 10,  # validate.yml, cron "0 14 * * 0"
+    "energy_context.json": 45,  # drift.yml cron "40 22 * * 0"; JODI itself
+    # reports with a 1-3 month lag, the same reason jodi_energy.json is 45
 }
 
 # Exempt, each with the reason it is exempt. Short on purpose.
