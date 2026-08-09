@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:trace_nary_association_projection_registry",
+  "effective": "2026-08-09",
+  "default_policy": "deny",
+  "projections": [
+    {
+      "projection_id": "projection:trace.nary_identity_index",
+      "version": "0.1.0",
+      "method_id": "method:trace_nary_association",
+      "implementation_path": "src/nary_association_trace.py",
+      "implementation_sha256": "539c442ceaddc4ae7e0868b260d9132c99e5f4dc5ef77878837e8fe3cc588d1e",
+      "row_rule": "one_projection_row_per_source_path_with_full_tuple_digest",
+      "value_rule": "no_independent_projection_value",
+      "origin_rule": "unique_exact_observation_and_trace_origin",
+      "source_fact_status": "projection_not_source_fact"
+    }
+  ]
+}

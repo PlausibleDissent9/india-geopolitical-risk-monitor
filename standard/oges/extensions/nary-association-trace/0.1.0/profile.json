@@ -1,0 +1,42 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:trace_nary_association",
+  "version": "0.1.0",
+  "effective": "2026-08-09",
+  "status": "public_draft_contract_only_real_source_refused",
+  "bound_files": [
+    {"kind": "specification", "path": "standard/oges/extensions/nary-association-trace/0.1.0/SPEC.md", "sha256": "901144498cd0c063fa9c6eee1887040ad6a69a3f034547e7b2f19618ae35e379"},
+    {"kind": "reference_contract", "path": "governance/nary_association_trace.json", "sha256": "24ac5bc2d04fec56823309eef24da8d39290f48390e7e6aa0b046260651162f1"},
+    {"kind": "request_schema", "path": "standard/oges/extensions/nary-association-trace/0.1.0/trace-request.schema.json", "sha256": "9f9e91787c395dbbdc4b2cd13dc08c1838ec806ab829004036b23f7d41bcdb22"},
+    {"kind": "output_schema", "path": "standard/oges/extensions/nary-association-trace/0.1.0/trace-output.schema.json", "sha256": "98b4ae330a16e5e0e78ef5d5dbdfe23ad2b275148320753f7177604dd6dddffe"},
+    {"kind": "projection_registry", "path": "standard/oges/extensions/nary-association-trace/0.1.0/projection-registry.json", "sha256": "edd3e9ee5655f02626fc4c2d641b4a690f1a110ebd81a972aa125a6eec83f93b"},
+    {"kind": "foundry_profile", "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/profile.json", "sha256": "feb0af8c8558f8eac664e5e77f075c698c287d531fa0a53edeb146a0ea0d6724"},
+    {"kind": "dependency_profile", "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json", "sha256": "1dcb5ee90562ef5f28b4776aa6e21267c5486c171df309aedabd40aa81553b8f"},
+    {"kind": "consequence_plan_profile", "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json", "sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f"},
+    {"kind": "event_ledger_profile", "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json", "sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1"},
+    {"kind": "claim_schema", "path": "standard/oges/extensions/event-ledger/0.1.0/claim.schema.json", "sha256": "d5e5d9d3f3d410ba449ab10979e561d9cdcb9f0d4caabe1ff0d812c783909266"},
+    {"kind": "episode_schema", "path": "standard/oges/extensions/event-ledger/0.1.0/episode.schema.json", "sha256": "6159a8d96cc6aa7a74cde64e807ea4e00f9254ab5c9cec66ee9df7042c52e011"},
+    {"kind": "correction_impact_schema", "path": "standard/oges/extensions/event-ledger/0.1.0/correction-impact.schema.json", "sha256": "847b8278b6d5a178f9939c95afb0dbf864d4dfb6799114ed20b6b208e6d361aa"},
+    {"kind": "canonicalization_implementation", "path": "src/event_ledger.py", "sha256": "66d2ec85f88a87c1cacc4c03a0ae271c24a4decb9d52557c6ffedf10d859977a"},
+    {"kind": "typed_record_implementation", "path": "src/event_ledger_extension.py", "sha256": "b094c40abb1455f27b81ff468204a9eff17bed9de3a7e83360afc2015d6c16e7"},
+    {"kind": "canonicalization_fixture", "path": "validation/event_ledger_canonicalization.json", "sha256": "405c30bfc8668bc5842d6e33e5e31660c0f0f18b0fd8fa40929621eb061c5442"},
+    {"kind": "adversarial_cases", "path": "standard/oges/extensions/nary-association-trace/0.1.0/adversarial-cases.json", "sha256": "a38403fb4fac3b34466e902ede836ba727f894c756514c29b508ea24627dfaa7"}
+  ],
+  "reference_implementation": {
+    "path": "src/nary_association_trace.py",
+    "sha256": "539c442ceaddc4ae7e0868b260d9132c99e5f4dc5ef77878837e8fe3cc588d1e"
+  },
+  "conformance_test": {
+    "path": "tests/test_nary_association_trace.py",
+    "sha256": "112e80000c922e101e9a0d670af5f8145ad7e8ba15ed695d4d3f7a0ac1cdeb0c"
+  },
+  "required_rights_uses": ["cite_metadata", "publish_derived_value", "publish_extract"],
+  "claim_boundary": [
+    "The Ministry reference remains rights-review-required and produces no real trace, labels, tuples, values, page or API.",
+    "Successful tests use test-generated signed synthetic Foundry and Event Ledger fixtures; no authenticated synthetic execution evidence is shipped.",
+    "Every source observation remains one complete n-ary historical association path with exact source, mapping, value, time, rights and method boundaries.",
+    "The sole projection is a one-to-one reconstructable index labelled projection_not_source_fact and carries no independent value.",
+    "Claim and Episode context can produce only typed no_registered_association proofs; CorrectionImpact invalidates those proofs without changing source paths.",
+    "Capability maturity remains contract_only and conformance establishes no dependency, causality, impact, forecast, legal or production claim."
+  ]
+}

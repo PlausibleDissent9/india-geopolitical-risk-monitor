@@ -1,0 +1,464 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/nary-association-trace/0.1.0/trace-output.schema.json",
+  "title": "OGES TRACE_NARY_ASSOCIATION execution 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "execution_id",
+    "record_sha256",
+    "trust_class",
+    "production_trust",
+    "capability_state",
+    "authenticated_synthetic_verification_claimed",
+    "query",
+    "execution_contract",
+    "source_binding",
+    "rights",
+    "method",
+    "denominators",
+    "paths",
+    "projection",
+    "proof_outputs",
+    "correction_reports",
+    "guarantees",
+    "limitation_codes"
+  ],
+  "properties": {
+    "object_type": {"const": "trace_nary_association_execution"},
+    "schema_version": {"const": "0.1.0"},
+    "execution_id": {"type": "string", "pattern": "^trc:[a-z0-9][a-z0-9._:-]{2,123}$"},
+    "record_sha256": {"$ref": "#/$defs/sha256"},
+    "trust_class": {"const": "test_generated_synthetic"},
+    "production_trust": {"const": false},
+    "capability_state": {"const": "contract_only"},
+    "authenticated_synthetic_verification_claimed": {"const": false},
+    "query": {"$ref": "#/$defs/query"},
+    "execution_contract": {"$ref": "#/$defs/executionContract"},
+    "source_binding": {"$ref": "#/$defs/sourceBinding"},
+    "rights": {"$ref": "#/$defs/rights"},
+    "method": {"$ref": "#/$defs/method"},
+    "denominators": {"$ref": "#/$defs/denominators"},
+    "paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/path"}
+    },
+    "projection": {"$ref": "#/$defs/projection"},
+    "proof_outputs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/proofOutput"}
+    },
+    "correction_reports": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/correctionReport"}
+    },
+    "guarantees": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_tuple_decomposed",
+        "cross_product_invented",
+        "binary_edge_emitted",
+        "causal_claim_emitted",
+        "dependency_claim_emitted",
+        "impact_claim_emitted",
+        "forecast_emitted",
+        "advice_emitted",
+        "live_state_claimed",
+        "all_india_coverage_claimed",
+        "model_literal_accepted"
+      ],
+      "properties": {
+        "source_tuple_decomposed": {"const": false},
+        "cross_product_invented": {"const": false},
+        "binary_edge_emitted": {"const": false},
+        "causal_claim_emitted": {"const": false},
+        "dependency_claim_emitted": {"const": false},
+        "impact_claim_emitted": {"const": false},
+        "forecast_emitted": {"const": false},
+        "advice_emitted": {"const": false},
+        "live_state_claimed": {"const": false},
+        "all_india_coverage_claimed": {"const": false},
+        "model_literal_accepted": {"const": false}
+      }
+    },
+    "limitation_codes": {
+      "type": "array",
+      "minItems": 8,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "mappingPartition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["matched", "unmatched", "ambiguous", "withheld"],
+      "properties": {
+        "matched": {"type": "integer", "minimum": 0},
+        "unmatched": {"type": "integer", "minimum": 0},
+        "ambiguous": {"type": "integer", "minimum": 0},
+        "withheld": {"type": "integer", "minimum": 0}
+      }
+    },
+    "massPartition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["matched", "unmatched", "ambiguous", "withheld"],
+      "properties": {
+        "matched": {"type": "number", "minimum": 0},
+        "unmatched": {"type": "number", "minimum": 0},
+        "ambiguous": {"type": "number", "minimum": 0},
+        "withheld": {"type": "number", "minimum": 0}
+      }
+    },
+    "valuePartition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed_positive", "observed_zero", "source_blank", "source_missing", "suppressed", "not_applicable"],
+      "properties": {
+        "observed_positive": {"type": "integer", "minimum": 0},
+        "observed_zero": {"type": "integer", "minimum": 0},
+        "source_blank": {"type": "integer", "minimum": 0},
+        "source_missing": {"type": "integer", "minimum": 0},
+        "suppressed": {"type": "integer", "minimum": 0},
+        "not_applicable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_id", "operator_id", "output_profile_id", "selection", "projection_id", "valid_on", "knowledge_cutoff", "execution_as_of"],
+      "properties": {
+        "request_id": {"type": "string", "pattern": "^trq:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "operator_id": {"const": "operator:trace.complete_registered_nary_frame"},
+        "output_profile_id": {"const": "output:trace.nary_association_paths"},
+        "selection": {"const": "complete_registered_joint_frame"},
+        "projection_id": {"oneOf": [{"const": "projection:trace.nary_identity_index"}, {"type": "null"}]},
+        "valid_on": {"type": "string", "format": "date"},
+        "knowledge_cutoff": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "execution_as_of": {"type": "string", "format": "date-time", "pattern": "Z$"}
+      }
+    },
+    "executionContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_transport_sha256",
+        "request_semantic_sha256",
+        "trace_profile_sha256",
+        "trace_reference_contract_sha256",
+        "trace_request_schema_sha256",
+        "trace_output_schema_sha256",
+        "projection_registry_sha256",
+        "canonicalization_profile_id",
+        "canonicalization_implementation_sha256",
+        "typed_record_implementation_sha256",
+        "canonicalization_fixture_sha256",
+        "trace_implementation_sha256",
+        "foundry_profile_sha256",
+        "dependency_profile_sha256",
+        "consequence_plan_profile_sha256",
+        "event_ledger_profile_sha256"
+      ],
+      "properties": {
+        "request_transport_sha256": {"$ref": "#/$defs/sha256"},
+        "request_semantic_sha256": {"$ref": "#/$defs/sha256"},
+        "trace_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "trace_reference_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "trace_request_schema_sha256": {"$ref": "#/$defs/sha256"},
+        "trace_output_schema_sha256": {"$ref": "#/$defs/sha256"},
+        "projection_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "canonicalization_profile_id": {"const": "igrm-typed-canonical-f64-v1"},
+        "canonicalization_implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "typed_record_implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "canonicalization_fixture_sha256": {"$ref": "#/$defs/sha256"},
+        "trace_implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "foundry_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "dependency_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "consequence_plan_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "event_ledger_profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_artifact_sha256", "release_id", "release_manifest_sha256", "foundry_package_id", "foundry_package_sha256", "foundry_profile_sha256", "foundry_source_contract_sha256", "row_tuple_frame_sha256", "joint_frame_id", "joint_frame_sha256"],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+        "source_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "release_id": {"type": "string", "pattern": "^rel:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "release_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "foundry_package_id": {"type": "string", "pattern": "^foundry:[a-z0-9][a-z0-9._:-]{2,119}$"},
+        "foundry_package_sha256": {"$ref": "#/$defs/sha256"},
+        "foundry_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "foundry_source_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "row_tuple_frame_sha256": {"$ref": "#/$defs/sha256"},
+        "joint_frame_id": {"type": "string", "pattern": "^frame:[a-z0-9][a-z0-9._:-]{2,119}$"},
+        "joint_frame_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "rights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "decision_id", "decision_artifact_sha256", "rights_registry_sha256", "rights_signers_sha256", "required_uses", "permitted_use_intersection", "signer_id", "signer_role", "execution_as_of", "human_signature_is_legal_determination"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "decision_id": {"type": "string"},
+        "decision_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "rights_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "#/$defs/sha256"},
+        "required_uses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "permitted_use_intersection": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "signer_id": {"type": "string"},
+        "signer_role": {"type": "string"},
+        "execution_as_of": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "human_signature_is_legal_determination": {"const": false}
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_path", "implementation_sha256", "projection_registry_sha256", "run_id"],
+      "properties": {
+        "method_id": {"const": "method:trace_nary_association"},
+        "version": {"const": "0.1.0"},
+        "implementation_path": {"const": "src/nary_association_trace.py"},
+        "implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "projection_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "run_id": {"type": "string", "pattern": "^run:[a-z0-9][a-z0-9._:-]{2,123}$"}
+      }
+    },
+    "denominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_label_members", "joint_cells", "mass", "paths"],
+      "properties": {
+        "source_label_members": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["total", "partition"],
+          "properties": {"total": {"type": "integer", "minimum": 1}, "partition": {"$ref": "#/$defs/mappingPartition"}}
+        },
+        "joint_cells": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["total", "value_partition"],
+          "properties": {"total": {"type": "integer", "minimum": 1}, "value_partition": {"$ref": "#/$defs/valuePartition"}}
+        },
+        "mass": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["measure_status", "unit", "scale_factor", "denominator", "total_value", "value_cell_count", "nonvalue_cell_count", "by_slot"],
+          "properties": {
+            "measure_status": {"const": "single_measure_spec"},
+            "unit": {"type": "string", "minLength": 1},
+            "scale_factor": {"type": "number", "exclusiveMinimum": 0},
+            "denominator": {"type": "string", "minLength": 1},
+            "total_value": {"type": "number", "minimum": 0},
+            "value_cell_count": {"type": "integer", "minimum": 1},
+            "nonvalue_cell_count": {"type": "integer", "minimum": 0},
+            "by_slot": {
+              "type": "array",
+              "minItems": 3,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["slot", "source_label_members", "cell_role_occurrences", "observed_mass_by_mapping", "observed_mass_total"],
+                "properties": {
+                  "slot": {"type": "string"},
+                  "source_label_members": {"$ref": "#/$defs/mappingPartition"},
+                  "cell_role_occurrences": {"$ref": "#/$defs/mappingPartition"},
+                  "observed_mass_by_mapping": {"$ref": "#/$defs/massPartition"},
+                  "observed_mass_total": {"type": "number", "minimum": 0}
+                }
+              }
+            }
+          }
+        },
+        "paths": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["expected", "emitted", "omitted"],
+          "properties": {"expected": {"type": "integer", "minimum": 1}, "emitted": {"type": "integer", "minimum": 1}, "omitted": {"const": 0}}
+        }
+      }
+    },
+    "role": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot", "semantic_role_id", "provider_value", "crosswalk_entry_id", "link_status", "canonical_entity_id", "interpretation_status"],
+      "properties": {
+        "slot": {"type": "string"},
+        "semantic_role_id": {"type": "string"},
+        "provider_value": {"type": "string", "minLength": 1},
+        "crosswalk_entry_id": {"type": "string"},
+        "link_status": {"enum": ["matched", "unmatched", "ambiguous", "withheld"]},
+        "canonical_entity_id": {"type": ["string", "null"]},
+        "interpretation_status": {"enum": ["resolved", "provider_ambiguous", "withheld"]}
+      }
+    },
+    "measure": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "unit", "scale_factor", "denominator"],
+          "properties": {
+            "value": {"type": "number", "minimum": 0},
+            "unit": {"type": "string"},
+            "scale_factor": {"type": "number", "exclusiveMinimum": 0},
+            "denominator": {"type": "string"}
+          }
+        },
+        {"type": "null"}
+      ]
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "start", "end", "time_basis"],
+      "properties": {"label": {"type": "string"}, "start": {"type": "string", "format": "date"}, "end": {"type": "string", "format": "date"}, "time_basis": {"enum": ["fiscal_year", "calendar_year", "month", "day", "event_window"]}}
+    },
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trace_id", "origin", "association_kind", "roles", "tuple_sha256", "value_status", "measure", "period", "time", "source", "method", "typed_missing_links", "claim_status"],
+      "properties": {
+        "trace_id": {"type": "string", "pattern": "^path:[a-z0-9][a-z0-9._:-]{2,122}$"},
+        "origin": {
+          "type": "object", "additionalProperties": false, "required": ["observation_id", "record_sha256", "frame_member_id"],
+          "properties": {"observation_id": {"type": "string"}, "record_sha256": {"$ref": "#/$defs/sha256"}, "frame_member_id": {"type": "string"}}
+        },
+        "association_kind": {"const": "historical_nary_source_association"},
+        "roles": {"type": "array", "minItems": 3, "maxItems": 8, "items": {"$ref": "#/$defs/role"}},
+        "tuple_sha256": {"$ref": "#/$defs/sha256"},
+        "value_status": {"enum": ["observed_positive", "observed_zero", "source_blank", "source_missing", "suppressed", "not_applicable"]},
+        "measure": {"$ref": "#/$defs/measure"},
+        "period": {"$ref": "#/$defs/period"},
+        "time": {
+          "type": "object", "additionalProperties": false, "required": ["source_observed_at", "valid_period", "retrieval_available_at", "system_compiled_at"],
+          "properties": {"source_observed_at": {"type": "string", "format": "date-time", "pattern": "Z$"}, "valid_period": {"$ref": "#/$defs/period"}, "retrieval_available_at": {"type": "string", "format": "date-time", "pattern": "Z$"}, "system_compiled_at": {"type": "string", "format": "date-time", "pattern": "Z$"}}
+        },
+        "source": {"$ref": "#/$defs/observationSource"},
+        "method": {"$ref": "#/$defs/observationMethod"},
+        "typed_missing_links": {
+          "type": "array", "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["slot", "link_status", "reason_code"],
+            "properties": {"slot": {"type": "string"}, "link_status": {"enum": ["unmatched", "ambiguous", "withheld"]}, "reason_code": {"enum": ["source_label_unmatched", "source_label_ambiguous", "source_label_withheld"]}}
+          }
+        },
+        "claim_status": {"const": "source_association_only_not_dependency_or_causality"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"value_status": {"const": "observed_positive"}}},
+          "then": {"properties": {"measure": {"type": "object", "properties": {"value": {"exclusiveMinimum": 0}}}}}
+        },
+        {
+          "if": {"properties": {"value_status": {"const": "observed_zero"}}},
+          "then": {"properties": {"measure": {"type": "object", "properties": {"value": {"const": 0}}}}}
+        },
+        {
+          "if": {"properties": {"value_status": {"enum": ["source_blank", "source_missing", "suppressed", "not_applicable"]}}},
+          "then": {"properties": {"measure": {"type": "null"}}}
+        }
+      ]
+    },
+    "observationSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "artifact_sha256", "rights_decision_id", "rights_registry_sha256", "rights_signers_sha256", "rights_decision_artifact_sha256", "locator"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "rights_decision_id": {"type": "string"},
+        "rights_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "#/$defs/sha256"},
+        "rights_decision_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["document_id", "table_id", "page", "row", "column"],
+          "properties": {
+            "document_id": {"type": "string"},
+            "table_id": {"type": "string"},
+            "page": {"type": ["integer", "null"], "minimum": 1},
+            "row": {"type": ["integer", "null"], "minimum": 1},
+            "column": {"type": "string"}
+          }
+        }
+      }
+    },
+    "observationMethod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "version", "implementation_path", "implementation_sha256", "run_id"],
+      "properties": {
+        "method_id": {"type": "string"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "implementation_path": {"type": "string"},
+        "implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "run_id": {"type": "string"}
+      }
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "projection_id", "source_fact_status", "source_path_count", "projection_row_count", "unique_origin_count", "rows"],
+      "properties": {
+        "status": {"enum": ["not_requested", "emitted"]},
+        "projection_id": {"oneOf": [{"const": "projection:trace.nary_identity_index"}, {"type": "null"}]},
+        "source_fact_status": {"const": "projection_not_source_fact"},
+        "source_path_count": {"type": "integer", "minimum": 1},
+        "projection_row_count": {"type": "integer", "minimum": 0},
+        "unique_origin_count": {"type": "integer", "minimum": 0},
+        "rows": {
+          "type": "array", "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["projection_row_id", "origin_trace_id", "origin_observation_id", "origin_record_sha256", "full_tuple_sha256", "value_carried"],
+            "properties": {"projection_row_id": {"type": "string"}, "origin_trace_id": {"type": "string"}, "origin_observation_id": {"type": "string"}, "origin_record_sha256": {"$ref": "#/$defs/sha256"}, "full_tuple_sha256": {"$ref": "#/$defs/sha256"}, "value_carried": {"const": false}}
+          }
+        }
+      }
+    },
+    "contextRef": {
+      "type": "object", "additionalProperties": false, "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {"object_type": {"enum": ["claim", "episode"]}, "object_id": {"type": "string"}, "record_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "proofOutput": {
+      "type": "object", "additionalProperties": false, "required": ["proof_id", "origin_trace_id", "context_object", "context_temporal_status", "link_status", "reason_code", "source_fact_claimed", "assumption_promoted", "affected_by_correction_ids"],
+      "properties": {
+        "proof_id": {"type": "string"}, "origin_trace_id": {"type": "string"}, "context_object": {"$ref": "#/$defs/contextRef"},
+        "context_temporal_status": {"enum": ["active_on_valid_date", "superseded_predecessor_invalidated_by_effective_correction"]},
+        "link_status": {"enum": ["no_registered_association", "invalidated_by_correction"]},
+        "reason_code": {"enum": ["no_registered_source_relation", "context_record_corrected"]},
+        "source_fact_claimed": {"const": false}, "assumption_promoted": {"const": false},
+        "affected_by_correction_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^cor:[a-z0-9][a-z0-9._:-]{2,123}$"}}
+      }
+    },
+    "correctionReport": {
+      "type": "object", "additionalProperties": false, "required": ["correction_id", "correction_record_sha256", "known_at", "valid_from", "context_valid_on", "temporal_status", "affected_proof_ids", "affected_trace_ids", "unaffected_trace_count", "output_effect"],
+      "properties": {
+        "correction_id": {"type": "string", "pattern": "^cor:[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "correction_record_sha256": {"$ref": "#/$defs/sha256"},
+        "known_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "valid_from": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "context_valid_on": {"type": "string", "format": "date"},
+        "temporal_status": {"enum": ["effective_on_context_valid_date", "known_future_effective_not_applied"]},
+        "affected_proof_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "affected_trace_ids": {"type": "array", "maxItems": 0},
+        "unaffected_trace_count": {"type": "integer", "minimum": 1},
+        "output_effect": {"enum": ["proof_invalidation_only_source_paths_immutable", "known_not_effective_no_output_change"]}
+      }
+    }
+  }
+}

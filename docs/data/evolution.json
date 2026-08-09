@@ -20,9 +20,9 @@
       "event_ledger": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18",
       "product_route_set": "747d5a8886e7dc2355537d45e364480ca4451418bbce5642628fa5256be9d968",
       "api_endpoint_set": "239ce5065c90299d6e6ae226e2ed3a229d6d33f9ca491582ef8824c96dd084a6",
-      "capability_attestation_registry": "71a36f307ffc2b8d40380d0051f635a5f14fce77b94464711436e77ca5712035",
+      "capability_attestation_registry": "3bf153b5dc642effa4cf6e4823689849e1efb820ec4ccd3c62dc80ffcec1108b",
       "max_launch_contract": "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc",
-      "capability_attestation_implementation": "8bc5a321591942a1426395d57b77c8706d91bb02eabcc7f14a5391aa1ae8a91b",
+      "capability_attestation_implementation": "1b094bb6555be75dc858d789c8d19dce897fd213070783b6d2c7a6e4b7646ef8",
       "capability_attestation_schema": "33d58dc86cec7b1f9bcdb87c09a822c652b0584827ea7840001c4c190cecce1c",
       "gap_atom_schema": "61128a377f0bc0f0f018530cb92f07411264145247768380a72381f747a34190"
     }
@@ -313,8 +313,8 @@
           "artifact_id": "event_ledger_extension_profile",
           "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
-          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "expected_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
+          "observed_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
           "status": "verified"
         }
       ],
@@ -343,8 +343,8 @@
           "artifact_id": "event_ledger_extension_profile",
           "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
-          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "expected_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
+          "observed_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
           "status": "verified"
         }
       ],
@@ -465,8 +465,8 @@
           "artifact_id": "event_ledger_extension_profile",
           "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
-          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "expected_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
+          "observed_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
           "status": "verified"
         }
       ],
@@ -687,8 +687,8 @@
           "artifact_id": "foundry_profile",
           "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "fb5ac3a0e31345d137efc310da344020034402fc2fbbc5b9c45f8d31afdbc7a9",
-          "observed_sha256": "fb5ac3a0e31345d137efc310da344020034402fc2fbbc5b9c45f8d31afdbc7a9",
+          "expected_sha256": "feb0af8c8558f8eac664e5e77f075c698c287d531fa0a53edeb146a0ea0d6724",
+          "observed_sha256": "feb0af8c8558f8eac664e5e77f075c698c287d531fa0a53edeb146a0ea0d6724",
           "status": "verified"
         }
       ],
@@ -712,6 +712,22 @@
           "expected_sha256": "1dcb5ee90562ef5f28b4776aa6e21267c5486c171df309aedabd40aa81553b8f",
           "observed_sha256": "1dcb5ee90562ef5f28b4776aa6e21267c5486c171df309aedabd40aa81553b8f",
           "status": "verified"
+        },
+        {
+          "artifact_id": "foundry_profile",
+          "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "feb0af8c8558f8eac664e5e77f075c698c287d531fa0a53edeb146a0ea0d6724",
+          "observed_sha256": "feb0af8c8558f8eac664e5e77f075c698c287d531fa0a53edeb146a0ea0d6724",
+          "status": "verified"
+        },
+        {
+          "artifact_id": "trace_profile",
+          "path": "standard/oges/extensions/nary-association-trace/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "b5541060064fa945680630012c523cee54a99e876827cd964fe26a5b3a3430d3",
+          "observed_sha256": "b5541060064fa945680630012c523cee54a99e876827cd964fe26a5b3a3430d3",
+          "status": "verified"
         }
       ],
       "counterevidence": [
@@ -731,8 +747,8 @@
           "artifact_id": "event_ledger_extension_profile",
           "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
-          "observed_sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4",
+          "expected_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
+          "observed_sha256": "c4326a8a069712905091375a380f424552f17006bde1e5aeea6b6bf83f9a08c1",
           "status": "verified"
         }
       ],
@@ -768,6 +784,14 @@
           "evidence_class": "contract",
           "expected_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
           "observed_sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f",
+          "status": "verified"
+        },
+        {
+          "artifact_id": "trace_profile",
+          "path": "standard/oges/extensions/nary-association-trace/0.1.0/profile.json",
+          "evidence_class": "contract",
+          "expected_sha256": "b5541060064fa945680630012c523cee54a99e876827cd964fe26a5b3a3430d3",
+          "observed_sha256": "b5541060064fa945680630012c523cee54a99e876827cd964fe26a5b3a3430d3",
           "status": "verified"
         }
       ],

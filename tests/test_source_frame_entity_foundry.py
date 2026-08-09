@@ -1081,6 +1081,11 @@ def test_valid_signed_synthetic_release_composes_existing_machinery(tmp_path: Pa
     assert result["joint_cell_count"] == 6
     assert result["source_label_count"] == 7
     assert result["row_tuple_count"] == 2
+    assert result["profile_sha256"] == _sha(fixture.profile)
+    assert result["manifest_sha256"] == _sha(fixture.manifest)
+    assert result["package_sha256"] == _sha(fixture.package)
+    assert result["release_id"] == json.loads(fixture.manifest.read_text())["release_id"]
+    assert result["package_id"] == json.loads(fixture.package.read_text())["package_id"]
     assert result["unresolved_label_count"] == 1
     assert result["universe_release_count"] == 3
     assert result["binary_edges_emitted"] == 0
@@ -1100,6 +1105,40 @@ def test_valid_signed_synthetic_release_composes_existing_machinery(tmp_path: Pa
     assert pairs == {("Alpha", "X"), ("Beta", "Y")}
     assert ("Alpha", "Y") not in pairs
     assert ("Beta", "X") not in pairs
+
+
+def test_manifest_capture_refuses_valid_a_b_a_validation_swap(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fixture = _build_fixture(tmp_path)
+    assert _validate(fixture)["joint_cell_count"] == 6
+    signature = fixture.root / "canonical/release.sig"
+    package_evidence = fixture.objects["evd:fixture.foundry.package"]
+    watched = [fixture.package, package_evidence, fixture.manifest, signature]
+    version_a = {path: path.read_bytes() for path in watched}
+    package = json.loads(fixture.package.read_text())
+    package["package_id"] = "foundry:fixture.unloaded.002"
+    _write_package(fixture, package)
+    version_b = {path: path.read_bytes() for path in watched}
+    for path, payload in version_a.items():
+        path.write_bytes(payload)
+    original = foundry.canonical_objects.load_validated_release
+
+    def validate_version_b(*args: Any, **kwargs: Any) -> Any:
+        for path, payload in version_b.items():
+            path.write_bytes(payload)
+        try:
+            return original(*args, **kwargs)
+        finally:
+            for path, payload in version_a.items():
+                path.write_bytes(payload)
+
+    monkeypatch.setattr(
+        foundry.canonical_objects, "load_validated_release", validate_version_b
+    )
+    with pytest.raises(foundry.SourceFrameEntityFoundryError) as exc:
+        _validate(fixture)
+    assert exc.value.code == "release_manifest_validated_content_mismatch"
 
 
 def test_status_refuses_expired_rights_at_explicit_as_of(tmp_path: Path) -> None:

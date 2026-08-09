@@ -62,6 +62,7 @@ class EventLedgerExtensionError(ValueError):
 class ExtensionProfile:
     document: Mapping[str, Any]
     sha256: str
+    bound_sha256: Mapping[str, str]
     validators: Mapping[str, Draft202012Validator]
     products_by_type: Mapping[str, frozenset[str]]
 
@@ -69,6 +70,7 @@ class ExtensionProfile:
 @dataclass(frozen=True)
 class ValidatedExtension:
     document: Mapping[str, Any]
+    bundle_sha256: str
     profile: ExtensionProfile
     ledger: knowledge_replay.LoadedLedger
     ledger_root: Path
@@ -90,19 +92,26 @@ def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
-def _read_json(path: Path, code: str) -> tuple[bytes, dict[str, Any], str]:
+def _parse_json_bytes(raw: bytes, code: str) -> dict[str, Any]:
     try:
-        raw = path.read_bytes()
         value = json.loads(
             raw,
             object_pairs_hook=_unique_object,
             parse_constant=lambda _: _fail("json_non_finite"),
         )
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise EventLedgerExtensionError(code, str(path)) from exc
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise EventLedgerExtensionError(code) from exc
     if not isinstance(value, dict):
-        _fail(code, str(path))
-    return raw, cast(dict[str, Any], value), hashlib.sha256(raw).hexdigest()
+        _fail(code)
+    return cast(dict[str, Any], value)
+
+
+def _read_json(path: Path, code: str) -> tuple[bytes, dict[str, Any], str]:
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        raise EventLedgerExtensionError(code, str(path)) from exc
+    return raw, _parse_json_bytes(raw, code), hashlib.sha256(raw).hexdigest()
 
 
 def _safe_file(root: Path, relative: object, code: str) -> Path:
@@ -264,20 +273,26 @@ def _load_profile(root: Path, profile_path: Path) -> ExtensionProfile:
             "profile_knowledge_replay_digest_mismatch",
         ),
     )
+    bound_sha256: dict[str, str] = {}
     for section_name, path_key, sha_key, refusal in bindings:
         section = profile.get(section_name)
         if not isinstance(section, dict):
             _fail(f"profile_{section_name}_invalid")
         path = _safe_file(root, section.get(path_key), f"profile_{section_name}_missing")
-        if hashlib.sha256(path.read_bytes()).hexdigest() != _sha(
-            section.get(sha_key), f"profile_{section_name}_digest_invalid"
-        ):
+        try:
+            payload = path.read_bytes()
+        except OSError:
+            _fail(f"profile_{section_name}_missing")
+        digest = hashlib.sha256(payload).hexdigest()
+        if digest != _sha(section.get(sha_key), f"profile_{section_name}_digest_invalid"):
             _fail(refusal)
+        bound_sha256[section_name] = digest
 
     rows = profile.get("normative_files")
     if not isinstance(rows, list) or not rows:
         _fail("profile_normative_files_invalid")
     schemas: dict[str, dict[str, Any]] = {}
+    documents_by_kind: dict[str, dict[str, Any]] = {}
     paths_by_kind: dict[str, Path] = {}
     for raw in rows:
         if not isinstance(raw, dict) or set(raw) != {"kind", "path", "sha256"}:
@@ -286,13 +301,21 @@ def _load_profile(root: Path, profile_path: Path) -> ExtensionProfile:
         if not isinstance(kind, str) or kind in paths_by_kind:
             _fail("profile_normative_file_duplicate")
         path = _safe_file(root, raw["path"], "profile_normative_file_missing")
-        if hashlib.sha256(path.read_bytes()).hexdigest() != _sha(
+        try:
+            payload = path.read_bytes()
+        except OSError:
+            _fail("profile_normative_file_missing", kind)
+        if hashlib.sha256(payload).hexdigest() != _sha(
             raw["sha256"], "profile_normative_file_digest_invalid"
         ):
             _fail("profile_normative_file_digest_mismatch", kind)
         paths_by_kind[kind] = path
+        if kind != "specification":
+            documents_by_kind[kind] = _parse_json_bytes(
+                payload, "profile_normative_file_invalid"
+            )
         if kind.endswith("_schema"):
-            _, schema, _ = _read_json(path, "profile_schema_invalid")
+            schema = documents_by_kind[kind]
             try:
                 Draft202012Validator.check_schema(schema)
             except SchemaError:
@@ -338,10 +361,7 @@ def _load_profile(root: Path, profile_path: Path) -> ExtensionProfile:
     ) or implementation_sha != hashlib.sha256(Path(__file__).read_bytes()).hexdigest():
         _fail("profile_implementation_digest_mismatch")
 
-    _, dependency_registry, _ = _read_json(
-        paths_by_kind["product_dependency_registry"],
-        "product_dependency_registry_invalid",
-    )
+    dependency_registry = documents_by_kind["product_dependency_registry"]
     products_by_type = _validate_product_registry(dependency_registry)
     if profile.get("trust_boundary") != {
         "accepted_bundle_class": "synthetic_nonproduction",
@@ -356,6 +376,7 @@ def _load_profile(root: Path, profile_path: Path) -> ExtensionProfile:
     return ExtensionProfile(
         document=profile,
         sha256=profile_sha,
+        bound_sha256=bound_sha256,
         validators=validators,
         products_by_type=products_by_type,
     )
@@ -1048,7 +1069,7 @@ def validate_bundle(
 
     profile = _load_profile(root, profile_path)
     bundle_file = _inside_root(root, bundle_path, "extension_bundle_missing")
-    _, bundle, _ = _read_json(bundle_file, "extension_bundle_invalid")
+    _, bundle, bundle_sha256 = _read_json(bundle_file, "extension_bundle_invalid")
     bundle_validator = profile.validators.get("bundle_schema")
     if bundle_validator is None:
         _fail("profile_bundle_schema_missing")
@@ -1071,14 +1092,8 @@ def validate_bundle(
         base["knowledge_signers_path"],
         "extension_knowledge_signers_missing",
     )
-    if hashlib.sha256(ledger_path.read_bytes()).hexdigest() != base["ledger_file_sha256"]:
-        _fail("extension_base_ledger_digest_mismatch")
     expected_replay_sha = profile.document["knowledge_replay"]["registry_sha256"]
-    if (
-        hashlib.sha256(replay_registry_path.read_bytes()).hexdigest()
-        != base["replay_registry_sha256"]
-        or base["replay_registry_sha256"] != expected_replay_sha
-    ):
+    if base["replay_registry_sha256"] != expected_replay_sha:
         _fail("extension_replay_registry_digest_mismatch")
     try:
         ledger = knowledge_replay.load_ledger(
@@ -1089,6 +1104,13 @@ def validate_bundle(
         )
     except knowledge_replay.KnowledgeReplayError as exc:
         raise EventLedgerExtensionError("extension_base_ledger_invalid", exc.code) from exc
+    if ledger.file_sha256 != base["ledger_file_sha256"]:
+        _fail("extension_base_ledger_digest_mismatch")
+    if (
+        ledger.contract.registry_sha256 != base["replay_registry_sha256"]
+        or ledger.contract.registry_sha256 != profile.bound_sha256["knowledge_replay"]
+    ):
+        _fail("extension_replay_registry_digest_mismatch")
 
     snapshots = cast(list[Mapping[str, Any]], bundle["snapshots"])
     if len(snapshots) != len(ledger.releases):
@@ -1157,6 +1179,7 @@ def validate_bundle(
         _validate_count_units(snapshot, loaded)
     return ValidatedExtension(
         document=bundle,
+        bundle_sha256=bundle_sha256,
         profile=profile,
         ledger=ledger,
         ledger_root=ledger_root,
@@ -1222,19 +1245,15 @@ def _events_on(
     return [archive[key] for key in sorted(candidates - excluded)]
 
 
-def replay(
-    bundle_path: Path,
+def replay_validated(
+    validated: ValidatedExtension,
     knowledge_cutoff: str,
     valid_on: str,
-    *,
-    root: Path = ROOT,
-    profile_path: Path = PROFILE_PATH,
 ) -> dict[str, Any]:
-    """Replay extension state using signed receipt time and separate valid time."""
+    """Replay one already validated extension without reopening its bundle path."""
 
     cutoff = _utc(knowledge_cutoff, "extension_knowledge_cutoff_invalid")
     valid_day = _day(valid_on, "extension_valid_on_invalid")
-    validated = validate_bundle(bundle_path, root=root, profile_path=profile_path)
     ledger_created = _utc(
         validated.ledger.document["created_at"], "extension_ledger_created_at_invalid"
     )
@@ -1357,6 +1376,20 @@ def replay(
         _fail("profile_replay_schema_missing")
     _validate_schema(sealed, replay_validator, "extension_replay_schema_invalid")
     return sealed
+
+
+def replay(
+    bundle_path: Path,
+    knowledge_cutoff: str,
+    valid_on: str,
+    *,
+    root: Path = ROOT,
+    profile_path: Path = PROFILE_PATH,
+) -> dict[str, Any]:
+    """Validate then replay using signed receipt time and separate valid time."""
+
+    validated = validate_bundle(bundle_path, root=root, profile_path=profile_path)
+    return replay_validated(validated, knowledge_cutoff, valid_on)
 
 
 def summary(validated: ValidatedExtension) -> dict[str, Any]:

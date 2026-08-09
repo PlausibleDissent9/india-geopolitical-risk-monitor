@@ -348,10 +348,64 @@ def test_valid_extension_is_a_nonproduction_sidecar_over_signed_replay(tmp_path:
         profile_path=fixture.root / EXTENSION / "profile.json",
     )
     report = ext.summary(validated)
+    assert validated.bundle_sha256 == hashlib.sha256(bundle_path.read_bytes()).hexdigest()
+    replay_from_loaded = ext.replay_validated(
+        validated, "2026-08-08T14:30:00Z", "2026-08-08"
+    )
+    replay_from_path = ext.replay(
+        bundle_path,
+        "2026-08-08T14:30:00Z",
+        "2026-08-08",
+        root=fixture.root,
+        profile_path=fixture.root / EXTENSION / "profile.json",
+    )
+    assert replay_from_loaded == replay_from_path
     assert report["status"] == "conformant_synthetic_event_ledger_extension"
     assert report["base_ledger_id"] == "kld:oges.fixture.2026-08-09"
     assert report["production_trust"] is False
     assert report["source_rights_authority"] is False
+
+
+def test_normative_schema_hash_and_parse_use_one_captured_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fixture, bundle_path, bundle = _fixture(tmp_path)
+    bundle["injected"] = True
+    _rewrite_bundle(bundle_path, bundle)
+    target = fixture.root / EXTENSION / "event-ledger-extension.schema.json"
+    version_a = target.read_bytes()
+    weakened = json.loads(version_a)
+    weakened["additionalProperties"] = True
+    version_b = (
+        json.dumps(weakened, ensure_ascii=False, indent=2) + "\n"
+    ).encode("utf-8")
+    original_read = Path.read_bytes
+    original_parse = ext._parse_json_bytes
+    state = {"swapped": False}
+
+    def read_then_swap(path: Path) -> bytes:
+        payload = original_read(path)
+        if path.resolve() == target.resolve() and not state["swapped"]:
+            target.write_bytes(version_b)
+            state["swapped"] = True
+        return payload
+
+    def parse_then_restore(raw: bytes, code: str) -> dict[str, Any]:
+        parsed = original_parse(raw, code)
+        if state["swapped"] and raw == version_a:
+            target.write_bytes(version_a)
+        return parsed
+
+    monkeypatch.setattr(Path, "read_bytes", read_then_swap)
+    monkeypatch.setattr(ext, "_parse_json_bytes", parse_then_restore)
+    with pytest.raises(ext.EventLedgerExtensionError) as exc:
+        ext.validate_bundle(
+            bundle_path,
+            root=fixture.root,
+            profile_path=fixture.root / EXTENSION / "profile.json",
+        )
+    assert state["swapped"] is True
+    assert exc.value.code == "object_schema_invalid"
 
 
 def test_evidence_verification_never_promotes_claim_truth(tmp_path: Path) -> None:

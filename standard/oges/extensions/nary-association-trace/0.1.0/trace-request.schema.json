@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/nary-association-trace/0.1.0/trace-request.schema.json",
+  "title": "OGES TRACE_NARY_ASSOCIATION request 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "request_id",
+    "trust_class",
+    "authority",
+    "source_binding",
+    "query",
+    "proof_context"
+  ],
+  "properties": {
+    "object_type": {"const": "trace_nary_association_request"},
+    "schema_version": {"const": "0.1.0"},
+    "request_id": {"type": "string", "pattern": "^trq:[a-z0-9][a-z0-9._:-]{2,123}$"},
+    "trust_class": {"const": "test_generated_synthetic"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "authority_id"],
+      "properties": {
+        "kind": {"const": "registered_deterministic_method"},
+        "authority_id": {"const": "method:trace_nary_association"}
+      }
+    },
+    "source_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "foundry_profile_sha256",
+        "foundry_source_contract_sha256",
+        "release_manifest_sha256",
+        "foundry_package_sha256"
+      ],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+        "foundry_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "foundry_source_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "release_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "foundry_package_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operator_id",
+        "output_profile_id",
+        "selection",
+        "projection_id",
+        "valid_on",
+        "knowledge_cutoff",
+        "execution_as_of"
+      ],
+      "properties": {
+        "operator_id": {"const": "operator:trace.complete_registered_nary_frame"},
+        "output_profile_id": {"const": "output:trace.nary_association_paths"},
+        "selection": {"const": "complete_registered_joint_frame"},
+        "projection_id": {
+          "oneOf": [
+            {"const": "projection:trace.nary_identity_index"},
+            {"type": "null"}
+          ]
+        },
+        "valid_on": {"type": "string", "format": "date"},
+        "knowledge_cutoff": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "execution_as_of": {"type": "string", "format": "date-time", "pattern": "Z$"}
+      }
+    },
+    "proof_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "event_bundle_sha256", "valid_on", "bindings"],
+      "properties": {
+        "status": {"enum": ["not_requested", "registered_event_extension"]},
+        "event_bundle_sha256": {
+          "oneOf": [
+            {"$ref": "#/$defs/sha256"},
+            {"type": "null"}
+          ]
+        },
+        "valid_on": {
+          "oneOf": [
+            {"type": "string", "format": "date"},
+            {"type": "null"}
+          ]
+        },
+        "bindings": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["proof_id", "origin_observation_id", "context_object"],
+            "properties": {
+              "proof_id": {"type": "string", "pattern": "^prf:[a-z0-9][a-z0-9._:-]{2,123}$"},
+              "origin_observation_id": {"type": "string", "pattern": "^depobs:[a-z0-9][a-z0-9._:-]{2,119}$"},
+              "context_object": {"$ref": "#/$defs/contextRef"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"proof_context": {"properties": {"status": {"const": "not_requested"}}}}},
+      "then": {"properties": {"proof_context": {"properties": {"event_bundle_sha256": {"type": "null"}, "valid_on": {"type": "null"}, "bindings": {"maxItems": 0}}}}}
+    },
+    {
+      "if": {"properties": {"proof_context": {"properties": {"status": {"const": "registered_event_extension"}}}}},
+      "then": {"properties": {"proof_context": {"properties": {"event_bundle_sha256": {"$ref": "#/$defs/sha256"}, "valid_on": {"type": "string", "format": "date"}, "bindings": {"minItems": 1}}}}}
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "contextRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "object_id", "record_sha256"],
+      "properties": {
+        "object_type": {"enum": ["claim", "episode"]},
+        "object_id": {"type": "string", "pattern": "^(clm|epi):[a-z0-9][a-z0-9._:-]{2,123}$"},
+        "record_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

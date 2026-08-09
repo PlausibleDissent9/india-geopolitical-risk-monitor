@@ -79,6 +79,28 @@ def test_foundry_evidence_stops_at_contract_only() -> None:
     assert rows["edge_evidence"]["computed_state"] == "contract_only"
 
 
+def test_nary_trace_evidence_stops_at_contract_only() -> None:
+    rows = _by_id(ca.build_report())
+    flow = rows["dependency_flow_reconciliation"]
+    assert flow["computed_state"] == "contract_only"
+    assert {row["artifact_id"] for row in flow["evidence"]} == {
+        "dependency_profile",
+        "foundry_profile",
+        "trace_profile",
+    }
+    assert {row["evidence_class"] for row in flow["evidence"]} == {"contract"}
+    proof = rows["proof_carrying_clauses"]
+    assert proof["computed_state"] == "contract_only"
+    assert {row["artifact_id"] for row in proof["evidence"]} == {
+        "plan_profile",
+        "trace_profile",
+    }
+    assert proof["next_state"] == "synthetic_verified"
+    assert proof["counterevidence"] == [
+        "unregistered_evidence_bundle:synthetic_verified"
+    ]
+
+
 def test_unsigned_fabricated_receipt_cannot_promote_with_rehashed_registry(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

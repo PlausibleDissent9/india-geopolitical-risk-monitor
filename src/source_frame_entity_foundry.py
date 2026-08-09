@@ -184,7 +184,7 @@ def _profile(
             _fail("profile_trust_root_invalid")
     except OSError:
         _fail("profile_trust_root_invalid")
-    _, profile, _ = _read_json(profile_path, "profile_unreadable")
+    _, profile, profile_sha = _read_json(profile_path, "profile_unreadable")
     if set(profile) != {
         "schema_version",
         "extension_id",
@@ -211,7 +211,7 @@ def _profile(
         _fail("profile_bound_files_invalid")
     documents: dict[str, dict[str, Any]] = {}
     paths: dict[str, Path] = {}
-    digests: dict[str, str] = {}
+    digests: dict[str, str] = {"profile": profile_sha}
     for raw in rows:
         row = _object(raw, {"kind", "path", "sha256"}, "profile_bound_file_invalid")
         kind = row["kind"]
@@ -697,8 +697,12 @@ def validate_foundry_release(
         or row_tuple_frame["tuples"] is None
     ):
         _fail("source_frame_contract_not_buildable")
+    manifest_file = _inside_root(root, manifest_path, "release_manifest_missing")
+    _, captured_manifest, manifest_sha = _read_json(
+        manifest_file, "release_manifest_invalid"
+    )
     package_file = _inside_root(root, package_path, "foundry_package_missing")
-    package_raw, package, package_sha = _read_json(package_file, "foundry_package_invalid")
+    _, package, package_sha = _read_json(package_file, "foundry_package_invalid")
     validator = Draft202012Validator(
         documents["foundry_package_schema"], format_checker=FormatChecker()
     )
@@ -717,7 +721,7 @@ def validate_foundry_release(
         _fail("loaded_cargo_forbidden")
     try:
         release = canonical_objects.load_validated_release(
-            manifest_path,
+            manifest_file,
             root=root,
             schema_registry_path=schema_registry_path
             or root / SCHEMA_REGISTRY_PATH.relative_to(ROOT),
@@ -731,6 +735,8 @@ def validate_foundry_release(
         )
     except canonical_objects.CanonicalObjectError as exc:
         raise SourceFrameEntityFoundryError("canonical_release_invalid") from exc
+    if release.manifest != captured_manifest:
+        _fail("release_manifest_validated_content_mismatch")
     objects = release.objects
     evidence = objects["evidence_item"]
     entities = objects["entity"]
@@ -916,9 +922,11 @@ def validate_foundry_release(
         "status": "conformant_source_frame_entity_foundry_package",
         "extension_id": profile["extension_id"],
         "version": profile["version"],
+        "profile_sha256": digests["profile"],
         "release_id": release.manifest["release_id"],
+        "manifest_sha256": manifest_sha,
         "package_id": package["package_id"],
-        "package_sha256": hashlib.sha256(package_raw).hexdigest(),
+        "package_sha256": package_sha,
         "source_id": contract["source"]["source_id"],
         "source_contract_sha256": digests["reference_source_contract"],
         "row_tuple_frame_sha256": row_tuple_frame["record_sha256"],
