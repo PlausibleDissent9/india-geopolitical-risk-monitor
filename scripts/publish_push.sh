@@ -108,6 +108,38 @@ gate_candidate() {
 
 git commit -m "$MSG" || echo "[publish] no changes to commit"
 
+# UNSTAGED CHANGES STOP A REBASE DEAD, AND USED TO DO IT SILENTLY.
+#
+# `git pull --rebase` refuses outright -- "cannot pull with rebase: You have
+# unstaged changes" -- and returns instantly. The loop below then finds no
+# conflicted paths, fails `git rebase --continue` because no rebase is in
+# progress, aborts, and sleeps. Five attempts sleep 10+20+30+40+50 = 150
+# seconds and the lane exits 1 having never called gate_candidate at all.
+#
+# That is precisely what happened on 2026-08-09: morning-contract #27, #32
+# and #33 and receipts-extended #1 each failed at their push step in 2.5
+# minutes -- the sleep total, not a gate that ran -- while the site served
+# 2026-08-07 for a third day. #33 carried the gate's new ::error:: reporting
+# and emitted nothing, which is how the path was identified: the gate was
+# never reached.
+#
+# The usual source is a lane staging narrower than it writes. stamp_assets
+# rewrites every docs/*.html when an asset hash changes, and a lane staging
+# only `docs/data data/raw` leaves those modifications behind.
+#
+# Do not stage them here. What a lane publishes is that lane's decision, and
+# silently sweeping stray files into a publish commit is how something
+# unreviewed reaches the site. Refuse, name the files, and say which lane.
+unstaged="$(git diff --name-only)"
+if [ -n "$unstaged" ]; then
+  echo "::error::publish refused before rebase: the working tree has unstaged changes, which makes 'git pull --rebase' fail instantly and burns all five retries without ever running the gate. Files: $(printf '%s' "$unstaged" | tr '\n' ' ')"
+  echo "[publish] REFUSING: unstaged changes would silently defeat the rebase:"
+  printf '%s\n' "$unstaged" | sed 's/^/[publish]   /'
+  echo "[publish] stage them in the lane's own 'git add' if they belong in"
+  echo "[publish] this publish, or leave them out of the runner deliberately."
+  exit 1
+fi
+
 pushed=0
 for i in 1 2 3 4 5; do
   if git pull --rebase origin main; then

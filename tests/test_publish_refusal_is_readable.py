@@ -122,3 +122,44 @@ def test_the_gate_status_is_not_laundered_through_a_pipe(tmp_path):
         "the gate output is not captured by redirection")
     assert not re.search(r"gate\.sh --committed[^\n]*\|", body), (
         "the gate is piped, which launders its exit status")
+
+
+def test_unstaged_changes_are_refused_before_the_rebase(tmp_path):
+    """The 2026-08-09 outage, as one assertion.
+
+    `git pull --rebase` refuses instantly when the tree has unstaged
+    changes. The retry loop then sleeps 10+20+30+40+50 = 150 seconds and
+    exits, having never called gate_candidate -- so the lane fails in
+    exactly 2.5 minutes with nothing in the log about a gate, because no
+    gate ran. Four runs across two workflows did that while the site
+    served a three-day-old number.
+
+    The usual cause is a lane staging narrower than it writes:
+    stamp_assets rewrites every docs/*.html, and morning.yml stages only
+    docs/data and data/raw.
+    """
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "config", "user.email", "t@t"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "config", "user.name", "t"], cwd=tmp_path, check=True)
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "docs" / "index.html").write_text("v1", encoding="utf-8")
+    subprocess.run(["git", "add", "-A"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-qm", "init"], cwd=tmp_path, check=True)
+    # What stamp_assets does, and what a narrow `git add` leaves behind.
+    (tmp_path / "docs" / "index.html").write_text("v2 stamped", encoding="utf-8")
+
+    script = (tmp_path / "scripts" / "publish_push.sh")
+    script.write_text(SCRIPT.read_text(encoding="utf-8"), encoding="utf-8")
+    r = subprocess.run(["bash", "scripts/publish_push.sh", "data: test"],
+                       cwd=tmp_path, capture_output=True, text=True,
+                       env={"PATH": "/usr/bin:/bin:/usr/local/bin",
+                            "HOME": str(tmp_path),
+                            "IGRM_PUBLISH_TOKEN": "dummy-not-used"})
+    assert r.returncode != 0, "unstaged changes must refuse, not proceed"
+    assert "::error::" in r.stdout, (
+        "the refusal is invisible in annotations, which is how this cost "
+        f"three days: {r.stdout}")
+    assert "docs/index.html" in r.stdout, (
+        f"the refusal does not name the offending file: {r.stdout}")
+    assert "sleep" not in r.stdout.lower() or r.returncode == 1
