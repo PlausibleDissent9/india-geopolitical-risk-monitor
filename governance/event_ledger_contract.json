@@ -96,7 +96,9 @@
     "current_capability": "current_release_historical_aggregate_series",
     "permitted_claim": "After rights approval, a user may inspect the historical aggregate row series included in the current release and the release-bound detector episode set.",
     "prohibited_claim": "A date-indexed backfill is not point-in-time knowledge replay. Only immutable predecessor-bound public vintages may support release-as-known-at replay.",
-    "future_release_rule": "Each authorized release must be stored immutably, bind its predecessor release-state digest and publish a typed date and episode delta. A previously observed day may never be laundered into unavailable."
+    "future_release_rule": "Each authorized release must be stored immutably, bind its predecessor release-state digest and publish a typed date and episode delta. A previously observed day may never be laundered into unavailable.",
+    "archive_append_rule": "Every committed predecessor vintage must remain byte-identical and present; only the next sequential vintage may be added. The current worktree must match every committed vintage, and the full typed delta must recompute from its predecessor.",
+    "release_time_rule": "released_at must be UTC to the second, cannot precede any bound evidence or knowledge date, must increase strictly across vintages and cannot exceed the verifier wall clock by more than five minutes."
   },
   "prohibited_interpretations": [
     "A global event census",

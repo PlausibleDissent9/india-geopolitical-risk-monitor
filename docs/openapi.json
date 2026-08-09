@@ -629,11 +629,11 @@
   "/data/event_ledger.json": {
    "get": {
     "operationId": "get_data_event_ledger_json",
-    "description": "A fail-closed publication status for the Global Event and Episode Ledger. It contains no source-derived counts.",
-    "x-igrm-stability": "stable",
+    "description": "Rights-gated Global Event and Episode Ledger. The blocked form is a value-free refusal; an authorized form may publish denominator-reconciled aggregate rows and detector windows with immutable vintage lineage. Deduplicated and canonical event counts remain separately unavailable until their stronger identity and release gates pass.",
+    "x-igrm-stability": "stable blocked/authorized union; append-only authorized vintages",
     "responses": {
      "200": {
-      "description": "A fail-closed publication status for the Global Event and Episode Ledger. It contains no source-derived counts.",
+      "description": "Rights-gated Global Event and Episode Ledger. The blocked form is a value-free refusal; an authorized form may publish denominator-reconciled aggregate rows and detector windows with immutable vintage lineage. Deduplicated and canonical event counts remain separately unavailable until their stronger identity and release gates pass.",
       "content": {
        "application/json": {
         "schema": {

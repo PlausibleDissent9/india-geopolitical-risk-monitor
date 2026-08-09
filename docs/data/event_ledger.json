@@ -11,12 +11,12 @@
     "citation": "Krishna, Ishan (2026). IGRM Global Event and Episode Ledger rights-gated release status. https://igrm.in/data/event_ledger.json",
     "codebook": "https://igrm.in/codebook.html",
     "source": "https://igrm.in/data/event_ledger.json",
-    "what": "A fail-closed publication status for the Global Event and Episode Ledger. It contains no source-derived counts.",
+    "what": "A fail-closed Global Event and Episode Ledger endpoint. Its blocked form contains no source-derived values; a future authorized form may publish the explicitly bounded aggregate and detector units described by the stable API contract.",
     "contract_effective": "2026-08-09",
     "rights_state": "blocked_unsigned_or_unapproved_source_decisions",
     "canonical_release_state": "unavailable_no_production_canonical_release",
-    "refusal_state_sha256": "c1c506129b68698d4a33a4e9268c0e8c3245aabd062cae736b35504df07a15ee",
-    "status_id": "event-ledger-blocked-c1c506129b68698d"
+    "refusal_state_sha256": "f8a4f0da0583f57aad29f4a4d7f459d309f2311b47959d828a03a6bb74e29cd3",
+    "status_id": "event-ledger-blocked-f8a4f0da0583f57a"
   },
   "rights_gate": {
     "authorized": false,

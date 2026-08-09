@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -284,6 +284,11 @@ def test_ledger_is_wired_into_atlas_catalog_sitemap_api_and_pipeline() -> None:
     assert isinstance(contract, dict)
     endpoints = {row["path"] for row in contract["endpoints"]}  # type: ignore[index]
     assert "data/event_ledger.json" in endpoints
+    ledger_endpoint = next(
+        row for row in contract["endpoints"] if row["path"] == "data/event_ledger.json"  # type: ignore[index]
+    )
+    assert "blocked form" in ledger_endpoint["description"]
+    assert "authorized form" in ledger_endpoint["description"]
 
     daily = (ROOT / ".github" / "workflows" / "daily.yml").read_text(encoding="utf-8")
     ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
@@ -328,7 +333,7 @@ def test_previously_observed_day_cannot_be_laundered_into_unavailable() -> None:
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "test"}
     previous = event_ledger._authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T12:00:00Z"
+        candidate, rights, None, "2026-08-09T00:00:00Z"
     )
     changed = json.loads(json.dumps(candidate))
     series = changed["aggregate_historical_series"]
@@ -416,7 +421,7 @@ def test_authorized_archive_head_survives_blocked_status_and_detects_tamper(
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "test"}
     release = event_ledger._authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T12:00:00Z"
+        candidate, rights, None, "2026-08-09T00:00:00Z"
     )
     vintage_dir = tmp_path / "vintages"
     vintage_dir.mkdir()
@@ -437,3 +442,102 @@ def test_authorized_archive_head_survives_blocked_status_and_detects_tamper(
     with pytest.raises(event_ledger.EventLedgerError) as exc:
         event_ledger._authorized_history()
     assert exc.value.code == "authorized_release_integrity_invalid"
+
+
+def test_blocked_build_still_rejects_a_malformed_authorized_archive(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    vintage_dir = tmp_path / "vintages"
+    vintage_dir.mkdir()
+    _write_json(vintage_dir / "event-ledger-v1-aaaaaaaaaaaaaaaa.json", {"forged": True})
+    monkeypatch.setattr(event_ledger, "VINTAGE_DIR", vintage_dir)
+    monkeypatch.setattr(event_ledger, "_validate_archive_append_only", lambda: None)
+
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger.build()
+    assert exc.value.code == "authorized_release_shape_invalid"
+
+
+def test_archive_transition_refuses_rewrite_removal_and_multiple_additions() -> None:
+    v1 = "docs/data/vintages/event-ledger/event-ledger-v1-aaaaaaaaaaaaaaaa.json"
+    v2 = "docs/data/vintages/event-ledger/event-ledger-v2-bbbbbbbbbbbbbbbb.json"
+    v3 = "docs/data/vintages/event-ledger/event-ledger-v3-cccccccccccccccc.json"
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._enforce_archive_transition(
+            {v1: b"original"}, {v1: b"rewritten"}, {v1: b"rewritten"}
+        )
+    assert exc.value.code == "authorized_release_archive_rewritten"
+
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._enforce_archive_transition({v1: b"original"}, {}, {})
+    assert exc.value.code == "authorized_release_archive_removed"
+
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._enforce_archive_transition(
+            {}, {v1: b"one", v2: b"two"}, {v1: b"one", v2: b"two"}
+        )
+    assert exc.value.code == "authorized_release_append_count_invalid"
+
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._enforce_archive_transition(
+            {v1: b"one"}, {v1: b"one"}, {v1: b"one", v3: b"three"}
+        )
+    assert exc.value.code == "authorized_release_append_sequence_invalid"
+
+
+def test_release_time_must_follow_evidence_predecessor_and_wall_clock() -> None:
+    candidate = event_ledger._build_candidate()
+    rights = {"authorized": True, "snapshot": "v1"}
+
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_public_artifact(
+            candidate, rights, None, "2000-01-01T00:00:00Z"
+        )
+    assert exc.value.code == "authorized_release_precedes_evidence"
+
+    v1 = event_ledger._authorized_public_artifact(
+        candidate, rights, None, "2026-08-09T00:00:00Z"
+    )
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_public_artifact(
+            candidate,
+            {"authorized": True, "snapshot": "v2"},
+            v1,
+            "2026-08-09T00:00:00Z",
+        )
+    assert exc.value.code == "authorized_release_time_not_monotonic"
+
+    future = (datetime.now(timezone.utc) + timedelta(minutes=10)).replace(microsecond=0)
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_public_artifact(
+            candidate,
+            {"authorized": True, "snapshot": "future"},
+            v1,
+            future.isoformat().replace("+00:00", "Z"),
+        )
+    assert exc.value.code == "authorized_release_future_clock_invalid"
+
+
+def test_recomputed_archive_tamper_cannot_erase_the_published_delta(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    candidate = event_ledger._build_candidate()
+    release = event_ledger._authorized_public_artifact(
+        candidate,
+        {"authorized": True, "snapshot": "test"},
+        None,
+        "2026-08-09T00:00:00Z",
+    )
+    release["boundary"]["purpose"] = "rewritten after publication"
+    release["release_lineage"]["delta"]["added_dates"] = []
+    release["_meta"]["artifact_integrity_sha256"] = event_ledger._artifact_integrity(
+        release
+    )
+    vintage_dir = tmp_path / "vintages"
+    vintage_dir.mkdir()
+    _write_json(vintage_dir / f"{release['_meta']['release_id']}.json", release)
+    monkeypatch.setattr(event_ledger, "VINTAGE_DIR", vintage_dir)
+
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._authorized_history()
+    assert exc.value.code == "authorized_release_delta_invalid"

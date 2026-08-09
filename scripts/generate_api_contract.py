@@ -48,7 +48,7 @@ DESCRIPTIONS = {
     "and end dates, and peak percentile, from the frozen 2sigma/90-day "
     "spike rule.",
     "episodes.csv": "The same detected episodes as CSV, one row per episode.",
-    "event_ledger.json": "Value-free Global Event and Episode Ledger publication status. Source-derived counts, detector windows and geometry denominators remain null until every required source-rights decision is human-signed; deduplicated and canonical events remain separately unavailable.",
+    "event_ledger.json": "Rights-gated Global Event and Episode Ledger. The blocked form is a value-free refusal; an authorized form may publish denominator-reconciled aggregate rows and detector windows with immutable vintage lineage. Deduplicated and canonical event counts remain separately unavailable until their stronger identity and release gates pass.",
     "event_study.csv": "Event-study outcome cells as CSV: India-specific "
     "relative outcomes plus labelled descriptive commodity returns, one "
     "row per channel x window x market series.",
@@ -275,6 +275,21 @@ def _description(name: str, data) -> str:
 # frozen payload cannot carry. test_api_contract_is_derived asserts
 # generated == committed, so drift in either direction now fails.
 OVERRIDES: dict = {
+    "data/event_ledger.json": {
+        "description": DESCRIPTIONS["event_ledger.json"],
+        "stability": "stable blocked/authorized union; append-only authorized vintages",
+        "frozen_fields": [
+            "_meta",
+            "rights_gate",
+            "boundary",
+            "frame",
+            "count_units",
+            "aggregate_historical_series",
+            "episodes",
+            "canonical_event_layer",
+            "release_lineage",
+        ],
+    },
     "data/daily_brief.json": {
         "description": "WITHDRAWN machine-brief experiment. Generated prose failed factual grounding; a stable-shaped null tombstone preserves the frozen-v2 endpoint during its deprecation window.",
         "stability": "deprecated; null tombstone through at least 2026-11-06",

@@ -68,8 +68,10 @@ ALLOWED_RIGHTS_SIGNER_ROLES = frozenset(
 # exact Ed25519 public key. Merely inserting a key into a mutable registry must
 # never create publication authority.
 TRUSTED_RIGHTS_SIGNERS: dict[str, str] = {}
-REGISTERED_CONTRACT_SHA256 = "0935b3ff4942b83eb7719197611499cb2c44f9a2e26394e8229f4a2b975b7c25"
+REGISTERED_CONTRACT_SHA256 = "8bc851f9519a3b99cd76b78a93ae7ebd4b108d328ca1faa830f7cecd56e8a40b"
 VINTAGE_NAME = re.compile(r"^event-ledger-v([1-9][0-9]*)-([0-9a-f]{16})\.json$")
+VINTAGE_RELATIVE = Path("docs/data/vintages/event-ledger")
+MAX_RELEASE_CLOCK_SKEW = timedelta(minutes=5)
 
 DAILY_FIELDS = (
     "date",
@@ -231,6 +233,85 @@ def _git_blob(commit: str, path: str, expected_sha: str) -> bytes:
     if hashlib.sha256(result.stdout).hexdigest() != expected_sha:
         _fail("candidate_baseline_digest_mismatch", path)
     return result.stdout
+
+
+def _git_vintage_snapshot(revision: str) -> dict[str, bytes]:
+    try:
+        listed = subprocess.run(
+            ["git", "ls-tree", "-r", "--name-only", revision, "--", str(VINTAGE_RELATIVE)],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise EventLedgerError("event_ledger_archive_history_unavailable", revision) from exc
+    snapshot: dict[str, bytes] = {}
+    for relative in [line for line in listed.stdout.splitlines() if line]:
+        if not VINTAGE_NAME.fullmatch(Path(relative).name):
+            _fail("authorized_release_filename_invalid", relative)
+        try:
+            blob = subprocess.run(
+                ["git", "show", f"{revision}:{relative}"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+            ).stdout
+        except (OSError, subprocess.CalledProcessError) as exc:
+            raise EventLedgerError("event_ledger_archive_history_unavailable", relative) from exc
+        snapshot[relative] = blob
+    return snapshot
+
+
+def _enforce_archive_transition(
+    parent: dict[str, bytes], head: dict[str, bytes], working: dict[str, bytes]
+) -> None:
+    for relative, prior in parent.items():
+        if relative not in head:
+            _fail("authorized_release_archive_removed", relative)
+        if head[relative] != prior:
+            _fail("authorized_release_archive_rewritten", relative)
+    for relative, committed in head.items():
+        if working.get(relative) != committed:
+            _fail("authorized_release_worktree_drift", relative)
+    added = sorted(set(head) - set(parent))
+    untracked = sorted(set(working) - set(head))
+    if len(added) > 1 or len(untracked) > 1 or (added and untracked):
+        _fail("authorized_release_append_count_invalid")
+    if added:
+        match = VINTAGE_NAME.fullmatch(Path(added[0]).name)
+        if match is None or int(match.group(1)) != len(parent) + 1:
+            _fail("authorized_release_append_sequence_invalid", added[0])
+    if untracked:
+        match = VINTAGE_NAME.fullmatch(Path(untracked[0]).name)
+        if match is None or int(match.group(1)) != len(head) + 1:
+            _fail("authorized_release_append_sequence_invalid", untracked[0])
+
+
+def _validate_archive_append_only() -> None:
+    try:
+        ancestry = subprocess.run(
+            ["git", "rev-list", "--parents", "-n", "1", "HEAD"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.split()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise EventLedgerError("event_ledger_archive_history_unavailable") from exc
+    if not ancestry:
+        _fail("event_ledger_archive_history_unavailable")
+    head = _git_vintage_snapshot("HEAD")
+    parent = _git_vintage_snapshot(ancestry[1]) if len(ancestry) > 1 else {}
+    working: dict[str, bytes] = {}
+    if VINTAGE_DIR.exists():
+        for path in VINTAGE_DIR.glob("*.json"):
+            relative = path.relative_to(ROOT).as_posix()
+            try:
+                working[relative] = path.read_bytes()
+            except OSError as exc:
+                raise EventLedgerError("authorized_release_archive_unreadable", relative) from exc
+    _enforce_archive_transition(parent, head, working)
 
 
 def _validate_candidate_baseline(
@@ -594,6 +675,8 @@ def _validate_contract(value: Any) -> dict[str, Any]:
         or len(gate["requirements"]) < 7
         or replay.get("current_capability")
         != "current_release_historical_aggregate_series"
+        or not isinstance(replay.get("archive_append_rule"), str)
+        or not isinstance(replay.get("release_time_rule"), str)
         or release_gate.get("required_source_ids") != list(REQUIRED_PUBLIC_SOURCES)
         or release_gate.get("required_permitted_uses")
         != sorted(REQUIRED_PUBLIC_USES)
@@ -867,7 +950,7 @@ def _blocked_public_artifact(candidate: dict[str, Any], rights: dict[str, Any]) 
             "citation": "Krishna, Ishan (2026). IGRM Global Event and Episode Ledger rights-gated release status. https://igrm.in/data/event_ledger.json",
             "codebook": "https://igrm.in/codebook.html",
             "source": "https://igrm.in/data/event_ledger.json",
-            "what": "A fail-closed publication status for the Global Event and Episode Ledger. It contains no source-derived counts.",
+            "what": "A fail-closed Global Event and Episode Ledger endpoint. Its blocked form contains no source-derived values; a future authorized form may publish the explicitly bounded aggregate and detector units described by the stable API contract.",
             "contract_effective": candidate["_meta"]["contract_effective"],
             "rights_state": "blocked_unsigned_or_unapproved_source_decisions",
             "canonical_release_state": "unavailable_no_production_canonical_release",
@@ -909,6 +992,30 @@ def _released_at(value: object) -> datetime:
     return parsed
 
 
+def _verify_release_time(
+    meta: dict[str, Any], predecessor_meta: dict[str, Any] | None = None
+) -> datetime:
+    released = _released_at(meta.get("released_at"))
+    bound_keys = (
+        "contract_effective",
+        "observation_through",
+        "detector_observation_through",
+        "rights_as_of",
+        "knowledge_cutoff",
+    )
+    bound_dates = [_day(meta.get(key), f"authorized_release_{key}_invalid") for key in bound_keys]
+    if released.date() < max(bound_dates):
+        _fail("authorized_release_precedes_evidence")
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    if released > now + MAX_RELEASE_CLOCK_SKEW:
+        _fail("authorized_release_future_clock_invalid")
+    if predecessor_meta is not None:
+        predecessor_time = _released_at(predecessor_meta.get("released_at"))
+        if released <= predecessor_time:
+            _fail("authorized_release_time_not_monotonic")
+    return released
+
+
 def _artifact_integrity(value: dict[str, Any]) -> str:
     clone = json.loads(json.dumps(value, ensure_ascii=False, allow_nan=False))
     meta = clone.get("_meta")
@@ -923,6 +1030,7 @@ def _verify_authorized_release(
     expected_vintage: int,
     predecessor_integrity: str | None,
     filename: str | None = None,
+    predecessor_release: dict[str, Any] | None = None,
 ) -> None:
     meta = value.get("_meta")
     rights = value.get("rights_gate")
@@ -965,7 +1073,12 @@ def _verify_authorized_release(
         _fail("authorized_release_chain_invalid")
     if filename is not None and filename != f"{release_id}.json":
         _fail("authorized_release_filename_invalid")
-    _released_at(meta.get("released_at"))
+    predecessor_meta = (
+        cast(dict[str, Any], predecessor_release["_meta"])
+        if predecessor_release is not None
+        else None
+    )
+    _verify_release_time(meta, predecessor_meta)
 
 
 def _authorized_history() -> list[dict[str, Any]]:
@@ -982,12 +1095,23 @@ def _authorized_history() -> list[dict[str, Any]]:
         _fail("authorized_release_vintage_sequence_invalid")
     history: list[dict[str, Any]] = []
     predecessor: str | None = None
+    predecessor_release: dict[str, Any] | None = None
     for number, path in indexed:
         value, _ = _read_json(path, "authorized_release_archive_unreadable")
         if not isinstance(value, dict):
             _fail("authorized_release_shape_invalid")
-        _verify_authorized_release(value, number, predecessor, path.name)
+        _verify_authorized_release(
+            value,
+            number,
+            predecessor,
+            path.name,
+            predecessor_release,
+        )
+        lineage = cast(dict[str, Any], value["release_lineage"])
+        if lineage.get("delta") != _release_delta(predecessor_release, value):
+            _fail("authorized_release_delta_invalid", path.name)
         history.append(value)
+        predecessor_release = value
         predecessor = cast(str, value["_meta"]["artifact_integrity_sha256"])
     return history
 
@@ -1173,11 +1297,18 @@ def _authorized_public_artifact(
     cast(dict[str, Any], released["_meta"])["artifact_integrity_sha256"] = (
         _artifact_integrity(released)
     )
-    _verify_authorized_release(released, vintage, predecessor_integrity)
+    _verify_authorized_release(
+        released,
+        vintage,
+        predecessor_integrity,
+        predecessor_release=previous,
+    )
     return released
 
 
 def build(released_at: str | None = None) -> dict[str, Any]:
+    _validate_archive_append_only()
+    history = _authorized_history()
     candidate = _build_candidate()
     rights_as_of = _day(candidate["_meta"]["rights_as_of"], "rights_as_of_invalid")
     if released_at is not None:
@@ -1185,7 +1316,6 @@ def build(released_at: str | None = None) -> dict[str, Any]:
     rights = _rights_gate(rights_as_of)
     if not rights["authorized"]:
         return _blocked_public_artifact(candidate, rights)
-    history = _authorized_history()
     previous = history[-1] if history else None
     return _authorized_public_artifact(candidate, rights, previous, released_at)
 

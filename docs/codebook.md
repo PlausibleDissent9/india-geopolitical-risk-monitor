@@ -148,7 +148,7 @@ event counts remain unavailable even after rights approval.
 | `aggregate_historical_series` | `null` while blocked. An authorized release defaults to India-row share of valid-layout rows; raw levels are secondary and cannot be treated as like-for-like across unregistered provider regimes |
 | `episodes` | `null` while blocked. An authorized release uses stable detector-window IDs, `provisional_open_window` until the three-day cluster gap is observed, and `canonical_event_ids: null` |
 | `canonical_event_layer` | Target lifecycle vocabulary and the non-negotiable requirements for a future production release |
-| `release_lineage` | No public vintage exists while blocked. Every authorized release is immutable, predecessor-bound, complete-state hashed and carries a typed date/episode delta |
+| `release_lineage` | No public vintage exists while blocked. Every authorized release is predecessor-bound, complete-state hashed and carries a typed date/episode delta. CI refuses removal or byte changes to any predecessor and permits only the next sequential vintage; the delta is recomputed from predecessor bytes. `released_at` must follow every bound evidence/knowledge date, increase strictly, and remain within five minutes of the verifier clock |
 
 The current refusal artifact is `partial: true` because values are withheld.
 Inside an authorized release, `partial: false` would mean only that the declared
