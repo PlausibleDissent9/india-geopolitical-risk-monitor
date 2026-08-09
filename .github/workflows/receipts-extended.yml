@@ -21,7 +21,7 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 210
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -32,22 +32,38 @@ jobs:
           python-version: "3.11"
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Full-day receipts evidence scan
-        timeout-minutes: 155
+        id: scan
+        continue-on-error: true
+        timeout-minutes: 150
+        env:
+          IGRM_RECEIPTS_DEADLINE_S: "8400"
+        run: python -m src.receipts_ngrams --extended
+      - name: Build extended-evidence derivatives
+        if: steps.scan.outcome == 'success'
+        timeout-minutes: 15
         run: |
-          python -m src.receipts_ngrams --extended
           python -m src.receipts_archive
           python -m src.episode_attribution
           python -m src.spike_breadth
           python -m src.syndication
       - name: Stamp payload metadata and assets
+        if: steps.scan.outcome == 'success'
         run: |
           python -m src.stamp_meta
           python -m src.stamp_assets
-      - name: Publish exact extended-evidence candidate
+      - name: Publish complete view or bank incomplete checkpoint
+        if: always()
         env:
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
-          git add data/raw/receipt_days docs
-          bash scripts/publish_push.sh "receipts: extended evidence $(date -u +%F)"
+          if [ "${{ steps.scan.outcome }}" = "success" ]; then
+            git add data/raw/receipt_days docs
+            bash scripts/publish_push.sh "receipts: extended evidence $(date -u +%F)"
+          else
+            git add data/raw/receipt_days
+            bash scripts/publish_push.sh "receipts: bank partial scan $(date -u +%F)"
+            echo "::error::extended receipts scan incomplete; raw checkpoint was banked"
+            exit 1
+          fi

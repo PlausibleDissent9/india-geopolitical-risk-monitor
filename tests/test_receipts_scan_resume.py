@@ -31,6 +31,7 @@ import re
 from datetime import date
 from pathlib import Path
 
+import pytest
 from src import receipts_ngrams
 
 DAY = date(2026, 8, 8)
@@ -169,17 +170,72 @@ def test_a_complete_cache_is_served_without_rescanning(monkeypatch, tmp_path):
 
 
 def test_the_budget_fits_inside_the_steps_cap():
-    """The scan shares one 60-minute step with four other commands. A
-    budget at or above the cap reproduces the original bug exactly."""
+    """The daily scoring-depth scan leaves time to bank and derive."""
     wf = (Path(__file__).resolve().parents[1]
           / ".github" / "workflows" / "daily.yml").read_text(encoding="utf-8")
-    m = re.search(r"timeout-minutes:\s*(\d+)\s*\n\s*run: \|\s*\n\s*"
-                  r"python -m src\.receipts_ngrams", wf)
+    m = re.search(
+        r"Receipts at scoring depth.*?timeout-minutes:\s*(\d+).*?"
+        r"IGRM_RECEIPTS_DEADLINE_S:\s*[\"']?(\d+)",
+        wf,
+        re.S,
+    )
     assert m, "cannot find the receipts step's timeout in daily.yml"
     cap = int(m.group(1)) * 60
-    assert receipts_ngrams.SCAN_DEADLINE_S < cap, (
-        f"scan budget {receipts_ngrams.SCAN_DEADLINE_S}s is not inside the "
+    budget = int(m.group(2))
+    assert budget < cap, (
+        f"scan budget {budget}s is not inside the "
         f"{cap}s step cap")
-    assert cap - receipts_ngrams.SCAN_DEADLINE_S >= 15 * 60, (
+    assert cap - budget >= 15 * 60, (
         "leave at least 15 minutes for the four commands that follow the "
         "scan in the same step")
+
+
+def test_an_incomplete_scan_can_never_reach_public_assembly(monkeypatch):
+    corpus = {
+        "n_docs_sampled": 10,
+        "n_samples": 2,
+        "extended": True,
+        "scored_stamps": set(),
+        "india": set(),
+        "matched": {},
+        "meta": {},
+        "done_stamps": {"a", "b"},
+        "complete": False,
+    }
+    monkeypatch.setattr(receipts_ngrams, "collect_corpus", lambda *a, **k: corpus)
+    monkeypatch.setattr(
+        receipts_ngrams.sys,
+        "argv",
+        ["receipts_ngrams", "--extended", DAY.isoformat()],
+    )
+
+    with pytest.raises(receipts_ngrams.IncompleteCorpusScan):
+        receipts_ngrams.main()
+
+
+def test_a_located_but_missing_pair_is_retried_not_marked_done(
+    monkeypatch, tmp_path,
+):
+    stamps = ["20260808000100", "20260808001600"]
+    good_toc, good_ngram = _minute_file("d1")
+    monkeypatch.setattr(receipts_ngrams, "CORPUS_CACHE", tmp_path)
+    monkeypatch.setattr(receipts_ngrams, "SCAN_DEADLINE_S", 3600)
+    monkeypatch.setattr(
+        receipts_ngrams,
+        "_day_minute_files",
+        lambda day, samples=None: list(stamps),
+    )
+    monkeypatch.setattr(
+        receipts_ngrams,
+        "prefetch_pairs",
+        lambda requested: iter([
+            (stamps[0], good_toc, good_ngram),
+            (stamps[1], None, None),
+        ]),
+    )
+
+    corpus = receipts_ngrams.collect_corpus(DAY, SPECS, extended=True)
+
+    assert corpus is not None
+    assert corpus["complete"] is False
+    assert corpus["done_stamps"] == {stamps[0]}

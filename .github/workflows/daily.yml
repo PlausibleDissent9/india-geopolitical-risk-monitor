@@ -222,6 +222,8 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         timeout-minutes: 25
+        env:
+          IGRM_RECEIPTS_DEADLINE_S: "600"
         run: |
           python -m src.receipts_ngrams
           python -m src.receipts_archive

@@ -87,6 +87,10 @@ CORPUS_CACHE = ROOT / "data" / "raw" / "receipt_days"
 SCAN_DEADLINE_S = int(os.environ.get("IGRM_RECEIPTS_DEADLINE_S", str(30 * 60)))
 
 
+class IncompleteCorpusScan(RuntimeError):
+    """A resumable raw checkpoint was written, but no public view is valid."""
+
+
 def _cache_path(day: date, extended: bool) -> Path:
     suffix = "-extended" if extended else ""
     return CORPUS_CACHE / f"{day.isoformat()}{suffix}.json"
@@ -183,15 +187,20 @@ def collect_corpus(day: date, specs: dict[str, dict],
 
     deadline = time.monotonic() + SCAN_DEADLINE_S
     out_of_time = False
+    missing_downloads = False
     for ts, toc_gz, ng_gz in prefetch_pairs(stamps):
         if time.monotonic() > deadline:
             print(f"[receipts-ngrams] budget spent after {len(done)} "
                   "minute-files; banking progress for the next run")
             out_of_time = True
             break
-        done.add(ts)
         if not toc_gz or not ng_gz:
+            # The stamp was located, so a missing pair is a transient
+            # acquisition failure, not evidence that the file contained no
+            # matches. Leave it out of done_stamps so the next run retries it.
+            missing_downloads = True
             continue
+        done.add(ts)
         toc_en: dict[str, dict[str, str]] = {}
         for line in gzip.decompress(toc_gz).decode("utf-8", "replace").splitlines():
             line = line.strip().rstrip(",")
@@ -244,7 +253,8 @@ def collect_corpus(day: date, specs: dict[str, dict],
     corpus = {"n_docs_sampled": total_en, "n_samples": len(done),
               "extended": extended, "scored_stamps": scored,
               "india": india, "matched": matched, "meta": meta,
-              "done_stamps": done, "complete": not out_of_time}
+              "done_stamps": done,
+              "complete": not out_of_time and not missing_downloads}
     _cache_save(day, corpus, extended)
     return corpus
 
@@ -406,7 +416,7 @@ def _meta(corpus: dict[str, Any]) -> dict[str, Any]:
                    if corpus.get("extended") else "ngrams-corpus+artlist"),
         "n_docs_sampled": corpus["n_docs_sampled"],
         "n_samples": corpus["n_samples"],
-        "partial": False,
+        "partial": not bool(corpus.get("complete", True)),
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
 
@@ -433,6 +443,16 @@ def main() -> None:
               "falling back to the artlist lane")
         receipts.main()
         return
+    if not corpus.get("complete", True):
+        # A partial corpus is valuable acquisition progress and is already
+        # checkpointed under data/raw. It is not a valid public denominator:
+        # publishing it would turn runner timing into an undocumented sampling
+        # rule and could materially change every displayed channel count.
+        raise IncompleteCorpusScan(
+            f"[receipts-ngrams] {day} scan incomplete after "
+            f"{corpus['n_samples']} minute-files; raw progress banked, "
+            "public receipts left untouched"
+        )
 
     # Same-day artlist carry-forward: a supplement retrieved earlier
     # today (say, by the VPS's clean address) is not forfeited to a

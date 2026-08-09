@@ -49,7 +49,10 @@ def test_atomic_daily_lane_does_not_run_the_full_day_receipts_scan() -> None:
 def test_full_day_receipts_remain_a_separate_gated_product() -> None:
     workflow = EXTENDED.read_text(encoding="utf-8")
     assert "python -m src.receipts_ngrams --extended" in workflow
-    assert "timeout-minutes: 180" in workflow
-    assert "timeout-minutes: 155" in workflow
+    assert "timeout-minutes: 210" in workflow
+    assert "timeout-minutes: 150" in workflow
+    assert 'IGRM_RECEIPTS_DEADLINE_S: "8400"' in workflow
+    assert "Publish complete view or bank incomplete checkpoint" in workflow
+    assert "extended receipts scan incomplete; raw checkpoint was banked" in workflow
     assert "bash scripts/publish_push.sh" in workflow
     assert "persist-credentials: false" in workflow
