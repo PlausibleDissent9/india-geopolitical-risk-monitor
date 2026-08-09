@@ -1,0 +1,71 @@
+name: historical-intelligence
+
+# The archive ends at 2019-12 and does not move. A daily cron here would
+# rewrite a frozen artifact on a cadence and put a rolling timestamp on
+# something whose whole claim is that it is fixed -- which is the defect
+# freshness.py exempts this payload for in the first place.
+#
+# So the lane triggers on its OWN INPUTS changing, exactly as
+# governance/historical_intelligence_contract.json registers: the
+# contract, the implementation, or the source archive. That also means
+# the payload's pinned sha256 of all three can never drift from the files
+# they name without this lane running.
+#
+# It exists at all because a module that writes into docs/ and is run by
+# no workflow freezes at whatever value it last had while the site keeps
+# serving it. tests/test_every_payload_has_a_lane.py refuses that, and it
+# refused this payload until this file existed.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "governance/historical_intelligence_contract.json"
+      - "src/historical_intelligence.py"
+      - "docs/data/back_extension.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: igrm-historical-intelligence-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Rebuild the historical intelligence payload and downloads
+        run: python -m src.historical_intelligence
+      - name: Refuse a payload that is not exactly what the code builds
+        # The payload is citable, so "regenerate it yourself and get the
+        # same bytes" has to be true rather than aspirational. The
+        # permutation null is seeded and ties break on month, so a
+        # difference here is a real change, not run-to-run noise.
+        run: git diff --exit-code -- docs/data/historical_intelligence.json
+      - name: Stamp payload metadata and asset versions
+        run: |
+          python -m src.stamp_meta || true
+          python -m src.stamp_assets || true
+      - name: Commit and push
+        env:
+          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          # docs, not docs/data: stamp_assets rewrites docs/*.html when an
+          # asset hash changes, and staging narrower than the lane writes
+          # leaves them unstaged, which makes git pull --rebase refuse and
+          # burns the publisher's retries without ever reaching its gate.
+          git add docs data/raw || true
+          bash scripts/publish_push.sh "historical intelligence: rebuild from registered inputs"

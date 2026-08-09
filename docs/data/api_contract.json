@@ -412,6 +412,21 @@
    "stability": "stable"
   },
   {
+   "path": "data/historical_intelligence.json",
+   "format": "json",
+   "description": "Registered contract for Historical Intelligence v1: regime baselines, candidate structural breaks, and analog retrieval over the 1979-2019 back-extension archive. Everything published under this contract derives from docs/data/back_extension.json, which is a DIFFERENT construct from the live instrument (monthly event-mention shares by frozen actor-pair filters) and is never spliced into or drawn beside the 2017+ series. Registration is frozen before computation: periods, algorithm, settings, features and refusals are fixed here, not chosen after seeing results.",
+   "frozen_fields": [
+    "_meta",
+    "analog_retrieval",
+    "channel_eligibility",
+    "event_archetypes",
+    "limitations",
+    "regime_baselines",
+    "structural_breaks"
+   ],
+   "stability": "stable"
+  },
+  {
    "path": "data/history.csv",
    "format": "csv",
    "description": "The full daily series (composite and five channels) as CSV, one row per day, since 2017.",

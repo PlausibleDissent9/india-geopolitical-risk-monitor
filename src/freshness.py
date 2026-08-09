@@ -74,6 +74,13 @@ EXEMPT: dict[str, str] = {
         "null tombstone remains through at least 2026-11-06 under the API "
         "v2 deprecation window and must not be refreshed as generated prose"
     ),
+    "historical_intelligence.json": (
+        "derived from a frozen 1979-2019 archive with a registered "
+        "knowledge cutoff of 2019-12, so it cannot go stale by the passage "
+        "of time; governance/historical_intelligence_contract.json "
+        "republishes it only when the contract, the source payload or the "
+        "implementation changes, and it pins the sha256 of all three"
+    ),
     "ai_gpr_benchmark.json": (
         "a hash-pinned, one-shot registered benchmark vintage; rewriting it "
         "on a cadence would violate the public registration"

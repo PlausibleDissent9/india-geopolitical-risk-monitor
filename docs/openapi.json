@@ -981,6 +981,43 @@
     }
    }
   },
+  "/data/historical_intelligence.json": {
+   "get": {
+    "operationId": "get_data_historical_intelligence_json",
+    "description": "Registered contract for Historical Intelligence v1: regime baselines, candidate structural breaks, and analog retrieval over the 1979-2019 back-extension archive. Everything published under this contract derives from docs/data/back_extension.json, which is a DIFFERENT construct from the live instrument (monthly event-mention shares by frozen actor-pair filters) and is never spliced into or drawn beside the 2017+ series. Registration is frozen before computation: periods, algorithm, settings, features and refusals are fixed here, not chosen after seeing results.",
+    "x-igrm-stability": "stable",
+    "responses": {
+     "200": {
+      "description": "Registered contract for Historical Intelligence v1: regime baselines, candidate structural breaks, and analog retrieval over the 1979-2019 back-extension archive. Everything published under this contract derives from docs/data/back_extension.json, which is a DIFFERENT construct from the live instrument (monthly event-mention shares by frozen actor-pair filters) and is never spliced into or drawn beside the 2017+ series. Registration is frozen before computation: periods, algorithm, settings, features and refusals are fixed here, not chosen after seeing results.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "analog_retrieval",
+          "channel_eligibility",
+          "event_archetypes",
+          "limitations",
+          "regime_baselines",
+          "structural_breaks"
+         ],
+         "properties": {
+          "_meta": {},
+          "analog_retrieval": {},
+          "channel_eligibility": {},
+          "event_archetypes": {},
+          "limitations": {},
+          "regime_baselines": {},
+          "structural_breaks": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/data/history.csv": {
    "get": {
     "operationId": "get_data_history_csv",

@@ -56,7 +56,11 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
         "command": "bash scripts/gate.sh --committed",
         "push_paths_verified": 2,
     }
-    assert len(report["publishing_lanes"]) == 12
+    # 13 since 2026-08-09: historical-intelligence.yml. This count is an
+    # inventory lock -- a lane that appears without a deliberate edit here
+    # is a lane nobody reviewed, so the number is meant to be updated in
+    # the same commit that adds one, never loosened to an inequality.
+    assert len(report["publishing_lanes"]) == 13
     assert report["controls"]["publisher_credential_isolation"] == {
         "status": "pass",
         "checkout_persist_credentials": False,

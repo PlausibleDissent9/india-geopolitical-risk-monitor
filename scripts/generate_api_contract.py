@@ -41,6 +41,20 @@ UNIVERSAL_META = {
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
 # borrow from. Kept short; the full construction lives in codebook.md.
 DESCRIPTIONS = {
+    "historical_intelligence.json": "Historical Intelligence v1 over the "
+    "frozen 1979-2019 attention archive: regime baselines with their own "
+    "denominators and coverage, candidate structural breaks with a seeded "
+    "permutation null and a sensitivity sweep, and deterministic analog "
+    "retrieval with per-pair feature availability. Two of five channels "
+    "publish; the three refused channels travel inside the payload with "
+    "their reasons. Measures press attention, not events, and carries no "
+    "causal or forward-looking claim.",
+    "igrm-historical-regime-baselines.csv": "Regime baselines as CSV, one "
+    "row per channel, series and registered period, including the "
+    "unavailable rows and the reason each was refused.",
+    "igrm-historical-analogs.csv": "Analog retrieval as CSV, one row per "
+    "query month and rank, with the distance, the features used, and the "
+    "features excluded as null for that pair.",
     "alt_specs.json": "Robustness bundle: composite under alternate channel "
     "weightings, episode-detection sigma thresholds, and percentile "
     "window lengths, published beside the frozen defaults.",
