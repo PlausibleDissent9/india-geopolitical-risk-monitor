@@ -31,6 +31,7 @@ EXPECTED_LAYOUTS = {
     },
     "dashboard": {
         "analysis.html",
+        "history-lab.html",
         "atlas.html",
         "explorer.html",
         "ledger.html",
@@ -80,7 +81,10 @@ def _parse(relative: str) -> tuple[str, StructureParser]:
 
 def test_all_public_routes_have_an_owned_layout() -> None:
     routes = {str(path.relative_to(DOCS)) for path in DOCS.rglob("*.html")}
-    assert len(routes) == 40
+    # 41 since 2026-08-09: history-lab.html. An inventory lock -- a route
+    # that appears without a deliberate edit here is a route nobody
+    # reviewed, so the number is updated in the commit that adds one.
+    assert len(routes) == 41
     expected_shell = set().union(*EXPECTED_LAYOUTS.values())
     assert set(site_shell.PAGES) == expected_shell
     assert routes == expected_shell | {"index.html", "embed.html"}

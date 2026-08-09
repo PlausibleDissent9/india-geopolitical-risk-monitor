@@ -1,0 +1,183 @@
+/* History Lab.
+ *
+ * The page's job is to make a refusal as legible as a number. So an
+ * unavailable cell is styled to read as a deliberate state, never as an
+ * empty one -- a blank cell and a refused cell look identical at a glance
+ * and only one of them is honest.
+ */
+
+.lab-block {
+  margin: 0 0 2.75rem;
+}
+
+.lab-block h2 {
+  margin: 0 0 0.6rem;
+}
+
+.lab-warning {
+  border-left: 3px solid var(--accent, #c2603a);
+  padding-left: 1rem;
+}
+
+.lab-emphasis {
+  font-weight: 600;
+}
+
+/* Tables scroll inside their own wrapper; the page body must never scroll
+ * sideways on a phone. */
+.tblwrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lab-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  min-width: 44rem;
+}
+
+.lab-table th,
+.lab-table td {
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--rule, rgba(128, 128, 128, 0.28));
+  vertical-align: top;
+}
+
+.lab-table th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lab-table .num,
+.lab-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* An unavailable value is a state with a reason, not a gap. */
+.lab-unavailable {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.lab-reason {
+  display: block;
+  font-size: 0.82rem;
+  opacity: 0.8;
+  margin-top: 0.15rem;
+}
+
+.lab-nojs {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.lab-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.1rem 0;
+}
+
+.lab-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 12rem;
+  flex: 1 1 12rem;
+}
+
+.lab-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.lab-field select {
+  font: inherit;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--rule, rgba(128, 128, 128, 0.4));
+  border-radius: 4px;
+  background: var(--surface, transparent);
+  color: inherit;
+  /* 16px stops iOS Safari zooming the viewport on focus, which on a phone
+   * reads as the page jumping away from the control just tapped. */
+  font-size: 16px;
+}
+
+/* Focus must be visible for keyboard users on every interactive control,
+ * and :focus-visible alone leaves older engines with nothing. */
+.lab-field select:focus,
+.lab-field select:focus-visible {
+  outline: 2px solid var(--accent, #c2603a);
+  outline-offset: 2px;
+}
+
+.lab-result-head {
+  margin: 0.4rem 0 0.6rem;
+}
+
+.lab-links,
+.lab-limits {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.lab-links li,
+.lab-limits li {
+  margin-bottom: 0.35rem;
+}
+
+.lab-provenance {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.3rem 1rem;
+  margin: 1rem 0 0.75rem;
+  font-size: 0.88rem;
+}
+
+.lab-provenance dt {
+  font-weight: 600;
+}
+
+.lab-provenance dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .lab-table {
+    font-size: 0.86rem;
+    min-width: 38rem;
+  }
+  .lab-provenance {
+    grid-template-columns: 1fr;
+  }
+  .lab-provenance dd {
+    margin-bottom: 0.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

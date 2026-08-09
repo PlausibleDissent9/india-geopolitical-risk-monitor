@@ -57,6 +57,7 @@ PAGES: dict[str, Page] = {
     "episode.html": Page("Episode detail", "Evidence", "evidence", "atlas"),
     "explorer.html": Page("Outcomes explorer", "Research", "dashboard", "analysis"),
     "exposure.html": Page("Your exposure", "Evidence utility", "evidence", "atlas", True),
+    "history-lab.html": Page("History Lab", "Methodology", "dashboard", "methodology"),
     "history.html": Page("1979–2019 historical proxy", "Research", "article", "analysis"),
     "ledger.html": Page(
         "Global Event & Episode Ledger",

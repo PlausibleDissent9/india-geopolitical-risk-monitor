@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>History Lab &mdash; IGRM</title>
+<meta name="description" content="Interrogate the frozen 1979-2019 attention archive: registered regime baselines with their denominators, candidate structural breaks with a permutation null and a sensitivity sweep, and deterministic analog retrieval that names every feature it used and every one it could not.">
+<link rel="canonical" href="https://igrm.in/history-lab.html">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=044019ad">
+<link rel="stylesheet" href="history-lab.css">
+</head>
+<body class="site-page layout-dashboard" data-page="history-lab.html" data-root=".">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="masthead site-masthead">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
+      <a href="start.html">Start here</a>
+      <a href="products.html">Explore</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="methodology.html" class="current">Methodology</a>
+      <a href="validation.html">Validation</a>
+      <a href="analysis.html">Research</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="data-cta" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
+    </div>
+  </div>
+</header>
+<div class="site-shell page-frame">
+  <section class="page-heading" aria-labelledby="page-title">
+    <div class="page-heading-copy">
+      <p class="page-kicker">Methodology</p>
+      <h1 id="page-title">History Lab</h1>
+    </div>
+    <dl class="page-meta" aria-label="Publication context">
+      <div><dt>Data day</dt><dd data-latest-date>See latest published payload</dd></div>
+      <div><dt>Freshness</dt><dd><a href="status.html">Source-by-source status</a></dd></div>
+    </dl>
+  </section>
+  <main id="main-content" class="page-content" tabindex="-1">
+    <!--site-shell:content-start-->
+    <section class="lab-block lab-warning" aria-labelledby="what-this-is">
+    <h2 id="what-this-is">What this measures, and what it does not</h2>
+    <p class="prose role-note">Archive 1979-01 to 2019-12 · registered knowledge cutoff <b id="cutoff">2019-12</b>.</p>
+    <p class="prose">The archive is a <b>monthly event-mention share under frozen
+      actor-pair filters</b>. It measures <b>press attention</b>. It does not
+      measure conflict, risk, escalation, casualties or outcomes, and nothing on
+      this page is a forecast. A candidate break is a break in attention. An
+      analog is a similarity between two months of one measured series &mdash; it
+      carries no claim that they shared circumstances and none whatever about
+      what followed either of them.</p>
+    <p class="prose">This is also <b>a different construct from the live 2017+
+      instrument</b> and is never spliced into it or drawn beside it. Comparing a
+      1984 number here against a 2026 number on the front page is not a
+      comparison of like with like.</p>
+  </section>
+
+  <section class="lab-block" aria-labelledby="eligibility">
+    <h2 id="eligibility">Two channels of five publish</h2>
+    <p class="prose">A channel appears here only where the registered 2017&ndash;2019
+      overlap audit returned a tracking verdict. A low correlation is a
+      <b>published negative finding</b>, not a channel to repair, so the refusals
+      travel with the data rather than being dropped from it.</p>
+    <div class="tblwrap">
+      <table class="lab-table" id="eligibility-table">
+        <caption class="sr-only">Channel eligibility and the reason each refused channel is unavailable</caption>
+        <thead><tr><th scope="col">Channel</th><th scope="col">Published</th><th scope="col">Reason</th></tr></thead>
+        <tbody id="eligibility-body">
+          <tr><td>pakistan_west</td><td>yes</td><td>overlap audit verdict: tracks</td></tr>
+          <tr><td>china_east</td><td>yes</td><td>overlap audit verdict: tracks</td></tr>
+          <tr><td>us_trade</td><td>no</td><td>overlap r=0.216 over 36 months; source payload verdict DOES NOT PUBLISH (negative finding)</td></tr>
+          <tr><td>gulf_energy</td><td>no</td><td>overlap r=0.153 over 36 months; source payload verdict DOES NOT PUBLISH (negative finding)</td></tr>
+          <tr><td>shipping</td><td>no</td><td>excluded at registration: no defensible historical event analog for the channel's construct</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="lab-block" aria-labelledby="baselines">
+    <h2 id="baselines">Regime baselines</h2>
+    <p class="prose">Periods are <b>calendar decades, named by their years and
+      nothing else</b>. They are not political regimes, administrations or eras,
+      and no boundary asserts that anything changed at it &mdash; naming a period
+      after an era would be a historical claim this instrument cannot support
+      from its own artifacts. Every statistic states the denominator it was
+      computed over, and a period with fewer than 24 observed months reports
+      unavailable with its count instead of a mean over the survivors.</p>
+    <div class="tblwrap">
+      <table class="lab-table" id="baselines-table">
+        <caption class="sr-only">Regime baselines by channel, series and registered calendar period, with denominators and coverage</caption>
+        <thead><tr>
+          <th scope="col">Channel</th><th scope="col">Series</th><th scope="col">Period</th>
+          <th scope="col" class="num">Months</th><th scope="col" class="num">Observed</th>
+          <th scope="col" class="num">Coverage</th><th scope="col" class="num">Mean</th>
+          <th scope="col" class="num">Median</th><th scope="col" class="num">p90</th>
+        </tr></thead>
+        <tbody id="baselines-body">
+          <tr><td colspan="9" class="lab-nojs">This table is rendered from
+            <a href="data/historical_intelligence.json">historical_intelligence.json</a>
+            so the values on screen are the published values and cannot drift from
+            them. Without JavaScript, use
+            <a href="downloads/igrm-historical-regime-baselines.csv">the baselines CSV</a>,
+            which carries the same rows including the unavailable ones and their
+            reasons.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="lab-block" aria-labelledby="breaks">
+    <h2 id="breaks">Candidate structural breaks</h2>
+    <p class="prose">The scan takes the largest absolute Welch <i>t</i> between the
+      two segments either side of every admissible split, against a
+      <b>seeded permutation null</b> that shuffles the values to destroy time
+      ordering while keeping their distribution. It is a descriptive scan, not a
+      change-point model with a stated generative assumption.</p>
+    <p class="prose lab-emphasis">The sweep is the honest part. A single break
+      month reported alone reads as a finding; the same month reported beside the
+      settings that move it reads as what it is. Where the candidate moves with
+      the minimum segment length, this page says so.</p>
+    <div id="breaks-body">
+      <p class="lab-nojs">Rendered from the published payload. Without
+        JavaScript, the candidate breaks, their statistics, p-values and the full
+        sensitivity sweep are in
+        <a href="data/historical_intelligence.json">historical_intelligence.json</a>
+        under <code>structural_breaks</code>.</p>
+    </div>
+  </section>
+
+  <section class="lab-block" aria-labelledby="analogs">
+    <h2 id="analogs">Analog retrieval</h2>
+    <p class="prose">Choose a channel and a month. The lab returns the nearest
+      other months in the same channel by standardised distance over three
+      registered features, and for every match it names <b>which features it
+      used and which were null for that pair</b>. A null is never imputed and
+      never replaced by zero; a pair with fewer than two usable features is
+      refused rather than guessed. Months within six months of the query are
+      excluded because adjacency is trivially similar.</p>
+    <p class="prose lab-emphasis">A near neighbour is a month whose measured
+      attention looked similar. It is not a precedent, not a cause, and says
+      nothing about what happened next in either month.</p>
+
+    <form class="lab-controls" id="analog-form">
+      <div class="lab-field">
+        <label for="analog-channel">Channel</label>
+        <select id="analog-channel" name="channel"></select>
+      </div>
+      <div class="lab-field">
+        <label for="analog-month">Month</label>
+        <select id="analog-month" name="month"></select>
+      </div>
+    </form>
+
+    <div id="analog-result" role="region" aria-live="polite" aria-atomic="false">
+      <p class="lab-nojs">The analog explorer needs JavaScript. Every query and
+        its result is also published as a static row in
+        <a href="downloads/igrm-historical-analogs.csv">the analogs CSV</a>
+        &mdash; one row per query month and rank, with the distance, the features
+        used and the features excluded as null.</p>
+    </div>
+  </section>
+
+  <section class="lab-block" aria-labelledby="archetypes">
+    <h2 id="archetypes">Event archetypes</h2>
+    <p class="prose">An archetype is attached to a month <b>only where a
+      human-authored anchor was registered</b>. Nothing here is machine-labelled.
+      A month with no registered anchor reports unavailable and is never given an
+      inferred one, and an anchor for a channel that does not publish is retained
+      for the record and marked unavailable with that channel's reason.</p>
+    <div class="tblwrap">
+      <table class="lab-table" id="archetypes-table">
+        <caption class="sr-only">Registered human-authored anchors and their availability</caption>
+        <thead><tr><th scope="col">Month</th><th scope="col">Channel</th><th scope="col">Archetype</th><th scope="col">Available</th></tr></thead>
+        <tbody id="archetypes-body">
+          <tr><td colspan="4" class="lab-nojs">Rendered from the published
+            payload; see <code>event_archetypes</code> in
+            <a href="data/historical_intelligence.json">historical_intelligence.json</a>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="lab-block" aria-labelledby="provenance">
+    <h2 id="provenance">Provenance and downloads</h2>
+    <p class="prose">The payload pins the SHA-256 of the three things it was
+      built from &mdash; its registered contract, the source archive and the
+      implementation &mdash; so a reader can regenerate it and get the same bytes.
+      The permutation null is seeded and ties break on ascending month, so the
+      same query is the same answer on every run and platform.</p>
+    <ul class="lab-links">
+      <li><a href="data/historical_intelligence.json">historical_intelligence.json</a> &mdash; the citable machine payload</li>
+      <li><a href="downloads/igrm-historical-regime-baselines.csv">Regime baselines (CSV)</a> &mdash; including unavailable rows and their reasons</li>
+      <li><a href="downloads/igrm-historical-analogs.csv">Analog retrieval (CSV)</a> &mdash; every query month, rank, distance and feature availability</li>
+      <li><a href="history.html">The 1979&ndash;2019 archive itself</a></li>
+      <li><a href="codebook.html#historical-intelligence">Codebook entry</a></li>
+    </ul>
+    <dl class="lab-provenance" id="provenance-list">
+      <dt>Contract</dt><dd id="prov-contract">&mdash;</dd>
+      <dt>Source archive</dt><dd id="prov-source">&mdash;</dd>
+      <dt>Implementation</dt><dd id="prov-impl">&mdash;</dd>
+    </dl>
+    <p class="prose role-note">This payload is exempt from the daily freshness
+      window on purpose: it derives from a frozen archive with a registered
+      2019-12 cutoff, so it cannot go stale by the passage of time. It is
+      republished only when its contract, its source or its implementation
+      changes.</p>
+  </section>
+
+  <section class="lab-block" aria-labelledby="limits">
+    <h2 id="limits">Limitations</h2>
+    <ul class="lab-limits" id="limits-list">
+      <li>This measures press attention in a monthly event-mention share, not conflict, risk, escalation or outcome.</li>
+      <li>Two of five channels publish. The other three are refused on registered grounds and the refusal is part of the output.</li>
+      <li>A candidate break is a property of the series under a declared descriptive scan; a different algorithm would place breaks differently, which is why the sensitivity sweep is published beside it.</li>
+      <li>Analog distance is a similarity over three registered features of one series. It is not a claim of comparable circumstances and it is not evidence about what followed.</li>
+      <li>The trailing-percentile feature is undefined for the first 120 months, so early-archive analogs rest on fewer features, and each result reports how many it used.</li>
+    </ul>
+  </section>
+  <noscript><p class="chart-note"><b>Static fallback:</b> every value on this page is read from <a href="data/historical_intelligence.json">historical_intelligence.json</a> rather than restated in the markup, so nothing here can drift from the published payload. Without JavaScript, read that payload directly, or the <a href="downloads/igrm-historical-regime-baselines.csv">baselines CSV</a> and <a href="downloads/igrm-historical-analogs.csv">analogs CSV</a>, which carry the same rows including every unavailable one and its reason.</p></noscript>
+  <script src="history-lab.js"></script>
+    <!--site-shell:content-end-->
+  </main>
+  <footer class="site-footer">
+    <div class="footer-context">
+      <!--site-shell:footer-start-->
+      <p>Association, not causation. Not investment advice.</p>
+      <!--site-shell:footer-end-->
+    </div>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="./">India Geopolitical Risk Monitor</a>
+        <p>Public research instrument · India-specific press salience</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="products.html">Explore IGRM</a>
+        <a href="atlas.html">Atlas</a>
+        <a href="maps.html">Maps</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="validation.html">Validation</a>
+        <a href="history.html">1979&ndash;2019 history</a>
+        <a href="data.html">Data</a>
+        <a href="corrections.html">Corrections</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="site.js?v=88fb47ea"></script>
+</body>
+</html>

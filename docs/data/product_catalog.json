@@ -71,32 +71,25 @@
  ],
  "routes": [
   {
-   "path": "index.html",
-   "label": "Current measure",
-   "pillar_id": "core",
+   "path": "analysis.html",
+   "label": "Analysis",
+   "pillar_id": "observatory",
    "status": "live",
-   "purpose": "The latest seven-day headline, channel decomposition, historical tape and research evidence."
+   "purpose": "Market comparisons, chokepoints, seasonality, robustness and negative-result surfaces."
   },
   {
-   "path": "start.html",
-   "label": "Start here",
-   "pillar_id": "core",
+   "path": "api.html",
+   "label": "API contract",
+   "pillar_id": "evidence_engine",
    "status": "live",
-   "purpose": "A bounded orientation to what the instrument measures, how to read it and what it cannot answer."
+   "purpose": "The frozen machine interface, deprecation rules, OpenAPI document and dataset datasheet."
   },
   {
-   "path": "receipts.html",
-   "label": "Evidence receipts",
-   "pillar_id": "core",
-   "status": "live",
-   "purpose": "Latest-day query-matched evidence representatives, lane status, denominators and source composition."
-  },
-  {
-   "path": "vintages.html",
-   "label": "Point-in-time vintages",
-   "pillar_id": "core",
-   "status": "live",
-   "purpose": "Reconstruct what the published series showed at earlier publication times without hindsight leakage."
+   "path": "ask.html",
+   "label": "Ask IGRM",
+   "pillar_id": "research_copilot",
+   "status": "experimental",
+   "purpose": "A deliberately bounded evidence-access prototype, not an unrestricted or authoritative chatbot."
   },
   {
    "path": "atlas.html",
@@ -106,11 +99,95 @@
    "purpose": "The integrated public hub for geography, detected episodes, sector salience, synthetic exposure fingerprints and bounded scenario compilation."
   },
   {
-   "path": "world.html",
-   "label": "World State Matrix",
+   "path": "break.html",
+   "label": "Break this index",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "Falsification questions, reproducible probes and the standard for publishing a serious failure."
+  },
+  {
+   "path": "codebook.html",
+   "label": "Codebook",
+   "pillar_id": "evidence_engine",
+   "status": "live",
+   "purpose": "Definitions, fields, units, construction choices and known limitations."
+  },
+  {
+   "path": "corrections.html",
+   "label": "Corrections",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "The dated public record of errors, withdrawals, restatements and methodological corrections."
+  },
+  {
+   "path": "data.html",
+   "label": "Data library",
+   "pillar_id": "evidence_engine",
+   "status": "live",
+   "purpose": "Core downloadable files, caveats, citation instructions and the exhaustive API contract."
+  },
+  {
+   "path": "divergence.html",
+   "label": "Divergence register",
+   "pillar_id": "benchmark_lab",
+   "status": "live",
+   "purpose": "Permanent comparator disagreements with exact samples, receipts and claim limits."
+  },
+  {
+   "path": "dna.html",
+   "label": "India Exposure DNA",
+   "pillar_id": "atlas",
+   "status": "public_draft",
+   "purpose": "A signed synthetic two-vintage fingerprint that preserves direct exposure units, declared-universe coverage, freshness and explicit gaps without a scalar score."
+  },
+  {
+   "path": "embed.html",
+   "label": "Embeddable charts",
+   "pillar_id": "distribution",
+   "status": "live",
+   "purpose": "A compact public chart surface for external sites, with each series and unit explicitly labelled."
+  },
+  {
+   "path": "episode.html",
+   "label": "Episode dossiers",
    "pillar_id": "atlas",
    "status": "live",
-   "purpose": "A complete 247-country/area by fourteen-domain coverage matrix that publishes real observations and every unavailable cell without a world risk score."
+   "purpose": "A directory and detail view for detected episodes and their associated market-context cells."
+  },
+  {
+   "path": "explorer.html",
+   "label": "Outcomes explorer",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "Historical episode-outcome cells and registered divergence evidence, labelled as association."
+  },
+  {
+   "path": "exposure.html",
+   "label": "Sector exposure",
+   "pillar_id": "atlas",
+   "status": "live",
+   "purpose": "A user-selected sector view over current channel readings, evidence and transparent computation."
+  },
+  {
+   "path": "history-lab.html",
+   "label": "History Lab",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "Registered baselines with their denominators, candidate structural breaks with the settings that move them, and deterministic analog retrieval over the frozen 1979-2019 archive."
+  },
+  {
+   "path": "history.html",
+   "label": "Historical proxy",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "The 1979–2019 newspaper attention proxy and its explicit comparability boundary."
+  },
+  {
+   "path": "index.html",
+   "label": "Current measure",
+   "pillar_id": "core",
+   "status": "live",
+   "purpose": "The latest seven-day headline, channel decomposition, historical tape and research evidence."
   },
   {
    "path": "ledger.html",
@@ -127,25 +204,53 @@
    "purpose": "India-partner and state-level press-recorded event geography, with explicit source and boundary limits."
   },
   {
-   "path": "exposure.html",
-   "label": "Sector exposure",
-   "pillar_id": "atlas",
+   "path": "methodology.html",
+   "label": "Methodology",
+   "pillar_id": "institution",
    "status": "live",
-   "purpose": "A user-selected sector view over current channel readings, evidence and transparent computation."
+   "purpose": "The complete construction, evaluation, limitations and versioned change record."
   },
   {
-   "path": "episode.html",
-   "label": "Episode dossiers",
-   "pillar_id": "atlas",
+   "path": "notes.html",
+   "label": "Weekly notes",
+   "pillar_id": "observatory",
    "status": "live",
-   "purpose": "A directory and detail view for detected episodes and their associated market-context cells."
+   "purpose": "Versioned public research notes derived from the instrument and its evidence."
   },
   {
-   "path": "dna.html",
-   "label": "India Exposure DNA",
-   "pillar_id": "atlas",
+   "path": "products.html",
+   "label": "Explore IGRM",
+   "pillar_id": "institution",
+   "status": "live",
+   "purpose": "The authoritative directory of every user-facing product and its present maturity boundary."
+  },
+  {
+   "path": "receipts.html",
+   "label": "Evidence receipts",
+   "pillar_id": "core",
+   "status": "live",
+   "purpose": "Latest-day query-matched evidence representatives, lane status, denominators and source composition."
+  },
+  {
+   "path": "replay.html",
+   "label": "Knowledge replay",
+   "pillar_id": "evidence_engine",
    "status": "public_draft",
-   "purpose": "A signed synthetic two-vintage fingerprint that preserves direct exposure units, declared-universe coverage, freshness and explicit gaps without a scalar score."
+   "purpose": "A signed synthetic bitemporal replay demonstration that prevents later revisions from entering an earlier knowledge cutoff."
+  },
+  {
+   "path": "research/history.html",
+   "label": "Historical research note",
+   "pillar_id": "observatory",
+   "status": "live",
+   "purpose": "The focused research interpretation of the historical attention proxy."
+  },
+  {
+   "path": "sensors.html",
+   "label": "Sensor Fusion",
+   "pillar_id": "evidence_engine",
+   "status": "public_draft",
+   "purpose": "A signed synthetic eight-lane matrix that collates unlike evidence without numeric blending and names every missing lane."
   },
   {
    "path": "shock.html",
@@ -162,123 +267,11 @@
    "purpose": "The OGES 0.1 profile, conformance boundary, schemas and adversarial test vectors."
   },
   {
-   "path": "replay.html",
-   "label": "Knowledge replay",
-   "pillar_id": "evidence_engine",
-   "status": "public_draft",
-   "purpose": "A signed synthetic bitemporal replay demonstration that prevents later revisions from entering an earlier knowledge cutoff."
-  },
-  {
-   "path": "sensors.html",
-   "label": "Sensor Fusion",
-   "pillar_id": "evidence_engine",
-   "status": "public_draft",
-   "purpose": "A signed synthetic eight-lane matrix that collates unlike evidence without numeric blending and names every missing lane."
-  },
-  {
-   "path": "data.html",
-   "label": "Data library",
-   "pillar_id": "evidence_engine",
+   "path": "start.html",
+   "label": "Start here",
+   "pillar_id": "core",
    "status": "live",
-   "purpose": "Core downloadable files, caveats, citation instructions and the exhaustive API contract."
-  },
-  {
-   "path": "api.html",
-   "label": "API contract",
-   "pillar_id": "evidence_engine",
-   "status": "live",
-   "purpose": "The frozen machine interface, deprecation rules, OpenAPI document and dataset datasheet."
-  },
-  {
-   "path": "viewer.html",
-   "label": "Data viewer",
-   "pillar_id": "evidence_engine",
-   "status": "live",
-   "purpose": "A bounded browser for every contract-listed JSON endpoint."
-  },
-  {
-   "path": "codebook.html",
-   "label": "Codebook",
-   "pillar_id": "evidence_engine",
-   "status": "live",
-   "purpose": "Definitions, fields, units, construction choices and known limitations."
-  },
-  {
-   "path": "workbench.html",
-   "label": "Research workbench",
-   "pillar_id": "research_copilot",
-   "status": "live",
-   "purpose": "Browser-side exact extracts with input hashes and a citation-bearing manifest."
-  },
-  {
-   "path": "ask.html",
-   "label": "Ask IGRM",
-   "pillar_id": "research_copilot",
-   "status": "experimental",
-   "purpose": "A deliberately bounded evidence-access prototype, not an unrestricted or authoritative chatbot."
-  },
-  {
-   "path": "analysis.html",
-   "label": "Analysis",
-   "pillar_id": "observatory",
-   "status": "live",
-   "purpose": "Market comparisons, chokepoints, seasonality, robustness and negative-result surfaces."
-  },
-  {
-   "path": "explorer.html",
-   "label": "Outcomes explorer",
-   "pillar_id": "observatory",
-   "status": "live",
-   "purpose": "Historical episode-outcome cells and registered divergence evidence, labelled as association."
-  },
-  {
-   "path": "history.html",
-   "label": "Historical proxy",
-   "pillar_id": "observatory",
-   "status": "live",
-   "purpose": "The 1979–2019 newspaper attention proxy and its explicit comparability boundary."
-  },
-  {
-   "path": "research/history.html",
-   "label": "Historical research note",
-   "pillar_id": "observatory",
-   "status": "live",
-   "purpose": "The focused research interpretation of the historical attention proxy."
-  },
-  {
-   "path": "notes.html",
-   "label": "Weekly notes",
-   "pillar_id": "observatory",
-   "status": "live",
-   "purpose": "Versioned public research notes derived from the instrument and its evidence."
-  },
-  {
-   "path": "validation.html",
-   "label": "Evaluation record",
-   "pillar_id": "benchmark_lab",
-   "status": "live",
-   "purpose": "Episode detection, baselines, robustness, comparisons and disclosed unfavorable diagnostics."
-  },
-  {
-   "path": "vs-gpr.html",
-   "label": "GPR comparison",
-   "pillar_id": "benchmark_lab",
-   "status": "live",
-   "purpose": "A registered, bounded comparison with AI-GPR India, including uncertainty and divergences."
-  },
-  {
-   "path": "divergence.html",
-   "label": "Divergence register",
-   "pillar_id": "benchmark_lab",
-   "status": "live",
-   "purpose": "Permanent comparator disagreements with exact samples, receipts and claim limits."
-  },
-  {
-   "path": "methodology.html",
-   "label": "Methodology",
-   "pillar_id": "institution",
-   "status": "live",
-   "purpose": "The complete construction, evaluation, limitations and versioned change record."
+   "purpose": "A bounded orientation to what the instrument measures, how to read it and what it cannot answer."
   },
   {
    "path": "status.html",
@@ -288,32 +281,46 @@
    "purpose": "Freshness and reliability for selected core publication lanes and sources."
   },
   {
-   "path": "corrections.html",
-   "label": "Corrections",
-   "pillar_id": "institution",
+   "path": "validation.html",
+   "label": "Evaluation record",
+   "pillar_id": "benchmark_lab",
    "status": "live",
-   "purpose": "The dated public record of errors, withdrawals, restatements and methodological corrections."
+   "purpose": "Episode detection, baselines, robustness, comparisons and disclosed unfavorable diagnostics."
   },
   {
-   "path": "break.html",
-   "label": "Break this index",
-   "pillar_id": "institution",
+   "path": "viewer.html",
+   "label": "Data viewer",
+   "pillar_id": "evidence_engine",
    "status": "live",
-   "purpose": "Falsification questions, reproducible probes and the standard for publishing a serious failure."
+   "purpose": "A bounded browser for every contract-listed JSON endpoint."
   },
   {
-   "path": "products.html",
-   "label": "Explore IGRM",
-   "pillar_id": "institution",
+   "path": "vintages.html",
+   "label": "Point-in-time vintages",
+   "pillar_id": "core",
    "status": "live",
-   "purpose": "The authoritative directory of every user-facing product and its present maturity boundary."
+   "purpose": "Reconstruct what the published series showed at earlier publication times without hindsight leakage."
   },
   {
-   "path": "embed.html",
-   "label": "Embeddable charts",
-   "pillar_id": "distribution",
+   "path": "vs-gpr.html",
+   "label": "GPR comparison",
+   "pillar_id": "benchmark_lab",
    "status": "live",
-   "purpose": "A compact public chart surface for external sites, with each series and unit explicitly labelled."
+   "purpose": "A registered, bounded comparison with AI-GPR India, including uncertainty and divergences."
+  },
+  {
+   "path": "workbench.html",
+   "label": "Research workbench",
+   "pillar_id": "research_copilot",
+   "status": "live",
+   "purpose": "Browser-side exact extracts with input hashes and a citation-bearing manifest."
+  },
+  {
+   "path": "world.html",
+   "label": "World State Matrix",
+   "pillar_id": "atlas",
+   "status": "live",
+   "purpose": "A complete 247-country/area by fourteen-domain coverage matrix that publishes real observations and every unavailable cell without a world risk score."
   }
  ],
  "protected_routes": [
@@ -331,6 +338,7 @@
   "episode.html",
   "explorer.html",
   "exposure.html",
+  "history-lab.html",
   "history.html",
   "index.html",
   "ledger.html",
