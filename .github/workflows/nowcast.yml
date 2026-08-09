@@ -26,7 +26,23 @@ concurrency:
 jobs:
   nowcast:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 45, raised from 30 on 2026-08-10 after #79 was cancelled at the cap.
+    # Measured from that run's own steps, and it was not a sick run:
+    #
+    #   Compute provisional today-so-far    9.9 min
+    #   Commit nowcast payload             19.8 min, cancelled at 30
+    #
+    # The commit step is publish_push.sh, which runs the full committed CI
+    # gate inside itself -- ~20 minutes on a hosted runner tonight, against
+    # the ~5.2 the lane caps were originally budgeted for. 9.9 + 20 is the
+    # whole cap with nothing left for the push, so this lane could no
+    # longer finish a healthy run.
+    #
+    # 45 leaves ~15 minutes of headroom over the measured 30. It is a
+    # bigger cap for a bigger gate, not a fix: see the note in morning.yml
+    # about whether nine lanes each re-running a 20-minute suite is the
+    # architecture we want.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

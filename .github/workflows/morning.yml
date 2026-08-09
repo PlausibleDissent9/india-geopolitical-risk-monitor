@@ -86,7 +86,44 @@ jobs:
     #
     # 45, not 50: a 05:33 shot then ends by 06:18 and still clears the
     # 06:21 daily cron, which is the property the cap exists to protect.
-    timeout-minutes: 45
+    #
+    # 2026-08-10: THE GATE TERM MOVED AGAIN, and 45 no longer covers it.
+    # Measured, rather than estimated:
+    #
+    #   gate.sh --committed, this laptop        7m32s
+    #   multilingual-backfill #78 "Commit
+    #     progress" on a hosted runner, GREEN   24.1 min
+    #   nowcast #79 killed at its 30-min cap
+    #     with 19.8 min inside the same step
+    #
+    # A 2-core hosted runner is roughly 2.5-3x this laptop on a CPU-bound
+    # pytest, so ~20 minutes is ONE gate, not a retry storm. The suite grew
+    # today -- scenario proof, n-ary trace, page anchors, no-JS,
+    # cross-runtime parity, analytical clause -- and every lane that calls
+    # publish_push.sh pays the whole of it inside its own cap.
+    #
+    #   heal (--heal 5)          11.0 - 11.1 min   measured #26, #27
+    #   pipeline (run_daily)     14.9 - 20.8 min   measured #27, #26
+    #   gate inside the push     ~20 min           measured tonight
+    #   commit / rebase / push   ~1 min
+    #                            ---------------
+    #   worst case                ~53 min against a 45-minute cap
+    #
+    # 60. That breaks the 06:18 property, and the trade is deliberate: a
+    # 05:33 shot may now still be running when the 06:21 daily cron fires.
+    # It does not race it -- both workflows share the igrm-pipeline-v3
+    # concurrency group with cancel-in-progress: false, so daily QUEUES
+    # behind morning and runs immediately after. A daily lane that starts
+    # fifteen minutes late is a cost. A morning contract killed mid-push
+    # every day is a missed promise, and that is what 45 now buys.
+    #
+    # The right fix is a cheaper gate, not a bigger cap, and that is not
+    # mine to decide alone: the in-lane gate deliberately runs exactly what
+    # CI runs, coverage included, because a gate that differs from CI is
+    # the defect scripts/gate.sh exists to prevent. Raising the number
+    # keeps the promise tonight; someone should decide whether nine lanes
+    # each re-running a 20-minute suite is the architecture we want.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
