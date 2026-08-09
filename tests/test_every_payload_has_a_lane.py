@@ -118,6 +118,35 @@ def test_shares_dependencies_run_in_the_right_order():
         f"dependency order broken in daily.yml: {order}")
 
 
+def _self_stamps(module: str) -> bool:
+    """True if the module carries the universal _meta fields itself.
+
+    Such a module does not depend on the post-run sweep reaching it, so
+    its position relative to stamp_meta does not decide whether its
+    download honours the codebook's promise.
+    """
+    path = SRC / f"{module}.py"
+    if not path.exists():
+        return False
+    return "universal_fields(" in path.read_text(encoding="utf-8")
+
+
+def test_a_self_stamping_module_really_carries_the_fields():
+    """Guard the exemption above: `universal_fields(` in the source is
+    only evidence if calling it actually produces the promised keys.
+
+    Without this, renaming or gutting universal_fields would silently
+    widen the exemption to every module that still mentions it.
+    """
+    from src import stamp_meta
+    fields = stamp_meta.universal_fields("assistant_answers.json")
+    for key in ("license", "citation", "codebook", "source"):
+        assert key in fields, (
+            f"stamp_meta.universal_fields no longer supplies {key!r}, so "
+            "self-stamping modules are not actually exempt from the "
+            "post-run sweep")
+
+
 def test_stamp_meta_runs_after_every_payload_writer():
     """Placement, not intent, is what makes 'stamp everything' true.
 
@@ -141,7 +170,23 @@ def test_stamp_meta_runs_after_every_payload_writer():
     after = [m for m in order[idx + 1:] if m in writers]
     # audit and make_datapack read/verify rather than publish payloads.
     after = [m for m in after if m not in ("audit", "make_datapack")]
+    # A module that stamps ITSELF may legitimately run after the sweep.
+    # freshness, vintages and nowcast already did -- each writes after
+    # its own last chance and calls stamp_meta.universal_fields() to
+    # carry the promised fields regardless of step order. Derived by
+    # reading the modules rather than by listing their names here,
+    # because a hand-kept exemption list is the second copy this repo
+    # keeps getting bitten by.
+    #
+    # assistant_answers joined them on 2026-08-09 for the opposite
+    # reason to the others: it records a source_sha256 of the payloads it
+    # cites, so it MUST run after the last rewrite of those payloads --
+    # which is this very step. See
+    # tests/test_answer_hashes_are_stamped_first.py.
+    after = [m for m in after if not _self_stamps(m)]
     assert not after, (
         f"these payload writers run AFTER stamp_meta: {after}. Their "
         "output ships without the licence and citation the codebook "
-        "promises every download carries.")
+        "promises every download carries. A module that must run this "
+        "late should call stamp_meta.universal_fields() itself, the way "
+        "freshness, vintages, nowcast and assistant_answers do.")
