@@ -1096,6 +1096,35 @@
     }
    }
   },
+  "/data/max_state_join_demo.json": {
+   "get": {
+    "operationId": "get_data_max_state_join_demo_json",
+    "description": "Deterministic synthetic certificate that one signed release read by the exposure traversal, sensor fusion, shock compiler and evidence output engines yields one governed state: one release identity, no object-identity collision, one rights position and one temporal boundary.",
+    "x-igrm-stability": "stable",
+    "responses": {
+     "200": {
+      "description": "Deterministic synthetic certificate that one signed release read by the exposure traversal, sensor fusion, shock compiler and evidence output engines yields one governed state: one release identity, no object-identity collision, one rights position and one temporal boundary.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "join",
+          "synthetic_labels"
+         ],
+         "properties": {
+          "_meta": {},
+          "join": {},
+          "synthetic_labels": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/data/monthly.csv": {
    "get": {
     "operationId": "get_data_monthly_csv",
@@ -3376,6 +3405,47 @@
           "$schema": {},
           "$id": {},
           "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "$defs": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/max-state-join.schema.json": {
+   "get": {
+    "operationId": "get_schemas_max_state_join_schema_json",
+    "description": "JSON Schema for a cross-engine governed-state join: a sealed certificate that every joined Max engine reports one release identity, no identifier bound to two content digests, one rights position per source and one temporal boundary. Its evidence class and licensed maturity level are computed, never declared.",
+    "x-igrm-stability": "static synthetic foundation 1.0.0",
+    "responses": {
+     "200": {
+      "description": "JSON Schema for a cross-engine governed-state join: a sealed certificate that every joined Max engine reports one release identity, no identifier bound to two content digests, one rights position per source and one temporal boundary. Its evidence class and licensed maturity level are computed, never declared.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "description",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "$defs"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "description": {},
           "type": {},
           "additionalProperties": {},
           "required": {},

@@ -6,6 +6,8 @@ data/raw/derived_returns.csv
 __pycache__/
 *.pyc
 .pytest_cache/
+.mypy_cache/
+.coverage
 .venv/
 .DS_Store
 ngram_*.log

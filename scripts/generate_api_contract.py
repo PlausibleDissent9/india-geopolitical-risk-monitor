@@ -205,6 +205,16 @@ PUBLIC_STATIC_JSON: dict[str, dict[str, str]] = {
         ),
         "stability": "static synthetic foundation 1.0.0",
     },
+    "schemas/max-state-join.schema.json": {
+        "description": (
+            "JSON Schema for a cross-engine governed-state join: a sealed "
+            "certificate that every joined Max engine reports one release "
+            "identity, no identifier bound to two content digests, one rights "
+            "position per source and one temporal boundary. Its evidence class "
+            "and licensed maturity level are computed, never declared."
+        ),
+        "stability": "static synthetic foundation 1.0.0",
+    },
     "schemas/universe-frame.schema.json": {
         "description": "OGES 0.1.0 JSON Schema for an enumerated source-universe frame.",
         "stability": "static versioned public draft 0.1.0",

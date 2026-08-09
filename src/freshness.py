@@ -108,6 +108,18 @@ EXEMPT: dict[str, str] = {
         "a deterministic synthetic bounded-scenario conformance demonstration, not "
         "a live disruption or forecasting lane; its fixed time is part of the public test vector"
     ),
+    "evidence_outputs_demo.json": (
+        "a deterministic synthetic four-product conformance demonstration, not a "
+        "live output lane; its fixed time is part of the public test vector. "
+        "Listed 2026-08-09: it had shipped unlisted since 2026-08-08 and was "
+        "counting as fresh only because its fixed timestamp had not yet aged past "
+        "the default limit, so the whole daily surface would have gone STALE on a "
+        "test vector that is supposed to never change"
+    ),
+    "max_state_join_demo.json": (
+        "a deterministic synthetic cross-engine agreement certificate, not a live "
+        "lane; its fixed time is part of the public test vector"
+    ),
     "notes.json": "the author's weekly writing; cadence is human",
     "note_latest.json": "the author's weekly writing; cadence is human",
     "episodes.json": (

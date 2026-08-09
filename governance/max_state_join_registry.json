@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0.0",
+  "effective": "2026-08-09",
+  "default_policy": "deny",
+  "join": {
+    "method_id": "method:igrm.max_state_join",
+    "version": "1.0.0",
+    "implementation_path": "src/max_state_join.py",
+    "implementation_sha256": "f77df3a5984bede03897e07ce2ed621908c6dfb8c0988ea25119b5f90492d9bd",
+    "effective": "2026-08-09",
+    "superseded_on": null,
+    "output_schema_id": "https://igrm.in/schemas/max-state-join.schema.json",
+    "output_schema_version": "1.0.0",
+    "output_schema_path": "schemas/max-state-join.schema.json",
+    "output_schema_sha256": "bd0bcc5551a6c550b3abdeaa6977a5d63947352f0b3d12d8186d7eb05e3c9246",
+    "common_schema_path": "schemas/common.schema.json",
+    "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+    "engines": [
+      {
+        "engine_id": "exposure_traversal",
+        "object_type": "exposure_traversal",
+        "method_id": "method:igrm.exposure_graph_projection",
+        "method_version": "1.0.0",
+        "required": true,
+        "carries_release_identity": true
+      },
+      {
+        "engine_id": "sensor_fusion",
+        "object_type": "sensor_fusion",
+        "method_id": "method:igrm.sensor_fusion",
+        "method_version": "1.0.0",
+        "required": true,
+        "carries_release_identity": true
+      },
+      {
+        "engine_id": "shock_compilation",
+        "object_type": "shock_compilation",
+        "method_id": "method:igrm.shock_compiler",
+        "method_version": "1.0.0",
+        "required": true,
+        "carries_release_identity": true
+      },
+      {
+        "engine_id": "evidence_output_set",
+        "object_type": "evidence_output_set",
+        "method_id": "method:igrm.evidence_outputs",
+        "method_version": "1.0.0",
+        "required": true,
+        "carries_release_identity": true
+      }
+    ],
+    "maturity_policy": {
+      "unapproved_rights": "L0",
+      "synthetic_nonproduction": "L0",
+      "observed": "L1"
+    },
+    "synthetic_access_basis_markers": [
+      "synthetic",
+      "fixture",
+      "test_authorization"
+    ],
+    "policy_notes": [
+      "The maturity policy is a ceiling, not an award. Reaching the ceiling for an evidence class licenses nothing beyond that level's description in IGRM_MAX_SPEC.md.",
+      "'observed' caps at L1 because agreement across engines proves that rights-approved official observations were composed without contradiction; it does not audit a crosswalk, so it cannot license the L2 bounded dependency map.",
+      "Advancing any class above its registered ceiling requires the corresponding external study in IGRM_MAX_SPEC.md Part V, not a further engine.",
+      "The synthetic access-basis markers exist so that a fixture-authorised source can never be mistaken for an approved public source; a marker match caps the whole world at synthetic_nonproduction."
+    ]
+  }
+}

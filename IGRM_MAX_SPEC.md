@@ -115,6 +115,34 @@ national exposure claim. The ten-week objective is one exceptional vertical that
 can credibly advance through L2 and, only where data support it, a partial L3—not
 a decorative whole-economy twin assembled from invented edges.
 
+The level is **computed, never declared**. `method:igrm.max_state_join@1.0.0`
+derives the evidence class of a joined world from the rights position of every
+source the release seals, and reads the licensed level out of
+`governance/max_state_join_registry.json`. The rule is monotone downward: one
+unapproved source makes the world unpublishable, and one synthetic access basis
+caps the whole world at `synthetic_nonproduction`, which is L0 however many
+engines composed over it. `observed` stops at L1, because engine agreement audits
+no crosswalk. No level above a class's registered ceiling is reachable by adding
+another engine; it is reachable only through the corresponding study in Part V.
+
+#### One governed state
+
+Engines that each validate their own inputs impeccably can still describe
+different worlds under the same identifiers. On 2026-08-08 the sensor-fusion and
+evidence-output conformance artifacts both named release
+`rel:oges.fixture.2026-08-08` and event `evt:oges.fixture.policy.001` while
+carrying different release records, different event records and different rights
+registries. Every engine gate was green; no gate existed that could have gone red.
+
+A Max engine output is therefore not admissible on its own. Before any composite
+reading, `src/max_state_join.py` must certify that every joined engine reports
+one release identity including governance registry digests, that no identifier is
+bound to two different content digests, that one source carries one rights
+decision, that no knowledge cutoff postdates release generation, and that two
+engines never count one population differently. Each is a refusal with a stable
+code, not a warning. Agreement is not accuracy: it proves the contract composes,
+never that a real dependency, observation or exposure exists.
+
 ### The atomic promise
 
 No public analytical claim renders unless its complete machine-validated

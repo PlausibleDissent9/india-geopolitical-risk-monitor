@@ -66,6 +66,7 @@ def test_versioned_oges_profile_and_schemas_are_first_class_endpoints():
                 "schemas/shock-scenario.schema.json",
                 "schemas/shock-compilation.schema.json",
                 "schemas/evidence-output-set.schema.json",
+                "schemas/max-state-join.schema.json",
             }
             else "static versioned public draft 0.1.0"
         )

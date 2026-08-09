@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "agreement_is_not_accuracy": true,
+    "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+    "codebook": "https://igrm.in/standard.html",
+    "date": "2026-08-09",
+    "forecast_probability_causation_advice_or_scalar_score": false,
+    "generated": "2026-08-09T09:00:00Z",
+    "license": "CC BY 4.0",
+    "method": "method:igrm.max_state_join@1.0.0",
+    "numeric_fusion_averaging_or_unit_conversion_performed": false,
+    "production_release": false,
+    "real_event_entity_source_right_exposure_or_adoption_claims": false,
+    "schema": "igrm-max-state-join-demo-v1",
+    "scope": "synthetic_test_vector_only",
+    "source": "https://igrm.in/data/max_state_join_demo.json",
+    "what": "Deterministic synthetic certificate that one signed release read by the exposure traversal, sensor fusion, shock compiler and evidence output engines yields one governed state: one release identity, no object-identity collision, one rights position and one temporal boundary."
+  },
+  "join": {
+    "contract": {
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "join_registry_sha256": "5ba4cf860ee705eb5b2c826c2f75c7c0a404290c742055f383fa3551d9a03a28",
+      "output_schema_id": "https://igrm.in/schemas/max-state-join.schema.json",
+      "output_schema_sha256": "bd0bcc5551a6c550b3abdeaa6977a5d63947352f0b3d12d8186d7eb05e3c9246"
+    },
+    "coverage": [
+      {
+        "denominator": 8,
+        "population_key": "named:eight_registered_semantic_lanes"
+      },
+      {
+        "denominator": 1,
+        "population_key": "universe:unv:oges.fixture.commodities.1"
+      }
+    ],
+    "engines": [
+      {
+        "carries_release_identity": true,
+        "engine_id": "evidence_output_set",
+        "method_id": "method:igrm.evidence_outputs",
+        "method_version": "1.0.0",
+        "object_type": "evidence_output_set",
+        "record_sha256": "0b63a5b7a7f258032e23cff7fba8222e4f98b78d92912a1f76e9466c37f75279"
+      },
+      {
+        "carries_release_identity": true,
+        "engine_id": "exposure_traversal",
+        "method_id": "method:igrm.exposure_graph_projection",
+        "method_version": "1.0.0",
+        "object_type": "exposure_traversal",
+        "record_sha256": "1ee9dbf4ed38dba4da0e6735ee7bba0fad2f940a0807b7941ac4fcd04baa5843"
+      },
+      {
+        "carries_release_identity": true,
+        "engine_id": "sensor_fusion",
+        "method_id": "method:igrm.sensor_fusion",
+        "method_version": "1.0.0",
+        "object_type": "sensor_fusion",
+        "record_sha256": "fe16ce20c1d55cfb2d40f2e51dfd132cda362a32e7aa5ef2e7cca736c8adc32e"
+      },
+      {
+        "carries_release_identity": true,
+        "engine_id": "shock_compilation",
+        "method_id": "method:igrm.shock_compiler",
+        "method_version": "1.0.0",
+        "object_type": "shock_compilation",
+        "record_sha256": "d9399289815169e763d0d5313f0dc95a0c58235116398463d2bf4852d136c3a0"
+      }
+    ],
+    "identity": {
+      "bindings_examined": 122,
+      "collisions": [],
+      "distinct_identifiers": 15
+    },
+    "limitations": [
+      "The join proves that every supplied engine output describes one release, one set of object identities and one rights position; it does not re-derive any engine's result.",
+      "Agreement is not accuracy: four engines can agree perfectly about a world that no observation supports.",
+      "The evidence class and licensed maturity level are computed from the joined rights positions and are never accepted from an input.",
+      "A synthetic world is licensed at L0 and carries no dependency, exposure, propagation, adoption or utility claim.",
+      "Absence of a collision is bounded by the engines actually supplied; the join cannot see a world no engine reported.",
+      "The join performs no numeric fusion, averaging, unit conversion, forecast, probability, causal attribution or scalar scoring."
+    ],
+    "method": {
+      "implementation_sha256": "f77df3a5984bede03897e07ce2ed621908c6dfb8c0988ea25119b5f90492d9bd",
+      "method_id": "method:igrm.max_state_join",
+      "version": "1.0.0"
+    },
+    "object_type": "max_state_join",
+    "record_sha256": "83ef9345f6d5b82df4ab52b9899d233e3cb851b3f2b15d00b3538fde2457965b",
+    "release": {
+      "effective_date": "2026-08-08",
+      "generated_at": "2026-08-08T13:00:00Z",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3",
+      "rights_registry_sha256": "0b456d38b6bbe486f0c4121918669294c50b12652c705390ee88ed92839aed05",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66"
+    },
+    "result": {
+      "causal_attribution_performed": false,
+      "evidence_class": "synthetic_nonproduction",
+      "forecast_performed": false,
+      "licensed_maturity": "L0",
+      "numeric_fusion_performed": false,
+      "probability_assigned": false,
+      "public_claim_state": "contract_conformance_only",
+      "recommendation_generated": false,
+      "scalar_score_computed": false,
+      "status": "one_governed_state"
+    },
+    "rights": [
+      {
+        "decision_artifact_sha256": "072f57a4db318e9fb18ad2326e5153a2856c6b3a159f5a92dfb6c21b312d3590",
+        "decision_id": "oges-fixture-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "oges_fixture_source"
+      },
+      {
+        "decision_artifact_sha256": "e652f282210f00dc40a1eb1581ca286826994c8b8d7ce3b66180aa2ffa98d21d",
+        "decision_id": "sensor-fixture-public_attention-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_attention"
+      },
+      {
+        "decision_artifact_sha256": "6777fac85bd607028305f83779d16fa2fb0f7653390f35f2a691c7b4f45a1d0d",
+        "decision_id": "sensor-fixture-coded_event-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_coded_event"
+      },
+      {
+        "decision_artifact_sha256": "54a082933659ec3fcda43365c006e166b203a4ef6ac118628567568987bd23f7",
+        "decision_id": "sensor-fixture-energy_transmission-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_energy"
+      },
+      {
+        "decision_artifact_sha256": "616b21078c9bd7b3fd63a8990b1cd4b80b3f00736bdab078e02e538440890916",
+        "decision_id": "sensor-fixture-market_transmission-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_market"
+      },
+      {
+        "decision_artifact_sha256": "f873a1c5e5bec78feb1be08f3f43ca8409d8e389b95b223cedf6d81078478402",
+        "decision_id": "sensor-fixture-news-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_news"
+      },
+      {
+        "decision_artifact_sha256": "f065ca5fef0bc977c5338e6064b5931478c3397c1fb883f6534da20171d4d5a7",
+        "decision_id": "sensor-fixture-physical_transmission-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_physical"
+      },
+      {
+        "decision_artifact_sha256": "3003adf5e1fce6022ec954b7096f284a3f5bcf3f26056c7e1f008d4799a48b78",
+        "decision_id": "sensor-fixture-trade_transmission-decision-2026-08-08",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_trade"
+      }
+    ],
+    "schema_version": "1.0.0",
+    "temporal": {
+      "knowledge_cutoffs": [
+        "2026-08-08T13:00:00Z"
+      ],
+      "release_generated_at": "2026-08-08T13:00:00Z"
+    }
+  },
+  "synthetic_labels": {
+    "edg:oges.fixture.origin_crude.001": "Synthetic import-dependence edge",
+    "ent:commodity.synthetic_crude": "Synthetic crude input",
+    "ent:country.synthetic_origin": "Synthetic origin country",
+    "evt:oges.fixture.policy.001": "Synthetic policy action"
+  }
+}

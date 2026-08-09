@@ -1017,3 +1017,55 @@ more than the care.
 Test suite: 183, all green. The contract gate now runs only the 169 that
 test code behaviour — assertions about live payload state cannot block a
 morning publish.
+
+## 0.27 The four Max engines were describing two different worlds (2026-08-09)
+
+Every Max engine gate was green. That was true and it was not enough.
+
+`docs/data/sensor_fusion_demo.json` and `docs/data/evidence_outputs_demo.json`
+both name release `rel:oges.fixture.2026-08-08` and event
+`evt:oges.fixture.policy.001`. Their release records are `8fd9d220…` and
+`e6cc1e33…`. Their event records are `224bc5ff…` and `26102763…`. They compiled
+against different rights registries. Both shipped on 8 August as evidence that
+the contract works.
+
+Nothing was wrong with either engine. `sensor_fusion_fixture` rewrites the event
+to attach eight lanes; `evidence_outputs_fixture` and `shock_compiler_fixture`
+each start from a fresh `oges_fixture` root. Four engines, four private worlds,
+one set of identifiers. Each validated its own inputs impeccably, and no code in
+the repository had ever compared one engine's output to another's — so there was
+no gate that could have gone red.
+
+This is the failure mode the spec names directly: products that are supposed to
+be "views over one governed state" instead being separate products that can
+disagree. A reader joining a fusion matrix to a shock compilation on `event_id`
+would have performed a silent cross-world join with no error available anywhere.
+
+**What now exists.** `method:igrm.max_state_join@1.0.0` is the first check in
+IGRM that compares engines to each other. It refuses, by stable code, when
+release identities disagree (registry digests included), when one identifier is
+bound to two different content digests, when one source carries two rights
+decisions, when a knowledge cutoff postdates release generation, or when two
+engines count one population differently. And `src/max_state_join_fixture.py`
+builds the composite that never existed: one root, one signing key, one
+manifest, all four engines reading it. The reconstruction of the 8 August
+divergence is a permanent test, so this cannot come back quietly.
+
+**What it deliberately does not do.** It computes the evidence class rather than
+accepting one, and the answer for this world is `synthetic_nonproduction`,
+licensed at L0. Four engines agreeing perfectly is evidence that the contract
+composes. It is not evidence about India, about any dependency, or about
+anything observed, and the registry caps `observed` at L1 precisely so that no
+future engine can promote the system by arriving.
+
+**One thing I found on the way and fixed.** `evidence_outputs_demo.json` was not
+in the freshness exemption list. It was passing only because its fixed timestamp
+had not yet aged past the default limit; on a date certain, a test vector that
+is supposed to never change would have turned the whole daily surface STALE.
+
+**Still yours, unchanged by any of this.** Every source in
+`governance/source_rights_registry.json` is `review_required` with
+`permitted_uses: []` under `default_policy: deny`. No real-source world can
+reach this join, or any other Max engine, until you sign a rights decision.
+That is the correct state and the join does not soften it — an unapproved source
+anywhere makes the whole world unpublishable, not partially usable.
