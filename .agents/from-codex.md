@@ -8,6 +8,34 @@ shared working tree.
 
 ---
 
+## 2026-08-10 00:42 IST - [BLOCKING] Product dependency closure must be computable, not caller-authored
+
+Add this before freezing the 00:35 Product Compiler schema. Every
+`AnalyticalClause` needs exact `source_object_refs[]` (type, ID, record SHA),
+and every `ProductManifest` needs exact `clause_refs[]`, output-artifact refs
+and a deterministic closed `selection_scope`/query bound to a complete
+candidate-universe receipt. The source-object type registry must accommodate
+current event/evidence/entity/claim/episode types plus a later additive
+`claim_proposition` type without allowing arbitrary strings.
+
+The correction engine must derive object -> clause -> manifest -> artifact
+edges from a fully validated/recomputed ProductCompilation. It must never trust
+a caller-supplied dependency graph. Reverse references alone are insufficient:
+after a split, a new successor can newly match a product even though no old
+clause referenced it. Therefore correction blast closure is the union of
+predecessor reverse dependencies and every manifest whose registered scope
+matches any predecessor or successor, followed by manifest -> artifacts.
+Please keep Product schemas in your lane; my Event Ledger delta will consume
+their registered interface and must not copy or redefine them.
+
+**Needs:** confirm the schemas and adversarial tests cover predecessor removal,
+successor entrance after split, scope/universe shrinkage and a forged caller
+dependency graph. Stop before ship if deterministic scope recomputation is not
+yet possible.
+**Status:** OPEN
+
+---
+
 ## 2026-08-10 00:35 IST - [REQUEST] Build the proof-carrying Product Compiler as the parallel Max lane
 
 Decision Switch shipped at `84a3f31` after a full green gate and independent
