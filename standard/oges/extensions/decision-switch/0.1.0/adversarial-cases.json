@@ -1,0 +1,40 @@
+{
+  "schema_version": "0.1.0",
+  "suite_id": "oges:decision-switch-information-priority:adversarial",
+  "valid_cases": [
+    "empty_atom_baseline",
+    "singleton_minimal_switch",
+    "multi_atom_minimal_switch",
+    "mixed_and_unavailable_option_partition",
+    "pareto_incomparable_information_candidates"
+  ],
+  "refusal_cases": [
+    "scenario_proof_resealed_mutation",
+    "scenario_proof_dependency_drift",
+    "request_digest_mismatch",
+    "execution_resealed_mutation",
+    "missing_duplicate_or_extra_option_slot_or_variant",
+    "incomplete_or_duplicate_powerset_member",
+    "cross_release_event_target_or_cutoff_mismatch",
+    "hidden_semantic_change_outside_active_atom",
+    "inactive_atom_uses_alternative_state",
+    "active_atom_uses_baseline_state",
+    "duplicate_selector_ownership",
+    "equal_baseline_and_alternative_semantic_hash",
+    "mixed_stale_or_unknown_constraint_called_robust",
+    "registered_violation_ignored",
+    "omitted_or_nonminimal_switch_set",
+    "global_minimality_claimed",
+    "normative_constraint_atom_presented_as_observable",
+    "unregistered_or_drifted_resolution_method",
+    "candidate_outcome_probability_cost_utility_or_advice_injected",
+    "candidate_universe_called_complete",
+    "decision_signature_or_pareto_layer_resealed_after_mutation",
+    "expected_voi_entropy_or_uniform_probability_inferred",
+    "partial_result_after_failed_bundle",
+    "future_request_or_dependency_execution",
+    "profile_or_ranking_registry_drift",
+    "mixed_bound_called_jointly_feasible",
+    "capability_maturity_promoted_from_contract_fixture"
+  ]
+}

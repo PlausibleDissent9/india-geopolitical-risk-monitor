@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/decision-switch/0.1.0/constraint-slot.schema.json",
+  "title": "Decision Switch cross-option constraint slot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slot_id", "metric", "operator", "unit", "denominator", "option_bindings"],
+  "properties": {
+    "slot_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "metric": {"enum": ["gross_affected_share", "residual_affected_share", "residual_duration"]},
+    "operator": {"const": "upper_bound_lte"},
+    "unit": {"enum": ["percentage_points_of_edge_denominator", "days"]},
+    "denominator": {"type": ["string", "null"], "minLength": 1, "maxLength": 300},
+    "option_bindings": {
+      "type": "array", "minItems": 2, "maxItems": 8, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["option_id", "constraint_id"],
+        "properties": {
+          "option_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+          "constraint_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"}
+        }
+      }
+    }
+  }
+}

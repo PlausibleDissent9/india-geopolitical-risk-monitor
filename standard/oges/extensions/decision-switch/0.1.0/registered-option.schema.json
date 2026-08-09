@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/decision-switch/0.1.0/registered-option.schema.json",
+  "title": "Decision Switch registered hypothetical option",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["option_id", "option_kind", "required_slot_ids", "real_world_action_claimed"],
+  "properties": {
+    "option_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "option_kind": {"const": "registered_hypothetical_configuration"},
+    "required_slot_ids": {
+      "type": "array", "minItems": 1, "maxItems": 20, "uniqueItems": true,
+      "items": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"}
+    },
+    "real_world_action_claimed": {"const": false}
+  }
+}

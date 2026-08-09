@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/decision-switch/0.1.0/switch-atom.schema.json",
+  "title": "Decision Switch registered binary atom",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "atom_id", "atom_kind", "selector_kind", "epistemic_kind",
+    "observation_eligibility", "option_values", "real_world_state_claimed"
+  ],
+  "properties": {
+    "atom_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "atom_kind": {
+      "enum": [
+        "shock_magnitude_assumption", "shock_duration_assumption",
+        "substitution_fraction_assumption", "buffer_duration_assumption",
+        "constraint_boundary"
+      ]
+    },
+    "selector_kind": {
+      "enum": [
+        "shock.magnitude", "shock.duration", "substitution.fraction",
+        "buffer.duration_offset", "constraint.threshold"
+      ]
+    },
+    "epistemic_kind": {
+      "enum": ["hypothetical_assumption_change", "hypothetical_normative_boundary_change"]
+    },
+    "observation_eligibility": {"enum": ["synthetic_atom_reveal", "not_observable_normative_boundary"]},
+    "option_values": {
+      "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/optionValue"}
+    },
+    "real_world_state_claimed": {"const": false}
+  },
+  "$defs": {
+    "optionValue": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "option_id", "target_id", "baseline_value", "alternative_value",
+        "baseline_value_sha256", "alternative_value_sha256"
+      ],
+      "properties": {
+        "option_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "target_id": {
+          "oneOf": [
+            {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+            {"type": "null"}
+          ]
+        },
+        "baseline_value": {"$ref": "#/$defs/semanticValue"},
+        "alternative_value": {"$ref": "#/$defs/semanticValue"},
+        "baseline_value_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "alternative_value_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "semanticValue": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["value_kind", "lower", "upper", "unit", "denominator"],
+          "properties": {
+            "value_kind": {"const": "interval"},
+            "lower": {"type": "number"},
+            "upper": {"type": "number"},
+            "unit": {"type": "string", "minLength": 1, "maxLength": 100},
+            "denominator": {"type": ["string", "null"], "minLength": 1, "maxLength": 300}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["value_kind", "value", "unit", "denominator"],
+          "properties": {
+            "value_kind": {"const": "scalar"},
+            "value": {"type": "number"},
+            "unit": {"type": "string", "minLength": 1, "maxLength": 100},
+            "denominator": {"type": ["string", "null"], "minLength": 1, "maxLength": 300}
+          }
+        }
+      ]
+    }
+  }
+}

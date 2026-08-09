@@ -1,0 +1,46 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:decision-switch-information-priority",
+  "version": "0.1.0",
+  "effective": "2026-08-09",
+  "status": "public_draft_contract_only_synthetic_fixtures",
+  "bound_files": [
+    {"kind": "specification", "path": "standard/oges/extensions/decision-switch/0.1.0/SPEC.md", "sha256": "5e60f75fb09f0ae2445843ecbfd15b6f5ebfa6fc4ccb8e70e674ac23da75199c"},
+    {"kind": "base_oges_profile", "path": "standard/oges/0.1.0/profile.json", "sha256": "27e434e5490e5bba2ce27c1bdc139c44ef72631cfe76907859b27145ba9f5a94"},
+    {"kind": "registered_option_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/registered-option.schema.json", "sha256": "9c0fd5a410412a7279490390638ae2abb417d6c4a4dabcd9f6292b008120c7fd"},
+    {"kind": "constraint_slot_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/constraint-slot.schema.json", "sha256": "26139d411806a099b8eef92050f3514edf7a0425f0b8993f7f3e9e5418c083c3"},
+    {"kind": "switch_atom_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/switch-atom.schema.json", "sha256": "6a3cdc407e999787ed3481cf5dc98d21c87d1d72a1de6edcbab737bd4dbf8132"},
+    {"kind": "artifact_bundle_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/decision-artifact-bundle.schema.json", "sha256": "94aea77c96b6386625b33510893cf85f23396c43a98ee21a54bde49e1fbc819f"},
+    {"kind": "information_candidate_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/information-candidate.schema.json", "sha256": "2cc029260097bb5f552acb977e22e311c8d6100342ef9a41ce0e6ede87455681"},
+    {"kind": "request_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/decision-switch-request.schema.json", "sha256": "3bc582247696dc22736b517b74b73b3b4c516d356d99059df619bf9c3924ee19"},
+    {"kind": "execution_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/decision-switch-execution.schema.json", "sha256": "2c80602e4eae7d37839e2720154ccd2d7423f8c2443aa663c05848cc8dbc3528"},
+    {"kind": "operator_registry", "path": "standard/oges/extensions/decision-switch/0.1.0/operator-registry.json", "sha256": "1c99d14fce138433b5e98db3a81c0addca33e32a41b31f2029ee3a5426295404"},
+    {"kind": "resolution_method_registry", "path": "standard/oges/extensions/decision-switch/0.1.0/resolution-method-registry.json", "sha256": "ead3d42c23dcc6d92397475fdab73bd18539fad7fc71f464f25dc61e73b4b511"},
+    {"kind": "adversarial_cases", "path": "standard/oges/extensions/decision-switch/0.1.0/adversarial-cases.json", "sha256": "2b127fde813bbbb1dd10fa9cd1255f4afb750f826862ff67e610889f4069b7b6"},
+    {"kind": "scenario_proof_profile", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json", "sha256": "9108c910bb3ecc93a81f9f2835a077540d3645fe9e26e44ded820f4eb07023cf"},
+    {"kind": "scenario_proof_request_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-request.schema.json", "sha256": "f438d98c2ddefc9b3510cba6d6c2e1c25fd9fc1bfa33e1465d500bbf94504d0e"},
+    {"kind": "scenario_proof_execution_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-execution.schema.json", "sha256": "9ac0cca982407fde76cea6a8fa6da3e4a2f749d2d163dd3c98cb6084fd7798a9"},
+    {"kind": "scenario_proof_implementation", "path": "src/scenario_proof.py", "sha256": "31884f9c9d2a1e6aaba2fd6e685820e58d0d2a5ffadfc6d7e7eec4ecfe93e0b9"},
+    {"kind": "common_schema", "path": "schemas/common.schema.json", "sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"},
+    {"kind": "typed_canonical_implementation", "path": "src/event_ledger.py", "sha256": "66d2ec85f88a87c1cacc4c03a0ae271c24a4decb9d52557c6ffedf10d859977a"},
+    {"kind": "typed_record_implementation", "path": "src/event_ledger_extension.py", "sha256": "b094c40abb1455f27b81ff468204a9eff17bed9de3a7e83360afc2015d6c16e7"},
+    {"kind": "typed_canonical_fixture", "path": "validation/event_ledger_canonicalization.json", "sha256": "405c30bfc8668bc5842d6e33e5e31660c0f0f18b0fd8fa40929621eb061c5442"}
+  ],
+  "reference_implementation": {
+    "path": "src/decision_switch.py",
+    "sha256": "e7abd0f040246825f868b928f62789625fb8fdda3a20385d9a480cc626508682"
+  },
+  "conformance_test": {
+    "path": "tests/test_decision_switch.py",
+    "sha256": "a3dcd8c5334144da9c7b8fd21a2524469989b352c0286b9ae585e5cbac98771b"
+  },
+  "claim_boundary": [
+    "The execution proves exact recomputation and finite registered-lattice set relations only.",
+    "Robust option sets are not real-world feasibility, capacity, implementability, desirability or advice.",
+    "Minimal switches are inclusion-minimal only inside the complete registered binary atom universe.",
+    "Information relevance is set-cardinality reduction, not entropy, probability, expected value, utility, acquisition value or a purchase recommendation.",
+    "Repository-authored synthetic fixtures keep capability maturity contract_only and do not constitute authenticated execution evidence.",
+    "The value_of_information launch capability remains target_only.",
+    "Non-synthetic public rendering retains the existing claim-bundle and release gates."
+  ]
+}

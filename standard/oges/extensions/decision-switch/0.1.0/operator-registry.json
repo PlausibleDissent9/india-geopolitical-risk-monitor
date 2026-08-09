@@ -1,0 +1,79 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:decision-switch-information-priority:operators",
+  "default_policy": "deny",
+  "operators": [
+    {
+      "operator_id": "operator:decision_switch.verify_scenario_proof",
+      "version": "1.0.0",
+      "input_kind": "scenario_proof_inputs_and_execution",
+      "output_kind": "recomputed_scenario_proof_execution",
+      "delegate_method_id": "method:igrm.scenario_proof",
+      "claim_boundary": "Exact deterministic recomputation only; no source-truth or feasibility claim."
+    },
+    {
+      "operator_id": "operator:decision_switch.verify_complete_option_universe",
+      "version": "1.0.0",
+      "input_kind": "registered_option_and_constraint_slot_universes",
+      "output_kind": "complete_registered_option_slot_partition",
+      "delegate_method_id": null,
+      "claim_boundary": "Reconciles exact finite request universes; it does not claim real-world completeness."
+    },
+    {
+      "operator_id": "operator:decision_switch.verify_complete_binary_lattice",
+      "version": "1.0.0",
+      "input_kind": "registered_binary_atom_and_variant_universes",
+      "output_kind": "complete_registered_powerset",
+      "delegate_method_id": null,
+      "claim_boundary": "Proves powerset completeness only inside the declared binary atom universe."
+    },
+    {
+      "operator_id": "operator:decision_switch.verify_registered_atom_diff",
+      "version": "1.0.0",
+      "input_kind": "baseline_and_variant_semantic_objects",
+      "output_kind": "registered_selector_only_diff_certificate",
+      "delegate_method_id": null,
+      "claim_boundary": "Rejects hidden changes outside registered atom selectors and legitimate cryptographic rebinding."
+    },
+    {
+      "operator_id": "operator:decision_switch.classify_registered_option_conjunction",
+      "version": "1.0.0",
+      "input_kind": "recomputed_constraint_slot_results",
+      "output_kind": "three_valued_registered_option_partition",
+      "delegate_method_id": null,
+      "claim_boundary": "Classifies universal marginal bounds; mixed bounds do not establish joint feasibility."
+    },
+    {
+      "operator_id": "operator:decision_switch.find_inclusion_minimal_switch_sets",
+      "version": "1.0.0",
+      "input_kind": "complete_registered_lattice_decision_signatures",
+      "output_kind": "inclusion_minimal_registered_switch_sets",
+      "delegate_method_id": null,
+      "claim_boundary": "Minimal only inside the complete registered binary lattice; no real intervention or policy claim."
+    },
+    {
+      "operator_id": "operator:decision_switch.partition_decision_signatures",
+      "version": "1.0.0",
+      "input_kind": "complete_registered_lattice_and_candidate_atom_scope",
+      "output_kind": "finite_signature_partitions",
+      "delegate_method_id": null,
+      "claim_boundary": "Exact finite-set counts only; no probability, entropy, expected value or empirical frequency."
+    },
+    {
+      "operator_id": "operator:decision_switch.compute_registered_information_relevance",
+      "version": "1.0.0",
+      "input_kind": "finite_signature_partitions",
+      "output_kind": "registered_set_cardinality_reduction",
+      "delegate_method_id": null,
+      "claim_boundary": "Combinatorial ambiguity reduction only; no acquisition value, utility or recommendation."
+    },
+    {
+      "operator_id": "operator:decision_switch.assign_pareto_layers",
+      "version": "1.0.0",
+      "input_kind": "registered_information_relevance_vectors",
+      "output_kind": "pareto_layers_without_total_order",
+      "delegate_method_id": null,
+      "claim_boundary": "Non-dominated layers are not a total ranking or substantive priority recommendation."
+    }
+  ]
+}

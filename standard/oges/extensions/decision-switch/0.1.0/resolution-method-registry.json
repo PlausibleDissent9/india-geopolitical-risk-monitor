@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:decision-switch:resolution-methods",
+  "default_policy": "deny",
+  "methods": [
+    {
+      "method_id": "method:decision-switch.synthetic-atom-reveal",
+      "version": "0.1.0",
+      "trust_class": "synthetic_contract_only",
+      "input_kind": "registered_binary_atom_subset",
+      "output_kind": "finite_lattice_partition",
+      "real_acquisition_claimed": false,
+      "expected_value_claimed": false,
+      "claim_boundary": "Reveals registered binary atom states only inside the synthetic contract lattice; it is not a real observation or acquisition method."
+    }
+  ]
+}

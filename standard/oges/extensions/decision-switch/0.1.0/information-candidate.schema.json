@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/decision-switch/0.1.0/information-candidate.schema.json",
+  "title": "Decision Switch registered synthetic information candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate_id", "atom_ids", "resolution_method_id",
+    "resolution_method_sha256", "candidate_set_completeness_claimed",
+    "real_observation_claimed", "probability_assigned", "cost_assigned",
+    "utility_assigned", "recommendation_generated"
+  ],
+  "properties": {
+    "candidate_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "atom_ids": {
+      "type": "array", "minItems": 1, "maxItems": 6, "uniqueItems": true,
+      "items": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"}
+    },
+    "resolution_method_id": {"const": "method:decision-switch.synthetic-atom-reveal"},
+    "resolution_method_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "candidate_set_completeness_claimed": {"const": false},
+    "real_observation_claimed": {"const": false},
+    "probability_assigned": {"const": false},
+    "cost_assigned": {"const": false},
+    "utility_assigned": {"const": false},
+    "recommendation_generated": {"const": false}
+  }
+}

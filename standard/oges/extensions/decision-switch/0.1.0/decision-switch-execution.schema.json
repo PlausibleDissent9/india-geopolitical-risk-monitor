@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/decision-switch/0.1.0/decision-switch-execution.schema.json",
+  "title": "OGES Decision Switch finite-lattice execution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type", "schema_version", "record_sha256", "execution_id",
+    "profile", "decision_case", "lattice", "minimal_switch_sets",
+    "information_relevance", "counts", "result", "limitations"
+  ],
+  "properties": {
+    "object_type": {"const": "decision_switch_execution"},
+    "schema_version": {"const": "0.1.0"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "execution_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "profile": {"$ref": "#/$defs/profile"},
+    "decision_case": {"$ref": "#/$defs/decisionCase"},
+    "lattice": {"$ref": "#/$defs/lattice"},
+    "minimal_switch_sets": {
+      "type": "array", "minItems": 0, "maxItems": 63, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/minimalSwitch"}
+    },
+    "information_relevance": {
+      "type": "array", "minItems": 1, "maxItems": 20, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/informationRelevance"}
+    },
+    "counts": {"$ref": "#/$defs/counts"},
+    "result": {"$ref": "#/$defs/result"},
+    "limitations": {
+      "allOf": [
+        {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/nonEmptyIdArray"},
+        {"contains": {"const": "robust_option_sets_apply_only_to_registered_hypothetical_bounds"}},
+        {"contains": {"const": "minimality_is_only_within_complete_registered_binary_lattice"}},
+        {"contains": {"const": "decision_signature_reduction_is_not_entropy_probability_expected_value_or_utility"}},
+        {"contains": {"const": "pareto_layers_are_not_total_priority_recommendation_or_purchase_advice"}},
+        {"contains": {"const": "no_real_world_feasibility_joint_distribution_forecast_or_optimization"}},
+        {"contains": {"const": "non_synthetic_rendering_requires_claim_bundle"}}
+      ]
+    }
+  },
+  "$defs": {
+    "profile": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "extension_id", "version", "profile_sha256", "request_schema_sha256",
+        "execution_schema_sha256", "operator_registry_sha256",
+        "resolution_method_registry_sha256", "scenario_proof_profile_sha256",
+        "scenario_proof_implementation_sha256", "reference_implementation_sha256"
+      ],
+      "properties": {
+        "extension_id": {"const": "oges:extension:decision-switch-information-priority"},
+        "version": {"const": "0.1.0"},
+        "profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "request_schema_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "execution_schema_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "operator_registry_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "resolution_method_registry_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "scenario_proof_profile_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "scenario_proof_implementation_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "reference_implementation_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "decisionCase": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "decision_case_id", "request_record_sha256", "created_at",
+        "evaluation_as_of", "release_id", "release_record_sha256",
+        "knowledge_cutoff", "event_id", "target_entity_id"
+      ],
+      "properties": {
+        "decision_case_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "request_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "created_at": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "evaluation_as_of": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "release_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "release_record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "knowledge_cutoff": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/utcDateTime"},
+        "event_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "target_entity_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"}
+      }
+    },
+    "slotState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["slot_id", "constraint_id", "interval_relation", "readiness", "scenario_feasibility_status"],
+      "properties": {
+        "slot_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "constraint_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "interval_relation": {"enum": ["all_registered_values_satisfy", "no_registered_values_satisfy", "mixed_within_registered_interval", "not_evaluable"]},
+        "readiness": {"enum": ["current_inputs", "stale_inputs", "unknown_freshness", "upstream_abstention"]},
+        "scenario_feasibility_status": {"enum": ["satisfied_under_registered_hypothetical_bounds", "violated_under_registered_hypothetical_bounds", "indeterminate_within_registered_bounds", "indeterminate_input_unavailable"]}
+      }
+    },
+    "optionState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["option_id", "status", "slot_states", "real_world_feasibility_claimed", "joint_feasibility_claimed"],
+      "properties": {
+        "option_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "status": {"enum": ["robustly_satisfies_all_registered_hypothetical_bounds", "excluded_by_registered_hypothetical_violation", "indeterminate_due_to_mixed_or_unavailable_registered_inputs"]},
+        "slot_states": {"type": "array", "minItems": 1, "maxItems": 20, "uniqueItems": true, "items": {"$ref": "#/$defs/slotState"}},
+        "real_world_feasibility_claimed": {"const": false},
+        "joint_feasibility_claimed": {"const": false}
+      }
+    },
+    "variantResult": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "variant_id", "active_atom_ids", "option_states", "robust_option_ids",
+        "excluded_option_ids", "indeterminate_option_ids", "decision_signature_sha256"
+      ],
+      "properties": {
+        "variant_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "active_atom_ids": {"$ref": "#/$defs/idArray"},
+        "option_states": {"type": "array", "minItems": 2, "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/optionState"}},
+        "robust_option_ids": {"$ref": "#/$defs/idArray"},
+        "excluded_option_ids": {"$ref": "#/$defs/idArray"},
+        "indeterminate_option_ids": {"$ref": "#/$defs/idArray"},
+        "decision_signature_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"}
+      }
+    },
+    "lattice": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "option_denominator", "atom_denominator", "expected_variant_denominator",
+        "observed_variant_denominator", "bundle_denominator", "baseline_variant_id",
+        "baseline_decision_signature_sha256", "variants", "powerset_complete"
+      ],
+      "properties": {
+        "option_denominator": {"type": "integer", "minimum": 2, "maximum": 8},
+        "atom_denominator": {"type": "integer", "minimum": 1, "maximum": 6},
+        "expected_variant_denominator": {"type": "integer", "minimum": 2, "maximum": 64},
+        "observed_variant_denominator": {"type": "integer", "minimum": 2, "maximum": 64},
+        "bundle_denominator": {"type": "integer", "minimum": 4, "maximum": 384},
+        "baseline_variant_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "baseline_decision_signature_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "variants": {"type": "array", "minItems": 2, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/variantResult"}},
+        "powerset_complete": {"const": true}
+      }
+    },
+    "minimalSwitch": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "switch_set_id", "atom_ids", "witness_variant_id",
+        "baseline_robust_set_sha256", "resulting_robust_set_sha256",
+        "added_option_ids", "removed_option_ids", "minimal_within",
+        "global_minimality_claimed"
+      ],
+      "properties": {
+        "switch_set_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "atom_ids": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/nonEmptyIdArray"},
+        "witness_variant_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "baseline_robust_set_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "resulting_robust_set_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "added_option_ids": {"$ref": "#/$defs/idArray"},
+        "removed_option_ids": {"$ref": "#/$defs/idArray"},
+        "minimal_within": {"const": "complete_registered_binary_lattice"},
+        "global_minimality_claimed": {"const": false}
+      }
+    },
+    "outcomeCell": {
+      "type": "object", "additionalProperties": false,
+      "required": ["active_candidate_atom_ids", "variant_count", "distinct_decision_signatures"],
+      "properties": {
+        "active_candidate_atom_ids": {"$ref": "#/$defs/idArray"},
+        "variant_count": {"type": "integer", "minimum": 1, "maximum": 64},
+        "distinct_decision_signatures": {"type": "integer", "minimum": 1, "maximum": 64}
+      }
+    },
+    "informationRelevance": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "candidate_id", "atom_ids", "resolution_method_id", "resolution_method_sha256",
+        "decision_signatures_before", "outcome_cells", "worst_case_remaining_signatures",
+        "best_case_remaining_signatures", "guaranteed_signature_reduction",
+        "maximum_signature_reduction", "changed_background_fibers",
+        "background_fiber_denominator", "affected_option_ids", "pareto_layer",
+        "rank_kind", "probability_assigned", "entropy_computed",
+        "expected_value_computed", "recommendation_generated"
+      ],
+      "properties": {
+        "candidate_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+        "atom_ids": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/nonEmptyIdArray"},
+        "resolution_method_id": {"const": "method:decision-switch.synthetic-atom-reveal"},
+        "resolution_method_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+        "decision_signatures_before": {"type": "integer", "minimum": 1, "maximum": 64},
+        "outcome_cells": {"type": "array", "minItems": 2, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/outcomeCell"}},
+        "worst_case_remaining_signatures": {"type": "integer", "minimum": 1, "maximum": 64},
+        "best_case_remaining_signatures": {"type": "integer", "minimum": 1, "maximum": 64},
+        "guaranteed_signature_reduction": {"type": "integer", "minimum": 0, "maximum": 63},
+        "maximum_signature_reduction": {"type": "integer", "minimum": 0, "maximum": 63},
+        "changed_background_fibers": {"type": "integer", "minimum": 0, "maximum": 64},
+        "background_fiber_denominator": {"type": "integer", "minimum": 1, "maximum": 64},
+        "affected_option_ids": {"$ref": "#/$defs/idArray"},
+        "pareto_layer": {"type": "integer", "minimum": 1, "maximum": 20},
+        "rank_kind": {"const": "pareto_layer_not_total_priority_or_recommendation"},
+        "probability_assigned": {"const": false},
+        "entropy_computed": {"const": false},
+        "expected_value_computed": {"const": false},
+        "recommendation_generated": {"const": false}
+      }
+    },
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["options", "constraint_slots", "atoms", "variants", "bundles", "minimal_switch_sets", "information_candidates", "pareto_layers"],
+      "properties": {
+        "options": {"type": "integer", "minimum": 2, "maximum": 8},
+        "constraint_slots": {"type": "integer", "minimum": 1, "maximum": 20},
+        "atoms": {"type": "integer", "minimum": 1, "maximum": 6},
+        "variants": {"type": "integer", "minimum": 2, "maximum": 64},
+        "bundles": {"type": "integer", "minimum": 4, "maximum": 384},
+        "minimal_switch_sets": {"type": "integer", "minimum": 0, "maximum": 63},
+        "information_candidates": {"type": "integer", "minimum": 1, "maximum": 20},
+        "pareto_layers": {"type": "integer", "minimum": 1, "maximum": 20}
+      }
+    },
+    "result": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "status", "trust_class", "public_claim_state", "real_world_feasibility_claimed",
+        "joint_feasibility_claimed", "causal_attribution_performed", "forecast_performed",
+        "probability_assigned", "entropy_computed", "expected_value_computed",
+        "recommendation_generated", "objective_optimized", "purchase_recommended",
+        "candidate_set_completeness_claimed", "global_minimality_claimed"
+      ],
+      "properties": {
+        "status": {"const": "complete_registered_lattice_assessed"},
+        "trust_class": {"const": "unauthenticated_contract_execution"},
+        "public_claim_state": {"const": "not_licensed_for_production_rendering"},
+        "real_world_feasibility_claimed": {"const": false},
+        "joint_feasibility_claimed": {"const": false},
+        "causal_attribution_performed": {"const": false},
+        "forecast_performed": {"const": false},
+        "probability_assigned": {"const": false},
+        "entropy_computed": {"const": false},
+        "expected_value_computed": {"const": false},
+        "recommendation_generated": {"const": false},
+        "objective_optimized": {"const": false},
+        "purchase_recommended": {"const": false},
+        "candidate_set_completeness_claimed": {"const": false},
+        "global_minimality_claimed": {"const": false}
+      }
+    },
+    "idArray": {
+      "type": "array", "minItems": 0, "maxItems": 64, "uniqueItems": true,
+      "items": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"}
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/decision-switch/0.1.0/decision-artifact-bundle.schema.json",
+  "title": "Decision Switch exact option-variant proof bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type", "schema_version", "record_sha256", "bundle_id",
+    "option_id", "variant_id", "scenario", "compilation",
+    "scenario_proof_request", "scenario_proof_execution"
+  ],
+  "properties": {
+    "object_type": {"const": "decision_artifact_bundle"},
+    "schema_version": {"const": "0.1.0"},
+    "record_sha256": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/sha256"},
+    "bundle_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "option_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "variant_id": {"$ref": "https://igrm.in/schemas/common.schema.json#/$defs/stableId"},
+    "scenario": {"type": "object", "minProperties": 1},
+    "compilation": {"type": "object", "minProperties": 1},
+    "scenario_proof_request": {"type": "object", "minProperties": 1},
+    "scenario_proof_execution": {"type": "object", "minProperties": 1}
+  }
+}
