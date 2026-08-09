@@ -485,3 +485,102 @@ was green on the commit that broke a publisher.
 
 **Needs:** nothing. Flagging because all three touch code you wrote.
 **Status:** OPEN
+
+## 2026-08-09 - [BLOCKING] The shared working tree is 486 files out of sync and one `add -A` from a disaster
+
+`~/india-geopolitical-risk-monitor` on Ishan's Mac is NOT main. Measured
+09:5x IST: HEAD at `0df3719`, 49 commits behind, and against origin/main
+the working tree shows **262 deletions and 224 modifications**. The
+deletions are files that exist on main and are simply absent from disk --
+including all of `.agents/`, so if you are reading this from that tree
+you are not reading it at all.
+
+The cause is in the reflog and it is unambiguous: eleven consecutive
+`reset: moving to origin/main` entries, the last at 08-08 18:45. A mixed
+reset moves HEAD and the index and **never writes the working tree**, so
+every file added to main since has never landed. Nothing has been edited
+in that tree since 18:45 yesterday, so no work is in flight there.
+
+Why it is BLOCKING rather than FYI: a single `git add -A && git commit`
+from that tree commits 262 deletions onto main. That is one keystroke
+away and it is the exact hazard we already agreed to avoid.
+
+I did not repair it. Sampling twelve modified files, nine are provably
+stale (disk content equals an older main commit) but three match no
+commit in the last eighty touching them -- `listings/README.md`,
+`docs/data/sector_energy_manufacturing.json`,
+`tests/test_blind_audit_500.py`. Those three need a look before anyone
+hard-resets, and that is Ishan's call, not mine. Work in a `git worktree`
+until it is resolved; I am.
+
+**Needs:** confirm you are not working in that tree, and do not stage
+from it. Ishan decides the repair.
+**Status:** OPEN
+
+## 2026-08-09 - [FYI] V5 was never slow at the series it is missing; it never asked for them
+
+The multilingual backfill has burned a 45-minute runner nightly for days
+at 6 of 15 series. The missing nine are exactly the last three channels
+in declaration order -- gulf_energy, us_trade, shipping, times three
+languages -- which is not what throttling looks like. Throttling does not
+sort itself by declaration order.
+
+`update()` took its attempt window as `missing_keys()[:MAX_SERIES_PER_RUN]`.
+`missing_keys()` returns the registered order, so that slice is constant
+across runs: every run attempted `gulf_energy_{hin,urd,zho}` plus
+`us_trade_hin`, spent its wall clock on the head, and stopped. The bound
+made a batch survivable and simultaneously made the tail unreachable.
+`shipping_*` had not been requested once in seventy runs.
+
+Fixed by rotating the window by ordinal day (`attempt_window`), so every
+missing series comes up within a fortnight while a same-day re-dispatch
+still resumes deterministically. Seven tests in
+`tests/test_multilingual_window.py`, including the old behaviour stated
+as arithmetic so the contrast does not decay into a commit message.
+
+Same shape as the watchdog eviction bug: machinery built to retry,
+retrying the identical thing, mistaking motion for progress. There the
+fix was to stand down; here it is to move on.
+
+Not fixed, and I am leaving it to you since it is your budget arithmetic:
+`DEADLINE_SECONDS` is checked only BETWEEN series, so it cannot stop a
+fetch already in flight. With `RETRIES=6` and `TIMEOUT_S=420` one request
+may legally run 42 minutes, past the 25-minute budget and into the
+45-minute axe. `test_multilingual_budget.py` models the 429 path, which
+closes; it does not model the read-timeout path, which does not.
+
+**Needs:** your view on whether the deadline should be pushed down into
+`_fetch_chunk` as a wall clock, which touches shared acquisition code.
+**Status:** OPEN
+
+## 2026-08-09 - [ANSWERED] Correcting myself on the retry-loop cost -- it did not cause this morning
+
+At 02:20 I escalated the gate-per-rebase cost in `publish_push.sh` as the
+thing that would break the morning contract, and this morning I said the
+31.5 minutes of morning-contract #27 were "roughly five gate passes".
+That was wrong, and the step timings say so plainly:
+
+    #27  dictionary rules 2.4m | heal 11.1m | pipeline 14.9m | push 2.5m FAIL
+    #26  dictionary rules 2.3m | heal 11.0m | pipeline 20.8m | push 0.6m CANCELLED
+
+The push step took 2.5 minutes. It never retried at all -- line 95 is
+`if ! gate_candidate; then exit 1; fi`, so a red gate exits immediately
+rather than looping. #27 ran the committed gate once, it came back red,
+and the lane correctly refused to publish. #26 was not a gate cost
+either: heal plus pipeline alone consumed 31.8 of its 35-minute budget.
+
+So the retry loop is still worth discussing, but it is not what missed
+the contract, and I withdraw the claim that it was. What actually cost us
+the morning is that #26's real work does not fit in 35 minutes on a day
+when the daily has already failed -- the tightest budget on the fallback
+lane -- and I cannot tell you why #27's gate was red, because Actions log
+download needs a token this session does not have and `gh` is not
+installed on the Mac. The gate on origin/main is green: all 11 checks,
+verified at 10:0x IST.
+
+That is the actionable gap: `gate_candidate` prints `SECURITY REFUSAL`
+without naming the check that failed, so diagnosing a refusal requires
+CI log access. Worth having it echo the failing check.
+
+**Needs:** nothing.
+**Status:** ANSWERED
