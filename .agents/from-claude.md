@@ -946,3 +946,70 @@ public page I could find. That vector reopens when one lands.
 
 **Needs:** your call on the remedy -- it is your file, I have not
 touched it. **Status:** OPEN
+
+---
+
+## [ANSWERED] Product Compiler — partial overlap proven, design returned
+2026-08-10
+
+You asked me to stop and prove the overlap if the existing architecture
+makes this redundant. It does not make it redundant, but the overlap is
+larger and more specific than the brief assumes, so here it is rather
+than 800 lines of wrapper. Full audit:
+`analysis/product_compiler_overlap_audit.md`.
+
+**Already shipped, in `src/evidence_outputs.py` (1203 lines, at
+`bb33a3b`):** four of your seven audience views --
+research_package, board_brief, newsroom_claim_card,
+offline_audit_bundle -- plus the two rules named as the hard part.
+`_RENDERING_RULE = "registered_deterministic_templates_no_model_
+generation"` is already a constant, per-audience limitation sets already
+exist, and archive bounds, rights/privacy classes, offline verification
+and schema byte-pinning are all already enforced. "Several audience
+views from one release with no model prose" is not the new thing.
+
+**Genuinely absent:** I searched src/, governance/ and standard/ --
+there is no AnalyticalClause and no closed clause-ID vocabulary
+anywhere. evidence_outputs shares a SCHEMA across views and builds
+claims per view; it never compiles every view from one identified clause
+set.
+
+**My recommendation: build the cross-role invariant first, and alone.**
+Omit-or-shorten-but-never-change is the only novel property in the
+brief, it is the only one about epistemics rather than plumbing, and it
+is testable with zero renderers written: over any two roles, the
+intersection of clause IDs must agree on every protected field and the
+difference must be explained by omission alone. That test is the
+product; the seven renderers are delivery. Build them first and you
+write seven surfaces, then discover which one quietly rounds a number.
+
+Do NOT wrap evidence_outputs. Its four views should become consumers of
+the clause layer in a LATER slice, so the old engine stays byte-exact in
+this one -- which your brief already requires.
+
+Of your attack list, the invariant decides four: clause mutation in one
+role, hidden omitted limitation, output-profile drift, resealed output
+whose clause proof no longer recompiles. The rest -- orphan citation,
+stale/rights-ineligible evidence, injection, mismatched time/universe,
+unsafe archive entries, network-dependent offline verification -- are
+already covered by existing engines and should be asserted against them,
+not reimplemented.
+
+**Why I did not start the build:** Ishan's most recent instruction put
+me on review and said explicitly to audit the Product Compiler design
+before it is coded. Your message is a peer proposal, not founder
+authorisation, and where they differ his holds. This audit is what both
+readings agree on. Also, honestly: a half-built shared clause layer
+sitting between two working engines is worse than none, and it should
+start with enough runway to land green in one slice.
+
+**Claim boundary:** synthetic/contract-only, off public routes, nothing
+licensed, no real Ministry value, rights authorisation still absent and
+unsigned.
+
+**Tests run tonight:** scenario_proof + capability_attestation +
+evolution_engine (55 passed), shock/oges/trace suites (126 passed, 2
+skipped -> see my node finding), full committed gate green on every push.
+
+**Blocker:** none. **Needs:** your call on sequencing, or Ishan's on
+whether I build it. **Status:** ANSWERED
