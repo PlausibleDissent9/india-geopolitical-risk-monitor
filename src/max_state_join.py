@@ -56,12 +56,13 @@ join therefore cannot be talked upward by adding engines to it.
 
 WHAT THIS IS NOT
 
-It is not a validator of the engines it joins: each engine's own gate
-still owns its schema, signature, freshness and rights checks, and this
-module refuses any document those gates would not have produced.  It
-proves agreement, not correctness.  Agreement across four synthetic
-engines is evidence that the contract composes; it is never evidence
-that a real dependency, observation or exposure exists.
+It validates each engine's output schema, content seal and exact registered
+implementation/schema/registry identity.  It does not semantically recompile
+an engine result or independently verify the underlying release signature;
+those remain the engine gate's job.  It proves agreement, not correctness.
+Agreement across four synthetic engines is evidence that the contract
+composes; it is never evidence that a real dependency, observation or
+exposure exists.
 """
 
 from __future__ import annotations
@@ -169,6 +170,9 @@ _LIMITATIONS = (
     "The join proves that every supplied engine output describes one release, "
     "one set of object identities and one rights position; it does not "
     "re-derive any engine's result.",
+    "Each engine output is schema-checked and bound to registered code, schema "
+    "and engine-registry bytes, but semantic recompilation and underlying "
+    "release-signature validation remain the engine gate's responsibility.",
     "Agreement is not accuracy: four engines can agree perfectly about a world "
     "that no observation supports.",
     "The evidence class and licensed maturity level are computed from the "
@@ -252,10 +256,80 @@ def _utc(value: object, code: str) -> datetime:
 class _Contract:
     """The registered join contract and its pinned digests."""
 
-    def __init__(self, row: Mapping[str, Any], registry_sha: str, root: Path):
+    def __init__(
+        self,
+        row: Mapping[str, Any],
+        registry_sha: str,
+        root: Path,
+        engine_validators: Mapping[str, Draft202012Validator],
+    ):
         self.row = row
         self.registry_sha = registry_sha
         self.root = root
+        self.engine_validators = engine_validators
+
+
+def _safe_file(root: Path, raw: object, code: str) -> Path:
+    if not isinstance(raw, str) or not raw:
+        _fail(code)
+    base = root.resolve()
+    candidate = (base / raw).resolve()
+    try:
+        candidate.relative_to(base)
+    except ValueError:
+        _fail(code, raw)
+    if not candidate.is_file():
+        _fail(code, raw)
+    return candidate
+
+
+def _schema_validator(root: Path, schema_path: Path) -> Draft202012Validator:
+    """Load one registered schema and every local relative ``$ref`` it uses."""
+
+    schemas_root = (root / "schemas").resolve()
+    pending = [schema_path.resolve()]
+    loaded: dict[Path, dict[str, Any]] = {}
+    resources: list[tuple[str, Resource[Any]]] = []
+    while pending:
+        path = pending.pop()
+        if path in loaded:
+            continue
+        try:
+            path.relative_to(schemas_root)
+        except ValueError:
+            _fail("join_engine_schema_path_invalid", str(path))
+        document, _ = _read_json(path, "join_engine_schema_unreadable")
+        loaded[path] = document
+        resource = Resource.from_contents(document)
+        resources.append((path.name, resource))
+        schema_id = document.get("$id")
+        if isinstance(schema_id, str) and schema_id:
+            resources.append((schema_id, resource))
+        for _, node in _walk(document, "", 0):
+            reference = node.get("$ref")
+            if not isinstance(reference, str) or reference.startswith("#"):
+                continue
+            relative = reference.split("#", 1)[0]
+            if not relative or "://" in relative:
+                continue
+            dependency = (path.parent / relative).resolve()
+            try:
+                dependency.relative_to(schemas_root)
+            except ValueError:
+                _fail("join_engine_schema_reference_invalid", reference)
+            if not dependency.is_file():
+                _fail("join_engine_schema_reference_missing", reference)
+            pending.append(dependency)
+    schema = loaded[schema_path.resolve()]
+    try:
+        Draft202012Validator.check_schema(schema)
+        return Draft202012Validator(
+            schema,
+            registry=Registry().with_resources(resources),
+            format_checker=FormatChecker(),
+        )
+    except SchemaError:
+        _fail("join_engine_schema_invalid", str(schema_path))
 
 
 def _load_contract(root: Path, registry_path: Path) -> _Contract:
@@ -284,6 +358,7 @@ def _load_contract(root: Path, registry_path: Path) -> _Contract:
     if not isinstance(engines, list) or not engines:
         _fail("join_registry_engines_invalid")
     seen: set[str] = set()
+    engine_validators: dict[str, Draft202012Validator] = {}
     for engine in engines:
         if not isinstance(engine, dict):
             _fail("join_registry_engines_invalid")
@@ -291,13 +366,46 @@ def _load_contract(root: Path, registry_path: Path) -> _Contract:
         if not isinstance(engine_id, str) or engine_id in seen:
             _fail("join_registry_engines_invalid")
         seen.add(engine_id)
-        for field in ("object_type", "method_id", "method_version"):
+        for field in (
+            "object_type",
+            "method_id",
+            "method_version",
+            "implementation_path",
+            "implementation_sha256",
+            "output_schema_id",
+            "output_schema_path",
+            "output_schema_sha256",
+            "engine_registry_path",
+            "engine_registry_sha256",
+            "document_schema_id_field",
+            "document_schema_sha256_field",
+            "document_registry_sha256_field",
+        ):
             if not isinstance(engine.get(field), str):
                 _fail("join_registry_engines_invalid")
         if not isinstance(engine.get("required"), bool):
             _fail("join_registry_engines_invalid")
         if not isinstance(engine.get("carries_release_identity"), bool):
             _fail("join_registry_engines_invalid")
+        implementation = _safe_file(
+            root, engine["implementation_path"], "join_engine_implementation_missing"
+        )
+        if _sha(implementation) != engine["implementation_sha256"]:
+            _fail("join_engine_implementation_digest_mismatch", engine_id)
+        schema_path = _safe_file(
+            root, engine["output_schema_path"], "join_engine_schema_missing"
+        )
+        if _sha(schema_path) != engine["output_schema_sha256"]:
+            _fail("join_engine_schema_digest_mismatch", engine_id)
+        schema_document, _ = _read_json(schema_path, "join_engine_schema_unreadable")
+        if schema_document.get("$id") != engine["output_schema_id"]:
+            _fail("join_engine_schema_id_mismatch", engine_id)
+        engine_registry = _safe_file(
+            root, engine["engine_registry_path"], "join_engine_registry_missing"
+        )
+        if _sha(engine_registry) != engine["engine_registry_sha256"]:
+            _fail("join_engine_registry_digest_mismatch", engine_id)
+        engine_validators[engine_id] = _schema_validator(root, schema_path)
     policy = row.get("maturity_policy")
     if not isinstance(policy, dict) or set(policy) != set(_EVIDENCE_CLASSES):
         _fail("join_registry_maturity_policy_invalid")
@@ -309,7 +417,7 @@ def _load_contract(root: Path, registry_path: Path) -> _Contract:
         isinstance(marker, str) and marker for marker in markers
     ):
         _fail("join_registry_synthetic_markers_invalid")
-    return _Contract(row, registry_sha, root)
+    return _Contract(row, registry_sha, root, engine_validators)
 
 
 def _output_validator(contract: _Contract) -> Draft202012Validator:
@@ -447,7 +555,10 @@ def _engine_rows(contract: _Contract) -> dict[str, Mapping[str, Any]]:
 
 
 def _check_engine(
-    engine_id: str, row: Mapping[str, Any], document: Mapping[str, Any]
+    contract: _Contract,
+    engine_id: str,
+    row: Mapping[str, Any],
+    document: Mapping[str, Any],
 ) -> None:
     if document.get("object_type") != row["object_type"]:
         _fail("join_engine_object_type_mismatch", engine_id)
@@ -458,6 +569,36 @@ def _check_engine(
         _fail("join_engine_method_mismatch", engine_id)
     if method.get("version") != row["method_version"]:
         _fail("join_engine_method_version_mismatch", engine_id)
+    if method.get("implementation_sha256") != row["implementation_sha256"]:
+        _fail("join_engine_implementation_mismatch", engine_id)
+    engine_contract = document.get("contract")
+    if not isinstance(engine_contract, Mapping):
+        _fail("join_engine_contract_missing", engine_id)
+    checks = (
+        ("document_schema_id_field", "output_schema_id", "join_engine_schema_id_mismatch"),
+        (
+            "document_schema_sha256_field",
+            "output_schema_sha256",
+            "join_engine_schema_digest_mismatch",
+        ),
+        (
+            "document_registry_sha256_field",
+            "engine_registry_sha256",
+            "join_engine_registry_digest_mismatch",
+        ),
+    )
+    for field_name, registered_name, code in checks:
+        document_field = cast(str, row[field_name])
+        if engine_contract.get(document_field) != row[registered_name]:
+            _fail(code, engine_id)
+    errors = sorted(
+        contract.engine_validators[engine_id].iter_errors(document),
+        key=lambda error: (list(error.absolute_path), str(error.validator)),
+    )
+    if errors:
+        first = errors[0]
+        path = "/" + "/".join(str(part) for part in first.absolute_path)
+        _fail("join_engine_schema_violation", f"{engine_id}:{path or '/'}:{first.validator}")
     sealed = document.get("record_sha256")
     if not isinstance(sealed, str):
         _fail("join_engine_unsealed", engine_id)
@@ -487,19 +628,29 @@ def _release_identity(
     return identity
 
 
-def _rights_rows(document: Mapping[str, Any]) -> dict[str, dict[str, str]]:
+def _rights_rows(
+    engine_id: str, document: Mapping[str, Any]
+) -> dict[str, dict[str, str]]:
     """Collect source_id -> decision triple from anywhere in *document*."""
 
     rows: dict[str, dict[str, str]] = {}
-    for _, node in _walk(document, "", 0):
+    for pointer, node in _walk(document, "", 0):
         source_id = node.get("source_id")
         if not isinstance(source_id, str) or not source_id:
             continue
-        if not all(isinstance(node.get(field), str) for field in _RIGHTS_FIELDS):
+        present = [field for field in _RIGHTS_FIELDS if field in node]
+        if present and not all(
+            isinstance(node.get(field), str) and node.get(field)
+            for field in _RIGHTS_FIELDS
+        ):
+            _fail("join_rights_position_incomplete", f"{engine_id}:{pointer or '/'}")
+        if not present:
             continue
-        rows.setdefault(
-            source_id, {field: cast(str, node[field]) for field in _RIGHTS_FIELDS}
-        )
+        decision = {field: cast(str, node[field]) for field in _RIGHTS_FIELDS}
+        held = rows.get(source_id)
+        if held is not None and held != decision:
+            _fail("join_rights_decision_disagreement", source_id)
+        rows[source_id] = decision
     return rows
 
 
@@ -590,6 +741,57 @@ def _evidence_class(
     return weakest
 
 
+def _validated_source_states(
+    release: Mapping[str, str],
+    rights: Mapping[str, Mapping[str, str]],
+    *,
+    rights_root: Path | None,
+    rights_registry_path: Path | None,
+    rights_signers_path: Path | None,
+) -> Mapping[str, Mapping[str, Any]] | None:
+    """Load the exact signed rights snapshot sealed by the joined release.
+
+    A caller-supplied dictionary is not evidence of an approval.  Observation
+    status is reachable only from registry bytes whose digest and signer
+    registry digest are the ones every joined engine reports.
+    """
+
+    supplied = (
+        rights_root is not None,
+        rights_registry_path is not None,
+        rights_signers_path is not None,
+    )
+    if not any(supplied):
+        return None
+    if not all(supplied):
+        _fail("join_rights_validation_inputs_incomplete")
+    assert rights_root is not None
+    assert rights_registry_path is not None
+    assert rights_signers_path is not None
+    try:
+        source_states, registry_sha, signers_sha = canonical._validate_rights(
+            rights_root, rights_registry_path, rights_signers_path
+        )
+    except canonical.CanonicalObjectError as error:
+        _fail("join_rights_registry_invalid", error.code)
+    if registry_sha != release["rights_registry_sha256"]:
+        _fail("join_rights_registry_digest_mismatch")
+    if signers_sha != release["rights_signers_sha256"]:
+        _fail("join_rights_signers_digest_mismatch")
+    for source_id, decision in rights.items():
+        state = source_states.get(source_id)
+        if state is None:
+            _fail("join_rights_source_not_in_release", source_id)
+        expected = {
+            "decision_id": state.get("decision_id"),
+            "decision_artifact_sha256": state.get("decision_artifact_sha256"),
+            "signer_id": state.get("signer_id"),
+        }
+        if decision != expected:
+            _fail("join_rights_decision_registry_mismatch", source_id)
+    return source_states
+
+
 def _licensed_maturity(contract: _Contract, evidence_class: str) -> str:
     policy = cast(Mapping[str, str], contract.row["maturity_policy"])
     level = policy.get(evidence_class)
@@ -606,16 +808,18 @@ def _licensed_maturity(contract: _Contract, evidence_class: str) -> str:
 def join_engine_states(
     engine_documents: Mapping[str, Mapping[str, Any]],
     *,
-    source_states: Mapping[str, Mapping[str, Any]] | None = None,
     root: Path = ROOT,
     join_registry_path: Path = JOIN_REGISTRY,
+    rights_root: Path | None = None,
+    rights_registry_path: Path | None = None,
+    rights_signers_path: Path | None = None,
 ) -> dict[str, Any]:
     """Certify that every supplied engine output describes one governed state.
 
     ``engine_documents`` maps a registered ``engine_id`` to that engine's
-    sealed output.  ``source_states`` is the release's own source records
-    keyed by ``source_id``; without it the join cannot prove an approval
-    state and caps the world at ``synthetic_nonproduction``.
+    sealed output. Observation status requires the exact signed rights and
+    signer registries sealed by the release; without those byte-level inputs
+    the join caps the world at ``synthetic_nonproduction``.
     """
 
     contract = _load_contract(root, join_registry_path)
@@ -643,11 +847,11 @@ def join_engine_states(
         if not isinstance(document, Mapping):
             _fail("join_engine_document_invalid", engine_id)
         row = rows[engine_id]
-        _check_engine(engine_id, row, document)
+        _check_engine(contract, engine_id, row, document)
         bindings.extend(_identity_bindings(engine_id, document))
         if row["carries_release_identity"]:
             releases[engine_id] = _release_identity(engine_id, document)
-        for source_id, decision in sorted(_rights_rows(document).items()):
+        for source_id, decision in sorted(_rights_rows(engine_id, document).items()):
             held = rights.get(source_id)
             if held is None:
                 rights[source_id] = decision
@@ -715,6 +919,13 @@ def join_engine_states(
         if len(values) > 1:
             _fail("join_coverage_denominator_disagreement", population_key)
 
+    source_states = _validated_source_states(
+        reference,
+        rights,
+        rights_root=rights_root,
+        rights_registry_path=rights_registry_path,
+        rights_signers_path=rights_signers_path,
+    )
     evidence_class = _evidence_class(contract, rights, source_states)
     licensed_maturity = _licensed_maturity(contract, evidence_class)
     if evidence_class == "unapproved_rights":
@@ -802,6 +1013,9 @@ def join_engine_state_files(
     pointer: str | None = None,
     root: Path = ROOT,
     join_registry_path: Path = JOIN_REGISTRY,
+    rights_root: Path | None = None,
+    rights_registry_path: Path | None = None,
+    rights_signers_path: Path | None = None,
 ) -> dict[str, Any]:
     """Join engine outputs read from disk.
 
@@ -820,7 +1034,12 @@ def join_engine_state_files(
         else:
             documents[engine_id] = parsed
     return join_engine_states(
-        documents, root=root, join_registry_path=join_registry_path
+        documents,
+        root=root,
+        join_registry_path=join_registry_path,
+        rights_root=rights_root,
+        rights_registry_path=rights_registry_path,
+        rights_signers_path=rights_signers_path,
     )
 
 
@@ -841,6 +1060,9 @@ def main(argv: Sequence[str] | None = None) -> None:
         help="Top-level key to unwrap in each document (e.g. compilation).",
     )
     parser.add_argument("--registry", type=Path, default=JOIN_REGISTRY)
+    parser.add_argument("--rights-root", type=Path)
+    parser.add_argument("--rights-registry", type=Path)
+    parser.add_argument("--rights-signers", type=Path)
     args = parser.parse_args(argv)
 
     paths: dict[str, Path] = {}
@@ -855,7 +1077,12 @@ def main(argv: Sequence[str] | None = None) -> None:
         raise SystemExit(2)
     try:
         document = join_engine_state_files(
-            paths, pointer=args.pointer, join_registry_path=args.registry
+            paths,
+            pointer=args.pointer,
+            join_registry_path=args.registry,
+            rights_root=args.rights_root,
+            rights_registry_path=args.rights_registry,
+            rights_signers_path=args.rights_signers,
         )
     except MaxStateJoinError as error:
         print(str(error), file=sys.stderr)

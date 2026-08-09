@@ -1051,6 +1051,15 @@ builds the composite that never existed: one root, one signing key, one
 manifest, all four engines reading it. The reconstruction of the 8 August
 divergence is a permanent test, so this cannot come back quietly.
 
+The independent integration review then closed two trust shortcuts before
+shipping. An engine can no longer pass by merely naming the registered method
+and resealing itself: its output schema and claimed implementation, schema and
+engine-registry digests must match the exact registered bytes. And a caller can
+no longer supply an in-memory source dictionary to promote a world to
+`observed`; that class requires the exact signed rights and signer registries
+whose hashes the joined release seals. The join still does not semantically
+recompile each engine or replace its release-signature gate, and says so.
+
 **What it deliberately does not do.** It computes the evidence class rather than
 accepting one, and the answer for this world is `synthetic_nonproduction`,
 licensed at L0. Four engines agreeing perfectly is evidence that the contract

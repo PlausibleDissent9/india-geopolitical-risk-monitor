@@ -41,8 +41,11 @@ performed a silent cross-world join with no error available anywhere.
 `join_engine_states` takes a mapping of registered `engine_id` to that
 engine's sealed output and certifies — or refuses — that they describe one
 governed state. It is deliberately ignorant of engine internals: it
-re-derives nothing, and each engine's own gate still owns its schema,
-signature, freshness and rights checks.
+re-derives nothing. It validates each supplied output against the exact
+registered schema and binds the claimed method, implementation, schema and
+engine-registry digests to current registered bytes. Semantic recompilation,
+the underlying release signature and engine-specific freshness checks remain
+each engine gate's responsibility.
 
 **Release identity.** Every release-bearing engine must report the
 identical release block, governance registry digests included. An engine
@@ -83,9 +86,10 @@ The join **computes** these; it never accepts them from an input.
 The rule is monotone downward. One unapproved source makes the whole
 world unapproved and unpublishable. One synthetic access basis caps the
 whole world at `synthetic_nonproduction`. There is no averaging and no
-majority. Without the release's own source records the join cannot prove
-an approval state, so it caps at synthetic rather than assuming
-observation.
+majority. Without the exact signed rights-registry and signer-registry bytes
+sealed by the release, the join cannot prove an approval state, so it caps at
+synthetic rather than assuming observation. A caller-supplied source dictionary
+cannot promote a world to observed.
 
 `maturity_policy` in the registry is a ceiling, not an award:
 

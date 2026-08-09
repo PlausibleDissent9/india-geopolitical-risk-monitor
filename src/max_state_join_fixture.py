@@ -181,7 +181,9 @@ def join_world(world: ComposedWorld) -> dict[str, Any]:
 
     return max_state_join.join_engine_states(
         run_engines(world),
-        source_states=source_states(world),
+        rights_root=world.root,
+        rights_registry_path=world.root / "governance" / "source_rights_registry.json",
+        rights_signers_path=world.root / "governance" / "rights_signers.json",
     )
 
 

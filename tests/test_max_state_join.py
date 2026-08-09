@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import inspect
 import json
 import tempfile
 from pathlib import Path
@@ -50,14 +51,32 @@ def composed() -> Any:
             "world": world,
             "engines": fixture.run_engines(world),
             "sources": fixture.source_states(world),
+            "rights_registry": world.root
+            / "governance"
+            / "source_rights_registry.json",
+            "rights_signers": world.root / "governance" / "rights_signers.json",
         }
 
 
-def _join(composed: Any, engines: Any = None, sources: Any = ...) -> dict[str, Any]:
+def _join(composed: Any, engines: Any = None, *, with_rights: bool = True) -> dict[str, Any]:
+    kwargs = {}
+    if with_rights:
+        kwargs = {
+            "rights_root": composed["world"].root,
+            "rights_registry_path": composed["rights_registry"],
+            "rights_signers_path": composed["rights_signers"],
+        }
     return join.join_engine_states(
-        composed["engines"] if engines is None else engines,
-        source_states=composed["sources"] if sources is ... else sources,
+        composed["engines"] if engines is None else engines, **kwargs
     )
+
+
+def _policy_class(composed: Any, sources: dict[str, dict[str, Any]]) -> str:
+    contract = join._load_contract(join.ROOT, join.JOIN_REGISTRY)
+    rights: dict[str, dict[str, str]] = {}
+    for engine_id, document in composed["engines"].items():
+        rights.update(join._rights_rows(engine_id, document))
+    return join._evidence_class(contract, rights, sources)
 
 
 # ---------------------------------------------------------------------------
@@ -205,6 +224,39 @@ def test_an_edited_engine_output_fails_its_own_seal(composed):
     assert error.value.code == "join_engine_digest_mismatch"
 
 
+def test_a_resealed_schema_invalid_engine_is_refused(composed):
+    """A content hash is not a schema validation certificate."""
+
+    engines = copy.deepcopy(composed["engines"])
+    del engines["exposure_traversal"]["result"]
+    engines["exposure_traversal"] = canonical.seal_record(
+        engines["exposure_traversal"]
+    )
+    with pytest.raises(join.MaxStateJoinError) as error:
+        _join(composed, engines)
+    assert error.value.code == "join_engine_schema_violation"
+
+
+def test_a_resealed_engine_cannot_claim_an_unregistered_implementation(composed):
+    engines = copy.deepcopy(composed["engines"])
+    engines["sensor_fusion"]["method"]["implementation_sha256"] = "4" * 64
+    engines["sensor_fusion"] = canonical.seal_record(engines["sensor_fusion"])
+    with pytest.raises(join.MaxStateJoinError) as error:
+        _join(composed, engines)
+    assert error.value.code == "join_engine_implementation_mismatch"
+
+
+def test_a_resealed_engine_cannot_claim_another_contract_registry(composed):
+    engines = copy.deepcopy(composed["engines"])
+    engines["evidence_output_set"]["contract"]["output_registry_sha256"] = "5" * 64
+    engines["evidence_output_set"] = canonical.seal_record(
+        engines["evidence_output_set"]
+    )
+    with pytest.raises(join.MaxStateJoinError) as error:
+        _join(composed, engines)
+    assert error.value.code == "join_engine_registry_digest_mismatch"
+
+
 def test_a_missing_required_engine_is_refused(composed):
     engines = {
         engine_id: document
@@ -274,9 +326,8 @@ def test_coverage_denominator_conflict_between_engines_is_refused(composed):
 
     engines = copy.deepcopy(composed["engines"])
     shock = engines["shock_compilation"]
-    row = copy.deepcopy(composed["engines"]["sensor_fusion"]["coverage"])
-    row["observed_lane_ids"] = list(row["observed_lane_ids"])[:-1]
-    shock["coverage"] = list(shock["coverage"]) + [row]
+    shock["coverage"][0]["counts"]["total_eligible"] = 2
+    shock["coverage"][0]["counts"]["included"] = 2
     engines["shock_compilation"] = canonical.seal_record(shock)
     with pytest.raises(join.MaxStateJoinError) as error:
         _join(composed, engines)
@@ -296,7 +347,7 @@ def test_a_fixture_authorised_world_is_synthetic_and_licensed_at_l0(composed):
 
 
 def test_a_world_without_provable_source_records_cannot_claim_observation(composed):
-    document = _join(composed, sources=None)
+    document = _join(composed, with_rights=False)
     assert document["result"]["evidence_class"] == "synthetic_nonproduction"
     assert document["result"]["licensed_maturity"] == "L0"
 
@@ -304,17 +355,13 @@ def test_a_world_without_provable_source_records_cannot_claim_observation(compos
 def test_an_unapproved_rights_decision_makes_the_world_unpublishable(composed):
     sources = {key: dict(value) for key, value in composed["sources"].items()}
     sources["oges_fixture_source"]["decision_state"] = "review_required"
-    with pytest.raises(join.MaxStateJoinError) as error:
-        _join(composed, sources=sources)
-    assert error.value.code == "join_world_not_publishable"
+    assert _policy_class(composed, sources) == "unapproved_rights"
 
 
 def test_one_unapproved_source_among_many_still_refuses(composed):
     sources = {key: dict(value) for key, value in composed["sources"].items()}
     sources["sensor_fixture_news"]["decision_state"] = "expired"
-    with pytest.raises(join.MaxStateJoinError) as error:
-        _join(composed, sources=sources)
-    assert error.value.code == "join_world_not_publishable"
+    assert _policy_class(composed, sources) == "unapproved_rights"
 
 
 def test_a_source_the_release_does_not_carry_is_refused(composed):
@@ -324,7 +371,7 @@ def test_a_source_the_release_does_not_carry_is_refused(composed):
         if key != "sensor_fixture_news"
     }
     with pytest.raises(join.MaxStateJoinError) as error:
-        _join(composed, sources=sources)
+        _policy_class(composed, sources)
     assert error.value.code == "join_rights_source_not_in_release"
 
 
@@ -339,10 +386,9 @@ def test_approved_non_synthetic_sources_reach_l1_and_no_further(composed):
     sources = {key: dict(value) for key, value in composed["sources"].items()}
     for value in sources.values():
         value["access_basis"] = "government_open_data_license_india"
-    document = _join(composed, sources=sources)
-    assert document["result"]["evidence_class"] == "observed"
-    assert document["result"]["licensed_maturity"] == "L1"
-    assert document["result"]["public_claim_state"] == "requires_claim_bundle"
+    assert _policy_class(composed, sources) == "observed"
+    contract = join._load_contract(join.ROOT, join.JOIN_REGISTRY)
+    assert join._licensed_maturity(contract, "observed") == "L1"
 
 
 def test_a_synthetic_marker_anywhere_caps_the_whole_world(composed):
@@ -350,9 +396,75 @@ def test_a_synthetic_marker_anywhere_caps_the_whole_world(composed):
     for value in sources.values():
         value["access_basis"] = "government_open_data_license_india"
     sources["sensor_fixture_market"]["access_basis"] = "synthetic_test_authorization"
-    document = _join(composed, sources=sources)
-    assert document["result"]["evidence_class"] == "synthetic_nonproduction"
-    assert document["result"]["licensed_maturity"] == "L0"
+    assert _policy_class(composed, sources) == "synthetic_nonproduction"
+
+
+def test_observation_cannot_be_promoted_with_a_caller_supplied_mapping():
+    assert "source_states" not in inspect.signature(join.join_engine_states).parameters
+
+
+def test_a_tampered_rights_registry_cannot_promote_the_join(composed, tmp_path):
+    document = json.loads(composed["rights_registry"].read_text(encoding="utf-8"))
+    document["sources"][0]["access_basis"] = "government_open_data_license_india"
+    path = tmp_path / "source_rights_registry.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    with pytest.raises(join.MaxStateJoinError) as error:
+        join.join_engine_states(
+            composed["engines"],
+            rights_root=composed["world"].root,
+            rights_registry_path=path,
+            rights_signers_path=composed["rights_signers"],
+        )
+    assert error.value.code in {
+        "join_rights_registry_invalid",
+        "join_rights_registry_digest_mismatch",
+    }
+
+
+def test_engine_rights_must_match_the_signed_registry(composed):
+    engines = copy.deepcopy(composed["engines"])
+
+    def rewrite(node: Any) -> None:
+        if isinstance(node, dict):
+            if (
+                node.get("source_id") == "sensor_fixture_news"
+                and all(field in node for field in join._RIGHTS_FIELDS)
+            ):
+                node["decision_id"] = "spoofed-decision"
+            for value in node.values():
+                rewrite(value)
+        elif isinstance(node, list):
+            for value in node:
+                rewrite(value)
+
+    for engine_id, document in engines.items():
+        rewrite(document)
+        engines[engine_id] = canonical.seal_record(document)
+    with pytest.raises(join.MaxStateJoinError) as error:
+        _join(composed, engines)
+    assert error.value.code == "join_rights_decision_registry_mismatch"
+
+
+def test_conflicting_rights_inside_one_engine_are_refused():
+    document = {
+        "rows": [
+            {
+                "source_id": "source:a",
+                "decision_id": "decision:a",
+                "decision_artifact_sha256": "1" * 64,
+                "signer_id": "signer:a",
+            },
+            {
+                "source_id": "source:a",
+                "decision_id": "decision:b",
+                "decision_artifact_sha256": "2" * 64,
+                "signer_id": "signer:a",
+            },
+        ]
+    }
+    with pytest.raises(join.MaxStateJoinError) as error:
+        join._rights_rows("engine:a", document)
+    assert error.value.code == "join_rights_decision_disagreement"
 
 
 def test_no_maturity_level_above_the_registered_ceiling_is_reachable():

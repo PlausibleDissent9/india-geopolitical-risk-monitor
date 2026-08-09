@@ -136,10 +136,13 @@ registries. Every engine gate was green; no gate existed that could have gone re
 
 A Max engine output is therefore not admissible on its own. Before any composite
 reading, `src/max_state_join.py` must certify that every joined engine reports
-one release identity including governance registry digests, that no identifier is
+the exact registered method implementation, output schema and engine-registry
+bytes; one release identity including governance registry digests; that no identifier is
 bound to two different content digests, that one source carries one rights
 decision, that no knowledge cutoff postdates release generation, and that two
-engines never count one population differently. Each is a refusal with a stable
+engines never count one population differently. Observed status additionally
+requires the exact signed rights and signer registries sealed by the release;
+an in-memory caller assertion cannot promote it. Each failure is a refusal with a stable
 code, not a warning. Agreement is not accuracy: it proves the contract composes,
 never that a real dependency, observation or exposure exists.
 
