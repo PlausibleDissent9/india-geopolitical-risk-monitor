@@ -93,6 +93,35 @@ def missing_keys() -> list[str]:
             if k not in store.columns or store[k].dropna().empty]
 
 
+def attempt_window(todo: list[str], today: date) -> list[str]:
+    """The slice of `todo` this run attempts, rotated by the date.
+
+    Bounding work per run made a batch survivable; taking that bound
+    from a FIXED end of a stable list made it useless, because
+    missing_keys() returns the registered order every time. Every run
+    therefore attempted the same first series, spent its wall clock
+    there, and stopped -- so a series that cannot be fetched does not
+    merely fail, it starves everything behind it.
+
+    Measured 2026-08-09, seventy-odd runs in: the store held 6 of 15
+    series, and the missing nine were exactly the last three channels in
+    declaration order (gulf_energy, us_trade, shipping x hin/urd/zho).
+    The window was always [gulf_energy_hin, gulf_energy_urd,
+    gulf_energy_zho, us_trade_hin], so shipping_* had never been
+    attempted a single time. The lane was not slow at those series; it
+    had never asked for them.
+
+    Rotating by ordinal day advances the window MAX_SERIES_PER_RUN at a
+    time, so every missing series comes up within a few days even if the
+    head of the list stays unfetchable, and a run is still deterministic
+    (same day, same window) so a re-dispatch resumes rather than
+    wandering."""
+    if len(todo) <= MAX_SERIES_PER_RUN:
+        return todo
+    offset = (today.toordinal() * MAX_SERIES_PER_RUN) % len(todo)
+    return (todo + todo)[offset:offset + MAX_SERIES_PER_RUN]
+
+
 def update(backfill: bool = False) -> pd.DataFrame | None:
     """Fetch the registered per-language series, PERSISTING EACH ONE as
     it lands.
@@ -140,7 +169,7 @@ def update(backfill: bool = False) -> pd.DataFrame | None:
     # stops starting new ones well before the axe falls, saves what it
     # got, and lets the chain come back for the rest.
     deadline = time.monotonic() + DEADLINE_SECONDS
-    todo = todo[:MAX_SERIES_PER_RUN]
+    todo = attempt_window(todo, today)
     print(f"[multilingual] this run attempts {len(todo)}: "
           f"{', '.join(todo)} (budget {DEADLINE_SECONDS // 60} min)")
 

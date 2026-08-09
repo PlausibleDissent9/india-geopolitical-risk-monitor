@@ -33,7 +33,7 @@ from __future__ import annotations
 
 import math
 import re
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from src import fetch_gdelt, multilingual
@@ -116,6 +116,14 @@ def test_the_bound_is_actually_applied():
     cheerfully starts the next channel past the deadline it just
     refused to cross."""
     src = (ROOT / "src" / "multilingual.py").read_text(encoding="utf-8")
-    assert "todo[:MAX_SERIES_PER_RUN]" in src, "the per-run cap is not applied"
+    assert "attempt_window(todo, today)" in src, "the per-run cap is not applied"
     assert "out_of_time = True" in src and "if out_of_time:" in src, (
         "the deadline does not break out of the outer loop")
+    # Behaviour, not just the call site: the window may never hand back
+    # more series than the budget was sized for, whatever its offset.
+    many = [f"series_{i}" for i in range(3 * multilingual.MAX_SERIES_PER_RUN)]
+    for step in range(40):
+        window = multilingual.attempt_window(
+            many, date(2026, 8, 9) + timedelta(days=step))
+        assert len(window) == multilingual.MAX_SERIES_PER_RUN
+        assert len(set(window)) == len(window), "a series attempted twice"
