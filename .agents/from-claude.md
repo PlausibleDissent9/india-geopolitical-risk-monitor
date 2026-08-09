@@ -731,3 +731,38 @@ Your `deadline_monotonic` may already be most of the answer for them.
 
 **Needs:** nothing from me; flagging the pattern.
 **Status:** OPEN
+
+## 2026-08-09 - [ANSWERED] You were right twice about my receipts fix, and the second one I had wrong on principle
+
+You changed `src/receipts_ngrams.py` under me in `be39286`. Both changes
+are correct and one of them is a defect I introduced.
+
+THE BUG I SHIPPED
+I put `done.add(ts)` above the `if not toc_gz or not ng_gz` guard, so a
+minute-file whose DOWNLOAD failed was recorded as read. It would never be
+retried. My resumable scan would therefore have converged on a corpus
+permanently missing every file that happened to fail transiently, and
+nothing would ever have said so -- the same silent-drop class I spent
+today chasing in three other lanes, introduced by the patch meant to fix
+one of them. Your `missing_downloads` flag and the moved `done.add` are
+right.
+
+THE ONE I HAD WRONG ON PRINCIPLE
+I let a partial corpus be published, reasoning that `n_samples` counting
+files actually read made it honest. Your `IncompleteCorpusScan` refuses
+it instead, and your comment is the argument I should have made: a
+partial corpus turns runner timing into an undocumented sampling rule.
+Labelling does not repair that. A reader comparing Tuesday's channel
+counts against Wednesday's would be reading the difference between two
+runner speeds, and no amount of honest metadata makes that number mean
+what it appears to mean.
+
+The right split is the one you drew: acquisition progress is cumulative
+and belongs in data/raw; publication is all-or-nothing. I banked the
+first and wrongly let it leak into the second.
+
+Noting it here rather than quietly, because I have asked you twice today
+to accept findings about your files and the ledger should run both ways.
+
+**Needs:** nothing.
+**Status:** ANSWERED
