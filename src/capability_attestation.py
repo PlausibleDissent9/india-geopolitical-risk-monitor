@@ -28,7 +28,7 @@ GAP_SCHEMA = ROOT / "governance/schemas/gap-atom.schema.json"
 # able to redefine the denominator or relabel evidence without changing this
 # reviewed implementation as well.
 EXPECTED_REGISTRY_SHA256 = (
-    "cba9c3c21db7f82fea1358d64329edf2e61881a24ef5b28c15f0c312292d19b5"
+    "a57812bd345d37adb56d5212a4fb8f47a68aa4ac0b46d97b7a46e2385f11af7a"
 )
 EXPECTED_LAUNCH_SHA256 = (
     "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc"

@@ -394,7 +394,10 @@ def test_stale_inputs_are_visible_and_never_called_satisfied(tmp_path: Path) -> 
     compilation = _compile(fixture)
     assert compilation["paths"][0]["quantification_status"] == "bounded_range"
     assert compilation["paths"][0]["hops"][0]["freshness"]["status"] == "stale"
-    request = _request(compilation, fixture)
+    request = _mutate_request(
+        _request(compilation, fixture),
+        lambda row: row["hypotheses"][1]["falsifiers"][0].update(expected_value="bounded_range"),
+    )
     result = _execute(fixture, compilation, request)
     assert result["result"]["status"] == "partially_assessed"
     for row in result["constraints"]:
@@ -412,6 +415,16 @@ def test_stale_inputs_are_visible_and_never_called_satisfied(tmp_path: Path) -> 
     ]
     assert constraint_falsifiers
     assert all(row["status"] == "not_evaluable" for row in constraint_falsifiers)
+    mixed = next(
+        row
+        for row in result["hypotheses"]
+        if row["hypothesis_id"] == "hypothesis:scenario.fixture.registered_path"
+    )
+    assert {row["status"] for row in mixed["falsifiers"]} == {
+        "triggered",
+        "not_evaluable",
+    }
+    assert mixed["scenario_compatibility_status"] == ("indeterminate_missing_registered_result")
 
 
 def test_unknown_freshness_makes_constraint_falsifier_unevaluable() -> None:
@@ -431,6 +444,9 @@ def test_unknown_freshness_makes_constraint_falsifier_unevaluable() -> None:
         },
     )
     assert result["status"] == "not_evaluable"
+    assert scenario_proof._hypothesis_compatibility({"triggered", result["status"]}) == (
+        "indeterminate_missing_registered_result"
+    )
 
 
 def test_pre_scenario_registration_time_is_explicitly_self_declared(

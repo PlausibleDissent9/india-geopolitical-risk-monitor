@@ -25,11 +25,11 @@
   ],
   "reference_implementation": {
     "path": "src/scenario_proof.py",
-    "sha256": "af21d70aeddb53a6e63f5fa806f9d19e8b1d5d20936fe07fdf340f714efe8b4c"
+    "sha256": "31884f9c9d2a1e6aaba2fd6e685820e58d0d2a5ffadfc6d7e7eec4ecfe93e0b9"
   },
   "conformance_test": {
     "path": "tests/test_scenario_proof.py",
-    "sha256": "a6b19eeb52e4efc750eb728a653ff9d611e075b0ec21e49355f032c54d7d465c"
+    "sha256": "0b4abb857e44075a296f91ff8bd105cba198f897fe2cdeee62e9947b341604ed"
   },
   "claim_boundary": [
     "A proof classifies only registered hypothetical intervals and structural predicates after exact Shock Compiler recomputation.",

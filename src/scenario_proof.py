@@ -631,6 +631,14 @@ def _falsifier_result(
     }
 
 
+def _hypothesis_compatibility(statuses: set[str]) -> str:
+    if "not_evaluable" in statuses:
+        return "indeterminate_missing_registered_result"
+    if "triggered" in statuses:
+        return "incompatible_with_compiled_scenario_not_real_world_falsified"
+    return "compatible_with_compiled_scenario_not_supported"
+
+
 def _build_execution(
     request: Mapping[str, Any],
     scenario: Mapping[str, Any],
@@ -651,12 +659,7 @@ def _build_execution(
             for row in hypothesis["falsifiers"]
         ]
         statuses = {row["status"] for row in falsifiers}
-        if "triggered" in statuses:
-            compatibility = "incompatible_with_compiled_scenario_not_real_world_falsified"
-        elif "not_evaluable" in statuses:
-            compatibility = "indeterminate_missing_registered_result"
-        else:
-            compatibility = "compatible_with_compiled_scenario_not_supported"
+        compatibility = _hypothesis_compatibility(statuses)
         hypothesis_results.append(
             {
                 "hypothesis_id": hypothesis["hypothesis_id"],
