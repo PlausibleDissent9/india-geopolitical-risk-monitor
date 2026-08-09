@@ -14,6 +14,7 @@ import json
 import math
 import os
 import tempfile
+from datetime import date
 from pathlib import Path
 from typing import Any, NoReturn, cast
 
@@ -74,6 +75,18 @@ def _number(value: object, code: str) -> int | float:
     return value
 
 
+def _day(value: object, code: str) -> str:
+    if not isinstance(value, str):
+        _fail(code)
+    try:
+        parsed = date.fromisoformat(value)
+    except ValueError:
+        _fail(code)
+    if parsed.isoformat() != value:
+        _fail(code)
+    return value
+
+
 def _partner_observation(value: object) -> dict[str, Any]:
     if not isinstance(value, dict) or set(value) != {
         "name",
@@ -103,6 +116,7 @@ def _partner_observation(value: object) -> dict[str, Any]:
         or recent_n < 0
         or not 0 <= conflict <= 1
         or (recent_conflict is not None and not 0 <= recent_conflict <= 1)
+        or (recent_n == 0 and recent_conflict is not None)
         or (recent_conflict is None and recent_n != 0)
     ):
         _fail("partner_measure_invalid")
@@ -119,8 +133,10 @@ def _partner_observation(value: object) -> dict[str, Any]:
 def build() -> dict[str, Any]:
     """Return the exact global denominator and currently supportable cells."""
 
-    # Reuse the evolution contract's complete validation before projecting it.
-    evolution_engine.build_report()
+    # Validate the immutable engine/layer contracts without reading generated
+    # catalogs or reports.  The matrix must remain rebuildable when its prior
+    # public output is absent.
+    evolution_engine.validate_static_contracts()
     world, world_sha = _read(WORLD_PATH, "world_geometry_unreadable")
     relations, _ = _read(RELATIONS_PATH, "map_relations_unreadable")
     layers, layers_sha = _read(LAYERS_PATH, "layer_registry_unreadable")
@@ -138,6 +154,15 @@ def build() -> dict[str, Any]:
         _fail("partner_outside_world_denominator")
     if relations.get("_meta", {}).get("partial") is not False:
         _fail("partner_payload_partial")
+    relation_meta = relations.get("_meta")
+    if not isinstance(relation_meta, dict):
+        _fail("partner_metadata_invalid")
+    observation_vintage = _day(
+        relation_meta.get("generated"), "partner_observation_vintage_invalid"
+    )
+    contract_effective = _day(
+        layers.get("effective"), "layer_registry_effective_invalid"
+    )
 
     country_layers = [
         cast(dict[str, Any], row)
@@ -214,8 +239,9 @@ def build() -> dict[str, Any]:
     return {
         "_meta": {
             "schema_version": "1.0.0",
-            "date": layers["effective"],
-            "generated": f"{layers['effective']}T00:00:00Z",
+            "date": observation_vintage,
+            "generated": f"{observation_vintage}T00:00:00Z",
+            "contract_effective": contract_effective,
             "partial": False,
             "partial_definition": (
                 "False means every registered geometry-layer cell is represented. It does "
@@ -233,7 +259,7 @@ def build() -> dict[str, Any]:
                 "appears for every country-level layer; unavailable cells remain explicit. "
                 "This is not a world risk score or a claim of complete measurement."
             ),
-            "observation_vintage": relations["_meta"]["generated"],
+            "observation_vintage": observation_vintage,
             "input_sha256": {
                 "world_geometry": world_sha,
                 "map_relations_observation_set": evolution_engine.canonical_sha256(

@@ -92,6 +92,12 @@ EXEMPT: dict[str, str] = {
         "a static machine-verified repository-control baseline, not a daily "
         "measurement; CI regenerates it whenever a registered control changes"
     ),
+    "evolution.json": (
+        "a deterministic capability, authority and denominator contract, not a "
+        "daily measurement; the hourly evolution audit reads current freshness "
+        "separately and this report changes only when a registered capability, "
+        "route, layer or program changes"
+    ),
     "knowledge_replay_demo.json": (
         "a deterministic synthetic two-release conformance demonstration, not "
         "a live world-state lane; its fixed time is part of the public test vector"

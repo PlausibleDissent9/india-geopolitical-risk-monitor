@@ -9,7 +9,7 @@
     "codebook": "https://igrm.in/codebook.html",
     "source": "https://igrm.in/data/evolution.json",
     "input_sha256": {
-      "engine_registry": "f1da352e9cd9377f57182e1c4f2dcb44271a95062b8ad6664f1ebc7e2c52f3cb",
+      "engine_registry": "38aac18d6a385423f879d967c2c6eadec195d2dd80faf67568f9e59710a83b9d",
       "global_layer_registry": "f5adcb1326637cc73347b48b0f8ab0d68c79b4989f7497b9d66c8be408616bb1",
       "world_geometry_member_set": "f680a626c04d45a735b96650a148d72881652f06fe9d9d97dfaece8a33ef3201",
       "map_relation_member_set": "ce04ef05f80b88a0050f0d4c6f7ec8e8b107c167c65b7386fac90e9ba75eaef2",
@@ -313,7 +313,7 @@
     {
       "candidate_id": "world_state_matrix",
       "risk_class": "R2_product_or_data_expansion",
-      "state": "implemented_contract_surface_pending",
+      "state": "released",
       "target_dimensions": [
         "coverage",
         "utility",
@@ -325,7 +325,7 @@
         "registered_layers": 15,
         "published_country_level_layers": 1
       },
-      "next_gate": "Publish the complete-country matrix and visible missingness, then add real source-backed layers only after rights and construct gates."
+      "next_gate": "Measure the released matrix after publication and add real source-backed layers only after their rights, construct and independent-review gates."
     },
     {
       "candidate_id": "historical_intelligence_activation",

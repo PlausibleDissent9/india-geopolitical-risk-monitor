@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 import pytest
-from src import world_state
+from src import evolution_engine, world_state
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -23,6 +23,11 @@ def test_exact_matrix_rebuild_and_complete_cell_partition() -> None:
     assert denominator["country_level_layers"] == 14
     assert denominator["cells"] == 3458
     assert denominator["single_world_score"] == "prohibited"
+    assert payload["_meta"]["date"] == payload["_meta"]["observation_vintage"]
+    assert payload["_meta"]["generated"] == (
+        payload["_meta"]["observation_vintage"] + "T00:00:00Z"
+    )
+    assert payload["_meta"]["contract_effective"] == "2026-08-09"
     assert len(payload["members"]) == 247
     assert len(payload["layers"]) == 14
 
@@ -62,6 +67,20 @@ def test_zero_recent_events_preserve_an_unavailable_share() -> None:
     assert observation["conflict_share_recent_window"] is None
 
 
+def test_zero_recent_events_cannot_publish_a_zero_conflict_share(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    relations = json.loads(world_state.RELATIONS_PATH.read_text(encoding="utf-8"))
+    relations["partners"]["PRY"]["recent_conflict_share"] = 0.0
+    path = tmp_path / "map_relations.json"
+    _write_json(path, relations)
+    monkeypatch.setattr(world_state, "RELATIONS_PATH", path)
+
+    with pytest.raises(world_state.WorldStateError) as exc:
+        world_state.build()
+    assert exc.value.code == "partner_measure_invalid"
+
+
 def test_partial_source_is_refused(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -74,6 +93,48 @@ def test_partial_source_is_refused(
     with pytest.raises(world_state.WorldStateError) as exc:
         world_state.build()
     assert exc.value.code == "partner_payload_partial"
+
+
+def test_publication_clock_follows_the_observation_vintage(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    relations = json.loads(world_state.RELATIONS_PATH.read_text(encoding="utf-8"))
+    relations["_meta"]["generated"] = "2026-08-10"
+    path = tmp_path / "map_relations.json"
+    _write_json(path, relations)
+    monkeypatch.setattr(world_state, "RELATIONS_PATH", path)
+
+    payload = world_state.build()
+    assert payload["_meta"]["date"] == "2026-08-10"
+    assert payload["_meta"]["generated"] == "2026-08-10T00:00:00Z"
+    assert payload["_meta"]["contract_effective"] == "2026-08-09"
+
+
+def test_invalid_observation_vintage_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    relations = json.loads(world_state.RELATIONS_PATH.read_text(encoding="utf-8"))
+    relations["_meta"]["generated"] = "not-a-date"
+    path = tmp_path / "map_relations.json"
+    _write_json(path, relations)
+    monkeypatch.setattr(world_state, "RELATIONS_PATH", path)
+
+    with pytest.raises(world_state.WorldStateError) as exc:
+        world_state.build()
+    assert exc.value.code == "partner_observation_vintage_invalid"
+
+
+def test_matrix_rebuild_has_no_generated_report_bootstrap_dependency(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    missing = tmp_path / "missing-generated-artifact.json"
+    monkeypatch.setattr(evolution_engine, "CATALOG_PATH", missing)
+    monkeypatch.setattr(evolution_engine, "CONTRACT_PATH", missing)
+    monkeypatch.setattr(evolution_engine, "FRESHNESS_PATH", missing)
+    monkeypatch.setattr(evolution_engine, "OUTPUT_PATH", missing)
+
+    payload = world_state.build()
+    assert payload["denominator"]["cells"] == 3458
 
 
 def test_partner_outside_geometry_denominator_is_refused(

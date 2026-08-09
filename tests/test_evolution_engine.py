@@ -105,17 +105,78 @@ def test_unpublished_layer_cannot_smuggle_a_source_payload(
     assert exc.value.code == "unpublished_layer_source_must_be_null"
 
 
+def test_layer_index_state_is_a_closed_refusal_enum(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    registry = json.loads(evolution_engine.LAYER_PATH.read_text(encoding="utf-8"))
+    registry["layers"][0]["index_state"] = "published_index"
+    path = tmp_path / "global_atlas_layers.json"
+    path.write_text(json.dumps(registry), encoding="utf-8")
+    monkeypatch.setattr(evolution_engine, "LAYER_PATH", path)
+
+    with pytest.raises(evolution_engine.EvolutionError) as exc:
+        evolution_engine.build_report()
+    assert exc.value.code == "layer_index_state_invalid"
+
+
+def test_evolution_report_can_recreate_itself_but_not_ignore_other_missing_endpoints(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    original = Path.is_file
+
+    def only_evolution_missing(path: Path) -> bool:
+        if path.resolve() == evolution_engine.OUTPUT_PATH.resolve():
+            return False
+        return original(path)
+
+    monkeypatch.setattr(Path, "is_file", only_evolution_missing)
+    assert evolution_engine.build_report()["_meta"]["partial"] is False
+
+    def world_state_missing(path: Path) -> bool:
+        if path.resolve() in {
+            evolution_engine.OUTPUT_PATH.resolve(),
+            (ROOT / "docs" / "data" / "world_state.json").resolve(),
+        }:
+            return False
+        return original(path)
+
+    monkeypatch.setattr(Path, "is_file", world_state_missing)
+    with pytest.raises(evolution_engine.EvolutionError) as exc:
+        evolution_engine.build_report()
+    assert exc.value.code == "api_endpoint_missing"
+
+
 def test_hourly_audit_is_read_only_and_separates_live_health() -> None:
     audit = evolution_engine.build_runtime_audit(
         datetime(2026, 8, 9, 12, 0, tzinfo=timezone.utc)
+    )
+    freshness = json.loads(
+        evolution_engine.FRESHNESS_PATH.read_text(encoding="utf-8")
     )
     assert audit["audited_at"] == "2026-08-09T12:00:00Z"
     assert audit["commit_publication_authority"] == "none"
     assert audit["automatic_change_authority"] == "none"
     assert audit["public_report_current"] is True
-    assert audit["current_freshness_ledger"]["payloads"] == 82
+    assert audit["current_freshness_ledger"]["payloads"] == len(
+        freshness["payloads"]
+    )
     assert audit["runtime_input_sha256"].keys() == {"freshness"}
     assert "freshness" not in audit["capability_input_sha256"]
+
+
+def test_released_observer_and_world_matrix_are_not_reported_as_pending() -> None:
+    registry = json.loads(
+        evolution_engine.ENGINE_PATH.read_text(encoding="utf-8")
+    )
+    assert registry["current_automation_boundary"]["hourly_observer"] == (
+        "live_read_only"
+    )
+    report = evolution_engine.build_report()
+    world = next(
+        row for row in report["priority_queue"] if row["candidate_id"] == "world_state_matrix"
+    )
+    assert world["state"] == "released"
+    assert "after publication" in world["next_gate"]
 
 
 def test_hourly_workflow_observes_without_repository_authority() -> None:

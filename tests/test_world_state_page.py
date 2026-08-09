@@ -17,8 +17,10 @@ def test_world_page_has_the_institutional_shell_and_claim_boundary() -> None:
     assert '<meta http-equiv="Content-Security-Policy"' in HTML
     assert '<main id="main-content"' in HTML
     assert '<h1 id="page-title">World State Matrix</h1>' in HTML
-    assert "3,458 explicit geometry-layer cells" in HTML
-    assert "No single world score is calculated" in HTML
+    assert 'id="world-denominator-copy"' in HTML
+    assert "Loading the validated geometry-layer denominator" in HTML
+    assert "3,458 explicit geometry-layer cells" not in HTML
+    assert "Search 247 members" not in HTML
     assert "not omniscience" in HTML
     assert 'href="data/world_state.json"' in HTML
     assert re.search(r'href="world\.css\?v=[0-9a-f]{8}"', HTML)
@@ -57,6 +59,13 @@ def test_runtime_validates_the_complete_denominator_before_rendering() -> None:
     assert 'fetch(GEO_URL, { cache: "no-store" })' in JS
     assert "innerHTML" not in JS
     assert 'fetch("http' not in JS and "fetch('http" not in JS
+    assert (
+        'number(state.payload.denominator.cells) +\n      " explicit geometry-layer cells'
+        in JS
+    )
+    assert (
+        'number(state.payload.denominator.geometry_members) + " members"' in JS
+    )
 
 
 def test_world_page_supports_keyboard_search_and_reduced_motion() -> None:

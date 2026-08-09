@@ -9,6 +9,7 @@
     "unavailable_layer_not_published"
   ];
   var dom = {
+    denominatorCopy: document.getElementById("world-denominator-copy"),
     vintage: document.getElementById("world-vintage"),
     kpiMembers: document.getElementById("world-kpi-members"),
     kpiLayers: document.getElementById("world-kpi-layers"),
@@ -37,7 +38,7 @@
     claimBoundary: document.getElementById("world-claim-boundary"),
     sourceLink: document.getElementById("world-source-link")
   };
-  if (!dom.layerList || !dom.mapLayer || !dom.tableBody) return;
+  if (!dom.denominatorCopy || !dom.layerList || !dom.mapLayer || !dom.tableBody) return;
 
   var params = new URLSearchParams(window.location.search);
   var state = {
@@ -386,6 +387,12 @@
     dom.kpiMembers.textContent = number(state.payload.denominator.geometry_members);
     dom.kpiLayers.textContent = number(state.payload.denominator.country_level_layers);
     dom.kpiCells.textContent = number(state.payload.denominator.cells);
+    dom.search.placeholder = "Search " + number(state.payload.denominator.geometry_members) + " members";
+    dom.denominatorCopy.textContent = (
+      "This validated release contains " + number(state.payload.denominator.cells) +
+      " explicit geometry-layer cells. An unavailable cell is a published limitation—" +
+      "not a zero, a safe condition or a hidden estimate. No single world score is calculated."
+    );
     buildGeometry();
     renderAll();
     updateUrl();

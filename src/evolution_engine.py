@@ -47,6 +47,8 @@ _STATES = (
     "post_release_measured",
     "accepted_or_rolled_back",
 )
+_INDEX_STATES = {"not_an_index", "not_registered"}
+_SELF_ENDPOINT = "data/evolution.json"
 
 
 class EvolutionError(ValueError):
@@ -172,7 +174,8 @@ def _validate_engine(engine: dict[str, Any]) -> None:
         _fail("candidate_state_machine_invalid")
     boundary = engine.get("current_automation_boundary")
     if not isinstance(boundary, dict) or (
-        boundary.get("automatic_code_change") != "not_authorized"
+        boundary.get("hourly_observer") != "live_read_only"
+        or boundary.get("automatic_code_change") != "not_authorized"
         or boundary.get("automatic_publication") != "not_authorized"
     ):
         _fail("automation_boundary_invalid")
@@ -217,6 +220,8 @@ def _validate_layers(layers: dict[str, Any]) -> list[dict[str, Any]]:
         }
         if set(row) != required:
             _fail("layer_fields_invalid")
+        if row["index_state"] not in _INDEX_STATES:
+            _fail("layer_index_state_invalid")
         state = row["current_state"]
         source = row["source_payload"]
         if not isinstance(state, str):
@@ -238,6 +243,21 @@ def _validate_layers(layers: dict[str, Any]) -> list[dict[str, Any]]:
 
 def _published_layer_state(row: dict[str, Any]) -> bool:
     return str(row["current_state"]).startswith("published_")
+
+
+def validate_static_contracts() -> None:
+    """Validate the immutable engine and Atlas registries only.
+
+    Generated products may call this while they are being recreated.  It must
+    therefore never depend on the product catalog, API contract, public report,
+    or any other generated output whose existence would create a bootstrap
+    cycle.
+    """
+
+    engine, _ = _read(ENGINE_PATH, "engine_unreadable")
+    layers, _ = _read(LAYER_PATH, "layer_registry_unreadable")
+    _validate_engine(engine)
+    _validate_layers(layers)
 
 
 def build_report(root: Path = ROOT) -> dict[str, Any]:
@@ -275,10 +295,14 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
     if missing_routes:
         _fail("catalog_route_missing")
     endpoints = _unique_rows(contract.get("endpoints"), "path", "api_endpoints_invalid")
+    endpoint_paths = {cast(str, row["path"]) for row in endpoints}
+    if _SELF_ENDPOINT not in endpoint_paths:
+        _fail("evolution_endpoint_unregistered")
     missing_endpoints = [
         row["path"]
         for row in endpoints
-        if not (ROOT / "docs" / cast(str, row["path"])).is_file()
+        if row["path"] != _SELF_ENDPOINT
+        and not (ROOT / "docs" / cast(str, row["path"])).is_file()
     ]
     if missing_endpoints:
         _fail("api_endpoint_missing")
@@ -391,7 +415,7 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
             {
                 "candidate_id": "world_state_matrix",
                 "risk_class": "R2_product_or_data_expansion",
-                "state": "implemented_contract_surface_pending",
+                "state": "released",
                 "target_dimensions": ["coverage", "utility", "experience"],
                 "evidence": {
                     "mapped_country_area_geometries": len(countries),
@@ -400,8 +424,8 @@ def build_report(root: Path = ROOT) -> dict[str, Any]:
                     "published_country_level_layers": len(observed_country_layers),
                 },
                 "next_gate": (
-                    "Publish the complete-country matrix and visible missingness, then add "
-                    "real source-backed layers only after rights and construct gates."
+                    "Measure the released matrix after publication and add real source-backed "
+                    "layers only after their rights, construct and independent-review gates."
                 ),
             },
             {

@@ -121,6 +121,12 @@ def test_withdrawn_brief_tombstone_is_intentionally_static():
     assert "must not be refreshed" in reason
 
 
+def test_evolution_contract_is_static_but_live_health_is_not_hidden() -> None:
+    reason = freshness.EXEMPT["evolution.json"]
+    assert "deterministic capability" in reason
+    assert "hourly evolution audit reads current freshness separately" in reason
+
+
 @pytest.mark.live
 def test_the_real_site_has_no_stale_or_undatable_payloads():
     """Belt and braces against the live tree, so this cannot pass in
