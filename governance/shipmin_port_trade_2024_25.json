@@ -14,7 +14,7 @@
   },
   "implementation": {
     "path": "src/shipmin_port_trade_pdf.py",
-    "sha256": "1f07f46e2b5997fab670f861ca55ffa9e861d2385f3be1eaf681a2a138616f0c"
+    "sha256": "8c263b85ddbc05404c85e9dc2e5330e3485255903a277c8d6d193018d7b0341b"
   },
   "artifact": {
     "url": "https://shipmin.gov.in/sites/default/files/BPS%202024-25_compressed.pdf",
@@ -59,6 +59,7 @@
   "flows": [
     {
       "flow": "unloaded",
+      "table_id": "2.1.6",
       "pdf_pages": [
         106,
         107,
@@ -114,6 +115,7 @@
     },
     {
       "flow": "loaded",
+      "table_id": "2.1.7",
       "pdf_pages": [
         118,
         119,

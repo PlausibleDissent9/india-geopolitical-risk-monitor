@@ -15,6 +15,7 @@ from typing import Any
 import pytest
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from jsonschema import Draft202012Validator
 from src import dependency_observation as dep
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -243,6 +244,8 @@ def _valid_bundle(tmp_path: Path) -> tuple[Path, Path, Path, dict[str, Any]]:
         ("observed_zero", "Kuwait", "Crude petroleum", "Mumbai", 0.0),
         ("source_missing", "Iraq", "Coal", "Mumbai", None),
         ("suppressed", "Kuwait", "Coal", "Deendayal", None),
+        ("source_blank", "Iraq", "Coal", "Deendayal", None),
+        ("not_applicable", "Kuwait", "Crude petroleum", "Deendayal", None),
     ]
     observations: list[dict[str, Any]] = []
     for index, (status, country, commodity, port, value) in enumerate(cells, start=1):
@@ -351,7 +354,14 @@ def _reframe(bundle: dict[str, Any]) -> None:
         row["coverage"]["joint_frame_sha256"] = digest
         row["coverage"]["value_partition"] = {
             status: partition[status]
-            for status in ("observed_positive", "observed_zero", "source_missing", "suppressed")
+            for status in (
+                "observed_positive",
+                "observed_zero",
+                "source_blank",
+                "source_missing",
+                "suppressed",
+                "not_applicable",
+            )
         }
         sealed = dep.seal_record(row)
         row.clear()
@@ -383,14 +393,41 @@ def test_valid_bundle_is_complete_lossless_and_not_an_edge(tmp_path: Path) -> No
     root, rights, signers, bundle = _valid_bundle(tmp_path)
     result = _validate(root, rights, signers, bundle)
     assert result["status"] == "conformant_dependency_observation_frame"
-    assert result["observation_count"] == 4
+    assert result["observation_count"] == 6
     assert result["value_partition"] == {
         "observed_positive": 1,
         "observed_zero": 1,
+        "source_blank": 1,
         "source_missing": 1,
         "suppressed": 1,
+        "not_applicable": 1,
     }
     assert result["claim_boundary"] == "structural_source_observations_not_dependency_edges"
+
+
+def test_schema_binds_every_value_status_to_its_measure(tmp_path: Path) -> None:
+    _, _, _, bundle = _valid_bundle(tmp_path)
+    schema = json.loads(
+        (ROOT / EXTENSION / "dependency-observation.schema.json").read_text()
+    )
+    validator = Draft202012Validator(schema)
+    invalid = []
+    positive_null = copy.deepcopy(bundle["observations"][0])
+    positive_null["measure"] = None
+    invalid.append(positive_null)
+    zero_positive = copy.deepcopy(bundle["observations"][1])
+    zero_positive["measure"]["value"] = 7
+    invalid.append(zero_positive)
+    for index in (2, 3, 4, 5):
+        hidden = copy.deepcopy(bundle["observations"][index])
+        hidden["measure"] = {
+            "value": 7,
+            "unit": "thousand_metric_tonnes",
+            "scale_factor": 1000,
+            "denominator": "exact source joint cell",
+        }
+        invalid.append(hidden)
+    assert all(not validator.is_valid(row) for row in invalid)
 
 
 def _positive_without_measure(bundle: dict[str, Any]) -> None:
@@ -406,6 +443,21 @@ def _missing_with_measure(bundle: dict[str, Any]) -> None:
         "denominator": "exact source joint cell",
     }
     _reseal(bundle["observations"][2])
+
+
+def _blank_with_hidden_measure(bundle: dict[str, Any]) -> None:
+    bundle["observations"][4]["measure"] = {
+        "value": 7.0,
+        "unit": "thousand_metric_tonnes",
+        "scale_factor": 1000,
+        "denominator": "exact source joint cell",
+    }
+    _reseal(bundle["observations"][4])
+
+
+def _zero_with_positive_measure(bundle: dict[str, Any]) -> None:
+    bundle["observations"][1]["measure"]["value"] = 7.0
+    _reseal(bundle["observations"][1])
 
 
 def _required_role_removed(bundle: dict[str, Any]) -> None:
@@ -476,8 +528,10 @@ def _partition_incomplete(bundle: dict[str, Any]) -> None:
     wrong = {
         "observed_positive": 2,
         "observed_zero": 0,
+        "source_blank": 1,
         "source_missing": 1,
         "suppressed": 1,
+        "not_applicable": 1,
     }
     for row in bundle["observations"]:
         row["coverage"]["value_partition"] = wrong
@@ -492,6 +546,8 @@ def _invented_method(bundle: dict[str, Any]) -> None:
 MUTATIONS: dict[str, Callable[[dict[str, Any]], None]] = {
     "positive_value_without_measure": _positive_without_measure,
     "source_missing_with_measure": _missing_with_measure,
+    "source_blank_with_hidden_measure": _blank_with_hidden_measure,
+    "zero_labelled_positive_measure": _zero_with_positive_measure,
     "required_role_removed": _required_role_removed,
     "duplicate_role_slot": _duplicate_role_slot,
     "unregistered_role_semantics": _unregistered_role,

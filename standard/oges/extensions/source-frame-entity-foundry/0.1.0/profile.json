@@ -1,0 +1,69 @@
+{
+  "schema_version": "0.1.0",
+  "extension_id": "oges:extension:source_frame_entity_foundry",
+  "version": "0.1.0",
+  "effective": "2026-08-09",
+  "status": "public_draft_contract_only_real_source_rights_blocked",
+  "bound_files": [
+    {
+      "kind": "specification",
+      "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/SPEC.md",
+      "sha256": "e5d215fc1dc277de6358cc46e6a157ac07a72599c9bbff211fc4e4e26b7618d3"
+    },
+    {
+      "kind": "reference_source_contract",
+      "path": "governance/source_frame_entity_foundry.json",
+      "sha256": "b5403bd1e1e698241272387fe27ca37fb257468a38c22b4158c35ee54c26622b"
+    },
+    {
+      "kind": "foundry_package_schema",
+      "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/foundry-package.schema.json",
+      "sha256": "46ac6c321e7754734d7b5fecb55ba36e009b756734931867ff856c4deb692873"
+    },
+    {
+      "kind": "normalization_registry",
+      "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/normalization-registry.json",
+      "sha256": "cd9052e65389bcc1e55184aa0a1ecf631a68a43f0292afec6381ead231e5a30d"
+    },
+    {
+      "kind": "dependency_profile",
+      "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json",
+      "sha256": "1dcb5ee90562ef5f28b4776aa6e21267c5486c171df309aedabd40aa81553b8f"
+    },
+    {
+      "kind": "universe_release_schema",
+      "path": "schemas/universe-release.schema.json",
+      "sha256": "1b5dc27a85ea25833952c7b6ca3b4540e7c866d138edfb0bd304a595c2268961"
+    },
+    {
+      "kind": "canonical_release_schema",
+      "path": "schemas/canonical-release.schema.json",
+      "sha256": "d56dc91f4a6ee7c287c7476f66ed92debfd6b92427207890ae08ff37f194bdde"
+    },
+    {
+      "kind": "adversarial_cases",
+      "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/adversarial-cases.json",
+      "sha256": "20e566f5247a9dd6bcae67d06af6cd99da8ce4fc60fe0c118f644b8a70507784"
+    }
+  ],
+  "reference_implementation": {
+    "path": "src/source_frame_entity_foundry.py",
+    "sha256": "cbacf0d03051ae92a53d2a206419bbb56058d073465e8e5a3ff70e9fc27e4869"
+  },
+  "conformance_test": {
+    "path": "tests/test_source_frame_entity_foundry.py",
+    "sha256": "5fa0083915dc32fcc80067dbe614bfd90ce8b82a45e7f68e756c8ce16e5ab384"
+  },
+  "required_rights_uses": [
+    "cite_metadata",
+    "publish_derived_value",
+    "publish_extract"
+  ],
+  "claim_boundary": [
+    "The real Ministry source emits only a metadata-safe contract/refusal state until an exact signed decision authorizes every required use.",
+    "The signed synthetic fixture is generated with test keys during tests; capability maturity remains contract_only because no independently authenticated conformance execution is shipped.",
+    "Source-label denominators retain every raw label even when reviewed aliases converge on one canonical entity.",
+    "Dependency observations remain n-ary and never imply binary dependency edges.",
+    "Conformance does not establish legal correctness, national completeness, causation, live state or production readiness."
+  ]
+}

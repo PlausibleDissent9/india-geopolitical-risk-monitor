@@ -1,0 +1,85 @@
+{
+  "schema_version": "0.1.0",
+  "contract_id": "contract:india_major_ports_bps_2024_25_unloaded_foundry",
+  "effective": "2026-08-09",
+  "status": "rights_blocked_contract_only",
+  "evidence_class": "contract_only",
+  "source": {
+    "source_id": "india_major_ports_bps_2024_25",
+    "document_id": "basic_port_statistics_india_2024_25",
+    "artifact_sha256": "c443531e8b7acd3d6912b25b99c97b2b2388fcba9d18d60123e2513fcd76e478"
+  },
+  "source_registry": {
+    "path": "governance/shipmin_port_trade_2024_25.json",
+    "sha256": "0196b493491412285f4acf4571d81f6dbc3c43fd9cf186223faf8a8bd6404e1d"
+  },
+  "parser": {
+    "method_id": "method:shipmin_port_trade_pdf",
+    "version": "1.0.0",
+    "path": "src/shipmin_port_trade_pdf.py",
+    "sha256": "8c263b85ddbc05404c85e9dc2e5330e3485255903a277c8d6d193018d7b0341b"
+  },
+  "scope": {
+    "flow_semantics_id": "flow:overseas_cargo_unloaded_at_india_major_port",
+    "provider_flow": "unloaded",
+    "table_id": "2.1.6",
+    "pdf_pages": [106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117],
+    "dock_columns": ["SMP(KDS)", "SMP(HDC)", "PPA", "VPA", "KPL", "ChPA", "V.O.C", "CoPA", "NMPA", "MoPA", "JNPA", "MbPA", "DPA"],
+    "expected_detail_rows": 483,
+    "expected_joint_cells": 6279,
+    "source_labels_status": "withheld_pending_exact_signed_rights_decision",
+    "row_tuple_frame": {
+      "frame_id": "rowframe:india_major_ports_bps_2024_25.unloaded.2.1.6",
+      "status": "withheld_rights_blocked",
+      "tuple_count": 483,
+      "record_sha256": null,
+      "tuples": null
+    },
+    "slots": [
+      {
+        "slot": "country",
+        "semantic_role_id": "role:country_of_origin",
+        "entity_type": "country",
+        "normalization_rule_id": "normalization:unicode_nfkc_casefold_space",
+        "provider_values": null
+      },
+      {
+        "slot": "commodity",
+        "semantic_role_id": "role:principal_commodity",
+        "entity_type": "commodity",
+        "normalization_rule_id": "normalization:unicode_nfkc_casefold_space",
+        "provider_values": null
+      },
+      {
+        "slot": "port",
+        "semantic_role_id": "role:india_major_port_table_column",
+        "entity_type": "port",
+        "normalization_rule_id": "normalization:exact_identity",
+        "provider_values": null
+      }
+    ]
+  },
+  "rights": {
+    "required_uses": ["cite_metadata", "publish_derived_value", "publish_extract"],
+    "human_signature_is_legal_determination": false
+  },
+  "forbidden_semantics": [
+    "loaded_cargo",
+    "loaded_destination",
+    "firm",
+    "vessel",
+    "route",
+    "capacity",
+    "buffer",
+    "live_state",
+    "all_india_ports",
+    "causality",
+    "binary_dependency_edge"
+  ],
+  "limits": [
+    "No real source-label frame, crosswalk, universe release or value-bearing package is emitted while rights remain unapproved.",
+    "Any future authorized package is limited to the exact 483 unloaded country-of-origin-within-commodity source rows crossed with the 13 Major-Port table columns on the registered pages.",
+    "Raw labels remain source members even when reviewed aliases converge on one canonical entity.",
+    "This contract is an executable L0 foundation, not an L1 observation layer or L2 dependency map."
+  ]
+}

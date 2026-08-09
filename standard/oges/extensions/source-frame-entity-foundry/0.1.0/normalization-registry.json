@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "oges:source_label_normalization",
+  "default_policy": "deny",
+  "rules": [
+    {
+      "rule_id": "normalization:exact_identity",
+      "operation": "exact_identity",
+      "meaning": "Preserve the source label byte-for-byte after JSON decoding."
+    },
+    {
+      "rule_id": "normalization:unicode_nfkc_casefold_space",
+      "operation": "unicode_nfkc_casefold_space",
+      "meaning": "Apply Unicode NFKC, casefold, trim, and collapse internal Unicode whitespace for collision detection only; the raw label remains authoritative."
+    }
+  ]
+}

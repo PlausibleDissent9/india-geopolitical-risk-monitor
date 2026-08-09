@@ -1,13 +1,22 @@
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
+from datetime import date
 from pathlib import Path
 
 import pytest
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from src import shipmin_port_trade_pdf as shipmin
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _write_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def _word(text: str, x: float, top: float, width: float = 4) -> dict[str, object]:
@@ -58,6 +67,7 @@ def _fixture_words() -> list[dict[str, object]]:
 def _config() -> dict[str, object]:
     return {
         "flow": "unloaded",
+        "table_id": "2.1.6",
         "pdf_pages": [1],
         "country_semantics": "country_of_origin",
         "commodities": ["TEST-COMMODITY"],
@@ -74,6 +84,121 @@ def _provider(words: list[dict[str, object]]):
         return words
 
     return provide
+
+
+def _approved_rights_fixture(
+    root: Path, *, review_due: str, revoked_on: str | None
+) -> tuple[Path, Path, dict[str, object]]:
+    private = Ed25519PrivateKey.generate()
+    public = private.public_key().public_bytes(
+        encoding=serialization.Encoding.Raw,
+        format=serialization.PublicFormat.Raw,
+    )
+    signers_path = root / "governance/rights_signers.json"
+    signers = {
+        "schema_version": "1.0.0",
+        "effective": "2026-08-09",
+        "default_policy": "deny",
+        "signers": [
+            {
+                "signer_id": "signer:fixture.shipmin",
+                "name": "Fixture Shipmin rights signer",
+                "role": "test-only rights reviewer",
+                "public_key_ed25519_base64": base64.b64encode(public).decode(),
+                "effective": "2026-08-09",
+                "revoked_on": revoked_on,
+            }
+        ],
+    }
+    _write_json(signers_path, signers)
+    source = {
+        "source_id": "fixture_shipmin_source",
+        "name": "Fixture Shipmin source",
+        "provider": "Fixture provider",
+        "role": "official_synthetic_joint_cargo_frame",
+        "authority_class": "official_primary",
+        "independence_group": "fixture_shipmin_provider",
+        "lineage_policy": "primary",
+        "decision_state": "approved",
+        "decision_id": "fixture-shipmin-rights-2026-08-09",
+        "decision_owner": "Fixture rights owner",
+        "signer_id": "signer:fixture.shipmin",
+        "decision_artifact_path": "governance/rights_decisions/fixture_shipmin.json",
+        "decision_artifact_sha256": "0" * 64,
+        "decision_signature_path": "governance/rights_decisions/fixture_shipmin.sig",
+        "reviewed_on": "2026-08-09",
+        "review_due": review_due,
+        "access_url": "https://example.test/fixture",
+        "terms_url": "https://example.test/terms",
+        "access_basis": "synthetic_fixture",
+        "geographic_coverage": "Synthetic fixture",
+        "historical_coverage": "One synthetic period",
+        "retrieval_target": "Synthetic rights boundary",
+        "outage_fallback": "Fail closed",
+        "cost_owner": "Fixture owner",
+        "reproducibility_tier": "open_synthetic_fixture",
+        "max_current_age_days": 3650,
+        "permitted_uses": [
+            "cite_metadata",
+            "publish_derived_value",
+            "publish_extract",
+        ],
+        "notes": "Synthetic test-only decision; not legal advice.",
+    }
+    decision = {
+        key: source[key]
+        for key in (
+            "source_id",
+            "name",
+            "provider",
+            "role",
+            "authority_class",
+            "independence_group",
+            "decision_id",
+            "decision_owner",
+            "signer_id",
+            "reviewed_on",
+            "review_due",
+            "access_url",
+            "terms_url",
+            "access_basis",
+            "lineage_policy",
+            "max_current_age_days",
+            "permitted_uses",
+        )
+    }
+    decision.update(
+        schema_version="1.0.0",
+        statement="Synthetic test authorization for the exact listed uses.",
+    )
+    decision_path = root / str(source["decision_artifact_path"])
+    _write_json(decision_path, decision)
+    signature_path = root / str(source["decision_signature_path"])
+    signature_path.write_bytes(private.sign(decision_path.read_bytes()))
+    source["decision_artifact_sha256"] = hashlib.sha256(
+        decision_path.read_bytes()
+    ).hexdigest()
+    rights_path = root / "governance/source_rights_registry.json"
+    _write_json(
+        rights_path,
+        {
+            "schema_version": "1.0.0",
+            "effective": "2026-08-09",
+            "default_policy": "deny",
+            "sources": [source],
+        },
+    )
+    registry = {
+        "source": {
+            "source_id": source["source_id"],
+            "required_permitted_uses": [
+                "cite_metadata",
+                "publish_derived_value",
+                "publish_extract",
+            ],
+        }
+    }
+    return rights_path, signers_path, registry
 
 
 def test_committed_registry_binds_latest_official_pdf_and_implementation() -> None:
@@ -109,6 +234,8 @@ def test_parser_preserves_blank_zero_and_missing_printed_total() -> None:
         "rows_missing_all_ports_total": 1,
     }
     alpha, beta = profile["rows"]
+    assert alpha["page"] == 1
+    assert [alpha["source_row"], beta["source_row"]] == [1, 2]
     assert alpha["values"]["SMP(HDC)"] == 0
     assert alpha["values"]["PPA"] is None
     assert beta["values"]["ALL PORTS"] is None
@@ -116,16 +243,17 @@ def test_parser_preserves_blank_zero_and_missing_printed_total() -> None:
 
     observations = shipmin._observations([profile], source_artifact_sha256="a" * 64)
     assert len(observations) == 26
+    assert {row["source_row"] for row in observations} == {1, 2}
     assert {
         status: sum(row["value_status"] == status for row in observations)
-        for status in ("observed_positive", "observed_zero", "source_missing")
+        for status in ("observed_positive", "observed_zero", "source_blank")
     } == {
         "observed_positive": 3,
         "observed_zero": 1,
-        "source_missing": 22,
+        "source_blank": 22,
     }
     assert all(
-        row["quantity"] is None for row in observations if row["value_status"] == "source_missing"
+        row["quantity"] is None for row in observations if row["value_status"] == "source_blank"
     )
 
 
@@ -180,7 +308,37 @@ def test_artifact_size_and_digest_changes_refuse(tmp_path: Path) -> None:
 
 def test_compile_refuses_until_source_specific_rights_are_signed(tmp_path: Path) -> None:
     with pytest.raises(shipmin.ShipminPortTradeError, match="rights_not_approved"):
-        shipmin.compile_baseline(tmp_path / "not-opened.pdf")
+        shipmin.compile_baseline(
+            tmp_path / "not-opened.pdf", as_of=date.fromisoformat("2026-08-09")
+        )
+
+
+def test_publication_refuses_expired_rights_at_explicit_as_of(tmp_path: Path) -> None:
+    rights, signers, registry = _approved_rights_fixture(
+        tmp_path, review_due="2026-08-09", revoked_on=None
+    )
+    with pytest.raises(shipmin.ShipminPortTradeError, match="rights_decision_expired"):
+        shipmin._approved_source(
+            root=tmp_path,
+            registry=registry,
+            rights_path=rights,
+            signers_path=signers,
+            as_of=date.fromisoformat("2026-08-10"),
+        )
+
+
+def test_publication_refuses_revoked_signer_at_explicit_as_of(tmp_path: Path) -> None:
+    rights, signers, registry = _approved_rights_fixture(
+        tmp_path, review_due="2027-08-09", revoked_on="2026-08-10"
+    )
+    with pytest.raises(shipmin.ShipminPortTradeError, match="rights_signer_inactive"):
+        shipmin._approved_source(
+            root=tmp_path,
+            registry=registry,
+            rights_path=rights,
+            signers_path=signers,
+            as_of=date.fromisoformat("2026-08-10"),
+        )
 
 
 def test_registry_source_is_review_required_and_cannot_claim_publication() -> None:

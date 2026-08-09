@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/oges/extensions/source-frame-entity-foundry/0.1.0/foundry-package.schema.json",
+  "title": "OGES source frame and entity foundry package 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "package_id",
+    "package_evidence_id",
+    "source_evidence_id",
+    "source_contract_sha256",
+    "normalization_registry_sha256",
+    "row_tuple_frame_sha256",
+    "dependency_bundle",
+    "normalizations",
+    "canonical_convergences",
+    "universe_bindings",
+    "coverage",
+    "guarantees",
+    "limitation_codes"
+  ],
+  "properties": {
+    "object_type": {"const": "source_frame_entity_foundry_package"},
+    "schema_version": {"const": "0.1.0"},
+    "package_id": {"type": "string", "pattern": "^foundry:[a-z0-9][a-z0-9._:-]{2,119}$"},
+    "package_evidence_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+    "source_evidence_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+    "source_contract_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "normalization_registry_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "row_tuple_frame_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "dependency_bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observations", "frames", "crosswalks", "known_entity_ids"],
+      "properties": {
+        "observations": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "frames": {"type": "array", "minItems": 3, "items": {"type": "object"}},
+        "crosswalks": {"type": "array", "minItems": 3, "items": {"type": "object"}},
+        "known_entity_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+        }
+      }
+    },
+    "normalizations": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot", "frame_id", "entries"],
+        "properties": {
+          "slot": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+          "frame_id": {"type": "string", "pattern": "^labelframe:[a-z0-9][a-z0-9._:-]{2,115}$"},
+          "entries": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["provider_value", "rule_id", "normalized_value"],
+              "properties": {
+                "provider_value": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\u0000-\\u001f]+$"},
+                "rule_id": {"type": "string", "pattern": "^normalization:[a-z0-9][a-z0-9._:-]{2,111}$"},
+                "normalized_value": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\u0000-\\u001f]+$"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "canonical_convergences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot",
+          "canonical_entity_id",
+          "provider_values",
+          "evidence_ids",
+          "reviewed_by",
+          "limitation_codes"
+        ],
+        "properties": {
+          "slot": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+          "canonical_entity_id": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"},
+          "provider_values": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\u0000-\\u001f]+$"}
+          },
+          "evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+          },
+          "reviewed_by": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+          },
+          "limitation_codes": {
+            "type": "array",
+            "contains": {"const": "many_to_one_alias_convergence"},
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+          }
+        }
+      }
+    },
+    "universe_bindings": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot",
+          "universe_release_id",
+          "universe_record_sha256",
+          "source_label_count",
+          "matched",
+          "unmatched",
+          "ambiguous",
+          "withheld",
+          "canonical_member_count"
+        ],
+        "properties": {
+          "slot": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+          "universe_release_id": {"type": "string", "pattern": "^unv:[a-z0-9][a-z0-9._:-]{2,123}$"},
+          "universe_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "source_label_count": {"type": "integer", "minimum": 1},
+          "matched": {"type": "integer", "minimum": 0},
+          "unmatched": {"type": "integer", "minimum": 0},
+          "ambiguous": {"type": "integer", "minimum": 0},
+          "withheld": {"type": "integer", "minimum": 0},
+          "canonical_member_count": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["row_tuple_count", "dock_column_count", "joint_cell_count", "value_partition"],
+      "properties": {
+        "row_tuple_count": {"type": "integer", "minimum": 1},
+        "dock_column_count": {"type": "integer", "minimum": 1},
+        "joint_cell_count": {"type": "integer", "minimum": 1},
+        "value_partition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["observed_positive", "observed_zero", "source_blank", "source_missing", "suppressed", "not_applicable"],
+          "properties": {
+            "observed_positive": {"type": "integer", "minimum": 0},
+            "observed_zero": {"type": "integer", "minimum": 0},
+            "source_blank": {"type": "integer", "minimum": 0},
+            "source_missing": {"type": "integer", "minimum": 0},
+            "suppressed": {"type": "integer", "minimum": 0},
+            "not_applicable": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "guarantees": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["loaded_cargo_included", "binary_edges_emitted", "national_port_completeness_claimed", "causal_claim_emitted", "live_state_claimed"],
+      "properties": {
+        "loaded_cargo_included": {"const": false},
+        "binary_edges_emitted": {"const": false},
+        "national_port_completeness_claimed": {"const": false},
+        "causal_claim_emitted": {"const": false},
+        "live_state_claimed": {"const": false}
+      }
+    },
+    "limitation_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9._:-]{2,127}$"}
+    }
+  }
+}

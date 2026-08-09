@@ -66,6 +66,79 @@ def test_all_38_launch_capabilities_are_measured_and_none_is_complete_by_asserti
     assert all(row["computed_state"] != "synthetic_verified" for row in rows)
 
 
+def test_foundry_evidence_stops_at_contract_only() -> None:
+    rows = _by_id(ca.build_report())
+    foundry = rows["declared_universe_partition"]
+    assert foundry["computed_state"] == "contract_only"
+    assert {row["evidence_class"] for row in foundry["evidence"]} == {"contract"}
+    assert foundry["next_state"] == "synthetic_verified"
+    assert foundry["counterevidence"] == [
+        "unregistered_evidence_bundle:synthetic_verified"
+    ]
+    assert rows["dependency_flow_reconciliation"]["computed_state"] == "contract_only"
+    assert rows["edge_evidence"]["computed_state"] == "contract_only"
+
+
+def test_unsigned_fabricated_receipt_cannot_promote_with_rehashed_registry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _copy_bound_tree(tmp_path)
+    fake_engine = root / "src/fake_foundry.py"
+    fake_test = root / "tests/test_fake_foundry.py"
+    fake_receipt = root / "validation/fake_foundry_receipt.json"
+    for path, content in (
+        (fake_engine, "VALUE = True\n"),
+        (fake_test, "def test_pass():\n    assert True\n"),
+        (fake_receipt, '{"exit_code": 0, "status": "pass", "passed_tests": 999}\n'),
+    ):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+    registry_path = root / ca.REGISTRY_RELATIVE
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["artifacts"].extend(
+        [
+            {
+                "artifact_id": "fake_foundry_implementation",
+                "path": "src/fake_foundry.py",
+                "sha256": hashlib.sha256(fake_engine.read_bytes()).hexdigest(),
+                "evidence_class": "implementation",
+            },
+            {
+                "artifact_id": "fake_foundry_test",
+                "path": "tests/test_fake_foundry.py",
+                "sha256": hashlib.sha256(fake_test.read_bytes()).hexdigest(),
+                "evidence_class": "adversarial_test",
+            },
+            {
+                "artifact_id": "fake_foundry_receipt",
+                "path": "validation/fake_foundry_receipt.json",
+                "sha256": hashlib.sha256(fake_receipt.read_bytes()).hexdigest(),
+                "evidence_class": "execution_receipt",
+            },
+        ]
+    )
+    rule = next(
+        row
+        for row in registry["capability_rules"]
+        if row["capability_id"] == "declared_universe_partition"
+    )
+    rule["levels"]["synthetic_verified"] = [
+        "foundry_profile",
+        "fake_foundry_implementation",
+        "fake_foundry_test",
+        "fake_foundry_receipt",
+    ]
+    registry_path.write_text(json.dumps(registry), encoding="utf-8")
+    monkeypatch.setattr(
+        ca,
+        "EXPECTED_REGISTRY_SHA256",
+        hashlib.sha256(registry_path.read_bytes()).hexdigest(),
+    )
+    with pytest.raises(ca.CapabilityAttestationError) as exc:
+        ca.build_report(root)
+    assert exc.value.code == "unsigned_synthetic_evidence_forbidden"
+
+
 def test_capability_registry_cannot_declare_its_own_state(tmp_path: Path) -> None:
     root = _copy_bound_tree(tmp_path)
     path = root / ca.REGISTRY_RELATIVE

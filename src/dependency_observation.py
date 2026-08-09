@@ -2,8 +2,9 @@
 
 The extension preserves n-ary source facts without pretending that a
 country-commodity-port cell is a binary exposure edge.  Validation is offline,
-rights-aware and frame-complete: every positive, zero, missing and suppressed
-cell in the declared joint frame must be present before the bundle can pass.
+rights-aware and frame-complete: every positive, zero, blank, missing,
+suppressed and not-applicable cell in the declared joint frame must be present
+before the bundle can pass.
 """
 
 from __future__ import annotations
@@ -11,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from datetime import date, datetime, timezone
@@ -30,7 +32,14 @@ RIGHTS_PATH = ROOT / "governance" / "source_rights_registry.json"
 SIGNERS_PATH = ROOT / "governance" / "rights_signers.json"
 
 _HEX = set("0123456789abcdef")
-_STATUS = ("observed_positive", "observed_zero", "source_missing", "suppressed")
+_STATUS = (
+    "observed_positive",
+    "observed_zero",
+    "source_blank",
+    "source_missing",
+    "suppressed",
+    "not_applicable",
+)
 
 
 class DependencyObservationError(ValueError):
@@ -285,6 +294,27 @@ def _schema_validate(
         _fail(code)
 
 
+def _value_status_measure(document: Mapping[str, Any]) -> None:
+    """Keep source missingness labels inseparable from their numeric payload."""
+
+    status = document.get("value_status")
+    measure = document.get("measure")
+    if status in {"observed_positive", "observed_zero"}:
+        if not isinstance(measure, Mapping):
+            _fail("observation_value_measure_invalid")
+        value = measure.get("value")
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(float(value))
+            or (status == "observed_positive" and value <= 0)
+            or (status == "observed_zero" and value != 0)
+        ):
+            _fail("observation_value_measure_invalid")
+    elif status in set(_STATUS[2:]) and measure is not None:
+        _fail("observation_value_measure_invalid")
+
+
 def _record(document: Mapping[str, Any]) -> None:
     expected = _sha(document.get("record_sha256"), "record_digest_invalid")
     if _canonical_sha(document) != expected:
@@ -350,6 +380,7 @@ def _rights(
     required_uses: Sequence[str],
     rights_path: Path,
     signers_path: Path,
+    as_of: datetime,
 ) -> None:
     try:
         _, signer_document, signer_sha = publication_guard._read_json(
@@ -366,6 +397,7 @@ def _rights(
     if not isinstance(source_id, str):
         _fail("observation_rights_invalid")
     row = rights.get(source_id)
+    signer = signers.get(row["signer_id"]) if row is not None else None
     if (
         row is None
         or row["decision_state"] != "approved"
@@ -374,6 +406,12 @@ def _rights(
         or source.get("rights_decision_artifact_sha256") != row["decision_artifact_sha256"]
         or source.get("rights_registry_sha256") != rights_sha
         or source.get("rights_signers_sha256") != signer_sha
+        or as_of.date() > _day(row["review_due"], "observation_rights_invalid")
+        or signer is None
+        or (
+            signer["revoked_on"] is not None
+            and as_of.date() >= _day(signer["revoked_on"], "observation_rights_invalid")
+        )
     ):
         _fail("observation_rights_invalid")
 
@@ -459,6 +497,7 @@ def validate_bundle(
     if not observations:
         _fail("observation_bundle_empty")
     for observation in observations:
+        _value_status_measure(observation)
         _schema_validate(
             validators["dependency_observation_schema"],
             observation,
@@ -502,7 +541,7 @@ def validate_bundle(
         _fail("observation_value_partition_invalid")
     ids: set[str] = set()
     members: set[str] = set()
-    source_snapshots: set[tuple[str, ...]] = set()
+    source_snapshots: dict[tuple[str, str, str, str, str], datetime] = {}
     for observation in observations:
         coverage = observation["coverage"]
         if (
@@ -569,15 +608,14 @@ def validate_bundle(
 
         _method(root, observation["method"])
         source = observation["source"]
-        source_snapshots.add(
-            (
-                source["source_id"],
-                source["rights_registry_sha256"],
-                source["rights_signers_sha256"],
-                source["rights_decision_id"],
-                source["rights_decision_artifact_sha256"],
-            )
+        snapshot = (
+            source["source_id"],
+            source["rights_registry_sha256"],
+            source["rights_signers_sha256"],
+            source["rights_decision_id"],
+            source["rights_decision_artifact_sha256"],
         )
+        source_snapshots[snapshot] = max(compiled, source_snapshots.get(snapshot, compiled))
         expected_status = (
             "blocked_semantic_ambiguity"
             if flow["semantic_ambiguity"]
@@ -590,7 +628,8 @@ def validate_bundle(
         if observation["relation_compilation_status"] != expected_status:
             _fail("observation_projection_status_invalid")
 
-    for source_id, rights_sha, signers_sha, decision_id, decision_sha in source_snapshots:
+    for snapshot, as_of in source_snapshots.items():
+        source_id, rights_sha, signers_sha, decision_id, decision_sha = snapshot
         matching = next(
             row
             for row in observations
@@ -606,6 +645,7 @@ def validate_bundle(
             required_uses=profile["required_rights_uses"],
             rights_path=rights_path,
             signers_path=signers_path,
+            as_of=as_of,
         )
     return {
         "status": "conformant_dependency_observation_frame",

@@ -18,6 +18,7 @@ import hashlib
 import json
 import re
 from collections import Counter
+from datetime import date
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any, Callable, NoReturn, cast
@@ -64,6 +65,18 @@ class ShipminPortTradeError(ValueError):
 
 def _fail(code: str) -> NoReturn:
     raise ShipminPortTradeError(code)
+
+
+def _day(value: object, code: str) -> date:
+    if not isinstance(value, str):
+        _fail(code)
+    try:
+        result = date.fromisoformat(value)
+    except ValueError:
+        _fail(code)
+    if result.isoformat() != value:
+        _fail(code)
+    return result
 
 
 def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -249,6 +262,7 @@ def _registry(path: Path = REGISTRY_PATH) -> tuple[dict[str, Any], str]:
             raw,
             {
                 "flow",
+                "table_id",
                 "pdf_pages",
                 "country_semantics",
                 "commodities",
@@ -300,6 +314,9 @@ def _registry(path: Path = REGISTRY_PATH) -> tuple[dict[str, Any], str]:
         )
         if flow["country_semantics"] != expected_semantics:
             _fail("registry_country_semantics_invalid")
+        expected_table_id = "2.1.6" if flow_id == "unloaded" else "2.1.7"
+        if flow["table_id"] != expected_table_id:
+            _fail("registry_table_id_invalid")
     if seen != {"unloaded", "loaded"}:
         _fail("registry_flows_invalid")
     limits = registry["limits"]
@@ -413,6 +430,7 @@ def _parse_flow(config: dict[str, Any], word_provider: WordProvider) -> dict[str
     complete = False
     rows: list[dict[str, Any]] = []
     header_centres: list[list[float]] = []
+    detail_row_number = 0
 
     for page_number in config["pdf_pages"]:
         words = word_provider(page_number)
@@ -471,8 +489,12 @@ def _parse_flow(config: dict[str, Any], word_provider: WordProvider) -> dict[str
                 drift = sum((value or Decimal(0)) for value in port_values) - all_ports
                 if abs(drift) > Decimal(2):
                     _fail("pdf_row_reconciliation_invalid")
+            is_summary = label.casefold() == "total"
+            if not is_summary:
+                detail_row_number += 1
             row = {
                 "page": page_number,
+                "source_row": None if is_summary else detail_row_number,
                 "commodity": current_commodity,
                 "reported_country": label,
                 "values": values,
@@ -480,7 +502,7 @@ def _parse_flow(config: dict[str, Any], word_provider: WordProvider) -> dict[str
                 "reconciliation_drift": drift,
             }
             rows.append(row)
-            if label.casefold() == "total":
+            if is_summary:
                 if any(values[name] is None for name in _PORT_COLUMNS):
                     _fail("pdf_summary_incomplete")
                 expect_commodity = True
@@ -549,6 +571,7 @@ def _parse_flow(config: dict[str, Any], word_provider: WordProvider) -> dict[str
     )
     return {
         "flow": config["flow"],
+        "table_id": config["table_id"],
         "country_semantics": config["country_semantics"],
         "commodities": expected_commodities,
         "rows": details,
@@ -626,7 +649,12 @@ def extract_profiles(path: Path, registry: dict[str, Any]) -> list[dict[str, Any
 
 
 def _approved_source(
-    *, root: Path, registry: dict[str, Any], rights_path: Path, signers_path: Path
+    *,
+    root: Path,
+    registry: dict[str, Any],
+    rights_path: Path,
+    signers_path: Path,
+    as_of: date,
 ) -> dict[str, Any]:
     try:
         _, signer_document, _ = publication_guard._read_json(
@@ -644,6 +672,14 @@ def _approved_source(
         _fail("rights_not_approved")
     if not set(registry["source"]["required_permitted_uses"]).issubset(source["permitted_uses"]):
         _fail("rights_use_not_approved")
+    if as_of > _day(source["review_due"], "rights_review_due_invalid"):
+        _fail("rights_decision_expired")
+    signer = signers.get(source["signer_id"])
+    if signer is None or _day(signer["effective"], "rights_signer_effective_invalid") > as_of:
+        _fail("rights_signer_inactive")
+    revoked = signer["revoked_on"]
+    if revoked is not None and as_of >= _day(revoked, "rights_signer_revoked_invalid"):
+        _fail("rights_signer_inactive")
     return source
 
 
@@ -662,6 +698,8 @@ def _observations(
                     continue
                 value_status = (
                     "source_missing"
+                    if port in row["explicit_missing_columns"]
+                    else "source_blank"
                     if value is None
                     else "observed_zero"
                     if value == 0
@@ -671,6 +709,8 @@ def _observations(
                     (
                         source_artifact_sha256,
                         profile["flow"],
+                        str(row["page"]),
+                        str(row["source_row"]),
                         row["commodity"],
                         row["reported_country"],
                         port,
@@ -689,6 +729,8 @@ def _observations(
                         "value_status": value_status,
                         "unit": "thousand_metric_tonnes",
                         "pdf_page": row["page"],
+                        "source_row": row["source_row"],
+                        "table_id": profile["table_id"],
                         "row_all_ports_quantity": (
                             _json_number(row["values"]["ALL PORTS"])
                             if row["values"]["ALL PORTS"] is not None
@@ -742,6 +784,7 @@ def validate_only(pdf_path: Path, *, registry_path: Path = REGISTRY_PATH) -> dic
 def compile_baseline(
     pdf_path: Path,
     *,
+    as_of: date,
     root: Path = ROOT,
     registry_path: Path = REGISTRY_PATH,
     rights_path: Path = RIGHTS_PATH,
@@ -753,6 +796,7 @@ def compile_baseline(
         registry=registry,
         rights_path=rights_path,
         signers_path=signers_path,
+        as_of=as_of,
     )
     profiles = extract_profiles(pdf_path, registry)
     observations = _observations(profiles, source_artifact_sha256=registry["artifact"]["sha256"])
@@ -766,6 +810,7 @@ def compile_baseline(
             "publication_allowed": True,
             "source_id": registry["source"]["source_id"],
             "rights_decision_id": rights["decision_id"],
+            "rights_as_of": as_of.isoformat(),
             "source_artifact": registry["artifact"],
             "registry_sha256": registry_sha,
             "period": registry["period"],
@@ -801,9 +846,15 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pdf", type=Path, required=True)
     parser.add_argument("--validate-only", action="store_true")
+    parser.add_argument("--as-of", type=date.fromisoformat)
     args = parser.parse_args()
     try:
-        result = validate_only(args.pdf) if args.validate_only else compile_baseline(args.pdf)
+        if args.validate_only:
+            result = validate_only(args.pdf)
+        else:
+            if args.as_of is None:
+                parser.error("--as-of is required for value-bearing compilation")
+            result = compile_baseline(args.pdf, as_of=args.as_of)
     except ShipminPortTradeError as exc:
         raise SystemExit(f"shipmin_port_trade_pdf: refused: {exc.code}") from exc
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))

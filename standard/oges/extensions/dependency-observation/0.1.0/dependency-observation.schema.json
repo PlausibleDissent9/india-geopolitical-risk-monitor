@@ -42,7 +42,7 @@
       "pattern": "^flow:[a-z0-9][a-z0-9._:-]{2,119}$"
     },
     "value_status": {
-      "enum": ["observed_positive", "observed_zero", "source_missing", "suppressed"]
+      "enum": ["observed_positive", "observed_zero", "source_blank", "source_missing", "suppressed", "not_applicable"]
     },
     "measure": {
       "oneOf": [
@@ -178,12 +178,14 @@
         "value_partition": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["observed_positive", "observed_zero", "source_missing", "suppressed"],
+          "required": ["observed_positive", "observed_zero", "source_blank", "source_missing", "suppressed", "not_applicable"],
           "properties": {
             "observed_positive": {"type": "integer", "minimum": 0},
             "observed_zero": {"type": "integer", "minimum": 0},
+            "source_blank": {"type": "integer", "minimum": 0},
             "source_missing": {"type": "integer", "minimum": 0},
-            "suppressed": {"type": "integer", "minimum": 0}
+            "suppressed": {"type": "integer", "minimum": 0},
+            "not_applicable": {"type": "integer", "minimum": 0}
           }
         }
       }
@@ -222,16 +224,16 @@
   },
   "allOf": [
     {
-      "if": {"properties": {"value_status": {"enum": ["observed_positive", "observed_zero"]}}},
+      "if": {"required": ["value_status"], "properties": {"value_status": {"enum": ["observed_positive", "observed_zero"]}}},
       "then": {"properties": {"measure": {"type": "object"}}},
       "else": {"properties": {"measure": {"type": "null"}}}
     },
     {
-      "if": {"properties": {"value_status": {"const": "observed_positive"}}},
+      "if": {"required": ["value_status"], "properties": {"value_status": {"const": "observed_positive"}}},
       "then": {"properties": {"measure": {"properties": {"value": {"exclusiveMinimum": 0}}}}}
     },
     {
-      "if": {"properties": {"value_status": {"const": "observed_zero"}}},
+      "if": {"required": ["value_status"], "properties": {"value_status": {"const": "observed_zero"}}},
       "then": {"properties": {"measure": {"properties": {"value": {"const": 0}}}}}
     }
   ]

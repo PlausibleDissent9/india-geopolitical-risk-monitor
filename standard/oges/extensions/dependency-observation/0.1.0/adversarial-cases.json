@@ -3,8 +3,10 @@
   "extension_id": "oges:extension:dependency_observation",
   "cases": [
     {"case_id": "valid_complete_joint_observation", "expected_status": "pass", "expected_reason": null},
-    {"case_id": "positive_value_without_measure", "expected_status": "refused", "expected_reason": "observation_schema_invalid"},
-    {"case_id": "source_missing_with_measure", "expected_status": "refused", "expected_reason": "observation_schema_invalid"},
+    {"case_id": "positive_value_without_measure", "expected_status": "refused", "expected_reason": "observation_value_measure_invalid"},
+    {"case_id": "source_missing_with_measure", "expected_status": "refused", "expected_reason": "observation_value_measure_invalid"},
+    {"case_id": "source_blank_with_hidden_measure", "expected_status": "refused", "expected_reason": "observation_value_measure_invalid"},
+    {"case_id": "zero_labelled_positive_measure", "expected_status": "refused", "expected_reason": "observation_value_measure_invalid"},
     {"case_id": "required_role_removed", "expected_status": "refused", "expected_reason": "observation_role_set_invalid"},
     {"case_id": "duplicate_role_slot", "expected_status": "refused", "expected_reason": "observation_role_slot_duplicate"},
     {"case_id": "unregistered_role_semantics", "expected_status": "refused", "expected_reason": "observation_role_semantics_invalid"},

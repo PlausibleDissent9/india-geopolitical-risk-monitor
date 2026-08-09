@@ -43,8 +43,10 @@ hashes only. It does not print provider values or measurements.
 ## Complete-frame rule
 
 A conformant bundle contains every member of its declared joint frame. Positive
-values, observed zeros, source-missing cells and suppressed cells form a
-mutually exclusive, exhaustive partition. The validator recomputes that
+values, observed zeros, source blanks, explicit source-missing cells,
+suppressed cells and not-applicable cells form a mutually exclusive,
+exhaustive partition. A blank is never converted to an observed zero or
+collapsed into an explicit missing marker. The validator recomputes that
 partition and a canonical frame hash from the observations. Publishing only the
 positive rows cannot conform.
 
@@ -58,6 +60,13 @@ label frame. The corresponding crosswalk release must contain exactly one entry
 for every frame member. A `matched` entry requires a known canonical entity,
 review evidence and a reviewer. Unmatched, ambiguous and withheld entries keep
 their canonical entity null and remain visible in the denominator.
+
+Distinct raw source labels may converge on one canonical identity only when
+the downstream release records that alias convergence explicitly. The source
+labels remain distinct members of this frame and crosswalk, so convergence
+cannot shrink the source denominator. This base extension validates the review
+and evidence on each match; a foundry profile may impose the additional
+convergence-record requirement.
 
 The crosswalk resolves identity only. It does not resolve the meaning of an
 ambiguous source heading. In the Ministry loaded-cargo table, the provider's

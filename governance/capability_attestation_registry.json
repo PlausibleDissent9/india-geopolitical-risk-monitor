@@ -1,8 +1,8 @@
 {
   "schema_version": "0.2.0",
   "registry_id": "igrm-max-capability-attestation",
-  "revision": 2,
-  "predecessor_registry_sha256": "8b41600670d163096742ed5f2567b525f96aacfebbcc8eacad388f7beca5855d",
+  "revision": 3,
+  "predecessor_registry_sha256": "45fb5b893554c7d977c58e4e063fcd3bb41691dd06d9ff54dec0ccae7b41c525",
   "authority_status": "repository_review_only_unsigned",
   "effective": "2026-08-09",
   "launch_contract": {
@@ -15,10 +15,11 @@
     {"artifact_id": "event_contract", "path": "governance/event_ledger_contract.json", "sha256": "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941", "evidence_class": "contract"},
     {"artifact_id": "event_ledger_extension_profile", "path": "standard/oges/extensions/event-ledger/0.1.0/profile.json", "sha256": "fcbd916bba86918690cd99a99fff1ebe19fe9198926e97f235dc62aa2fbe56e4", "evidence_class": "contract"},
     {"artifact_id": "replay_contract", "path": "governance/knowledge_replay_registry.json", "sha256": "d730b6f97472469c2bea1cea27c42b8034cf04f064424162277618795f274fef", "evidence_class": "contract"},
-    {"artifact_id": "dependency_profile", "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json", "sha256": "c3e813f6ebfc6abfb5d5ccca5a5fb61fd72a8d35fff6d23b3ccf2b0147526361", "evidence_class": "contract"},
+    {"artifact_id": "dependency_profile", "path": "standard/oges/extensions/dependency-observation/0.1.0/profile.json", "sha256": "1dcb5ee90562ef5f28b4776aa6e21267c5486c171df309aedabd40aa81553b8f", "evidence_class": "contract"},
     {"artifact_id": "shock_contract", "path": "governance/shock_compiler_registry.json", "sha256": "0114fe73ab57cadd9e22dba382f2aefe595bab3cb51ebbb3b84637acf38503ad", "evidence_class": "contract"},
     {"artifact_id": "join_contract", "path": "governance/max_state_join_registry.json", "sha256": "e21c08240ca62c7b03a140b80a2a783c3933211b3a05fda7e236c8923ee4f7be", "evidence_class": "contract"},
-    {"artifact_id": "plan_profile", "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json", "sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f", "evidence_class": "contract"}
+    {"artifact_id": "plan_profile", "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json", "sha256": "48296c3b9e2655a8e4ec5d78ef93a422b52c82dbe85aa3ace20bbfb4c845251f", "evidence_class": "contract"},
+    {"artifact_id": "foundry_profile", "path": "standard/oges/extensions/source-frame-entity-foundry/0.1.0/profile.json", "sha256": "fb5ac3a0e31345d137efc310da344020034402fc2fbbc5b9c45f8d31afdbc7a9", "evidence_class": "contract"}
   ],
   "capability_rules": [
     {"capability_id": "typed_event", "levels": {"contract_only": ["event_contract", "event_ledger_extension_profile"]}},
@@ -31,7 +32,7 @@
     {"capability_id": "event_to_recovery", "levels": {"contract_only": ["shock_contract"]}},
     {"capability_id": "global_shock_india", "levels": {"contract_only": ["shock_contract"]}},
     {"capability_id": "open_conformance", "levels": {"contract_only": ["oges_profile"]}},
-    {"capability_id": "declared_universe_partition", "levels": {"contract_only": ["dependency_profile"]}},
+    {"capability_id": "declared_universe_partition", "levels": {"contract_only": ["dependency_profile", "foundry_profile"]}},
     {"capability_id": "dependency_flow_reconciliation", "levels": {"contract_only": ["dependency_profile"]}},
     {"capability_id": "proof_carrying_clauses", "levels": {"contract_only": ["plan_profile"]}},
     {"capability_id": "constraint_feasibility", "levels": {"contract_only": ["shock_contract"]}},
