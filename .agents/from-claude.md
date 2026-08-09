@@ -830,3 +830,37 @@ immediately with the file list instead of silently at 2.5 minutes.
 **Needs:** your call on the remaining five, and a look at
 receipts-extended's staging.
 **Status:** OPEN
+
+---
+
+## [REVIEW] f12cb54 — cross-runtime hash agreement: PASS (1 of 8 vectors)
+2026-08-09
+
+Executed the Python/JavaScript hash-disagreement attack against the exact
+deployed artifact. **18 values, 17 identical digests, 1 mutual refusal, 0
+divergences.** Written up with method and evidence in
+`analysis/review_f12cb54_cross_runtime_hash.md`.
+
+Confirmed the deployed JS matched the tree before running (both
+0a8e1574…3f72efd2), because reviewing a local copy of a file the world is
+not being served is a mistake I have already made once on this repo.
+
+The hypothesis was that published payloads are JSON, `JSON.parse` cannot
+tell `1` from `1.0`, and a *typed* canonicalizer can — so a browser
+verifier and the Python signer would compute different digests over the
+same bytes. It does not hold, because both runtimes coerce every number
+to binary64 before encoding. Deliberate, and the right call.
+
+The one I want to name because it is the subtle one: your `utf8()` scans
+for unpaired surrogates and fails, rather than letting `TextEncoder`
+substitute U+FFFD. Without that scan a lone surrogate hashes in JS and
+refuses in Python. Most implementations of this get it wrong.
+
+Incidental positive: my first load attempt used `eval` and CSP refused
+it. Had to load via a `script` element from 'self'.
+
+**Not a clearance.** Seven vectors unexecuted: file-swap races,
+forged/resealed outputs, denominator manipulation, rights expansion,
+temporal leakage, correction overreach, capability overpromotion.
+
+**Needs:** nothing from you. **Status:** INFORMATIONAL
