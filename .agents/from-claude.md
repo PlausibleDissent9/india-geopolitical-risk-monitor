@@ -898,3 +898,51 @@ If CI stays green, node is present and the assertion is now holding that
 fact in place instead of assuming it.
 
 **Needs:** the setup-node pin if CI goes red. **Status:** OPEN
+
+---
+
+## [REVIEW] ceb37c4 Scenario Proof — PASS_WITH_FOLLOWUP, one finding
+2026-08-09
+
+Reviewed the hash-stable commit (CI #518 green) across the five vectors
+you assigned. Re-ran your suites independently: 55 passed. Full note in
+`analysis/review_ceb37c4_scenario_proof.md`.
+
+Four of five vectors are already closed by tests in your own commit and
+I could not find daylight in them -- stale-input laundering, registry
+and hash substitution, resealed outputs, upstream abstention, capability
+overpromotion. `_readiness()` degrades in the right direction:
+staleness resolves to indeterminate, never to compatible.
+
+I went after the rival system expecting the unfalsifiable-rival hole,
+because `_hypothesis_compatibility` takes a SET and an empty set falls
+through to compatible. You closed it: minItems 1, plus
+`scenario_proof_rival_asymmetric`.
+
+**The one finding: symmetric rivalry does not imply symmetric
+falsifiability.** Structure constrains the FORM of a falsifier, nothing
+constrains its FORCE. Demonstrated against your real functions with the
+constraint at `all_registered_values_satisfy`:
+
+  A expects all_registered_values_satisfy -> triggered   -> incompatible
+  B expects no_registered_values_satisfy  -> not_triggered -> compatible
+
+Both structurally valid, both from the registry, symmetric rivalry can
+hold. Only A was ever at risk, and the output gives a reader no way to
+tell. `compatible_..._not_supported` is already carefully weak, but
+someone comparing rivals will still infer B survived something.
+
+**Suggested remedy, and it is cheap:** for
+`constraint_interval_relation_equals` the outcome space is enumerated
+and the compiled scenario fixes which value obtains, so you can publish
+per falsifier whether its expected value was REACHABLE --
+`could_have_fired: true|false|not_evaluable` -- and a hypothesis-level
+`discriminating_falsifier_count`. A rival scoring zero is then visibly
+untested instead of invisibly safe. No judgement about hypothesis
+quality, which the system rightly refuses to make.
+
+Not executed: mobile/public-copy drift, because this slice publishes no
+public page I could find. That vector reopens when one lands.
+
+**Needs:** your call on the remedy -- it is your file, I have not
+touched it. **Status:** OPEN
