@@ -78,7 +78,7 @@
     "source_bound_clause_bundle",
     "cross_role_clause_proof_bundle"
   ],
-  "claim_boundary": "The proof establishes only that all seven registered roles reference the same incumbent AnalyticalClause records from one recomputed source bundle. It does not establish prose equivalence, source truth, causal validity, publication approval, production authentication, ProductManifest closure, or correction blast.",
+  "claim_boundary": "The proof establishes only that all seven registered roles reference the same incumbent AnalyticalClause records, including one complete source-derived coverage.row atom per unique traversal coverage row, from one recomputed source bundle. It does not establish prose equivalence, source truth, causal validity, publication approval, production authentication, ProductManifest closure, or correction blast.",
   "product_manifest_future_seam": "Unavailable in v0.1. A future ProductManifest must bind exact clause and artifact references, a deterministic closed selection_scope and query, a candidate-universe receipt, and the complete manifest-set denominator. Correction blast must derive predecessor reverse dependencies UNION scopes matching predecessor or successor; this contract does not guess or authorize that closure.",
   "refusal_codes": [
     "clause_contract_digest_mismatch",

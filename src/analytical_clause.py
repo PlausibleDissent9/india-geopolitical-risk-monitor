@@ -7,7 +7,8 @@ payloads: they carry only ``{clause_id, clause_record_sha256}`` references.
 The source-binding extension in this module is synthetic and contract-only.
 It reopens one signed OGES fixture release, reruns the registered exposure
 traversal, derives clauses from every returned path hop and exact coverage
-entity, compiles all seven incumbent roles, and byte-compares a replay.
+entity including one complete ``coverage.row`` atom, compiles all seven
+incumbent roles, and byte-compares a replay.
 
 It publishes no route and claims neither source truth nor production trust.
 """
@@ -106,6 +107,22 @@ _EVIDENCE_METADATA_FIELDS = (
     "evidence.rights_use",
     "evidence.privacy_class",
     "evidence.rights_decision_id",
+)
+_COVERAGE_ROW_FIELDS = (
+    "universe_release_id",
+    "record_sha256",
+    "entity_type",
+    "reference_date",
+    "covered_entity_id",
+    "member_status",
+    "counts",
+)
+_COVERAGE_COUNT_FIELDS = (
+    "total_eligible",
+    "included",
+    "excluded",
+    "unmappable",
+    "stale",
 )
 _REGISTERED_QUERY_IDS = (
     "query:analytical_clause.fixture.path_found",
@@ -608,6 +625,7 @@ def _validate_source_profile_document(
             "edge_membership": "exact_edge_id_and_record_sha256_in_hop_and_object_evidence",
             "coverage_instances": "derive_every_unique_traversal_coverage_row",
             "coverage_membership": "exact_universe_release_id_record_sha256_and_covered_entity_id",
+            "coverage_atom": "one_exact_source_field_coverage.row_value_per_unique_traversal_row",
             "evidence_instances": "exact_union_of_traversal_object_evidence_evidence_ids",
             "evidence_membership": "traversal_evidence_equals_union_and_exact_canonical_evidence_record",
             "evidence_metadata": "exactly_once_each_registered_field_per_union_evidence_id",
@@ -1506,6 +1524,15 @@ def _compile_incumbent_clauses(
 
     for coverage_key in sorted(coverage_rows):
         coverage = coverage_rows[coverage_key]
+        _exact_keys(coverage, _COVERAGE_ROW_FIELDS, "clause_coverage_binding_invalid")
+        coverage_counts = coverage.get("counts")
+        if not isinstance(coverage_counts, dict):
+            _fail("clause_coverage_binding_invalid")
+        _exact_keys(
+            coverage_counts,
+            _COVERAGE_COUNT_FIELDS,
+            "clause_coverage_binding_invalid",
+        )
         universe_id = cast(str, coverage["universe_release_id"])
         covered_id = cast(str, coverage["covered_entity_id"])
         universe_type, universe = by_id[universe_id]
@@ -1538,6 +1565,21 @@ def _compile_incumbent_clauses(
         coverage_refs = (
             _source_ref(universe_type, universe_id, universe),
             _source_ref(covered_type, covered_id, covered),
+        )
+        add(
+            "coverage.row",
+            {"coverage_key": list(coverage_key)},
+            dict(coverage),
+            denominator={
+                "coverage_rows": len(coverage_rows),
+                "universe_denominator_definition": universe["denominator_definition"],
+                "total_eligible": coverage["counts"]["total_eligible"],
+            },
+            as_of=coverage["reference_date"],
+            epistemic_type="derived",
+            refs=coverage_refs,
+            path_bindings=path_bindings,
+            coverage_binding=coverage,
         )
         facts = (
             ("coverage.universe_release_id", universe_id, None),
@@ -2068,6 +2110,62 @@ def validate_source_bundle(
         )
     ):
         _fail("clause_evidence_binding_invalid")
+    coverage_row_clauses = [
+        clause
+        for clause in clauses
+        if clause["proof_binding"]["source_field"] == "coverage.row"
+    ]
+    coverage_values: set[str] = set()
+    for clause in coverage_row_clauses:
+        value = clause["value"]
+        counts = value.get("counts") if isinstance(value, dict) else None
+        binding = clause["proof_binding"]["coverage_binding"]
+        refs = clause["proof_binding"]["source_object_refs"]
+        clause_denominator = clause["denominator"]
+        if (
+            not isinstance(value, dict)
+            or set(value) != set(_COVERAGE_ROW_FIELDS)
+            or not isinstance(counts, dict)
+            or set(counts) != set(_COVERAGE_COUNT_FIELDS)
+            or any(
+                isinstance(count, bool) or not isinstance(count, int) or count < 0
+                for count in counts.values()
+            )
+            or counts["total_eligible"] < 1
+            or binding != value
+            or not isinstance(refs, list)
+            or len(refs) != 2
+            or not any(
+                ref.get("object_type") == "universe_release"
+                and ref.get("object_id") == value["universe_release_id"]
+                and ref.get("record_sha256") == value["record_sha256"]
+                for ref in refs
+            )
+            or not any(
+                ref.get("object_type") == "entity"
+                and ref.get("object_id") == value["covered_entity_id"]
+                for ref in refs
+            )
+            or not isinstance(clause_denominator, dict)
+            or set(clause_denominator)
+            != {
+                "coverage_rows",
+                "universe_denominator_definition",
+                "total_eligible",
+            }
+            or clause_denominator["coverage_rows"] != denominator["coverage_rows"]
+            or clause_denominator["total_eligible"] != counts["total_eligible"]
+            or not isinstance(clause_denominator["universe_denominator_definition"], str)
+            or not clause_denominator["universe_denominator_definition"]
+            or not clause["proof_binding"]["path_bindings"]
+        ):
+            _fail("clause_coverage_binding_invalid")
+        coverage_values.add(_typed_sha(value))
+    if (
+        len(coverage_row_clauses) != denominator["coverage_rows"]
+        or len(coverage_values) != denominator["coverage_rows"]
+    ):
+        _fail("clause_coverage_binding_invalid")
     singleton_fields = (
         "event.canonical_label",
         "target.identity",

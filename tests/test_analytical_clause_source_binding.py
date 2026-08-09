@@ -14,6 +14,7 @@ from typing import Any, Callable
 import pytest
 from src import analytical_clause as ac
 from src import canonical_objects as canonical
+from src import evidence_output_consumer_contract as consumer
 from src import evidence_outputs, exposure_graph
 from src.oges_fixture import Fixture, build_fixture
 
@@ -21,6 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 VECTORS = ROOT / "governance" / "analytical_clause_adversarial_vectors.json"
 PROFILE = ROOT / "governance" / "analytical_clause_source_profile.json"
 LIMITATIONS = ROOT / "governance" / "analytical_clause_limitation_registry.json"
+CONSUMER_PROFILE = (
+    ROOT / "governance" / "evidence_output_renderer_consumer_profile.json"
+)
 PATH_QUERY = "query:analytical_clause.fixture.path_found"
 NO_PATH_QUERY = "query:analytical_clause.fixture.no_path"
 
@@ -379,6 +383,152 @@ def test_no_path_is_bounded_refusal_not_no_exposure(tmp_path: Path) -> None:
     )
     assert "no_exposure" not in json.dumps(source)
     assert _verify(fixture, NO_PATH_QUERY, source, proof)["status"] == "valid"
+
+
+def test_one_complete_atomic_clause_exists_for_every_exact_coverage_row(
+    tmp_path: Path,
+) -> None:
+    fixture, source, proof = _compiled(tmp_path)
+    _, traversal, _ = _validated_and_traversal(fixture)
+    atoms = [
+        row
+        for row in source["clauses"]
+        if row["proof_binding"]["source_field"] == "coverage.row"
+    ]
+    assert len(atoms) == source["complete_denominators"]["coverage_rows"] == 1
+    atom = atoms[0]
+    assert atom["value"] == traversal["coverage"][0]
+    assert set(atom["value"]) == set(ac._COVERAGE_ROW_FIELDS)
+    assert atom["proof_binding"]["coverage_binding"] == atom["value"]
+    assert atom["denominator"] == {
+        "coverage_rows": 1,
+        "universe_denominator_definition": (
+            "Every commodity in the one-row synthetic frame."
+        ),
+        "total_eligible": 1,
+    }
+    assert atom["proof_binding"]["path_bindings"]
+    assert _verify(fixture, PATH_QUERY, source, proof)["status"] == "valid"
+
+
+def test_no_path_has_exact_zero_coverage_atom_denominator_and_explicit_truncation(
+    tmp_path: Path,
+) -> None:
+    fixture, source, proof = _compiled(tmp_path, NO_PATH_QUERY)
+    assert source["complete_denominators"]["coverage_rows"] == 0
+    assert not any(
+        row["proof_binding"]["source_field"] == "coverage.row"
+        for row in source["clauses"]
+    )
+    assert _find(source, "traversal.status")["value"] == "no_path"
+    assert _find(source, "traversal.returned_paths")["value"] == 0
+    assert _find(source, "traversal.truncated")["value"] is False
+    assert _find(source, "traversal.max_hops")["value"] == 4
+    assert _find(source, "traversal.max_paths")["value"] == 25
+    assert _verify(fixture, NO_PATH_QUERY, source, proof)["status"] == "valid"
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("covered_entity_id", "ent:country.synthetic_origin"),
+        ("record_sha256", "f" * 64),
+        ("reference_date", "2026-08-07"),
+    ],
+)
+def test_coordinated_resealed_coverage_row_substitution_refuses(
+    tmp_path: Path, field: str, value: str
+) -> None:
+    fixture, source, proof = _compiled(tmp_path)
+    atom = _find(source, "coverage.row")
+
+    def substitute(row: dict[str, Any]) -> None:
+        row["value"][field] = value
+        row["proof_binding"]["coverage_binding"][field] = value
+        if field == "covered_entity_id":
+            covered_ref = next(
+                ref
+                for ref in row["proof_binding"]["source_object_refs"]
+                if ref["object_type"] == "entity"
+            )
+            covered_ref["object_id"] = value
+        if field == "record_sha256":
+            universe_ref = next(
+                ref
+                for ref in row["proof_binding"]["source_object_refs"]
+                if ref["object_type"] == "universe_release"
+            )
+            universe_ref["record_sha256"] = value
+
+    changed = _replace_clause(source, proof, atom["clause_id"], substitute)
+    with pytest.raises(ac.AnalyticalClauseError):
+        _verify(fixture, PATH_QUERY, *changed)
+
+
+def test_coverage_atom_cannot_be_reconstructed_from_other_proof_internals(
+    tmp_path: Path,
+) -> None:
+    fixture, source, _ = _compiled(tmp_path)
+    atom = _find(source, "coverage.row")
+    mutation = deepcopy(source)
+    mutation["clauses"] = [
+        row for row in mutation["clauses"] if row["clause_id"] != atom["clause_id"]
+    ]
+    mutation["complete_denominators"]["clauses"] -= 1
+    mutation = ac._seal(mutation)
+    contract, _ = ac.load_contract()
+    proof = ac._compile_role_proof_bundle(mutation, contract)
+    assert any(
+        row["proof_binding"]["coverage_binding"] is not None
+        for row in mutation["clauses"]
+    )
+    with pytest.raises(ac.AnalyticalClauseError, match="^clause_coverage_binding_invalid$"):
+        _verify(fixture, PATH_QUERY, mutation, proof)
+
+
+@pytest.mark.parametrize("attack", ["shrink", "duplicate", "omit", "add"])
+def test_coverage_row_set_is_an_exact_unique_denominator(
+    tmp_path: Path, attack: str
+) -> None:
+    fixture, source, _ = _compiled(tmp_path)
+    atom = deepcopy(_find(source, "coverage.row"))
+    mutation = deepcopy(source)
+    if attack == "shrink":
+        mutation["complete_denominators"]["coverage_rows"] = 0
+    elif attack == "omit":
+        mutation["clauses"] = [
+            row for row in mutation["clauses"] if row["clause_id"] != atom["clause_id"]
+        ]
+        mutation["complete_denominators"]["clauses"] -= 1
+    else:
+        replacement = deepcopy(atom)
+        replacement["clause_id"] = ac._clause_identifier(
+            PATH_QUERY, "coverage.row", {"attack": attack}
+        )
+        if attack == "add":
+            replacement["value"]["covered_entity_id"] = "ent:country.synthetic_origin"
+            replacement["proof_binding"]["coverage_binding"][
+                "covered_entity_id"
+            ] = "ent:country.synthetic_origin"
+            next(
+                ref
+                for ref in replacement["proof_binding"]["source_object_refs"]
+                if ref["object_type"] == "entity"
+            )["object_id"] = "ent:country.synthetic_origin"
+        mutation["complete_denominators"]["coverage_rows"] = 2
+        for row in mutation["clauses"]:
+            if row["proof_binding"]["source_field"] == "coverage.row":
+                row["denominator"]["coverage_rows"] = 2
+                row.update(ac._seal(row))
+        replacement["denominator"]["coverage_rows"] = 2
+        mutation["clauses"].append(ac._seal(replacement))
+        mutation["clauses"].sort(key=lambda row: row["clause_id"])
+        mutation["complete_denominators"]["clauses"] += 1
+    mutation = ac._seal(mutation)
+    contract, _ = ac.load_contract()
+    proof = ac._compile_role_proof_bundle(mutation, contract)
+    with pytest.raises(ac.AnalyticalClauseError):
+        _verify(fixture, PATH_QUERY, mutation, proof)
 
 
 def test_nullable_citation_fields_remain_null_with_explicit_missingness(
@@ -1404,6 +1554,198 @@ def _case_refusal(
                 lambda row: row.update(value="Coordinated all-role forged title"),
             ),
         )
+    elif case_id == "coverage_row_wrong_record_coordinated_reseal":
+        clause = _find(source, "coverage.row")
+
+        def replace_coverage_record(row: dict[str, Any]) -> None:
+            row["value"]["record_sha256"] = "f" * 64
+            row["proof_binding"]["coverage_binding"]["record_sha256"] = "f" * 64
+            next(
+                ref
+                for ref in row["proof_binding"]["source_object_refs"]
+                if ref["object_type"] == "universe_release"
+            )["record_sha256"] = "f" * 64
+
+        _verify(
+            fixture,
+            PATH_QUERY,
+            *_replace_clause(
+                source, proof, clause["clause_id"], replace_coverage_record
+            ),
+        )
+    elif case_id == "coverage_row_atom_omitted":
+        clause = _find(source, "coverage.row")
+        mutation = deepcopy(source)
+        mutation["clauses"] = [
+            row for row in mutation["clauses"] if row["clause_id"] != clause["clause_id"]
+        ]
+        mutation["complete_denominators"]["clauses"] -= 1
+        mutation = ac._seal(mutation)
+        contract, _ = ac.load_contract()
+        _verify(
+            fixture,
+            PATH_QUERY,
+            mutation,
+            ac._compile_role_proof_bundle(mutation, contract),
+        )
+    elif case_id == "coverage_row_denominator_shrunk":
+        mutation = deepcopy(source)
+        mutation["complete_denominators"]["coverage_rows"] = 0
+        mutation = ac._seal(mutation)
+        contract, _ = ac.load_contract()
+        _verify(
+            fixture,
+            PATH_QUERY,
+            mutation,
+            ac._compile_role_proof_bundle(mutation, contract),
+        )
+    elif case_id in {"coverage_row_duplicate_value", "coverage_row_off_path_added"}:
+        mutation = deepcopy(source)
+        original = deepcopy(_find(mutation, "coverage.row"))
+        for row in mutation["clauses"]:
+            if row["clause_id"] == original["clause_id"]:
+                row["denominator"]["coverage_rows"] = 2
+                row.update(ac._seal(row))
+        added = deepcopy(original)
+        added["clause_id"] = ac._clause_identifier(
+            PATH_QUERY, "coverage.row", {"case_id": case_id}
+        )
+        added["denominator"]["coverage_rows"] = 2
+        if case_id == "coverage_row_off_path_added":
+            added["value"]["covered_entity_id"] = "ent:country.synthetic_origin"
+            added["proof_binding"]["coverage_binding"][
+                "covered_entity_id"
+            ] = "ent:country.synthetic_origin"
+            next(
+                ref
+                for ref in added["proof_binding"]["source_object_refs"]
+                if ref["object_type"] == "entity"
+            )["object_id"] = "ent:country.synthetic_origin"
+        mutation["clauses"].append(ac._seal(added))
+        mutation["clauses"].sort(key=lambda row: row["clause_id"])
+        mutation["complete_denominators"]["clauses"] += 1
+        mutation["complete_denominators"]["coverage_rows"] = 2
+        mutation = ac._seal(mutation)
+        contract, _ = ac.load_contract()
+        _verify(
+            fixture,
+            PATH_QUERY,
+            mutation,
+            ac._compile_role_proof_bundle(mutation, contract),
+        )
+    elif case_id.startswith("consumer_"):
+        consumer_profile = json.loads(CONSUMER_PROFILE.read_text(encoding="utf-8"))
+        if case_id == "consumer_unknown_source_field":
+            consumer_profile = json.loads(
+                json.dumps(consumer_profile).replace(
+                    "event.canonical_label", "event.canonical_label_missing"
+                )
+            )
+            consumer.validate_resolution(
+                consumer_profile, source, consumer.expected_source_binding(source)
+            )
+        elif case_id == "consumer_duplicate_source_field":
+            consumer_profile["source_field_selectors"].append(
+                deepcopy(consumer_profile["source_field_selectors"][0])
+            )
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_non_atomic_selector":
+            consumer_profile["source_field_selectors"][0]["atomicity"] = (
+                "renderer_aggregate"
+            )
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_undeclared_numeric_literal":
+            consumer_profile["templates"][0]["literal_value_classes"].append("integer")
+            consumer_profile["templates"][0]["literal_value_classes"].sort()
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_branch_predicate_mismatch":
+            consumer_profile["branches"][0]["predicate"]["value"] = "no_path"
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_missing_required_clause":
+            mutation = deepcopy(source)
+            mutation["clauses"] = [
+                row
+                for row in mutation["clauses"]
+                if row["proof_binding"]["source_field"] != "traversal.max_paths"
+            ]
+            mutation["complete_denominators"]["clauses"] -= 1
+            mutation = ac._seal(mutation)
+            consumer.validate_resolution(
+                consumer_profile,
+                mutation,
+                consumer.expected_source_binding(mutation),
+            )
+        elif case_id == "consumer_limitation_literal":
+            consumer_profile["templates"][0]["limitation_scope_ids"].append(
+                "bounded_traversal_not_complete_exposure"
+            )
+            consumer_profile["templates"][0]["limitation_scope_ids"].sort()
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_omission_partition_ambiguity":
+            consumer_profile["consumers"][0][
+                "omitted_registered_selector_fields"
+            ].pop()
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_dependency_drift":
+            consumer_profile["consumer_dependencies"][0]["sha256"] = "0" * 64
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_future_effective":
+            consumer_profile["effective"] = "2026-08-09"
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        elif case_id == "consumer_cross_query_splice":
+            no_fixture, no_source, _ = _compiled(tmp_path, NO_PATH_QUERY)
+            del no_fixture
+            consumer.validate_resolution(
+                consumer_profile,
+                no_source,
+                consumer.expected_source_binding(source),
+            )
+        elif case_id == "consumer_complete_clause_partition_claim":
+            consumer_profile["binding_rule"]["selector_partition_scope"] = (
+                "complete_clause_denominator"
+            )
+            consumer_profile["binding_rule"][
+                "all_source_clause_omission_receipt_available"
+            ] = True
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
+        else:
+            raise AssertionError(case_id)
     else:
         raise AssertionError(f"unimplemented adversarial case: {case_id}")
 
@@ -1484,7 +1826,12 @@ def test_normative_adversarial_registry_is_complete_and_executed(
         elif case_id == "every_clause_field_except_self_hash_mutated":
             test_every_clause_field_except_self_hash_is_protected(tmp_path / "every-field")
         else:
-            with pytest.raises(ac.AnalyticalClauseError) as exc:
+            with pytest.raises(
+                (
+                    ac.AnalyticalClauseError,
+                    consumer.EvidenceOutputConsumerContractError,
+                )
+            ) as exc:
                 _case_refusal(
                     case_id,
                     fixture,
@@ -1495,7 +1842,7 @@ def test_normative_adversarial_registry_is_complete_and_executed(
             assert exc.value.code == row["expected_reason"], case_id
         executed.add(case_id)
     assert executed == {row["case_id"] for row in registry["cases"]}
-    assert len(executed) == 55
+    assert len(executed) == 72
 
 
 def test_source_profile_pins_incumbent_and_upstream_exact_bytes() -> None:
