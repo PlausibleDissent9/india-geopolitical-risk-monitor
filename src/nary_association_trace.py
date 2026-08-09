@@ -1365,6 +1365,9 @@ def execute_trace(
     valid_on = _day(query["valid_on"], "trace_valid_on_invalid")
     knowledge_cutoff = _utc(query["knowledge_cutoff"], "trace_time_order_invalid")
     execution_as_of = _utc(query["execution_as_of"], "trace_time_order_invalid")
+    release_generated_at = _utc(
+        manifest["generated_at"], "trace_time_order_invalid"
+    )
     periods = {
         json.dumps(row["period"], sort_keys=True, separators=(",", ":"))
         for row in observations
@@ -1395,6 +1398,7 @@ def execute_trace(
         or max(retrieval_times) > knowledge_cutoff
         or knowledge_cutoff > execution_as_of
         or max(system_times) > execution_as_of
+        or release_generated_at > execution_as_of
         or valid_on > knowledge_cutoff.date()
     ):
         _fail("trace_time_order_invalid")

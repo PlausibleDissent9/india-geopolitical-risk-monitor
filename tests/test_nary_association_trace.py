@@ -61,6 +61,7 @@ COVERED_CASES = {
     "rights_wrong_use",
     "rights_signer_role",
     "invalid_temporal_ordering",
+    "release_generated_after_execution_as_of",
     "projection_nonreconstructable",
     "projection_double_counted",
     "assumption_promoted_to_fact",
@@ -358,6 +359,7 @@ def test_valid_trace_preserves_complete_tuple_denominators_and_time(tmp_path: Pa
     assert report["source_path_count"] == 6
     assert report["projection_row_count"] == 6
     assert report["capability_state"] == "contract_only"
+
     assert report["production_trust"] is False
     assert output["denominators"]["source_label_members"] == {
         "total": 7,
@@ -413,6 +415,22 @@ def test_valid_trace_preserves_complete_tuple_denominators_and_time(tmp_path: Pa
         "all_india_coverage_claimed": False,
         "model_literal_accepted": False,
     }
+
+
+def test_authenticated_release_must_exist_by_execution_as_of(tmp_path: Path) -> None:
+    equality = _build_trace_fixture(tmp_path / "equality")
+    manifest = json.loads(equality.foundry.manifest.read_text(encoding="utf-8"))
+    request = json.loads(equality.request.read_text(encoding="utf-8"))
+    assert manifest["generated_at"] == request["query"]["execution_as_of"]
+    assert len(_execute(equality)["paths"]) == 6
+
+    future = _build_trace_fixture(tmp_path / "future")
+    manifest = json.loads(future.foundry.manifest.read_text(encoding="utf-8"))
+    manifest["generated_at"] = "2026-08-09T12:00:01Z"
+    _write_json(future.foundry.manifest, trace.seal_record(manifest))
+    _resign_release(future.foundry, rebind_package=False)
+    _refresh_trace(future)
+    _refuses_execute(future, "trace_time_order_invalid")
 
 
 def test_semantic_execution_identity_changes_with_projection(tmp_path: Path) -> None:

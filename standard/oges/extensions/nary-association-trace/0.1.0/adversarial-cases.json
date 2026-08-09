@@ -21,6 +21,7 @@
     {"case_id": "rights_wrong_use", "expected_status": "refused", "expected_reason": "canonical_release_invalid"},
     {"case_id": "rights_signer_role", "expected_status": "refused", "expected_reason": "trace_rights_signer_role_forbidden"},
     {"case_id": "invalid_temporal_ordering", "expected_status": "refused", "expected_reason": "trace_time_order_invalid"},
+    {"case_id": "release_generated_after_execution_as_of", "expected_status": "refused", "expected_reason": "trace_time_order_invalid"},
     {"case_id": "projection_nonreconstructable", "expected_status": "refused", "expected_reason": "trace_output_result_mismatch"},
     {"case_id": "projection_double_counted", "expected_status": "refused", "expected_reason": "trace_output_result_mismatch"},
     {"case_id": "assumption_promoted_to_fact", "expected_status": "refused", "expected_reason": "trace_output_schema_invalid"},
