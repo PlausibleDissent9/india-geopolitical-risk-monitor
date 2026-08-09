@@ -49,6 +49,16 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    # A JOB-LEVEL BOUND, BECAUSE THE CONCURRENCY GROUP MAKES A HANG
+    # CONTAGIOUS. `cancel-in-progress: false` above means a wedged run does
+    # not merely waste itself -- it HOLDS THE LANE, and the 06:21 and 20:53
+    # backup crons queue behind it rather than replacing it. Without this,
+    # GitHub's 360-minute default applied, so one hang could eat the whole
+    # day and both of its insurance slots.
+    # Measured end-to-end on successful runs: 143.2 (#95), 147.2 (#97),
+    # 160.3 (#99) minutes. 240 leaves ~50% headroom over the slowest
+    # observed run while releasing the lane inside the same day.
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -104,6 +114,17 @@ jobs:
         timeout-minutes: 10
         run: python -m src.stress_gauge
       - name: Run pipeline
+        # THE ONE UNBOUNDED STEP IN THIS WORKFLOW, UNTIL NOW.
+        # Every other step here carries a timeout; this one -- the step the
+        # daily contract actually depends on -- carried none, so it
+        # inherited GitHub's 360-minute default. On 2026-08-09 run #103 sat
+        # inside `python -m src.run_daily` for 84 minutes and counting,
+        # against a worst observed incremental run of 20.7 minutes.
+        # 120 covers the backfill branch below, whose retry loop is
+        # deliberately slow: 12 passes with a 240s cooldown each is 48
+        # minutes of sleeping before a single pass's own work is counted.
+        # The incremental branch is bounded far more tightly, in-line.
+        timeout-minutes: 120
         # Backfill mode supervises itself: GDELT's rate limiter kills
         # naive runs mid-fetch, so retry with cooldowns inside one job,
         # committing the chunk cache between passes -- progress survives
@@ -150,7 +171,16 @@ jobs:
             done
             [ "$ok" = "1" ]
           else
-            python -m src.run_daily
+            # THE NIGHTLY PATH, BOUNDED SEPARATELY FROM THE BACKFILL.
+            # Measured incremental runs: 11.6 (#102), 13.8 (#95), 17.5
+            # (#97), 20.7 (#99) minutes. 30m is ~45% above the worst of
+            # those, so a fetch that exceeds it is not slow, it is stuck.
+            # Failing here is strictly better than hanging: the job's
+            # concurrency lane is released, so the 06:21 or 20:53 backup
+            # cron gets to try instead of queueing behind a corpse.
+            # Revise this number from the measured distribution, not by
+            # feel -- and never by removing the bound.
+            timeout 30m python -m src.run_daily
           fi
       - name: Global Event and Episode Ledger (aggregate observation foundation)
         if: github.event.inputs.backfill != 'true'

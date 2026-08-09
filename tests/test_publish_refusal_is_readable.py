@@ -20,9 +20,29 @@ without a token -- can see WHICH check refused, and specifically can tell
 "the gate ran and check X failed" apart from "the gate never ran at all",
 which is exactly the distinction #102 turned on and nobody could make.
 
+AND THEN THE ANNOTATION ITSELF SHIPPED BROKEN
+The first version reported the last line matching `^-- `, which is what
+gate.sh prints when it STARTS a check. pytest's own warnings footer ends
+
+    -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+so morning-contract #34 refused with "Last check started: Docs:
+https://docs.pytest.org/...", naming a documentation URL. Correct
+refusal, zero diagnosis -- the failure this annotation exists to prevent,
+reproduced inside the fix for it.
+
+The stubs below were complicit: GATE_RED_MIDWAY printed the `-- ` lines
+but never gate.sh's actual `FAILED: <cmd>` line, and never pytest's
+footer, so the broken version passed. A stub that omits the output the
+code reads is not a test of that code. They now transcribe what gate.sh
+really emits.
+
 These tests run the real function out of the real script against stub
 gates, rather than asserting on the source text, because a message that
-is never reached is not a message.
+is never reached is not a message. Assertions read the `::error::` line
+specifically, not the whole of stdout -- the refusal `cat`s the gate log
+too, so asserting against stdout passes on text the annotation never
+carried.
 """
 from __future__ import annotations
 
@@ -42,6 +62,27 @@ def _gate_candidate_source() -> str:
     return m.group(0)
 
 
+def _explain_source() -> str:
+    """gate_candidate delegates the reading, so the harness needs both."""
+    text = SCRIPT.read_text(encoding="utf-8")
+    m = re.search(r"^explain_gate_log\(\) \{.*?^\}", text, re.S | re.M)
+    assert m, "explain_gate_log() not found in scripts/publish_push.sh"
+    return m.group(0)
+
+
+def _annotation(proc: subprocess.CompletedProcess[str]) -> str:
+    """The ::error:: line alone.
+
+    The refusal also echoes the whole gate log, so a naive `in r.stdout`
+    passes on text that never reached the annotations API -- which is the
+    one surface this entire mechanism exists to populate.
+    """
+    for line in proc.stdout.splitlines():
+        if line.startswith("::error::"):
+            return line
+    return ""
+
+
 def _run(tmp_path: Path, gate_body: str) -> subprocess.CompletedProcess[str]:
     (tmp_path / "scripts").mkdir(parents=True, exist_ok=True)
     (tmp_path / "scripts" / "gate.sh").write_text(gate_body, encoding="utf-8")
@@ -53,6 +94,8 @@ def _run(tmp_path: Path, gate_body: str) -> subprocess.CompletedProcess[str]:
     subprocess.run(["git", "commit", "-qm", "init"], cwd=tmp_path, check=True)
     harness = (
         "set -uo pipefail\n"
+        + _explain_source()
+        + "\n"
         + _gate_candidate_source()
         + "\nif ! gate_candidate; then exit 7; fi\n"
     )
@@ -61,11 +104,30 @@ def _run(tmp_path: Path, gate_body: str) -> subprocess.CompletedProcess[str]:
                           capture_output=True, text=True)
 
 
+# What gate.sh really prints when a check fails: the `-- ` line as it
+# STARTS each check, then `FAILED: <cmd>` for the one that failed. The
+# pytest footer is included because it is the line that broke the first
+# version of the reader.
 GATE_RED_MIDWAY = """#!/usr/bin/env bash
 echo "gate: running 3 checks from ci.yml"
 echo "-- python scripts/check_environment.py"
 echo "-- ruff check ."
 echo "-- python -m pytest --cov=src -q"
+echo "=========================== short test summary info ============================"
+echo "FAILED tests/test_vintages.py::test_published_history_is_never_rewritten - ..."
+echo "FAILED: python -m pytest --cov=src -q"
+echo ""
+echo "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html"
+echo "gate: CI would be red. Do not push."
+exit 1
+"""
+
+# A refusal that is not pytest at all, so there is no summary block.
+GATE_RED_ON_A_CHECK = """#!/usr/bin/env bash
+echo "gate: running 3 checks from ci.yml"
+echo "-- python -m src.evolution_engine --check"
+echo "__main__.EvolutionError: evolution_report_stale"
+echo "FAILED: python -m src.evolution_engine --check"
 echo "gate: CI would be red. Do not push."
 exit 1
 """
@@ -85,11 +147,40 @@ echo "gate: all 11 CI checks pass"
 def test_a_refusal_names_the_failing_check_in_an_annotation(tmp_path):
     r = _run(tmp_path, GATE_RED_MIDWAY)
     assert r.returncode == 7, "a red gate must refuse"
-    assert "::error::" in r.stdout, (
+    note = _annotation(r)
+    assert note, (
         "the refusal never reaches the annotations API, so diagnosing it "
         "still requires an authenticated log download")
-    assert "python -m pytest --cov=src -q" in r.stdout, (
-        f"the annotation does not name the failing check: {r.stdout}")
+    assert "python -m pytest --cov=src -q" in note, (
+        f"the annotation does not name the failing check: {note}")
+
+
+def test_the_pytest_docs_footer_is_never_mistaken_for_a_check(tmp_path):
+    """The morning-contract #34 regression, as one assertion.
+
+    pytest's warnings footer starts with `-- `, so a reader that takes the
+    last `-- ` line reports a documentation URL as the failing check.
+    """
+    note = _annotation(_run(tmp_path, GATE_RED_MIDWAY))
+    assert "docs.pytest.org" not in note, (
+        f"the annotation names pytest's docs footer as a check: {note}")
+
+
+def test_the_annotation_carries_the_failing_test_names(tmp_path):
+    """Naming the command is not enough: `pytest` is the whole suite."""
+    note = _annotation(_run(tmp_path, GATE_RED_MIDWAY))
+    assert "test_published_history_is_never_rewritten" in note, (
+        f"the annotation names no failing test: {note}")
+
+
+def test_a_non_pytest_refusal_is_explained_too(tmp_path):
+    """A `--check` refusal prints no summary block, only an exception."""
+    r = _run(tmp_path, GATE_RED_ON_A_CHECK)
+    assert r.returncode == 7
+    note = _annotation(r)
+    assert "python -m src.evolution_engine --check" in note, note
+    assert "evolution_report_stale" in note, (
+        f"the annotation gives the check but not the reason: {note}")
 
 
 def test_a_gate_that_never_ran_says_so(tmp_path):
@@ -99,9 +190,11 @@ def test_a_gate_that_never_ran_says_so(tmp_path):
     reader hunting for a failing test that never ran."""
     r = _run(tmp_path, GATE_DIED_EARLY)
     assert r.returncode == 7
-    assert "::error::" in r.stdout
-    assert "unknown" in r.stdout and "before running any check" in r.stdout, (
-        f"an early gate abort is not distinguished: {r.stdout}")
+    note = _annotation(r)
+    assert "none reported" in note and "before it ran a check" in note, (
+        f"an early gate abort is not distinguished: {note}")
+    assert "git archive failed" in note, (
+        f"the annotation drops the reason the gate died: {note}")
 
 
 def test_a_green_gate_still_passes_and_says_nothing_alarming(tmp_path):
@@ -110,6 +203,22 @@ def test_a_green_gate_still_passes_and_says_nothing_alarming(tmp_path):
     assert r.returncode == 0, "a green gate must still pass"
     assert "::error::" not in r.stdout
     assert "passed the committed CI gate" in r.stdout
+
+
+def test_reading_a_log_needs_no_publish_credential(tmp_path):
+    """`--explain-gate-log` sits above the IGRM_PUBLISH_TOKEN requirement
+    deliberately: reading a file and printing must never need the token
+    that authorises a push. If it drifts below, this exits non-zero."""
+    log = tmp_path / "gate.log"
+    log.write_text(GATE_RED_ON_A_CHECK, encoding="utf-8")
+    r = subprocess.run(
+        ["bash", str(SCRIPT), "--explain-gate-log", str(log)],
+        capture_output=True, text=True,
+        env={"PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(tmp_path)},
+    )
+    assert r.returncode == 0, (
+        f"explaining a log required a publish credential: {r.stderr}")
+    assert "Failing check:" in r.stdout
 
 
 def test_the_gate_status_is_not_laundered_through_a_pipe(tmp_path):

@@ -45,6 +45,40 @@
 # getting it backwards would quietly publish upstream's older numbers.
 set -uo pipefail
 
+# TURN A RED GATE LOG INTO A ONE-LINE DIAGNOSIS.
+#
+# Kept as its own function, and reachable as
+#
+#   scripts/publish_push.sh --explain-gate-log <file>
+#
+# so its test can run THIS code against fixture logs instead of re-typing
+# the patterns. gate.sh grew --print for exactly this reason: a test that
+# restates the expression under test verifies the restatement.
+#
+# gate.sh prints "FAILED: <cmd>" for the check that failed; pytest prints
+# "FAILED tests/x.py::y" per failing test. Take both. Everything else --
+# a --check refusal, a `git diff --exit-code` -- says its piece in the
+# closing lines instead of a summary block, so fall back to those.
+explain_gate_log() {
+  local log="$1" failing detail
+  failing="$(grep '^FAILED: ' "$log" | tail -1 | sed 's/^FAILED: //')"
+  detail="$(grep -E '^(FAILED|ERROR) (tests|src)/' "$log" | head -5 | tr '\n' ' ')"
+  if [ -z "$detail" ]; then
+    detail="$(grep -vE '^[[:space:]]*$' "$log" | tail -4 | tr '\n' ' ')"
+  fi
+  printf 'Failing check: %s. Detail: %s' \
+    "${failing:-none reported (the gate died before it ran a check)}" \
+    "${detail:-see the step log}"
+}
+
+# Before MSG and before the token requirement: this mode reads a file and
+# prints, and must not need a publish credential to do it.
+if [ "${1:-}" = "--explain-gate-log" ]; then
+  explain_gate_log "${2:?usage: publish_push.sh --explain-gate-log <gate log>}"
+  echo
+  exit 0
+fi
+
 MSG="${1:?usage: publish_push.sh <commit message>}"
 DERIVED_RE='^(docs/|data/raw/)'
 
@@ -84,7 +118,7 @@ git_push() {
 # too, which puts the failing check in the annotations API where anyone
 # looking at a red publisher can read it directly.
 gate_candidate() {
-  local commit tree log rc failing
+  local commit tree log rc explanation
   commit=$(git rev-parse --verify HEAD) || return 1
   tree=$(git rev-parse --verify 'HEAD^{tree}') || return 1
   echo "[publish] verifying exact candidate commit=$commit tree=$tree"
@@ -96,9 +130,19 @@ gate_candidate() {
   rc=$?
   cat "$log"
   if [ "$rc" -ne 0 ]; then
-    failing="$(grep '^-- ' "$log" | tail -1 | sed 's/^-- //')"
+    # REPORT WHAT FAILED, NOT WHAT STARTED.
+    # The first version grepped '^-- ' -- the line gate.sh prints when it
+    # BEGINS a check -- and took the last match. pytest's own warnings
+    # footer ends with "-- Docs: https://docs.pytest.org/...", which
+    # matches. So morning-contract #34 refused with
+    #   "Last check started: Docs: https://docs.pytest.org/..."
+    # naming a documentation URL instead of a check. The refusal was
+    # correct and completely unactionable: it said the gate was red
+    # without saying what was red, which is the failure this ::error::
+    # was added to prevent in the first place.
+    explanation="$(explain_gate_log "$log")"
     rm -f "$log"
-    echo "::error::publish refused: the committed CI gate is red on ${commit:0:8}. Last check started: ${failing:-unknown (gate failed before running any check)}"
+    echo "::error::publish refused: the committed CI gate is red on ${commit:0:8}. $explanation"
     echo "[publish] SECURITY REFUSAL: candidate failed the committed CI gate"
     return 1
   fi
