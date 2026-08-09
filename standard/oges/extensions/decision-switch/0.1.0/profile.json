@@ -5,7 +5,7 @@
   "effective": "2026-08-09",
   "status": "public_draft_contract_only_synthetic_fixtures",
   "bound_files": [
-    {"kind": "specification", "path": "standard/oges/extensions/decision-switch/0.1.0/SPEC.md", "sha256": "5e60f75fb09f0ae2445843ecbfd15b6f5ebfa6fc4ccb8e70e674ac23da75199c"},
+    {"kind": "specification", "path": "standard/oges/extensions/decision-switch/0.1.0/SPEC.md", "sha256": "f6ace827cf2bc79f3c5ea34096cbe7c2f792ce7904396848b8b1fc51b4dbe48f"},
     {"kind": "base_oges_profile", "path": "standard/oges/0.1.0/profile.json", "sha256": "27e434e5490e5bba2ce27c1bdc139c44ef72631cfe76907859b27145ba9f5a94"},
     {"kind": "registered_option_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/registered-option.schema.json", "sha256": "9c0fd5a410412a7279490390638ae2abb417d6c4a4dabcd9f6292b008120c7fd"},
     {"kind": "constraint_slot_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/constraint-slot.schema.json", "sha256": "26139d411806a099b8eef92050f3514edf7a0425f0b8993f7f3e9e5418c083c3"},
@@ -16,7 +16,7 @@
     {"kind": "execution_schema", "path": "standard/oges/extensions/decision-switch/0.1.0/decision-switch-execution.schema.json", "sha256": "2c80602e4eae7d37839e2720154ccd2d7423f8c2443aa663c05848cc8dbc3528"},
     {"kind": "operator_registry", "path": "standard/oges/extensions/decision-switch/0.1.0/operator-registry.json", "sha256": "1c99d14fce138433b5e98db3a81c0addca33e32a41b31f2029ee3a5426295404"},
     {"kind": "resolution_method_registry", "path": "standard/oges/extensions/decision-switch/0.1.0/resolution-method-registry.json", "sha256": "ead3d42c23dcc6d92397475fdab73bd18539fad7fc71f464f25dc61e73b4b511"},
-    {"kind": "adversarial_cases", "path": "standard/oges/extensions/decision-switch/0.1.0/adversarial-cases.json", "sha256": "2b127fde813bbbb1dd10fa9cd1255f4afb750f826862ff67e610889f4069b7b6"},
+    {"kind": "adversarial_cases", "path": "standard/oges/extensions/decision-switch/0.1.0/adversarial-cases.json", "sha256": "a938880c1dc0cb11f89af29a43aebfb57217d21322917183f7916196ead38e09"},
     {"kind": "scenario_proof_profile", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json", "sha256": "9108c910bb3ecc93a81f9f2835a077540d3645fe9e26e44ded820f4eb07023cf"},
     {"kind": "scenario_proof_request_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-request.schema.json", "sha256": "f438d98c2ddefc9b3510cba6d6c2e1c25fd9fc1bfa33e1465d500bbf94504d0e"},
     {"kind": "scenario_proof_execution_schema", "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/scenario-proof-execution.schema.json", "sha256": "9ac0cca982407fde76cea6a8fa6da3e4a2f749d2d163dd3c98cb6084fd7798a9"},
@@ -28,11 +28,11 @@
   ],
   "reference_implementation": {
     "path": "src/decision_switch.py",
-    "sha256": "e7abd0f040246825f868b928f62789625fb8fdda3a20385d9a480cc626508682"
+    "sha256": "770bb827c67f813da180d5d5b17feab7921bca2364be9ed022989f53d0becd2c"
   },
   "conformance_test": {
     "path": "tests/test_decision_switch.py",
-    "sha256": "a3dcd8c5334144da9c7b8fd21a2524469989b352c0286b9ae585e5cbac98771b"
+    "sha256": "1b4ae6aa1a813bb4023f9a3f7d3e8e246a3d51fd766e3743ade19402496a99e9"
   },
   "claim_boundary": [
     "The execution proves exact recomputation and finite registered-lattice set relations only.",

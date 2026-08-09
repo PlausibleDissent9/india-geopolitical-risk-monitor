@@ -5,8 +5,8 @@ test-generated synthetic fixtures and no adoption claim.
 
 ## Purpose
 
-Decision Switch answers three narrow questions over one exact, fully
-recomputed OGES Scenario Proof execution:
+Decision Switch answers three narrow questions over an exact, complete set of
+fully recomputed OGES Scenario Proof executions:
 
 1. which user-registered hypothetical options satisfy every required
    constraint for every value in each registered marginal interval across a
@@ -24,16 +24,17 @@ is supplied by the request and explicitly remains hypothetical.
 
 ## Option classification
 
-Every option binds one or more existing Scenario Proof constraint results.
-The classification is deliberately conservative:
+Every option binds exactly one constraint for every registered constraint slot,
+and the Scenario Proof constraint universe must equal that registered slot
+universe. Extra, omitted, duplicated or ignored constraints refuse the whole
+execution. The classification is deliberately conservative:
 
-- any unavailable input makes the option `indeterminate_input_unavailable`;
+- any unavailable input or mixed marginal relation makes the option
+  `indeterminate_due_to_mixed_or_unavailable_registered_inputs`;
 - otherwise, any universally violated constraint makes it
-  `robustly_infeasible_from_registered_bound`;
-- otherwise, any mixed marginal relation makes it
-  `not_robust_mixed_marginal_bounds`; and
+  `excluded_by_registered_hypothetical_violation`; and
 - only universal satisfaction of every required constraint makes it
-  `robustly_feasible_under_each_registered_bound`.
+  `robustly_satisfies_all_registered_hypothetical_bounds`.
 
 The last status proves a conjunction of universal marginal bounds. The mixed
 status does not assert that a jointly feasible realization exists.
@@ -68,7 +69,10 @@ The reference implementation validates every hash-bound profile artifact,
 requires the exact Scenario Proof implementation and profile, fully
 recomputes the supplied Scenario Proof, evaluates only registered operators,
 emits a typed-canonical execution and validates any supplied execution by full
-recomputation. A failed dependency emits no partial decision result.
+recomputation. Every constraint and hypothesis is also bound to the normalized
+semantics of its referenced path; preserving the same unordered path set while
+remapping an object to another path is an unregistered semantic change. A
+failed dependency emits no partial decision result.
 
 Repository-authored fixtures keep maturity at `contract_only`. Non-synthetic
 public rendering still requires the existing claim-bundle and release gates.

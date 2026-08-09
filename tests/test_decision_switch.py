@@ -41,6 +41,58 @@ def _paths(fixture: shock_compiler_fixture.ShockFixture) -> dict[str, Path]:
     }
 
 
+def _parallel_path_fixture(
+    destination: Path,
+) -> shock_compiler_fixture.ShockFixture:
+    fixture = shock_compiler_fixture.build_fixture(destination)
+    base = fixture.base
+    original = json.loads(base.objects[EDGE_ID].read_text())
+    parallel = copy.deepcopy(original)
+    parallel_id = "edg:oges.fixture.parallel.304412"
+    parallel["edge_id"] = parallel_id
+    parallel["magnitude"]["value"] = 42.5
+    parallel["magnitude"]["uncertainty"]["lower"] = 40.0
+    parallel["magnitude"]["uncertainty"]["upper"] = 45.0
+    parallel = cast(dict[str, Any], canonical.seal_record(parallel))
+    parallel_path = base.root / "canonical" / f"{parallel_id.replace(':', '__')}.json"
+    parallel_path.write_text(
+        json.dumps(parallel, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    base.objects[parallel_id] = parallel_path
+
+    manifest = json.loads(base.manifest.read_text())
+    manifest["objects"].append(
+        {
+            "object_type": "exposure_edge",
+            "object_id": parallel_id,
+            "path": str(parallel_path.relative_to(base.root)),
+            "file_sha256": hashlib.sha256(parallel_path.read_bytes()).hexdigest(),
+            "record_sha256": parallel["record_sha256"],
+        }
+    )
+    manifest["objects"].sort(
+        key=lambda row: (row["object_type"], row["object_id"])
+    )
+    manifest["counts"]["exposure_edge"] += 1
+    manifest = cast(dict[str, Any], canonical.seal_record(manifest))
+    base.manifest.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    base.release_signature.write_bytes(
+        base.release_private_key.sign(base.manifest.read_bytes())
+    )
+
+    scenario = copy.deepcopy(fixture.scenario)
+    scenario["release"] = {
+        "release_id": manifest["release_id"],
+        "record_sha256": manifest["record_sha256"],
+        "generated_at": manifest["generated_at"],
+        "effective_date": manifest["effective_date"],
+    }
+    scenario = cast(dict[str, Any], canonical.seal_record(scenario))
+    return shock_compiler_fixture.ShockFixture(base=base, scenario=scenario)
+
+
 def _constraint(
     fixture: shock_compiler_fixture.ShockFixture,
     compilation: dict[str, Any],
@@ -596,6 +648,82 @@ def test_hidden_semantic_change_is_rejected_after_valid_full_recompile(
     assert exc.value.code == "decision_switch_hidden_semantic_change"
 
 
+def test_object_to_path_remap_is_rejected_after_valid_full_recompile(
+    tmp_path: Path,
+) -> None:
+    base = _parallel_path_fixture(tmp_path / "parallel-path")
+    request = _request(base)
+    for variant in request["variants"]:
+        swapped = variant["variant_id"] == "variant:decision.fixture.001"
+        for index, bundle in enumerate(variant["bundles"]):
+            paths = {
+                tuple(row["edge_ids"]): row["path_id"]
+                for row in bundle["compilation"]["paths"]
+            }
+            original_path = paths[(EDGE_ID,)]
+            parallel_path = paths[("edg:oges.fixture.parallel.304412",)]
+            proof_request = copy.deepcopy(bundle["scenario_proof_request"])
+            for row in proof_request["constraints"]:
+                share = row["metric"] == "residual_affected_share"
+                row["path_id"] = (
+                    parallel_path if share == swapped else original_path
+                )
+            for row in proof_request["hypotheses"]:
+                alternative = row["mechanism_code"] == "alternative_pathway_candidate"
+                row["path_id"] = (
+                    parallel_path if alternative == swapped else original_path
+                )
+            proof_request["constraints"] = sorted(
+                [scenario_proof.seal_request(row) for row in proof_request["constraints"]],
+                key=lambda row: row["constraint_id"],
+            )
+            proof_request["hypotheses"] = sorted(
+                [scenario_proof.seal_request(row) for row in proof_request["hypotheses"]],
+                key=lambda row: row["hypothesis_id"],
+            )
+            proof_request = scenario_proof.seal_request(proof_request)
+            proof = scenario_proof.execute_scenario_proof(
+                base.base.manifest,
+                bundle["scenario"],
+                bundle["compilation"],
+                proof_request,
+                **_paths(base),
+            )
+            bundle["scenario_proof_request"] = proof_request
+            bundle["scenario_proof_execution"] = proof
+            variant["bundles"][index] = decision_switch.seal_record(bundle)
+    request = _reseal(request)
+    with pytest.raises(decision_switch.DecisionSwitchError) as exc:
+        _execute(base, request)
+    assert exc.value.code == "decision_switch_hidden_semantic_change"
+
+
+def test_switch_identity_binds_case_and_decision_partition() -> None:
+    first = [
+        {"robust_option_ids": ["option:a"], "active_atom_ids": []},
+        {
+            "robust_option_ids": ["option:b"],
+            "active_atom_ids": ["atom:shared.x"],
+            "variant_id": "variant:first",
+        },
+    ]
+    second = [
+        {"robust_option_ids": ["option:c"], "active_atom_ids": []},
+        {
+            "robust_option_ids": ["option:d"],
+            "active_atom_ids": ["atom:shared.x"],
+            "variant_id": "variant:second",
+        },
+    ]
+    first_id = decision_switch._minimal_switches("case:first", first)[0][
+        "switch_set_id"
+    ]
+    second_id = decision_switch._minimal_switches("case:second", second)[0][
+        "switch_set_id"
+    ]
+    assert first_id != second_id
+
+
 def test_active_and_inactive_atom_semantics_are_exact(
     decision_fixture: tuple[shock_compiler_fixture.ShockFixture, dict[str, Any]],
 ) -> None:
@@ -706,7 +834,7 @@ def test_unused_slots_duplicate_bundle_ids_and_candidate_scopes_refuse(
     unused = _reseal(unused)
     with pytest.raises(decision_switch.DecisionSwitchError) as exc:
         _execute(base, unused)
-    assert exc.value.code == "decision_switch_slot_unreferenced"
+    assert exc.value.code == "decision_switch_option_slot_invalid"
 
     duplicate_bundle = copy.deepcopy(request)
     duplicate_bundle["variants"][1]["bundles"][0]["bundle_id"] = (
@@ -728,6 +856,65 @@ def test_unused_slots_duplicate_bundle_ids_and_candidate_scopes_refuse(
     with pytest.raises(decision_switch.DecisionSwitchError) as exc:
         _execute(base, duplicate_scope)
     assert exc.value.code == "decision_switch_candidate_scope_duplicate"
+
+
+def test_proof_constraint_universe_must_equal_registered_slot_universe(
+    decision_fixture: tuple[shock_compiler_fixture.ShockFixture, dict[str, Any]],
+) -> None:
+    base, request = decision_fixture
+    mutated = copy.deepcopy(request)
+    for variant in mutated["variants"]:
+        bundle = next(
+            row for row in variant["bundles"] if row["option_id"] == OPTION_A
+        )
+        scenario = bundle["scenario"]
+        compilation = bundle["compilation"]
+        path = compilation["paths"][0]
+        extra = scenario_proof.seal_request(
+            {
+                "object_type": "registered_constraint",
+                "schema_version": "0.1.0",
+                "record_sha256": "0" * 64,
+                "constraint_id": "constraint:decision.fixture.a.extra",
+                "scenario_id": scenario["scenario_id"],
+                "scenario_record_sha256": scenario["record_sha256"],
+                "compilation_record_sha256": compilation["record_sha256"],
+                "path_id": path["path_id"],
+                "metric": "gross_affected_share",
+                "operator": "upper_bound_lte",
+                "threshold": {
+                    "value": 10.0,
+                    "unit": "percentage_points_of_edge_denominator",
+                    "denominator": path["hops"][0]["magnitude"]["denominator"],
+                },
+                "epistemic_kind": "hypothetical_normative_boundary",
+                "origin": "user_supplied",
+                "evidence_id": None,
+                "real_world_feasibility_claimed": False,
+            }
+        )
+        proof_request = copy.deepcopy(bundle["scenario_proof_request"])
+        proof_request["constraints"].append(extra)
+        proof_request["constraints"].sort(key=lambda row: row["constraint_id"])
+        proof_request = scenario_proof.seal_request(proof_request)
+        proof = scenario_proof.execute_scenario_proof(
+            base.base.manifest,
+            scenario,
+            compilation,
+            proof_request,
+            **_paths(base),
+        )
+        bundle["scenario_proof_request"] = proof_request
+        bundle["scenario_proof_execution"] = proof
+        replacement = decision_switch.seal_record(bundle)
+        variant["bundles"] = [
+            replacement if row["option_id"] == OPTION_A else row
+            for row in variant["bundles"]
+        ]
+    mutated = _reseal(mutated)
+    with pytest.raises(decision_switch.DecisionSwitchError) as exc:
+        _execute(base, mutated)
+    assert exc.value.code == "decision_switch_constraint_partition_invalid"
 
 
 def test_dependency_proof_mutation_never_yields_partial_decision_output(
@@ -752,6 +939,13 @@ def test_profile_contract_lists_every_adversarial_boundary() -> None:
     cases = json.loads((ROOT / EXTENSION / "adversarial-cases.json").read_text())
     assert "incomplete_or_duplicate_powerset_member" in cases["refusal_cases"]
     assert "hidden_semantic_change_outside_active_atom" in cases["refusal_cases"]
+    assert "proof_constraint_outside_registered_slot_universe" in cases[
+        "refusal_cases"
+    ]
+    assert "constraint_or_hypothesis_remapped_to_different_registered_path" in cases[
+        "refusal_cases"
+    ]
+    assert "cross_case_switch_identity_collision" in cases["refusal_cases"]
     assert "expected_voi_entropy_or_uniform_probability_inferred" in cases[
         "refusal_cases"
     ]

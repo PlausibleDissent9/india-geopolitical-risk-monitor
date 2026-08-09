@@ -432,6 +432,7 @@ def _semantic_skeleton(
 ) -> str:
     scenario = copy.deepcopy(bundle["scenario"])
     proof_request = copy.deepcopy(bundle["scenario_proof_request"])
+    path_semantics = _path_semantic_projections(bundle)
     scenario.pop("record_sha256", None)
     scenario.pop("scenario_id", None)
     proof_request.pop("record_sha256", None)
@@ -442,20 +443,28 @@ def _semantic_skeleton(
         row.pop("scenario_id", None)
         row.pop("scenario_record_sha256", None)
         row.pop("compilation_record_sha256", None)
-        row.pop("path_id", None)
+        path_id = row.pop("path_id")
+        if path_id not in path_semantics:
+            _fail("decision_switch_path_binding_invalid")
+        row["path_semantic_sha256"] = _semantic_sha(path_semantics[path_id])
     for row in proof_request["hypotheses"]:
         row.pop("record_sha256", None)
         row.pop("scenario_id", None)
         row.pop("scenario_record_sha256", None)
         row.pop("compilation_record_sha256", None)
-        row.pop("path_id", None)
+        path_id = row.pop("path_id")
+        if path_id not in path_semantics:
+            _fail("decision_switch_path_binding_invalid")
+        row["path_semantic_sha256"] = _semantic_sha(path_semantics[path_id])
     for atom_id, selector, target_id in atom_rows:
         _mask_selector(scenario, proof_request, selector, target_id, atom_id)
     return _semantic_sha({"scenario": scenario, "scenario_proof_request": proof_request})
 
 
-def _path_semantics(bundle: Mapping[str, Any]) -> str:
-    """Bind every referenced path to its non-scenario-derived topology bytes."""
+def _path_semantic_projections(
+    bundle: Mapping[str, Any],
+) -> dict[str, dict[str, Any]]:
+    """Return each referenced path's normalized non-scenario-derived semantics."""
 
     compilation = bundle["compilation"]
     proof_request = bundle["scenario_proof_request"]
@@ -467,36 +476,43 @@ def _path_semantics(bundle: Mapping[str, Any]) -> str:
     by_id = {row["path_id"]: row for row in compilation["paths"]}
     if not referenced <= set(by_id):
         _fail("decision_switch_path_binding_invalid")
-    projected: list[dict[str, Any]] = []
+    projected: dict[str, dict[str, Any]] = {}
     for path_id in sorted(referenced):
         path = by_id[path_id]
-        projected.append(
-            {
-                "entry_entity_id": path["entry_entity_id"],
-                "entity_ids": path["entity_ids"],
-                "edge_ids": path["edge_ids"],
-                "hops": [
-                    {
-                        "edge_id": hop["edge_id"],
-                        "source_entity_id": hop["source_entity_id"],
-                        "target_entity_id": hop["target_entity_id"],
-                        "edge_type": hop["edge_type"],
-                        "quantification_status": hop["quantification_status"],
-                        "magnitude": hop["magnitude"],
-                        "freshness": hop["freshness"],
-                        "coverage": hop["coverage"],
-                        "evidence_ids": hop["evidence_ids"],
-                        "limitation_codes": hop["limitation_codes"],
-                    }
-                    for hop in path["hops"]
-                ],
-                "quantification_status": path["quantification_status"],
-                "reason_code": path["reason_code"],
-                "gap_codes": path["gap_codes"],
-                "limitation_codes": path["limitation_codes"],
-            }
-        )
-    return _semantic_sha(projected)
+        projected[path_id] = {
+            "entry_entity_id": path["entry_entity_id"],
+            "entity_ids": path["entity_ids"],
+            "edge_ids": path["edge_ids"],
+            "hops": [
+                {
+                    "edge_id": hop["edge_id"],
+                    "source_entity_id": hop["source_entity_id"],
+                    "target_entity_id": hop["target_entity_id"],
+                    "edge_type": hop["edge_type"],
+                    "quantification_status": hop["quantification_status"],
+                    "magnitude": hop["magnitude"],
+                    "freshness": hop["freshness"],
+                    "coverage": hop["coverage"],
+                    "evidence_ids": hop["evidence_ids"],
+                    "limitation_codes": hop["limitation_codes"],
+                }
+                for hop in path["hops"]
+            ],
+            "quantification_status": path["quantification_status"],
+            "reason_code": path["reason_code"],
+            "gap_codes": path["gap_codes"],
+            "limitation_codes": path["limitation_codes"],
+        }
+    return projected
+
+
+def _path_semantics(bundle: Mapping[str, Any]) -> str:
+    """Bind the complete referenced path set independent of ephemeral path IDs."""
+
+    projections = _path_semantic_projections(bundle)
+    return _semantic_sha(
+        sorted(projections.values(), key=lambda row: _semantic_sha(row))
+    )
 
 
 def _powerset(atom_ids: Sequence[str]) -> list[tuple[str, ...]]:
@@ -543,12 +559,8 @@ def _validate_structure(
         _fail("decision_switch_slot_duplicate")
     for option in options:
         ids = option["required_slot_ids"]
-        if ids != sorted(ids) or not set(ids) <= set(slot_by_id):
+        if ids != sorted(ids) or set(ids) != set(slot_by_id):
             _fail("decision_switch_option_slot_invalid")
-    if set(slot_by_id) != {
-        slot_id for option in options for slot_id in option["required_slot_ids"]
-    }:
-        _fail("decision_switch_slot_unreferenced")
     per_option_constraints: dict[str, set[str]] = {option_id: set() for option_id in option_ids}
     for slot in slots:
         bindings = slot["option_bindings"]
@@ -753,6 +765,11 @@ def _variant_result(
             row["constraint_id"]: row
             for row in bundle_by_option[option_id]["scenario_proof_execution"]["constraints"]
         }
+        expected_constraint_ids = {
+            binding[(option_id, slot_id)] for slot_id in slot_by_id
+        }
+        if set(proof_constraints) != expected_constraint_ids:
+            _fail("decision_switch_constraint_partition_invalid")
         slot_states: list[dict[str, Any]] = []
         unavailable = False
         violated = False
@@ -847,23 +864,28 @@ def _minimal_switches(
         if any(other < atoms and other != baseline_atoms for other in changed_sets):
             continue
         robust = set(row["robust_option_ids"])
-        token = hashlib.sha256("\x1f".join(sorted(atoms)).encode()).hexdigest()[:24]
+        resulting_sha = _semantic_sha({"robust_option_ids": sorted(robust)})
+        token = _semantic_sha(
+            {
+                "decision_case_id": decision_case_id,
+                "atom_ids": sorted(atoms),
+                "baseline_robust_set_sha256": baseline_sha,
+                "resulting_robust_set_sha256": resulting_sha,
+            }
+        )[:24]
         result.append(
             {
                 "switch_set_id": f"switch:decision.{token}",
                 "atom_ids": sorted(atoms),
                 "witness_variant_id": row["variant_id"],
                 "baseline_robust_set_sha256": baseline_sha,
-                "resulting_robust_set_sha256": _semantic_sha(
-                    {"robust_option_ids": sorted(robust)}
-                ),
+                "resulting_robust_set_sha256": resulting_sha,
                 "added_option_ids": sorted(robust - baseline_robust),
                 "removed_option_ids": sorted(baseline_robust - robust),
                 "minimal_within": "complete_registered_binary_lattice",
                 "global_minimality_claimed": False,
             }
         )
-    del decision_case_id
     return sorted(result, key=lambda row: (len(row["atom_ids"]), row["atom_ids"]))
 
 
