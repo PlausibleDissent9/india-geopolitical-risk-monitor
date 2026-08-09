@@ -6,6 +6,7 @@ import base64
 import csv
 import hashlib
 import json
+import shutil
 import subprocess
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -18,6 +19,7 @@ from src import event_ledger
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
+CANONICAL_FIXTURES = ROOT / "validation" / "event_ledger_canonicalization.json"
 
 
 def _json(path: Path) -> object:
@@ -96,6 +98,106 @@ def _signed_release(
         released_at,
         _release_signature(unsigned, signer),
     )
+
+
+def test_typed_release_canonicalization_matches_registered_fixtures() -> None:
+    registered = _json(CANONICAL_FIXTURES)
+    assert isinstance(registered, dict)
+    assert registered["profile"] == event_ledger.TYPED_CANONICAL_PROFILE
+    fixtures = registered["fixtures"]
+    assert isinstance(fixtures, list) and len(fixtures) >= 12
+    for row in fixtures:
+        assert isinstance(row, dict)
+        projection = event_ledger._typed_canonical_bytes(row["value"])
+        assert projection.decode("ascii") == row["typed_projection"], row["id"]
+        assert hashlib.sha256(projection).hexdigest() == row["sha256"], row["id"]
+
+
+def test_typed_release_canonicalization_refuses_cross_runtime_ambiguity() -> None:
+    for value in (9007199254740992, 1e20, float("inf"), float("nan")):
+        with pytest.raises(event_ledger.EventLedgerError) as exc:
+            event_ledger._typed_canonical_bytes(value)
+        assert exc.value.code == "typed_canonical_number_invalid"
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._typed_canonical_bytes("\ud800")
+    assert exc.value.code == "typed_canonical_string_invalid"
+
+
+def test_browser_and_python_share_typed_release_projection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("node is not available in this environment")
+    candidate = event_ledger._build_candidate()
+    release = _signed_release(
+        candidate,
+        {"authorized": True, "snapshot": "cross-runtime"},
+        None,
+        "2026-08-09T00:00:00Z",
+        _release_signer(monkeypatch),
+    )
+    release_path = tmp_path / "signed-release.json"
+    _write_json(release_path, release)
+    script = r"""
+const fs = require("fs");
+const crypto = require("crypto");
+const typed = require(process.argv[1]);
+const fixtures = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+for (const row of fixtures.fixtures) {
+  const projection = typed.encode(row.value);
+  const digest = crypto.createHash("sha256").update(projection, "utf8").digest("hex");
+  if (projection !== row.typed_projection || digest !== row.sha256) process.exit(41);
+}
+for (const invalid of [9007199254740992, 1e20, Infinity, NaN, "\ud800"]) {
+  let refused = false;
+  try { typed.encode(invalid); } catch (_error) { refused = true; }
+  if (!refused) process.exit(45);
+}
+const release = JSON.parse(fs.readFileSync(process.argv[3], "utf8"));
+const content = JSON.parse(JSON.stringify(release));
+delete content._meta.artifact_integrity_sha256;
+delete content._meta.release_content_sha256;
+delete content._meta.release_signature;
+const artifact = JSON.parse(JSON.stringify(release));
+delete artifact._meta.artifact_integrity_sha256;
+function digest(value) {
+  return crypto.createHash("sha256").update(typed.encode(value), "utf8").digest("hex");
+}
+if (typed.profile !== fixtures.profile) process.exit(42);
+if (digest(content) !== release._meta.release_content_sha256) process.exit(43);
+if (digest(artifact) !== release._meta.artifact_integrity_sha256) process.exit(44);
+"""
+    subprocess.run(
+        [
+            node,
+            "-e",
+            script,
+            str(DOCS / "typed-canonical.js"),
+            str(CANONICAL_FIXTURES),
+            str(release_path),
+        ],
+        check=True,
+    )
+
+
+def test_authorized_release_refuses_an_unregistered_integrity_profile(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    release = _signed_release(
+        event_ledger._build_candidate(),
+        {"authorized": True, "snapshot": "profile-test"},
+        None,
+        "2026-08-09T00:00:00Z",
+        _release_signer(monkeypatch),
+    )
+    release["_meta"]["release_integrity_profile"] = "runtime-default-json"
+    release["_meta"]["release_content_sha256"] = (
+        event_ledger._release_content_integrity(release)
+    )
+    with pytest.raises(event_ledger.EventLedgerError) as exc:
+        event_ledger._verify_release_signature(release)
+    assert exc.value.code == "authorized_release_content_digest_invalid"
 
 
 def test_public_artifact_fails_closed_until_signed_source_rights_exist() -> None:
@@ -319,6 +421,7 @@ def test_public_page_and_javascript_fail_closed_on_the_same_boundaries() -> None
     html = (DOCS / "ledger.html").read_text(encoding="utf-8")
     js = (DOCS / "ledger.js").read_text(encoding="utf-8")
     assert 'href="data/event_ledger.json"' in html
+    assert 'src="typed-canonical.js' in html
     assert "Static fallback is value-free" in html
     assert "fails closed unless" in html
     assert "No language model may promote" in html
@@ -334,6 +437,8 @@ def test_public_page_and_javascript_fail_closed_on_the_same_boundaries() -> None
     assert '!sha256(meta.artifact_integrity_sha256)' in js
     assert '!utcSecond(meta.released_at)' in js
     assert "var TRUSTED_RELEASE_SIGNERS = Object.freeze({});" in js
+    assert 'var TYPED_CANONICAL_PROFILE = "igrm-typed-canonical-f64-v1";' in js
+    assert "globalThis.IGRMTypedCanonical.encode(value)" in js
     assert "async function verifyAuthorizedRelease(payload)" in js
     assert 'delete content._meta.release_signature' in js
     assert 'crypto.subtle.importKey(' in js

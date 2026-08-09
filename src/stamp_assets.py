@@ -90,6 +90,7 @@ ASSETS = [
     "maps_replay.js",
     "maps.js",
     "world.js",
+    "typed-canonical.js",
     "ledger.js",
     "history-lab.js",
     "app.js",

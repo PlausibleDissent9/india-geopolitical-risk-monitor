@@ -93,6 +93,8 @@
     "trusted_release_signer_ids": [],
     "allowed_release_signer_roles": ["external_release_approver", "founder_release_approver"],
     "detached_release_signature_required": true,
+    "release_integrity_profile": "igrm-typed-canonical-f64-v1",
+    "release_integrity_rule": "Release-content and whole-artifact hashes use the registered typed projection: finite IEEE-754 binary64 numbers, safe-integer refusal, preserved negative zero, UTF-8 strings and UTF-8 byte-ordered object keys. Python and browser implementations must pass the same registered fixtures before an authorized release may render.",
     "release_signer_separate_from_rights_signer": true,
     "trust_root_change_authority": "A human-reviewed code change must pin the rights signer ID and exact Ed25519 public key before any signed source decision can authorize this endpoint. An agent-created key or role string never establishes trust.",
     "release_trust_root_change_authority": "A separate human-reviewed code change must pin a release signer ID, allowed release role, effective/revocation window and exact Ed25519 public key. Historical keys remain pinned after rotation so releases signed while a key was active remain verifiable. Every value-bearing vintage must carry a valid detached signature over its canonical release statement; a rights signer, agent-created key or self-declared role is not release authority."
@@ -102,7 +104,7 @@
     "permitted_claim": "After rights approval, a user may inspect the historical aggregate row series included in the current release and the release-bound detector episode set.",
     "prohibited_claim": "A date-indexed backfill is not point-in-time knowledge replay. Only immutable predecessor-bound public vintages may support release-as-known-at replay.",
     "future_release_rule": "Each authorized release must be stored immutably, bind its predecessor release-state digest and publish a typed date and episode delta. A previously observed day may never be laundered into unavailable.",
-    "archive_append_rule": "Every first-parent commit that ever changed the vintage directory is replayed from its parent: each predecessor must remain byte-identical and present, and a transition may add only the next sequential vintage. An innocent tip cannot hide an earlier rewrite. The current worktree must match every committed vintage, and the full typed delta must recompute from its predecessor.",
+    "archive_append_rule": "Every first-parent commit that ever changed the vintage directory is replayed from its parent: each predecessor must remain byte-identical and present, and a transition may add only the next sequential vintage. An innocent tip cannot hide an earlier rewrite. The current worktree must match every committed vintage, and the full typed delta must recompute from its predecessor. Release and artifact digests use igrm-typed-canonical-f64-v1 rather than runtime-default JSON number formatting.",
     "release_time_rule": "released_at must be UTC to the second, cannot precede any bound evidence or knowledge date, must increase strictly across vintages and cannot exceed the verifier wall clock by more than five minutes."
   },
   "prohibited_interpretations": [

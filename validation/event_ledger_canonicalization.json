@@ -1,0 +1,27 @@
+{
+  "profile": "igrm-typed-canonical-f64-v1",
+  "fixtures": [
+    {"id": "null", "value": null, "typed_projection": "n;", "sha256": "0492cf50f43a86cd8a34e48fb3969f207abed99f8d7a5662fc41cce70fe1e46b"},
+    {"id": "true", "value": true, "typed_projection": "b1;", "sha256": "24249283b4f1e433df562081f9c9a78b746a699c7e6c4311f54df32afea1b725"},
+    {"id": "false", "value": false, "typed_projection": "b0;", "sha256": "e0955493c87b8a25928d5e55330e9ddb5ba83549b5930e535d277652885c6bb9"},
+    {"id": "one_integer", "value": 1, "typed_projection": "d3ff0000000000000;", "sha256": "c212e9a0720fc99506627a86fb6b4c9a4afa85f20fa3fd1b059c787e38c9df53"},
+    {"id": "one_decimal", "value": 1.0, "typed_projection": "d3ff0000000000000;", "sha256": "c212e9a0720fc99506627a86fb6b4c9a4afa85f20fa3fd1b059c787e38c9df53"},
+    {"id": "negative_zero", "value": -0.0, "typed_projection": "d8000000000000000;", "sha256": "0cd7c2a0306c930717ab1fd859b2608c3e14ff61b70fcda695849692c983dd92"},
+    {"id": "small_exponent_boundary", "value": 1e-7, "typed_projection": "d3e7ad7f29abcaf48;", "sha256": "bf37548dc150f45f3d12b7cf8eede9d8aa83a60bc9c77149d4d696e6fff98127"},
+    {"id": "small_decimal_boundary", "value": 1e-6, "typed_projection": "d3eb0c6f7a0b5ed8d;", "sha256": "0e03f3cb9ad8ad690f455fa09aa55db541a9320009e6e244e723a1e1149ff55f"},
+    {"id": "very_small_exponent", "value": 1e-27, "typed_projection": "d3a53ce9a36f23c10;", "sha256": "f937c8aad70ea687a98f01ac92bd905c82cbf2a788a4c4d7cce48a6a7132278f"},
+    {"id": "max_safe_integer", "value": 9007199254740991, "typed_projection": "d433fffffffffffff;", "sha256": "db79889d902a1cb35ceaa097b7e9523228815bce0cfbaef1a7bc4d5f61c5d1b6"},
+    {"id": "unicode_string", "value": "भारत · é · 𐀀", "typed_projection": "s27:e0a4ade0a4bee0a4b0e0a4a420c2b72065cc8120c2b720f0908080;", "sha256": "a0a5616c79c24efabaa5e880ae2bdab2054fcbef50479021d7c6701174923039"},
+    {"id": "utf8_key_order", "value": {"": 1, "𐀀": 2}, "typed_projection": "o2:s3:ee8080;d3ff0000000000000;s4:f0908080;d4000000000000000;;", "sha256": "d28ae4cd4730ac5eaf0f0f5f4122b37af4e32192a0a3ce6d0675e181c8b43b05"},
+    {
+      "id": "release_projection",
+      "value": {
+        "_meta": {"release_id": "event-ledger-v1-fixture", "vintage_number": 1.0},
+        "episodes": [{"peak_value": 100.0, "change": -0.0}],
+        "rights_gate": {"authorized": true, "blocked": null}
+      },
+      "typed_projection": "o3:s5:5f6d657461;o2:s10:72656c656173655f6964;s23:6576656e742d6c65646765722d76312d66697874757265;s14:76696e746167655f6e756d626572;d3ff0000000000000;;s8:657069736f646573;a1:o2:s6:6368616e6765;d8000000000000000;s10:7065616b5f76616c7565;d4059000000000000;;;s11:7269676874735f67617465;o2:s10:617574686f72697a6564;b1;s7:626c6f636b6564;n;;;",
+      "sha256": "2bdc313b52d0d57b17db0bc9a84a06884a616f342604855dcd82a54212ee4701"
+    }
+  ]
+}

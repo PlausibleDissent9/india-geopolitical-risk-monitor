@@ -2,6 +2,7 @@
   "use strict";
 
   var DATA_URL = "data/event_ledger.json";
+  var TYPED_CANONICAL_PROFILE = "igrm-typed-canonical-f64-v1";
   // This trust root is deliberately independent from source-rights signers
   // and empty until a human-reviewed commit pins an exact release key.
   var TRUSTED_RELEASE_SIGNERS = Object.freeze({});
@@ -77,8 +78,13 @@
     var decoded = atob(value);
     return Uint8Array.from(decoded, function (character) { return character.charCodeAt(0); });
   }
-  function digest(value) {
-    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical(value))).then(hex);
+  function typedDigest(value) {
+    if (!globalThis.IGRMTypedCanonical ||
+        globalThis.IGRMTypedCanonical.profile !== TYPED_CANONICAL_PROFILE) {
+      fail("Authorized release integrity profile is unavailable");
+    }
+    var bytes = new TextEncoder().encode(globalThis.IGRMTypedCanonical.encode(value));
+    return crypto.subtle.digest("SHA-256", bytes).then(hex);
   }
   function exactKeys(value, keys) {
     if (!object(value)) return false;
@@ -146,6 +152,7 @@
         !sha256(meta.artifact_integrity_sha256) ||
         !sha256(meta.release_state_sha256) ||
         !sha256(meta.measurement_state_sha256) ||
+        meta.release_integrity_profile !== TYPED_CANONICAL_PROFILE ||
         !utcSecond(meta.released_at) || !isoDate(meta.knowledge_cutoff) ||
         (predecessor !== null && !sha256(predecessor)) ||
         lineage.vintage_number !== meta.vintage_number ||
@@ -245,18 +252,19 @@
     delete content._meta.artifact_integrity_sha256;
     delete content._meta.release_content_sha256;
     delete content._meta.release_signature;
-    if (await digest(content) !== meta.release_content_sha256) {
+    if (await typedDigest(content) !== meta.release_content_sha256) {
       fail("Authorized release content digest is invalid");
     }
     var artifact = JSON.parse(JSON.stringify(payload));
     delete artifact._meta.artifact_integrity_sha256;
-    if (await digest(artifact) !== meta.artifact_integrity_sha256) {
+    if (await typedDigest(artifact) !== meta.artifact_integrity_sha256) {
       fail("Authorized release artifact digest is invalid");
     }
     var statement = {
       schema_version: "igrm-event-ledger-release-signature-v1",
       release_id: meta.release_id,
       vintage_number: meta.vintage_number,
+      release_integrity_profile: meta.release_integrity_profile,
       release_content_sha256: meta.release_content_sha256,
       release_state_sha256: meta.release_state_sha256,
       predecessor_release_integrity_sha256: meta.predecessor_release_integrity_sha256,

@@ -150,6 +150,17 @@ event counts remain unavailable even after rights approval.
 | `canonical_event_layer` | Target lifecycle vocabulary and the non-negotiable requirements for a future production release |
 | `release_lineage` | No public vintage exists while blocked. Every authorized release is predecessor-bound, complete-state hashed, carries a typed date/episode delta and requires a detached Ed25519 signature from a separately pinned release trust root. Source-rights approval alone cannot sign a public vintage; an agent-created key or self-declared role has no authority. CI replays every first-parent commit that ever changed the archive, refuses removal or byte changes to any predecessor and permits only the next sequential vintage, so an innocent tip cannot hide an earlier rewrite. The delta is recomputed from predecessor bytes. `released_at` must follow every bound evidence/knowledge date, increase strictly, and remain within five minutes of the verifier clock |
 
+Authorized release-content and whole-artifact digests use
+`igrm-typed-canonical-f64-v1`, not the host runtime's JSON number formatting.
+Every number is encoded by its finite IEEE-754 binary64 bits, integers outside
+the JavaScript safe range are refused, negative zero is preserved, and strings
+and object-key ordering use UTF-8 bytes. Python and browser implementations are
+checked against the same fixtures in
+`validation/event_ledger_canonicalization.json`, including `1`/`1.0`, `-0.0`,
+exponent boundaries, non-BMP Unicode and a release-shaped projection. A
+profile mismatch or fixture failure refuses the authorized UI instead of
+silently disagreeing about a signed digest.
+
 The current refusal artifact is `partial: true` because values are withheld.
 Inside an authorized release, `partial: false` would mean only that the declared
 calendar, aggregate-store and display-geometry partitions reconcile. It would

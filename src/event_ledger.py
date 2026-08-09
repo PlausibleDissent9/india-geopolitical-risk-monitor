@@ -31,6 +31,7 @@ import json
 import math
 import os
 import re
+import struct
 import subprocess
 import tempfile
 from collections.abc import Iterable
@@ -82,10 +83,12 @@ ALLOWED_RELEASE_SIGNER_ROLES = frozenset(
 # commit pins an ID, role and exact Ed25519 public key.  The private key must
 # never enter this repository or an agent session.
 TRUSTED_RELEASE_SIGNERS: dict[str, dict[str, str]] = {}
-REGISTERED_CONTRACT_SHA256 = "05280f359b76c7863d24f87705b3aafa971addc2d603baff0291cc0eb5550e8a"
+REGISTERED_CONTRACT_SHA256 = "241b6bb99dff1a19b789612d01624af1c2e1a24f9fa93ee8d1783128f1f5f941"
 VINTAGE_NAME = re.compile(r"^event-ledger-v([1-9][0-9]*)-([0-9a-f]{16})\.json$")
 VINTAGE_RELATIVE = Path("docs/data/vintages/event-ledger")
 MAX_RELEASE_CLOCK_SKEW = timedelta(minutes=5)
+TYPED_CANONICAL_PROFILE = "igrm-typed-canonical-f64-v1"
+MAX_SAFE_JSON_INTEGER = (1 << 53) - 1
 
 DAILY_FIELDS = (
     "date",
@@ -225,6 +228,74 @@ def _float(value: object, code: str) -> float:
 
 def _sha_projection(value: object) -> str:
     return evolution_engine.canonical_sha256(value)
+
+
+def _typed_canonical_bytes(value: object) -> bytes:
+    """Encode JSON data identically in Python and a browser.
+
+    Ordinary JSON canonicalization is not a cross-runtime number contract:
+    Python preserves ``1.0`` while JavaScript parses and serializes it as
+    ``1``.  Release integrity therefore uses an explicit typed projection.
+    Every number is a finite IEEE-754 binary64 value, integers outside the
+    JavaScript safe range are refused, strings and object-key ordering operate
+    on UTF-8 bytes, and negative zero remains distinguishable from positive
+    zero.  The format is intentionally internal and versioned; signatures bind
+    its resulting digest rather than relying on implementation-default JSON.
+    """
+
+    if value is None:
+        return b"n;"
+    if isinstance(value, bool):
+        return b"b1;" if value else b"b0;"
+    if isinstance(value, (int, float)):
+        number = float(value)
+        if not math.isfinite(number) or (
+            number.is_integer() and abs(number) > MAX_SAFE_JSON_INTEGER
+        ):
+            _fail("typed_canonical_number_invalid")
+        return b"d" + struct.pack(">d", number).hex().encode("ascii") + b";"
+    if isinstance(value, str):
+        try:
+            encoded = value.encode("utf-8")
+        except UnicodeEncodeError:
+            _fail("typed_canonical_string_invalid")
+        return (
+            b"s"
+            + str(len(encoded)).encode("ascii")
+            + b":"
+            + encoded.hex().encode("ascii")
+            + b";"
+        )
+    if isinstance(value, list):
+        return (
+            b"a"
+            + str(len(value)).encode("ascii")
+            + b":"
+            + b"".join(_typed_canonical_bytes(item) for item in value)
+            + b";"
+        )
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            _fail("typed_canonical_object_key_invalid")
+        try:
+            keys = sorted(value, key=lambda key: key.encode("utf-8"))
+        except UnicodeEncodeError:
+            _fail("typed_canonical_string_invalid")
+        return (
+            b"o"
+            + str(len(keys)).encode("ascii")
+            + b":"
+            + b"".join(
+                _typed_canonical_bytes(key) + _typed_canonical_bytes(value[key])
+                for key in keys
+            )
+            + b";"
+        )
+    _fail("typed_canonical_type_invalid")
+
+
+def _typed_canonical_sha256(value: object) -> str:
+    return hashlib.sha256(_typed_canonical_bytes(value)).hexdigest()
 
 
 def _file_sha256(path: Path) -> str:
@@ -743,6 +814,9 @@ def _validate_contract(value: Any) -> dict[str, Any]:
         or release_gate.get("allowed_release_signer_roles")
         != sorted(ALLOWED_RELEASE_SIGNER_ROLES)
         or release_gate.get("detached_release_signature_required") is not True
+        or release_gate.get("release_integrity_profile")
+        != TYPED_CANONICAL_PROFILE
+        or not isinstance(release_gate.get("release_integrity_rule"), str)
         or release_gate.get("release_signer_separate_from_rights_signer") is not True
         or not isinstance(release_gate.get("trust_root_change_authority"), str)
         or not isinstance(
@@ -1083,7 +1157,7 @@ def _artifact_integrity(value: dict[str, Any]) -> str:
     if not isinstance(meta, dict):
         _fail("authorized_release_meta_invalid")
     meta.pop("artifact_integrity_sha256", None)
-    return _sha_projection(clone)
+    return _typed_canonical_sha256(clone)
 
 
 def _release_content_integrity(value: dict[str, Any]) -> str:
@@ -1096,7 +1170,7 @@ def _release_content_integrity(value: dict[str, Any]) -> str:
     meta.pop("artifact_integrity_sha256", None)
     meta.pop("release_content_sha256", None)
     meta.pop("release_signature", None)
-    return _sha_projection(clone)
+    return _typed_canonical_sha256(clone)
 
 
 def _release_signature_statement(value: dict[str, Any]) -> dict[str, Any]:
@@ -1107,6 +1181,7 @@ def _release_signature_statement(value: dict[str, Any]) -> dict[str, Any]:
         "schema_version": "igrm-event-ledger-release-signature-v1",
         "release_id": meta.get("release_id"),
         "vintage_number": meta.get("vintage_number"),
+        "release_integrity_profile": meta.get("release_integrity_profile"),
         "release_content_sha256": meta.get("release_content_sha256"),
         "release_state_sha256": meta.get("release_state_sha256"),
         "predecessor_release_integrity_sha256": meta.get(
@@ -1136,7 +1211,8 @@ def _verify_release_signature(value: dict[str, Any]) -> None:
         _fail("authorized_release_meta_invalid")
     content_sha = meta.get("release_content_sha256")
     if (
-        not isinstance(content_sha, str)
+        meta.get("release_integrity_profile") != TYPED_CANONICAL_PROFILE
+        or not isinstance(content_sha, str)
         or not re.fullmatch(r"[0-9a-f]{64}", content_sha)
         or _release_content_integrity(value) != content_sha
     ):
@@ -1436,6 +1512,7 @@ def _unsigned_authorized_public_artifact(
             "release_id": f"event-ledger-v{vintage}-{release_state_sha[:16]}",
             "released_at": release_time.isoformat().replace("+00:00", "Z"),
             "knowledge_cutoff": candidate["_meta"]["detector_observation_through"],
+            "release_integrity_profile": TYPED_CANONICAL_PROFILE,
             "predecessor_release_integrity_sha256": predecessor_integrity,
         }
     )
