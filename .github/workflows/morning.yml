@@ -63,10 +63,30 @@ jobs:
     # killed BY THIS LINE at 20m15s, mid-pipeline under GDELT throttle --
     # congestion plus throttle plus a tight cap is three failures where
     # any two would have been survivable. The cap exists so a hung shot
-    # cannot block the daily lane's concurrency slot; 35 still clears
-    # well before the daily cron and lets a throttled-but-working shot
-    # finish.
-    timeout-minutes: 35
+    # cannot block the daily lane's concurrency slot.
+    #
+    # 35 was then killed by this line in turn, on 2026-08-09 at 35m12s,
+    # and the arithmetic says it always would be. What the cap has to
+    # cover was re-derived from the two runs that morning rather than
+    # from the previous estimate:
+    #
+    #   heal (--heal 5)          11.0 - 11.1 min   measured #26, #27
+    #   pipeline (run_daily)     14.9 - 20.8 min   measured #27, #26
+    #   gate inside the push     ~5.2 min          gate.sh --committed
+    #   commit / rebase / push   ~1 min
+    #                            ---------------
+    #   worst observed            ~38 min against a 35-minute cap
+    #
+    # The gate term is the one nobody re-derived: publish_push.sh runs
+    # scripts/gate.sh --committed inside the push step, so since
+    # gate_candidate landed EVERY lane's cap has had to cover a full CI
+    # gate on top of that lane's own work. Nine lanes call it. #26 spent
+    # 31.8 minutes in heal and pipeline alone and was axed during the
+    # push with the gate still running -- not bad luck, no headroom.
+    #
+    # 45, not 50: a 05:33 shot then ends by 06:18 and still clears the
+    # 06:21 daily cron, which is the property the cap exists to protect.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
