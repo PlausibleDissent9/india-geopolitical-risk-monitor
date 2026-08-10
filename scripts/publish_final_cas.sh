@@ -12,23 +12,60 @@ DERIVED_OUTCOME="${6:?missing derived outcome}"
 PUBLISH_TOKEN="${IGRM_PUBLISH_TOKEN:?IGRM_PUBLISH_TOKEN is required}"
 AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$PUBLISH_TOKEN" | base64 | tr -d '\n')"
 unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN
+FROZEN_CANDIDATE_SHA=""
+
+require_frozen_base() {
+  local current_head
+  current_head=$(git rev-parse HEAD)
+  if [ "$current_head" != "$BASE_COMMIT" ]; then
+    echo "::error::candidate construction refusal: local HEAD $current_head is not frozen base $BASE_COMMIT"
+    return 1
+  fi
+}
 
 push_frozen_parent() {
+  local candidate_head parent_count candidate_parent remote_commit
+  candidate_head=$(git rev-parse HEAD)
+  if [ -z "$FROZEN_CANDIDATE_SHA" ] || [ "$candidate_head" != "$FROZEN_CANDIDATE_SHA" ]; then
+    echo "::error::CAS refusal: gated candidate SHA is not current HEAD"
+    return 1
+  fi
+  parent_count=$(git rev-list --parents -n 1 "$FROZEN_CANDIDATE_SHA" | awk '{print NF - 1}')
+  if [ "$parent_count" != "1" ]; then
+    echo "::error::CAS refusal: candidate must have exactly one parent"
+    return 1
+  fi
+  candidate_parent=$(git rev-parse "$FROZEN_CANDIDATE_SHA^")
+  if [ "$candidate_parent" != "$BASE_COMMIT" ]; then
+    echo "::error::CAS refusal: candidate parent $candidate_parent is not frozen base $BASE_COMMIT"
+    return 1
+  fi
   git fetch --quiet origin main
-  REMOTE_COMMIT=$(git rev-parse origin/main)
-  if [ "$REMOTE_COMMIT" != "$BASE_COMMIT" ]; then
-    echo "::error::CAS refusal: candidate parent $BASE_COMMIT, current main $REMOTE_COMMIT; rebuild required"
+  remote_commit=$(git rev-parse origin/main)
+  if [ "$remote_commit" != "$BASE_COMMIT" ]; then
+    echo "::error::CAS refusal: candidate parent $BASE_COMMIT, current main $remote_commit; rebuild required"
     return 1
   fi
   GIT_CONFIG_COUNT=1 \
     GIT_CONFIG_KEY_0='http.https://github.com/.extraheader' \
     GIT_CONFIG_VALUE_0="$AUTH_HEADER" \
-    git push origin HEAD:main
+    git push origin "$FROZEN_CANDIDATE_SHA:main"
 }
 
 publish_gated_candidate() {
-  local message="$1"
+  local message="$1" parent_count candidate_parent
   git commit -m "$message"
+  FROZEN_CANDIDATE_SHA=$(git rev-parse HEAD)
+  parent_count=$(git rev-list --parents -n 1 "$FROZEN_CANDIDATE_SHA" | awk '{print NF - 1}')
+  if [ "$parent_count" != "1" ]; then
+    echo "::error::candidate refusal: publisher commit must have exactly one parent"
+    return 1
+  fi
+  candidate_parent=$(git rev-parse "$FROZEN_CANDIDATE_SHA^")
+  if [ "$candidate_parent" != "$BASE_COMMIT" ]; then
+    echo "::error::candidate refusal: publisher commit parent $candidate_parent is not frozen base $BASE_COMMIT"
+    return 1
+  fi
   # One exact gate over the one candidate SHA. A changed remote is a refusal,
   # never authority to rebase or auto-resolve final/history bytes.
   /usr/bin/time -v bash scripts/gate.sh --committed
@@ -82,6 +119,7 @@ publish_refusal() {
   publish_gated_candidate "status: final $TARGET unavailable"
 }
 
+require_frozen_base
 if [ "$SOURCE_OUTCOME" = "success" ] && \
    [ "$PIPELINE_OUTCOME" = "success" ] && \
    [ "$AUDIT_OUTCOME" = "success" ] && \

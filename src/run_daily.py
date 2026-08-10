@@ -175,6 +175,11 @@ def main() -> None:
     ap.add_argument("--backfill", action="store_true")
     ap.add_argument("--final-only", action="store_true")
     ap.add_argument("--target", type=date.fromisoformat)
+    ap.add_argument(
+        "--contract-today",
+        type=date.fromisoformat,
+        help="frozen UTC date paired with --target for one publication attempt",
+    )
     # Full GDELT DOC API range. The per-chunk cache in fetch_gdelt plus its
     # resume logic (only missing dates are fetched) make the 2017 range
     # feasible where a single uncached run previously was not: an interrupted
@@ -182,7 +187,7 @@ def main() -> None:
     # budget from scratch.
     ap.add_argument("--from", dest="from_date", default="2017-01-01")
     args = ap.parse_args()
-    today_utc = datetime.now(timezone.utc).date()
+    today_utc = args.contract_today or datetime.now(timezone.utc).date()
     target = args.target or final_publication.required_target(today_utc)
     final_publication.require_exact_target(target, today_utc)
 
@@ -239,6 +244,7 @@ def main() -> None:
         final_publication.require_promotion_receipt(
             target,
             require_bridge_receipt=True,
+            rights_as_of=today_utc,
         )
     except final_publication.FinalPublicationError as exc:
         raise SystemExit(
@@ -271,7 +277,7 @@ def main() -> None:
     if not args.final_only:
         publish_latest_note()
     render_site.main()
-    final_publication.mark_finalized(target)
+    final_publication.mark_finalized(target, rights_as_of=today_utc)
     print("[done] site data written to docs/data/")
 
 

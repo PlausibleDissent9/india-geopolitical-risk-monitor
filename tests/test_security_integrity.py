@@ -147,14 +147,14 @@ def test_direct_final_recovery_cas_must_keep_frozen_parent_guard(
     path = security_tree / "scripts" / "publish_final_cas.sh"
     path.write_text(
         path.read_text(encoding="utf-8").replace(
-            'REMOTE_COMMIT=$(git rev-parse origin/main)',
-            'REMOTE_COMMIT="unguarded"',
+            "remote_commit=$(git rev-parse origin/main)",
+            'remote_commit="unguarded"',
             1,
         ),
         encoding="utf-8",
     )
     _rehash_registered_script(security_tree, "final_cas_script")
-    _refusal(security_tree, "publisher_final_cas_remote_guard_order_invalid")
+    _refusal(security_tree, "publisher_final_cas_function_digest_invalid")
 
 
 def test_registered_final_publisher_refuses_a_second_or_earlier_push(
@@ -189,7 +189,71 @@ def test_registered_final_publisher_refuses_dead_code_gate_fragments(
         encoding="utf-8",
     )
     _rehash_registered_script(security_tree, "final_cas_script")
-    _refusal(security_tree, "publisher_final_cas_dead_code_guard_present")
+    _refusal(security_tree, "publisher_final_cas_function_digest_invalid")
+
+
+@pytest.mark.parametrize(
+    ("needle", "replacement"),
+    (
+        (
+            "  git fetch --quiet origin main",
+            "  if false; then\n    git fetch --quiet origin main\n  fi",
+        ),
+        (
+            "  git fetch --quiet origin main",
+            "  true || git fetch --quiet origin main",
+        ),
+        (
+            "  git fetch --quiet origin main",
+            "  return 0\n  git fetch --quiet origin main",
+        ),
+        (
+            '  if [ "$candidate_parent" != "$BASE_COMMIT" ]; then',
+            '  if false; then\n    if [ "$candidate_parent" != "$BASE_COMMIT" ]; then',
+        ),
+        (
+            '    git push origin "$FROZEN_CANDIDATE_SHA:main"',
+            '    true || git push origin "$FROZEN_CANDIDATE_SHA:main"',
+        ),
+    ),
+)
+def test_final_cas_push_function_rejects_dead_or_bypassed_dominators(
+    security_tree: Path, needle: str, replacement: str
+) -> None:
+    path = security_tree / "scripts" / "publish_final_cas.sh"
+    text = path.read_text(encoding="utf-8")
+    assert needle in text
+    path.write_text(text.replace(needle, replacement, 1), encoding="utf-8")
+    _rehash_registered_script(security_tree, "final_cas_script")
+    _refusal(security_tree, "publisher_final_cas_function_digest_invalid")
+
+
+@pytest.mark.parametrize(
+    ("replacement", "code"),
+    (
+        ("true || require_frozen_base", "publisher_final_cas_dispatch_invalid"),
+        (
+            "if false; then require_frozen_base; fi",
+            "publisher_final_cas_dispatch_invalid",
+        ),
+        (
+            "return 0\nrequire_frozen_base",
+            "publisher_final_cas_dispatch_digest_invalid",
+        ),
+    ),
+)
+def test_final_cas_dispatch_rejects_dead_or_skipped_base_guard(
+    security_tree: Path, replacement: str, code: str
+) -> None:
+    path = security_tree / "scripts" / "publish_final_cas.sh"
+    text = path.read_text(encoding="utf-8")
+    marker = "\nrequire_frozen_base\nif ["
+    assert marker in text
+    path.write_text(
+        text.replace(marker, f"\n{replacement}\nif [", 1), encoding="utf-8"
+    )
+    _rehash_registered_script(security_tree, "final_cas_script")
+    _refusal(security_tree, code)
 
 
 def test_job_level_permission_override_is_refused(security_tree: Path) -> None:

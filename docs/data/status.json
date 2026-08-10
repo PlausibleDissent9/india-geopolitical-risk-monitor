@@ -216,7 +216,7 @@
   "target_date": "2026-08-09",
   "latest_finalized_date": "2026-08-09",
   "status": "legacy_proof_limited",
-  "reason": "The D-1 number remains published under the legacy frame: all 48 half-hour windows are verified, but its English denominator is source-reported and cannot be independently reconstructed.",
+  "reason": "The Aug-9 number remains visible as the exact historical blobs introduced by commit 9077ea4; its cache structurally covers all 48 half-hour windows. This byte identity does not supply a source acquisition receipt, reconstructable English denominator, cache-to-store calibration/transform receipt, or store-to-public score derivation receipt; source-retention and redistribution rights review also remains pending. It is not new-contract final proof.",
   "finalized": false,
   "provisional_substitution_allowed": false,
   "value_fields_published": false,

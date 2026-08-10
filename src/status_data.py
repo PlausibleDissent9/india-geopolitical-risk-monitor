@@ -16,6 +16,7 @@ promise, and reliability.json carries its record.
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import html
 import json
@@ -177,11 +178,15 @@ def _static_final_message(state: dict[str, Any]) -> str:
         )
     if state.get("status") == "legacy_proof_limited":
         return (
-            f"Legacy final with proof limitation: target <b>{target}</b> remains "
-            "published and its 48 half-hour windows are verified, but the "
-            "English denominator was source-reported and cannot be independently "
-            "reconstructed. No new-contract source receipt is claimed. A "
-            "provisional nowcast remains separate and non-final."
+            f"Bounded historical publication: target <b>{target}</b> remains "
+            "visible because its cache, store, provenance, latest and history "
+            "exactly match commit 9077ea4, and its cache structurally covers all "
+            "48 half-hour windows. This byte identity has no source acquisition "
+            "receipt, reconstructable English denominator, cache-to-store "
+            "calibration/transform receipt, or store-to-public score derivation "
+            "receipt; source-retention and redistribution rights review also "
+            "remains pending. It is not new-contract final proof. A provisional "
+            "nowcast remains separate and non-final."
         )
     labels = {
         "source_unavailable": "the registered source is unavailable",
@@ -417,8 +422,8 @@ def check_alignments(root: Path | None = None,
     return out
 
 
-def main() -> None:
-    today = datetime.now(timezone.utc).date()
+def main(today: date | None = None) -> None:
+    today = today or datetime.now(timezone.utc).date()
     reliability = {}
     rel_path = SITE_DATA / "reliability.json"
     if rel_path.exists():
@@ -471,4 +476,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--contract-today", type=date.fromisoformat)
+    parsed = parser.parse_args()
+    main(today=parsed.contract_today)

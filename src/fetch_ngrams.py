@@ -432,6 +432,13 @@ def _cached_day(day: date, specs: dict[str, dict]) -> dict | None:
     cache = DAY_CACHE / f"{day.isoformat()}.json"
     if cache.exists():
         return json.loads(cache.read_text(encoding="utf-8"))
+    # A newly computed schema-1.1 cache contains deterministic membership
+    # commitments. Do not acquire or persist it while the source-retention
+    # rights decision is absent, pending, expired or revoked. Existing frozen
+    # schema-1.0 historical bytes remain readable through the branch above.
+    from . import final_publication
+
+    final_publication.require_ngram_public_identity_rights(root=ROOT)
     result = compute_day(day, specs)
     if result is not None:
         cache.write_text(json.dumps(result), encoding="utf-8")

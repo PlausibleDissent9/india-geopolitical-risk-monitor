@@ -1,6 +1,7 @@
 """Focused fail-closed tests for the visitor-visible D-1 final contract."""
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import os
@@ -13,6 +14,8 @@ from typing import Callable
 import pandas as pd
 import pytest
 import requests
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from src import (
     fetch_gdelt,
     fetch_ngrams,
@@ -28,6 +31,140 @@ PREFIX_DAY = date(2026, 8, 8)
 
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def _write_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+
+
+def _write_approved_ngram_rights(
+    root: Path,
+    *,
+    reviewed_on: str = "2026-08-08",
+    review_due: str = "2027-08-08",
+    signer_effective: str = "2026-08-08",
+    signer_revoked: str | None = None,
+    registry_effective: str = "2026-08-08",
+) -> None:
+    private_key = Ed25519PrivateKey.generate()
+    public_key = private_key.public_key().public_bytes(
+        encoding=serialization.Encoding.Raw,
+        format=serialization.PublicFormat.Raw,
+    )
+    signer = {
+        "signer_id": "test_ngram_rights_signer",
+        "name": "Synthetic test signer",
+        "role": "test-only rights reviewer",
+        "public_key_ed25519_base64": base64.b64encode(public_key).decode(),
+        "effective": signer_effective,
+        "revoked_on": signer_revoked,
+    }
+    _write_json(
+        root / "governance/rights_signers.json",
+        {
+            "schema_version": "1.0.0",
+            "effective": registry_effective,
+            "default_policy": "deny",
+            "signers": [signer],
+        },
+    )
+    uses = [
+        "model_processing",
+        "publish_derived_value",
+        "publish_extract",
+        "redistribute_full_record",
+    ]
+    source = {
+        "source_id": "gdelt_web_ngrams_v5",
+        "name": "Synthetic GDELT NGrams fixture",
+        "provider": "Synthetic test provider",
+        "role": "news_attention_corpus",
+        "authority_class": "aggregator",
+        "independence_group": "synthetic_gdelt",
+        "lineage_policy": "primary",
+        "decision_state": "approved",
+        "decision_id": "test:ngrams-public-identity-retention",
+        "decision_owner": "Synthetic test owner",
+        "signer_id": signer["signer_id"],
+        "decision_artifact_path": "governance/rights_decisions/ngrams.json",
+        "decision_artifact_sha256": "0" * 64,
+        "decision_signature_path": "governance/rights_decisions/ngrams.sig",
+        "reviewed_on": reviewed_on,
+        "review_due": review_due,
+        "access_url": "https://example.test/ngrams",
+        "terms_url": "https://example.test/terms",
+        "access_basis": "synthetic_test_fixture",
+        "geographic_coverage": "Synthetic fixture",
+        "historical_coverage": "Synthetic fixture day",
+        "retrieval_target": "Synthetic identity commitments",
+        "outage_fallback": "Fail closed",
+        "cost_owner": "Synthetic test owner",
+        "reproducibility_tier": "test_only",
+        "max_current_age_days": 2,
+        "permitted_uses": uses,
+        "notes": "Synthetic test-only authorization; not a real rights decision.",
+    }
+    decision = {
+        "schema_version": "1.0.0",
+        **{
+            key: source[key]
+            for key in (
+                "source_id",
+                "name",
+                "provider",
+                "role",
+                "authority_class",
+                "independence_group",
+                "decision_id",
+                "decision_owner",
+                "signer_id",
+                "reviewed_on",
+                "review_due",
+                "access_url",
+                "terms_url",
+                "access_basis",
+                "lineage_policy",
+                "max_current_age_days",
+                "permitted_uses",
+            )
+        },
+        "statement": "Synthetic authorization for exact test-only uses.",
+    }
+    decision_path = root / str(source["decision_artifact_path"])
+    _write_json(decision_path, decision)
+    (root / str(source["decision_signature_path"])).write_bytes(
+        private_key.sign(decision_path.read_bytes())
+    )
+    source["decision_artifact_sha256"] = _sha(decision_path.read_bytes())
+    _write_json(
+        root / "governance/source_rights_registry.json",
+        {
+            "schema_version": "1.0.0",
+            "effective": registry_effective,
+            "default_policy": "deny",
+            "sources": [source],
+        },
+    )
+
+
+def _set_ngram_rights_pending(root: Path) -> None:
+    path = root / "governance/source_rights_registry.json"
+    registry = json.loads(path.read_text(encoding="utf-8"))
+    source = registry["sources"][0]
+    source.update(
+        decision_state="review_required",
+        decision_id="pending:gdelt_web_ngrams_v5",
+        signer_id=None,
+        decision_artifact_path=None,
+        decision_artifact_sha256=None,
+        decision_signature_path=None,
+        reviewed_on=None,
+        review_due=None,
+        max_current_age_days=None,
+        permitted_uses=[],
+    )
+    _write_json(path, registry)
 
 
 def _stamp(index: int) -> str:
@@ -180,6 +317,7 @@ def _publication_root(tmp_path: Path) -> Path:
         "<!--final-publication-status-static:end-->",
         encoding="utf-8",
     )
+    _write_approved_ngram_rights(root)
     return root
 
 
@@ -253,6 +391,98 @@ def _acquire(
     )
 
 
+@pytest.mark.parametrize(
+    "rights_attack",
+    ("missing", "pending", "revoked", "future_decision"),
+)
+def test_identity_retaining_acquisition_requires_current_signed_rights_before_fetch(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    rights_attack: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    if rights_attack == "missing":
+        (root / "governance/rights_decisions/ngrams.sig").unlink()
+    elif rights_attack == "pending":
+        _set_ngram_rights_pending(root)
+    elif rights_attack == "revoked":
+        _write_approved_ngram_rights(root, signer_revoked=TODAY.isoformat())
+    else:
+        _write_approved_ngram_rights(
+            root,
+            reviewed_on="2026-08-11",
+            review_due="2027-08-11",
+        )
+    store_before = (root / "data/raw/gdelt_volume.csv").read_bytes()
+    called = False
+
+    def compute(*_args: object) -> dict:
+        nonlocal called
+        called = True
+        return _complete_result(root)
+
+    monkeypatch.setattr(fetch_ngrams, "group_specs", _specs)
+    status = final_publication.acquire_target(
+        TARGET,
+        today=TODAY,
+        root=root,
+        base_commit="a" * 40,
+        compute_day=compute,
+    )
+
+    assert status["status"] == "acquisition_failed"
+    assert "retention refused" in status["reason"]
+    assert called is False
+    assert (root / "data/raw/gdelt_volume.csv").read_bytes() == store_before
+    assert not (root / f"data/raw/ngram_days/{TARGET}.json").exists()
+
+
+def test_cached_day_does_not_fetch_or_retain_strong_evidence_while_rights_pending(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    _set_ngram_rights_pending(root)
+    cache_dir = root / "data/raw/ngram_days"
+    called = False
+
+    def compute(*_args: object) -> dict:
+        nonlocal called
+        called = True
+        return _complete_result(root)
+
+    monkeypatch.setattr(fetch_ngrams, "ROOT", root)
+    monkeypatch.setattr(fetch_ngrams, "DAY_CACHE", cache_dir)
+    monkeypatch.setattr(fetch_ngrams, "compute_day", compute)
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        fetch_ngrams._cached_day(TARGET, _specs())
+
+    assert exc.value.classification == "rights_not_authorized"
+    assert called is False
+    assert not (cache_dir / f"{TARGET}.json").exists()
+
+
+def test_promotion_revalidates_signed_rights_against_frozen_parent(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    trust = _trust(root)
+    assert _acquire(root, monkeypatch, _complete_result(root))["status"] == (
+        "target_ready"
+    )
+    _set_ngram_rights_pending(root)
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_promotion_receipt(
+            TARGET,
+            root=root,
+            require_bridge_receipt=True,
+            non_git_test_trust=trust,
+            rights_as_of=TODAY,
+        )
+    assert exc.value.classification == "promotion_receipt_invalid"
+    assert "rights_not_authorized" in exc.value.detail
+
+
 def test_exact_d_minus_one_complete_frame_promotes_target_only(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -289,8 +519,9 @@ def test_exact_d_minus_one_complete_frame_promotes_target_only(
         "calibration_records_sha256",
         "dictionary_sha256",
         "matcher_sha256",
-        "matcher_specs_sha256",
-        "candidate_row_sha256",
+            "matcher_specs_sha256",
+            "candidate_row_sha256",
+            "rights",
     }
 
 
@@ -497,14 +728,27 @@ def test_failed_daily_staging_drops_an_interrupted_unverified_bundle(
     cache.write_text(json.dumps({"date": TARGET.isoformat()}), encoding="utf-8")
     receipt.write_text(json.dumps({"target_date": TARGET.isoformat()}), encoding="utf-8")
     (root / final_publication.STATUS_RELATIVE).write_text(
-        json.dumps({"target_date": TARGET.isoformat(), "status": "target_ready"}),
+        json.dumps(
+            {"target_date": PREFIX_DAY.isoformat(), "status": "target_ready"}
+        ),
         encoding="utf-8",
     )
+    non_target_cache = root / f"data/raw/ngram_days/{PREFIX_DAY}.json"
+    non_target_receipt = (
+        root / f"data/raw/final_publication_receipts/{PREFIX_DAY}.json"
+    )
+    non_target_cache.write_text("{malformed", encoding="utf-8")
+    non_target_receipt.write_text("{malformed", encoding="utf-8")
 
     env = os.environ.copy()
     env["PYTHON"] = str(ROOT / ".venv/bin/python")
     subprocess.run(
-        ["bash", "scripts/stage_daily_outputs.sh", "failure"],
+        [
+            "bash",
+            "scripts/stage_daily_outputs.sh",
+            "failure",
+            TARGET.isoformat(),
+        ],
         cwd=root,
         env=env,
         check=True,
@@ -524,7 +768,91 @@ def test_failed_daily_staging_drops_an_interrupted_unverified_bundle(
     assert provenance.read_bytes() == provenance_before
     assert not cache.exists()
     assert not receipt.exists()
+    assert not non_target_cache.exists()
+    assert not non_target_receipt.exists()
     assert not (root / final_publication.STATUS_RELATIVE).exists()
+
+
+def test_failed_staging_drops_valid_bundle_and_next_attempt_can_promote(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    (root / "scripts").mkdir()
+    shutil.copy2(
+        ROOT / "scripts/stage_daily_outputs.sh",
+        root / "scripts/stage_daily_outputs.sh",
+    )
+    (root / "notes-inbox").mkdir()
+    (root / "notes-inbox/.keep").write_text("\n", encoding="utf-8")
+    (root / ".trigger").mkdir()
+    (root / ".trigger/.keep").write_text("\n", encoding="utf-8")
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Daily staging test"),
+        ("config", "user.email", "daily-staging@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "frozen parent"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    base = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    monkeypatch.setattr(fetch_ngrams, "group_specs", _specs)
+
+    first = final_publication.acquire_target(
+        TARGET,
+        today=TODAY,
+        root=root,
+        base_commit=base,
+        compute_day=lambda *_args: _complete_result(root),
+    )
+    assert first["status"] == "target_ready"
+    (root / "docs/index.html").write_text("downstream candidate\n", encoding="utf-8")
+
+    env = os.environ.copy()
+    env["PYTHON"] = str(ROOT / ".venv/bin/python")
+    subprocess.run(
+        [
+            "bash",
+            "scripts/stage_daily_outputs.sh",
+            "failure",
+            TARGET.isoformat(),
+        ],
+        cwd=root,
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert not (root / f"data/raw/ngram_days/{TARGET}.json").exists()
+    assert not (
+        root / f"data/raw/final_publication_receipts/{TARGET}.json"
+    ).exists()
+    assert not (root / final_publication.STATUS_RELATIVE).exists()
+    assert subprocess.run(
+        ["git", "diff", "--cached", "--quiet"], cwd=root
+    ).returncode == 0
+
+    second = final_publication.acquire_target(
+        TARGET,
+        today=TODAY,
+        root=root,
+        base_commit=base,
+        compute_day=lambda *_args: _complete_result(root),
+    )
+    assert second["status"] == "target_ready"
+    _write_target_outputs(root)
+    finalized = final_publication.mark_finalized(
+        TARGET,
+        root=root,
+        base_commit=base,
+        rights_as_of=TODAY,
+    )
+    assert finalized["status"] == "finalized"
 
 
 def test_typed_network_classification_distinguishes_404_from_transport_failure(
@@ -638,7 +966,113 @@ def test_forged_latest_date_is_not_treated_as_already_finalized(
     assert public["source_receipt"] is None
 
 
-def test_frozen_legacy_target_remains_visible_only_as_proof_limited(
+def _committed_new_contract_final(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> tuple[Path, str]:
+    root = _publication_root(tmp_path)
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Final proof test"),
+        ("config", "user.email", "final-proof@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "frozen parent"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    parent = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    monkeypatch.setattr(fetch_ngrams, "group_specs", _specs)
+    assert final_publication.acquire_target(
+        TARGET,
+        today=TODAY,
+        root=root,
+        base_commit=parent,
+        compute_day=lambda *_args: _complete_result(root),
+    )["status"] == "target_ready"
+    _write_target_outputs(root)
+    final_publication.mark_finalized(
+        TARGET,
+        root=root,
+        base_commit=parent,
+        rights_as_of=TODAY,
+    )
+    subprocess.run(["git", "add", "."], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "publish exact final"],
+        cwd=root,
+        check=True,
+    )
+    return root, parent
+
+
+def test_remote_idempotence_verifier_skips_only_valid_receipt_or_pinned_aug9(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root, _parent = _committed_new_contract_final(tmp_path, monkeypatch)
+
+    assert final_publication.require_published_target(
+        TARGET, root=root, today=TODAY
+    )["status"] == "finalized"
+    assert final_publication.require_published_target(
+        TARGET, root=ROOT, today=TODAY
+    )["status"] == "legacy_proof_limited"
+
+
+@pytest.mark.parametrize(
+    "attack",
+    ("latest_status_only", "invalid_receipt", "wrong_introduction_parent", "generic_legacy"),
+)
+def test_remote_idempotence_verifier_never_skips_unproven_public_fields(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    attack: str,
+) -> None:
+    if attack in {"invalid_receipt", "wrong_introduction_parent"}:
+        root, _parent = _committed_new_contract_final(tmp_path, monkeypatch)
+        receipt_path = root / f"data/raw/final_publication_receipts/{TARGET}.json"
+        marker_path = root / final_publication.STATUS_RELATIVE
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        marker = json.loads(marker_path.read_text(encoding="utf-8"))
+        if attack == "invalid_receipt":
+            receipt["bindings"]["candidate_row_sha256"] = "0" * 64
+        else:
+            receipt["base_commit"] = "b" * 40
+            marker["base_commit"] = "b" * 40
+        receipt_path.write_text(json.dumps(receipt, indent=1) + "\n", encoding="utf-8")
+        marker["receipt"]["sha256"] = _sha(
+            final_publication._canonical_bytes(receipt)
+        )
+        marker_path.write_text(json.dumps(marker, indent=1) + "\n", encoding="utf-8")
+    else:
+        root = _publication_root(tmp_path)
+        if attack == "generic_legacy":
+            cache = root / f"data/raw/ngram_days/{TARGET}.json"
+            cache.parent.mkdir(parents=True)
+            cache.write_text(json.dumps(_legacy_result(root)), encoding="utf-8")
+        _write_target_outputs(root)
+        status_path = root / "docs/data/status.json"
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        status["final_publication"] = {
+            "target_date": TARGET.isoformat(),
+            "status": (
+                "legacy_proof_limited"
+                if attack == "generic_legacy"
+                else "finalized"
+            ),
+            "finalized": attack != "generic_legacy",
+        }
+        status_path.write_text(json.dumps(status), encoding="utf-8")
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_published_target(TARGET, root=root, today=TODAY)
+    assert exc.value.classification == "published_target_unproven"
+
+
+def test_fabricated_schema_1_legacy_target_is_not_a_historical_exception(
     tmp_path: Path,
 ) -> None:
     root = _publication_root(tmp_path)
@@ -649,12 +1083,80 @@ def test_frozen_legacy_target_remains_visible_only_as_proof_limited(
 
     public = final_publication.public_status(root=root, today=TODAY)
 
+    assert public["status"] == "delayed_final"
+    assert public["latest_finalized_date"] is None
+    assert public["finalized"] is False
+    assert public["source_receipt"] is None
+
+
+def test_exact_upstream_aug9_object_alone_retains_bounded_legacy_label() -> None:
+    public = final_publication.public_status(root=ROOT, today=TODAY)
+
     assert public["status"] == "legacy_proof_limited"
     assert public["latest_finalized_date"] == TARGET.isoformat()
     assert public["finalized"] is False
     assert public["source_receipt"] is None
-    assert "48 half-hour windows are verified" in public["reason"]
-    assert "cannot be independently reconstructed" in public["reason"]
+    for missing_link in (
+        "source acquisition receipt",
+        "reconstructable English denominator",
+        "cache-to-store calibration/transform receipt",
+        "store-to-public score derivation receipt",
+        "source-retention and redistribution rights review",
+    ):
+        assert missing_link in public["reason"]
+
+
+@pytest.mark.parametrize(
+    "attack",
+    (
+        "cache",
+        "latest",
+        "history",
+        "store",
+        "provenance",
+        "dictionary",
+        "coordinated_later_commit",
+    ),
+)
+def test_aug9_legacy_label_refuses_any_value_or_regime_drift(
+    tmp_path: Path, attack: str
+) -> None:
+    root = tmp_path / "legacy-repo"
+    subprocess.run(
+        ["git", "clone", "-q", "--shared", str(ROOT), str(root)], check=True
+    )
+    paths = {
+        "cache": root / f"data/raw/ngram_days/{TARGET}.json",
+        "latest": root / "docs/data/latest.json",
+        "history": root / "docs/data/history.json",
+        "store": root / "data/raw/gdelt_volume.csv",
+        "provenance": root / "data/raw/provenance.csv",
+        "dictionary": root / "dictionaries.json",
+    }
+    if attack == "coordinated_later_commit":
+        for key in ("cache", "latest", "history", "store", "provenance"):
+            paths[key].write_bytes(paths[key].read_bytes() + b"\n")
+        subprocess.run(
+            ["git", "config", "user.name", "Legacy attack"], cwd=root, check=True
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "legacy@example.invalid"],
+            cwd=root,
+            check=True,
+        )
+        subprocess.run(["git", "add", *[str(paths[key]) for key in paths if key != "dictionary"]], cwd=root, check=True)
+        subprocess.run(
+            ["git", "commit", "-q", "-m", "coordinated reseal"],
+            cwd=root,
+            check=True,
+        )
+    else:
+        paths[attack].write_bytes(paths[attack].read_bytes() + b"\n")
+
+    public = final_publication.public_status(root=root, today=TODAY)
+    assert public["status"] == "delayed_final"
+    assert public["latest_finalized_date"] is None
+    assert public["source_receipt"] is None
 
 
 def test_receipt_revalidation_refuses_bound_input_drift(
@@ -1063,8 +1565,11 @@ def test_morning_gate_is_bounded_once_per_candidate_and_cas_only() -> None:
     assert workflow.count("bash scripts/publish_final_cas.sh") == 1
     assert workflow.count("git push origin HEAD:main") == 0
     assert publisher.count("bash scripts/gate.sh --committed") == 1
-    assert publisher.count("git push origin HEAD:main") == 1
-    assert 'REMOTE_COMMIT=$(git rev-parse origin/main)' in publisher
+    assert publisher.count('git push origin "$FROZEN_CANDIDATE_SHA:main"') == 1
+    assert "remote_commit=$(git rev-parse origin/main)" in publisher
+    assert 'candidate_head=$(git rev-parse HEAD)' in publisher
+    assert 'candidate_parent=$(git rev-parse "$FROZEN_CANDIDATE_SHA^")' in publisher
+    assert 'current_head=$(git rev-parse HEAD)' in publisher
     assert "/usr/bin/time -v" in publisher
     assert "git worktree add --detach" in publisher
     publish_lane = workflow.split(
@@ -1096,6 +1601,190 @@ def test_morning_gate_is_bounded_once_per_candidate_and_cas_only() -> None:
     assert "36m42s" in workflow and "24m55s" in workflow
     assert "0.687s locally" in workflow and "run #43" in workflow
     assert "job cap remains the only" in workflow
+    assert "CONTRACT_TODAY=$(date -u +%F)" in workflow
+    assert '--check-published-target "$TARGET"' in workflow
+    assert '--root "$REMOTE_ROOT"' in workflow
+    assert "git worktree add --quiet --detach" in workflow
+    assert "REMOTE_PROOF_STATUS" not in workflow
+    assert '--today "${{ steps.guard.outputs.contract_today }}"' in workflow
+    assert '--contract-today "${{ steps.guard.outputs.contract_today }}"' in workflow
+
+    daily = (ROOT / ".github/workflows/daily.yml").read_text(encoding="utf-8")
+    staging = (ROOT / "scripts/stage_daily_outputs.sh").read_text(encoding="utf-8")
+    assert "id: final_contract" in daily
+    assert '--acquire-target "${{ steps.final_contract.outputs.target }}"' in daily
+    assert '--contract-today "${{ steps.final_contract.outputs.today }}"' in daily
+    assert '"${{ job.status }}" "${{ steps.final_contract.outputs.target }}"' in daily
+    assert "datetime.now" not in staging
+    assert "date -u" not in staging
+    assert 'TARGET="${2:?missing frozen final-publication target}"' in staging
+
+
+def _publisher_e2e_repo(tmp_path: Path) -> tuple[Path, Path, str]:
+    remote = tmp_path / "remote.git"
+    root = tmp_path / "publisher"
+    subprocess.run(["git", "init", "-q", "--bare", str(remote)], check=True)
+    root.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+    subprocess.run(["git", "config", "user.name", "Publisher E2E"], cwd=root, check=True)
+    subprocess.run(
+        ["git", "config", "user.email", "publisher@example.invalid"],
+        cwd=root,
+        check=True,
+    )
+    (root / "scripts").mkdir()
+    shutil.copy2(
+        ROOT / "scripts/publish_final_cas.sh",
+        root / "scripts/publish_final_cas.sh",
+    )
+    (root / "scripts/gate.sh").write_text(
+        "#!/usr/bin/env bash\nset -euo pipefail\nexit 0\n", encoding="utf-8"
+    )
+    (root / "docs/data").mkdir(parents=True)
+    (root / "data/raw").mkdir(parents=True)
+    (root / "docs/data/base.json").write_text("{}\n", encoding="utf-8")
+    (root / "data/raw/base.txt").write_text("base\n", encoding="utf-8")
+    subprocess.run(["git", "add", "."], cwd=root, check=True)
+    subprocess.run(["git", "commit", "-q", "-m", "base"], cwd=root, check=True)
+    base = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    subprocess.run(["git", "branch", "-M", "main"], cwd=root, check=True)
+    subprocess.run(["git", "remote", "add", "origin", str(remote)], cwd=root, check=True)
+    subprocess.run(["git", "push", "-q", "-u", "origin", "main"], cwd=root, check=True)
+    return root, remote, base
+
+
+def _run_publisher(root: Path, base: str, env: dict[str, str]) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [
+            "bash",
+            "scripts/publish_final_cas.sh",
+            TARGET.isoformat(),
+            base,
+            "success",
+            "success",
+            "success",
+            "success",
+        ],
+        cwd=root,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+
+
+def _remote_main(remote: Path) -> str:
+    return subprocess.run(
+        ["git", f"--git-dir={remote}", "rev-parse", "refs/heads/main"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+
+def test_final_cas_refuses_extra_local_ancestor_before_candidate_generation(
+    tmp_path: Path,
+) -> None:
+    root, remote, base = _publisher_e2e_repo(tmp_path)
+    (root / "docs/local.txt").write_text("unpublished ancestor\n", encoding="utf-8")
+    subprocess.run(["git", "add", "docs/local.txt"], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "extra local ancestor"],
+        cwd=root,
+        check=True,
+    )
+    (root / "docs/data/candidate.json").write_text("{}\n", encoding="utf-8")
+    env = {**os.environ, "IGRM_PUBLISH_TOKEN": "test-token"}
+
+    result = _run_publisher(root, base, env)
+
+    assert result.returncode != 0
+    assert "local HEAD" in result.stdout
+    assert _remote_main(remote) == base
+
+
+def test_final_cas_gates_and_pushes_exact_single_parent_candidate(
+    tmp_path: Path,
+) -> None:
+    root, remote, base = _publisher_e2e_repo(tmp_path)
+    publisher = root / "scripts/publish_final_cas.sh"
+    publisher.write_text(
+        publisher.read_text(encoding="utf-8").replace("/usr/bin/time -v ", ""),
+        encoding="utf-8",
+    )
+    (root / "docs/data/candidate.json").write_text("{}\n", encoding="utf-8")
+    env = {**os.environ, "IGRM_PUBLISH_TOKEN": "test-token"}
+
+    result = _run_publisher(root, base, env)
+
+    assert result.returncode == 0, result.stderr
+    candidate = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    assert _remote_main(remote) == candidate
+    assert subprocess.run(
+        ["git", "rev-parse", f"{candidate}^"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip() == base
+
+
+def test_final_cas_refuses_merge_parent_candidate_before_gate_or_push(
+    tmp_path: Path,
+) -> None:
+    root, remote, base = _publisher_e2e_repo(tmp_path)
+    real_git = shutil.which("git")
+    assert real_git is not None
+    side = subprocess.run(
+        [real_git, "commit-tree", f"{base}^{{tree}}", "-p", base],
+        cwd=root,
+        input="side parent\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    wrapper_dir = tmp_path / "bin"
+    wrapper_dir.mkdir()
+    wrapper = wrapper_dir / "git"
+    wrapper.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "if [ \"${1:-}\" = \"commit\" ]; then\n"
+        "  tree=$(\"$REAL_GIT\" write-tree)\n"
+        "  head=$(\"$REAL_GIT\" rev-parse HEAD)\n"
+        "  candidate=$(printf 'forced merge candidate\\n' | \"$REAL_GIT\" commit-tree \"$tree\" -p \"$head\" -p \"$EXTRA_PARENT\")\n"
+        "  \"$REAL_GIT\" reset --hard \"$candidate\" >/dev/null\n"
+        "  exit 0\n"
+        "fi\n"
+        "exec \"$REAL_GIT\" \"$@\"\n",
+        encoding="utf-8",
+    )
+    wrapper.chmod(0o755)
+    (root / "docs/data/candidate.json").write_text("{}\n", encoding="utf-8")
+    env = {
+        **os.environ,
+        "IGRM_PUBLISH_TOKEN": "test-token",
+        "PATH": f"{wrapper_dir}:{os.environ['PATH']}",
+        "REAL_GIT": real_git,
+        "EXTRA_PARENT": side,
+    }
+
+    result = _run_publisher(root, base, env)
+
+    assert result.returncode != 0
+    assert "exactly one parent" in result.stdout
+    assert _remote_main(remote) == base
 
 
 def test_rescue_predicates_and_public_pages_use_final_date_contract() -> None:
@@ -1116,13 +1805,16 @@ def test_rescue_predicates_and_public_pages_use_final_date_contract() -> None:
     assert 'id="final-publication-status"' in homepage
     assert 'id="final-publication-status" hidden' not in homepage
     for text in (homepage, status_page):
-        assert "Legacy final with proof limitation" in text
-        assert "target <b>2026-08-09</b> remains published" in text
-        assert "48 half-hour windows are verified" in text
-        assert "cannot be independently reconstructed" in text
-        assert "No new-contract source receipt is claimed" in text
+        assert "Bounded historical publication" in text
+        assert "target <b>2026-08-09</b> remains visible" in text
+        assert "exactly match commit 9077ea4" in text
+        assert "source acquisition receipt" in text
+        assert "reconstructable English denominator" in text
+        assert "cache-to-store calibration/transform receipt" in text
+        assert "store-to-public score derivation receipt" in text
+        assert "source-retention and redistribution rights review" in text
         assert "provisional nowcast remains separate and non-final" in text
-    assert "provisional nowcast remains separate and non-final" in app
+    assert "nowcast remains separate and non-final" in app
     assert final_state["status"] == "legacy_proof_limited"
     assert final_state["latest_finalized_date"] == TARGET.isoformat()
     assert final_state["finalized"] is False
