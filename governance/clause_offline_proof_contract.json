@@ -1,0 +1,165 @@
+{
+  "schema_version": "0.1.0",
+  "contract_id": "igrm:clause-reader-proof-archive:0.1.0",
+  "effective": "2026-08-10",
+  "status": "internal_synthetic_contract_only",
+  "default_policy": "deny",
+  "public_routes": [],
+  "api": {
+    "builder": "build_clause_offline_proof",
+    "verifier": "verify_clause_offline_proof",
+    "builder_positional_inputs": ["source_bundle", "role_proof_bundle"],
+    "verifier_positional_inputs": ["archive"],
+    "verifier_required_keyword_inputs": ["expected_sha256"],
+    "caller_paths_profiles_selectors_queries_outputs_or_policies": false,
+    "caller_views_or_compilations": false
+  },
+  "fixed_files": {
+    "receipt_schema": {
+      "path": "governance/schemas/clause-offline-proof-receipt.schema.json",
+      "file_sha256": "a0cea759a0c884f1a7716b0e06c074261af469efc29ca3868d8b8d1f9751cead"
+    },
+    "adversarial_vectors": {
+      "path": "governance/clause_offline_proof_adversarial_vectors.json",
+      "file_sha256": "5e21a525827cda2edc71ea0cd9ed1d21a023807e82167588dea8ff351d524a62"
+    }
+  },
+  "archive_authorities": [
+    {
+      "authority_id": "source_profile",
+      "source_path": "governance/analytical_clause_source_profile.json",
+      "archive_path": "authority/analytical-clause-source-profile.json",
+      "file_sha256": "bedb840a8f0350eb6646f7f4337e62d7c118fc949f91338d78cb77aafa75b190"
+    },
+    {
+      "authority_id": "consumer_profile",
+      "source_path": "governance/evidence_output_renderer_consumer_profile.json",
+      "archive_path": "authority/evidence-output-renderer-consumer-profile.json",
+      "file_sha256": "996baf2336e96434a49fa71b01501847e4c002e3d8ee2a7ab52d0b5da4aec450"
+    },
+    {
+      "authority_id": "template_profile",
+      "source_path": "governance/clause_reader_template_profile.json",
+      "archive_path": "authority/clause-reader-template-profile.json",
+      "file_sha256": "e502fb224f5d3ef275ee3321483dd481eabd2f2ffec92bdf3f52790f20048724"
+    },
+    {
+      "authority_id": "limitation_registry",
+      "source_path": "governance/analytical_clause_limitation_registry.json",
+      "archive_path": "authority/analytical-clause-limitation-registry.json",
+      "file_sha256": "57d8c70e45d2f39370c7061773648d4b67cedf467e01876b52fa0f4d490f4776"
+    }
+  ],
+  "installed_dependencies": [
+    {"path": "governance/analytical_clause_contract.json", "file_sha256": "0ab5b9544f08f75454bc7f8e8ea7e9aea7bc54bed0e7d4144dcdc2662cd11325"},
+    {"path": "governance/clause_source_view_contract.json", "file_sha256": "7cae18b976d1c599de2b35fd09897f935fbbb621114bdab21335492052663b47"},
+    {"path": "governance/clause_reader_shadow_contract.json", "file_sha256": "c7a2b4bdb9aad312a43f23059dc9446b3e67de72edccd2d3ddecf259d8f21333"},
+    {"path": "src/analytical_clause.py", "file_sha256": "e0960fa6eb4704cd35fcf3c601e30cd79ca6a3d4772914da99b4ab6f33598160"},
+    {"path": "src/clause_source_view.py", "file_sha256": "5e612518227056d94ebd1b10728ec70fd8be76f60aceadf6621254f2f36cac5c"},
+    {"path": "src/clause_reader_shadow.py", "file_sha256": "3499dc07489ec799bb0a9be7df0ef0f633204f92019bb854e935c08f7493dbaf"},
+    {"path": "governance/schemas/clause-source-view-receipt.schema.json", "file_sha256": "f5b51f430db12666839a60fb24d2421c4c72fe3410ae8ae490298a8c53480dfb"},
+    {"path": "governance/schemas/clause-reader-compilation-receipt.schema.json", "file_sha256": "f1c691e993f3e052a5e3c8c91f7b15d654c3190cfb8bb4d50e8b272c22a32792"},
+    {"path": "schemas/common.schema.json", "file_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"},
+    {"path": "schemas/evidence-output-set.schema.json", "file_sha256": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780"}
+  ],
+  "archive": {
+    "format": "deterministic_zip_store_v1",
+    "compression": "stored_only",
+    "entry_timestamp": [1980, 1, 1, 0, 0, 0],
+    "entry_mode_octal": "100644",
+    "entry_order": "lexicographic_path",
+    "archive_comment": "",
+    "entry_extra": "",
+    "max_archive_bytes": 16777216,
+    "max_expanded_bytes": 16777216,
+    "max_entry_bytes": 8388608,
+    "archive_entry_denominator": 12,
+    "listed_member_denominator": 11,
+    "receipt_path": "proof-receipt.json",
+    "closed_member_paths": [
+      "artifacts/board-brief.json",
+      "artifacts/newsroom-claim-card.json",
+      "artifacts/research-package.json",
+      "authority/analytical-clause-limitation-registry.json",
+      "authority/analytical-clause-source-profile.json",
+      "authority/clause-reader-template-profile.json",
+      "authority/evidence-output-renderer-consumer-profile.json",
+      "inputs/role-proof-bundle.json",
+      "inputs/source-bundle.json",
+      "receipts/clause-reader-compilation.json",
+      "receipts/clause-source-view.json"
+    ],
+    "bundled_code_allowed": false,
+    "extraction_allowed": false
+  },
+  "compiler": {
+    "source_capture": "one_canonical_serialization_before_validation",
+    "proof_capture": "one_canonical_serialization_before_validation",
+    "view_compiler": "src.clause_source_view.compile_clause_source_views",
+    "reader_compiler": "src.clause_reader_shadow.compile_clause_reader_shadow",
+    "output_ids": ["output:board_brief", "output:newsroom_claim_card", "output:research_package"],
+    "output_denominator": 3,
+    "role_denominator": 7,
+    "role_pair_denominator": 21,
+    "authority_snapshot": "exact_pre_and_post_compile_byte_equality",
+    "installed_dependency_snapshot": "exact_pre_and_post_compile_byte_equality",
+    "source_or_release_replay": false,
+    "canonical_store_read": false,
+    "network": false
+  },
+  "verification": {
+    "external_archive_digest_required": true,
+    "archive_digest_inside_archive_is_authority": false,
+    "separately_trusted_installed_verifier_required": true,
+    "archive_members_loaded_as_code": false,
+    "archive_members_extracted": false,
+    "exact_view_receipt_recompile": true,
+    "exact_reader_receipt_recompile": true,
+    "exact_three_artifact_recompile": true,
+    "return_values_prose_urls_dates_signatures_or_source_content": false
+  },
+  "trust": {
+    "synthetic": true,
+    "contract_only": true,
+    "self_hash_integrity_only": true,
+    "signed": false,
+    "authenticated": false,
+    "nonpublic": true,
+    "nonproduction": true
+  },
+  "boundary": {
+    "proof_transport_only": true,
+    "public_behavior_changed": false,
+    "publication_approved": false,
+    "offline_audience_output_created": false,
+    "product_manifest_created": false,
+    "source_replay_performed": false,
+    "source_truth_claimed": false,
+    "rights_approval_claimed": false,
+    "output_equivalence_claimed": false,
+    "production_authority": false,
+    "public_authority": false
+  },
+  "claim_boundary": "Given a separately trusted external archive digest and matching separately trusted installed verifier and governance bytes, the exact archived synthetic source bundle and seven-role proof recompile into the exact three archived shadow artifacts and receipts without network access or executing archive content. This does not establish source truth, source replay, signer authentication, current legal rights, production or publication authority, public evidence-output equivalence, ProductManifest or correction closure, causal validity, forecast skill, adoption or decision utility.",
+  "refusal_codes": [
+    "proof_archive_compression_invalid",
+    "proof_archive_duplicate_path",
+    "proof_archive_entry_size_invalid",
+    "proof_archive_entry_type_invalid",
+    "proof_archive_invalid",
+    "proof_archive_membership_invalid",
+    "proof_archive_metadata_invalid",
+    "proof_archive_path_invalid",
+    "proof_archive_size_invalid",
+    "proof_authority_mismatch",
+    "proof_contract_drift",
+    "proof_contract_invalid",
+    "proof_dependency_drift",
+    "proof_external_digest_invalid",
+    "proof_external_digest_mismatch",
+    "proof_input_invalid",
+    "proof_receipt_invalid",
+    "proof_recompile_mismatch",
+    "proof_runtime_drift"
+  ]
+}
