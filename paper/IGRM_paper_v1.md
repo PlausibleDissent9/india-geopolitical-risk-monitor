@@ -22,7 +22,9 @@ chance, 19 of 29 under strict start-based timing, and 26 of 29 for a
 naive any-channel detector, so the contribution is channel attribution
 and not detection; co-movement with the
 Caldara–Iacoviello GPR-India index at r = 0.484 in monthly levels over
-110 shared months; and a separate code-frozen test against AI-GPR
+110 shared months but only r = 0.232 in monthly changes, which is the
+construction that carries information once both series' trends are
+removed; and a separate code-frozen test against AI-GPR
 India_all finding Spearman rho = 0.256 in 106 month-over-month changes
 (registered moving-block 95% CI 0.050–0.407), showing a common component
 but substantial non-redundancy; a 1979–2016 historical proxy on a different construct

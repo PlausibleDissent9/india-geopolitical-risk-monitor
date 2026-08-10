@@ -208,7 +208,10 @@ of channel attribution, not of detection, and I am not going to quote it
 without saying so.
 Its two border channels replicate against an independently built forty-one-
 year proxy at **r = 0.89** and **0.85**, under filters frozen in a signed memo
-before the first query ran.
+before the first query ran. The other two channels in that audit scored
+**0.216** and **0.153** and a pre-registered threshold refused them
+publication. Four channels went in, two came out. I am quoting the pair that
+passed, and the pair that failed is why the pair that passed means anything.
 
 I'd like someone to name another public index where a stranger can rebuild
 every number from the codebook alone and get an exact match. I don't think

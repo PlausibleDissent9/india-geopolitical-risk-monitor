@@ -146,10 +146,51 @@ readers get cached CSS. Recorded here rather than fixed: the ordering belongs
 to the pipeline lane, and changing `render_site` to self-stamp would duplicate
 the stamp registry.
 
-## 6. What this audit does not establish
+## 6. The same ratio test on the other headline numbers
 
-It does not establish that the remaining reader-facing numbers carry their
-baselines — this pass was scoped to the detection figure. The same ratio test
-(favourable count vs. accompanied count) has not been run on the GPR
-co-movement r, the replication correlations, or the robustness gulf. That is
-the natural next pass and it is not done.
+Run after the detection pass, on the same surface. The defect turned out to be
+a *shape*, not a one-off, but the corpus is in much better condition elsewhere.
+
+| Pair | accompanied | bare | real defects |
+|---|---|---|---|
+| GPR levels `r = 0.484` vs changes `r = 0.232` | 3 | 3 | **1** |
+| Back-extension published `0.893 / 0.848` vs refused `0.216 / 0.153` | 13 | 2 | **1** |
+| AI-GPR `rho 0.256` vs its 95% interval `[0.050, 0.407]` | 12 | 2 | **2** |
+
+Four of the seven "bare" hits were **my scanner being wrong, not the prose**:
+
+- `listings/nasdaq_data_link_pitch.md` and `listings/kaggle_dataset_metadata.json`
+  qualify the GPR figure in words — "limited co-movement between related
+  measures rather than validation" — without quoting 0.232. That is a correct
+  qualification. The pattern only looked for the number.
+- `methodology.md` (twice) and `docs/datasheet.md` state the AI-GPR interval as
+  *"95% **interval** of [0.050, 0.407]"*. The pattern accepted only "95% CI",
+  and a `\b` after `0.05` cannot match inside `0.050`.
+
+This is the third time in this sweep that a scan flagged correct prose (the
+first was `README.md` on the detection pass). Recorded because the ratio method
+is only as good as its companion patterns, and a pattern that is too narrow
+manufactures violations that a careless fixer would then "fix".
+
+### The three real ones, fixed
+
+| File | Defect |
+|---|---|
+| `paper/IGRM_paper_v1.md` | Abstract gave `r = 0.484` in monthly levels and never the composite's `0.232` in changes — the construction that carries information once both series' trends are removed. |
+| `paper/founder_interview.md` | The verifiability boast quoted the two channels that replicate at 0.89 and 0.85 without saying that two others scored 0.216 and 0.153 and were **refused publication** by a pre-registered threshold. Four channels went in; two came out. The paper's abstract already handled this correctly; the interview did not. |
+| `docs/index.html`, `docs/divergence.html` | Both display `ρ 0.256` as a headline stat tile with no interval. The registered moving-block 95% CI is `[0.050, 0.407]` — a lower bound that near zero is the finding. Verified in-browser at 375px after the fix: no page overflow, no clipped text. |
+
+Generalised into `tests/test_headline_numbers_carry_their_companion.py`, three
+rows, values read from the payloads, companions accepted as a **set** so that an
+honest prose qualification passes without quoting a number. Mutation-verified:
+stripping the back-extension refusal sentence and stripping the CI from the
+divergence tile are each caught at the exact line.
+
+## 7. What this audit still does not establish
+
+The robustness gulf (0.527) and the syndication multiplier have not been put
+through the same test. Neither has any number that appears only inside
+`docs/data/*.json` prose fields, since this pass scoped payloads out on the
+grounds that a human does not read a claim there — that reasoning is defensible
+for `_meta.what` strings but not obviously right for the `finding` and
+`reading` fields, which the site renders. That is the next pass.
