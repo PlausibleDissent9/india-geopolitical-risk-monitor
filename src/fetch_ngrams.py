@@ -462,30 +462,32 @@ def _cached_day(
 ) -> dict | None:
     cache = DAY_CACHE / f"{day.isoformat()}.json"
     if cache.exists():
-        raw = cache.read_bytes()
-        cached = json.loads(raw)
-        evidence = cached.get("_matcher_evidence") if isinstance(cached, dict) else None
-        # A version label is attacker-controlled metadata, not a rights
-        # boundary.  Identity retention is classified from the evidence
-        # fields themselves.  The sole rights-free read is the exact Aug-9
-        # object whose full public history is pinned by final_publication.
         from . import final_publication
 
-        legacy_exception = final_publication.is_exact_legacy_cache_exception(
-            ROOT, day, cache_bytes=raw
-        )
-        if legacy_exception:
-            return cached
-        identity_bearing = isinstance(evidence, dict) and bool(
-            _IDENTITY_EVIDENCE_FIELDS.intersection(evidence)
-        )
-        if identity_bearing or not legacy_exception:
+        # Every ordinary cache is authority-gated before its bytes enter the
+        # process.  The one historical exception may be read once only to
+        # authenticate its exact registered Git blob; parsing remains barred
+        # until that identity check succeeds.
+        legacy_target = final_publication.is_registered_legacy_cache_target(day)
+        if not legacy_target:
             ngram_rights.require_public_identity_rights(
                 target=day,
                 root=ROOT,
                 test_authority=rights_authority,
             )
-        return cached
+        raw = cache.read_bytes()
+        legacy_exception = final_publication.is_exact_legacy_cache_exception(
+            ROOT, day, cache_bytes=raw
+        )
+        if legacy_exception:
+            return _decode_cached_day(raw)
+        if legacy_target:
+            ngram_rights.require_public_identity_rights(
+                target=day,
+                root=ROOT,
+                test_authority=rights_authority,
+            )
+        return _decode_cached_day(raw)
     result = compute_day(day, specs, rights_authority=rights_authority)
     if result is not None:
         ngram_rights.require_public_identity_rights(
@@ -496,6 +498,13 @@ def _cached_day(
         DAY_CACHE.mkdir(parents=True, exist_ok=True)
         cache.write_text(json.dumps(result), encoding="utf-8")
     return result
+
+
+def _decode_cached_day(raw: bytes) -> dict:
+    value = json.loads(raw)
+    if not isinstance(value, dict):
+        raise ValueError("cached day must be an object")
+    return value
 
 
 def _channel_sums(result: dict, specs: dict[str, dict]) -> dict[str, float]:

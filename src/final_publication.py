@@ -25,6 +25,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Callable, NoReturn
 
@@ -422,55 +423,13 @@ def _contains_unregistered_final_claim(text: str) -> bool:
     numeric claim is an unregistered public mirror.
     """
 
-    contexts: list[str] = []
-    contexts.extend(re.findall(r"<meta\b[^>]*>", text, flags=re.I))
-    contexts.extend(re.findall(r">([^<>]+)<", text, flags=re.S))
-    contexts.extend(
-        match.group(0)
-        for match in re.finditer(
-            r"<script\b[^>]*>.*?</script>", text, flags=re.I | re.S
-        )
-    )
-    for match in re.finditer(
-        r"<(?P<claim_tag>p|section|article|aside|div|table|tr|td|th|dl|dt|dd)"
-        r"\b[^>]*>.*?</(?P=claim_tag)>",
-        text,
-        flags=re.I | re.S,
-    ):
-        tag = match.group("claim_tag").lower()
-        opening_text = match.group(0).split(">", 1)[0]
-        # Broad layout containers combine unrelated numbers with the real
-        # instrument heading. Inspect them only when the container itself
-        # declares a claim; prose and tables are always inspected locally.
-        if tag in {"section", "div"} and not re.search(
-            r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
-            r"(?=.*(?:score|composite|measure|date|channel))",
-            opening_text,
-        ):
-            continue
-        contexts.append(match.group(0))
-    claim_attributes = re.compile(
-        r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
-        r"(?=.*(?:score|composite|measure|date|channel))"
-    )
-    for opening_match in re.finditer(
-        r"<(?P<any_tag>[a-z][a-z0-9:-]*)\b(?P<attrs>[^>]*)>",
-        text,
-        flags=re.I,
-    ):
-        if not claim_attributes.search(opening_match.group("attrs")):
-            continue
-        closing = re.search(
-            rf"</{re.escape(opening_match.group('any_tag'))}\s*>",
-            text[opening_match.end() :],
-            flags=re.I,
-        )
-        end = (
-            opening_match.end() + closing.end()
-            if closing
-            else opening_match.end()
-        )
-        contexts.append(text[opening_match.start() : end])
+    parser = _LegacyClaimContextParser()
+    try:
+        parser.feed(text)
+        parser.close()
+    except (AssertionError, ValueError):
+        return True
+    contexts = parser.claim_contexts()
     number = r"(?:\b\d{4}-\d{2}-\d{2}\b|(?<![\w])[-+]?\d+(?:\.\d+)?%?)"
     official_claim = re.compile(
         r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
@@ -485,6 +444,161 @@ def _contains_unregistered_final_claim(text: str) -> bool:
         official_claim.search(context) or direct_claim.search(context)
         for context in contexts
     )
+
+
+@dataclass
+class _LegacyClaimNode:
+    tag: str
+    attrs: list[tuple[str, str | None]]
+    text: list[str]
+    children: list[_LegacyClaimNode]
+    parent: _LegacyClaimNode | None
+
+
+class _LegacyClaimContextParser(HTMLParser):
+    """Collect structurally local text so sibling-node claims cannot fragment.
+
+    The registered value slots are removed before parsing.  Every remaining
+    claim label is joined to its own subtree, its immediate parent subtree and
+    any explicit ``aria-labelledby`` target.  That catches headings paired
+    with sibling values without joining an unrelated year/licence fact from a
+    distant layout ancestor to the legitimate label "Latest final measure".
+    """
+
+    _VOID_TAGS = {
+        "area",
+        "base",
+        "br",
+        "col",
+        "embed",
+        "hr",
+        "img",
+        "input",
+        "link",
+        "meta",
+        "param",
+        "source",
+        "track",
+        "wbr",
+    }
+    _CLAIM_LABEL = re.compile(
+        r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
+        r"(?=.*(?:score|composite|measure|date|channel))"
+    )
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._root = _LegacyClaimNode("#document", [], [], [], None)
+        self._stack = [self._root]
+        self._malformed = False
+
+    @staticmethod
+    def _attribute_text(attrs: list[tuple[str, str | None]]) -> str:
+        return " ".join(f"{key} {value or ''}" for key, value in attrs)
+
+    def handle_starttag(
+        self, tag: str, attrs: list[tuple[str, str | None]]
+    ) -> None:
+        lowered = tag.lower()
+        parent = self._stack[-1]
+        node = _LegacyClaimNode(lowered, attrs, [], [], parent)
+        parent.children.append(node)
+        if lowered not in self._VOID_TAGS:
+            self._stack.append(node)
+
+    def handle_startendtag(
+        self, tag: str, attrs: list[tuple[str, str | None]]
+    ) -> None:
+        self.handle_starttag(tag, attrs)
+        self.handle_endtag(tag)
+
+    def handle_data(self, data: str) -> None:
+        normalized = " ".join(data.split())
+        if normalized:
+            self._stack[-1].text.append(normalized)
+
+    def handle_endtag(self, tag: str) -> None:
+        lowered = tag.lower()
+        if lowered in self._VOID_TAGS:
+            return
+        for index in range(len(self._stack) - 1, 0, -1):
+            if self._stack[index].tag != lowered:
+                continue
+            if index != len(self._stack) - 1:
+                self._malformed = True
+            del self._stack[index:]
+            return
+        self._malformed = True
+
+    def claim_contexts(self) -> list[str]:
+        if self._malformed or len(self._stack) != 1:
+            raise ValueError("malformed HTML claim surface")
+        contexts: list[str] = []
+        nodes: list[_LegacyClaimNode] = []
+        ids: dict[str, _LegacyClaimNode] = {}
+        subtree_cache: dict[int, str] = {}
+
+        def walk(node: _LegacyClaimNode) -> None:
+            for child in node.children:
+                nodes.append(child)
+                for key, value in child.attrs:
+                    if key.lower() == "id" and value:
+                        if value in ids:
+                            raise ValueError("duplicate HTML id in claim surface")
+                        ids[value] = child
+                walk(child)
+
+        def direct(node: _LegacyClaimNode) -> str:
+            return " ".join(
+                part
+                for part in (self._attribute_text(node.attrs), *node.text)
+                if part
+            )
+
+        def subtree(node: _LegacyClaimNode) -> str:
+            cache_key = id(node)
+            if cache_key not in subtree_cache:
+                subtree_cache[cache_key] = " ".join(
+                    part
+                    for part in (
+                        direct(node),
+                        *(subtree(child) for child in node.children),
+                    )
+                    if part
+                )
+            return subtree_cache[cache_key]
+
+        walk(self._root)
+        for node in nodes:
+            own = direct(node)
+            if own:
+                contexts.append(own)
+            if self._CLAIM_LABEL.search(own):
+                contexts.append(subtree(node))
+                if node.parent is not None:
+                    contexts.append(subtree(node.parent))
+            labelled_by = next(
+                (
+                    value
+                    for key, value in node.attrs
+                    if key.lower() == "aria-labelledby" and value
+                ),
+                None,
+            )
+            if labelled_by is not None:
+                labels = [ids.get(identifier) for identifier in labelled_by.split()]
+                # Registered value nodes are intentionally removed before
+                # this scan, so references to one of those removed IDs are
+                # expected to be unresolved.  Only a surviving label can
+                # license a structural join in the residual surface.
+                if any(label is None for label in labels):
+                    continue
+                label_context = " ".join(
+                    subtree(label) for label in labels if label is not None
+                )
+                if self._CLAIM_LABEL.search(label_context):
+                    contexts.append(f"{label_context} {subtree(node)}")
+        return contexts
 
 
 def _rights_decision_paths(registry_raw: bytes) -> list[str]:
@@ -595,57 +709,12 @@ _RIGHTS_EVALUATION_FIELDS = {
 def _validated_bound_rights(
     value: object, target: date
 ) -> dict[str, Any]:
-    if not isinstance(value, dict):
-        _fail("promotion_receipt_invalid", "rights_binding_missing")
-    required = {
-        "source_id",
-        "decision_id",
-        "signer_id",
-        "reviewed_on",
-        "review_due",
-        "target_date",
-        "evaluated_at_utc",
-        "rights_as_of",
-        "max_current_age_days",
-        "evaluated_age_days",
-        "release_deadline_utc",
-        "permitted_uses",
-        "trusted_signer_public_key_sha256",
-        "rights_registry_sha256",
-        "rights_signers_sha256",
-        "decision_artifact_path",
-        "decision_artifact_sha256",
-        "decision_signature_path",
-        "decision_signature_sha256",
-    }
-    if set(value) != required or value.get("target_date") != target.isoformat():
-        _fail("promotion_receipt_invalid", "rights_binding_fields_invalid")
     try:
-        checked_text = str(value["evaluated_at_utc"])
-        if not checked_text.endswith("Z"):
-            raise ValueError
-        checked = datetime.fromisoformat(checked_text[:-1] + "+00:00")
-        as_of = date.fromisoformat(str(value["rights_as_of"]))
-    except ValueError:
-        _fail("promotion_receipt_invalid", "rights_evaluation_time_invalid")
-    max_age = value.get("max_current_age_days")
-    age = value.get("evaluated_age_days")
-    expected_age = (as_of - target).days
-    if (
-        checked.tzinfo is None
-        or checked.utcoffset() != timedelta(0)
-        or checked.date() != as_of
-        or isinstance(max_age, bool)
-        or not isinstance(max_age, int)
-        or max_age < 0
-        or isinstance(age, bool)
-        or not isinstance(age, int)
-        or age != expected_age
-        or age < 0
-        or age > max_age
-    ):
-        _fail("promotion_receipt_invalid", "rights_evaluated_age_invalid")
-    return value
+        return ngram_rights.validate_public_identity_rights_proof(
+            value, target=target
+        )
+    except ngram_rights.NgramRightsError as exc:
+        _fail("promotion_receipt_invalid", exc.code)
 
 
 def _read_latest_day(root: Path) -> date | None:
@@ -1696,21 +1765,40 @@ def _legacy_proof_limited(root: Path, target: date) -> bool:
 def is_exact_legacy_cache_exception(
     root: Path, target: date, *, cache_bytes: bytes
 ) -> bool:
-    """Permit rights-free cache access only for the pinned Aug-9 object."""
+    """Permit rights-free cache parsing only for the pinned Aug-9 object.
+
+    The caller has already performed the one bounded byte read needed to
+    identify the legacy object.  Authentication below uses committed Git
+    blobs and the append-only first-parent history; it never reopens or parses
+    the working-tree cache before exact identity is established.
+    """
 
     relative = f"data/raw/ngram_days/{target.isoformat()}.json"
     expected = _LEGACY_AUG9_BLOBS.get(relative)
     if target != _LEGACY_AUG9_DAY or expected is None:
         return False
     try:
-        current = (root / relative).read_bytes()
-    except OSError:
+        head = _git_head(root)
+        introduction = _git_commit(root, _LEGACY_AUG9_INTRODUCTION)
+        introduced = _git_blob(root, introduction, relative)
+        committed = _git_blob(root, head, relative) if head is not None else b""
+    except FinalPublicationError:
         return False
     return (
-        current == cache_bytes
-        and _sha256(cache_bytes) == expected
-        and _legacy_proof_limited(root, target)
+        introduction == _LEGACY_AUG9_INTRODUCTION
+        and introduced == committed == cache_bytes
+        and _sha256(introduced) == expected
+        and head is not None
+        and _first_parent_path_never_changed(
+            root, introduction, head, relative
+        )
     )
+
+
+def is_registered_legacy_cache_target(target: date) -> bool:
+    """Identify the sole day allowed one pre-rights identity byte probe."""
+
+    return target == _LEGACY_AUG9_DAY
 
 
 def public_status(

@@ -671,6 +671,46 @@ def test_identity_bearing_cached_day_rechecks_rights_before_processing(
     assert processed == []
 
 
+@pytest.mark.parametrize(
+    ("day", "expected_reads"),
+    ((date(2026, 8, 8), 0), (TARGET, 1)),
+)
+def test_pending_rights_refuse_before_cache_parse_or_unbounded_read(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    day: date,
+    expected_reads: int,
+) -> None:
+    root = _publication_root(tmp_path)
+    _set_ngram_rights_pending(root)
+    cache = root / f"data/raw/ngram_days/{day}.json"
+    cache.parent.mkdir(parents=True)
+    cache.write_text(json.dumps(_complete_result(root)), encoding="utf-8")
+    cache_reads: list[str] = []
+    parse_calls: list[str] = []
+    original_read_bytes = Path.read_bytes
+
+    def observed_read_bytes(path: Path) -> bytes:
+        if path == cache:
+            cache_reads.append(path.name)
+        return original_read_bytes(path)
+
+    def observed_parse(_raw: bytes) -> dict:
+        parse_calls.append("parsed")
+        return {}
+
+    monkeypatch.setattr(fetch_ngrams, "ROOT", root)
+    monkeypatch.setattr(fetch_ngrams, "DAY_CACHE", cache.parent)
+    monkeypatch.setattr(Path, "read_bytes", observed_read_bytes)
+    monkeypatch.setattr(fetch_ngrams, "_decode_cached_day", observed_parse)
+
+    with pytest.raises(ngram_rights.NgramRightsError):
+        fetch_ngrams._cached_day(day, _specs())
+
+    assert len(cache_reads) == expected_reads
+    assert parse_calls == []
+
+
 @pytest.mark.parametrize("boundary", ("expired", "revoked", "max_age"))
 def test_cached_day_rechecks_rights_after_fetch_before_cache_write(
     tmp_path: Path,
@@ -943,6 +983,132 @@ def test_nowcast_binds_rights_receipts_and_rechecks_committed_release(
 
     assert proof["status"] == "nowcast_release_rights_verified"
     assert proof["candidate_sha"] == candidate
+
+
+@pytest.mark.parametrize(
+    "attack", ("missing", "null", "future_post_fetch", "reversed")
+)
+def test_nowcast_release_refuses_invalid_temporal_receipt_proofs(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    attack: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    checked = datetime(2026, 8, 10, 12, 0, tzinfo=timezone.utc)
+    monkeypatch.setattr(ngram_rights, "_utc_now", lambda: checked)
+
+    class FixedDateTime:
+        @classmethod
+        def now(cls, _tz: object = None) -> datetime:
+            return checked
+
+    out = root / "docs/data/nowcast.json"
+    monkeypatch.setattr(fetch_ngrams, "ROOT", root)
+    monkeypatch.setattr(
+        fetch_ngrams,
+        "compute_day",
+        lambda *_args, **_kwargs: _complete_result(root),
+    )
+    monkeypatch.setattr(nowcast, "ROOT", root)
+    monkeypatch.setattr(nowcast, "STORE", root / "data/raw/gdelt_volume.csv")
+    monkeypatch.setattr(nowcast, "CALIB", root / "data/raw/ngram_calibration.json")
+    monkeypatch.setattr(nowcast, "OUT", out)
+    monkeypatch.setattr(nowcast, "datetime", FixedDateTime)
+    nowcast.main(rights_authority=_rights(root))
+    payload = json.loads(out.read_text(encoding="utf-8"))
+    receipt = payload["_meta"]["rights_receipt"]
+    if attack == "missing":
+        for boundary in ("post_fetch", "write_boundary"):
+            for field in (
+                "evaluated_at_utc",
+                "rights_as_of",
+                "evaluated_age_days",
+                "release_deadline_utc",
+            ):
+                receipt[boundary].pop(field)
+    elif attack == "null":
+        receipt["post_fetch"]["evaluated_at_utc"] = None
+    elif attack == "future_post_fetch":
+        receipt["post_fetch"]["evaluated_at_utc"] = "2026-08-10T13:00:00Z"
+    else:
+        receipt["write_boundary"]["evaluated_at_utc"] = (
+            "2026-08-10T11:59:59Z"
+        )
+    out.write_text(json.dumps(payload), encoding="utf-8")
+
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Nowcast receipt attack"),
+        ("config", "user.email", "nowcast-receipt@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "committed attacked nowcast"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    candidate = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    _authorize_production_test_signer(root, monkeypatch)
+    monkeypatch.setattr(nowcast, "datetime", datetime)
+
+    with pytest.raises(ngram_rights.NgramRightsError):
+        nowcast.require_release_rights(candidate, root=root)
+
+
+def test_nowcast_release_refuses_previous_utc_day_after_rollover(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = _publication_root(tmp_path)
+    generated = datetime(2026, 8, 10, 23, 50, tzinfo=timezone.utc)
+    release = datetime(2026, 8, 11, 0, 10, tzinfo=timezone.utc)
+    current = [generated]
+    monkeypatch.setattr(ngram_rights, "_utc_now", lambda: current[0])
+
+    class FixedDateTime:
+        @classmethod
+        def now(cls, _tz: object = None) -> datetime:
+            return generated
+
+    out = root / "docs/data/nowcast.json"
+    monkeypatch.setattr(fetch_ngrams, "ROOT", root)
+    monkeypatch.setattr(
+        fetch_ngrams,
+        "compute_day",
+        lambda *_args, **_kwargs: _complete_result(root),
+    )
+    monkeypatch.setattr(nowcast, "ROOT", root)
+    monkeypatch.setattr(nowcast, "STORE", root / "data/raw/gdelt_volume.csv")
+    monkeypatch.setattr(nowcast, "CALIB", root / "data/raw/ngram_calibration.json")
+    monkeypatch.setattr(nowcast, "OUT", out)
+    monkeypatch.setattr(nowcast, "datetime", FixedDateTime)
+    nowcast.main(rights_authority=_rights(root))
+
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Nowcast rollover attack"),
+        ("config", "user.email", "nowcast-rollover@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "committed previous-day nowcast"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    candidate = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    _authorize_production_test_signer(root, monkeypatch)
+    current[0] = release
+    monkeypatch.setattr(nowcast, "datetime", datetime)
+
+    with pytest.raises(ngram_rights.NgramRightsError) as exc_info:
+        nowcast.require_release_rights(candidate, root=root)
+    assert exc_info.value.code == "nowcast_time_order_invalid"
 
 
 def test_nowcast_publish_path_rechecks_rights_inside_push_boundary() -> None:
@@ -2540,6 +2706,27 @@ def test_aug9_legacy_history_refuses_ssr_score_mutation_then_exact_revert(
     "injected",
     (
         '<section id="official-final-score"><strong>99.9</strong></section>',
+        (
+            "<section><h2>Official finalized composite score</h2>"
+            "<p>99.9</p></section>"
+        ),
+        (
+            "<article><header id=\"claim-label\">Official final measure</header>"
+            "<div aria-labelledby=\"claim-label\"><span>99.9</span></div>"
+            "</article>"
+        ),
+        (
+            "<div><h3>Latest channel score</h3>"
+            "<table><tr><td><strong>99.9</strong></td></tr></table></div>"
+        ),
+        (
+            "<section><p>99.9</p>"
+            "<h2>Official finalized composite score</h2></section>"
+        ),
+        (
+            "<section><h2>Official finalized composite score</h2>"
+            f"<div>{'filler ' * 80}<strong>99.9</strong></div></section>"
+        ),
         "<p>Official finalized composite score: 99.9</p>",
         "<table><tr><th>Official final score</th><td>99.9</td></tr></table>",
         '<meta name="official-final-score" content="99.9">',
