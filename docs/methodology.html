@@ -278,10 +278,12 @@ so it is published rather than summarized away:</p>
 </tr>
 </tbody>
 </table>
-<p>Shifts are sensitivity score minus frozen production score over the 37
-mechanically bridged days from 2026-07-01 to 2026-08-06. The full daily
-series is published at <code>docs/data/splice_sensitivity.json</code>. It is not a
-corrected history and must not be substituted silently for the primary.</p>
+<p>The table is the fixed 37-day study window from 2026-07-01 to 2026-08-06.
+The machine-readable artifact was extended through 2026-08-09 (40 days)
+before the retained-identity rights boundary was hardened, and is now frozen
+at <code>docs/data/splice_sensitivity.json</code>. It will not be recomputed unless a
+current signed source decision permits that evidence use. Neither artifact is
+a corrected history or may be substituted silently for the primary.</p>
 <p>A future measurement version may
 adopt new ratios only after at least 14 independently observed overlap
 days exist for every channel, the score-level impact is published, and

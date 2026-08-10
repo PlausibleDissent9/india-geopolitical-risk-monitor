@@ -309,6 +309,8 @@ def test_registered_security_implementation_cannot_drift(security_tree: Path) ->
 def test_prior_commit_anchor_rejects_coordinated_cas_and_validator_reseal(
     tmp_path: Path,
 ) -> None:
+    if not (ROOT / ".git").exists():
+        pytest.skip("requires committed Git history for the predecessor anchor")
     root = tmp_path / "coordinated-reseal"
     subprocess.run(
         ["git", "clone", "-q", "--shared", str(ROOT), str(root)], check=True
@@ -374,6 +376,8 @@ def test_prior_commit_anchor_rejects_coordinated_cas_and_validator_reseal(
 def test_coordinated_successor_reseal_cannot_claim_independent_trust(
     tmp_path: Path,
 ) -> None:
+    if not (ROOT / ".git").exists():
+        pytest.skip("requires committed Git history for the predecessor anchor")
     root = tmp_path / "coordinated-successor-reseal"
     subprocess.run(
         ["git", "clone", "-q", "--shared", str(ROOT), str(root)], check=True

@@ -324,7 +324,9 @@ jobs:
         run: |
           python -m src.provenance
           python -m src.publish_shares
-          python -m src.splice_sensitivity
+          # splice_sensitivity.json is a frozen historical study. Rebuilding it
+          # reads retained identity-bearing NGram evidence and remains refused
+          # until the source has a current signed decision for that use.
           python -m src.monthly
           python -m src.blind_spot
           python -m src.detection_baselines

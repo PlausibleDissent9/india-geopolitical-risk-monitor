@@ -1,10 +1,15 @@
-"""Publish the score-level sensitivity to independent splice ratios.
+"""Build the score-level sensitivity to independent splice ratios.
 
 This never changes the primary series. It applies the independently
 estimated ratios from analysis/splice_overlap_audit.py only to store days
 that can be identified as mechanically bridged from NGrams under the
 production ratio, rebuilds daily and 7-day scores, and publishes the
 difference beside the frozen vintage.
+
+The published 2026-08-10 artifact is now a frozen historical study. Rebuilds
+read identity-bearing retained NGram evidence and therefore fail closed until
+the source has a current signed decision covering that use. Daily workflows do
+not call this module while the decision remains pending.
 
     python3 -m src.splice_sensitivity
 """
@@ -17,7 +22,7 @@ from pathlib import Path
 import pandas as pd
 from analysis.splice_overlap_audit import audit as calibration_audit
 
-from src import fetch_ngrams
+from src import fetch_ngrams, ngram_rights
 from src.build_index import build_scores, build_scores7
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +37,14 @@ def _r(value: float, digits: int = 2) -> float:
 
 
 def build() -> dict:
+    cache_days = sorted(
+        date.fromisoformat(path.stem)
+        for path in fetch_ngrams.DAY_CACHE.glob("*.json")
+    )
+    if not cache_days:
+        raise RuntimeError("no retained NGrams days; refusing empty audit")
+    # Rights dominate every read or parse of the identity-bearing day caches.
+    ngram_rights.require_public_identity_rights(target=cache_days[-1], root=ROOT)
     volume = pd.read_csv(
         fetch_ngrams.STORE, parse_dates=["date"]
     ).set_index("date")
