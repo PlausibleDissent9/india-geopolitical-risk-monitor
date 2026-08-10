@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "contract_id": "igrm:offline-audit-bundle:0.1.0",
+  "what": "The byte-deterministic manifest for an offline audit bundle. This sub-slice covers member admission (rights-eligible, tracked, safe path, declared-digest-matches-actual) and a reproducible manifest whose self-digest is stable across rebuilds. It proves the manifest half of design/offline_audit_bundle.md; it does not yet package a zip, verify a timestamp, verify a founder signature, or ship a stdlib verifier.",
+  "canonicalization_profile_id": "igrm-typed-canonical-f64-v1",
+  "status": "synthetic_contract_only",
+  "public_routes": [],
+  "default_policy": "deny",
+  "rights_restricted_globs": [
+    "data/raw/",
+    "data/raw/gdelt_chunks/",
+    "data/raw/receipt_days/",
+    "data/raw/receipts/"
+  ],
+  "rights_restricted_globs_note": "Deny-by-default. A member whose repo-relative path is inside any of these prefixes is rights-ineligible and refuses bundle_member_rights_ineligible. Enumerated from the raw store that exists today; a new lane adding a restricted path must extend this list in the same commit (inventory-lock discipline). This is a prefix allowlist-of-exclusions, never a pattern the caller supplies.",
+  "manifest_fields": [
+    "schema_version",
+    "bundle_manifest_id",
+    "members",
+    "member_count",
+    "manifest_digest"
+  ],
+  "member_fields": [
+    "path",
+    "sha256"
+  ],
+  "refusal_codes": [
+    "bundle_member_rights_ineligible",
+    "bundle_member_untracked",
+    "bundle_member_digest_mismatch",
+    "bundle_member_unsafe_path",
+    "bundle_member_duplicate_path",
+    "bundle_manifest_incomplete",
+    "bundle_nondeterminism_detected"
+  ],
+  "reserved_refusal_codes_later_slices": [
+    "bundle_release_unregistered",
+    "bundle_signature_missing",
+    "bundle_timestamp_unverifiable",
+    "bundle_verifier_nonstdlib_import"
+  ],
+  "reserved_note": "These codes belong to sub-slices this module does NOT yet implement (release registration, founder signature, .ots timestamp, stdlib verifier). They are listed here for design traceability and are explicitly NOT claimed as reachable by the current runtime; a test asserts the runtime raises exactly refusal_codes and none of reserved_refusal_codes_later_slices.",
+  "determinism_rules": [
+    "members are ordered lexicographically by repo-relative path",
+    "each member sha256 is the raw sha256 of the file's committed bytes",
+    "the manifest self-digest is the typed-canonical digest of the manifest with manifest_digest excluded",
+    "two builds over the same members and the same committed bytes are byte-identical"
+  ],
+  "claim_boundary": "The manifest establishes that every included member is rights-eligible, tracked, safely named, and byte-identical to its declared digest, and that the manifest is reproducible from committed bytes. It does not establish that the bundle is complete, that a zip was packaged deterministically, that a founder signature or timestamp is valid, or that the underlying data is accurate. Those are later sub-slices and are not claimed here."
+}

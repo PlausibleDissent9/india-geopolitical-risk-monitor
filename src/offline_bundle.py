@@ -1,0 +1,185 @@
+"""Byte-deterministic manifest for an offline audit bundle (first sub-slice).
+
+A stranger who distrusts the site should be able to carry away one artifact and
+verify it forever. The full design (design/offline_audit_bundle.md) ships zip
+packaging, a founder signature, a timestamp proof and a stdlib verifier. THIS
+sub-slice is only the manifest half, which everything else rests on: a member
+list that is rights-eligible, tracked, safely named, digest-matched, and a
+manifest whose self-digest reproduces byte-for-byte from committed bytes.
+
+Deny-by-default. Rights-restricted members refuse rather than degrade; a member
+whose declared digest does not match its bytes refuses; an unsafe path refuses.
+The manifest never contains the raw store -- it proves without containing.
+
+Refusal codes and the rights-restricted glob list are registered in
+governance/offline_bundle_contract.json. Codes for the deferred sub-slices
+(signature, timestamp, verifier) are reserved there and are NOT raised here;
+`tests/test_offline_bundle.py` asserts that boundary so the contract never
+claims more than this runtime proves.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import subprocess
+from collections.abc import Mapping, Sequence
+from pathlib import Path, PurePosixPath
+from typing import Any, NoReturn, cast
+
+from src import event_ledger_extension
+
+ROOT = Path(__file__).resolve().parents[1]
+CONTRACT_PATH = ROOT / "governance" / "offline_bundle_contract.json"
+
+_MEMBER_FIELDS = frozenset({"path", "declared_sha256"})
+
+
+class OfflineBundleError(ValueError):
+    """Stable fail-closed refusal for the offline-bundle manifest builder."""
+
+    def __init__(self, code: str, detail: str = ""):
+        super().__init__(code)
+        self.code = code
+        self.detail = detail
+
+
+def _fail(code: str, detail: str = "") -> NoReturn:
+    raise OfflineBundleError(code, detail)
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in out:
+            _fail("bundle_member_unsafe_path", "json_duplicate_key")
+        out[key] = value
+    return out
+
+
+def load_contract(path: Path = CONTRACT_PATH) -> dict[str, Any]:
+    try:
+        contract = json.loads(path.read_text(encoding="utf-8"),
+                              object_pairs_hook=_unique_object)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise OfflineBundleError("bundle_manifest_incomplete",
+                                 "contract_unreadable") from exc
+    if contract.get("default_policy") != "deny":
+        _fail("bundle_manifest_incomplete", "contract_not_deny_by_default")
+    return cast(dict[str, Any], contract)
+
+
+def _tracked_paths(root: Path) -> set[str]:
+    out = subprocess.run(["git", "ls-files"], cwd=root,
+                         capture_output=True, text=True, check=True).stdout
+    return set(out.split())
+
+
+def _safe_relative_path(raw: object) -> str:
+    """Reject anything that is not a plain relative repo path: no absolute
+    paths, no '..' traversal, no NUL, no backslashes. Returns the normalized
+    posix path."""
+    if not isinstance(raw, str) or not raw or "\x00" in raw or "\\" in raw:
+        _fail("bundle_member_unsafe_path", repr(raw)[:60])
+    pure = PurePosixPath(raw)
+    if pure.is_absolute() or any(part == ".." for part in pure.parts):
+        _fail("bundle_member_unsafe_path", raw)
+    normalized = pure.as_posix()
+    if normalized != raw:
+        _fail("bundle_member_unsafe_path", raw)
+    return normalized
+
+
+def _rights_ineligible(path: str, contract: Mapping[str, Any]) -> bool:
+    for prefix in contract["rights_restricted_globs"]:
+        if path == prefix.rstrip("/") or path.startswith(prefix):
+            return True
+    return False
+
+
+def build_manifest(
+    members: Sequence[Mapping[str, Any]],
+    *,
+    root: Path = ROOT,
+    contract: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Admit each member and emit a byte-deterministic bundle manifest.
+
+    A member is {path, declared_sha256}. It must be a safe relative path, not
+    rights-restricted, tracked in git, and its bytes must hash to the declared
+    digest. Members are ordered lexicographically; the manifest self-digest is
+    the typed-canonical digest of the manifest with manifest_digest excluded.
+    """
+    contract = contract or load_contract()
+    tracked = _tracked_paths(root)
+
+    seen: set[str] = set()
+    rows: list[dict[str, str]] = []
+    for member in members:
+        if not isinstance(member, dict) or frozenset(member) != _MEMBER_FIELDS:
+            _fail("bundle_manifest_incomplete", "member_shape")
+        path = _safe_relative_path(member["path"])
+        if path in seen:
+            _fail("bundle_member_duplicate_path", path)
+        seen.add(path)
+        if _rights_ineligible(path, contract):
+            _fail("bundle_member_rights_ineligible", path)
+        if path not in tracked:
+            _fail("bundle_member_untracked", path)
+        actual = hashlib.sha256((root / path).read_bytes()).hexdigest()
+        declared = member["declared_sha256"]
+        if not isinstance(declared, str) or declared != actual:
+            _fail("bundle_member_digest_mismatch", path)
+        rows.append({"path": path, "sha256": actual})
+
+    rows.sort(key=lambda r: r["path"])
+    manifest = {
+        "schema_version": "0.1.0",
+        "bundle_manifest_id": "offline-bundle-manifest",
+        "members": rows,
+        "member_count": len(rows),
+    }
+    manifest["manifest_digest"] = event_ledger_extension.typed_record_sha256(
+        cast(Mapping[str, Any], manifest))
+    return manifest
+
+
+def verify_rebuild(
+    manifest: Mapping[str, Any],
+    members: Sequence[Mapping[str, Any]],
+    *,
+    root: Path = ROOT,
+    contract: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Rebuild the manifest from the same members and refuse on any drift.
+
+    An offline bundle's whole worth is that its digest reproduces. A rebuilt
+    manifest that differs by one byte from the presented one is
+    bundle_nondeterminism_detected.
+    """
+    rebuilt = build_manifest(members, root=root, contract=contract)
+    if rebuilt["manifest_digest"] != manifest.get("manifest_digest"):
+        _fail("bundle_nondeterminism_detected", rebuilt["manifest_digest"])
+    if rebuilt["members"] != list(manifest.get("members", [])):
+        _fail("bundle_nondeterminism_detected", "members")
+    return {"verified": True, "manifest_digest": rebuilt["manifest_digest"]}
+
+
+def main(argv: Sequence[str] | None = None) -> None:  # pragma: no cover - CLI
+    parser = argparse.ArgumentParser(
+        description="Validate the offline-bundle contract loads deny-by-default.")
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args(argv)
+    if args.check:
+        contract = load_contract()
+        print(f"[offline-bundle] contract {contract['contract_id']} ok; "
+              f"{len(contract['rights_restricted_globs'])} restricted globs, "
+              f"{len(contract['refusal_codes'])} codes")
+    else:
+        parser.print_help()
+        raise SystemExit(2)
+
+
+if __name__ == "__main__":  # pragma: no cover - CLI
+    main()

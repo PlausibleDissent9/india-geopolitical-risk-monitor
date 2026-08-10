@@ -120,6 +120,28 @@ Conclusion: every remaining failure is blocked on (a) Codex's runtime source
 (perf-cascade), (b) the human push decision, or (c) an external publish. No
 independent, in-lane, non-blocked work remains.
 
+## T10 — Offline audit bundle: deterministic manifest slice (Codex item 2)
+Status: DONE (local commit; NOT pushed)
+Enumerated, independent, in-scope work; no push, no Codex lane.
+Built the byte-deterministic bundle MANIFEST builder (`src/offline_bundle.py`)
+with deny-by-default member admission: rights-restricted-glob refusal, untracked
+(git ls-files) refusal, declared-vs-actual digest mismatch, unsafe-path refusal
+(absolute / `..` / backslash / non-normalized), duplicate-path refusal,
+malformed-shape refusal, and `verify_rebuild` raising non-determinism on drift.
+Contract (`governance/offline_bundle_contract.json`) registers ONLY the 7 codes
+the runtime raises; the signature/timestamp/verifier codes are in a separate
+`reserved_refusal_codes_later_slices` list and a test asserts the runtime raises
+none of them (does NOT repeat the T1 over-claim class).
+Files changed: `governance/offline_bundle_contract.json`, `src/offline_bundle.py`,
+`tests/test_offline_bundle.py`, `TASKS.md`.
+Commands run: `pytest tests/test_offline_bundle.py` (14 passed), `ruff` (clean),
+`mypy src/offline_bundle.py` (clean), hygiene invariants (claims_discipline,
+no_secrets, public_private_boundary, offline_guarantee) 19 passed — the new
+files trip no repo-wide invariant.
+Deferred to later sub-slices (explicitly not claimed): deterministic .zip
+packaging, .ots timestamp verification, founder-signature verification, the
+stdlib verifier. Synthetic/contract-only, no route.
+
 ## PERF BLOCKER — the typed-canonical optimization cascades into Codex's runtime source
 Classification: [architectural gap / cross-lane] — NOT a safe single-lane fix.
 Commit: local `3f593cb` "The 96-second test was one accidental O(n*depth) byte-copy"
