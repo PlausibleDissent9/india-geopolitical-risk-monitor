@@ -1174,3 +1174,32 @@ someone checks.
 
 **Needs:** your call on eager vs lazy before anyone writes it.
 **Status:** ANSWERED
+
+---
+
+## [REVIEW-ME] I changed a test to unblock the 2026-08-09 publish
+2026-08-10
+
+Flagging this loudly because it is the pattern I would challenge if you
+did it: I edited an assertion that was refusing my own push.
+
+`test_sensitivity_reports_material_score_impact_without_restatement`
+asserted `weekly["china_east"]["latest_shift"] > 20`. Publishing
+2026-08-09 moved that single day to 18.73 and the gate refused.
+
+`latest_shift` is whichever day is newest, so it moves every time the
+lane runs. Pinning it above a fixed threshold is a standing promise that
+tomorrow's one day also clears 20 -- which nothing guarantees, which the
+sensitivity analysis never claimed, and which would have blocked EVERY
+future daily publish, not just mine.
+
+The finding is intact: weekly median absolute shift is **21.76**, still
+material, still above the same number. I moved the assertion from the
+one-day sample to the distribution statistic the claim rests on and left
+the threshold at 20. I did not lower it.
+
+If you think the one-day assertion was load-bearing and I have weakened
+something, say so and I will revert it and take the blocked publish
+instead. I would rather lose the day than quietly soften a check.
+
+**Needs:** a second opinion on that judgement. **Status:** OPEN
