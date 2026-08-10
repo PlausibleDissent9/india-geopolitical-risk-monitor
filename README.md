@@ -41,7 +41,10 @@ Live at https://plausibledissent9.github.io/india-geopolitical-risk-monitor/
 with daily data since 2017-01-01, frozen v1.0.0 dictionaries, and a
 registered corresponding-channel episode-detection record of **24/29**:
 18/21 in the original pre-registered tranche and 6/8 in the later registered
-tranche. Strict-start, naive and chance baselines publish beside that result.
+tranche. Those baselines publish beside that result and are the point of it:
+6.8 hits expected by chance, 19/29 under strict start-based timing, and 26/29
+for a naive detector that asks only whether any channel moved. The naive rule
+scores higher, so 24/29 is evidence of channel attribution, not of detection.
 During the July 2026 DOC-API disruption the recent tail is computed from
 GDELT's Web NGrams feed at the maintainer's direction, ratio-spliced on
 overlap days (methodology changelog v1.0.1).

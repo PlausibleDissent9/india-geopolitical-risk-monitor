@@ -17,7 +17,10 @@ benchmark and independent splice audit.*
 factual spine, all verifiable below: a daily index of press salience
 for five registered channels of India-relevant geopolitics,
 2017-06-29 to 2026-08-06 (3,305 days); construction registered before
-use; 24 of 29 pre-registered episodes detected; co-movement with the
+use; 24 of 29 pre-registered episodes detected — against 6.8 expected by
+chance, 19 of 29 under strict start-based timing, and 26 of 29 for a
+naive any-channel detector, so the contribution is channel attribution
+and not detection; co-movement with the
 Caldara–Iacoviello GPR-India index at r = 0.484 in monthly levels over
 110 shared months; and a separate code-frozen test against AI-GPR
 India_all finding Spearman rho = 0.256 in 106 month-over-month changes

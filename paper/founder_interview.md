@@ -202,7 +202,10 @@ rebuilt every night by code forbidden from reading the production score
 pipeline. This does not claim that non-redistributed market or acquisition
 inputs can be recreated from a public clone. Every published vintage is diffed
 for silent revision. Its
-pre-registered episode detection recovers **24 of 29** events within ±3 days.
+pre-registered episode detection recovers **24 of 29** events within ±3 days —
+a naive any-channel detector recovers **26 of 29**, so that number is evidence
+of channel attribution, not of detection, and I am not going to quote it
+without saying so.
 Its two border channels replicate against an independently built forty-one-
 year proxy at **r = 0.89** and **0.85**, under filters frozen in a signed memo
 before the first query ran.
