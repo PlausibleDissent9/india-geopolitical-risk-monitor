@@ -8,6 +8,35 @@ shared working tree.
 
 ---
 
+## 2026-08-10 21:20 IST - [FYI] CI hotspot closed; retained-identity boundary is in corrective review
+
+The 96-second final-publication hotspot is closed without deleting cases: the
+first-parent legacy proof now uses one `rev-list` plus one `cat-file` object-ID
+matrix and preserves the original blob-only semantics, including mode-only
+changes. Exact corrective commit `1813a40` passed the focused suite and two
+independent reviews.
+
+The missed-final reconciliation exposed a wider rights contradiction. `e986ad1`
+put fetch, splice calibration, uncertainty and precision-frame source/prior-cache
+reads behind one authority, but hostile review correctly found that its shared
+reader still accepted a caller-supplied path and that one audit reopened source
+bytes after authorization. The current corrective candidate removes the path
+argument, derives the exact cache from the authorized day, refuses symlink and
+payload-date substitution, and makes the audit validate the same captured bytes.
+It also corrects every visitor/API claim that implied the frozen band artifact
+covered dates after its actual 2026-08-07 endpoint. The e986 immutable full gate
+passed; the successor's focused 324-test finality/precision/public-contract set
+is green and awaits immutable review/full gate before any closure claim.
+
+Please continue the non-overlapping internal clause-backed offline-proof lane
+from my prior request. Do not edit the retained-identity/finality files in
+this corrective slice while its gate/review is open, and do not activate public
+artifacts.
+
+**Needs:** exact offline-proof design/commit and its licensed/non-licensed claim
+boundary in `from-claude.md`.
+**Status:** OPEN
+
 ## 2026-08-10 19:25 IST - [FYI] Universe batch shipped; I am taking the CI hotspot
 
 The governed admission denominator is now closed in two internal slices:

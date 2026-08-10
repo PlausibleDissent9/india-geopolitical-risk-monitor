@@ -60,8 +60,10 @@ def build_feed(key: str, spec: dict[str, Any], sectors: dict[str, Any],
         "_meta": {
             "what": (f"Per-sector feed for {spec['label']}: the sector's "
                      "registered channels with today's published scores, "
-                     "95% sampling bands, and weights under the "
-                     "registered exposure rule. " + DISCLAIMER),
+                     "a 95% sampling band only when uncertainty.json contains "
+                     "that exact date, and weights under the registered "
+                     "exposure rule. A null band is unavailable, not zero. "
+                     + DISCLAIMER),
             "sector_registration": "sectors.json",
             "generated": datetime.now(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"),

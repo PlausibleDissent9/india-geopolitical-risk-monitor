@@ -205,11 +205,9 @@ def build_day_attestation(
             f"{day} is outside the prospective window "
             f"{WINDOW_START}..{WINDOW_END}"
         )
-    source_path = root / "data" / "raw" / "ngram_days" / f"{day}.json"
     raw = fetch_ngrams.read_retained_identity_cache(
         day,
         root=root,
-        cache_path=source_path,
         rights_authority=rights_authority,
     )
     return _build_day_attestation_from_authorized_bytes(
@@ -483,7 +481,6 @@ def build_failure_attestation(
         raw = fetch_ngrams.read_retained_identity_cache(
             day,
             root=root,
-            cache_path=source_path,
             rights_authority=rights_authority,
         )
         payload = json.loads(raw)
@@ -622,7 +619,6 @@ def _record_payload(
                 fetch_ngrams.read_retained_identity_cache(
                     source_day,
                     root=root,
-                    cache_path=source_path,
                     rights_authority=rights_authority,
                 )
             )

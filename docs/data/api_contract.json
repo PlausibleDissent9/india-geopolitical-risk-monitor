@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.3.0",
+  "contract_version": "2.3.1",
   "frozen_date": "2026-08-09",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -775,7 +775,7 @@
   {
    "path": "data/sector_agri_food.json",
    "format": "json",
-   "description": "Per-sector feed for Agriculture & Food Exports: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Agriculture & Food Exports: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -789,7 +789,7 @@
   {
    "path": "data/sector_auto_components.json",
    "format": "json",
-   "description": "Per-sector feed for Auto & Components: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Auto & Components: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -804,7 +804,7 @@
   {
    "path": "data/sector_chemicals.json",
    "format": "json",
-   "description": "Per-sector feed for Chemicals & Petrochemicals: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Chemicals & Petrochemicals: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -818,7 +818,7 @@
   {
    "path": "data/sector_defence_aerospace.json",
    "format": "json",
-   "description": "Per-sector feed for Defence & Aerospace: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Defence & Aerospace: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -832,7 +832,7 @@
   {
    "path": "data/sector_electronics.json",
    "format": "json",
-   "description": "Per-sector feed for Electronics Manufacturing: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Electronics Manufacturing: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -846,7 +846,7 @@
   {
    "path": "data/sector_energy_manufacturing.json",
    "format": "json",
-   "description": "Per-sector feed for Energy-intensive Manufacturing: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Energy-intensive Manufacturing: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -861,7 +861,7 @@
   {
    "path": "data/sector_engineering_goods.json",
    "format": "json",
-   "description": "Per-sector feed for Engineering Goods: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Engineering Goods: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -875,7 +875,7 @@
   {
    "path": "data/sector_fmcg.json",
    "format": "json",
-   "description": "Per-sector feed for FMCG: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for FMCG: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -890,7 +890,7 @@
   {
    "path": "data/sector_gems_jewellery.json",
    "format": "json",
-   "description": "Per-sector feed for Gems & Jewellery: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Gems & Jewellery: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -904,7 +904,7 @@
   {
    "path": "data/sector_it_services.json",
    "format": "json",
-   "description": "Per-sector feed for IT Services: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for IT Services: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -919,7 +919,7 @@
   {
    "path": "data/sector_marine_products.json",
    "format": "json",
-   "description": "Per-sector feed for Marine Products & Fisheries: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Marine Products & Fisheries: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -933,7 +933,7 @@
   {
    "path": "data/sector_metals.json",
    "format": "json",
-   "description": "Per-sector feed for Metals & Mining: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Metals & Mining: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -948,7 +948,7 @@
   {
    "path": "data/sector_petroleum_refining.json",
    "format": "json",
-   "description": "Per-sector feed for Petroleum Refining & Export: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Petroleum Refining & Export: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -963,7 +963,7 @@
   {
    "path": "data/sector_pharma.json",
    "format": "json",
-   "description": "Per-sector feed for Pharmaceuticals: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Pharmaceuticals: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -988,7 +988,7 @@
   {
    "path": "data/sector_textiles_apparel.json",
    "format": "json",
-   "description": "Per-sector feed for Textiles & Apparel: the sector's registered channels with today's published scores, 95% sampling bands, and weights under the registered exposure rule. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
+   "description": "Per-sector feed for Textiles & Apparel: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
    "frozen_fields": [
     "_meta",
     "sector",
@@ -1148,7 +1148,7 @@
   {
    "path": "data/uncertainty.json",
    "format": "json",
-   "description": "95% sampling bands for sample-estimated daily scores: Wilson interval on the day's matched share, passed through the same splice ratio and trailing-percentile transform as the published point value. The composite band is the mean of channel bounds -- an envelope, conservative because channel sampling errors are independent. Days before the first banded date were computed over the full monitored corpus (no sampling design of this kind), so they carry no band.",
+   "description": "95% sampling bands for sample-estimated daily scores: Wilson interval on the day's matched share, passed through the same splice ratio and trailing-percentile transform as the published point value. The composite band is the mean of channel bounds -- an envelope, conservative because channel sampling errors are independent. This artifact covers only the exact dates from first_banded_date through last_banded_date. Days outside that frozen window carry no published band; absence is not a zero-width interval.",
    "frozen_fields": [
     "_meta",
     "days"

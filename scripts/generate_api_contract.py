@@ -22,10 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-# Minor release: the additive event_ledger.json endpoint freezes the
-# observation/event/episode count-unit firewall without removing or renaming
-# any existing field.
-CONTRACT_VERSION = "2.3.0"
+# Patch release: public descriptions now distinguish a band that exists for an
+# exact date from a null/unavailable band. No endpoint or field shape changed.
+CONTRACT_VERSION = "2.3.1"
 FROZEN_DATE = "2026-08-09"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:

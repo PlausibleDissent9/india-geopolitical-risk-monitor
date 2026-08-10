@@ -26,8 +26,8 @@ from pathlib import Path
 from src import fetch_ngrams
 
 ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT = ROOT / "analysis" / "splice_overlap_api_091c25e.csv"
 CACHE = ROOT / "data" / "raw" / "ngram_days"
+SNAPSHOT = ROOT / "analysis" / "splice_overlap_api_091c25e.csv"
 PRODUCTION = ROOT / "data" / "raw" / "ngram_calibration.json"
 CHANNELS = (
     "pakistan_west",
@@ -44,7 +44,6 @@ def _ngram_channel_sums(day: str) -> dict[str, float]:
         fetch_ngrams.read_retained_identity_cache(
             parsed_day,
             root=ROOT,
-            cache_path=CACHE / f"{day}.json",
         )
     )
     shares = payload["shares"]

@@ -466,7 +466,6 @@ def _cached_day(
             read_retained_identity_cache(
                 day,
                 root=ROOT,
-                cache_path=cache,
                 rights_authority=rights_authority,
             )
         )
@@ -486,7 +485,6 @@ def read_retained_identity_cache(
     day: date,
     *,
     root: Path = ROOT,
-    cache_path: Path | None = None,
     rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> bytes:
     """Read one retained identity cache only behind the shared authority.
@@ -499,9 +497,14 @@ def read_retained_identity_cache(
 
     from . import final_publication
 
-    cache = cache_path or (
-        root / "data" / "raw" / "ngram_days" / f"{day.isoformat()}.json"
-    )
+    relative = Path("data") / "raw" / "ngram_days" / f"{day.isoformat()}.json"
+    cache = root / relative
+    registered_cache = root.resolve() / relative
+    # Callers cannot authorize one day and substitute another path.  Refuse a
+    # final-component symlink as well: the bounded legacy exception is an
+    # exact registered repository path, not whatever that path points at.
+    if cache.is_symlink() or cache.resolve(strict=False) != registered_cache:
+        raise ngram_rights.NgramRightsError("ngram_cache_path_invalid")
     legacy_target = final_publication.is_registered_legacy_cache_target(day)
     if not legacy_target:
         ngram_rights.require_public_identity_rights(
@@ -510,16 +513,21 @@ def read_retained_identity_cache(
             test_authority=rights_authority,
         )
     raw = cache.read_bytes()
-    if final_publication.is_exact_legacy_cache_exception(
+    exact_legacy = final_publication.is_exact_legacy_cache_exception(
         root, day, cache_bytes=raw
-    ):
-        return raw
-    if legacy_target:
+    )
+    if legacy_target and not exact_legacy:
         ngram_rights.require_public_identity_rights(
             target=day,
             root=root,
             test_authority=rights_authority,
         )
+    try:
+        payload = json.loads(raw)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        raise ngram_rights.NgramRightsError("ngram_cache_payload_invalid") from None
+    if not isinstance(payload, dict) or payload.get("date") != day.isoformat():
+        raise ngram_rights.NgramRightsError("ngram_cache_day_binding_invalid")
     return raw
 
 

@@ -2,6 +2,7 @@
 that must track build_index's percentile window."""
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -73,3 +74,45 @@ def test_daily_lane_does_not_recompute_frozen_sampling_or_precision_studies():
     workflow = (ROOT / ".github/workflows/daily.yml").read_text(encoding="utf-8")
     assert "python -m src.uncertainty" not in workflow
     assert "python -m src.precision_frame_v3" not in workflow
+
+
+def test_public_claims_bind_the_exact_frozen_band_window() -> None:
+    payload = json.loads(
+        (ROOT / "docs/data/uncertainty.json").read_text(encoding="utf-8")
+    )
+    assert payload["_meta"]["first_banded_date"] == "2026-06-30"
+    assert payload["_meta"]["last_banded_date"] == "2026-08-07"
+    assert min(payload["days"]) == "2026-06-30"
+    assert max(payload["days"]) == "2026-08-07"
+
+    exact_window_surfaces = (
+        ROOT / "docs/index.html",
+        ROOT / "docs/exposure.html",
+        ROOT / "docs/data.html",
+        ROOT / "docs/codebook.md",
+        ROOT / "nef/REVIEWERS_GUIDE.md",
+    )
+    for path in exact_window_surfaces:
+        text = path.read_text(encoding="utf-8")
+        assert "2026-06-30" in text, path
+        assert "2026-08-07" in text, path
+
+    combined = "\n".join(
+        path.read_text(encoding="utf-8") for path in exact_window_surfaces
+    )
+    assert "every published point sits inside its own band" not in combined
+    assert "today's readings with sampling bands" not in combined
+
+    sector_feeds = sorted((ROOT / "docs/data").glob("sector_*.json"))
+    sector_feeds.remove(ROOT / "docs/data/sector_sensitivity.json")
+    assert len(sector_feeds) == 15
+    for path in sector_feeds:
+        description = json.loads(path.read_text(encoding="utf-8"))["_meta"][
+            "what"
+        ]
+        assert "only when uncertainty.json contains that exact date" in description
+        assert "A null band is unavailable, not zero" in description
+
+    for path in (ROOT / "docs/data/api_contract.json", ROOT / "docs/openapi.json"):
+        text = path.read_text(encoding="utf-8")
+        assert "today's published scores, 95% sampling bands" not in text

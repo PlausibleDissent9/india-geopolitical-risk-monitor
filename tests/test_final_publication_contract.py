@@ -595,6 +595,41 @@ def test_pending_rights_allow_only_exact_pinned_aug9_legacy_cache(
     assert fetch_ngrams._cached_day(TARGET, _specs()) == legacy
 
 
+def test_retained_cache_binds_authorized_day_to_path_payload_and_no_symlink(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    cache_dir = root / "data/raw/ngram_days"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    payload = _complete_result(root)
+    payload["date"] = PREFIX_DAY.isoformat()
+    cache = cache_dir / f"{TARGET}.json"
+    cache.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(ngram_rights.NgramRightsError) as exc:
+        fetch_ngrams.read_retained_identity_cache(
+            TARGET,
+            root=root,
+            rights_authority=_rights(root),
+        )
+    assert exc.value.code == "ngram_cache_day_binding_invalid"
+
+    other = cache_dir / f"{PREFIX_DAY}.json"
+    other.write_text(json.dumps(payload), encoding="utf-8")
+    cache.unlink()
+    try:
+        cache.symlink_to(other)
+    except OSError:
+        pytest.skip("symlinks unavailable on this filesystem")
+    with pytest.raises(ngram_rights.NgramRightsError) as exc:
+        fetch_ngrams.read_retained_identity_cache(
+            TARGET,
+            root=root,
+            rights_authority=_rights(root),
+        )
+    assert exc.value.code == "ngram_cache_path_invalid"
+
+
 @pytest.mark.parametrize(
     "attack",
     ("downgraded_version", "missing_version", "mixed_fields", "fabricated_legacy"),
