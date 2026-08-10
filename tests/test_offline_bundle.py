@@ -83,6 +83,25 @@ def test_unsafe_member_path_refuses(bad_path: str) -> None:
     assert err.value.code == "bundle_member_unsafe_path"
 
 
+def test_symlink_member_refuses_before_reading_its_target(tmp_path: Path) -> None:
+    """Adversarial self-review (design attack A4): a symlink member would have
+    read_bytes() follow the link and bundle out-of-tree content. git tracks a
+    symlink as a symlink, so the tracked check would not catch it. Refuse."""
+    import os
+    secret = tmp_path / "out_of_tree_secret.txt"
+    secret.write_text("SECRET")
+    link = ROOT / "docs" / "data" / "_advtest_symlink.json"
+    try:
+        os.symlink(secret, link)
+        digest = hashlib.sha256(link.read_bytes()).hexdigest()  # the target's bytes
+        with pytest.raises(ob.OfflineBundleError) as err:
+            ob.build_manifest([{"path": "docs/data/_advtest_symlink.json",
+                                "declared_sha256": digest}])
+        assert err.value.code == "bundle_member_unsafe_path"
+    finally:
+        link.unlink(missing_ok=True)
+
+
 def test_duplicate_member_path_refuses() -> None:
     m = _member(PUBLIC[0])
     with pytest.raises(ob.OfflineBundleError) as err:

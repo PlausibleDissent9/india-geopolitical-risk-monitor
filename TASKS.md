@@ -251,3 +251,17 @@ test requires and no failure motivates -> "no silent scope expansion / do not
 alter unrelated files". Correctly declined. (ci.yml in particular must NOT be
 capped naively — it legitimately runs ~37m and a low cap would break the gate.)
 Recorded so this is not re-litigated. origin/main still 331a807.
+
+## T16 — Offline bundle: reject symlink / path-escape members (adversarial self-review)
+Status: DONE (local commit; NOT pushed)
+Applied the cross-review discipline to my OWN recent code and found a real gap:
+build_manifest checked the path STRING and trackedness, then read_bytes() --
+which FOLLOWS a symlink. git tracks a symlink as a symlink, so the tracked
+check would not catch it; a tracked symlink member would be bundled as its
+out-of-tree target's bytes (design attack A4, missed by the T10 slice).
+Fix: before rights/tracked/read, refuse any member that is a symlink OR whose
+resolved real path escapes root -> bundle_member_unsafe_path. Catches both a
+symlink leaf and a member reached through a symlinked parent.
+Files: src/offline_bundle.py, tests/test_offline_bundle.py.
+Checks: pytest (23 passed), ruff + mypy clean. New test creates a symlink to an
+out-of-tree secret and asserts the member refuses before its target is read.

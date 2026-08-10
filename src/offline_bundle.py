@@ -125,11 +125,20 @@ def build_manifest(
         if path in seen:
             _fail("bundle_member_duplicate_path", path)
         seen.add(path)
+        # A safe path STRING is not a safe FILE: a symlink member (or a member
+        # reached through a symlinked parent) would have read_bytes() follow the
+        # link and bundle out-of-tree content -- design attack A4. git tracks a
+        # symlink as a symlink, so the tracked check below would not catch it.
+        # Refuse any member that is a symlink or whose real path escapes root,
+        # before rights/tracked/read.
+        full = root / path
+        if full.is_symlink() or not full.resolve().is_relative_to(root.resolve()):
+            _fail("bundle_member_unsafe_path", f"symlink_or_escapes_root:{path}")
         if _rights_ineligible(path, contract):
             _fail("bundle_member_rights_ineligible", path)
         if path not in tracked:
             _fail("bundle_member_untracked", path)
-        actual = hashlib.sha256((root / path).read_bytes()).hexdigest()
+        actual = hashlib.sha256(full.read_bytes()).hexdigest()
         declared = member["declared_sha256"]
         if not isinstance(declared, str) or declared != actual:
             _fail("bundle_member_digest_mismatch", path)
