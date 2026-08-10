@@ -59,7 +59,15 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           if [ "${{ steps.scan.outcome }}" = "success" ]; then
-            git add data/raw/receipt_days docs
+            # syndication.csv too: python -m src.syndication in the
+            # derivatives step appends the day's rows to this TRACKED
+            # file, and publish_push.sh's pre-rebase guard refuses a
+            # dirty tree outright. Run #2 (2026-08-10) completed a
+            # 95-minute scan, built every derivative, then published
+            # nothing because this line staged everything except the
+            # one file the lane had just modified. The guard was right;
+            # the lane forgot its own product.
+            git add data/raw/receipt_days data/raw/syndication.csv docs
             bash scripts/publish_push.sh "receipts: extended evidence $(date -u +%F)"
           else
             git add data/raw/receipt_days
