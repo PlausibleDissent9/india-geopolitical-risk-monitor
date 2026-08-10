@@ -95,8 +95,12 @@ DESCRIPTIONS = {
     "validation.json": "The registered episode-detection record: 24 of 29 "
     "events under the +/-3-day corresponding-channel criterion (the "
     "original pre-registered tranche was 18 of 21; the later registered "
-    "tranche was 6 of 8), plus baselines, cross-source comparisons, "
-    "placebo checks and robustness under alternate specifications.",
+    "tranche was 6 of 8), read against its published baselines -- 6.8 "
+    "expected by chance, 19 of 29 under strict start-based timing, and "
+    "26 of 29 for a naive any-channel detector, which scores higher, so "
+    "the record is evidence of channel attribution rather than of "
+    "detection -- plus cross-source comparisons, placebo checks and "
+    "robustness under alternate specifications.",
 }
 
 # Endpoints intentionally excluded from the data-API contract because they

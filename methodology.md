@@ -315,6 +315,18 @@ two tranche-2 misses (the 2022 BrahMos accidental launch, the 2022
 OPEC+ production cut) are listed in the payload like every miss —
 the sequence draft-blind, sign, then grade is the figure's warrant.
 
+**83% is not the number to be impressed by, and this section will not
+present it alone.** The same payload
+(`docs/data/detection_baselines.json`) publishes what 24 of 29 should be
+read against: **6.8** hits expected by chance, **19 of 29** under the
+stricter start-based timing rule, and **26 of 29** for a naive detector
+that asks only whether *any* channel moved, ignoring which one. The
+naive rule beats the registered one by two events. So detection alone is
+cheap, and the honest reading of this section is not "the index detects
+events" — it is that the index detects them *in the right channel*, which
+is the only part a naive rule cannot do. Anywhere the 24 of 29 figure is
+quoted without those baselines, the quote is flattering the index.
+
 **8b. Dictionary robustness** (`python -m src.validate robustness`).
 Broader and narrower constructions of every channel are frozen in
 `dictionaries_alt.json`. The full index is recomputed under each and

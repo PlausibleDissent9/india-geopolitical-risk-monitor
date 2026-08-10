@@ -16,7 +16,9 @@ channel's own trailing 730 days, 0–100.
 **Construct, stated plainly:** press salience — the share of global
 English news coverage matching registered channel dictionaries. Not a
 risk measure; no forecasts. Methodology, validation record (24/29
-pre-registered episodes), sampling bands, and per-article receipts
+pre-registered episodes, against 26/29 for a naive any-channel detector
+and 6.8 expected by chance — the apparatus contributes channel
+attribution, not detection), sampling bands, and per-article receipts
 are public. A clean-room public command reconstructs every published daily
 channel/composite score cell exactly; acquisition, receipts and market-derived
 outputs have separately disclosed evidence/rights limits
