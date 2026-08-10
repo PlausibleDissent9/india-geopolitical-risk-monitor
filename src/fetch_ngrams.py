@@ -53,7 +53,6 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-from . import provenance
 from .fetch_gdelt import build_queries
 
 BASE = ("https://storage.googleapis.com/data.gdeltproject.org/"
@@ -72,6 +71,10 @@ SAMPLES_PER_DAY = 48
 # so every minute of a sampling window is probed until the first hit.
 HEADERS = {"User-Agent": "IGRM/1.0 (ngrams bridge, per maintainer guidance)"}
 PUBLISH_LAG_DAYS = 1          # today's files are still accumulating
+
+
+class NgramAcquisitionError(RuntimeError):
+    """The source could not be classified as absent because I/O failed."""
 
 
 def _norm_tokens(text: str) -> list[str]:
@@ -171,6 +174,7 @@ def _fetch(url: str) -> bytes | None:
         raise RuntimeError(
             f"[ngrams] IGRM_OFFLINE is set; refusing to fetch {url}. "
             "Offline mode serves committed caches only.")
+    last_error: requests.RequestException | None = None
     for attempt in (1, 2):
         try:
             r = requests.get(url, timeout=120, headers=HEADERS)
@@ -178,11 +182,14 @@ def _fetch(url: str) -> bytes | None:
                 return None
             r.raise_for_status()
             return r.content
-        except requests.RequestException:
+        except requests.RequestException as exc:
+            last_error = exc
             if attempt == 2:
-                return None
+                break
             time.sleep(3)
-    return None
+    raise NgramAcquisitionError(
+        f"GET failed without a source-absence response: {url}"
+    ) from last_error
 
 
 def _probe_window(day: date, base_minute: int, window_min: int) -> str | None:
@@ -193,16 +200,25 @@ def _probe_window(day: date, base_minute: int, window_min: int) -> str | None:
             "[ngrams] IGRM_OFFLINE is set; refusing to probe for "
             f"{day} minute-files. Offline mode serves committed caches "
             "only.")
+    last_error: requests.RequestException | None = None
     for offset in range(window_min):
         m = base_minute + offset
         ts = f"{day:%Y%m%d}{m // 60:02d}{m % 60:02d}00"
         try:
             r = requests.head(f"{BASE}{ts}.ngrams.txt.gz",
                               timeout=30, headers=HEADERS)
-        except requests.RequestException:
+            if r.status_code == 200:
+                return ts
+            if r.status_code != 404:
+                r.raise_for_status()
+        except requests.RequestException as exc:
+            last_error = exc
             continue
-        if r.status_code == 200:
-            return ts
+    if last_error is not None:
+        raise NgramAcquisitionError(
+            f"HEAD probe failed without proving source absence for {day} "
+            f"window {base_minute}:{base_minute + window_min}"
+        ) from last_error
     return None
 
 
@@ -349,7 +365,9 @@ def compute_day(
 
     total = len(en_docs)
     if total < min_docs:  # a sample this thin is a feed gap, not a measurement
-        return None
+        raise NgramAcquisitionError(
+            f"located source frame has {total} documents; minimum is {min_docs}"
+        )
     shares = {}
     for g, s in specs.items():
         hits = matched[g] & india_docs if s["anchor"] == "india" else matched[g]
@@ -433,54 +451,35 @@ def calibrate(days: list[date]) -> dict:
 
 
 def heal(max_days: int) -> int:
-    """Fill store days missing/NaN for any channel, newest window first.
-    Returns the number of days written."""
-    specs = group_specs()
-    channels = sorted({s["channel"] for s in specs.values()})
-    store = pd.read_csv(STORE, parse_dates=["date"]).set_index("date")
-    last_allowed = date.today() - timedelta(days=PUBLISH_LAG_DAYS)
-    first_needed = min(store.dropna(how="any").index.max().date(),
-                       last_allowed - timedelta(days=max_days))
+    """Compatibility entrypoint for the exact append-only D-1 recovery.
 
-    targets = []
-    d = first_needed
-    while d <= last_allowed:
-        ts = pd.Timestamp(d)
-        if ts not in store.index or store.loc[ts, channels].isna().any():
-            targets.append(d)
-        d += timedelta(days=1)
-    if not targets:
-        print("[ngrams] store already current; nothing to heal")
+    The historical implementation searched a window and wrote every located
+    day straight into the canonical store.  That could revise an already
+    published prefix and could bank a one-stamp day because ``partial`` only
+    described missing *located* stamps.  Final recovery is now target-only:
+    the existing promotion boundary acquires fresh bytes, requires the
+    registered 48/48 attestation, binds the calibration and matcher regime,
+    and appends exactly one D-1 row or writes only a value-free refusal.
+
+    ``max_days`` remains accepted so existing scheduled invocations do not
+    change shape; widening it no longer broadens publication authority.
+    """
+
+    _ = max_days
+    from . import final_publication
+
+    today = final_publication.utc_today()
+    target = final_publication.required_target(today)
+    status = final_publication.acquire_target(target, today=today, root=ROOT)
+    state = status["status"]
+    if state == "target_ready":
+        print(f"[ngrams] exact 48/48 D-1 candidate banked for {target}")
+        return 1
+    if state == "already_finalized":
+        print(f"[ngrams] exact D-1 final already published for {target}")
         return 0
-
-    calib_path = RAW_DIR / "ngram_calibration.json"
-    if not calib_path.exists():
-        sys.exit("[ngrams] no calibration -- run --calibrate first; the "
-                 "bridge must never splice uncalibrated levels")
-    calib = json.loads(calib_path.read_text(encoding="utf-8"))
-
-    wrote = 0
-    for day in targets:
-        print(f"[ngrams] sampling {day}")
-        result = _cached_day(day, specs)
-        if result is None:
-            print(f"[ngrams] {day}: no usable files; skipping")
-            continue
-        for ch, v in _channel_sums(result, specs).items():
-            if ch not in calib:
-                continue
-            store.loc[pd.Timestamp(day), ch] = v / calib[ch]["ratio"]
-        # A spliced day is a different instrument's measurement wearing
-        # the API's scale. Recording that at the moment it happens is
-        # the only way the published series can ever say so honestly;
-        # everything earlier than this line has to be RECONSTRUCTED
-        # (src/provenance.py) because nothing wrote it down.
-        provenance.record_bridged(day.isoformat())
-        wrote += 1
-
-    store.sort_index().to_csv(STORE, index_label="date")
-    print(f"[ngrams] healed {wrote} day(s) into {STORE.name}")
-    return wrote
+    print(f"[ngrams] {target}: {state}; canonical value/provenance unchanged")
+    return 0
 
 
 def main() -> None:

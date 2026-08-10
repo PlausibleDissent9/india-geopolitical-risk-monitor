@@ -426,23 +426,56 @@ def fetch_all(dictionaries: dict, start: date, end: date) -> pd.DataFrame:
     return pd.DataFrame(cols)
 
 
-def load_or_update(dictionaries: dict, backfill_from: date | None = None) -> pd.DataFrame:
+def load_or_update(
+    dictionaries: dict,
+    backfill_from: date | None = None,
+    *,
+    end_date: date | None = None,
+    immutable_through: date | None = None,
+) -> pd.DataFrame:
     """Incremental store: keep raw volumes in data/raw/gdelt_volume.csv.
     Daily runs fetch a 14-day tail and merge (GDELT revises recent days);
-    --backfill fetches from backfill_from (default 2017-01-01)."""
+    --backfill fetches from backfill_from (default 2017-01-01).
+
+    A finalized-publication caller supplies ``end_date=D-1`` and the last
+    already-published day as ``immutable_through``.  That mode fetches only
+    unpublished days, refuses a store that already contains D0/future rows,
+    and cannot silently revise a prior final.
+    """
     store = RAW_DIR / "gdelt_volume.csv"
     today = date.today()
+    end = end_date or today
+    if end > today:
+        raise RuntimeError(f"GDELT end date {end} is later than today {today}")
+    if immutable_through is not None and immutable_through > end:
+        raise RuntimeError("immutable publication boundary is later than fetch end")
     existing = None
     if store.exists():
         existing = pd.read_csv(store, parse_dates=["date"])
         existing["date"] = existing["date"].dt.date
         existing = existing.set_index("date").sort_index()
+        if immutable_through is not None and any(day > end for day in existing.index):
+            raise RuntimeError(
+                "GDELT store contains D0/future rows beyond the finalized target"
+            )
 
     if backfill_from is not None:
-        fetched = fetch_all(dictionaries, backfill_from, today)
+        fetched = fetch_all(dictionaries, backfill_from, end)
     else:
-        start = today - timedelta(days=14)
-        fetched = fetch_all(dictionaries, start, today)
+        start = end - timedelta(days=14)
+        if immutable_through is not None:
+            start = max(start, immutable_through + timedelta(days=1))
+        fetched = (
+            fetch_all(dictionaries, start, end)
+            if start <= end
+            else pd.DataFrame()
+        )
+
+    if immutable_through is not None and not fetched.empty:
+        if any(day <= immutable_through or day > end for day in fetched.index):
+            raise RuntimeError(
+                "GDELT fetch crossed the immutable finalized-day boundary"
+            )
 
     if existing is not None and backfill_from is None:
         merged = fetched.combine_first(existing)  # new tail wins on overlap? No:

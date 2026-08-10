@@ -141,6 +141,21 @@ def test_new_actions_write_permission_is_refused(security_tree: Path) -> None:
     _refusal(security_tree, "workflow_actions_write_set_mismatch")
 
 
+def test_direct_final_recovery_cas_must_keep_frozen_parent_guard(
+    security_tree: Path,
+) -> None:
+    path = security_tree / ".github" / "workflows" / "morning.yml"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            'REMOTE_COMMIT=$(git rev-parse origin/main)',
+            'REMOTE_COMMIT="unguarded"',
+            1,
+        ),
+        encoding="utf-8",
+    )
+    _refusal(security_tree, "publisher_frozen_cas_incomplete")
+
+
 def test_job_level_permission_override_is_refused(security_tree: Path) -> None:
     path = security_tree / ".github" / "workflows" / "ci.yml"
     path.write_text(

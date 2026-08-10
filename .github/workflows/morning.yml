@@ -77,7 +77,7 @@ jobs:
     #                            ---------------
     #   worst observed            ~38 min against a 35-minute cap
     #
-    # The gate term is the one nobody re-derived: publish_push.sh runs
+    # The gate term is the one nobody re-derived: the generic publisher runs
     # scripts/gate.sh --committed inside the push step, so since
     # gate_candidate landed EVERY lane's cap has had to cover a full CI
     # gate on top of that lane's own work. Nine lanes call it. #26 spent
@@ -100,7 +100,7 @@ jobs:
     # pytest, so ~20 minutes is ONE gate, not a retry storm. The suite grew
     # today -- scenario proof, n-ary trace, page anchors, no-JS,
     # cross-runtime parity, analytical clause -- and every lane that calls
-    # publish_push.sh pays the whole of it inside its own cap.
+    # every publishing lane pays the whole of it inside its own cap.
     #
     #   heal (--heal 5)          11.0 - 11.1 min   measured #26, #27
     #   pipeline (run_daily)     14.9 - 20.8 min   measured #27, #26
@@ -188,45 +188,60 @@ jobs:
           else
             echo "remote tip has $REMOTE_DATE, contract target is $TARGET"
             echo "skip=false" >> "$GITHUB_OUTPUT"
+            BASE_COMMIT=$(git rev-parse origin/main)
+            # Freeze the exact target and main parent before acquisition.
+            # A later publication slice will replace the generic publisher
+            # with a CAS-only final push; until then the candidate itself
+            # records this parent and remains reviewable off-line.
+            git checkout --detach "$BASE_COMMIT"
+            echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+            echo "base_commit=$BASE_COMMIT" >> "$GITHUB_OUTPUT"
           fi
-      - name: Enforce dictionary rules (ex-ante rule)
+      - name: Cheap disjoint preflight (dictionary and frozen calibration only)
         if: steps.guard.outputs.skip != 'true'
-        # -m "not live" excludes assertions about the CURRENT state of
-        # published payloads (freshness, the _meta stamp promise, served
-        # -data invariants). Those are real checks and they run in ci.yml
-        # and in the daily enrichment lane.
-        #
-        # They must not run HERE. This step is the first gate on the
-        # 06:00 contract, so any test it runs can block a publish -- and
-        # a weekly lane landing one day late would fail a freshness
-        # assertion and stop an index that is itself perfectly correct.
-        # The gate would be enforcing something with nothing to do with
-        # whether today's number is right.
-        #
-        # Same mistake, third time today: a test that reaches outside
-        # the code it tests does not belong in the contract's gate.
-        run: python -m pytest -q -m "not live"
-      - name: Heal recent days (fresh runner IP)
+        # The exact full CI gate still runs over the final candidate inside
+        # publish_push. Running the whole suite here too spent 11-13 hosted
+        # minutes before acquisition and repeated the same normative vectors
+        # over a pre-candidate SHA. This bounded preflight checks only the two
+        # inputs acquisition is about to trust.
+        run: python -m pytest -q tests/test_dictionaries.py tests/test_registration_freezes.py
+      - name: Acquire immutable exact-target source frame
+        id: source
         if: steps.guard.outputs.skip != 'true'
-        run: python -m src.fetch_ngrams --heal 5
+        continue-on-error: true
+        # Hosted maximum observed for the same 48-stamp acquisition was
+        # 11m13s (#43); 14m adds 2m47s (25%) without consuming the gate's
+        # separately declared budget.
+        run: |
+          /usr/bin/time -v timeout --signal=TERM 14m python -m src.final_publication \
+            --acquire-target "${{ steps.guard.outputs.target }}" \
+            --base-commit "${{ steps.guard.outputs.base_commit }}"
       - name: Run pipeline (final index only)
-        if: steps.guard.outputs.skip != 'true'
-        # The healer immediately above is this lane's one source-acquisition
-        # boundary. Without offline mode, run_daily opens a second GDELT DOC
-        # tail acquisition (multiple requests with seven-minute read ceilings)
-        # after the NGram store is already healed. That duplicate path hit the
-        # job budget while also risking a mixed-regime overwrite of the store.
-        # Offline run_daily consumes the exact healed store and committed market
-        # cache, then performs only deterministic transformation/publication.
-        run: IGRM_OFFLINE=1 python -m src.run_daily
+        id: pipeline
+        if: steps.guard.outputs.skip != 'true' && steps.source.outcome == 'success'
+        continue-on-error: true
+        # This lane is store-only: no GDELT or markets acquisition. The exact
+        # final-only code path (receipt revalidation, 3,486-row score/episode
+        # build, written-target assertion, render, and finalized marker) took
+        # 0.687s locally on 2026-08-10 against an isolated eligible 48/48
+        # candidate; /usr/bin/time was 1.22s including fixture preparation.
+        # Seven minutes leaves a deliberately large hosted-runner margin while
+        # keeping the historical 31m05s network pipeline from run #43 outside
+        # this recovery authority.
+        run: |
+          IGRM_OFFLINE=1 /usr/bin/time -v timeout --signal=TERM 7m python -m src.run_daily --final-only \
+            --target "${{ steps.guard.outputs.target }}"
       - name: Dual-computation audit (fail-loud gate before any push)
-        if: steps.guard.outputs.skip != 'true'
-        run: python -m src.audit
+        id: audit
+        if: steps.guard.outputs.skip != 'true' && steps.source.outcome == 'success' && steps.pipeline.outcome == 'success'
+        continue-on-error: true
+        run: /usr/bin/time -v timeout --signal=TERM 2m python -m src.audit
       - name: Reliability record from git evidence
-        if: steps.guard.outputs.skip != 'true'
+        if: steps.guard.outputs.skip != 'true' && steps.source.outcome == 'success' && steps.pipeline.outcome == 'success' && steps.audit.outcome == 'success'
         continue-on-error: true
         run: python scripts/build_reliability.py
       - name: Stamp payload metadata and asset versions
+        if: steps.guard.outputs.skip != 'true' && steps.source.outcome == 'success' && steps.pipeline.outcome == 'success' && steps.audit.outcome == 'success'
         # Nine workflows commit into docs/. Until 2026-08-07 exactly ONE
         # of them stamped, so the codebook's promise that every download
         # carries its licence and citation held only for whatever
@@ -242,7 +257,9 @@ jobs:
           python -m src.stamp_meta || true
           python -m src.stamp_assets || true
       - name: Derived lanes (recompute from the committed stores)
-        if: steps.guard.outputs.skip != 'true'
+        id: derived
+        if: steps.guard.outputs.skip != 'true' && steps.source.outcome == 'success' && steps.pipeline.outcome == 'success' && steps.audit.outcome == 'success'
+        continue-on-error: true
         # THE CONTRACT LANE COULD NOT SATISFY ITS OWN GATE WITHOUT THIS.
         #
         # This lane advanced latest.json and regenerated nothing that
@@ -263,76 +280,139 @@ jobs:
         # source column, monthly reads the shares CSV publish_shares
         # writes. Nothing here touches the network -- they read the
         # committed stores -- so they are safe in a lane whose whole job
-        # is to publish quickly from what is already banked. Measured at
-        # roughly two minutes inside daily #102, against a 45-minute cap.
+        # is to publish quickly from what is already banked. The group took
+        # 10s in morning #43; a broader daily #102 observation was roughly
+        # two minutes.
         #
-        # Deliberately NOT continue-on-error, unlike the daily's copy. If
-        # a derived payload cannot be rebuilt the candidate is incoherent
-        # and the gate refuses it anyway, and a visible step failure
-        # naming the generator beats a gate refusal that has to be traced
-        # back to one -- which is the lesson of this entire day.
+        # The step outcome is captured so a refusal can publish the disjoint,
+        # value-free status candidate. No derived failure becomes authority
+        # to publish final values.
         run: |
-          python -m src.provenance
-          python -m src.publish_shares
-          python -m src.splice_sensitivity
-          python -m src.monthly
-          python -m src.blind_spot
-          python -m src.detection_baselines
-          python -m src.negative_results
-          python -m src.episode_actors
-          python -m src.exposure
-          python -m src.predictability
-          python -m src.outlet_drift
-          python -m src.assistant_answers
-          python -m src.status_data
-          # THE THREE THAT CAN REFUSE THIS LANE'S OWN CANDIDATE.
-          #
-          # The block above was assembled from the payloads whose TESTS
-          # rebuild and compare them. It missed the other half: the registries
-          # whose CI step is `python -m src.X --check`, which refuse just as
-          # hard and are what actually killed runs #53, #54, #55 and #57 on
-          # 2026-08-11:
-          #
-          #   publish refused: the committed CI gate is red on 68294b02.
-          #   Failing check: python -m src.event_ledger --check
-          #   EventLedgerError: event_ledger_report_stale
-          #
-          # Thirty-five modules run in daily.yml and not here, and adding all
-          # of them would blow the window -- most fetch the network or scan
-          # corpora. Exactly FOUR have a CI --check that can fail this gate,
-          # so exactly four belong here. They read the committed stores, need
-          # no network, and cost about two seconds together (measured).
-          #
-          # product_catalog is in this list only because
-          # tests/test_contract_lane_regenerates_what_ci_checks.py found it.
-          # Reading daily.yml and diffing it against this lane by hand missed
-          # it -- daily.yml does not run it either, so a comparison between
-          # the two lanes could never have found it. The relation that matters
-          # is ci.yml --check vs THIS lane, and only the test states it.
-          python -m src.world_state
-          python -m src.event_ledger
-          python -m src.evolution_engine
-          python -m src.product_catalog --write
-      - name: Commit and push
-        if: steps.guard.outputs.skip != 'true'
+          # Five minutes covers both the 10s morning #43 observation and the
+          # roughly two-minute daily #102 observation with substantial margin.
+          /usr/bin/time -v timeout --signal=TERM 5m bash -c '
+            set -e
+            python -m src.provenance
+            python -m src.publish_shares
+            python -m src.splice_sensitivity
+            python -m src.monthly
+            python -m src.blind_spot
+            python -m src.detection_baselines
+            python -m src.negative_results
+            python -m src.episode_actors
+            python -m src.exposure
+            python -m src.predictability
+            python -m src.outlet_drift
+            python -m src.assistant_answers
+            python -m src.status_data
+            # These four offline registries are checked by the committed CI
+            # gate and must be regenerated by the same candidate that changes
+            # their source stores. They add roughly two measured seconds and
+            # cannot be deferred to an enrichment lane without making this
+            # publisher refuse its own otherwise-valid final.
+            python -m src.world_state
+            python -m src.event_ledger
+            python -m src.evolution_engine
+            python -m src.product_catalog --write
+          '
+      - name: Gate and CAS-publish final or value-free refusal
+        id: publish
+        if: always() && steps.guard.outputs.skip != 'true'
         env:
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "igrm-bot"
-          git config user.email "actions@github.com"
-          # docs, not docs/data. The step above runs stamp_assets, which
-          # rewrites EVERY docs/*.html whenever an asset hash changes, and
-          # those rewrites are not under docs/data. Staging narrower than
-          # the lane writes left them in the working tree, and unstaged
-          # changes make `git pull --rebase` refuse outright -- so
-          # publish_push.sh burned all five retries on sleeps, never
-          # reached its gate, and the contract lane failed at 2.5 minutes
-          # with nothing in the log to say why. Runs #27, #32 and #33 on
-          # 2026-08-09, while the site served 2026-08-07 for a third day.
-          #
-          # Publishing them is also correct on its own terms: an asset
-          # stamp that stays behind points the served pages at a version
-          # of the stylesheet that is no longer the one on disk.
-          # daily.yml, notes.yml and validate.yml already stage docs.
-          git add docs data/raw || true
-          bash scripts/publish_push.sh "data: final $(date -u -d 'yesterday' +%F) via morning-contract lane"
+          PUBLISH_TOKEN="${IGRM_PUBLISH_TOKEN:?IGRM_PUBLISH_TOKEN is required}"
+          AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$PUBLISH_TOKEN" | base64 | tr -d '\n')"
+          unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN
+
+          push_frozen_parent() {
+            git fetch --quiet origin main || return 1
+            REMOTE_COMMIT=$(git rev-parse origin/main) || return 1
+            if [ "$REMOTE_COMMIT" != "${{ steps.guard.outputs.base_commit }}" ]; then
+              echo "::error::CAS refusal: candidate parent ${{ steps.guard.outputs.base_commit }}, current main $REMOTE_COMMIT; rebuild required"
+              return 1
+            fi
+            GIT_CONFIG_COUNT=1 \
+              GIT_CONFIG_KEY_0='http.https://github.com/.extraheader' \
+              GIT_CONFIG_VALUE_0="$AUTH_HEADER" \
+              git push origin HEAD:main
+          }
+
+          publish_final() {
+            git config user.name "igrm-bot"
+            git config user.email "actions@github.com"
+            git add docs data/raw || return 1
+            git commit -m "data: final ${{ steps.guard.outputs.target }} via morning-contract lane" || return 1
+            # One exact gate for one frozen candidate SHA. Never rebase or
+            # resolve final/history conflicts; a changed parent must rebuild.
+            # Do not impose an inner deadline on the exact gate yet. Public
+            # CI #533 (run 31360365274), step "Tests + coverage", took 36m42s
+            # on c76d5be; CI #534 on current a2a05b6 took 24m55s. The older
+            # 24.1m publisher observation is not a safe upper bound across
+            # hosted-runner variance, and a 27m timeout would kill a valid
+            # candidate. The unchanged 60m job cap therefore remains a known
+            # availability boundary pending a separately budgeted gate job.
+            /usr/bin/time -v bash scripts/gate.sh --committed || return 1
+            push_frozen_parent
+          }
+
+          publish_refusal() {
+            # Build from the frozen parent in a disjoint worktree. The main
+            # runner may even contain a committed failed value candidate; no
+            # such byte can become an ancestor of this status-only commit.
+            STATUS_ROOT="$(mktemp -d)/status-candidate"
+            git worktree add --detach "$STATUS_ROOT" \
+              "${{ steps.guard.outputs.base_commit }}" || return 1
+            if [ -f data/raw/final_publication_status.json ]; then
+              mkdir -p "$STATUS_ROOT/data/raw"
+              cp data/raw/final_publication_status.json \
+                "$STATUS_ROOT/data/raw/final_publication_status.json"
+            fi
+            cd "$STATUS_ROOT" || return 1
+            git config user.name "igrm-bot"
+            git config user.email "actions@github.com"
+            FAILURE_STAGE=pipeline
+            if [ "${{ steps.source.outcome }}" != "success" ]; then
+              FAILURE_STAGE=source
+            elif [ "${{ steps.pipeline.outcome }}" != "success" ]; then
+              FAILURE_STAGE=pipeline
+            elif [ "${{ steps.audit.outcome }}" != "success" ]; then
+              FAILURE_STAGE=audit
+            elif [ "${{ steps.derived.outcome }}" != "success" ]; then
+              FAILURE_STAGE=derived
+            fi
+            python -m src.final_publication \
+              --record-pipeline-failed "${{ steps.guard.outputs.target }}" \
+              --failure-stage "$FAILURE_STAGE" \
+              --base-commit "${{ steps.guard.outputs.base_commit }}" || return 1
+            python -m src.final_publication --write-public-status \
+              --today "$(date -u -d '${{ steps.guard.outputs.target }} + 1 day' +%F)" \
+              || return 1
+            git add data/raw/final_publication_status.json docs/data/status.json \
+              docs/index.html docs/status.html || return 1
+            if git diff --cached --name-only | grep -Eq \
+              '^(data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/ngram_days/|data/raw/final_publication_receipts/)'; then
+              echo "::error::failure disclosure attempted to stage candidate value bytes"
+              return 1
+            fi
+            git commit -m "status: final ${{ steps.guard.outputs.target }} unavailable" || return 1
+            /usr/bin/time -v bash scripts/gate.sh --committed || return 1
+            push_frozen_parent
+          }
+
+          if [ "${{ steps.source.outcome }}" = "success" ] && \
+             [ "${{ steps.pipeline.outcome }}" = "success" ] && \
+             [ "${{ steps.audit.outcome }}" = "success" ] && \
+             [ "${{ steps.derived.outcome }}" = "success" ]; then
+            # This exact candidate consumes the one full-gate budget for the
+            # job. A gate/CAS refusal exits red; the separately budgeted
+            # watchdog retries/discloses it instead of starting a second full
+            # gate inside a nearly exhausted 60-minute job.
+            if publish_final; then
+              exit 0
+            else
+              rc=$?
+              exit "$rc"
+            fi
+          fi
+          publish_refusal
