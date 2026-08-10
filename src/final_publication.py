@@ -306,11 +306,13 @@ def _first_parent_paths_never_changed(
     """Check append-only path history with two Git walks, not O(paths*commits).
 
     Endpoint equality is insufficient because a value can be changed and later
-    restored.  ``git log --first-parent --name-only`` reports every path whose
-    blob changed at any transition in the range, including deletion/re-add and
-    merge-result changes.  The separate first-parent ancestry walk preserves
-    the old refusal when ``introduction`` is reachable only through a merge's
-    non-first parent.
+    restored.  One ``git cat-file --batch-check`` call resolves every registered
+    path at every commit on the first-parent segment, so intermediate deletion,
+    re-addition and merge-result changes remain visible without one process per
+    blob.  Comparing object IDs deliberately preserves the old byte rule: a
+    mode-only change with the same blob is accepted.  The separate ancestry walk
+    preserves the old refusal when ``introduction`` is reachable only through a
+    merge's non-first parent.
     """
 
     paths = tuple(relatives)
@@ -322,24 +324,34 @@ def _first_parent_paths_never_changed(
         capture_output=True,
         text=True,
     )
-    if ancestry.returncode != 0 or introduction not in ancestry.stdout.splitlines():
+    commits = ancestry.stdout.splitlines()
+    if ancestry.returncode != 0 or introduction not in commits:
         return False
-    changes = subprocess.run(
-        [
-            "git",
-            "log",
-            "--first-parent",
-            "--format=",
-            "--name-only",
-            f"{introduction}..{head}",
-            "--",
-            *paths,
-        ],
+    segment = list(reversed(commits[: commits.index(introduction) + 1]))
+    queries = [f"{commit}:{path}" for path in paths for commit in segment]
+    objects = subprocess.run(
+        ["git", "cat-file", "--batch-check=%(objectname)"],
         cwd=root,
+        input="\n".join(queries) + "\n",
         capture_output=True,
         text=True,
     )
-    return changes.returncode == 0 and not changes.stdout.strip()
+    answers = objects.stdout.splitlines()
+    if objects.returncode != 0 or len(answers) != len(queries):
+        return False
+    object_ids: list[str | None] = []
+    for query, answer in zip(queries, answers, strict=True):
+        if re.fullmatch(r"[0-9a-f]{40,64}", answer):
+            object_ids.append(answer)
+        elif answer == f"{query} missing":
+            object_ids.append(None)
+        else:
+            return False
+    width = len(segment)
+    return all(
+        len(set(object_ids[offset : offset + width])) == 1
+        for offset in range(0, len(object_ids), width)
+    )
 
 
 def _first_parent_index_surface_never_changed(

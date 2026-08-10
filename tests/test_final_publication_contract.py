@@ -2631,6 +2631,16 @@ def test_first_parent_blob_history_is_checked_in_two_batched_git_walks(
         cwd=root,
         check=True,
     )
+    subprocess.run(
+        ["git", "update-index", "--chmod=+x", "docs/data/latest.json"],
+        cwd=root,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "mode only; blob remains identical"],
+        cwd=root,
+        check=True,
+    )
     head = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=root,
@@ -2656,7 +2666,7 @@ def test_first_parent_blob_history_is_checked_in_two_batched_git_walks(
     )
     assert len(commands) == 2
     assert commands[0][:3] == ("git", "rev-list", "--first-parent")
-    assert commands[1][:3] == ("git", "log", "--first-parent")
+    assert commands[1][:3] == ("git", "cat-file", "--batch-check=%(objectname)")
 
 
 def test_aug9_legacy_history_refuses_mutation_followed_by_exact_revert(
