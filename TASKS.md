@@ -33,9 +33,21 @@ contract codes == reachable codes (15 == 15), so the over-claim cannot recur.
 Gates hit: pytest/ruff/mypy all pass. Not shipped (do-not-push rule).
 
 ## T2 — Second scope predicate `scope:objects_touching_event`
-Status: TODO
-Design already lists it (design/product_manifest_and_correction_closure.md §10).
-Additive; strengthens the closure over event-scoped products.
+Status: DONE (local commit; NOT pushed)
+Design listed it (design/product_manifest_and_correction_closure.md §10).
+Fix: registered `scope:objects_touching_event` in the contract only —
+`compute_scope` already generalized over match_object_type/binding_parameter,
+so NO runtime change was needed (smallest safe change confirmed).
+Files changed: `governance/product_manifest_contract.json`,
+`tests/test_product_manifest.py`, `TASKS.md`.
+Commands run: `pytest tests/test_product_manifest.py` (19 passed),
+`ruff check` (clean).
+Assertions: new test compiles a 24-clause event-scoped product and asserts its
+correction closure catches a supersede of that event; the inventory-lock test
+`test_contract_is_deny_by_default_and_loads` was moved to the new 2-predicate
+set in the SAME change (existing test correctly caught the addition — not
+loosened to a subset check).
+Gates hit: pytest/ruff pass. Not shipped (do-not-push rule).
 
 ## T3 — Codex B2: Atlas Max join certifies an unpublished world
 Status: BLOCKED(codex-lane) — engine files are Codex's; audit filed at

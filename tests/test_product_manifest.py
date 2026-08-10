@@ -73,7 +73,10 @@ def _op(topology: str, predecessors: list[tuple[str, str]],
 def test_contract_is_deny_by_default_and_loads() -> None:
     contract = pm.load_contract()
     assert contract["default_policy"] == "deny"
-    assert set(contract["scope_predicates"]) == {"scope:objects_touching_entity"}
+    # Inventory lock: this set moves in the same change that registers a
+    # predicate, never loosened to a subset check.
+    assert set(contract["scope_predicates"]) == {
+        "scope:objects_touching_entity", "scope:objects_touching_event"}
 
 
 def test_a_real_product_compiles_and_is_deterministic(tmp_path: Path) -> None:
@@ -229,6 +232,42 @@ def test_artifact_role_must_be_registered(tmp_path: Path) -> None:
     with pytest.raises(pm.ProductManifestError) as err:
         pm.compile_product(source, manifest)
     assert err.value.code == "manifest_artifact_not_registered_role_projection"
+
+
+# --- second scope predicate: objects_touching_event -------------------------
+
+EVENT = "evt:oges.fixture.policy.001"
+
+
+def test_event_scope_predicate_compiles_without_a_runtime_change(tmp_path: Path) -> None:
+    """scope:objects_touching_event is a contract addition; compute_scope
+    already generalizes over match_object_type/binding_parameter, so no code
+    change was needed. 24 of 89 clauses reference the fixture event."""
+    source = _bundle(tmp_path)
+    contract = pm.load_contract()
+    scope = {"predicate_id": "scope:objects_touching_event",
+             "bindings": {"event_id": EVENT}}
+    selected = pm.compute_scope(source["clauses"], scope, contract)["selected_clause_ids"]
+    assert len(selected) == 24, "the fixture event is referenced by 24 clauses"
+    by_id = {c["clause_id"]: c for c in source["clauses"]}
+    manifest = {
+        "object_type": "product_manifest", "schema_version": "0.1.0",
+        "manifest_id": "pm:event", "record_sha256": "unset",
+        "clause_refs": [{"clause_id": c, "clause_record_sha256": by_id[c]["record_sha256"]}
+                        for c in selected],
+        "selection_scope": scope,
+        "output_artifact_refs": [
+            {"artifact_id": "pm:event:research", "artifact_record_sha256": "a" * 64,
+             "role": "research"}],
+        "universe_receipt": {}, "limitation_ids": [],
+    }
+    comp = pm.compile_product(source, manifest, contract=contract)
+    assert len(comp["resolved_clause_ids"]) == 24
+
+    # A supersede of that event is a direct reverse-dep hit on the event product.
+    op = _op("supersede", [("event", EVENT)], [])
+    res = pm.correction_closure([manifest], source, op, contract=contract)
+    assert res["affected_manifest_ids"] == ["pm:event"]
 
 
 # --- verify_compilation: an external compilation is reproduced, not trusted ---

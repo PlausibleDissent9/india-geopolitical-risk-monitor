@@ -48,6 +48,12 @@
       "match_object_type": "entity",
       "binding_parameter": "entity_id",
       "binding_domain_id": "domain:registered_entity_ids"
+    },
+    "scope:objects_touching_event": {
+      "what": "Selects every clause whose proof_binding.source_object_refs include an event ref equal to the bound event_id. Enables event-scoped products whose correction blast-closure is exercised directly when a lineage split/merge/supersede names that event.",
+      "match_object_type": "event",
+      "binding_parameter": "event_id",
+      "binding_domain_id": "domain:registered_event_ids"
     }
   },
   "scope_predicates_note": "Closed and deny-by-default. selection_scope names a predicate_id from this registry and supplies bindings drawn from the named closed domain. A selection_scope carrying filter text, a field list, a lambda or a wildcard refuses manifest_scope_predicate_unregistered. The kernel computes the selected clause set; the caller never lists members.",
