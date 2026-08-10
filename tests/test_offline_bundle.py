@@ -105,6 +105,42 @@ def test_a_flipped_member_byte_breaks_the_rebuild() -> None:
     assert err.value.code == "bundle_nondeterminism_detected"
 
 
+# --- deterministic zip packaging (T11 sub-slice) ----------------------------
+
+def test_bundle_zip_is_byte_deterministic() -> None:
+    import io
+    import zipfile
+    a = ob.build_bundle_bytes(_members())
+    b = ob.build_bundle_bytes(_members())
+    assert a == b, "the bundle zip is not byte-reproducible"
+    # it is a real, readable zip containing the members + manifest.json
+    with zipfile.ZipFile(io.BytesIO(a)) as zf:
+        names = sorted(zf.namelist())
+        assert names == sorted(PUBLIC + ["manifest.json"])
+        # every member's stored bytes equal the committed file bytes
+        for p in PUBLIC:
+            assert zf.read(p) == (ROOT / p).read_bytes()
+
+
+def test_bundle_zip_refuses_a_rights_restricted_member_before_writing() -> None:
+    members = _members() + [{"path": "data/raw/gdelt_chunks/x.json",
+                             "declared_sha256": "0" * 64}]
+    with pytest.raises(ob.OfflineBundleError) as err:
+        ob.build_bundle_bytes(members)
+    assert err.value.code == "bundle_member_rights_ineligible"
+
+
+def test_bundle_zip_member_timestamp_is_pinned_not_now() -> None:
+    import io
+    import zipfile
+    data = ob.build_bundle_bytes(_members())
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        for info in zf.infolist():
+            assert info.date_time == (1980, 1, 1, 0, 0, 0), (
+                "a zip member carries a build-time timestamp; the bundle bytes "
+                "would then depend on when it was built")
+
+
 def test_malformed_member_shape_refuses() -> None:
     with pytest.raises(ob.OfflineBundleError) as err:
         ob.build_manifest([{"path": PUBLIC[0]}])  # missing declared_sha256

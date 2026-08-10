@@ -22,8 +22,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import subprocess
+import zipfile
 from collections.abc import Mapping, Sequence
 from pathlib import Path, PurePosixPath
 from typing import Any, NoReturn, cast
@@ -164,6 +166,52 @@ def verify_rebuild(
     if rebuilt["members"] != list(manifest.get("members", [])):
         _fail("bundle_nondeterminism_detected", "members")
     return {"verified": True, "manifest_digest": rebuilt["manifest_digest"]}
+
+
+# A single fixed timestamp for every zip member. A bundle's bytes must not
+# depend on when it was built, so mtime is pinned rather than "now". 1980-01-01
+# is the zip epoch (the earliest a DOS timestamp can express).
+_ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
+
+
+def build_bundle_bytes(
+    members: Sequence[Mapping[str, Any]],
+    *,
+    root: Path = ROOT,
+    contract: Mapping[str, Any] | None = None,
+) -> bytes:
+    """Package the manifest and its members into a BYTE-DETERMINISTIC zip.
+
+    Two builds over the same members and committed bytes are byte-identical.
+    Determinism is not free in zip: it requires a fixed member order, a fixed
+    per-member timestamp, a single compression method, and no host-specific
+    external attributes. The manifest is admitted first (so a rights-restricted
+    or tampered member refuses before any bytes are written), then members and
+    manifest.json are added in one lexicographic order.
+    """
+    contract = contract or load_contract()
+    manifest = build_manifest(members, root=root, contract=contract)
+
+    entries: list[tuple[str, bytes]] = [
+        (row["path"], (root / row["path"]).read_bytes())
+        for row in manifest["members"]
+    ]
+    entries.append((
+        "manifest.json",
+        json.dumps(manifest, ensure_ascii=False, sort_keys=True,
+                   separators=(",", ":")).encode("utf-8"),
+    ))
+    entries.sort(key=lambda e: e[0])
+
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for name, data in entries:
+            info = zipfile.ZipInfo(filename=name, date_time=_ZIP_EPOCH)
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o644 << 16  # fixed mode, no host bits
+            info.create_system = 3  # fixed to unix, not the building host
+            zf.writestr(info, data)
+    return buffer.getvalue()
 
 
 def main(argv: Sequence[str] | None = None) -> None:  # pragma: no cover - CLI

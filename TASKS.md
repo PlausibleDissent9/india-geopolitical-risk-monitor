@@ -180,3 +180,13 @@ Not actionable by this worker without touching Codex-owned engine code.
 Status: BLOCKED(do-not-push) — the perf fix (local commit `3f593cb`) recovers
 the nowcast/morning gate margin, but confirming recovery requires the commit on
 `origin` and a lane run. Cannot push. Human action needed to push, then observe.
+
+## T11 — Offline bundle: deterministic zip packaging
+Status: DONE (local commit; NOT pushed)
+`build_bundle_bytes` packages the manifest + members into a byte-reproducible
+zip: fixed member order, pinned 1980-epoch per-member timestamp, single
+compression method, fixed unix mode/create_system (no host bits). Admits the
+manifest first, so a rights-restricted or tampered member refuses before any
+bytes are written. Files: src/offline_bundle.py, tests/test_offline_bundle.py.
+Checks: pytest (17 passed), ruff + mypy clean. 3 new tests: byte-determinism +
+real-zip-contents, rights refusal before writing, timestamp-pinned-not-now.
