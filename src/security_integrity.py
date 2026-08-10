@@ -19,6 +19,8 @@ import hashlib
 import json
 import os
 import re
+import shutil
+import subprocess
 import tempfile
 from pathlib import Path, PurePosixPath
 from typing import Any, NoReturn, cast
@@ -41,15 +43,48 @@ FINAL_CAS_FUNCTION_SHA256 = {
         "5b1b35c93e04107f700430b24afc197dc68b91b46c3d1b5e0f2c765687b77f25"
     ),
     "publish_gated_candidate": (
-        "0c1f320ccc5f71f009140e445b1b84ff9a53f1584d0ff77ecff9aa8ba112efe3"
+        "a855c2a570525e63f30f8974548ac0de584e23c07facd81912215e8bf5d75856"
     ),
     "push_frozen_parent": (
-        "97cdd1df58596eee343054ac7923478bd034b8cca7d1b7a287190634867ebca5"
+        "2370b61bca5ed688272960332f69045cfbb18908bb72793a56c05d615797508b"
     ),
 }
 FINAL_CAS_DISPATCH_SHA256 = (
     "792dff3ece39d417edc12565c3dd97f8d3e0d7d05ed10273f239ea97c5e2d3f5"
 )
+TRUSTED_SECURITY_BASELINE_COMMIT = "1ba3618b832a5ee64ea86b3f97e26145ee72c178"
+TRUSTED_SECURITY_IMPLEMENTATION_SHA256 = (
+    "47630c10edd582e19e23a733de9ba5e632e8a587f42551a90363628b40978718"
+)
+TRUSTED_FINAL_CAS_SCRIPT_SHA256 = (
+    "64435b77b8ff876160f7bb62cda478c687e5980f22b8da2da867fbae2e8b5234"
+)
+_RIGHTS_RELEASE_TRANSITION = """  # Rights are time-varying authority. Recheck after every potentially slow
+  # gate/remote operation for value-bearing finals. A disjoint refusal uses
+  # separate authority: its exact candidate diff must contain only value-free
+  # status/UI paths. Both proofs bind the frozen candidate SHA and class.
+  if ! release_proof=$(python -m src.final_publication \\
+    --check-release-candidate "$CANDIDATE_CLASS" \\
+    --expected-candidate-sha "$FROZEN_CANDIDATE_SHA" \\
+    --base-commit "$BASE_COMMIT" \\
+    --expected-target "$TARGET"); then
+    echo "::error::CAS refusal: candidate-class release proof is not valid"
+    return 1
+  fi
+  release_candidate=$(printf '%s\\n' "$release_proof" | \\
+    sed -n 's/.*"candidate_sha": "\\([0-9a-f]*\\)".*/\\1/p')
+  release_class=$(printf '%s\\n' "$release_proof" | \\
+    sed -n 's/.*"candidate_class": "\\([a-z]*\\)".*/\\1/p')
+  if [ "$release_candidate" != "$FROZEN_CANDIDATE_SHA" ]; then
+    echo "::error::CAS refusal: release proof candidate $release_candidate is not frozen candidate $FROZEN_CANDIDATE_SHA"
+    return 1
+  fi
+  if [ "$release_class" != "$CANDIDATE_CLASS" ]; then
+    echo "::error::CAS refusal: release proof class $release_class is not candidate class $CANDIDATE_CLASS"
+    return 1
+  fi
+  printf '%s\\n' "$release_proof"
+"""
 
 
 class SecurityIntegrityError(ValueError):
@@ -212,6 +247,115 @@ def _shell_function_end(text: str, name: str) -> int:
     if len(matches) != 1:
         _fail("publisher_final_cas_function_count_invalid", name)
     return matches[0].end()
+
+
+def _validate_against_predecessor_projection(
+    root: Path, registry: dict[str, Any]
+) -> None:
+    """Prove the unchanged predecessor, not authority for its successor.
+
+    The cbb verifier authenticates the controls that predate the additive
+    release-rights block. The successor block and this projection live in the
+    same mutable commit, so their agreement is repository self-consistency,
+    not independent transition authorization. The public result is explicitly
+    downgraded until a signature rooted outside this commit is available.
+    """
+
+    result = subprocess.run(
+        [
+            "git",
+            "show",
+            f"{TRUSTED_SECURITY_BASELINE_COMMIT}:src/security_integrity.py",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        _fail("security_prior_trust_anchor_unavailable")
+    trusted_bytes = result.stdout
+    if hashlib.sha256(trusted_bytes).hexdigest() != (
+        TRUSTED_SECURITY_IMPLEMENTATION_SHA256
+    ):
+        _fail("security_prior_trust_anchor_digest_invalid")
+    script_result = subprocess.run(
+        [
+            "git",
+            "show",
+            f"{TRUSTED_SECURITY_BASELINE_COMMIT}:scripts/publish_final_cas.sh",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+    )
+    if script_result.returncode != 0 or hashlib.sha256(
+        script_result.stdout
+    ).hexdigest() != TRUSTED_FINAL_CAS_SCRIPT_SHA256:
+        _fail("security_prior_cas_anchor_invalid")
+    predecessor_script = script_result.stdout.decode("utf-8")
+    current_script = (root / "scripts/publish_final_cas.sh").read_text(
+        encoding="utf-8"
+    )
+    predecessor_push = _shell_function(predecessor_script, "push_frozen_parent")
+    prior_locals = "  local candidate_head parent_count candidate_parent remote_commit\n"
+    successor_locals = (
+        "  local candidate_head parent_count candidate_parent remote_commit "
+        "release_proof release_candidate release_class\n"
+    )
+    marker = "  GIT_CONFIG_COUNT=1 \\\n"
+    if predecessor_push.count(marker) != 1 or predecessor_push.count(prior_locals) != 1:
+        _fail("security_prior_cas_transition_marker_invalid")
+    expected_push = predecessor_push.replace(
+        prior_locals, successor_locals, 1
+    ).replace(
+        marker, _RIGHTS_RELEASE_TRANSITION + marker, 1
+    )
+    if _shell_function(current_script, "push_frozen_parent") != expected_push:
+        _fail("security_prior_cas_transition_rejected")
+
+    namespace: dict[str, Any] = {
+        "__name__": "_igrm_trusted_security_baseline",
+        "__file__": (
+            f"git:{TRUSTED_SECURITY_BASELINE_COMMIT}:src/security_integrity.py"
+        ),
+    }
+    try:
+        exec(compile(trusted_bytes, namespace["__file__"], "exec"), namespace)
+        trusted_validate = namespace["validate_repository"]
+        projected_registry = json.loads(json.dumps(registry))
+        projected_registry["implementation"]["sha256"] = (
+            TRUSTED_SECURITY_IMPLEMENTATION_SHA256
+        )
+        projected_registry["publisher"]["final_cas_script"]["sha256"] = (
+            TRUSTED_FINAL_CAS_SCRIPT_SHA256
+        )
+        with tempfile.TemporaryDirectory(prefix="igrm-security-parent-") as temp:
+            projected = Path(temp)
+            shutil.copytree(
+                root / ".github/workflows", projected / ".github/workflows"
+            )
+            for record in (
+                projected_registry["publisher"]["push_script"],
+                projected_registry["publisher"]["gate_script"],
+            ):
+                relative = Path(record["path"])
+                destination = projected / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(root / relative, destination)
+            final_relative = Path(
+                projected_registry["publisher"]["final_cas_script"]["path"]
+            )
+            final_destination = projected / final_relative
+            final_destination.parent.mkdir(parents=True, exist_ok=True)
+            final_destination.write_bytes(script_result.stdout)
+            implementation_relative = Path(
+                projected_registry["implementation"]["path"]
+            )
+            implementation_destination = projected / implementation_relative
+            implementation_destination.parent.mkdir(parents=True, exist_ok=True)
+            implementation_destination.write_bytes(trusted_bytes)
+            trusted_validate(root=projected, registry=projected_registry)
+    except Exception as exc:  # noqa: BLE001 - translate prior verifier refusal
+        detail = str(getattr(exc, "code", type(exc).__name__))
+        _fail("security_prior_trust_anchor_rejected", detail)
 
 
 def validate_repository(
@@ -388,9 +532,18 @@ def validate_repository(
         "git fetch --quiet origin main",
         "remote_commit=$(git rev-parse origin/main)",
         '[ "$remote_commit" != "$BASE_COMMIT" ]',
+        '--check-release-candidate "$CANDIDATE_CLASS"',
+        '--expected-candidate-sha "$FROZEN_CANDIDATE_SHA"',
+        '--base-commit "$BASE_COMMIT"',
+        '--expected-target "$TARGET"',
+        "release_candidate=$(printf",
+        "release_class=$(printf",
+        '[ "$release_candidate" != "$FROZEN_CANDIDATE_SHA" ]',
+        '[ "$release_class" != "$CANDIDATE_CLASS" ]',
         direct_push,
     )
     gated_markers = (
+        'CANDIDATE_CLASS="$candidate_class"',
         'git commit -m "$message"',
         "FROZEN_CANDIDATE_SHA=$(git rev-parse HEAD)",
         'parent_count=$(git rev-list --parents -n 1 "$FROZEN_CANDIDATE_SHA"',
@@ -418,6 +571,10 @@ def validate_repository(
     if hashlib.sha256(dispatch.encode("utf-8")).hexdigest() != FINAL_CAS_DISPATCH_SHA256:
         _fail("publisher_final_cas_dispatch_digest_invalid")
 
+    # Preserve granular refusals for ordinary drift and verify that the
+    # unchanged predecessor still satisfies cbb. This does not independently
+    # authorize the successor transition; the returned status says so.
+    _validate_against_predecessor_projection(root, value)
     limitations = _string_list(
         value.get("limitations"), "security_limitations_missing"
     )
@@ -439,7 +596,7 @@ def validate_repository(
                 "post-rebase publication gate; not a penetration test or security certification."
             ),
         },
-        "status": "static_repository_control_foundation",
+        "status": "repository_self_consistency_only",
         "default_policy": "deny",
         "scope": {
             "repository_controls_only": True,
@@ -447,6 +604,7 @@ def validate_repository(
             "publisher_push_script": push_path,
             "final_cas_push_script": final_cas_path,
             "canonical_gate_script": gate_path,
+            "successor_transition_external_authority": False,
         },
         "controls": {
             "immutable_workflow_actions": {
@@ -479,10 +637,11 @@ def validate_repository(
                 "token_cleared_before_candidate_gate": True,
             },
             "exact_post_rebase_publication_gate": {
-                "status": "pass",
+                "status": "self_consistent_unattested_transition",
                 "policy": "refuse_publish_on_red_candidate",
                 "command": gate_command,
                 "push_paths_verified": len(pushes) + 1,
+                "transition_authority": "unavailable_no_external_signature",
             },
         },
         "publishing_lanes": sorted(publishing_lanes),

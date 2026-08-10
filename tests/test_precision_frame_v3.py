@@ -142,6 +142,11 @@ def _write_source_cache(
 def test_production_scan_captures_exact_matcher_evidence(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    monkeypatch.setattr(
+        fetch_ngrams.ngram_rights,
+        "require_public_identity_rights",
+        lambda **_kwargs: {"status": "synthetic_authorized_fixture"},
+    )
     stamp = _stamp(0)
     toc = gzip.compress(
         "\n".join(

@@ -14,7 +14,8 @@
    "command": "bash scripts/gate.sh --publish",
    "policy": "refuse_publish_on_red_candidate",
    "push_paths_verified": 3,
-   "status": "pass"
+   "status": "self_consistent_unattested_transition",
+   "transition_authority": "unavailable_no_external_signature"
   },
   "full_history_for_frozen_evidence": {
    "fetch_depth": 0,
@@ -57,6 +58,7 @@
   "No external penetration test, independent security audit, formal threat-model review or security certification has been completed.",
   "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
   "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
+  "The rebased cbbdf45-equivalent predecessor projection at 1ba3618 does not independently authorize the successor release-rights insertion: coordinated changes to that insertion, its validator and this registry remain outside the machine-verifiable trust boundary until an external human-signed transition root exists.",
   "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
  ],
  "publishing_lanes": [
@@ -79,7 +81,8 @@
   "final_cas_push_script": "scripts/publish_final_cas.sh",
   "publisher_push_script": "scripts/publish_push.sh",
   "repository_controls_only": true,
+  "successor_transition_external_authority": false,
   "workflow_directory": ".github/workflows"
  },
- "status": "static_repository_control_foundation"
+ "status": "repository_self_consistency_only"
 }

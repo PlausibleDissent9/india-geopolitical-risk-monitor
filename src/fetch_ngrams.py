@@ -53,6 +53,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 
+from . import ngram_rights
 from .fetch_gdelt import build_queries
 
 BASE = ("https://storage.googleapis.com/data.gdeltproject.org/"
@@ -325,11 +326,21 @@ def _subseq(phrase: tuple[str, ...], tokens: list[str]) -> bool:
 def compute_day(
     day: date, specs: dict[str, dict],
     until_minute: int | None = None, min_docs: int = 5000,
+    *,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> dict | None:
     """Pooled-sample shares for one day; None if no files exist. The
     nowcast passes until_minute for a partial day and a lower min_docs
     (its payload discloses the sample size; the heal path keeps the
     full-day floor)."""
+    # This is the common network and identity-construction entry point used
+    # by finalized acquisition, calibration, debugging and nowcast. Rights
+    # must dominate the first source probe, not merely later cache/promotion
+    # paths. The current production registry is pending, so every caller
+    # refuses before touching the source until an applicable decision exists.
+    ngram_rights.require_public_identity_rights(
+        target=day, root=ROOT, test_authority=rights_authority
+    )
     stamps = _day_minute_files(day, until_minute)
     if not stamps:
         return None
@@ -427,20 +438,29 @@ def compute_day(
     }
 
 
-def _cached_day(day: date, specs: dict[str, dict]) -> dict | None:
-    DAY_CACHE.mkdir(parents=True, exist_ok=True)
+def _cached_day(
+    day: date,
+    specs: dict[str, dict],
+    *,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> dict | None:
     cache = DAY_CACHE / f"{day.isoformat()}.json"
     if cache.exists():
-        return json.loads(cache.read_text(encoding="utf-8"))
-    # A newly computed schema-1.1 cache contains deterministic membership
-    # commitments. Do not acquire or persist it while the source-retention
-    # rights decision is absent, pending, expired or revoked. Existing frozen
-    # schema-1.0 historical bytes remain readable through the branch above.
-    from . import final_publication
-
-    final_publication.require_ngram_public_identity_rights(root=ROOT)
-    result = compute_day(day, specs)
+        cached = json.loads(cache.read_text(encoding="utf-8"))
+        evidence = cached.get("_matcher_evidence") if isinstance(cached, dict) else None
+        if (
+            isinstance(evidence, dict)
+            and evidence.get("schema_version") == MATCHER_EVIDENCE_VERSION
+        ):
+            ngram_rights.require_public_identity_rights(
+                target=day,
+                root=ROOT,
+                test_authority=rights_authority,
+            )
+        return cached
+    result = compute_day(day, specs, rights_authority=rights_authority)
     if result is not None:
+        DAY_CACHE.mkdir(parents=True, exist_ok=True)
         cache.write_text(json.dumps(result), encoding="utf-8")
     return result
 

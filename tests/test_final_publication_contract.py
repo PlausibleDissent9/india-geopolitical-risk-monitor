@@ -7,7 +7,7 @@ import json
 import os
 import shutil
 import subprocess
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
 
@@ -20,6 +20,8 @@ from src import (
     fetch_gdelt,
     fetch_ngrams,
     final_publication,
+    ngram_rights,
+    nowcast,
     run_daily,
 )
 
@@ -46,6 +48,9 @@ def _write_approved_ngram_rights(
     signer_effective: str = "2026-08-08",
     signer_revoked: str | None = None,
     registry_effective: str = "2026-08-08",
+    permitted_uses: list[str] | None = None,
+    max_current_age_days: int = 2,
+    signer_role: str = "rights_reviewer",
 ) -> None:
     private_key = Ed25519PrivateKey.generate()
     public_key = private_key.public_key().public_bytes(
@@ -55,7 +60,7 @@ def _write_approved_ngram_rights(
     signer = {
         "signer_id": "test_ngram_rights_signer",
         "name": "Synthetic test signer",
-        "role": "test-only rights reviewer",
+        "role": signer_role,
         "public_key_ed25519_base64": base64.b64encode(public_key).decode(),
         "effective": signer_effective,
         "revoked_on": signer_revoked,
@@ -69,7 +74,7 @@ def _write_approved_ngram_rights(
             "signers": [signer],
         },
     )
-    uses = [
+    uses = permitted_uses or [
         "model_processing",
         "publish_derived_value",
         "publish_extract",
@@ -101,7 +106,7 @@ def _write_approved_ngram_rights(
         "outage_fallback": "Fail closed",
         "cost_owner": "Synthetic test owner",
         "reproducibility_tier": "test_only",
-        "max_current_age_days": 2,
+        "max_current_age_days": max_current_age_days,
         "permitted_uses": uses,
         "notes": "Synthetic test-only authorization; not a real rights decision.",
     }
@@ -325,6 +330,29 @@ def _trust(root: Path) -> final_publication.NonGitTestTrustRoot:
     return final_publication.non_git_test_trust_root(root, "a" * 40)
 
 
+def _rights(root: Path) -> ngram_rights.NonGitTestRightsAuthority:
+    return ngram_rights.non_git_test_authority(root)
+
+
+def _authorize_production_test_signer(
+    root: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    registry = json.loads(
+        (root / "governance/rights_signers.json").read_text(encoding="utf-8")
+    )
+    signer = registry["signers"][0]
+    monkeypatch.setattr(
+        ngram_rights,
+        "PRODUCTION_TRUSTED_SIGNERS",
+        {
+            signer["signer_id"]: (
+                signer["public_key_ed25519_base64"],
+                signer["role"],
+            )
+        },
+    )
+
+
 def _write_target_outputs(root: Path) -> None:
     (root / "docs/data/latest.json").write_text(
         json.dumps(
@@ -388,6 +416,7 @@ def _acquire(
         root=root,
         base_commit="a" * 40,
         compute_day=lambda _day, _specs_arg: result,
+        non_git_test_rights=_rights(root),
     )
 
 
@@ -428,6 +457,7 @@ def test_identity_retaining_acquisition_requires_current_signed_rights_before_fe
         root=root,
         base_commit="a" * 40,
         compute_day=compute,
+        non_git_test_rights=_rights(root),
     )
 
     assert status["status"] == "acquisition_failed"
@@ -443,22 +473,329 @@ def test_cached_day_does_not_fetch_or_retain_strong_evidence_while_rights_pendin
     root = _publication_root(tmp_path)
     _set_ngram_rights_pending(root)
     cache_dir = root / "data/raw/ngram_days"
-    called = False
+    probes: list[str] = []
 
-    def compute(*_args: object) -> dict:
-        nonlocal called
-        called = True
-        return _complete_result(root)
+    def probe(*_args: object, **_kwargs: object) -> list[str]:
+        probes.append("network-probe")
+        return []
 
     monkeypatch.setattr(fetch_ngrams, "ROOT", root)
     monkeypatch.setattr(fetch_ngrams, "DAY_CACHE", cache_dir)
-    monkeypatch.setattr(fetch_ngrams, "compute_day", compute)
-    with pytest.raises(final_publication.FinalPublicationError) as exc:
+    monkeypatch.setattr(fetch_ngrams, "_day_minute_files", probe)
+    with pytest.raises(ngram_rights.NgramRightsError):
         fetch_ngrams._cached_day(TARGET, _specs())
 
-    assert exc.value.classification == "rights_not_authorized"
-    assert called is False
+    assert probes == []
     assert not (cache_dir / f"{TARGET}.json").exists()
+
+
+def _apply_ngram_rights_attack(root: Path, attack: str) -> None:
+    if attack == "missing":
+        (root / "governance/source_rights_registry.json").unlink()
+    elif attack == "pending":
+        _set_ngram_rights_pending(root)
+    elif attack == "expired":
+        _write_approved_ngram_rights(root, review_due="2026-08-09")
+    elif attack == "revoked":
+        _write_approved_ngram_rights(root, signer_revoked=TODAY.isoformat())
+    elif attack == "future":
+        _write_approved_ngram_rights(
+            root,
+            reviewed_on="2026-08-11",
+            review_due="2027-08-11",
+        )
+    elif attack == "wrong_use":
+        _write_approved_ngram_rights(root, permitted_uses=["model_processing"])
+    else:
+        raise AssertionError(attack)
+
+
+@pytest.mark.parametrize(
+    "rights_attack", ("missing", "pending", "expired", "revoked", "future", "wrong_use")
+)
+def test_compute_day_and_nowcast_refuse_before_any_source_or_identity_work(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    rights_attack: str,
+) -> None:
+    direct_root = _publication_root(tmp_path / "direct")
+    _apply_ngram_rights_attack(direct_root, rights_attack)
+    probes: list[str] = []
+
+    def probe(*_args: object, **_kwargs: object) -> list[str]:
+        probes.append("network-probe")
+        return []
+
+    monkeypatch.setattr(fetch_ngrams, "ROOT", direct_root)
+    monkeypatch.setattr(fetch_ngrams, "_day_minute_files", probe)
+    with pytest.raises(ngram_rights.NgramRightsError):
+        fetch_ngrams.compute_day(
+            TARGET, _specs(), rights_authority=_rights(direct_root)
+        )
+    assert probes == []
+    assert not (direct_root / "data/raw/ngram_days").exists()
+
+    nowcast_root = _publication_root(tmp_path / "nowcast")
+    _apply_ngram_rights_attack(nowcast_root, rights_attack)
+    nowcast_out = nowcast_root / "docs/data/nowcast.json"
+
+    class FixedDateTime:
+        @classmethod
+        def now(cls, _tz: object = None) -> datetime:
+            return datetime(2026, 8, 10, 12, 0, tzinfo=timezone.utc)
+
+    monkeypatch.setattr(fetch_ngrams, "ROOT", nowcast_root)
+    monkeypatch.setattr(nowcast, "ROOT", nowcast_root)
+    monkeypatch.setattr(nowcast, "STORE", nowcast_root / "data/raw/gdelt_volume.csv")
+    monkeypatch.setattr(
+        nowcast, "CALIB", nowcast_root / "data/raw/ngram_calibration.json"
+    )
+    monkeypatch.setattr(nowcast, "OUT", nowcast_out)
+    monkeypatch.setattr(nowcast, "datetime", FixedDateTime)
+    with pytest.raises(ngram_rights.NgramRightsError):
+        nowcast.main(rights_authority=_rights(nowcast_root))
+    assert probes == []
+    assert not nowcast_out.exists()
+    assert not (nowcast_root / "data/raw/ngram_days").exists()
+
+
+def test_compute_day_reaches_probe_with_applicable_signed_rights(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    probes: list[date] = []
+
+    def probe(day: date, *_args: object, **_kwargs: object) -> list[str]:
+        probes.append(day)
+        return []
+
+    monkeypatch.setattr(fetch_ngrams, "ROOT", root)
+    monkeypatch.setattr(fetch_ngrams, "_day_minute_files", probe)
+    assert fetch_ngrams.compute_day(
+        TARGET, _specs(), rights_authority=_rights(root)
+    ) is None
+    assert probes == [TARGET]
+
+
+def test_pending_rights_do_not_block_read_only_legacy_cache(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    _set_ngram_rights_pending(root)
+    cache = root / f"data/raw/ngram_days/{TARGET}.json"
+    cache.parent.mkdir(parents=True)
+    legacy = _legacy_result(root)
+    cache.write_text(json.dumps(legacy), encoding="utf-8")
+    monkeypatch.setattr(fetch_ngrams, "ROOT", root)
+    monkeypatch.setattr(fetch_ngrams, "DAY_CACHE", cache.parent)
+    monkeypatch.setattr(
+        fetch_ngrams,
+        "compute_day",
+        lambda *_args, **_kwargs: pytest.fail("legacy cache attempted recomputation"),
+    )
+
+    assert fetch_ngrams._cached_day(TARGET, _specs()) == legacy
+
+
+@pytest.mark.parametrize("rights_attack", ("expired", "revoked"))
+def test_identity_bearing_cached_day_rechecks_rights_before_processing(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    rights_attack: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    if rights_attack == "expired":
+        _write_approved_ngram_rights(root, review_due="2026-08-09")
+    else:
+        _write_approved_ngram_rights(root, signer_revoked=TODAY.isoformat())
+    cache = root / f"data/raw/ngram_days/{TARGET}.json"
+    cache.parent.mkdir(parents=True)
+    cache.write_text(json.dumps(_complete_result(root)), encoding="utf-8")
+    probes: list[str] = []
+    processed: list[str] = []
+    monkeypatch.setattr(fetch_ngrams, "ROOT", root)
+    monkeypatch.setattr(fetch_ngrams, "DAY_CACHE", cache.parent)
+    monkeypatch.setattr(
+        fetch_ngrams,
+        "_day_minute_files",
+        lambda *_args, **_kwargs: probes.append("network") or [],
+    )
+
+    with pytest.raises(ngram_rights.NgramRightsError):
+        value = fetch_ngrams._cached_day(
+            TARGET,
+            _specs(),
+            rights_authority=_rights(root),
+        )
+        processed.append(str(value))
+
+    assert probes == []
+    assert processed == []
+
+
+@pytest.mark.parametrize(
+    "attack",
+    ("synthetic_copied_into_git", "arbitrary_agent_role", "coordinated_reseal"),
+)
+def test_production_rights_refuse_repository_added_signer_authority(
+    tmp_path: Path,
+    attack: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    if attack == "arbitrary_agent_role":
+        _write_approved_ngram_rights(root, signer_role="autonomous_agent")
+    elif attack == "coordinated_reseal":
+        # Re-create the signer, signed decision, signature and both registries
+        # together. Cryptographic self-consistency is not production trust.
+        _write_approved_ngram_rights(root)
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+
+    with pytest.raises(
+        ngram_rights.NgramRightsError,
+        match="^ngram_production_signer_untrusted$",
+    ):
+        ngram_rights.require_public_identity_rights(target=TARGET, root=root)
+
+
+def test_explicit_non_git_authority_is_the_only_synthetic_positive(
+    tmp_path: Path,
+) -> None:
+    root = _publication_root(tmp_path)
+    proof = ngram_rights.require_public_identity_rights(
+        target=TARGET,
+        root=root,
+        test_authority=_rights(root),
+    )
+
+    assert proof["target_date"] == TARGET.isoformat()
+    assert proof["max_current_age_days"] == 2
+    assert proof["evaluated_age_days"] == 1
+
+
+def test_rights_are_rechecked_at_actual_promotion_day_after_expiry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    _write_approved_ngram_rights(root, review_due="2026-08-10")
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 23, 55, tzinfo=timezone.utc),
+    )
+    trust = _trust(root)
+    assert _acquire(root, monkeypatch, _complete_result(root))["status"] == (
+        "target_ready"
+    )
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 11, 0, 5, tzinfo=timezone.utc),
+    )
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_promotion_receipt(
+            TARGET,
+            root=root,
+            require_bridge_receipt=True,
+            non_git_test_trust=trust,
+        )
+    assert exc.value.classification == "promotion_receipt_invalid"
+    assert "ngram_rights_decision_expired" in exc.value.detail
+
+
+def test_rights_are_rechecked_at_actual_promotion_day_after_revocation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    _write_approved_ngram_rights(root, signer_revoked="2026-08-11")
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 23, 55, tzinfo=timezone.utc),
+    )
+    trust = _trust(root)
+    assert _acquire(root, monkeypatch, _complete_result(root))["status"] == (
+        "target_ready"
+    )
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 11, 0, 5, tzinfo=timezone.utc),
+    )
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_promotion_receipt(
+            TARGET,
+            root=root,
+            require_bridge_receipt=True,
+            non_git_test_trust=trust,
+        )
+    assert "ngram_rights_signer_revoked" in exc.value.detail
+
+
+@pytest.mark.parametrize(
+    ("checked_at", "max_age", "expected"),
+    (
+        (datetime(2026, 8, 10, 12, tzinfo=timezone.utc), 0, "refused"),
+        (datetime(2026, 8, 10, 12, tzinfo=timezone.utc), 1, "target_ready"),
+        (datetime(2026, 8, 8, 12, tzinfo=timezone.utc), 2, "refused"),
+    ),
+)
+def test_signed_max_current_age_is_enforced_and_bound(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    checked_at: datetime,
+    max_age: int,
+    expected: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    _write_approved_ngram_rights(root, max_current_age_days=max_age)
+    monkeypatch.setattr(ngram_rights, "_utc_now", lambda: checked_at)
+
+    status = _acquire(root, monkeypatch, _complete_result(root))
+
+    if expected == "refused":
+        assert status["status"] == "acquisition_failed"
+        assert not (root / f"data/raw/ngram_days/{TARGET}.json").exists()
+        return
+    assert status["status"] == expected
+    receipt = json.loads(
+        (root / f"data/raw/final_publication_receipts/{TARGET}.json").read_text()
+    )
+    rights = receipt["bindings"]["rights"]
+    assert rights["max_current_age_days"] == 1
+    assert rights["evaluated_age_days"] == 1
+    assert rights["rights_as_of"] == "2026-08-10"
+
+
+def test_signed_max_current_age_is_rechecked_at_promotion(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _publication_root(tmp_path)
+    _write_approved_ngram_rights(root, max_current_age_days=2)
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 12, tzinfo=timezone.utc),
+    )
+    trust = _trust(root)
+    assert _acquire(root, monkeypatch, _complete_result(root))["status"] == (
+        "target_ready"
+    )
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 12, 0, 1, tzinfo=timezone.utc),
+    )
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_promotion_receipt(
+            TARGET,
+            root=root,
+            require_bridge_receipt=True,
+            non_git_test_trust=trust,
+        )
+    assert "ngram_rights_target_too_old" in exc.value.detail
 
 
 def test_promotion_revalidates_signed_rights_against_frozen_parent(
@@ -477,7 +814,6 @@ def test_promotion_revalidates_signed_rights_against_frozen_parent(
             root=root,
             require_bridge_receipt=True,
             non_git_test_trust=trust,
-            rights_as_of=TODAY,
         )
     assert exc.value.classification == "promotion_receipt_invalid"
     assert "rights_not_authorized" in exc.value.detail
@@ -802,6 +1138,7 @@ def test_failed_staging_drops_valid_bundle_and_next_attempt_can_promote(
         text=True,
     ).stdout.strip()
     monkeypatch.setattr(fetch_ngrams, "group_specs", _specs)
+    _authorize_production_test_signer(root, monkeypatch)
 
     first = final_publication.acquire_target(
         TARGET,
@@ -850,7 +1187,6 @@ def test_failed_staging_drops_valid_bundle_and_next_attempt_can_promote(
         TARGET,
         root=root,
         base_commit=base,
-        rights_as_of=TODAY,
     )
     assert finalized["status"] == "finalized"
 
@@ -868,6 +1204,7 @@ def test_typed_network_classification_distinguishes_404_from_transport_failure(
 
     unavailable_root = _publication_root(tmp_path / "unavailable")
     monkeypatch.setattr(fetch_ngrams, "group_specs", _specs)
+    monkeypatch.setattr(fetch_ngrams, "ROOT", unavailable_root)
     monkeypatch.setattr(
         fetch_ngrams.requests,
         "head",
@@ -888,9 +1225,11 @@ def test_typed_network_classification_distinguishes_404_from_transport_failure(
         today=TODAY,
         root=unavailable_root,
         compute_day=fetch_ngrams.compute_day,
+        non_git_test_rights=_rights(unavailable_root),
     )
 
     failed_root = _publication_root(tmp_path / "failed")
+    monkeypatch.setattr(fetch_ngrams, "ROOT", failed_root)
     monkeypatch.setattr(
         fetch_ngrams.requests,
         "head",
@@ -903,6 +1242,7 @@ def test_typed_network_classification_distinguishes_404_from_transport_failure(
         today=TODAY,
         root=failed_root,
         compute_day=fetch_ngrams.compute_day,
+        non_git_test_rights=_rights(failed_root),
     )
 
     assert unavailable["status"] == "source_unavailable"
@@ -937,6 +1277,7 @@ def test_typed_network_classification_treats_5xx_as_acquisition_failure(
             if fetch_ngrams._probe_window(TARGET, 0, 2) is None
             else pytest.fail("5xx source unexpectedly located")
         ),
+        non_git_test_rights=_rights(root),
     )
 
     assert status["status"] == "acquisition_failed"
@@ -986,6 +1327,7 @@ def _committed_new_contract_final(
         text=True,
     ).stdout.strip()
     monkeypatch.setattr(fetch_ngrams, "group_specs", _specs)
+    _authorize_production_test_signer(root, monkeypatch)
     assert final_publication.acquire_target(
         TARGET,
         today=TODAY,
@@ -998,7 +1340,6 @@ def _committed_new_contract_final(
         TARGET,
         root=root,
         base_commit=parent,
-        rights_as_of=TODAY,
     )
     subprocess.run(["git", "add", "."], cwd=root, check=True)
     subprocess.run(
@@ -1007,6 +1348,358 @@ def _committed_new_contract_final(
         check=True,
     )
     return root, parent
+
+
+@pytest.mark.parametrize("boundary", ("expired", "revoked"))
+def test_candidate_release_rechecks_rights_after_gate_crosses_midnight(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    boundary: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    if boundary == "expired":
+        _write_approved_ngram_rights(root, review_due="2026-08-10")
+    else:
+        _write_approved_ngram_rights(root, signer_revoked="2026-08-11")
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 23, 55, tzinfo=timezone.utc),
+    )
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Release boundary test"),
+        ("config", "user.email", "release-boundary@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "frozen parent"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    parent = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    _authorize_production_test_signer(root, monkeypatch)
+    monkeypatch.setattr(fetch_ngrams, "group_specs", _specs)
+    assert final_publication.acquire_target(
+        TARGET,
+        today=TODAY,
+        root=root,
+        base_commit=parent,
+        compute_day=lambda *_args: _complete_result(root),
+    )["status"] == "target_ready"
+    _write_target_outputs(root)
+    final_publication.mark_finalized(TARGET, root=root, base_commit=parent)
+    subprocess.run(["git", "add", "."], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "candidate before midnight"],
+        cwd=root,
+        check=True,
+    )
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 11, 0, 5, tzinfo=timezone.utc),
+    )
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_release_rights(root=root)
+    assert exc.value.classification == "promotion_receipt_invalid"
+    expected = (
+        "ngram_rights_decision_expired"
+        if boundary == "expired"
+        else "ngram_rights_signer_revoked"
+    )
+    assert expected in exc.value.detail
+
+
+def test_candidate_release_emits_sha_time_and_bound_deadline(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 23, 59, 58, tzinfo=timezone.utc),
+    )
+    root, _parent = _committed_new_contract_final(tmp_path, monkeypatch)
+
+    release = final_publication.require_release_rights(root=root)
+
+    assert release["status"] == "release_rights_verified"
+    assert release["candidate_sha"] == subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    evaluation = release["release_rights_evaluation"]
+    assert evaluation["evaluated_at_utc"] == "2026-08-10T23:59:58Z"
+    assert evaluation["release_deadline_utc"] == "2026-08-11T23:59:59Z"
+
+
+def _committed_value_free_refusal(tmp_path: Path) -> tuple[Path, str, str]:
+    root = _publication_root(tmp_path)
+    (root / "docs/index.html").write_bytes((ROOT / "docs/index.html").read_bytes())
+    (root / "docs/status.html").write_bytes(
+        (ROOT / "docs/status.html").read_bytes()
+    )
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Refusal proof test"),
+        ("config", "user.email", "refusal-proof@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "frozen parent"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    base = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    final_publication.record_pipeline_failed(
+        TARGET,
+        root=root,
+        base_commit=base,
+        failure_stage="source",
+        contract_today=TODAY,
+    )
+    final_publication.write_public_status(root=root, today=TODAY)
+    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "value-free refusal"],
+        cwd=root,
+        check=True,
+    )
+    candidate = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    return root, base, candidate
+
+
+def _amend_refusal(root: Path, relative: str) -> str:
+    subprocess.run(["git", "add", "--", relative], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "--amend", "--no-edit"],
+        cwd=root,
+        check=True,
+    )
+    return subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+
+def test_value_free_refusal_release_rebuilds_exact_parent_patch(
+    tmp_path: Path,
+) -> None:
+    root, base, candidate = _committed_value_free_refusal(tmp_path)
+
+    proof = final_publication.require_release_candidate(
+        "refusal",
+        expected_candidate_sha=candidate,
+        base_commit=base,
+        expected_target=TARGET,
+        root=root,
+    )
+
+    assert proof["candidate_class"] == "refusal"
+    assert proof["candidate_sha"] == candidate
+    assert proof["changed_paths"] == sorted(
+        final_publication._VALUE_FREE_REFUSAL_PATHS
+    )
+    assert proof["value_fields_published"] is False
+
+
+@pytest.mark.parametrize(
+    ("old", "new"),
+    (
+        (">58.8</p>", ">99.9</p>"),
+        ('id="latest-date">2026-08-09</span>', 'id="latest-date">2030-01-01</span>'),
+        ('class="component-score">65.2</span>', 'class="component-score">99.9</span>'),
+    ),
+)
+def test_value_free_refusal_refuses_reader_value_mutation_inside_allowed_index(
+    tmp_path: Path, old: str, new: str
+) -> None:
+    root, base, _candidate = _committed_value_free_refusal(tmp_path)
+    path = root / "docs/index.html"
+    text = path.read_text(encoding="utf-8")
+    assert old in text
+    path.write_text(text.replace(old, new, 1), encoding="utf-8")
+    candidate = _amend_refusal(root, "docs/index.html")
+
+    with pytest.raises(
+        final_publication.FinalPublicationError,
+        match="^release_candidate_unproven$",
+    ):
+        final_publication.require_release_candidate(
+            "refusal",
+            expected_candidate_sha=candidate,
+            base_commit=base,
+            expected_target=TARGET,
+            root=root,
+        )
+
+
+def test_value_free_refusal_refuses_unrelated_public_status_mutation(
+    tmp_path: Path,
+) -> None:
+    root, base, _candidate = _committed_value_free_refusal(tmp_path)
+    path = root / "docs/data/status.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["unrelated_reader_score"] = 99.9
+    path.write_text(json.dumps(payload, indent=1) + "\n", encoding="utf-8")
+    candidate = _amend_refusal(root, "docs/data/status.json")
+
+    with pytest.raises(final_publication.FinalPublicationError):
+        final_publication.require_release_candidate(
+            "refusal",
+            expected_candidate_sha=candidate,
+            base_commit=base,
+            expected_target=TARGET,
+            root=root,
+        )
+
+
+def test_value_free_refusal_refuses_value_in_operational_marker(
+    tmp_path: Path,
+) -> None:
+    root, base, _candidate = _committed_value_free_refusal(tmp_path)
+    path = root / final_publication.STATUS_RELATIVE
+    marker = json.loads(path.read_text(encoding="utf-8"))
+    marker["composite"] = 99.9
+    path.write_text(json.dumps(marker, indent=1) + "\n", encoding="utf-8")
+    candidate = _amend_refusal(root, final_publication.STATUS_RELATIVE.as_posix())
+
+    with pytest.raises(final_publication.FinalPublicationError):
+        final_publication.require_release_candidate(
+            "refusal",
+            expected_candidate_sha=candidate,
+            base_commit=base,
+            expected_target=TARGET,
+            root=root,
+        )
+
+
+def test_value_free_refusal_refuses_value_path_even_with_exact_disclosure(
+    tmp_path: Path,
+) -> None:
+    root, base, _candidate = _committed_value_free_refusal(tmp_path)
+    path = root / "data/raw/gdelt_volume.csv"
+    path.write_text(
+        path.read_text(encoding="utf-8") + "2026-08-09,99.9\n",
+        encoding="utf-8",
+    )
+    candidate = _amend_refusal(root, "data/raw/gdelt_volume.csv")
+
+    with pytest.raises(final_publication.FinalPublicationError):
+        final_publication.require_release_candidate(
+            "refusal",
+            expected_candidate_sha=candidate,
+            base_commit=base,
+            expected_target=TARGET,
+            root=root,
+        )
+
+
+def test_consecutive_missed_finals_publish_only_frozen_target_disclosure(
+    tmp_path: Path,
+) -> None:
+    root = _publication_root(tmp_path)
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Consecutive refusal test"),
+        ("config", "user.email", "consecutive-refusal@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "last finalized Aug-8"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    value_paths = (
+        "data/raw/gdelt_volume.csv",
+        "data/raw/provenance.csv",
+        "docs/data/latest.json",
+        "docs/data/history.json",
+    )
+    frozen_values = {
+        relative: (root / relative).read_bytes() for relative in value_paths
+    }
+
+    for target in (date(2026, 8, 9), date(2026, 8, 10), date(2026, 8, 11)):
+        contract_today = target + timedelta(days=1)
+        base = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        final_publication.record_pipeline_failed(
+            target,
+            root=root,
+            base_commit=base,
+            failure_stage="source",
+            contract_today=contract_today,
+        )
+        state = final_publication.write_public_status(
+            root=root, today=contract_today
+        )
+        paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+        subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
+        subprocess.run(
+            ["git", "commit", "-q", "-m", f"refuse {target}"],
+            cwd=root,
+            check=True,
+        )
+        candidate = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+
+        proof = final_publication.require_release_candidate(
+            "refusal",
+            expected_candidate_sha=candidate,
+            base_commit=base,
+            expected_target=target,
+            root=root,
+        )
+
+        assert proof["changed_paths"] == paths
+        assert state["target_date"] == target.isoformat()
+        assert state["latest_finalized_date"] == PREFIX_DAY.isoformat()
+        assert all(
+            (root / relative).read_bytes() == frozen_values[relative]
+            for relative in value_paths
+        )
+
+
+def test_release_rights_check_is_inside_the_final_cas_barrier() -> None:
+    publisher = (ROOT / "scripts/publish_final_cas.sh").read_text(encoding="utf-8")
+    push = publisher.split("push_frozen_parent() {", 1)[1].split("\n}", 1)[0]
+    remote = push.index('[ "$remote_commit" != "$BASE_COMMIT" ]')
+    rights = push.index('--check-release-candidate "$CANDIDATE_CLASS"')
+    target = push.index('--expected-target "$TARGET"')
+    candidate = push.index(
+        '[ "$release_candidate" != "$FROZEN_CANDIDATE_SHA" ]'
+    )
+    direct_push = push.index('git push origin "$FROZEN_CANDIDATE_SHA:main"')
+
+    assert remote < rights < target < candidate < direct_push
 
 
 def test_remote_idempotence_verifier_skips_only_valid_receipt_or_pinned_aug9(
@@ -1112,6 +1805,9 @@ def test_exact_upstream_aug9_object_alone_retains_bounded_legacy_label() -> None
         "cache",
         "latest",
         "history",
+        "history_csv",
+        "shares_csv",
+        "shares_json",
         "store",
         "provenance",
         "dictionary",
@@ -1129,6 +1825,9 @@ def test_aug9_legacy_label_refuses_any_value_or_regime_drift(
         "cache": root / f"data/raw/ngram_days/{TARGET}.json",
         "latest": root / "docs/data/latest.json",
         "history": root / "docs/data/history.json",
+        "history_csv": root / "docs/data/history.csv",
+        "shares_csv": root / "docs/data/shares.csv",
+        "shares_json": root / "docs/data/shares.json",
         "store": root / "data/raw/gdelt_volume.csv",
         "provenance": root / "data/raw/provenance.csv",
         "dictionary": root / "dictionaries.json",
@@ -1157,6 +1856,216 @@ def test_aug9_legacy_label_refuses_any_value_or_regime_drift(
     assert public["status"] == "delayed_final"
     assert public["latest_finalized_date"] is None
     assert public["source_receipt"] is None
+
+
+def _legacy_history_repo(tmp_path: Path) -> Path:
+    root = tmp_path / "legacy-history"
+    subprocess.run(
+        ["git", "clone", "-q", "--shared", str(ROOT), str(root)], check=True
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Legacy history attack"],
+        cwd=root,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.email", "legacy-history@example.invalid"],
+        cwd=root,
+        check=True,
+    )
+    return root
+
+
+def _commit_legacy_path(root: Path, relative: str, message: str) -> None:
+    subprocess.run(["git", "add", "--", relative], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", message], cwd=root, check=True
+    )
+
+
+def _restore_aug9_blob(root: Path, relative: str) -> None:
+    blob = subprocess.run(
+        [
+            "git",
+            "show",
+            f"9077ea4f27b4662ed6651828ee28183eed8fc727:{relative}",
+        ],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    ).stdout
+    (root / relative).write_bytes(blob)
+
+
+def test_aug9_legacy_history_allows_only_unchanged_first_parent_descendants(
+    tmp_path: Path,
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    subprocess.run(
+        ["git", "commit", "-q", "--allow-empty", "-m", "unchanged descendant one"],
+        cwd=root,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "commit", "-q", "--allow-empty", "-m", "unchanged descendant two"],
+        cwd=root,
+        check=True,
+    )
+
+    state = final_publication.public_status(root=root, today=TODAY)
+    assert state["status"] == "legacy_proof_limited"
+
+
+def test_aug9_legacy_history_refuses_mutation_followed_by_exact_revert(
+    tmp_path: Path,
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    latest = root / "docs/data/latest.json"
+    latest.write_bytes(latest.read_bytes() + b"\n")
+    _commit_legacy_path(root, "docs/data/latest.json", "mutate pinned latest")
+    _restore_aug9_blob(root, "docs/data/latest.json")
+    _commit_legacy_path(root, "docs/data/latest.json", "restore exact pinned latest")
+
+    assert final_publication.public_status(root=root, today=TODAY)["status"] == (
+        "delayed_final"
+    )
+
+
+def test_aug9_legacy_history_refuses_remove_then_exact_readd(
+    tmp_path: Path,
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    subprocess.run(
+        ["git", "rm", "-q", "docs/data/latest.json"], cwd=root, check=True
+    )
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "remove pinned latest"],
+        cwd=root,
+        check=True,
+    )
+    _restore_aug9_blob(root, "docs/data/latest.json")
+    _commit_legacy_path(root, "docs/data/latest.json", "readd exact pinned latest")
+
+    assert final_publication.public_status(root=root, today=TODAY)["status"] == (
+        "delayed_final"
+    )
+
+
+def test_aug9_legacy_history_refuses_merge_path_change_followed_by_revert(
+    tmp_path: Path,
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    subprocess.run(["git", "switch", "-q", "-c", "legacy-side"], cwd=root, check=True)
+    latest = root / "docs/data/latest.json"
+    latest.write_bytes(latest.read_bytes() + b"\n")
+    _commit_legacy_path(root, "docs/data/latest.json", "side mutates pinned latest")
+    subprocess.run(["git", "switch", "-q", "-"], cwd=root, check=True)
+    subprocess.run(
+        ["git", "merge", "-q", "--no-ff", "legacy-side", "-m", "merge path mutation"],
+        cwd=root,
+        check=True,
+    )
+    _restore_aug9_blob(root, "docs/data/latest.json")
+    _commit_legacy_path(root, "docs/data/latest.json", "revert merge path mutation")
+
+    assert final_publication.public_status(root=root, today=TODAY)["status"] == (
+        "delayed_final"
+    )
+
+
+def test_aug9_legacy_history_refuses_ssr_score_mutation_then_exact_revert(
+    tmp_path: Path,
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    index = root / "docs/index.html"
+    text = index.read_text(encoding="utf-8")
+    assert 'id="composite-score" aria-live="polite">58.8</p>' in text
+    index.write_text(
+        text.replace(
+            'id="composite-score" aria-live="polite">58.8</p>',
+            'id="composite-score" aria-live="polite">99.9</p>',
+            1,
+        ),
+        encoding="utf-8",
+    )
+    _commit_legacy_path(root, "docs/index.html", "contradict pinned SSR score")
+    _restore_aug9_blob(root, "docs/index.html")
+    _commit_legacy_path(root, "docs/index.html", "restore pinned SSR score")
+
+    assert final_publication.public_status(root=root, today=TODAY)["status"] == (
+        "delayed_final"
+    )
+
+
+@pytest.mark.parametrize(
+    ("relative", "old", "new"),
+    (
+        (
+            "docs/data/history.csv",
+            "2026-08-09,65.2,5.5,78.5,39.3,83.9,54.5",
+            "2026-08-09,65.2,5.5,78.5,39.3,83.9,99.9",
+        ),
+        (
+            "docs/data/shares.csv",
+            "2026-08-09,0.023916201974727578",
+            "2026-08-09,99.0",
+        ),
+        ("docs/data/shares.json", '"ratio": 1.9547', '"ratio": 99.0'),
+    ),
+)
+def test_aug9_legacy_refuses_contradictory_public_mirror_values(
+    tmp_path: Path, relative: str, old: str, new: str
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    path = root / relative
+    text = path.read_text(encoding="utf-8")
+    assert old in text
+    path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+    assert final_publication.public_status(root=root, today=TODAY)["status"] == (
+        "delayed_final"
+    )
+
+
+@pytest.mark.parametrize(
+    "relative",
+    ("docs/data/history.csv", "docs/data/shares.csv", "docs/data/shares.json"),
+)
+def test_aug9_legacy_mirrors_refuse_mutation_followed_by_exact_revert(
+    tmp_path: Path, relative: str
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    path = root / relative
+    path.write_bytes(path.read_bytes() + b"\n")
+    _commit_legacy_path(root, relative, f"mutate {relative}")
+    _restore_aug9_blob(root, relative)
+    _commit_legacy_path(root, relative, f"restore {relative}")
+
+    assert final_publication.public_status(root=root, today=TODAY)["status"] == (
+        "delayed_final"
+    )
+
+
+@pytest.mark.parametrize(
+    "relative",
+    ("docs/data/history.csv", "docs/data/shares.csv", "docs/data/shares.json"),
+)
+def test_aug9_legacy_mirrors_refuse_remove_then_exact_readd(
+    tmp_path: Path, relative: str
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    subprocess.run(["git", "rm", "-q", "--", relative], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", f"remove {relative}"],
+        cwd=root,
+        check=True,
+    )
+    _restore_aug9_blob(root, relative)
+    _commit_legacy_path(root, relative, f"readd {relative}")
+
+    assert final_publication.public_status(root=root, today=TODAY)["status"] == (
+        "delayed_final"
+    )
 
 
 def test_receipt_revalidation_refuses_bound_input_drift(
@@ -1640,6 +2549,46 @@ def _publisher_e2e_repo(tmp_path: Path) -> tuple[Path, Path, str]:
     (root / "scripts/gate.sh").write_text(
         "#!/usr/bin/env bash\nset -euo pipefail\nexit 0\n", encoding="utf-8"
     )
+    (root / "bin").mkdir()
+    rights_python = root / "bin/python"
+    rights_python.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "if [ \"${3:-}\" = '--record-pipeline-failed' ]; then\n"
+        "  mkdir -p data/raw\n"
+        "  printf '{\"status\":\"acquisition_failed\"}\\n' > "
+        "data/raw/final_publication_status.json\n"
+        "  exit 0\n"
+        "fi\n"
+        "if [ \"${3:-}\" = '--write-public-status' ]; then\n"
+        "  mkdir -p docs/data\n"
+        "  printf '{\"final_publication\":{\"status\":"
+        "\"acquisition_failed\"}}\\n' > docs/data/status.json\n"
+        "  printf '<p>value-free refusal</p>\\n' > docs/index.html\n"
+        "  printf '<p>value-free refusal</p>\\n' > docs/status.html\n"
+        "  exit 0\n"
+        "fi\n"
+        "if [ \"${1:-}\" != '-m' ] || "
+        "[ \"${2:-}\" != 'src.final_publication' ] || "
+        "[ \"${3:-}\" != '--check-release-candidate' ]; then\n"
+        "  echo 'unexpected test python invocation' >&2\n"
+        "  exit 90\n"
+        "fi\n"
+        "candidate_class=${4:-}\n"
+        "if [ \"$candidate_class\" = final ] && "
+        "[ -f .rights-expired-after-gate ]; then\n"
+        "  echo '{\"status\":\"promotion_receipt_invalid\","
+        "\"evaluated_at_utc\":\"2026-08-11T00:00:01Z\"}'\n"
+        "  exit 2\n"
+        "fi\n"
+        "candidate=${RELEASE_CANDIDATE_OVERRIDE:-$(git rev-parse HEAD)}\n"
+        "printf '{\"status\":\"release_rights_verified\","
+        "\"candidate_class\": \"%s\","
+        "\"candidate_sha\": \"%s\"}\\n' "
+        "\"$candidate_class\" \"$candidate\"\n",
+        encoding="utf-8",
+    )
+    rights_python.chmod(0o755)
     (root / "docs/data").mkdir(parents=True)
     (root / "data/raw").mkdir(parents=True)
     (root / "docs/data/base.json").write_text("{}\n", encoding="utf-8")
@@ -1659,20 +2608,26 @@ def _publisher_e2e_repo(tmp_path: Path) -> tuple[Path, Path, str]:
     return root, remote, base
 
 
-def _run_publisher(root: Path, base: str, env: dict[str, str]) -> subprocess.CompletedProcess[str]:
+def _run_publisher(
+    root: Path,
+    base: str,
+    env: dict[str, str],
+    outcomes: tuple[str, str, str, str] = ("success",) * 4,
+) -> subprocess.CompletedProcess[str]:
+    run_env = {
+        **env,
+        "PATH": f"{root / 'bin'}:{env.get('PATH', os.environ.get('PATH', ''))}",
+    }
     return subprocess.run(
         [
             "bash",
             "scripts/publish_final_cas.sh",
             TARGET.isoformat(),
             base,
-            "success",
-            "success",
-            "success",
-            "success",
+            *outcomes,
         ],
         cwd=root,
-        env=env,
+        env=run_env,
         capture_output=True,
         text=True,
     )
@@ -1738,6 +2693,108 @@ def test_final_cas_gates_and_pushes_exact_single_parent_candidate(
         capture_output=True,
         text=True,
     ).stdout.strip() == base
+
+
+def test_final_cas_midnight_rights_barrier_refuses_before_push(
+    tmp_path: Path,
+) -> None:
+    root, remote, base = _publisher_e2e_repo(tmp_path)
+    publisher = root / "scripts/publish_final_cas.sh"
+    publisher.write_text(
+        publisher.read_text(encoding="utf-8").replace("/usr/bin/time -v ", ""),
+        encoding="utf-8",
+    )
+    (root / "scripts/gate.sh").write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "printf '2026-08-11T00:00:01Z\\n' > .rights-expired-after-gate\n",
+        encoding="utf-8",
+    )
+    (root / "docs/data/candidate.json").write_text("{}\n", encoding="utf-8")
+    env = {**os.environ, "IGRM_PUBLISH_TOKEN": "test-token"}
+
+    result = _run_publisher(root, base, env)
+
+    assert result.returncode != 0
+    assert "candidate-class release proof is not valid" in result.stdout
+    assert _remote_main(remote) == base
+
+
+def test_final_cas_release_proof_must_name_frozen_candidate(
+    tmp_path: Path,
+) -> None:
+    root, remote, base = _publisher_e2e_repo(tmp_path)
+    publisher = root / "scripts/publish_final_cas.sh"
+    publisher.write_text(
+        publisher.read_text(encoding="utf-8").replace("/usr/bin/time -v ", ""),
+        encoding="utf-8",
+    )
+    (root / "docs/data/candidate.json").write_text("{}\n", encoding="utf-8")
+    env = {
+        **os.environ,
+        "IGRM_PUBLISH_TOKEN": "test-token",
+        "RELEASE_CANDIDATE_OVERRIDE": "f" * 40,
+    }
+
+    result = _run_publisher(root, base, env)
+
+    assert result.returncode != 0
+    assert "is not frozen candidate" in result.stdout
+    assert _remote_main(remote) == base
+
+
+def test_final_cas_expired_rights_still_publish_value_free_refusal(
+    tmp_path: Path,
+) -> None:
+    root, remote, base = _publisher_e2e_repo(tmp_path)
+    publisher = root / "scripts/publish_final_cas.sh"
+    publisher.write_text(
+        publisher.read_text(encoding="utf-8").replace("/usr/bin/time -v ", ""),
+        encoding="utf-8",
+    )
+    (root / "scripts/gate.sh").write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "printf '2026-08-11T00:00:01Z\\n' > .rights-expired-after-gate\n",
+        encoding="utf-8",
+    )
+    env = {**os.environ, "IGRM_PUBLISH_TOKEN": "test-token"}
+
+    result = _run_publisher(
+        root,
+        base,
+        env,
+        outcomes=("failure", "skipped", "skipped", "skipped"),
+    )
+
+    assert result.returncode == 0, result.stderr
+    candidate = _remote_main(remote)
+    changed = subprocess.run(
+        [
+            "git",
+            f"--git-dir={remote}",
+            "diff-tree",
+            "--no-commit-id",
+            "--name-only",
+            "-r",
+            candidate,
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    assert set(changed) == {
+        "data/raw/final_publication_status.json",
+        "docs/data/status.json",
+        "docs/index.html",
+        "docs/status.html",
+    }
+    assert not any(
+        path.startswith("data/raw/ngram_days/")
+        or path.startswith("data/raw/final_publication_receipts/")
+        or path in {"data/raw/gdelt_volume.csv", "data/raw/provenance.csv"}
+        for path in changed
+    )
 
 
 def test_final_cas_refuses_merge_parent_candidate_before_gate_or_push(

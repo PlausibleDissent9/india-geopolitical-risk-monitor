@@ -211,32 +211,49 @@ def write_static_final_disclosure(
 ) -> None:
     """Bake the current final-vs-target state into both no-JS surfaces."""
 
+    for relative in ("docs/index.html", "docs/status.html"):
+        path = root / relative
+        path.write_bytes(
+            static_final_disclosure_bytes(state, relative, path.read_bytes())
+        )
+
+
+def static_final_disclosure_bytes(
+    state: dict[str, Any], relative: str, parent_bytes: bytes
+) -> bytes:
+    """Deterministically patch only the registered value-free HTML region."""
+
     message = _static_final_message(state)
     replacements = {
-        root / "docs/index.html": (
+        "docs/index.html": (
             "final-publication-static",
             '<p class="final-publication-status" '
             f'id="final-publication-status">{message}</p>',
         ),
-        root / "docs/status.html": (
+        "docs/status.html": (
             "final-publication-status-static",
             f'<p class="prose" id="final-publication-state">{message}</p>',
         ),
     }
-    for path, (marker, content) in replacements.items():
-        raw = path.read_text(encoding="utf-8")
-        pattern = re.compile(
-            rf"<!--{re.escape(marker)}:start-->.*?"
-            rf"<!--{re.escape(marker)}:end-->",
-            re.DOTALL,
-        )
-        replacement = (
-            f"<!--{marker}:start-->{content}<!--{marker}:end-->"
-        )
-        updated, count = pattern.subn(replacement, raw)
-        if count != 1:
-            raise RuntimeError(f"static final disclosure marker invalid: {path}")
-        path.write_text(updated, encoding="utf-8")
+    if relative not in replacements:
+        raise RuntimeError(f"static final disclosure path invalid: {relative}")
+    try:
+        raw = parent_bytes.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise RuntimeError(
+            f"static final disclosure parent invalid: {relative}"
+        ) from exc
+    marker, content = replacements[relative]
+    pattern = re.compile(
+        rf"<!--{re.escape(marker)}:start-->.*?"
+        rf"<!--{re.escape(marker)}:end-->",
+        re.DOTALL,
+    )
+    replacement = f"<!--{marker}:start-->{content}<!--{marker}:end-->"
+    updated, count = pattern.subn(replacement, raw)
+    if count != 1:
+        raise RuntimeError(f"static final disclosure marker invalid: {relative}")
+    return updated.encode("utf-8")
 
 
 def _csv_last_date(path: Path, date_col: str | None = None) -> str | None:

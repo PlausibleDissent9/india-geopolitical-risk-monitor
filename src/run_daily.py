@@ -244,7 +244,6 @@ def main() -> None:
         final_publication.require_promotion_receipt(
             target,
             require_bridge_receipt=True,
-            rights_as_of=today_utc,
         )
     except final_publication.FinalPublicationError as exc:
         raise SystemExit(
@@ -277,7 +276,7 @@ def main() -> None:
     if not args.final_only:
         publish_latest_note()
     render_site.main()
-    final_publication.mark_finalized(target, rights_as_of=today_utc)
+    final_publication.mark_finalized(target)
     print("[done] site data written to docs/data/")
 
 
