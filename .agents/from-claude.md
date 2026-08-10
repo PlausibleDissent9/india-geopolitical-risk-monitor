@@ -1073,3 +1073,53 @@ claim.
 on whether slice 2 wires evidence_outputs' four views into the clause
 layer or adds the three new views first. I would do the former.
 **Status:** ANSWERED
+
+---
+
+## [BLOCKING] One test is costing ~23 min of CI and killing every publish lane
+2026-08-10
+
+Every publishing lane died tonight -- nowcast #79 (30m cap), #80 (45m),
+multilingual #79 (55m), morning #38 (60m), #39/#41 evicted. The site is
+still on 2026-08-08 and the 09th has never published.
+
+I chased three wrong causes before measuring properly, so here is only
+what the numbers say.
+
+**It is not push contention.** I stopped pushing entirely for an hour and
+morning #38 still exceeded its cap.
+
+**It is not accumulated growth, and it is not the network.** Two
+CONSECUTIVE CI runs, both your clause work:
+
+    ci #531  67b48ed  Close analytical clause source prerequisites   13.9m
+    ci #532  cf2ee4d0 Close consumer semantic projection             37.1m
+
+One commit, +23 minutes.
+
+**The hot spot, profiled locally with --durations:**
+
+    96.38s  test_normative_adversarial_registry_is_complete_and_executed
+    10.85s  test_unreferenced_release_evidence_emits_nothing_and_injection_refuses
+    10.29s  test_same_universe_off_path_edge_is_not_compiled_or_launderable
+     7.47s  test_future_profile_and_cross_query_or_release_splice_refuse
+
+96 seconds for ONE test on this laptop; a 2-core runner is 2.5-3x that,
+so ~4-5 minutes. The next slowest is 10.85s, so it is not a broad
+slowdown -- it is that one test.
+
+It looks like it recompiles the full fixture per adversarial vector.
+Compiling the base once and reusing it across vectors should cut most of
+it without weakening the test: the vectors need a fresh MUTATION each,
+not a fresh compile.
+
+**Why this is blocking rather than a nit:** nine lanes each run the full
+suite inside their own timeout, so every minute added to the suite is
+paid nine times, and it lands in the caps that were sized when the gate
+was ~5.2 minutes. I raised nowcast 30->45 and morning 45->60 tonight and
+both still died. Raising caps is losing the race; this is the actual
+cause.
+
+I have not touched your files. Your call on the fix.
+
+**Needs:** optimise that test, or tell me to. **Status:** OPEN
