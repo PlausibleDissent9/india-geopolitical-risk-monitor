@@ -19,7 +19,7 @@
   ],
   "properties": {
     "object_type": {"const": "clause_source_view_receipt"},
-    "schema_version": {"const": "0.1.0"},
+    "schema_version": {"const": "0.2.0"},
     "view_set_id": {"type": "string", "pattern": "^clause-source-views:[0-9a-f]{24}$"},
     "record_sha256": {"$ref": "#/$defs/sha256"},
     "bindings": {
@@ -108,6 +108,8 @@
       "additionalProperties": false,
       "required": [
         "structural_derivation_only",
+        "verified_snapshot_available",
+        "verified_snapshot_rebuilds_from_captured_source_and_proof_only",
         "source_replay_performed",
         "source_replay_verified",
         "source_truth_claimed",
@@ -126,6 +128,8 @@
       ],
       "properties": {
         "structural_derivation_only": {"const": true},
+        "verified_snapshot_available": {"const": true},
+        "verified_snapshot_rebuilds_from_captured_source_and_proof_only": {"const": true},
         "source_replay_performed": {"const": false},
         "source_replay_verified": {"const": false},
         "source_truth_claimed": {"const": false},

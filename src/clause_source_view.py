@@ -33,10 +33,10 @@ ADVERSARIAL_VECTORS_PATH = (
     ROOT / "governance" / "clause_source_view_adversarial_vectors.json"
 )
 
-_VERSION = "0.1.0"
-_CONTRACT_ID = "igrm:clause-source-view:0.1.0"
+_VERSION = "0.2.0"
+_CONTRACT_ID = "igrm:clause-source-view:0.2.0"
 _REGISTERED_CONTRACT_SHA256 = (
-    "5568102dbb6620b17826207b29e09feb384cded488d29c7af760033cbe729f79"
+    "7cae18b976d1c599de2b35fd09897f935fbbb621114bdab21335492052663b47"
 )
 _OUTPUT_IDS = (
     "output:board_brief",
@@ -73,6 +73,8 @@ _TRUST: dict[str, Any] = {
 }
 _BOUNDARY: dict[str, Any] = {
     "structural_derivation_only": True,
+    "verified_snapshot_available": True,
+    "verified_snapshot_rebuilds_from_captured_source_and_proof_only": True,
     "source_replay_performed": False,
     "source_replay_verified": False,
     "source_truth_claimed": False,
@@ -329,6 +331,30 @@ class ClauseSourceViews:
 
         _verify_compiled(self)
         return self
+
+    def verified_snapshot(self) -> ClauseSourceViews:
+        """Return a fresh verified view set rebuilt only from captured input bytes."""
+
+        try:
+            source_bytes = bytes(self._source_bytes)
+            proof_bytes = bytes(self._proof_bytes)
+        except (AttributeError, TypeError, ValueError) as exc:
+            raise ClauseSourceViewError("view_input_invalid", type(exc).__name__) from exc
+        contract_bytes, contract, profile_bytes, profile, profile_sha = (
+            _load_fixed_inputs()
+        )
+        snapshot = _compile_captured(
+            source_bytes,
+            proof_bytes,
+            contract_bytes,
+            contract,
+            profile_bytes,
+            profile,
+            profile_sha,
+        )
+        if type(snapshot) is not ClauseSourceViews or snapshot is self:
+            _fail("view_recompile_mismatch", "verified_snapshot")
+        return snapshot
 
 
 def _runtime_sha256() -> str:

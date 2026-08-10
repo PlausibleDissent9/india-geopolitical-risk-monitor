@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/clause-reader-compilation-receipt.schema.json",
+  "title": "IGRM internal clause reader compilation receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["object_type", "schema_version", "compilation_id", "record_sha256", "bindings", "active_branch_id", "outputs", "denominators", "comparison_performed", "comparison_result", "trust", "boundary"],
+  "properties": {
+    "object_type": {"const": "clause_reader_compilation_receipt"},
+    "schema_version": {"const": "0.1.0"},
+    "compilation_id": {"type": "string", "pattern": "^clause-reader-compilation:[0-9a-f]{24}$"},
+    "record_sha256": {"$ref": "#/$defs/sha256"},
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["view_receipt_ref", "source_bundle_ref", "role_proof_bundle_ref", "consumer_profile_ref", "analytical_clause_contract_ref", "view_contract_ref", "view_runtime_ref", "renderer_contract_ref", "renderer_runtime_ref", "template_profile_ref", "limitation_registry_ref", "public_common_schema_ref", "public_schema_ref"],
+      "properties": {
+        "view_receipt_ref": {"$ref": "#/$defs/viewReceiptRef"},
+        "source_bundle_ref": {"$ref": "#/$defs/capturedRecordRef"},
+        "role_proof_bundle_ref": {"$ref": "#/$defs/capturedRecordRef"},
+        "consumer_profile_ref": {"$ref": "#/$defs/profileRef"},
+        "analytical_clause_contract_ref": {"$ref": "#/$defs/fileRef"},
+        "view_contract_ref": {"$ref": "#/$defs/fileRef"},
+        "view_runtime_ref": {"$ref": "#/$defs/runtimeRef"},
+        "renderer_contract_ref": {"$ref": "#/$defs/fileRef"},
+        "renderer_runtime_ref": {"$ref": "#/$defs/runtimeRef"},
+        "template_profile_ref": {"$ref": "#/$defs/profileRef"},
+        "limitation_registry_ref": {"$ref": "#/$defs/fileRef"},
+        "public_common_schema_ref": {"$ref": "#/$defs/fileRef"},
+        "public_schema_ref": {"$ref": "#/$defs/fileRef"}
+      }
+    },
+    "active_branch_id": {"enum": ["branch:no_path", "branch:path_found"]},
+    "outputs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/outputReceipt"}
+    },
+    "denominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_denominator", "template_denominator", "consumed_source_field_denominator", "clause_ref_denominator", "operator_denominator", "rendered_limitation_scope_denominator", "applicable_but_outer_wrapper_absent_scope_denominator"],
+      "properties": {
+        "output_denominator": {"const": 3},
+        "template_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "consumed_source_field_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "clause_ref_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "operator_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "rendered_limitation_scope_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "applicable_but_outer_wrapper_absent_scope_denominator": {"$ref": "#/$defs/nonnegativeInteger"}
+      }
+    },
+    "comparison_performed": {"const": false},
+    "comparison_result": {"const": "not_performed"},
+    "trust": {
+      "const": {
+        "synthetic": true,
+        "self_hash_integrity_only": true,
+        "signed": false,
+        "authenticated": false,
+        "nonpublic": true,
+        "nonproduction": true,
+        "offline": false,
+        "product_manifest": false
+      }
+    },
+    "boundary": {
+      "const": {
+        "shadow_only": true,
+        "public_behavior_changed": false,
+        "publication_approved": false,
+        "comparison_performed": false,
+        "comparison_result": "not_performed",
+        "standalone_activation_requires_common_scope_wrapper": true,
+        "general_equivalence_claimed": false,
+        "prose_equivalence_claimed": false,
+        "public_authority": false,
+        "production_authority": false,
+        "offline_bundle_created": false,
+        "product_manifest_created": false
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonnegativeInteger": {"type": "integer", "minimum": 0},
+    "stringSet": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "fileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file_sha256"],
+      "properties": {"file_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "runtimeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation_sha256"],
+      "properties": {"implementation_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "capturedRecordRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_sha256", "captured_bytes_sha256"],
+      "properties": {
+        "record_sha256": {"$ref": "#/$defs/sha256"},
+        "captured_bytes_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "profileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file_sha256", "semantic_projection_sha256"],
+      "properties": {
+        "file_sha256": {"$ref": "#/$defs/sha256"},
+        "semantic_projection_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "viewReceiptRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["view_set_id", "record_sha256", "captured_bytes_sha256"],
+      "properties": {
+        "view_set_id": {"type": "string", "pattern": "^clause-source-views:[0-9a-f]{24}$"},
+        "record_sha256": {"$ref": "#/$defs/sha256"},
+        "captured_bytes_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "clauseRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clause_id", "clause_record_sha256"],
+      "properties": {
+        "clause_id": {"type": "string", "minLength": 1},
+        "clause_record_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "outputDenominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active_template_denominator", "consumed_source_field_denominator", "clause_ref_denominator", "operator_denominator", "rendered_limitation_scope_denominator", "applicable_but_outer_wrapper_absent_scope_denominator", "evidence_item_denominator", "coverage_row_denominator", "object_evidence_row_denominator", "body_bytes", "artifact_bytes"],
+      "properties": {
+        "active_template_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "consumed_source_field_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "clause_ref_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "operator_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "rendered_limitation_scope_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "applicable_but_outer_wrapper_absent_scope_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "evidence_item_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "coverage_row_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "object_evidence_row_denominator": {"$ref": "#/$defs/nonnegativeInteger"},
+        "body_bytes": {"$ref": "#/$defs/nonnegativeInteger"},
+        "artifact_bytes": {"$ref": "#/$defs/nonnegativeInteger"}
+      }
+    },
+    "outputReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "role_id", "view_id", "active_template_ids", "consumed_source_field_ids", "clause_refs", "operator_ids", "rendered_limitation_scope_ids", "applicable_but_outer_wrapper_absent_scope_ids", "body_sha256", "artifact_sha256", "denominators"],
+      "properties": {
+        "output_id": {"enum": ["output:board_brief", "output:newsroom_claim_card", "output:research_package"]},
+        "role_id": {"enum": ["board", "newsroom", "research"]},
+        "view_id": {"type": "string", "pattern": "^clause-source-view:[0-9a-f]{24}$"},
+        "active_template_ids": {"$ref": "#/$defs/stringSet"},
+        "consumed_source_field_ids": {"$ref": "#/$defs/stringSet"},
+        "clause_refs": {"type": "array", "items": {"$ref": "#/$defs/clauseRef"}, "uniqueItems": true},
+        "operator_ids": {"$ref": "#/$defs/stringSet"},
+        "rendered_limitation_scope_ids": {"$ref": "#/$defs/stringSet"},
+        "applicable_but_outer_wrapper_absent_scope_ids": {"$ref": "#/$defs/stringSet"},
+        "body_sha256": {"$ref": "#/$defs/sha256"},
+        "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "denominators": {"$ref": "#/$defs/outputDenominators"}
+      }
+    }
+  }
+}

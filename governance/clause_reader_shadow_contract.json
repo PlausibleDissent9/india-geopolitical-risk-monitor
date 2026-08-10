@@ -1,0 +1,121 @@
+{
+  "schema_version": "0.1.0",
+  "contract_id": "igrm:clause-reader-shadow:0.1.0",
+  "effective": "2026-08-08",
+  "status": "internal_shadow_only",
+  "default_policy": "deny",
+  "public_routes": [],
+  "compiler": {
+    "function": "compile_clause_reader_shadow",
+    "positional_inputs": ["views"],
+    "input_type": "ClauseSourceViews",
+    "output_type": "ClauseReaderCompilation",
+    "caller_semantic_arguments": false,
+    "query_output_template_path_or_caller_selectors": false,
+    "consumer_outputs": ["output:board_brief", "output:newsroom_claim_card", "output:research_package"],
+    "offline_output": false
+  },
+  "fixed_authorities": {
+    "consumer_profile": {"path": "governance/evidence_output_renderer_consumer_profile.json", "file_sha256": "996baf2336e96434a49fa71b01501847e4c002e3d8ee2a7ab52d0b5da4aec450", "semantic_projection_sha256": "18d23cba41b67e75e780025c124bbd2c92da50683711958431c2e882570fb1b0"},
+    "consumer_validator": {"path": "src/evidence_output_consumer_contract.py", "file_sha256": "b197c7d6637480fdb853cfbad877671492940eea71118f59c5e4e47f3a8a9ebe"},
+    "limitation_registry": {"path": "governance/analytical_clause_limitation_registry.json", "file_sha256": "57d8c70e45d2f39370c7061773648d4b67cedf467e01876b52fa0f4d490f4776"},
+    "public_common_schema": {"path": "schemas/common.schema.json", "file_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"},
+    "public_output_schema": {"path": "schemas/evidence-output-set.schema.json", "file_sha256": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780"},
+    "receipt_schema": {"path": "governance/schemas/clause-reader-compilation-receipt.schema.json", "file_sha256": "f1c691e993f3e052a5e3c8c91f7b15d654c3190cfb8bb4d50e8b272c22a32792"},
+    "template_profile": {"path": "governance/clause_reader_template_profile.json", "file_sha256": "e502fb224f5d3ef275ee3321483dd481eabd2f2ffec92bdf3f52790f20048724", "semantic_projection_sha256": "5124eb47b7669b60f864246f9c6164def3003bdc0616268d7eab5be13382b2d7"},
+    "view_contract": {"path": "governance/clause_source_view_contract.json", "file_sha256": "7cae18b976d1c599de2b35fd09897f935fbbb621114bdab21335492052663b47"},
+    "view_runtime": {"path": "src/clause_source_view.py", "file_sha256": "5e612518227056d94ebd1b10728ec70fd8be76f60aceadf6621254f2f36cac5c"},
+    "adversarial_vectors": {"path": "governance/clause_reader_shadow_adversarial_vectors.json", "file_sha256": "cd80558282ae986ff337da2eea3d80190aa84c41afcdd045e781f90d4966f2ef"}
+  },
+  "dependency_boundary": {
+    "accepted_data_source": "one_source_view_owned_verified_unaliased_snapshot",
+    "caller_owned_view_use_after_snapshot": false,
+    "snapshot_exact_type_required": true,
+    "each_output_reads_only_its_own_role_handle": true,
+    "forbidden_runtime_dependencies": ["canonical object store", "exposure traversal", "incumbent output engine", "analytical compiler internals", "ClauseSourceViews private storage"],
+    "filesystem_or_data_selectors": false,
+    "source_or_traversal_replay": false
+  },
+  "rendering_rule": {
+    "template_language": "closed_ordered_token_stream",
+    "token_kinds": ["literal", "slot"],
+    "slots": "registered_and_typed",
+    "operators": "registered_and_code_pinned",
+    "format_eval_free_prose_or_model_calls": false,
+    "evidence_join": "exact_source_identity_key_never_position_or_value",
+    "research_object_index": "provenance_source_refs_union_evidence_identity_refs",
+    "nullable_metadata": "preserve_null_and_source_missing",
+    "object_and_release_identity": "derive_from_accessor_source_refs",
+    "limitations": "derive_only_from_single_pinned_analytical_clause_limitation_registry",
+    "rendered_limitation_scopes": "exact_scopes_executed_into_standalone_document_or_claim",
+    "applicable_but_outer_wrapper_absent_scopes": ["scope:output.all_views"],
+    "limitation_operator_proofs": "rendered_scopes_only_never_absent_outer_scopes"
+  },
+  "branch_rule": {
+    "path_found": "exactly_one_registered_path_template_set",
+    "no_path": "exactly_one_registered_no_path_template_set",
+    "both_or_neither": "refuse",
+    "no_path_semantics": "bounded_non_result_never_no_exposure"
+  },
+  "receipt_rule": {
+    "schema_id": "https://igrm.in/schemas/clause-reader-compilation-receipt.schema.json",
+    "content": "ids_hashes_refs_counts_scopes_and_boundary_flags_only",
+    "clause_values_prose_urls_dates_signatures_or_source_content": false,
+    "self_hash_semantics": "integrity_only_not_authentication",
+    "limitation_scope_accounting": "rendered_and_applicable_outer_wrapper_absent_are_disjoint",
+    "comparison_performed": false,
+    "comparison_result": "not_performed",
+    "standalone_activation_requires_common_scope_wrapper": true,
+    "comparison_success_attestation": false
+  },
+  "verification_rule": {
+    "compile_input": "ClauseSourceViews.verified_snapshot_result_only",
+    "stored_view": "private_unaliased_verified_snapshot_only",
+    "verify_recompile_input": "fresh_verified_snapshot_of_private_snapshot",
+    "caller_owned_outer_view_reacquired": false,
+    "fixed_governance_byte_equality": true,
+    "body_and_artifact_byte_equality": true,
+    "receipt_byte_equality": true
+  },
+  "trust": {
+    "synthetic": true,
+    "self_hash_integrity_only": true,
+    "signed": false,
+    "authenticated": false,
+    "nonpublic": true,
+    "nonproduction": true,
+    "offline": false,
+    "product_manifest": false
+  },
+  "boundary": {
+    "shadow_only": true,
+    "public_behavior_changed": false,
+    "publication_approved": false,
+    "comparison_performed": false,
+    "comparison_result": "not_performed",
+    "standalone_activation_requires_common_scope_wrapper": true,
+    "general_equivalence_claimed": false,
+    "prose_equivalence_claimed": false,
+    "public_authority": false,
+    "production_authority": false,
+    "offline_bundle_created": false,
+    "product_manifest_created": false
+  },
+  "refusal_codes": [
+    "reader_artifact_invalid",
+    "reader_branch_invalid",
+    "reader_clause_invalid",
+    "reader_contract_drift",
+    "reader_contract_invalid",
+    "reader_governance_drift",
+    "reader_handle_invalid",
+    "reader_identity_join_invalid",
+    "reader_input_invalid",
+    "reader_limitation_invalid",
+    "reader_receipt_invalid",
+    "reader_recompile_mismatch",
+    "reader_runtime_drift",
+    "reader_template_invalid",
+    "reader_value_leakage"
+  ]
+}

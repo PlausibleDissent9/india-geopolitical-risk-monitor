@@ -1,13 +1,13 @@
 {
-  "schema_version": "0.1.0",
-  "profile_id": "igrm:evidence-output-renderer-consumers:0.1.0",
+  "schema_version": "0.2.0",
+  "profile_id": "igrm:evidence-output-renderer-consumers:0.2.0",
   "effective": "2026-08-08",
   "status": "contract_only_inactive",
   "default_policy": "deny",
   "validator_runtime": {
     "kind": "evidence_output_consumer_contract_validator",
     "path": "src/evidence_output_consumer_contract.py",
-    "sha256": "d837f3fd72fed9c0977c279f573e32cf6b9f4bd91eace7eef0dc19d4b3092b19",
+    "sha256": "b197c7d6637480fdb853cfbad877671492940eea71118f59c5e4e47f3a8a9ebe",
     "authority": "consumer_contract_validator_not_clause_authority"
   },
   "registry_extension": {
@@ -132,7 +132,7 @@
       "template_id": "template:board.decision.boundary.v1",
       "consumer_id": "output:board_brief",
       "branch_id": null,
-      "required_source_fields": [],
+      "required_source_fields": ["evidence.identity"],
       "limitation_scope_ids": ["scope:output.all_views", "scope:output.board_brief"],
       "literal_value_classes": ["fixed_identifier", "fixed_nonfactual_text"],
       "template_body_status": "identifier_only_not_activated"
@@ -141,7 +141,7 @@
       "template_id": "template:board.event.record.v1",
       "consumer_id": "output:board_brief",
       "branch_id": null,
-      "required_source_fields": ["event.canonical_label", "event.class", "event.last_verified_at", "event.record_status", "event.starts_at"],
+      "required_source_fields": ["event.canonical_label", "event.class", "event.last_verified_at", "event.record_status", "event.starts_at", "evidence.identity"],
       "limitation_scope_ids": ["scope:output.all_views", "scope:output.board_brief"],
       "literal_value_classes": ["fixed_identifier", "fixed_nonfactual_text"],
       "template_body_status": "identifier_only_not_activated"
@@ -150,7 +150,7 @@
       "template_id": "template:board.linkage.no_path.v1",
       "consumer_id": "output:board_brief",
       "branch_id": "branch:no_path",
-      "required_source_fields": ["coverage.row", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "required_source_fields": ["coverage.row", "evidence.identity", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
       "limitation_scope_ids": ["scope:output.all_views", "scope:output.board_brief"],
       "literal_value_classes": ["fixed_identifier", "fixed_nonfactual_text"],
       "template_body_status": "identifier_only_not_activated"
@@ -159,7 +159,7 @@
       "template_id": "template:board.linkage.path_found.v1",
       "consumer_id": "output:board_brief",
       "branch_id": "branch:path_found",
-      "required_source_fields": ["coverage.row", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "required_source_fields": ["coverage.row", "evidence.identity", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
       "limitation_scope_ids": ["scope:output.all_views", "scope:output.board_brief"],
       "literal_value_classes": ["fixed_identifier", "fixed_nonfactual_text"],
       "template_body_status": "identifier_only_not_activated"
@@ -215,10 +215,9 @@
       "output_id": "output:board_brief",
       "role_id": "board",
       "template_ids": ["template:board.brief.shell.v1", "template:board.decision.boundary.v1", "template:board.event.record.v1", "template:board.linkage.no_path.v1", "template:board.linkage.path_found.v1"],
-      "required_source_fields": ["coverage.row", "event.canonical_label", "event.class", "event.last_verified_at", "event.record_status", "event.starts_at", "release.generated_at", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "required_source_fields": ["coverage.row", "event.canonical_label", "event.class", "event.last_verified_at", "event.record_status", "event.starts_at", "evidence.identity", "release.generated_at", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
       "omitted_registered_selector_fields": [
         {"source_field": "evidence.content_availability", "reason_id": "omission:not_used_by_consumer"},
-        {"source_field": "evidence.identity", "reason_id": "omission:not_used_by_consumer"},
         {"source_field": "evidence.observed_at", "reason_id": "omission:not_used_by_consumer"},
         {"source_field": "evidence.public_url", "reason_id": "omission:not_used_by_consumer"},
         {"source_field": "evidence.published_at", "reason_id": "omission:not_used_by_consumer"},

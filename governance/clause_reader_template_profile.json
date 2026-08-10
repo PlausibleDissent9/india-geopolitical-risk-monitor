@@ -1,0 +1,202 @@
+{
+  "schema_version": "0.1.0",
+  "profile_id": "igrm:clause-reader-template-profile:0.1.0",
+  "effective": "2026-08-08",
+  "status": "internal_shadow_only",
+  "default_policy": "deny",
+  "rendering_rule": "closed_literal_and_typed_slot_token_stream_no_free_prose",
+  "operators": [
+    {"operator_id": "operator:artifact.json.v1", "input_type": "object", "output_type": "artifact_descriptor"},
+    {"operator_id": "operator:artifact.stem.v1", "input_type": "source_ref_tuple", "output_type": "identifier"},
+    {"operator_id": "operator:branch.exactly_one.v1", "input_type": "traversal_status", "output_type": "branch_id"},
+    {"operator_id": "operator:evidence.identity_join.v1", "input_type": "evidence_clause_sets", "output_type": "evidence_rows"},
+    {"operator_id": "operator:limitation.scope.v1", "input_type": "limitation_scope_id", "output_type": "identifier_list"},
+    {"operator_id": "operator:object_ref.source.v1", "input_type": "clause_source_ref", "output_type": "object_ref"},
+    {"operator_id": "operator:object_ref.union.v1", "input_type": "object_ref_sets", "output_type": "object_ref_list"},
+    {"operator_id": "operator:token.literal.v1", "input_type": "registered_literal", "output_type": "text"},
+    {"operator_id": "operator:token.slot.v1", "input_type": "registered_typed_slot", "output_type": "text"}
+  ],
+  "slots": [
+    {"slot_id": "slot:event.canonical_label", "source_field": "event.canonical_label", "value_type": "text"},
+    {"slot_id": "slot:event.class", "source_field": "event.class", "value_type": "identifier"},
+    {"slot_id": "slot:event.last_verified_at", "source_field": "event.last_verified_at", "value_type": "datetime"},
+    {"slot_id": "slot:event.object_id", "source_field": "event.canonical_label", "value_type": "identifier", "operator_id": "operator:object_ref.source.v1"},
+    {"slot_id": "slot:event.record_status", "source_field": "event.record_status", "value_type": "identifier"},
+    {"slot_id": "slot:event.starts_at", "source_field": "event.starts_at", "value_type": "datetime"},
+    {"slot_id": "slot:release.generated_at", "source_field": "release.generated_at", "value_type": "datetime"},
+    {"slot_id": "slot:release.object_id", "source_field": "release.generated_at", "value_type": "identifier", "operator_id": "operator:object_ref.source.v1"},
+    {"slot_id": "slot:release.record_sha256", "source_field": "release.generated_at", "value_type": "sha256", "operator_id": "operator:object_ref.source.v1"},
+    {"slot_id": "slot:target.canonical_name", "source_field": "target.canonical_name", "value_type": "text"},
+    {"slot_id": "slot:target.object_id", "source_field": "target.identity_or_canonical_name", "value_type": "identifier", "operator_id": "operator:object_ref.source.v1"},
+    {"slot_id": "slot:traversal.max_hops", "source_field": "traversal.max_hops", "value_type": "integer"},
+    {"slot_id": "slot:traversal.returned_paths", "source_field": "traversal.returned_paths", "value_type": "integer"}
+  ],
+  "fixed_values": [
+    {"value_id": "fixed:board.heading.decision_boundary", "value_type": "fixed_nonfactual_text", "value": "Decision boundary"},
+    {"value_id": "fixed:board.heading.event_record", "value_type": "fixed_nonfactual_text", "value": "Registered event record"},
+    {"value_id": "fixed:board.heading.india_linkage", "value_type": "fixed_nonfactual_text", "value": "Stored India linkage"},
+    {"value_id": "fixed:board.section.decision_boundary", "value_type": "fixed_identifier", "value": "section:board.decision_boundary"},
+    {"value_id": "fixed:board.section.event_record", "value_type": "fixed_identifier", "value": "section:board.event_record"},
+    {"value_id": "fixed:board.section.india_linkage", "value_type": "fixed_identifier", "value": "section:board.india_linkage"},
+    {"value_id": "fixed:claim.event_record", "value_type": "fixed_identifier", "value": "claim:card.event_record"},
+    {"value_id": "fixed:claim.release_structure", "value_type": "fixed_identifier", "value": "claim:card.release_structure"},
+    {"value_id": "fixed:claim.scope.release_record", "value_type": "fixed_identifier", "value": "release_record"},
+    {"value_id": "fixed:claim.scope.release_structure", "value_type": "fixed_identifier", "value": "release_structure"},
+    {"value_id": "fixed:claim.status", "value_type": "fixed_identifier", "value": "compiled_from_registered_fields"},
+    {"value_id": "fixed:media_type.json", "value_type": "fixed_identifier", "value": "application/json"},
+    {"value_id": "fixed:newsroom.correction_route", "value_type": "fixed_nonfactual_text", "value": "https://igrm.in/corrections.html"},
+    {"value_id": "fixed:output.board", "value_type": "fixed_identifier", "value": "output:board_brief"},
+    {"value_id": "fixed:output.newsroom", "value_type": "fixed_identifier", "value": "output:newsroom_claim_card"},
+    {"value_id": "fixed:output.research", "value_type": "fixed_identifier", "value": "output:research_package"}
+  ],
+  "templates": [
+    {
+      "template_id": "template:board.brief.shell.v1",
+      "output_id": "output:board_brief",
+      "branch_id": null,
+      "consumed_source_fields": ["event.canonical_label", "release.generated_at"],
+      "rendered_limitation_scope_ids": ["scope:output.board_brief"],
+      "applicable_but_outer_wrapper_absent_scope_ids": [],
+      "operator_ids": ["operator:artifact.json.v1", "operator:artifact.stem.v1", "operator:limitation.scope.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "title", "tokens": [{"kind": "literal", "value": "Evidence-bound board brief — "}, {"kind": "slot", "slot_id": "slot:event.canonical_label"}]}
+      ]
+    },
+    {
+      "template_id": "template:board.decision.boundary.v1",
+      "output_id": "output:board_brief",
+      "branch_id": null,
+      "consumed_source_fields": ["evidence.identity"],
+      "rendered_limitation_scope_ids": [],
+      "applicable_but_outer_wrapper_absent_scope_ids": [],
+      "operator_ids": ["operator:token.literal.v1"],
+      "rendered_strings": [
+        {"field_id": "text", "tokens": [{"kind": "literal", "value": "This deterministic draft supplies traceable release facts and structural paths only. It does not estimate probability, severity, loss, causation, future outcomes or a recommended action; a human reviewer must inspect the evidence and declared gaps before use."}]}
+      ]
+    },
+    {
+      "template_id": "template:board.event.record.v1",
+      "output_id": "output:board_brief",
+      "branch_id": null,
+      "consumed_source_fields": ["event.canonical_label", "event.class", "event.last_verified_at", "event.record_status", "event.starts_at", "evidence.identity"],
+      "rendered_limitation_scope_ids": [],
+      "applicable_but_outer_wrapper_absent_scope_ids": [],
+      "operator_ids": ["operator:object_ref.source.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "text", "tokens": [{"kind": "literal", "value": "The signed release records "}, {"kind": "slot", "slot_id": "slot:event.canonical_label"}, {"kind": "literal", "value": " as a "}, {"kind": "slot", "slot_id": "slot:event.record_status"}, {"kind": "literal", "value": " "}, {"kind": "slot", "slot_id": "slot:event.class"}, {"kind": "literal", "value": " beginning "}, {"kind": "slot", "slot_id": "slot:event.starts_at"}, {"kind": "literal", "value": "; it was last verified at "}, {"kind": "slot", "slot_id": "slot:event.last_verified_at"}, {"kind": "literal", "value": "."}]}
+      ]
+    },
+    {
+      "template_id": "template:board.linkage.no_path.v1",
+      "output_id": "output:board_brief",
+      "branch_id": "branch:no_path",
+      "consumed_source_fields": ["coverage.row", "evidence.identity", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "rendered_limitation_scope_ids": [],
+      "applicable_but_outer_wrapper_absent_scope_ids": ["scope:output.all_views"],
+      "operator_ids": ["operator:branch.exactly_one.v1", "operator:object_ref.source.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "text", "tokens": [{"kind": "literal", "value": "The registered bounded traversal returned no structural path to "}, {"kind": "slot", "slot_id": "slot:target.canonical_name"}, {"kind": "literal", "value": " within "}, {"kind": "slot", "slot_id": "slot:traversal.max_hops"}, {"kind": "literal", "value": " hop(s). This bounded non-result is not evidence that exposure is absent."}]}
+      ]
+    },
+    {
+      "template_id": "template:board.linkage.path_found.v1",
+      "output_id": "output:board_brief",
+      "branch_id": "branch:path_found",
+      "consumed_source_fields": ["coverage.row", "evidence.identity", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "rendered_limitation_scope_ids": [],
+      "applicable_but_outer_wrapper_absent_scope_ids": ["scope:output.all_views"],
+      "operator_ids": ["operator:branch.exactly_one.v1", "operator:object_ref.source.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "text", "tokens": [{"kind": "literal", "value": "The registered bounded traversal returned "}, {"kind": "slot", "slot_id": "slot:traversal.returned_paths"}, {"kind": "literal", "value": " structural path(s) from stored event-entry entities to "}, {"kind": "slot", "slot_id": "slot:target.canonical_name"}, {"kind": "literal", "value": " within "}, {"kind": "slot", "slot_id": "slot:traversal.max_hops"}, {"kind": "literal", "value": " hop(s). A structural path is not evidence of causation, realized disruption or economic loss."}]}
+      ]
+    },
+    {
+      "template_id": "template:newsroom.card.shell.v1",
+      "output_id": "output:newsroom_claim_card",
+      "branch_id": null,
+      "consumed_source_fields": ["event.canonical_label", "evidence.content_availability", "evidence.identity", "evidence.observed_at", "evidence.public_url", "evidence.published_at", "evidence.rights_use", "evidence.source_id", "evidence.title", "evidence.verification_status", "release.generated_at"],
+      "rendered_limitation_scope_ids": ["scope:output.newsroom_claim_card"],
+      "applicable_but_outer_wrapper_absent_scope_ids": [],
+      "operator_ids": ["operator:artifact.json.v1", "operator:artifact.stem.v1", "operator:evidence.identity_join.v1", "operator:limitation.scope.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "title", "tokens": [{"kind": "literal", "value": "Verifiable claim card — "}, {"kind": "slot", "slot_id": "slot:event.canonical_label"}]}
+      ]
+    },
+    {
+      "template_id": "template:newsroom.event.record.v1",
+      "output_id": "output:newsroom_claim_card",
+      "branch_id": null,
+      "consumed_source_fields": ["event.canonical_label", "event.class", "event.record_status", "event.starts_at", "evidence.identity"],
+      "rendered_limitation_scope_ids": ["scope:claim.card.event_record"],
+      "applicable_but_outer_wrapper_absent_scope_ids": [],
+      "operator_ids": ["operator:limitation.scope.v1", "operator:object_ref.source.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "statement", "tokens": [{"kind": "literal", "value": "In the signed release, "}, {"kind": "slot", "slot_id": "slot:event.canonical_label"}, {"kind": "literal", "value": " is recorded as a "}, {"kind": "slot", "slot_id": "slot:event.record_status"}, {"kind": "literal", "value": " "}, {"kind": "slot", "slot_id": "slot:event.class"}, {"kind": "literal", "value": " beginning "}, {"kind": "slot", "slot_id": "slot:event.starts_at"}, {"kind": "literal", "value": "."}]}
+      ]
+    },
+    {
+      "template_id": "template:newsroom.release_structure.no_path.v1",
+      "output_id": "output:newsroom_claim_card",
+      "branch_id": "branch:no_path",
+      "consumed_source_fields": ["coverage.row", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "rendered_limitation_scope_ids": ["scope:claim.card.release_structure"],
+      "applicable_but_outer_wrapper_absent_scope_ids": ["scope:output.all_views"],
+      "operator_ids": ["operator:branch.exactly_one.v1", "operator:limitation.scope.v1", "operator:object_ref.source.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "statement", "tokens": [{"kind": "literal", "value": "The registered traversal returned "}, {"kind": "slot", "slot_id": "slot:traversal.returned_paths"}, {"kind": "literal", "value": " structural path(s) from the event's stored entity entries to "}, {"kind": "slot", "slot_id": "slot:target.canonical_name"}, {"kind": "literal", "value": " under its declared hop and path limits."}]}
+      ]
+    },
+    {
+      "template_id": "template:newsroom.release_structure.path_found.v1",
+      "output_id": "output:newsroom_claim_card",
+      "branch_id": "branch:path_found",
+      "consumed_source_fields": ["coverage.row", "target.canonical_name", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "rendered_limitation_scope_ids": ["scope:claim.card.release_structure"],
+      "applicable_but_outer_wrapper_absent_scope_ids": ["scope:output.all_views"],
+      "operator_ids": ["operator:branch.exactly_one.v1", "operator:limitation.scope.v1", "operator:object_ref.source.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "statement", "tokens": [{"kind": "literal", "value": "The registered traversal returned "}, {"kind": "slot", "slot_id": "slot:traversal.returned_paths"}, {"kind": "literal", "value": " structural path(s) from the event's stored entity entries to "}, {"kind": "slot", "slot_id": "slot:target.canonical_name"}, {"kind": "literal", "value": " under its declared hop and path limits."}]}
+      ]
+    },
+    {
+      "template_id": "template:research.package.shell.v1",
+      "output_id": "output:research_package",
+      "branch_id": null,
+      "consumed_source_fields": ["coverage.row", "event.canonical_label", "evidence.content_availability", "evidence.identity", "evidence.observed_at", "evidence.public_url", "evidence.published_at", "evidence.rights_use", "evidence.source_id", "evidence.title", "evidence.verification_status", "provenance.source_object_ref", "release.generated_at", "target.identity", "traversal.max_hops", "traversal.max_paths", "traversal.returned_paths", "traversal.status", "traversal.truncated"],
+      "rendered_limitation_scope_ids": ["scope:output.research_package"],
+      "applicable_but_outer_wrapper_absent_scope_ids": ["scope:output.all_views"],
+      "operator_ids": ["operator:artifact.json.v1", "operator:artifact.stem.v1", "operator:branch.exactly_one.v1", "operator:evidence.identity_join.v1", "operator:limitation.scope.v1", "operator:object_ref.source.v1", "operator:object_ref.union.v1", "operator:token.literal.v1", "operator:token.slot.v1"],
+      "rendered_strings": [
+        {"field_id": "title", "tokens": [{"kind": "literal", "value": "Evidence-bound research package — "}, {"kind": "slot", "slot_id": "slot:event.canonical_label"}]},
+        {"field_id": "citation", "tokens": [{"kind": "literal", "value": "Krishna, Ishan (2026). IGRM evidence-bound research package for "}, {"kind": "slot", "slot_id": "slot:event.object_id"}, {"kind": "literal", "value": " to "}, {"kind": "slot", "slot_id": "slot:target.object_id"}, {"kind": "literal", "value": ". Canonical release "}, {"kind": "slot", "slot_id": "slot:release.object_id"}, {"kind": "literal", "value": " (record SHA-256 "}, {"kind": "slot", "slot_id": "slot:release.record_sha256"}, {"kind": "literal", "value": "), generated "}, {"kind": "slot", "slot_id": "slot:release.generated_at"}, {"kind": "literal", "value": ". India Geopolitical Risk Monitor. https://igrm.in/standard.html"}]}
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "branch_id": "branch:no_path",
+      "predicate": {"source_field": "traversal.status", "operator_id": "operator:branch.exactly_one.v1", "value": "no_path"},
+      "active_template_ids": ["template:board.brief.shell.v1", "template:board.decision.boundary.v1", "template:board.event.record.v1", "template:board.linkage.no_path.v1", "template:newsroom.card.shell.v1", "template:newsroom.event.record.v1", "template:newsroom.release_structure.no_path.v1", "template:research.package.shell.v1"]
+    },
+    {
+      "branch_id": "branch:path_found",
+      "predicate": {"source_field": "traversal.status", "operator_id": "operator:branch.exactly_one.v1", "value": "paths_found"},
+      "active_template_ids": ["template:board.brief.shell.v1", "template:board.decision.boundary.v1", "template:board.event.record.v1", "template:board.linkage.path_found.v1", "template:newsroom.card.shell.v1", "template:newsroom.event.record.v1", "template:newsroom.release_structure.path_found.v1", "template:research.package.shell.v1"]
+    }
+  ],
+  "limitation_registry": {
+    "path": "governance/analytical_clause_limitation_registry.json",
+    "selection": "exact_pinned_output_profile_scope_only",
+    "duplicate_literal_lists": false
+  },
+  "boundary": {
+    "comparison_performed": false,
+    "comparison_result": "not_performed",
+    "standalone_activation_requires_common_scope_wrapper": true,
+    "general_equivalence_claimed": false,
+    "offline_output_created": false,
+    "public_activation": false,
+    "model_call": false,
+    "free_prose": false
+  }
+}

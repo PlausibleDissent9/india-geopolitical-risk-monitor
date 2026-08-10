@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 PROFILE_PATH = ROOT / "governance" / "evidence_output_renderer_consumer_profile.json"
 EVIDENCE_OUTPUT_REGISTRY_PATH = ROOT / "governance" / "evidence_output_registry.json"
 
-_VERSION = "0.1.0"
-_PROFILE_ID = "igrm:evidence-output-renderer-consumers:0.1.0"
+_VERSION = "0.2.0"
+_PROFILE_ID = "igrm:evidence-output-renderer-consumers:0.2.0"
 _DEPENDENCY_KINDS = {
     "analytical_clause_contract",
     "analytical_clause_limitations",
@@ -221,7 +221,7 @@ _SEMANTIC_PROJECTION_FIELDS = (
 # This digest binds the inactive registry's complete semantic projection while
 # deliberately excluding operational dependency paths and hashes.
 _REGISTERED_SEMANTIC_PROJECTION_SHA256 = (
-    "ca36e57dfe247e610775b679699686eab7a3121994642d41799ccd329b3cf009"
+    "18d23cba41b67e75e780025c124bbd2c92da50683711958431c2e882570fb1b0"
 )
 
 

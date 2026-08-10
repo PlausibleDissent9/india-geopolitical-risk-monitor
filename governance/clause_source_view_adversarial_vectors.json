@@ -24,6 +24,11 @@
     {"case_id": "one_many_mismatch", "expected_status": "refused", "expected_reason": "view_cardinality_invalid"},
     {"case_id": "post_compile_input_mutation", "expected_status": "valid"},
     {"case_id": "post_accessor_return_mutation", "expected_status": "valid"},
+    {"case_id": "verified_snapshot_unaliased", "expected_status": "valid"},
+    {"case_id": "verified_snapshot_corrupt_cache_ignored", "expected_status": "valid"},
+    {"case_id": "verified_snapshot_cross_pair_splice", "expected_status": "refused", "expected_reason": "view_proof_refused"},
+    {"case_id": "verified_snapshot_cache_aba_ignored", "expected_status": "valid"},
+    {"case_id": "verified_snapshot_other_valid_pair", "expected_status": "valid"},
     {"case_id": "runtime_drift", "expected_status": "refused", "expected_reason": "view_runtime_drift"},
     {"case_id": "profile_drift", "expected_status": "refused", "expected_reason": "view_contract_drift"},
     {"case_id": "deterministic_recompile", "expected_status": "valid"}

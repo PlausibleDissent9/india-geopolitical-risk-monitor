@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.1.0",
-  "contract_id": "igrm:clause-source-view:0.1.0",
+  "schema_version": "0.2.0",
+  "contract_id": "igrm:clause-source-view:0.2.0",
   "effective": "2026-08-08",
   "status": "internal_contract_only",
   "default_policy": "deny",
@@ -17,20 +17,20 @@
   "fixed_authorities": {
     "consumer_profile": {
       "path": "governance/evidence_output_renderer_consumer_profile.json",
-      "file_sha256": "74b1a88cad90fcd785549d6568b5ba18ebfe11f0f4657cb9bf145670f4d4fc3b",
-      "semantic_projection_sha256": "ca36e57dfe247e610775b679699686eab7a3121994642d41799ccd329b3cf009"
+      "file_sha256": "996baf2336e96434a49fa71b01501847e4c002e3d8ee2a7ab52d0b5da4aec450",
+      "semantic_projection_sha256": "18d23cba41b67e75e780025c124bbd2c92da50683711958431c2e882570fb1b0"
     },
     "consumer_validator": {
       "path": "src/evidence_output_consumer_contract.py",
-      "file_sha256": "d837f3fd72fed9c0977c279f573e32cf6b9f4bd91eace7eef0dc19d4b3092b19"
+      "file_sha256": "b197c7d6637480fdb853cfbad877671492940eea71118f59c5e4e47f3a8a9ebe"
     },
     "receipt_schema": {
       "path": "governance/schemas/clause-source-view-receipt.schema.json",
-      "file_sha256": "4306477e79f825dfe6ca50260ed06c68f1cfbcef6c7444c4e067e9d2e683ae9a"
+      "file_sha256": "f5b51f430db12666839a60fb24d2421c4c72fe3410ae8ae490298a8c53480dfb"
     },
     "adversarial_vectors": {
       "path": "governance/clause_source_view_adversarial_vectors.json",
-      "file_sha256": "fa860cac25c48551a87976646e4c2b39047f9b36ab83ec5bf53cde836c2e8944"
+      "file_sha256": "5c876b6f599886548434009a3bbaf40463efb3047c77e85f48604f2c15f13c42"
     }
   },
   "incumbent_authority": {
@@ -45,6 +45,11 @@
   "snapshot_rule": {
     "source_capture": "one_canonical_serialization_before_validation",
     "proof_capture": "one_canonical_serialization_before_validation",
+    "verified_snapshot_api": "ClauseSourceViews.verified_snapshot",
+    "verified_snapshot_input": "local_immutable_byte_references_to_captured_source_and_proof_only",
+    "verified_snapshot_rebuild": "existing_captured_input_compiler_with_current_pinned_contract_and_profile",
+    "verified_snapshot_result": "new_unaliased_fully_validated_ClauseSourceViews",
+    "cached_entries_policies_receipt_or_handles_reused": false,
     "retained_caller_objects": false,
     "internal_clause_storage": "immutable_canonical_bytes",
     "accessor_result": "fresh_copy_from_immutable_clause_bytes",
@@ -104,6 +109,8 @@
     "require_source_record_byte_equality": true,
     "require_proof_record_byte_equality": true,
     "require_receipt_byte_equality": true,
+    "snapshot_mixed_source_proof_binding": "refuse_via_incumbent_binding_validation",
+    "snapshot_other_valid_source_proof_pair": "valid_pair_is_valid_snapshot",
     "source_release_replay": false
   },
   "trust": {
@@ -115,6 +122,8 @@
   },
   "boundary": {
     "structural_derivation_only": true,
+    "verified_snapshot_available": true,
+    "verified_snapshot_rebuilds_from_captured_source_and_proof_only": true,
     "source_replay_performed": false,
     "source_replay_verified": false,
     "source_truth_claimed": false,

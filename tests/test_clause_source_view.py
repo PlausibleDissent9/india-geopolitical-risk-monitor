@@ -36,6 +36,23 @@ def _refuses(code: str):
     return pytest.raises(csv.ClauseSourceViewError, match=f"^{code}$")
 
 
+class _CacheMutatingBytes:
+    def __init__(self, raw: bytes, mutate: Callable[[], None]) -> None:
+        self._raw = raw
+        self._mutate = mutate
+
+    def __bytes__(self) -> bytes:
+        self._mutate()
+        return self._raw
+
+
+def _swap_view_caches(
+    target: csv.ClauseSourceViews, source: csv.ClauseSourceViews
+) -> None:
+    for attribute in ("_entries", "_policies", "_receipt_bytes"):
+        object.__setattr__(target, attribute, getattr(source, attribute))
+
+
 def _find(source: dict[str, Any], source_field: str) -> dict[str, Any]:
     rows = [
         row
@@ -188,6 +205,8 @@ def test_only_two_argument_compiler_is_the_composition_entry_point() -> None:
     )
     with pytest.raises(TypeError):
         csv.compile_clause_source_views({}, {}, query_id=PATH_QUERY)  # type: ignore[call-arg]
+    snapshot_signature = inspect.signature(csv.ClauseSourceViews.verified_snapshot)
+    assert list(snapshot_signature.parameters) == ["self"]
 
     analytical_source = Path(ac.__file__).read_text(encoding="utf-8")
     assert "clause_source_view" not in analytical_source
@@ -200,6 +219,64 @@ def test_only_two_argument_compiler_is_the_composition_entry_point() -> None:
         "evidence_outputs.py",
     ):
         assert forbidden not in source
+
+
+def test_verified_snapshot_rebuilds_only_from_captured_input_bytes(
+    tmp_path: Path,
+) -> None:
+    _, path_source, path_proof = _compiled(tmp_path / "path")
+    _, no_path_source, no_path_proof = _compiled(
+        tmp_path / "no-path", NO_PATH_QUERY
+    )
+    clean = csv.compile_clause_source_views(path_source, path_proof)
+    snapshot = clean.verified_snapshot()
+    assert snapshot is not clean
+    assert snapshot.receipt == clean.receipt
+    assert snapshot.receipt is not clean.receipt
+    assert snapshot._entries == clean._entries
+    assert snapshot._entries is not clean._entries
+    assert snapshot._policies == clean._policies
+    assert snapshot._policies is not clean._policies
+    assert snapshot._receipt_bytes == clean._receipt_bytes
+    assert snapshot._receipt_bytes is not clean._receipt_bytes
+    assert snapshot.research is not clean.research
+    assert snapshot.research._entries is snapshot._entries
+    assert snapshot.research._entries is not clean.research._entries
+
+    corrupt = csv.compile_clause_source_views(path_source, path_proof)
+    no_path = csv.compile_clause_source_views(no_path_source, no_path_proof)
+    _swap_view_caches(corrupt, no_path)
+    corrupt_snapshot = corrupt.verified_snapshot()
+    assert corrupt_snapshot.receipt == clean.receipt
+    assert corrupt_snapshot.research.one("traversal.status").value == "paths_found"
+
+    spliced = csv.compile_clause_source_views(path_source, path_proof)
+    object.__setattr__(spliced, "_proof_bytes", no_path._proof_bytes)
+    with _refuses("view_proof_refused"):
+        spliced.verified_snapshot()
+
+    aba = csv.compile_clause_source_views(path_source, path_proof)
+    mutations = 0
+
+    def mutate_cache() -> None:
+        nonlocal mutations
+        mutations += 1
+        _swap_view_caches(aba, no_path)
+
+    object.__setattr__(
+        aba, "_source_bytes", _CacheMutatingBytes(aba._source_bytes, mutate_cache)
+    )
+    aba_snapshot = aba.verified_snapshot()
+    assert mutations == 1
+    assert aba_snapshot.receipt == clean.receipt
+    assert aba_snapshot.research.one("traversal.status").value == "paths_found"
+
+    other_pair = csv.compile_clause_source_views(path_source, path_proof)
+    object.__setattr__(other_pair, "_source_bytes", no_path._source_bytes)
+    object.__setattr__(other_pair, "_proof_bytes", no_path._proof_bytes)
+    other_snapshot = other_pair.verified_snapshot()
+    assert other_snapshot.receipt == no_path.receipt
+    assert other_snapshot.research.one("traversal.status").value == "no_path"
 
 
 @pytest.mark.parametrize(
@@ -537,6 +614,11 @@ def _run_refusal_case(
         csv.compile_clause_source_views(source, proof).board.many(
             "event.canonical_label"
         )
+    elif case_id == "verified_snapshot_cross_pair_splice":
+        views = csv.compile_clause_source_views(source, proof)
+        other = csv.compile_clause_source_views(no_path_source, no_path_proof)
+        object.__setattr__(views, "_proof_bytes", other._proof_bytes)
+        views.verified_snapshot()
     elif case_id == "runtime_drift":
         views = csv.compile_clause_source_views(source, proof)
         monkeypatch.setattr(csv, "_runtime_sha256", lambda: "0" * 64)
@@ -567,6 +649,10 @@ def test_normative_adversarial_vectors_are_complete_and_executed(
         "valid_no_path",
         "post_compile_input_mutation",
         "post_accessor_return_mutation",
+        "verified_snapshot_unaliased",
+        "verified_snapshot_corrupt_cache_ignored",
+        "verified_snapshot_cache_aba_ignored",
+        "verified_snapshot_other_valid_pair",
         "deterministic_recompile",
     }
     for row in registry["cases"]:
@@ -588,6 +674,51 @@ def test_normative_adversarial_vectors_are_complete_and_executed(
             first = views.research.one("target.identity")
             first.value["object_id"] = "mutated"
             assert views.research.one("target.identity").value["object_id"] != "mutated"
+        elif case_id == "verified_snapshot_unaliased":
+            views = csv.compile_clause_source_views(source, proof)
+            snapshot = views.verified_snapshot()
+            assert snapshot is not views
+            assert snapshot._entries == views._entries
+            assert snapshot._entries is not views._entries
+            assert snapshot._policies == views._policies
+            assert snapshot._policies is not views._policies
+            assert snapshot._receipt_bytes == views._receipt_bytes
+            assert snapshot._receipt_bytes is not views._receipt_bytes
+        elif case_id == "verified_snapshot_corrupt_cache_ignored":
+            views = csv.compile_clause_source_views(source, proof)
+            other = csv.compile_clause_source_views(no_path_source, no_path_proof)
+            _swap_view_caches(views, other)
+            snapshot = views.verified_snapshot()
+            assert snapshot.research.one("traversal.status").value == "paths_found"
+        elif case_id == "verified_snapshot_cache_aba_ignored":
+            views = csv.compile_clause_source_views(source, proof)
+            other = csv.compile_clause_source_views(no_path_source, no_path_proof)
+            mutations = 0
+
+            def mutate_cache(
+                target: csv.ClauseSourceViews = views,
+                replacement: csv.ClauseSourceViews = other,
+            ) -> None:
+                nonlocal mutations
+                mutations += 1
+                _swap_view_caches(target, replacement)
+
+            object.__setattr__(
+                views,
+                "_source_bytes",
+                _CacheMutatingBytes(views._source_bytes, mutate_cache),
+            )
+            snapshot = views.verified_snapshot()
+            assert mutations == 1
+            assert snapshot.research.one("traversal.status").value == "paths_found"
+        elif case_id == "verified_snapshot_other_valid_pair":
+            views = csv.compile_clause_source_views(source, proof)
+            other = csv.compile_clause_source_views(no_path_source, no_path_proof)
+            object.__setattr__(views, "_source_bytes", other._source_bytes)
+            object.__setattr__(views, "_proof_bytes", other._proof_bytes)
+            snapshot = views.verified_snapshot()
+            assert snapshot.receipt == other.receipt
+            assert snapshot.research.one("traversal.status").value == "no_path"
         elif case_id == "deterministic_recompile":
             first = csv.compile_clause_source_views(source, proof)
             second = csv.compile_clause_source_views(source, proof)
