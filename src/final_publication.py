@@ -21,6 +21,8 @@ import re
 import shutil
 import subprocess
 import tempfile
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -130,6 +132,39 @@ _VALUE_FREE_REFUSAL_PATHS = {
     "docs/data/status.json",
     "docs/index.html",
     "docs/status.html",
+}
+_REFUSAL_REASONS = {
+    "source_unavailable": (
+        "source",
+        "source_unavailable",
+        "The registered source returned no eligible target-day frame.",
+    ),
+    "source_acquisition_failed": (
+        "source",
+        "acquisition_failed",
+        "The registered source acquisition did not complete its bounded step.",
+    ),
+    "pipeline_validation_failed": (
+        "pipeline",
+        "pipeline_failed",
+        "The exact D-1 candidate did not complete pipeline validation.",
+    ),
+    "audit_validation_failed": (
+        "audit",
+        "pipeline_failed",
+        "The exact D-1 candidate did not complete audit validation.",
+    ),
+    "derived_validation_failed": (
+        "derived",
+        "pipeline_failed",
+        "The exact D-1 candidate did not complete derived-output validation.",
+    ),
+}
+_REFUSAL_DEFAULT_CODES = {
+    "source": "source_acquisition_failed",
+    "pipeline": "pipeline_validation_failed",
+    "audit": "audit_validation_failed",
+    "derived": "derived_validation_failed",
 }
 
 
@@ -329,7 +364,7 @@ def _first_parent_index_surface_never_changed(
 
 
 def _legacy_index_value_surface(raw: bytes) -> tuple[str, ...] | None:
-    """Extract only the direct final-number SSR mirror from the homepage."""
+    """Extract the closed SSR value surface and reject unregistered claims."""
 
     try:
         text = raw.decode("utf-8")
@@ -352,7 +387,104 @@ def _legacy_index_value_surface(raw: bytes) -> tuple[str, ...] | None:
     )
     if len(components) != 5:
         return None
+    scrubbed = text
+    status_pattern = (
+        r"<!--final-publication-static:start-->.*?"
+        r"<!--final-publication-static:end-->"
+    )
+    status_regions = re.findall(status_pattern, scrubbed, flags=re.DOTALL)
+    if len(status_regions) > 1:
+        return None
+    scrubbed = re.sub(status_pattern, "", scrubbed, flags=re.DOTALL)
+    registered_patterns = (
+        r'<p[^>]*id="composite-label"[^>]*>.*?</p>',
+        r'<p[^>]*id="composite-score"[^>]*>.*?</p>',
+        r'<p[^>]*id="composite-delta"[^>]*>.*?</p>',
+        r"<!--ssr:components-->.*?<!--/ssr:components-->",
+    )
+    for pattern in registered_patterns:
+        scrubbed, count = re.subn(
+            pattern, "", scrubbed, count=1, flags=re.DOTALL
+        )
+        if count != 1:
+            return None
+    if _contains_unregistered_final_claim(scrubbed):
+        return None
     return (*scalars, *components)
+
+
+def _contains_unregistered_final_claim(text: str) -> bool:
+    """Refuse score/date claims outside the registered SSR slots.
+
+    Contexts cover reader prose, tables, metadata, ordinary DOM containers,
+    and JSON-LD.  Registered headline/component/status regions are removed by
+    the caller before this scan, so any remaining official/final/latest
+    numeric claim is an unregistered public mirror.
+    """
+
+    contexts: list[str] = []
+    contexts.extend(re.findall(r"<meta\b[^>]*>", text, flags=re.I))
+    contexts.extend(re.findall(r">([^<>]+)<", text, flags=re.S))
+    contexts.extend(
+        match.group(0)
+        for match in re.finditer(
+            r"<script\b[^>]*>.*?</script>", text, flags=re.I | re.S
+        )
+    )
+    for match in re.finditer(
+        r"<(?P<claim_tag>p|section|article|aside|div|table|tr|td|th|dl|dt|dd)"
+        r"\b[^>]*>.*?</(?P=claim_tag)>",
+        text,
+        flags=re.I | re.S,
+    ):
+        tag = match.group("claim_tag").lower()
+        opening_text = match.group(0).split(">", 1)[0]
+        # Broad layout containers combine unrelated numbers with the real
+        # instrument heading. Inspect them only when the container itself
+        # declares a claim; prose and tables are always inspected locally.
+        if tag in {"section", "div"} and not re.search(
+            r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
+            r"(?=.*(?:score|composite|measure|date|channel))",
+            opening_text,
+        ):
+            continue
+        contexts.append(match.group(0))
+    claim_attributes = re.compile(
+        r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
+        r"(?=.*(?:score|composite|measure|date|channel))"
+    )
+    for opening_match in re.finditer(
+        r"<(?P<any_tag>[a-z][a-z0-9:-]*)\b(?P<attrs>[^>]*)>",
+        text,
+        flags=re.I,
+    ):
+        if not claim_attributes.search(opening_match.group("attrs")):
+            continue
+        closing = re.search(
+            rf"</{re.escape(opening_match.group('any_tag'))}\s*>",
+            text[opening_match.end() :],
+            flags=re.I,
+        )
+        end = (
+            opening_match.end() + closing.end()
+            if closing
+            else opening_match.end()
+        )
+        contexts.append(text[opening_match.start() : end])
+    number = r"(?:\b\d{4}-\d{2}-\d{2}\b|(?<![\w])[-+]?\d+(?:\.\d+)?%?)"
+    official_claim = re.compile(
+        r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
+        r"(?=.*(?:score|composite|measure|date|channel))"
+        rf"(?=.*{number})"
+    )
+    direct_claim = re.compile(
+        rf"(?is)(?:composite|(?:pakistan|china|gulf|energy|trade|shipping)"
+        rf"(?:\s+channel)?(?:\s+score)?)\s*(?:is|=|:|·)\s*{number}"
+    )
+    return any(
+        official_claim.search(context) or direct_claim.search(context)
+        for context in contexts
+    )
 
 
 def _rights_decision_paths(registry_raw: bytes) -> list[str]:
@@ -897,6 +1029,21 @@ def acquire_target(
         )
 
     try:
+        rights_proof = require_ngram_public_identity_rights(
+            target=target,
+            root=root,
+            non_git_test_rights=non_git_test_rights,
+        )
+    except FinalPublicationError as exc:
+        return record_status(
+            target,
+            "acquisition_failed",
+            f"post-fetch ngram evidence retention refused: {exc.detail}",
+            root=root,
+            base_commit=frozen_commit,
+        )
+
+    try:
         attestation = _validate_frame_candidate(target, result, root)
         channels = sorted({spec["channel"] for spec in specs.values()})
         calibration_raw, calibration = _calibration(root, channels)
@@ -946,6 +1093,23 @@ def acquire_target(
             base_commit=frozen_commit,
         )
 
+    # Candidate preparation may itself span a policy boundary. Re-evaluate
+    # immediately before the atomic bundle write and bind that latest proof.
+    try:
+        write_rights_proof = require_ngram_public_identity_rights(
+            target=target,
+            root=root,
+            non_git_test_rights=non_git_test_rights,
+        )
+    except FinalPublicationError as exc:
+        return record_status(
+            target,
+            "acquisition_failed",
+            f"candidate-write ngram evidence retention refused: {exc.detail}",
+            root=root,
+            base_commit=frozen_commit,
+        )
+    receipt["bindings"]["rights"] = write_rights_proof
     receipt_path = RECEIPTS_RELATIVE / f"{target.isoformat()}.json"
     status = _status_payload(
         target,
@@ -1354,15 +1518,17 @@ def record_pipeline_failed(
     except (OSError, json.JSONDecodeError):
         pass
     prior_matches = prior.get("target_date") == target.isoformat()
-    if failure_stage not in {"source", "pipeline", "audit", "derived"}:
+    if failure_stage not in _REFUSAL_DEFAULT_CODES:
         _fail("final_status_invalid", f"unknown_failure_stage:{failure_stage}")
     prior_latest = prior.get("latest_finalized_date")
-    state = "acquisition_failed" if failure_stage == "source" else "pipeline_failed"
-    reason = (
-        "the registered source acquisition did not complete its bounded step"
+    reason_code = (
+        "source_unavailable"
         if failure_stage == "source"
-        else "the exact D-1 candidate did not complete publication validation"
+        and prior_matches
+        and prior.get("status") == "source_unavailable"
+        else _REFUSAL_DEFAULT_CODES[failure_stage]
     )
+    _stage, state, reason = _REFUSAL_REASONS[reason_code]
     payload = record_status(
         target,
         state,
@@ -1371,6 +1537,8 @@ def record_pipeline_failed(
         base_commit=base_commit or prior.get("base_commit"),
     )
     payload["contract_today"] = frozen_today.isoformat()
+    payload["failure_stage"] = failure_stage
+    payload["reason_code"] = reason_code
     _atomic_write(root / STATUS_RELATIVE, _json_bytes(payload))
     # run_daily may have written an uncommitted candidate latest.json before a
     # later gate failed. The target_ready marker captured the real published
@@ -1525,6 +1693,26 @@ def _legacy_proof_limited(root: Path, target: date) -> bool:
     )
 
 
+def is_exact_legacy_cache_exception(
+    root: Path, target: date, *, cache_bytes: bytes
+) -> bool:
+    """Permit rights-free cache access only for the pinned Aug-9 object."""
+
+    relative = f"data/raw/ngram_days/{target.isoformat()}.json"
+    expected = _LEGACY_AUG9_BLOBS.get(relative)
+    if target != _LEGACY_AUG9_DAY or expected is None:
+        return False
+    try:
+        current = (root / relative).read_bytes()
+    except OSError:
+        return False
+    return (
+        current == cache_bytes
+        and _sha256(cache_bytes) == expected
+        and _legacy_proof_limited(root, target)
+    )
+
+
 def public_status(
     *,
     root: Path = ROOT,
@@ -1542,11 +1730,31 @@ def public_status(
         pass
 
     marker_matches = marker.get("target_date") == target.isoformat()
-    marker_failure = marker_matches and marker.get("status") in {
-        "source_unavailable",
-        "acquisition_failed",
-        "pipeline_failed",
-    }
+    marker_stage = marker.get("failure_stage")
+    marker_code = marker.get("reason_code")
+    marker_refusal = (
+        _REFUSAL_REASONS.get(marker_code)
+        if isinstance(marker_code, str)
+        else None
+    )
+    if (
+        marker_refusal is None
+        and marker_matches
+        and marker.get("status") == "source_unavailable"
+    ):
+        marker_refusal = _REFUSAL_REASONS["source_unavailable"]
+    marker_failure = (
+        marker_matches
+        and marker_refusal is not None
+        and marker.get("status") == marker_refusal[1]
+        and (
+            marker_code is None
+            or (
+                marker_stage == marker_refusal[0]
+                and marker.get("reason") == marker_refusal[2]
+            )
+        )
+    )
     proven_final = False
     if latest == target and marker_matches and marker.get("status") == "finalized":
         proof_parent = trusted_parent
@@ -1606,14 +1814,15 @@ def public_status(
         )
     elif marker_failure:
         status = marker["status"]
-        reason = marker.get("reason") or "The D-1 final is unavailable."
+        assert marker_refusal is not None
+        reason = marker_refusal[2]
     else:
         status = "delayed_final"
         reason = (
             "The D-1 final has not completed publication; the latest older "
             "final remains the number of record."
         )
-    return {
+    result = {
         "target_date": target.isoformat(),
         "latest_finalized_date": (
             reported_latest.isoformat() if reported_latest else None
@@ -1625,6 +1834,13 @@ def public_status(
         "value_fields_published": False,
         "source_receipt": marker.get("receipt") if proven_final else None,
     }
+    if marker_failure:
+        assert marker_refusal is not None
+        result["failure_stage"] = marker_refusal[0]
+        result["reason_code"] = (
+            marker_code if isinstance(marker_code, str) else "source_unavailable"
+        )
+    return result
 
 
 def write_public_status(
@@ -1686,7 +1902,46 @@ def require_published_target(
     return state
 
 
-def require_release_rights(
+def _require_clean_release_tree(root: Path, classification: str) -> str:
+    head = _git_head(root)
+    status = subprocess.run(
+        ["git", "status", "--porcelain=v1", "--untracked-files=all"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    if head is None or status.returncode != 0 or status.stdout:
+        _fail(classification, "candidate_worktree_not_clean")
+    return head
+
+
+@contextmanager
+def _committed_candidate_snapshot(
+    root: Path, candidate_sha: str
+) -> Iterator[Path]:
+    container = Path(tempfile.mkdtemp(prefix="igrm-release-candidate-"))
+    snapshot = container / "tree"
+    added = subprocess.run(
+        ["git", "worktree", "add", "--quiet", "--detach", str(snapshot), candidate_sha],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    if added.returncode != 0:
+        shutil.rmtree(container, ignore_errors=True)
+        _fail("release_candidate_unproven", "candidate_snapshot_unavailable")
+    try:
+        yield snapshot
+    finally:
+        subprocess.run(
+            ["git", "worktree", "remove", "--force", str(snapshot)],
+            cwd=root,
+            capture_output=True,
+        )
+        shutil.rmtree(container, ignore_errors=True)
+
+
+def _require_release_rights_from_snapshot(
     *, root: Path = ROOT, expected_candidate_sha: str | None = None
 ) -> dict[str, Any]:
     """Recheck actual-time rights at the end of the candidate gate."""
@@ -1701,13 +1956,6 @@ def require_release_rights(
     ):
         _fail("release_rights_unproven", "frozen_candidate_sha_mismatch")
     latest = _read_latest_day(root)
-    if latest == _LEGACY_AUG9_DAY and _legacy_proof_limited(root, latest):
-        return {
-            "status": "legacy_proof_limited",
-            "target_date": latest.isoformat(),
-            "candidate_sha": candidate_sha,
-            "release_rights_evaluation": None,
-        }
     try:
         marker = json.loads((root / STATUS_RELATIVE).read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
@@ -1745,7 +1993,22 @@ def require_release_rights(
     }
 
 
-def require_release_candidate(
+def require_release_rights(
+    *, root: Path = ROOT, expected_candidate_sha: str | None = None
+) -> dict[str, Any]:
+    """Verify release rights only from one clean committed candidate tree."""
+
+    candidate_sha = _require_clean_release_tree(root, "release_rights_unproven")
+    if expected_candidate_sha is not None and candidate_sha != expected_candidate_sha:
+        _fail("release_rights_unproven", "frozen_candidate_sha_mismatch")
+    with _committed_candidate_snapshot(root, candidate_sha) as snapshot:
+        return _require_release_rights_from_snapshot(
+            root=snapshot,
+            expected_candidate_sha=candidate_sha,
+        )
+
+
+def _require_release_candidate_from_snapshot(
     candidate_class: str,
     *,
     expected_candidate_sha: str,
@@ -1772,9 +2035,11 @@ def require_release_candidate(
     if len(lineage) != 2 or lineage[1] != base_commit:
         _fail("release_candidate_unproven", "candidate_parent_invalid")
     if candidate_class == "final":
-        proof = require_release_rights(
+        proof = _require_release_rights_from_snapshot(
             root=root, expected_candidate_sha=expected_candidate_sha
         )
+        if proof.get("status") != "release_rights_verified":
+            _fail("release_candidate_unproven", "final_release_rights_required")
         if proof.get("target_date") != expected_target.isoformat():
             _fail("release_candidate_unproven", "final_target_mismatch")
         return {
@@ -1837,6 +2102,8 @@ def require_release_candidate(
         "target_date",
         "contract_today",
         "status",
+        "failure_stage",
+        "reason_code",
         "reason",
         "latest_finalized_date",
         "generated",
@@ -1844,14 +2111,21 @@ def require_release_candidate(
         "value_fields_published",
         "provisional_substitution_allowed",
     }
+    marker_reason_code = marker.get("reason_code")
+    expected_refusal = (
+        _REFUSAL_REASONS.get(marker_reason_code)
+        if isinstance(marker_reason_code, str)
+        else None
+    )
     if (
         not isinstance(marker, dict)
         or set(marker) != expected_marker_fields
         or marker.get("schema_version") != "1.0.0"
-        or marker.get("status")
-        not in {"source_unavailable", "acquisition_failed", "pipeline_failed"}
-        or not isinstance(marker.get("reason"), str)
-        or not marker["reason"].strip()
+        or expected_refusal is None
+        or marker.get("failure_stage") != expected_refusal[0]
+        or marker.get("status") != expected_refusal[1]
+        or marker.get("reason_code") != marker_reason_code
+        or marker.get("reason") != expected_refusal[2]
         or marker.get("base_commit") != base_commit
         or marker.get("value_fields_published") is not False
         or marker.get("provisional_substitution_allowed") is not False
@@ -1868,12 +2142,14 @@ def require_release_candidate(
     state = {
         "target_date": target.isoformat(),
         "latest_finalized_date": latest.isoformat(),
-        "status": marker["status"],
-        "reason": marker["reason"],
+        "status": expected_refusal[1],
+        "reason": expected_refusal[2],
         "finalized": False,
         "provisional_substitution_allowed": False,
         "value_fields_published": False,
         "source_receipt": None,
+        "failure_stage": marker["failure_stage"],
+        "reason_code": marker_reason_code,
     }
     try:
         parent_status = json.loads(
@@ -1919,6 +2195,29 @@ def require_release_candidate(
         "value_fields_published": False,
         "release_rights_evaluation": None,
     }
+
+
+def require_release_candidate(
+    candidate_class: str,
+    *,
+    expected_candidate_sha: str,
+    base_commit: str,
+    expected_target: date,
+    root: Path = ROOT,
+) -> dict[str, Any]:
+    """Verify a release only from one clean snapshot of its committed SHA."""
+
+    candidate_sha = _require_clean_release_tree(root, "release_candidate_unproven")
+    if candidate_sha != expected_candidate_sha:
+        _fail("release_candidate_unproven", "candidate_identity_invalid")
+    with _committed_candidate_snapshot(root, candidate_sha) as snapshot:
+        return _require_release_candidate_from_snapshot(
+            candidate_class,
+            expected_candidate_sha=expected_candidate_sha,
+            base_commit=base_commit,
+            expected_target=expected_target,
+            root=snapshot,
+        )
 
 
 def main() -> None:

@@ -113,6 +113,7 @@ jobs:
       - name: Commit nowcast payload
         env:
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IGRM_PUBLISH_CLASS: nowcast
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"

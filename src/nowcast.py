@@ -17,6 +17,8 @@ day, and the site labels this payload provisional wherever it appears.
 from __future__ import annotations
 
 import json
+import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,6 +41,87 @@ FEED_LAG_MIN = 20
 # first publishable nowcast of a UTC day lands mid-morning IST.
 MIN_DAY_MINUTES = 180
 MIN_DOCS = 2500
+_DYNAMIC_RIGHTS_FIELDS = {
+    "evaluated_at_utc",
+    "rights_as_of",
+    "evaluated_age_days",
+    "release_deadline_utc",
+}
+
+
+def _rights_authority_binding(proof: object) -> dict[str, object]:
+    if not isinstance(proof, dict):
+        raise ngram_rights.NgramRightsError("nowcast_rights_receipt_invalid")
+    return {
+        key: value
+        for key, value in proof.items()
+        if key not in _DYNAMIC_RIGHTS_FIELDS
+    }
+
+
+def require_release_rights(
+    expected_candidate_sha: str,
+    *,
+    root: Path = ROOT,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> dict[str, object]:
+    """Recheck a committed nowcast immediately before its exact SHA push."""
+
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_candidate_sha):
+        raise ngram_rights.NgramRightsError("nowcast_candidate_sha_invalid")
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    dirty = subprocess.run(
+        ["git", "status", "--porcelain=v1", "--untracked-files=all"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    if (
+        head.returncode != 0
+        or head.stdout.strip() != expected_candidate_sha
+        or dirty.returncode != 0
+        or dirty.stdout
+    ):
+        raise ngram_rights.NgramRightsError("nowcast_candidate_not_clean")
+    blob = subprocess.run(
+        ["git", "show", f"{expected_candidate_sha}:docs/data/nowcast.json"],
+        cwd=root,
+        capture_output=True,
+    )
+    try:
+        payload = json.loads(blob.stdout)
+        target = datetime.strptime(str(payload["date"]), "%Y-%m-%d").date()
+        receipt = payload["_meta"]["rights_receipt"]
+        post_fetch = receipt["post_fetch"]
+        write_boundary = receipt["write_boundary"]
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise ngram_rights.NgramRightsError(
+            "nowcast_rights_receipt_invalid"
+        ) from exc
+    if blob.returncode != 0 or receipt.get("schema_version") != "1.0.0":
+        raise ngram_rights.NgramRightsError("nowcast_rights_receipt_invalid")
+    current = ngram_rights.require_public_identity_rights(
+        target=target,
+        root=root,
+        test_authority=rights_authority,
+    )
+    current_binding = _rights_authority_binding(current)
+    if (
+        _rights_authority_binding(post_fetch) != current_binding
+        or _rights_authority_binding(write_boundary) != current_binding
+    ):
+        raise ngram_rights.NgramRightsError("nowcast_rights_receipt_drift")
+    return {
+        "status": "nowcast_release_rights_verified",
+        "candidate_sha": expected_candidate_sha,
+        "target_date": target.isoformat(),
+        "release_rights_evaluation": current,
+    }
 
 
 def _percentile_vs_store(store: pd.DataFrame, channel: str,
@@ -85,6 +168,9 @@ def main(
     if result is None:
         print("[nowcast] sample too thin or feed gap; not writing")
         return
+    post_fetch_rights = ngram_rights.require_public_identity_rights(
+        target=now.date(), root=ROOT, test_authority=rights_authority
+    )
 
     with open(ROOT / "dictionaries.json", encoding="utf-8") as f:
         dictionaries = json.load(f)
@@ -131,6 +217,14 @@ def main(
         "composite": composite,
         "channels": channels,
     }
+    write_rights = ngram_rights.require_public_identity_rights(
+        target=now.date(), root=ROOT, test_authority=rights_authority
+    )
+    payload["_meta"]["rights_receipt"] = {
+        "schema_version": "1.0.0",
+        "post_fetch": post_fetch_rights,
+        "write_boundary": write_rights,
+    }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload), encoding="utf-8")
     print(f"[nowcast] {now.date()} as of {payload['as_of_utc']}Z: "
@@ -139,4 +233,7 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) == 3 and sys.argv[1] == "--check-release-rights":
+        print(json.dumps(require_release_rights(sys.argv[2]), indent=1))
+    else:
+        main()

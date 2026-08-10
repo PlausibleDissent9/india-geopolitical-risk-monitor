@@ -74,6 +74,15 @@ HEADERS = {"User-Agent": "IGRM/1.0 (ngrams bridge, per maintainer guidance)"}
 PUBLISH_LAG_DAYS = 1          # today's files are still accumulating
 DOCUMENT_IDENTITY_DOMAIN = b"igrm-ngram-document-identity-v1\0"
 MATCHER_EVIDENCE_VERSION = "1.1.0"
+_IDENTITY_EVIDENCE_FIELDS = frozenset(
+    {
+        "english_document_identities",
+        "english_document_counts_by_stamp",
+        "india_document_keys",
+        "matched_document_keys",
+        "article_meta",
+    }
+)
 
 
 class NgramAcquisitionError(RuntimeError):
@@ -414,7 +423,7 @@ def compute_day(
     for g, s in specs.items():
         hits = matched[g] & india_docs if s["anchor"] == "india" else matched[g]
         shares[g] = round(100.0 * len(hits & en_docs) / total, 6)
-    return {
+    result = {
         "date": day.isoformat(),
         "n_docs_sampled": total,
         # Preserve the legacy meaning: located sampling windows.  Loaded and
@@ -436,6 +445,13 @@ def compute_day(
             article_meta,
         ),
     }
+    # Network work may cross a rights deadline or revocation boundary. Do not
+    # hand identity-bearing evidence to any caller under a stale pre-fetch
+    # decision; writers perform their own additional boundary check.
+    ngram_rights.require_public_identity_rights(
+        target=day, root=ROOT, test_authority=rights_authority
+    )
+    return result
 
 
 def _cached_day(
@@ -446,12 +462,24 @@ def _cached_day(
 ) -> dict | None:
     cache = DAY_CACHE / f"{day.isoformat()}.json"
     if cache.exists():
-        cached = json.loads(cache.read_text(encoding="utf-8"))
+        raw = cache.read_bytes()
+        cached = json.loads(raw)
         evidence = cached.get("_matcher_evidence") if isinstance(cached, dict) else None
-        if (
-            isinstance(evidence, dict)
-            and evidence.get("schema_version") == MATCHER_EVIDENCE_VERSION
-        ):
+        # A version label is attacker-controlled metadata, not a rights
+        # boundary.  Identity retention is classified from the evidence
+        # fields themselves.  The sole rights-free read is the exact Aug-9
+        # object whose full public history is pinned by final_publication.
+        from . import final_publication
+
+        legacy_exception = final_publication.is_exact_legacy_cache_exception(
+            ROOT, day, cache_bytes=raw
+        )
+        if legacy_exception:
+            return cached
+        identity_bearing = isinstance(evidence, dict) and bool(
+            _IDENTITY_EVIDENCE_FIELDS.intersection(evidence)
+        )
+        if identity_bearing or not legacy_exception:
             ngram_rights.require_public_identity_rights(
                 target=day,
                 root=ROOT,
@@ -460,6 +488,11 @@ def _cached_day(
         return cached
     result = compute_day(day, specs, rights_authority=rights_authority)
     if result is not None:
+        ngram_rights.require_public_identity_rights(
+            target=day,
+            root=ROOT,
+            test_authority=rights_authority,
+        )
         DAY_CACHE.mkdir(parents=True, exist_ok=True)
         cache.write_text(json.dumps(result), encoding="utf-8")
     return result
