@@ -3,7 +3,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import re
 import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -48,14 +51,16 @@ def _refusal(root: Path, code: str) -> None:
 
 def test_current_repository_controls_generate_the_bounded_report() -> None:
     report = security_integrity.validate_repository()
-    assert report["status"] == "static_repository_control_foundation"
+    assert report["status"] == "repository_self_consistency_only"
     assert report["default_policy"] == "deny"
     assert report["controls"]["exact_post_rebase_publication_gate"] == {
-        "status": "pass",
+        "status": "self_consistent_unattested_transition",
         "policy": "refuse_publish_on_red_candidate",
         "command": "bash scripts/gate.sh --committed",
         "push_paths_verified": 3,
+        "transition_authority": "unavailable_no_external_signature",
     }
+    assert report["scope"]["successor_transition_external_authority"] is False
     # 13 since 2026-08-09: historical-intelligence.yml. This count is an
     # inventory lock -- a lane that appears without a deliberate edit here
     # is a lane nobody reviewed, so the number is meant to be updated in
@@ -210,6 +215,14 @@ def test_registered_final_publisher_refuses_dead_code_gate_fragments(
             '    git push origin "$FROZEN_CANDIDATE_SHA:main"',
             '    true || git push origin "$FROZEN_CANDIDATE_SHA:main"',
         ),
+        (
+            '  if ! release_proof=$(python -m src.final_publication \\',
+            '  if ! release_proof=$(true || python -m src.final_publication \\',
+        ),
+        (
+            '  if [ "$release_candidate" != "$FROZEN_CANDIDATE_SHA" ]; then',
+            '  if false && [ "$release_candidate" != "$FROZEN_CANDIDATE_SHA" ]; then',
+        ),
     ),
 )
 def test_final_cas_push_function_rejects_dead_or_bypassed_dominators(
@@ -291,3 +304,171 @@ def test_registered_security_implementation_cannot_drift(security_tree: Path) ->
     path = security_tree / "src" / "security_integrity.py"
     path.write_text(path.read_text(encoding="utf-8") + "\n# drift\n", encoding="utf-8")
     _refusal(security_tree, "security_registered_hash_mismatch")
+
+
+def test_prior_commit_anchor_rejects_coordinated_cas_and_validator_reseal(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "coordinated-reseal"
+    subprocess.run(
+        ["git", "clone", "-q", "--shared", str(ROOT), str(root)], check=True
+    )
+    shutil.copy2(
+        ROOT / "src/security_integrity.py", root / "src/security_integrity.py"
+    )
+    shutil.copy2(
+        ROOT / "governance/security_integrity_registry.json",
+        root / "governance/security_integrity_registry.json",
+    )
+    shutil.copy2(
+        ROOT / "scripts/publish_final_cas.sh",
+        root / "scripts/publish_final_cas.sh",
+    )
+    script_path = root / "scripts/publish_final_cas.sh"
+    script = script_path.read_text(encoding="utf-8").replace(
+        "  git fetch --quiet origin main",
+        "  true || git fetch --quiet origin main",
+        1,
+    )
+    script_path.write_text(script, encoding="utf-8")
+    body = re.search(
+        r"(?ms)^push_frozen_parent\(\) \{\n(?P<body>.*?)^\}\s*$", script
+    )
+    assert body is not None
+    resealed_function = hashlib.sha256(
+        body.group("body").encode("utf-8")
+    ).hexdigest()
+    implementation_path = root / "src/security_integrity.py"
+    implementation = implementation_path.read_text(encoding="utf-8")
+    implementation = implementation.replace(
+        security_integrity.FINAL_CAS_FUNCTION_SHA256["push_frozen_parent"],
+        resealed_function,
+        1,
+    )
+    implementation_path.write_text(implementation, encoding="utf-8")
+    registry = _registry(root)
+    registry["publisher"]["final_cas_script"]["sha256"] = hashlib.sha256(
+        script_path.read_bytes()
+    ).hexdigest()
+    registry["implementation"]["sha256"] = hashlib.sha256(
+        implementation_path.read_bytes()
+    ).hexdigest()
+    _write_registry(root, registry)
+
+    result = subprocess.run(
+        [str(ROOT / ".venv/bin/python"), "-m", "src.security_integrity", "--check"],
+        cwd=root,
+        env={**os.environ, "PYTHONPATH": str(root)},
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode != 0
+    assert "security_prior_cas_transition_rejected" in result.stderr
+
+
+def test_coordinated_successor_reseal_cannot_claim_independent_trust(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "coordinated-successor-reseal"
+    subprocess.run(
+        ["git", "clone", "-q", "--shared", str(ROOT), str(root)], check=True
+    )
+    for relative in (
+        "src/security_integrity.py",
+        "scripts/publish_final_cas.sh",
+        "governance/security_integrity_registry.json",
+    ):
+        shutil.copy2(ROOT / relative, root / relative)
+
+    malicious_transition = (
+        "  true # release-rights bypass\n"
+        '  # --check-release-candidate "$CANDIDATE_CLASS"\n'
+        '  # --expected-candidate-sha "$FROZEN_CANDIDATE_SHA"\n'
+        '  # --base-commit "$BASE_COMMIT"\n'
+        '  # --expected-target "$TARGET"\n'
+        '  release_proof="{\\"candidate_sha\\": '
+        '\\"$FROZEN_CANDIDATE_SHA\\", '
+        '\\"candidate_class\\": \\"$CANDIDATE_CLASS\\"}"\n'
+        '  release_candidate="$FROZEN_CANDIDATE_SHA"\n'
+        '  release_class="$CANDIDATE_CLASS"\n'
+        '  if [ "$release_candidate" != "$FROZEN_CANDIDATE_SHA" ]; then\n'
+        '    echo "::error::unreachable candidate mismatch"\n'
+        "    return 1\n"
+        "  fi\n"
+        '  if [ "$release_class" != "$CANDIDATE_CLASS" ]; then\n'
+        '    echo "::error::unreachable class mismatch"\n'
+        "    return 1\n"
+        "  fi\n"
+        "  printf '%s\\n' \"$release_proof\"\n"
+    )
+    script_path = root / "scripts/publish_final_cas.sh"
+    script = script_path.read_text(encoding="utf-8")
+    start = script.index("  # Rights are time-varying authority.")
+    end = script.index("  GIT_CONFIG_COUNT=1", start)
+    script = script[:start] + malicious_transition + script[end:]
+    script_path.write_text(script, encoding="utf-8")
+    body = re.search(
+        r"(?ms)^push_frozen_parent\(\) \{\n(?P<body>.*?)^\}\s*$", script
+    )
+    assert body is not None
+    resealed_function = hashlib.sha256(
+        body.group("body").encode("utf-8")
+    ).hexdigest()
+
+    implementation_path = root / "src/security_integrity.py"
+    implementation = implementation_path.read_text(encoding="utf-8")
+    implementation = re.sub(
+        r'(?s)_RIGHTS_RELEASE_TRANSITION = """.*?"""\n\n',
+        lambda _match: (
+            f"_RIGHTS_RELEASE_TRANSITION = {malicious_transition!r}\n\n"
+        ),
+        implementation,
+        count=1,
+    )
+    implementation = implementation.replace(
+        security_integrity.FINAL_CAS_FUNCTION_SHA256["push_frozen_parent"],
+        resealed_function,
+        1,
+    )
+    implementation = implementation.replace(
+        '"release_candidate=$(printf",',
+        "'release_candidate=\"$FROZEN_CANDIDATE_SHA\"',",
+        1,
+    ).replace(
+        '"release_class=$(printf",',
+        "'release_class=\"$CANDIDATE_CLASS\"',",
+        1,
+    )
+    implementation_path.write_text(implementation, encoding="utf-8")
+    registry = _registry(root)
+    registry["publisher"]["final_cas_script"]["sha256"] = hashlib.sha256(
+        script_path.read_bytes()
+    ).hexdigest()
+    registry["implementation"]["sha256"] = hashlib.sha256(
+        implementation_path.read_bytes()
+    ).hexdigest()
+    _write_registry(root, registry)
+
+    result = subprocess.run(
+        [str(ROOT / ".venv/bin/python"), "-m", "src.security_integrity", "--write"],
+        cwd=root,
+        env={**os.environ, "PYTHONPATH": str(root)},
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    report = json.loads(
+        (root / "docs/data/security_integrity.json").read_text(encoding="utf-8")
+    )
+    assert report["status"] == "repository_self_consistency_only"
+    assert report["controls"]["exact_post_rebase_publication_gate"]["status"] == (
+        "self_consistent_unattested_transition"
+    )
+    assert (
+        report["controls"]["exact_post_rebase_publication_gate"][
+            "transition_authority"
+        ]
+        == "unavailable_no_external_signature"
+    )

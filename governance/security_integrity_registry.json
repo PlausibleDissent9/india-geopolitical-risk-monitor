@@ -6,7 +6,7 @@
   "workflow_directory": ".github/workflows",
   "implementation": {
     "path": "src/security_integrity.py",
-    "sha256": "47630c10edd582e19e23a733de9ba5e632e8a587f42551a90363628b40978718"
+    "sha256": "8279eb072640eb3a0a2e3b1ff4a03b43bae52ca3730590f0242af231bd9ea9f4"
   },
   "actions": {
     "actions/checkout": {
@@ -39,7 +39,7 @@
     },
     "final_cas_script": {
       "path": "scripts/publish_final_cas.sh",
-      "sha256": "64435b77b8ff876160f7bb62cda478c687e5980f22b8da2da867fbae2e8b5234"
+      "sha256": "ffa989cb07547dfc58695f0ac1bdcf6228b772ca7af634154347e66a7c170716"
     }
   },
   "limitations": [
@@ -47,6 +47,7 @@
     "No external penetration test, independent security audit, formal threat-model review or security certification has been completed.",
     "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
     "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
+    "The rebased cbbdf45-equivalent predecessor projection at 1ba3618 does not independently authorize the successor release-rights insertion: coordinated changes to that insertion, its validator and this registry remain outside the machine-verifiable trust boundary until an external human-signed transition root exists.",
     "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
   ]
 }

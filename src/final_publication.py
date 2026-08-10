@@ -26,7 +26,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, NoReturn
 
-from . import fetch_ngrams, precision_frame_v3, provenance, publication_guard
+from . import fetch_ngrams, ngram_rights, precision_frame_v3, provenance
 
 ROOT = Path(__file__).resolve().parents[1]
 STATUS_RELATIVE = Path("data/raw/final_publication_status.json")
@@ -50,25 +50,72 @@ _LEGACY_AUG9_BLOBS = {
     "dictionaries.json": (
         "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40"
     ),
-    "src/fetch_ngrams.py": (
-        "0cbf9e9837e5d6bb51ddb558a4cd3397953907e9a4ba44133292fd7441629e39"
-    ),
     "docs/data/latest.json": (
         "2af2170bd58fbcf98d4285124f2fede5d6a5d01628cc8674eaf4055acb37e049"
     ),
     "docs/data/history.json": (
         "672d240e167ee95f3363395445cdf4ab98a0dcf5d89c5071f65d85d12329bdfe"
     ),
+    "docs/data/history.csv": (
+        "b43ec447d9b009c18ffe9b20620a5bec9dfddb237bb33011e5fb2884bcc3ca9b"
+    ),
+    "docs/data/shares.csv": (
+        "c0bd5d30d81958c1d7e81cfc90fb98fed76d11cec31a24214a57d8685223317c"
+    ),
+    "docs/data/shares.json": (
+        "e34cec407d2ad9393eb03e723c2a42a70ce20ebdc43c27017757c4c91b606941"
+    ),
+    "docs/data/assistant_answers.json": (
+        "49b409a349d69e60a91688baabab066cdccb9f49069591bc7035799692624bb3"
+    ),
+    "docs/data/detection_baselines.json": (
+        "f8c440223d8c37e63748a34280e75ac9e61d962dad39b1d25d7e4e70f775edc6"
+    ),
+    "docs/data/detector_blindness.json": (
+        "b7ac0a46387acd2626e8d3f8a34c6cbc5c42aff364854cc9846f0205c11dcc6b"
+    ),
+    "docs/data/episode_actors.json": (
+        "86f94c4a9977d79675ba09e5ef292f24150e3ff585a357dc8dec5ab916f64220"
+    ),
+    "docs/data/event_study.csv": (
+        "1a6c492b33f14c6c8a42e6859091c1b05238b5aec878952a9bb912aebadacf5b"
+    ),
+    "docs/data/event_study.json": (
+        "b99b1fbf04954121d4361b76d756ea5c30b6548f551fba9c1a9493901fa8bec7"
+    ),
+    "docs/data/exposure_sectors.json": (
+        "6b6b6e2daf0d4a4216404c8ec64bb8d31e8c3c8f50426ae9e7c9705360388f9a"
+    ),
+    "docs/data/monthly.csv": (
+        "3433e7ab806d2d12aa850d67fe0ac5fa084c81d943af2fc4f4921f522af27b2d"
+    ),
+    "docs/data/monthly.json": (
+        "1f59a74e46246d603b22917d2d85b48b3355c04167d59b20d643bab34081c9d5"
+    ),
+    "docs/data/negative_results.json": (
+        "1e8679d50f5175fa382c5d81542f32cc67eb3143750761de72d7e69c8c9954c8"
+    ),
+    "docs/data/outlet_drift.json": (
+        "2069d8fd6dcd25c311aa1bd1e650c87fb047ba90910e703802a6affc8b525452"
+    ),
+    "docs/data/predictability.json": (
+        "8d32459b5064b47787a38ed9c7059cc913411d53cfb4a6a9b0119392c79f56e9"
+    ),
+    "docs/data/splice_sensitivity.json": (
+        "fe0cc510309b38fd21471c1e775c6f02624b69f11cc592f0395828c6e710c333"
+    ),
+    "docs/feed.xml": (
+        "8a8d3af902870f11d3cb1860685ab72664d97772ba2802a79b764e7f4811cc3e"
+    ),
 }
-_LEGACY_AUG9_HISTORICAL_ONLY_PATHS = {"src/fetch_ngrams.py"}
-_NGRAM_RIGHTS_SOURCE_ID = "gdelt_web_ngrams_v5"
-_NGRAM_PUBLIC_IDENTITY_USES = {
-    "model_processing",
-    "publish_derived_value",
-    "publish_extract",
-    "redistribute_full_record",
+_LEGACY_AUG9_HISTORICAL_BLOBS = {
+    # This pins the matcher that produced the cache at its introduction
+    # commit. The live matcher legitimately evolved to schema 1.1 afterward,
+    # so it is not part of the unchanged public value-surface history below.
+    "src/fetch_ngrams.py": (
+        "0cbf9e9837e5d6bb51ddb558a4cd3397953907e9a4ba44133292fd7441629e39"
+    ),
 }
-
 _PUBLIC_STATES = {
     "already_finalized",
     "source_unavailable",
@@ -77,6 +124,12 @@ _PUBLIC_STATES = {
     "target_ready",
     "finalized",
     "legacy_proof_limited",
+}
+_VALUE_FREE_REFUSAL_PATHS = {
+    "data/raw/final_publication_status.json",
+    "docs/data/status.json",
+    "docs/index.html",
+    "docs/status.html",
 }
 
 
@@ -106,6 +159,7 @@ class NonGitTestTrustRoot:
     rights_registry: bytes
     rights_signers: bytes
     rights_decision_files: dict[str, bytes]
+    rights_authority: ngram_rights.NonGitTestRightsAuthority
 
 
 @dataclass(frozen=True)
@@ -119,6 +173,7 @@ class _ParentSnapshot:
     rights_registry: bytes
     rights_signers: bytes
     rights_decision_files: dict[str, bytes]
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None
 
 
 def _fail(classification: str, detail: str = "") -> NoReturn:
@@ -195,6 +250,111 @@ def _git_blob(root: Path, commit: str, relative: str) -> bytes:
     return result.stdout
 
 
+def _git_blob_oid(root: Path, commit: str, relative: str) -> str | None:
+    """Return a path's blob identity at one commit, including absence."""
+
+    result = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{commit}:{relative}"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    value = result.stdout.strip()
+    if result.returncode != 0:
+        return None
+    return value if re.fullmatch(r"[0-9a-f]{40,64}", value) else None
+
+
+def _first_parent_path_never_changed(
+    root: Path,
+    introduction: str,
+    head: str,
+    relative: str,
+) -> bool:
+    """Require byte identity at every first-parent transition after intro."""
+
+    chain: list[tuple[str, str]] = []
+    current = head
+    while current != introduction:
+        result = subprocess.run(
+            ["git", "rev-list", "--parents", "-n", "1", current],
+            cwd=root,
+            capture_output=True,
+            text=True,
+        )
+        parts = result.stdout.split()
+        if result.returncode != 0 or not parts or parts[0] != current or len(parts) < 2:
+            return False
+        first_parent = parts[1]
+        chain.append((first_parent, current))
+        current = first_parent
+    for parent, child in reversed(chain):
+        if _git_blob_oid(root, parent, relative) != _git_blob_oid(
+            root, child, relative
+        ):
+            return False
+    return True
+
+
+def _first_parent_index_surface_never_changed(
+    root: Path,
+    introduction: str,
+    head: str,
+    expected: tuple[str, ...],
+) -> bool:
+    """Allow UX evolution while refusing any historical SSR value drift."""
+
+    current = head
+    while True:
+        try:
+            surface = _legacy_index_value_surface(
+                _git_blob(root, current, "docs/index.html")
+            )
+        except FinalPublicationError:
+            return False
+        if surface != expected:
+            return False
+        if current == introduction:
+            return True
+        result = subprocess.run(
+            ["git", "rev-list", "--parents", "-n", "1", current],
+            cwd=root,
+            capture_output=True,
+            text=True,
+        )
+        parts = result.stdout.split()
+        if result.returncode != 0 or not parts or parts[0] != current or len(parts) < 2:
+            return False
+        current = parts[1]
+
+
+def _legacy_index_value_surface(raw: bytes) -> tuple[str, ...] | None:
+    """Extract only the direct final-number SSR mirror from the homepage."""
+
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeError:
+        return None
+    scalar_patterns = (
+        r'id="latest-date">([^<]+)</span>',
+        r'id="composite-score"[^>]*>([^<]+)</p>',
+        r'id="composite-delta">([^<]+)</p>',
+    )
+    scalars: list[str] = []
+    for pattern in scalar_patterns:
+        values = re.findall(pattern, text)
+        if len(values) != 1:
+            return None
+        scalars.append(values[0])
+    components = re.findall(
+        r'<a class="component-row" href="receipts\.html\?channel=[^"]+">.*?</a>',
+        text,
+    )
+    if len(components) != 5:
+        return None
+    return (*scalars, *components)
+
+
 def _rights_decision_paths(registry_raw: bytes) -> list[str]:
     try:
         registry = json.loads(registry_raw)
@@ -206,7 +366,7 @@ def _rights_decision_paths(registry_raw: bytes) -> list[str]:
     for source in sources:
         if (
             isinstance(source, dict)
-            and source.get("source_id") == _NGRAM_RIGHTS_SOURCE_ID
+            and source.get("source_id") == ngram_rights.SOURCE_ID
         ):
             paths = [
                 source.get("decision_artifact_path"),
@@ -238,6 +398,7 @@ def non_git_test_trust_root(root: Path, commit: str) -> NonGitTestTrustRoot:
         rights_registry=rights_registry,
         rights_signers=(root / "governance/rights_signers.json").read_bytes(),
         rights_decision_files=decision_files,
+        rights_authority=ngram_rights.non_git_test_authority(root),
     )
 
 
@@ -270,91 +431,89 @@ def _parent_snapshot(
             relative: _git_blob(root, commit, relative)
             for relative in _rights_decision_paths(rights_registry)
         },
+        rights_authority=None,
     )
 
 
 def require_ngram_public_identity_rights(
     *,
+    target: date,
     root: Path = ROOT,
-    as_of: date | None = None,
+    non_git_test_rights: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> dict[str, Any]:
-    """Require an applicable signed decision before public identity retention."""
+    """Translate the shared processing refusal into publication terminology."""
 
-    decision_day = as_of or utc_today()
-    rights_path = root / "governance/source_rights_registry.json"
-    signers_path = root / "governance/rights_signers.json"
     try:
-        rights_raw, rights_document, _ = publication_guard._read_json(
-            rights_path, "rights_registry_unreadable"
+        return ngram_rights.require_public_identity_rights(
+            target=target,
+            root=root,
+            test_authority=non_git_test_rights,
         )
-        signers_raw, signers_document, _ = publication_guard._read_json(
-            signers_path, "rights_signers_unreadable"
-        )
-        signers = publication_guard._validate_signers(signers_document)
-        rights = publication_guard._validate_rights_registry(
-            rights_document, root, signers
-        )
-    except publication_guard.PublicationGuardError as exc:
+    except ngram_rights.NgramRightsError as exc:
         _fail("rights_not_authorized", exc.code)
-    try:
-        registry_effective = date.fromisoformat(str(rights_document["effective"]))
-        signers_effective = date.fromisoformat(str(signers_document["effective"]))
-    except (KeyError, ValueError):
-        _fail("rights_not_authorized", "rights_effective_date_invalid")
-    if registry_effective > decision_day or signers_effective > decision_day:
-        _fail("rights_not_authorized", "rights_registry_future_dated")
-    source = rights.get(_NGRAM_RIGHTS_SOURCE_ID)
-    if source is None:
-        _fail("rights_not_authorized", "ngram_rights_decision_missing")
-    if source.get("decision_state") != "approved":
-        _fail(
-            "rights_not_authorized",
-            f"ngram_rights_decision_{source.get('decision_state') or 'missing'}",
-        )
-    try:
-        reviewed = date.fromisoformat(str(source["reviewed_on"]))
-        due = date.fromisoformat(str(source["review_due"]))
-    except (KeyError, ValueError):
-        _fail("rights_not_authorized", "ngram_rights_dates_invalid")
-    if reviewed > decision_day:
-        _fail("rights_not_authorized", "ngram_rights_decision_future_dated")
-    if due < decision_day:
-        _fail("rights_not_authorized", "ngram_rights_decision_expired")
-    signer_id = source.get("signer_id")
-    if not isinstance(signer_id, str):
-        _fail("rights_not_authorized", "ngram_rights_signer_missing")
-    signer = signers.get(signer_id)
-    if signer is None:
-        _fail("rights_not_authorized", "ngram_rights_signer_missing")
-    signer_effective = date.fromisoformat(str(signer["effective"]))
-    signer_revoked = signer.get("revoked_on")
-    if signer_effective > decision_day:
-        _fail("rights_not_authorized", "ngram_rights_signer_future_dated")
-    if signer_revoked is not None and decision_day >= date.fromisoformat(
-        str(signer_revoked)
-    ):
-        _fail("rights_not_authorized", "ngram_rights_signer_revoked")
-    uses = source.get("permitted_uses")
-    if not isinstance(uses, list) or not _NGRAM_PUBLIC_IDENTITY_USES <= set(uses):
-        _fail("rights_not_authorized", "ngram_public_identity_use_not_permitted")
-    artifact_path = source.get("decision_artifact_path")
-    signature_path = source.get("decision_signature_path")
-    if not isinstance(artifact_path, str) or not isinstance(signature_path, str):
-        _fail("rights_not_authorized", "ngram_signed_decision_missing")
-    return {
-        "source_id": _NGRAM_RIGHTS_SOURCE_ID,
-        "decision_id": source["decision_id"],
-        "signer_id": source["signer_id"],
-        "reviewed_on": source["reviewed_on"],
-        "review_due": source["review_due"],
-        "permitted_uses": sorted(_NGRAM_PUBLIC_IDENTITY_USES),
-        "rights_registry_sha256": _sha256(rights_raw),
-        "rights_signers_sha256": _sha256(signers_raw),
-        "decision_artifact_path": artifact_path,
-        "decision_artifact_sha256": source["decision_artifact_sha256"],
-        "decision_signature_path": signature_path,
-        "decision_signature_sha256": _sha256((root / signature_path).read_bytes()),
+
+
+_RIGHTS_EVALUATION_FIELDS = {
+    "evaluated_at_utc",
+    "rights_as_of",
+    "evaluated_age_days",
+}
+
+
+def _validated_bound_rights(
+    value: object, target: date
+) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        _fail("promotion_receipt_invalid", "rights_binding_missing")
+    required = {
+        "source_id",
+        "decision_id",
+        "signer_id",
+        "reviewed_on",
+        "review_due",
+        "target_date",
+        "evaluated_at_utc",
+        "rights_as_of",
+        "max_current_age_days",
+        "evaluated_age_days",
+        "release_deadline_utc",
+        "permitted_uses",
+        "trusted_signer_public_key_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "decision_artifact_path",
+        "decision_artifact_sha256",
+        "decision_signature_path",
+        "decision_signature_sha256",
     }
+    if set(value) != required or value.get("target_date") != target.isoformat():
+        _fail("promotion_receipt_invalid", "rights_binding_fields_invalid")
+    try:
+        checked_text = str(value["evaluated_at_utc"])
+        if not checked_text.endswith("Z"):
+            raise ValueError
+        checked = datetime.fromisoformat(checked_text[:-1] + "+00:00")
+        as_of = date.fromisoformat(str(value["rights_as_of"]))
+    except ValueError:
+        _fail("promotion_receipt_invalid", "rights_evaluation_time_invalid")
+    max_age = value.get("max_current_age_days")
+    age = value.get("evaluated_age_days")
+    expected_age = (as_of - target).days
+    if (
+        checked.tzinfo is None
+        or checked.utcoffset() != timedelta(0)
+        or checked.date() != as_of
+        or isinstance(max_age, bool)
+        or not isinstance(max_age, int)
+        or max_age < 0
+        or isinstance(age, bool)
+        or not isinstance(age, int)
+        or age != expected_age
+        or age < 0
+        or age > max_age
+    ):
+        _fail("promotion_receipt_invalid", "rights_evaluated_age_invalid")
+    return value
 
 
 def _read_latest_day(root: Path) -> date | None:
@@ -647,6 +806,7 @@ def acquire_target(
     base_commit: str | None = None,
     compute_day: Callable[[date, dict[str, dict]], dict[str, Any] | None]
     | None = None,
+    non_git_test_rights: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> dict[str, Any]:
     """Acquire, validate and atomically bank exactly one D-1 frame.
 
@@ -698,7 +858,9 @@ def acquire_target(
     # identity evidence behind even when later validation would fail.
     try:
         rights_proof = require_ngram_public_identity_rights(
-            root=root, as_of=today or utc_today()
+            target=target,
+            root=root,
+            non_git_test_rights=non_git_test_rights,
         )
     except FinalPublicationError as exc:
         return record_status(
@@ -710,9 +872,13 @@ def acquire_target(
         )
 
     specs = fetch_ngrams.group_specs()
-    compute = compute_day or fetch_ngrams.compute_day
     try:
-        result = compute(target, specs)
+        if compute_day is None or compute_day is fetch_ngrams.compute_day:
+            result = fetch_ngrams.compute_day(
+                target, specs, rights_authority=non_git_test_rights
+            )
+        else:
+            result = compute_day(target, specs)
     except Exception as exc:  # noqa: BLE001 - classified, value-free refusal
         return record_status(
             target,
@@ -900,7 +1066,6 @@ def require_promotion_receipt(
     trusted_parent: str | None = None,
     non_git_test_trust: NonGitTestTrustRoot | None = None,
     required_marker_status: str = "target_ready",
-    rights_as_of: date | None = None,
 ) -> dict[str, Any]:
     """Revalidate the exact bridge candidate before it may become final.
 
@@ -1007,9 +1172,12 @@ def require_promotion_receipt(
     bindings = receipt.get("bindings")
     if not isinstance(bindings, dict):
         _fail("promotion_receipt_invalid", "transform_bindings_missing")
+    bound_rights = _validated_bound_rights(bindings.get("rights"), target)
     try:
         rights_proof = require_ngram_public_identity_rights(
-            root=root, as_of=rights_as_of or utc_today()
+            target=target,
+            root=root,
+            non_git_test_rights=parent.rights_authority,
         )
     except FinalPublicationError as exc:
         _fail("promotion_receipt_invalid", f"rights_not_authorized:{exc.detail}")
@@ -1028,7 +1196,17 @@ def require_promotion_receipt(
                 "promotion_receipt_invalid",
                 f"rights_input_differs_from_frozen_parent:{relative}",
             )
-    if bindings.get("rights") != rights_proof:
+    bound_static = {
+        key: value
+        for key, value in bound_rights.items()
+        if key not in _RIGHTS_EVALUATION_FIELDS
+    }
+    current_static = {
+        key: value
+        for key, value in rights_proof.items()
+        if key not in _RIGHTS_EVALUATION_FIELDS
+    }
+    if bound_static != current_static:
         _fail("promotion_receipt_invalid", "rights_binding_mismatch")
     if calibration_raw != parent.calibration:
         _fail("promotion_receipt_invalid", "calibration_differs_from_frozen_parent")
@@ -1115,7 +1293,9 @@ def require_promotion_receipt(
         _canonical_bytes(expected_row)
     ):
         _fail("promotion_receipt_invalid", "candidate_row_hash_mismatch")
-    return receipt
+    validated_receipt = dict(receipt)
+    validated_receipt["release_rights_evaluation"] = rights_proof
+    return validated_receipt
 
 
 def mark_finalized(
@@ -1124,7 +1304,6 @@ def mark_finalized(
     root: Path = ROOT,
     base_commit: str | None = None,
     non_git_test_trust: NonGitTestTrustRoot | None = None,
-    rights_as_of: date | None = None,
 ) -> dict[str, Any]:
     prior: dict[str, Any] = {}
     try:
@@ -1144,7 +1323,6 @@ def mark_finalized(
         trusted_parent=base_commit,
         non_git_test_trust=non_git_test_trust,
         required_marker_status="target_ready",
-        rights_as_of=rights_as_of,
     )
     require_written_final_target(target, site_data=root / "docs/data")
     return record_status(
@@ -1163,8 +1341,12 @@ def record_pipeline_failed(
     root: Path = ROOT,
     base_commit: str | None = None,
     failure_stage: str = "pipeline",
+    contract_today: date | None = None,
 ) -> dict[str, Any]:
     """Record a value-free failure while preserving the last true final."""
+
+    frozen_today = contract_today or (target + timedelta(days=1))
+    require_exact_target(target, frozen_today)
 
     prior: dict[str, Any] = {}
     try:
@@ -1172,13 +1354,6 @@ def record_pipeline_failed(
     except (OSError, json.JSONDecodeError):
         pass
     prior_matches = prior.get("target_date") == target.isoformat()
-    if prior_matches and prior.get("status") in {
-        "source_unavailable",
-        "acquisition_failed",
-        "pipeline_failed",
-        "legacy_proof_limited",
-    }:
-        return prior
     if failure_stage not in {"source", "pipeline", "audit", "derived"}:
         _fail("final_status_invalid", f"unknown_failure_stage:{failure_stage}")
     prior_latest = prior.get("latest_finalized_date")
@@ -1195,6 +1370,8 @@ def record_pipeline_failed(
         root=root,
         base_commit=base_commit or prior.get("base_commit"),
     )
+    payload["contract_today"] = frozen_today.isoformat()
+    _atomic_write(root / STATUS_RELATIVE, _json_bytes(payload))
     # run_daily may have written an uncommitted candidate latest.json before a
     # later gate failed. The target_ready marker captured the real published
     # prefix before that work began; retain it instead of laundering local
@@ -1288,11 +1465,28 @@ def _legacy_proof_limited(root: Path, target: date) -> bool:
             if _sha256(introduced) != expected_sha:
                 return False
             historical[relative] = introduced
-            if (
-                relative not in _LEGACY_AUG9_HISTORICAL_ONLY_PATHS
-                and (root / relative).read_bytes() != introduced
+            if (root / relative).read_bytes() != introduced:
+                return False
+            if not _first_parent_path_never_changed(
+                root, introduction, head, relative
             ):
                 return False
+        for relative, expected_sha in _LEGACY_AUG9_HISTORICAL_BLOBS.items():
+            introduced = _git_blob(root, introduction, relative)
+            if _sha256(introduced) != expected_sha:
+                return False
+            historical[relative] = introduced
+        introduced_index = _git_blob(root, introduction, "docs/index.html")
+        current_index = (root / "docs/index.html").read_bytes()
+        introduced_surface = _legacy_index_value_surface(introduced_index)
+        if (
+            introduced_surface is None
+            or _legacy_index_value_surface(current_index) != introduced_surface
+            or not _first_parent_index_surface_never_changed(
+                root, introduction, head, introduced_surface
+            )
+        ):
+            return False
         cache = json.loads(
             historical["data/raw/ngram_days/2026-08-09.json"]
         )
@@ -1367,7 +1561,6 @@ def public_status(
                     trusted_parent=proof_parent,
                     non_git_test_trust=non_git_test_trust,
                     required_marker_status="finalized",
-                    rights_as_of=contract_today,
                 )
                 require_written_final_target(target, site_data=root / "docs/data")
                 proven_final = True
@@ -1493,6 +1686,241 @@ def require_published_target(
     return state
 
 
+def require_release_rights(
+    *, root: Path = ROOT, expected_candidate_sha: str | None = None
+) -> dict[str, Any]:
+    """Recheck actual-time rights at the end of the candidate gate."""
+
+    candidate_sha = _git_head(root)
+    if (
+        candidate_sha is None
+        or (
+            expected_candidate_sha is not None
+            and candidate_sha != expected_candidate_sha
+        )
+    ):
+        _fail("release_rights_unproven", "frozen_candidate_sha_mismatch")
+    latest = _read_latest_day(root)
+    if latest == _LEGACY_AUG9_DAY and _legacy_proof_limited(root, latest):
+        return {
+            "status": "legacy_proof_limited",
+            "target_date": latest.isoformat(),
+            "candidate_sha": candidate_sha,
+            "release_rights_evaluation": None,
+        }
+    try:
+        marker = json.loads((root / STATUS_RELATIVE).read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise FinalPublicationError(
+            "release_rights_unproven", "finalized_marker_unreadable"
+        ) from exc
+    target_text = marker.get("target_date")
+    try:
+        target = date.fromisoformat(target_text)
+    except (TypeError, ValueError) as exc:
+        raise FinalPublicationError(
+            "release_rights_unproven", "finalized_target_invalid"
+        ) from exc
+    if (
+        marker.get("status") != "finalized"
+        or latest != target
+        or not isinstance(marker.get("receipt"), dict)
+    ):
+        _fail("release_rights_unproven", "exact_finalized_marker_required")
+    parent = _committed_receipt_parent(root, marker)
+    if parent is None:
+        _fail("release_rights_unproven", "receipt_introduction_parent_unproven")
+    receipt = require_promotion_receipt(
+        target,
+        root=root,
+        require_bridge_receipt=True,
+        trusted_parent=parent,
+        required_marker_status="finalized",
+    )
+    return {
+        "status": "release_rights_verified",
+        "target_date": target.isoformat(),
+        "candidate_sha": candidate_sha,
+        "release_rights_evaluation": receipt["release_rights_evaluation"],
+    }
+
+
+def require_release_candidate(
+    candidate_class: str,
+    *,
+    expected_candidate_sha: str,
+    base_commit: str,
+    expected_target: date,
+    root: Path = ROOT,
+) -> dict[str, Any]:
+    """Authorize one frozen final or disjoint value-free refusal candidate."""
+
+    candidate_sha = _git_head(root)
+    if (
+        candidate_class not in {"final", "refusal"}
+        or not re.fullmatch(r"[0-9a-f]{40}", expected_candidate_sha)
+        or not re.fullmatch(r"[0-9a-f]{40}", base_commit)
+        or candidate_sha != expected_candidate_sha
+    ):
+        _fail("release_candidate_unproven", "candidate_identity_invalid")
+    lineage = subprocess.run(
+        ["git", "rev-list", "--parents", "-n", "1", candidate_sha],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    ).stdout.split()
+    if len(lineage) != 2 or lineage[1] != base_commit:
+        _fail("release_candidate_unproven", "candidate_parent_invalid")
+    if candidate_class == "final":
+        proof = require_release_rights(
+            root=root, expected_candidate_sha=expected_candidate_sha
+        )
+        if proof.get("target_date") != expected_target.isoformat():
+            _fail("release_candidate_unproven", "final_target_mismatch")
+        return {
+            **proof,
+            "candidate_class": "final",
+            "base_commit": base_commit,
+            "value_fields_published": True,
+        }
+
+    result = subprocess.run(
+        [
+            "git",
+            "diff",
+            "--name-status",
+            "--no-renames",
+            base_commit,
+            candidate_sha,
+        ],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        _fail("release_candidate_unproven", "refusal_diff_unreadable")
+    changed: set[str] = set()
+    for line in result.stdout.splitlines():
+        fields = line.split("\t")
+        if len(fields) != 2 or fields[0] not in {"A", "M"}:
+            _fail("release_candidate_unproven", "refusal_diff_status_invalid")
+        changed.add(fields[1])
+    if (
+        changed != _VALUE_FREE_REFUSAL_PATHS
+    ):
+        _fail("release_candidate_unproven", "refusal_diff_not_value_free")
+    marker_path = root / STATUS_RELATIVE
+    try:
+        marker_raw = marker_path.read_bytes()
+        marker = json.loads(marker_raw)
+        parent_latest = json.loads(
+            _git_blob(root, base_commit, "docs/data/latest.json")
+        )["date"]
+        target = date.fromisoformat(str(marker["target_date"]))
+        contract_today = date.fromisoformat(str(marker["contract_today"]))
+        latest = date.fromisoformat(str(marker["latest_finalized_date"]))
+        generated_text = str(marker["generated"])
+        generated = datetime.fromisoformat(generated_text[:-1] + "+00:00")
+    except (
+        FinalPublicationError,
+        OSError,
+        KeyError,
+        TypeError,
+        ValueError,
+        json.JSONDecodeError,
+    ) as exc:
+        raise FinalPublicationError(
+            "release_candidate_unproven", "refusal_marker_invalid"
+        ) from exc
+    expected_marker_fields = {
+        "schema_version",
+        "target_date",
+        "contract_today",
+        "status",
+        "reason",
+        "latest_finalized_date",
+        "generated",
+        "base_commit",
+        "value_fields_published",
+        "provisional_substitution_allowed",
+    }
+    if (
+        not isinstance(marker, dict)
+        or set(marker) != expected_marker_fields
+        or marker.get("schema_version") != "1.0.0"
+        or marker.get("status")
+        not in {"source_unavailable", "acquisition_failed", "pipeline_failed"}
+        or not isinstance(marker.get("reason"), str)
+        or not marker["reason"].strip()
+        or marker.get("base_commit") != base_commit
+        or marker.get("value_fields_published") is not False
+        or marker.get("provisional_substitution_allowed") is not False
+        or marker_raw != _json_bytes(marker)
+        or not generated_text.endswith("Z")
+        or generated.tzinfo is None
+        or generated.utcoffset() != timedelta(0)
+        or target != expected_target
+        or target != required_target(contract_today)
+        or latest >= target
+        or latest.isoformat() != parent_latest
+    ):
+        _fail("release_candidate_unproven", "refusal_marker_not_value_free")
+    state = {
+        "target_date": target.isoformat(),
+        "latest_finalized_date": latest.isoformat(),
+        "status": marker["status"],
+        "reason": marker["reason"],
+        "finalized": False,
+        "provisional_substitution_allowed": False,
+        "value_fields_published": False,
+        "source_receipt": None,
+    }
+    try:
+        parent_status = json.loads(
+            _git_blob(root, base_commit, "docs/data/status.json")
+        )
+        if not isinstance(parent_status, dict):
+            raise ValueError("parent status root invalid")
+        parent_status["final_publication"] = state
+        expected_bytes = {
+            "data/raw/final_publication_status.json": marker_raw,
+            "docs/data/status.json": _json_bytes(parent_status),
+        }
+        from . import status_data
+
+        for relative in ("docs/index.html", "docs/status.html"):
+            expected_bytes[relative] = status_data.static_final_disclosure_bytes(
+                state,
+                relative,
+                _git_blob(root, base_commit, relative),
+            )
+    except (FinalPublicationError, OSError, ValueError, json.JSONDecodeError) as exc:
+        raise FinalPublicationError(
+            "release_candidate_unproven", "refusal_rebuild_failed"
+        ) from exc
+    for relative, expected in expected_bytes.items():
+        try:
+            actual = (root / relative).read_bytes()
+        except OSError as exc:
+            raise FinalPublicationError(
+                "release_candidate_unproven", "refusal_output_missing"
+            ) from exc
+        if actual != expected:
+            _fail(
+                "release_candidate_unproven",
+                f"refusal_output_mismatch:{relative}",
+            )
+    return {
+        "status": "value_free_refusal_verified",
+        "candidate_class": "refusal",
+        "candidate_sha": candidate_sha,
+        "base_commit": base_commit,
+        "changed_paths": sorted(changed),
+        "value_fields_published": False,
+        "release_rights_evaluation": None,
+    }
+
+
 def main() -> None:
     import argparse
 
@@ -1501,6 +1929,12 @@ def main() -> None:
     parser.add_argument("--record-pipeline-failed", type=date.fromisoformat)
     parser.add_argument("--check-promotion-receipt", type=date.fromisoformat)
     parser.add_argument("--check-published-target", type=date.fromisoformat)
+    parser.add_argument("--check-release-rights", metavar="EXPECTED_CANDIDATE_SHA")
+    parser.add_argument(
+        "--check-release-candidate", choices=("final", "refusal")
+    )
+    parser.add_argument("--expected-candidate-sha")
+    parser.add_argument("--expected-target", type=date.fromisoformat)
     parser.add_argument(
         "--failure-stage",
         choices=("source", "pipeline", "audit", "derived"),
@@ -1518,6 +1952,8 @@ def main() -> None:
             args.record_pipeline_failed is not None,
             args.check_promotion_receipt is not None,
             args.check_published_target is not None,
+            args.check_release_rights is not None,
+            args.check_release_candidate is not None,
             args.write_public_status,
         )
     )
@@ -1529,6 +1965,7 @@ def main() -> None:
             root=args.root,
             base_commit=args.base_commit,
             failure_stage=args.failure_stage,
+            contract_today=args.today,
         )
         print(json.dumps(status, indent=1))
         return
@@ -1557,6 +1994,50 @@ def main() -> None:
             )
             raise SystemExit(2) from exc
         print(json.dumps(state, indent=1))
+        return
+    if args.check_release_rights:
+        try:
+            release = require_release_rights(
+                root=args.root,
+                expected_candidate_sha=args.check_release_rights,
+            )
+        except FinalPublicationError as exc:
+            print(
+                json.dumps(
+                    {"status": exc.classification, "reason": exc.detail},
+                    indent=1,
+                )
+            )
+            raise SystemExit(2) from exc
+        print(json.dumps(release, indent=1))
+        return
+    if args.check_release_candidate is not None:
+        if (
+            args.expected_candidate_sha is None
+            or args.base_commit is None
+            or args.expected_target is None
+        ):
+            parser.error(
+                "--check-release-candidate requires --expected-candidate-sha "
+                "--base-commit, and --expected-target"
+            )
+        try:
+            release = require_release_candidate(
+                args.check_release_candidate,
+                expected_candidate_sha=args.expected_candidate_sha,
+                base_commit=args.base_commit,
+                expected_target=args.expected_target,
+                root=args.root,
+            )
+        except FinalPublicationError as exc:
+            print(
+                json.dumps(
+                    {"status": exc.classification, "reason": exc.detail},
+                    indent=1,
+                )
+            )
+            raise SystemExit(2) from exc
+        print(json.dumps(release, indent=1))
         return
     if args.write_public_status:
         print(

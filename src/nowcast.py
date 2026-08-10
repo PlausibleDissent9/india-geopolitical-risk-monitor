@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from . import fetch_ngrams
+from . import fetch_ngrams, ngram_rights
 from .build_index import DEFINITION, MIN_OBS, PERCENTILE_WINDOW_DAYS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -56,7 +56,10 @@ def _percentile_vs_store(store: pd.DataFrame, channel: str,
     return round(100.0 * float(np.mean(a <= value)), 1)
 
 
-def main() -> None:
+def main(
+    *,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> None:
     now = datetime.now(timezone.utc)
     until_minute = now.hour * 60 + now.minute - FEED_LAG_MIN
     if until_minute < MIN_DAY_MINUTES:
@@ -73,7 +76,12 @@ def main() -> None:
     # compute_day, not _cached_day: a partial-day result must never
     # poison the heal path's per-day cache.
     result = fetch_ngrams.compute_day(
-        now.date(), specs, until_minute=until_minute, min_docs=MIN_DOCS)
+        now.date(),
+        specs,
+        until_minute=until_minute,
+        min_docs=MIN_DOCS,
+        rights_authority=rights_authority,
+    )
     if result is None:
         print("[nowcast] sample too thin or feed gap; not writing")
         return
