@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 # Stage a daily run without publishing a half-updated derived-data tree.
 #
-# The acquisition store and byte-exact response evidence are worth banking
-# even when a downstream gate fails. Derived docs are publishable only when
-# the complete required job is successful. On failure, stash those derived
-# worktree changes so publish_push.sh can safely rebase and push the raw-only
-# evidence commit; the stash is recoverable in a persistent runner.
+# Other acquisition evidence may be banked when a downstream gate fails, but
+# a finalized-publication candidate is one parent-bound transaction. Banking
+# any part of it in a raw-only failure commit both exposes unapproved evidence
+# and makes the complete bundle unpromotable on the next run.
 set -euo pipefail
 
-JOB_STATUS="${1:?usage: stage_daily_outputs.sh <success|failure|cancelled>}"
+JOB_STATUS="${1:?usage: stage_daily_outputs.sh <success|failure|cancelled> <frozen-target>}"
+TARGET="${2:?missing frozen final-publication target}"
 PYTHON_BIN="${PYTHON:-python}"
+
+if ! "$PYTHON_BIN" -c \
+    'from datetime import date; import sys; value=sys.argv[1]; assert date.fromisoformat(value).isoformat() == value' \
+    "$TARGET"; then
+  echo "[daily-stage] invalid frozen target: $TARGET" >&2
+  exit 1
+fi
 
 if [ "$JOB_STATUS" = "success" ]; then
   git add data/raw || true
@@ -20,37 +27,58 @@ fi
 
 echo "[daily-stage] $JOB_STATUS job: refusing every derived docs change"
 
-# A killed acquisition can leave a subset of the five-file final candidate on
-# disk even though the Python exception rollback never ran. A failed daily may
-# bank other raw acquisition evidence, but these exact target-value paths are
-# admissible only when the frozen-parent promotion verifier closes the whole
-# bundle. Otherwise restore tracked bytes and drop untracked candidate bytes
-# before the broad data/raw staging boundary below.
-TARGET="$($PYTHON_BIN -c 'from datetime import datetime,timedelta,timezone; print((datetime.now(timezone.utc).date()-timedelta(days=1)).isoformat())')"
-FINAL_VALUE_PATHS=(
+# A process kill can bypass Python's bundle rollback. On every unsuccessful
+# publication, restore *all changed* final-contract paths to HEAD before the
+# broad raw pathspec is staged. This deliberately drops even a fully valid
+# target_ready bundle: its receipt is rooted in this HEAD and cannot survive a
+# raw-only intermediate commit without becoming self-inconsistent.
+FINAL_CONTRACT_PATHS=(
   data/raw/gdelt_volume.csv
   data/raw/provenance.csv
-  "data/raw/ngram_days/$TARGET.json"
-  "data/raw/final_publication_receipts/$TARGET.json"
+  data/raw/final_publication_status.json
+  data/raw/ngram_days
+  data/raw/final_publication_receipts
 )
-BUNDLE_PATHS=("${FINAL_VALUE_PATHS[@]}" data/raw/final_publication_status.json)
-bundle_changes="$(git status --porcelain -- "${BUNDLE_PATHS[@]}" || true)"
-if [ -n "$bundle_changes" ]; then
-  if "$PYTHON_BIN" -m src.final_publication \
-      --check-promotion-receipt "$TARGET" --trusted-parent HEAD >/dev/null; then
-    echo "[daily-stage] interrupted job retained a fully verified target bundle"
-  else
-    echo "[daily-stage] dropping incomplete/untrusted final target bundle"
-    for path in "${BUNDLE_PATHS[@]}"; do
-      git reset -q -- "$path" 2>/dev/null || true
-      if git cat-file -e "HEAD:$path" 2>/dev/null; then
-        git restore --source=HEAD --worktree -- "$path"
-      else
-        rm -f -- "$path"
+
+changed_contract_paths="$({
+  git diff --name-only -- "${FINAL_CONTRACT_PATHS[@]}"
+  git diff --cached --name-only -- "${FINAL_CONTRACT_PATHS[@]}"
+  git ls-files --others --exclude-standard -- "${FINAL_CONTRACT_PATHS[@]}"
+} | sort -u)"
+
+while IFS= read -r path; do
+  [ -n "$path" ] || continue
+  case "$path" in
+    data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/final_publication_status.json)
+      ;;
+    data/raw/ngram_days/*.json)
+      day="${path##*/}"
+      day="${day%.json}"
+      if [ "$day" != "$TARGET" ]; then
+        echo "[daily-stage] dropping non-target final cache $path (frozen target $TARGET)"
       fi
-    done
+      ;;
+    data/raw/final_publication_receipts/*.json)
+      day="${path##*/}"
+      day="${day%.json}"
+      if [ "$day" != "$TARGET" ]; then
+        echo "[daily-stage] dropping non-target final receipt $path (frozen target $TARGET)"
+      fi
+      ;;
+    *)
+      echo "[daily-stage] refusing unexpected final-contract path: $path" >&2
+      exit 1
+      ;;
+  esac
+  git reset -q -- "$path" 2>/dev/null || true
+  if git cat-file -e "HEAD:$path" 2>/dev/null; then
+    git restore --source=HEAD --worktree -- "$path"
+  else
+    rm -f -- "$path"
   fi
-fi
+done <<EOF
+$changed_contract_paths
+EOF
 
 git add data/raw || true
 git reset -q -- docs notes-inbox .trigger 2>/dev/null || true
@@ -66,4 +94,11 @@ if [ -n "$unexpected" ]; then
   printf '%s\n' "$unexpected" >&2
   exit 1
 fi
-echo "[daily-stage] failed job: raw evidence only staged"
+forbidden="$(git diff --cached --name-only | grep -E \
+  '^(data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/final_publication_status.json|data/raw/ngram_days/|data/raw/final_publication_receipts/)' || true)"
+if [ -n "$forbidden" ]; then
+  echo "[daily-stage] refusing failed commit containing final-contract candidate paths:" >&2
+  printf '%s\n' "$forbidden" >&2
+  exit 1
+fi
+echo "[daily-stage] failed job: non-final raw evidence only staged"

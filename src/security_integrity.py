@@ -32,6 +32,25 @@ PERMISSIONS_RE = re.compile(r"^permissions:\n(?P<body>(?:  [^\n]+\n)+)", re.M)
 PERMISSION_ROW_RE = re.compile(r"^  (?P<scope>[a-z-]+): (?P<level>read|write|none)$", re.M)
 HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 
+# These bodies are deliberately tiny, reviewable shell grammars. The full
+# script is registry-pinned; these independent implementation pins prevent an
+# attacker from wrapping a required fragment in dead code and merely resealing
+# the script's registry hash.
+FINAL_CAS_FUNCTION_SHA256 = {
+    "require_frozen_base": (
+        "5b1b35c93e04107f700430b24afc197dc68b91b46c3d1b5e0f2c765687b77f25"
+    ),
+    "publish_gated_candidate": (
+        "0c1f320ccc5f71f009140e445b1b84ff9a53f1584d0ff77ecff9aa8ba112efe3"
+    ),
+    "push_frozen_parent": (
+        "97cdd1df58596eee343054ac7923478bd034b8cca7d1b7a287190634867ebca5"
+    ),
+}
+FINAL_CAS_DISPATCH_SHA256 = (
+    "792dff3ece39d417edc12565c3dd97f8d3e0d7d05ed10273f239ea97c5e2d3f5"
+)
+
 
 class SecurityIntegrityError(ValueError):
     """Stable refusal code for a repository security-control violation."""
@@ -184,6 +203,17 @@ def _shell_function(text: str, name: str) -> str:
     return matches[0].group("body")
 
 
+def _shell_function_end(text: str, name: str) -> int:
+    matches = list(
+        re.finditer(
+            rf"(?ms)^{re.escape(name)}\(\) \{{\n(?P<body>.*?)^\}}\s*$", text
+        )
+    )
+    if len(matches) != 1:
+        _fail("publisher_final_cas_function_count_invalid", name)
+    return matches[0].end()
+
+
 def validate_repository(
     *, root: Path = ROOT, registry: dict[str, Any] | None = None
 ) -> dict[str, Any]:
@@ -329,25 +359,64 @@ def validate_repository(
     final_cas_text = _safe_path(
         root, final_cas_path, "security_final_cas_script_path_invalid"
     ).read_text(encoding="utf-8")
-    if final_cas_text.count("git push origin HEAD:main") != 1:
+    direct_push = 'git push origin "$FROZEN_CANDIDATE_SHA:main"'
+    if final_cas_text.count(direct_push) != 1 or "git push origin HEAD:main" in final_cas_text:
         _fail("publisher_final_cas_push_count_invalid")
     if "git pull --rebase" in final_cas_text or "checkout --theirs" in final_cas_text:
         _fail("publisher_frozen_cas_conflict_resolution_present")
     if "unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN" not in final_cas_text:
         _fail("publisher_token_not_cleared_before_gate")
-    push_body = _shell_function(final_cas_text, "push_frozen_parent")
-    remote_index = push_body.find("REMOTE_COMMIT=$(git rev-parse origin/main)")
-    equality_index = push_body.find('[ "$REMOTE_COMMIT" != "$BASE_COMMIT" ]')
-    direct_push_index = push_body.find("git push origin HEAD:main")
-    if not 0 <= remote_index < equality_index < direct_push_index:
-        _fail("publisher_final_cas_remote_guard_order_invalid")
-    gated_body = _shell_function(final_cas_text, "publish_gated_candidate")
-    gate_index = gated_body.find(gate_command)
-    cas_index = gated_body.find("push_frozen_parent")
-    if not 0 <= gate_index < cas_index:
-        _fail("publisher_final_cas_gate_order_invalid")
-    if re.search(r"(?m)^\s*(?:if|case|while|until|for)\b|\b(?:true|false)\b|&&|\|\|", gated_body):
-        _fail("publisher_final_cas_dead_code_guard_present")
+    bodies = {
+        name: _shell_function(final_cas_text, name)
+        for name in FINAL_CAS_FUNCTION_SHA256
+    }
+    for name, expected_sha in FINAL_CAS_FUNCTION_SHA256.items():
+        if hashlib.sha256(bodies[name].encode("utf-8")).hexdigest() != expected_sha:
+            _fail("publisher_final_cas_function_digest_invalid", name)
+
+    base_markers = (
+        "current_head=$(git rev-parse HEAD)",
+        '[ "$current_head" != "$BASE_COMMIT" ]',
+    )
+    push_markers = (
+        "candidate_head=$(git rev-parse HEAD)",
+        '[ -z "$FROZEN_CANDIDATE_SHA" ]',
+        'parent_count=$(git rev-list --parents -n 1 "$FROZEN_CANDIDATE_SHA"',
+        '[ "$parent_count" != "1" ]',
+        'candidate_parent=$(git rev-parse "$FROZEN_CANDIDATE_SHA^")',
+        '[ "$candidate_parent" != "$BASE_COMMIT" ]',
+        "git fetch --quiet origin main",
+        "remote_commit=$(git rev-parse origin/main)",
+        '[ "$remote_commit" != "$BASE_COMMIT" ]',
+        direct_push,
+    )
+    gated_markers = (
+        'git commit -m "$message"',
+        "FROZEN_CANDIDATE_SHA=$(git rev-parse HEAD)",
+        'parent_count=$(git rev-list --parents -n 1 "$FROZEN_CANDIDATE_SHA"',
+        '[ "$parent_count" != "1" ]',
+        'candidate_parent=$(git rev-parse "$FROZEN_CANDIDATE_SHA^")',
+        '[ "$candidate_parent" != "$BASE_COMMIT" ]',
+        gate_command,
+        "push_frozen_parent",
+    )
+    for body, markers, code in (
+        (bodies["require_frozen_base"], base_markers, "publisher_final_cas_base_guard_order_invalid"),
+        (bodies["push_frozen_parent"], push_markers, "publisher_final_cas_remote_guard_order_invalid"),
+        (bodies["publish_gated_candidate"], gated_markers, "publisher_final_cas_gate_order_invalid"),
+    ):
+        offsets = [body.find(marker) for marker in markers]
+        if any(offset < 0 for offset in offsets) or offsets != sorted(offsets):
+            _fail(code)
+
+    dispatch_marker = "\nrequire_frozen_base\n"
+    if final_cas_text.count(dispatch_marker) != 1:
+        _fail("publisher_final_cas_dispatch_invalid")
+    dispatch = final_cas_text[
+        _shell_function_end(final_cas_text, "publish_refusal") :
+    ]
+    if hashlib.sha256(dispatch.encode("utf-8")).hexdigest() != FINAL_CAS_DISPATCH_SHA256:
+        _fail("publisher_final_cas_dispatch_digest_invalid")
 
     limitations = _string_list(
         value.get("limitations"), "security_limitations_missing"

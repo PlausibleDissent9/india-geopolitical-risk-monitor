@@ -68,12 +68,25 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Freeze finalized-publication target and parent
+        id: final_contract
+        run: |
+          CONTRACT_TODAY=$(date -u +%F)
+          TARGET=$(date -u -d "$CONTRACT_TODAY - 1 day" +%F)
+          echo "today=$CONTRACT_TODAY" >> "$GITHUB_OUTPUT"
+          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "base_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Enforce dictionary rules (ex-ante rule)
         run: python -m pytest -q
-      - name: Ngram bridge - heal recent days (maintainer-sanctioned path)
+      - name: Acquire exact finalized target (maintainer-sanctioned bridge)
+        id: final_source
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        run: python -m src.fetch_ngrams --heal 35
+        run: |
+          python -m src.final_publication \
+            --acquire-target "${{ steps.final_contract.outputs.target }}" \
+            --today "${{ steps.final_contract.outputs.today }}" \
+            --base-commit "${{ steps.final_contract.outputs.base_commit }}"
       - name: Harvest missing historical chunks (opportunistic, self-ending)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
@@ -180,7 +193,13 @@ jobs:
             # cron gets to try instead of queueing behind a corpse.
             # Revise this number from the measured distribution, not by
             # feel -- and never by removing the bound.
-            timeout 30m python -m src.run_daily
+            if [ "${{ steps.final_source.outcome }}" != "success" ]; then
+              echo "exact frozen-target acquisition did not close; refusing pipeline"
+              exit 1
+            fi
+            timeout 30m python -m src.run_daily \
+              --target "${{ steps.final_contract.outputs.target }}" \
+              --contract-today "${{ steps.final_contract.outputs.today }}"
           fi
       - name: Global Event and Episode Ledger (aggregate observation foundation)
         if: github.event.inputs.backfill != 'true'
@@ -477,7 +496,7 @@ jobs:
         # rule-computed "no" with its note, not a crash.
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        run: python -m src.status_data
+        run: python -m src.status_data --contract-today "${{ steps.final_contract.outputs.today }}"
       - name: Regenerate sitemap from the pages that exist
         # It was hand-maintained and had drifted to 16 urls against 26
         # pages -- start.html and the 41-year series among the missing.
@@ -570,5 +589,6 @@ jobs:
           # the exclusion had begun publishing map aggregates that the
           # committed store could not reproduce (caught by the first
           # run of src.audit; corrections ledger entry the same day).
-          bash scripts/stage_daily_outputs.sh "${{ job.status }}"
+          bash scripts/stage_daily_outputs.sh \
+            "${{ job.status }}" "${{ steps.final_contract.outputs.target }}"
           bash scripts/publish_push.sh "data: update $(date -u +%F)"

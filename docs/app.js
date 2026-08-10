@@ -551,11 +551,15 @@ function renderFinalPublicationStatus(payload) {
   };
   const label = labels[state.status] || "final publication delayed";
   if (state.status === "legacy_proof_limited") {
-    el.innerHTML = `<strong>Legacy final with proof limitation.</strong> ` +
-      `${esc(state.target_date)} remains published with all 48 half-hour ` +
-      `windows verified, but its English denominator was source-reported ` +
-      `and cannot be independently reconstructed. No new-contract source ` +
-      `receipt is claimed. A provisional nowcast remains separate and non-final.`;
+    el.innerHTML = `<strong>Bounded historical publication.</strong> ` +
+      `${esc(state.target_date)} remains visible because its cache, store, ` +
+      `provenance, latest and history exactly match commit 9077ea4, and its ` +
+      `cache structurally covers all 48 half-hour windows. This byte identity ` +
+      `has no source acquisition receipt, reconstructable English denominator, ` +
+      `cache-to-store calibration/transform receipt, or store-to-public score ` +
+      `derivation receipt; source-retention and redistribution rights review ` +
+      `also remains pending. It is not new-contract final proof. A provisional ` +
+      `nowcast remains separate and non-final.`;
     el.hidden = false;
     return;
   }
