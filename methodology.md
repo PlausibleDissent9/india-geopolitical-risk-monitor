@@ -144,10 +144,12 @@ so it is published rather than summarized away:
 | Trailing 7-day | Gulf & Energy | 0.0 | 0.4 | 0.0 |
 | Trailing 7-day | Composite | 2.6 | 4.1 | +3.8 |
 
-Shifts are sensitivity score minus frozen production score over the 37
-mechanically bridged days from 2026-07-01 to 2026-08-06. The full daily
-series is published at `docs/data/splice_sensitivity.json`. It is not a
-corrected history and must not be substituted silently for the primary.
+The table is the fixed 37-day study window from 2026-07-01 to 2026-08-06.
+The machine-readable artifact was extended through 2026-08-09 (40 days)
+before the retained-identity rights boundary was hardened, and is now frozen
+at `docs/data/splice_sensitivity.json`. It will not be recomputed unless a
+current signed source decision permits that evidence use. Neither artifact is
+a corrected history or may be substituted silently for the primary.
 
 A future measurement version may
 adopt new ratios only after at least 14 independently observed overlap

@@ -301,7 +301,8 @@ jobs:
             set -e
             python -m src.provenance
             python -m src.publish_shares
-            python -m src.splice_sensitivity
+            # splice_sensitivity.json is frozen; identity-evidence rebuilds
+            # remain rights-refused and are not a daily-final prerequisite.
             python -m src.monthly
             python -m src.blind_spot
             python -m src.detection_baselines

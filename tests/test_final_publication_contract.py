@@ -7,6 +7,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
@@ -964,7 +965,7 @@ def test_nowcast_binds_rights_receipts_and_rechecks_committed_release(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Nowcast rights test"),
-        ("config", "user.email", "nowcast-rights@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "committed nowcast"),
     ):
@@ -1039,7 +1040,7 @@ def test_nowcast_release_refuses_invalid_temporal_receipt_proofs(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Nowcast receipt attack"),
-        ("config", "user.email", "nowcast-receipt@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "committed attacked nowcast"),
     ):
@@ -1090,7 +1091,7 @@ def test_nowcast_release_refuses_previous_utc_day_after_rollover(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Nowcast rollover attack"),
-        ("config", "user.email", "nowcast-rollover@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "committed previous-day nowcast"),
     ):
@@ -1536,7 +1537,7 @@ def test_failed_daily_staging_drops_an_interrupted_unverified_bundle(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Daily staging test"),
-        ("config", "user.email", "daily-staging@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "frozen parent"),
     ):
@@ -1567,7 +1568,7 @@ def test_failed_daily_staging_drops_an_interrupted_unverified_bundle(
     non_target_receipt.write_text("{malformed", encoding="utf-8")
 
     env = os.environ.copy()
-    env["PYTHON"] = str(ROOT / ".venv/bin/python")
+    env["PYTHON"] = sys.executable
     subprocess.run(
         [
             "bash",
@@ -1615,7 +1616,7 @@ def test_failed_staging_drops_valid_bundle_and_next_attempt_can_promote(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Daily staging test"),
-        ("config", "user.email", "daily-staging@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "frozen parent"),
     ):
@@ -1641,7 +1642,7 @@ def test_failed_staging_drops_valid_bundle_and_next_attempt_can_promote(
     (root / "docs/index.html").write_text("downstream candidate\n", encoding="utf-8")
 
     env = os.environ.copy()
-    env["PYTHON"] = str(ROOT / ".venv/bin/python")
+    env["PYTHON"] = sys.executable
     subprocess.run(
         [
             "bash",
@@ -1804,7 +1805,7 @@ def _committed_new_contract_final(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Final proof test"),
-        ("config", "user.email", "final-proof@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "frozen parent"),
     ):
@@ -1859,7 +1860,7 @@ def test_candidate_release_rechecks_rights_after_gate_crosses_midnight(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Release boundary test"),
-        ("config", "user.email", "release-boundary@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "frozen parent"),
     ):
@@ -1960,7 +1961,7 @@ def test_exact_aug9_legacy_visibility_never_authorizes_final_release(
         check=True,
     )
     subprocess.run(
-        ["git", "config", "user.email", "legacy-release@example.invalid"],
+        ["git", "config", "user.email", "actions@github.com"],
         cwd=root,
         check=True,
     )
@@ -2014,7 +2015,7 @@ def test_final_release_never_reads_dirty_value_overlay_instead_of_candidate(
                 check=True,
             )
             subprocess.run(
-                ["git", "config", "user.email", "final-overlay@example.invalid"],
+                ["git", "config", "user.email", "actions@github.com"],
                 cwd=root,
                 check=True,
             )
@@ -2067,7 +2068,7 @@ def _committed_value_free_refusal(tmp_path: Path) -> tuple[Path, str, str]:
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Refusal proof test"),
-        ("config", "user.email", "refusal-proof@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "frozen parent"),
     ):
@@ -2327,7 +2328,7 @@ def test_consecutive_missed_finals_publish_only_frozen_target_disclosure(
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Consecutive refusal test"),
-        ("config", "user.email", "consecutive-refusal@example.invalid"),
+        ("config", "user.email", "actions@github.com"),
         ("add", "."),
         ("commit", "-q", "-m", "last finalized Aug-8"),
     ):
@@ -2544,7 +2545,7 @@ def test_aug9_legacy_label_refuses_any_value_or_regime_drift(
             ["git", "config", "user.name", "Legacy attack"], cwd=root, check=True
         )
         subprocess.run(
-            ["git", "config", "user.email", "legacy@example.invalid"],
+            ["git", "config", "user.email", "actions@github.com"],
             cwd=root,
             check=True,
         )
@@ -2574,7 +2575,7 @@ def _legacy_history_repo(tmp_path: Path) -> Path:
         check=True,
     )
     subprocess.run(
-        ["git", "config", "user.email", "legacy-history@example.invalid"],
+        ["git", "config", "user.email", "actions@github.com"],
         cwd=root,
         check=True,
     )
@@ -3324,7 +3325,7 @@ def _publisher_e2e_repo(tmp_path: Path) -> tuple[Path, Path, str]:
     subprocess.run(["git", "init", "-q"], cwd=root, check=True)
     subprocess.run(["git", "config", "user.name", "Publisher E2E"], cwd=root, check=True)
     subprocess.run(
-        ["git", "config", "user.email", "publisher@example.invalid"],
+        ["git", "config", "user.email", "actions@github.com"],
         cwd=root,
         check=True,
     )
