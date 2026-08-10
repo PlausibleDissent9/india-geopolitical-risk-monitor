@@ -1,0 +1,40 @@
+{
+  "schema_version": "0.1.0",
+  "profile_id": "igrm:live-query-admission-profile:0.1.0",
+  "effective": "2026-08-10",
+  "status": "synthetic_contract_only",
+  "default_policy": "deny",
+  "normative_files": [
+    {"kind": "contract", "path": "governance/live_query_admission_contract.json", "sha256": "5cae8288ff544df090e228e787bb46f89cd2dd5e400c518a7593f36f1ca7ee00"},
+    {"kind": "domain_registry", "path": "governance/live_query_domain_registry.json", "sha256": "9dabd1f049ce5196a8ad0c16bd8e5b9d7ccae52bdb25697a436054c17c67c5c2"},
+    {"kind": "template_registry", "path": "governance/live_query_template_registry.json", "sha256": "423a36606fb1c54e14166d9b00f867c6836d558b01eefdb8f69a60d9867ff4fc"},
+    {"kind": "adversarial_vectors", "path": "governance/live_query_admission_adversarial_vectors.json", "sha256": "cc602009cf28902be0ed23627da45f67491fce70e93adc52432979f1a6d222d2"}
+  ],
+  "source_releases": [
+    {
+      "release_id": "release:live-query.synthetic.v1",
+      "record_sha256": "54d85f092d9cec71be9d4fef24f4fc65d3c5291cea6a60242a558f0933d9e012",
+      "status": "registered_synthetic_identity_only",
+      "source_execution_performed": false
+    }
+  ],
+  "synthetic_rights_policy": {
+    "default_state": "admitted",
+    "overrides": [
+      {
+        "binding_member_ids": ["member:country.beta", "member:commodity.metal", "member:period.two"],
+        "state": "refused_rights"
+      }
+    ]
+  },
+  "trust_boundary": {
+    "signed": false,
+    "authenticated": false,
+    "synthetic": true,
+    "contract_only": true,
+    "source_execution_performed": false,
+    "production_authority": false,
+    "public_authority": false,
+    "requested_at_semantics": "caller_declared_unauthenticated"
+  }
+}

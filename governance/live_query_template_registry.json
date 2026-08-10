@@ -1,0 +1,35 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "igrm:live-query-templates:0.1.0",
+  "status": "synthetic_contract_only",
+  "default_policy": "deny",
+  "registered_aggregations": ["aggregation:none"],
+  "registered_relations": ["relation:synthetic.country_commodity_period"],
+  "registered_denominator_rules": ["denominator:complete_cartesian_product.v1"],
+  "templates": [
+    {
+      "template_id": "template:synthetic.country_commodity_period.v1",
+      "record_sha256": "c4c59caeb8a1b1b5ccfddb2f3bd210f3cd84ef687024ecd20dd2e2aa3d8f4c4b",
+      "relation": "relation:synthetic.country_commodity_period",
+      "denominator_rule": "denominator:complete_cartesian_product.v1",
+      "projection": [],
+      "aggregation": "aggregation:none",
+      "parameters": [
+        {"parameter_id": "parameter:country", "domain_id": "domain:synthetic.country.v1", "required": true},
+        {"parameter_id": "parameter:commodity", "domain_id": "domain:synthetic.commodity.v1", "required": true},
+        {"parameter_id": "parameter:period", "domain_id": "domain:synthetic.period.v1", "required": true}
+      ],
+      "bounds": {"max_hops": 0, "max_rows": 0, "max_universe_size": 8},
+      "rights_use_required": "synthetic_none",
+      "source_release_ref": {
+        "release_id": "release:live-query.synthetic.v1",
+        "record_sha256": "54d85f092d9cec71be9d4fef24f4fc65d3c5291cea6a60242a558f0933d9e012"
+      },
+      "limitation_ids": [
+        "limitation:no_real_source_execution",
+        "limitation:selective_publication_visible_not_prevented",
+        "limitation:synthetic_contract_only"
+      ]
+    }
+  ]
+}

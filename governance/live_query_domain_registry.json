@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "igrm:live-query-domains:0.1.0",
+  "status": "synthetic_contract_only",
+  "default_policy": "deny",
+  "domains": [
+    {
+      "domain_id": "domain:synthetic.country.v1",
+      "record_sha256": "ba4dd77f98c2f0c69960d5216933a0ef7b48819def7fd8bdc5ecd140732e324e",
+      "members": [
+        {"member_id": "member:country.alpha"},
+        {"member_id": "member:country.beta"}
+      ]
+    },
+    {
+      "domain_id": "domain:synthetic.commodity.v1",
+      "record_sha256": "f155d908cc95592d85541e7de39f23d22b3d93b631ca79f6c148dd81d104fdcd",
+      "members": [
+        {"member_id": "member:commodity.grain"},
+        {"member_id": "member:commodity.metal"}
+      ]
+    },
+    {
+      "domain_id": "domain:synthetic.period.v1",
+      "record_sha256": "2024968a97b49a723ab3b1bd8cbed7a0b02cb5fbfb8661e6628ee8d6265f3d9d",
+      "members": [
+        {"member_id": "member:period.one"},
+        {"member_id": "member:period.two"}
+      ]
+    }
+  ]
+}
