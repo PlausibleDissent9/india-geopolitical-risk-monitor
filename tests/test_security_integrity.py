@@ -329,6 +329,10 @@ def test_prior_commit_anchor_rejects_coordinated_cas_and_validator_reseal(
         ROOT / "scripts/publish_final_cas.sh",
         root / "scripts/publish_final_cas.sh",
     )
+    shutil.copy2(
+        ROOT / "scripts/publish_push.sh",
+        root / "scripts/publish_push.sh",
+    )
     script_path = root / "scripts/publish_final_cas.sh"
     script = script_path.read_text(encoding="utf-8").replace(
         "  git fetch --quiet origin main",
@@ -382,6 +386,7 @@ def test_coordinated_successor_reseal_cannot_claim_independent_trust(
     for relative in (
         "src/security_integrity.py",
         "scripts/publish_final_cas.sh",
+        "scripts/publish_push.sh",
         "governance/security_integrity_registry.json",
     ):
         shutil.copy2(ROOT / relative, root / relative)

@@ -93,6 +93,11 @@ AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$PUBLISH_TOKEN" 
 unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN
 
 git_push() {
+  if [ "${IGRM_PUBLISH_CLASS:-}" = "nowcast" ]; then
+    local candidate
+    candidate=$(git rev-parse --verify HEAD) || return 1
+    python -m src.nowcast --check-release-rights "$candidate" || return 1
+  fi
   GIT_CONFIG_COUNT=1 \
     GIT_CONFIG_KEY_0='http.https://github.com/.extraheader' \
     GIT_CONFIG_VALUE_0="$AUTH_HEADER" \
