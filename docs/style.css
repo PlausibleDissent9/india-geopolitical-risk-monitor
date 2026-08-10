@@ -682,3 +682,13 @@ h2 { position: relative; }
   .nowcast-channels { display: none; }
   .nowcast { margin-top: 8px; }
 }
+
+/* A finalized measure behind its own published target says so, next to the
+ * date rather than in a footnote. --elevated, not --severe: the series is
+ * late, which is a caveat on freshness, not a claim that anything is wrong
+ * with the numbers themselves. */
+.stale-flag {
+  color: var(--elevated);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}

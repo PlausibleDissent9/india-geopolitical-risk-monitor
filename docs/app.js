@@ -90,12 +90,57 @@ function sparkline(series, color) {
     `<circle cx="89" cy="${ly}" r="2.2" fill="${color}"/></svg>`;
 }
 
+/* Say so when the finalized measure is behind its own published target.
+ *
+ * The homepage promises "Publication target: 6:00 AM IST" and, until now,
+ * never mentioned missing it. On 2026-08-07 the lane stopped and the front
+ * page kept presenting a three-day-old number under the heading "Latest
+ * final measure", with a same-day provisional nowcast beside it making the
+ * whole panel look current. The founder found out by reading the date.
+ *
+ * The nowcast already refuses to render when its payload is not genuinely
+ * today's. The finalized number had no such check, which is the wrong way
+ * round: the provisional value was better guarded than the published one.
+ *
+ * Computed here rather than baked in at publish time, because a page baked
+ * on the 7th cannot know it is being read on the 10th.
+ *
+ * DOWNGRADE ONLY. This can add a warning; it can never remove one or make
+ * the series look fresher than it is.
+ */
+function markIfBehindTarget(latestDate) {
+  const host = document.getElementById("composite-label");
+  if (!host || !/^\d{4}-\d{2}-\d{2}$/.test(latestDate || "")) return;
+
+  // The measured day is the previous UTC day: it closes at 00:00 UTC
+  // (05:30 IST) and publishes by 00:30 UTC (06:00 IST). Before that
+  // deadline the newest day is not late, it is not due.
+  const now = new Date();
+  const dueToday = now.getUTCHours() > 0 || now.getUTCMinutes() >= 30;
+  const expected = new Date(Date.UTC(
+    now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  expected.setUTCDate(expected.getUTCDate() - (dueToday ? 1 : 2));
+
+  const have = new Date(latestDate + "T00:00:00Z");
+  const behind = Math.round((expected - have) / 86400000);
+  if (!(behind >= 1)) return;
+
+  const note = document.createElement("span");
+  note.className = "stale-flag";
+  note.setAttribute("role", "status");
+  note.textContent = behind === 1
+    ? " · one measured day behind the 6:00 AM IST target"
+    : ` · ${behind} measured days behind the 6:00 AM IST target`;
+  host.appendChild(note);
+}
+
 function renderLatest(latest, history) {
   // Headline is the 7-day (founder-signed 2026-08-06); daily is the tape.
   const score = latest.composite7 != null ? latest.composite7 : latest.composite;
   if (score == null) return;
   document.documentElement.style.setProperty("--state", stateColor(score));
   document.getElementById("latest-date").textContent = latest.date;
+  markIfBehindTarget(latest.date);
   countUp(document.getElementById("composite-score"), score);
   document.getElementById("composite-delta").innerHTML =
     `${fmtDelta(history ? delta1d(history.composite7 || history.composite) : null)} <span class="flat">vs yesterday</span>`;
