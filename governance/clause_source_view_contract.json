@@ -1,0 +1,153 @@
+{
+  "schema_version": "0.1.0",
+  "contract_id": "igrm:clause-source-view:0.1.0",
+  "effective": "2026-08-08",
+  "status": "internal_contract_only",
+  "default_policy": "deny",
+  "public_routes": [],
+  "compiler": {
+    "function": "compile_clause_source_views",
+    "positional_inputs": ["source_bundle", "role_proof_bundle"],
+    "profile_loading": "one_fixed_internal_profile_only",
+    "composition": "one_global_registered_field_index_plus_four_profile_derived_access_policies",
+    "caller_semantic_arguments": false,
+    "second_source_bundle": false,
+    "role_projection_created": false
+  },
+  "fixed_authorities": {
+    "consumer_profile": {
+      "path": "governance/evidence_output_renderer_consumer_profile.json",
+      "file_sha256": "74b1a88cad90fcd785549d6568b5ba18ebfe11f0f4657cb9bf145670f4d4fc3b",
+      "semantic_projection_sha256": "ca36e57dfe247e610775b679699686eab7a3121994642d41799ccd329b3cf009"
+    },
+    "consumer_validator": {
+      "path": "src/evidence_output_consumer_contract.py",
+      "file_sha256": "d837f3fd72fed9c0977c279f573e32cf6b9f4bd91eace7eef0dc19d4b3092b19"
+    },
+    "receipt_schema": {
+      "path": "governance/schemas/clause-source-view-receipt.schema.json",
+      "file_sha256": "4306477e79f825dfe6ca50260ed06c68f1cfbcef6c7444c4e067e9d2e683ae9a"
+    },
+    "adversarial_vectors": {
+      "path": "governance/clause_source_view_adversarial_vectors.json",
+      "file_sha256": "fa860cac25c48551a87976646e4c2b39047f9b36ab83ec5bf53cde836c2e8944"
+    }
+  },
+  "incumbent_authority": {
+    "source_bundle_validator": "src.analytical_clause.validate_source_bundle",
+    "role_proof_validator": "src.analytical_clause.validate_role_proof_bundle",
+    "consumer_profile_validator": "src.evidence_output_consumer_contract.validate_profile_document",
+    "consumer_resolution_validator": "src.evidence_output_consumer_contract.validate_resolution",
+    "clause_standard_created": false,
+    "validator_logic_duplicated": false,
+    "dependency_direction": "analytical_clause_and_consumer_contract_to_clause_source_view_only"
+  },
+  "snapshot_rule": {
+    "source_capture": "one_canonical_serialization_before_validation",
+    "proof_capture": "one_canonical_serialization_before_validation",
+    "retained_caller_objects": false,
+    "internal_clause_storage": "immutable_canonical_bytes",
+    "accessor_result": "fresh_copy_from_immutable_clause_bytes",
+    "profile_capture": "one_exact_fixed_file_snapshot",
+    "post_compile_profile_read": "verification_only_with_exact_captured_hash_check"
+  },
+  "field_index_rule": {
+    "authority": "fixed_consumer_profile.source_field_selectors",
+    "source_field_denominator": 24,
+    "key": "proof_binding.source_field",
+    "order": "source_field_then_clause_id",
+    "multirow_order": "clause_id",
+    "multirow_identity": "exact_registered_source_identity_and_source_object_refs",
+    "multirow_grouping": false,
+    "multirow_position_join": false,
+    "equal_value_deduplication": false,
+    "nullable_rule": "only_profile_licensed_source_missing_null",
+    "synthesis": false
+  },
+  "consumer_policy_rule": {
+    "authority": "fixed_consumer_profile.consumers_and_templates",
+    "consumer_denominator": 4,
+    "output_ids": [
+      "output:board_brief",
+      "output:newsroom_claim_card",
+      "output:offline_audit_bundle",
+      "output:research_package"
+    ],
+    "runtime_composition_change": false,
+    "selector_partition_scope": "registered_selector_subset_not_complete_clause_denominator",
+    "all_source_clause_omission_receipt_available": false
+  },
+  "accessor_rule": {
+    "one": "required_registered_exactly_one_field_only",
+    "many": "required_registered_exact_bundle_denominator_field_only",
+    "unknown_field": "refuse",
+    "omitted_field": "refuse",
+    "array_index_selector": false,
+    "preserve_source_object_refs": true,
+    "render_prose": false
+  },
+  "receipt_rule": {
+    "schema_id": "https://igrm.in/schemas/clause-source-view-receipt.schema.json",
+    "content": "bindings_refs_counts_and_boundary_flags_only",
+    "copied_clause_values": false,
+    "timestamps": false,
+    "signatures": false,
+    "view_id_binding": "output_role_branch_profile_source_proof_and_selected_ref_digest",
+    "self_hash_semantics": "integrity_only_not_authentication"
+  },
+  "verification_rule": {
+    "reopen_captured_source": true,
+    "reopen_captured_proof": true,
+    "revalidate_incumbent_authorities": true,
+    "recheck_fixed_profile_file_sha256": true,
+    "recheck_view_runtime_sha256": true,
+    "require_source_record_byte_equality": true,
+    "require_proof_record_byte_equality": true,
+    "require_receipt_byte_equality": true,
+    "source_release_replay": false
+  },
+  "trust": {
+    "immutable_captured_inputs": true,
+    "self_hash_integrity_only": true,
+    "signed": false,
+    "authenticated": false,
+    "caller_authority_accepted": false
+  },
+  "boundary": {
+    "structural_derivation_only": true,
+    "source_replay_performed": false,
+    "source_replay_verified": false,
+    "source_truth_claimed": false,
+    "role_projection_created": false,
+    "selector_partition_scope": "registered_selector_subset_not_complete_clause_denominator",
+    "all_source_clause_omission_receipt_available": false,
+    "prose_rendered": false,
+    "output_created": false,
+    "output_equivalence_claimed": false,
+    "prose_equivalence_claimed": false,
+    "publication_approved": false,
+    "product_manifest_created": false,
+    "correction_blast_radius_claimed": false,
+    "production_authority": false,
+    "public_authority": false
+  },
+  "refusal_codes": [
+    "view_binding_invalid",
+    "view_branch_invalid",
+    "view_cardinality_invalid",
+    "view_consumer_policy_invalid",
+    "view_contract_drift",
+    "view_contract_invalid",
+    "view_field_index_invalid",
+    "view_field_not_required",
+    "view_field_unknown",
+    "view_input_invalid",
+    "view_profile_refused",
+    "view_proof_refused",
+    "view_query_invalid",
+    "view_receipt_invalid",
+    "view_recompile_mismatch",
+    "view_runtime_drift",
+    "view_source_refused"
+  ]
+}
