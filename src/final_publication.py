@@ -459,10 +459,10 @@ class _LegacyClaimContextParser(HTMLParser):
     """Collect structurally local text so sibling-node claims cannot fragment.
 
     The registered value slots are removed before parsing.  Every remaining
-    claim label is joined to its own subtree, its immediate parent subtree and
-    any explicit ``aria-labelledby`` target.  That catches headings paired
-    with sibling values without joining an unrelated year/licence fact from a
-    distant layout ancestor to the legitimate label "Latest final measure".
+    claim label is joined to its own subtree, its ancestors through the first
+    semantic boundary, and any explicit ``aria-labelledby`` target.  That
+    catches wrapped siblings without joining an unrelated year/licence fact
+    from a distant outer section to the label "Latest final measure".
     """
 
     _VOID_TAGS = {
@@ -485,6 +485,15 @@ class _LegacyClaimContextParser(HTMLParser):
         r"(?is)(?=.*(?:official|final(?:ized)?|latest))"
         r"(?=.*(?:score|composite|measure|date|channel))"
     )
+    _SEMANTIC_BOUNDARY_TAGS = {
+        "article",
+        "aside",
+        "dl",
+        "main",
+        "nav",
+        "section",
+        "table",
+    }
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -575,8 +584,12 @@ class _LegacyClaimContextParser(HTMLParser):
                 contexts.append(own)
             if self._CLAIM_LABEL.search(own):
                 contexts.append(subtree(node))
-                if node.parent is not None:
-                    contexts.append(subtree(node.parent))
+                ancestor = node.parent
+                while ancestor is not None:
+                    contexts.append(subtree(ancestor))
+                    if ancestor.tag in self._SEMANTIC_BOUNDARY_TAGS:
+                        break
+                    ancestor = ancestor.parent
             labelled_by = next(
                 (
                     value
