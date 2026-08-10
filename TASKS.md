@@ -238,3 +238,16 @@ sanity check breaks if it starts reading a different file). Previously the
 bundle only proved member integrity structurally; now the T1 sufficiency claim
 is connected to the actual reconstruction machinery. Files: tests/test_offline_bundle.py.
 Checks: pytest (22 passed), ruff clean. No runtime change.
+
+## T15 — Verify workflow job-cap coverage (lane sweep); consciously no change
+Status: DONE (verification; NO change — a speculative fix was correctly declined)
+"Verifying the lanes": five workflows carry no job-level timeout-minutes
+(ci, lane-env, notes, permanence, validate) and fall to GitHub's 360m default.
+Checked the authority: tests/test_workflow_time_budget.py requires a cap ONLY
+on bq-gfg-probe.yml (the lane that actually had a cancelled run). No invariant
+requires caps on the five, and none has an observed hang (permanence ran fine
+at 17:11). Adding caps would be speculative robustness on shared files that no
+test requires and no failure motivates -> "no silent scope expansion / do not
+alter unrelated files". Correctly declined. (ci.yml in particular must NOT be
+capped naively — it legitimately runs ~37m and a low cap would break the gate.)
+Recorded so this is not re-litigated. origin/main still 331a807.
