@@ -141,6 +141,36 @@ def test_bundle_zip_member_timestamp_is_pinned_not_now() -> None:
                 "would then depend on when it was built")
 
 
+# --- T1 sufficiency: the bundle carries the reconstruction inputs -----------
+
+def test_bundle_carries_the_public_reconstruction_inputs() -> None:
+    """The bundle's central claim (design/offline_audit_bundle.md §2): a reader
+    can recompute every published score cell from the bundle's public inputs.
+    src.blind_replicator IS that recomputation, and it reads shares.csv and
+    history.csv from its SITE_DATA. This proves the bundle can carry exactly
+    those inputs, digest-matched, so the T1 claim is not hollow. Coupled to
+    blind_replicator's real reads: if it starts reading a different file, this
+    list is wrong and should be updated deliberately."""
+    from src import blind_replicator as br
+
+    site = br.SITE_DATA.relative_to(ROOT).as_posix()
+    reconstruction_inputs = [f"{site}/shares.csv", f"{site}/history.csv"]
+    # sanity: those are the files blind_replicator actually opens
+    src_text = (ROOT / "src" / "blind_replicator.py").read_text(encoding="utf-8")
+    for name in ("shares.csv", "history.csv"):
+        assert f'"{name}"' in src_text, (
+            f"blind_replicator no longer reads {name}; update this coupling")
+
+    members = [_member(p) for p in reconstruction_inputs]
+    bundle = ob.build_bundle_bytes(members)
+    assert ob.verify_bundle_bytes(bundle)["verified"] is True
+    manifest = ob.build_manifest(members)
+    carried = {m["path"] for m in manifest["members"]}
+    assert set(reconstruction_inputs) <= carried, (
+        "the bundle does not carry blind_replicator's reconstruction inputs; "
+        "the T1 'recompute from included public inputs' claim would be hollow")
+
+
 # --- stdlib reader-side verifier (T12 sub-slice) ----------------------------
 
 def test_verifier_accepts_a_faithful_bundle() -> None:

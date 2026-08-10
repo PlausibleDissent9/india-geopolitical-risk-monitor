@@ -226,3 +226,15 @@ decision_switch (all perf-cascade, Codex lane) + 1 test_freshness (external
 live-site). Zero new failures from the offline bundle. The whole 13-commit
 local batch is now confirmed to add nothing beyond the two documented blockers.
 origin/main still 331a807 (Codex has not landed; perf cascade unchanged).
+
+## T14 — Offline bundle: prove the T1 reconstruction claim is not hollow
+Status: DONE (local commit; NOT pushed)
+The bundle's central claim (design §2): a reader recomputes every published
+score cell from the bundle's public inputs. src.blind_replicator IS that
+recomputation and reads shares.csv + history.csv from SITE_DATA. Added a test
+that builds a bundle carrying exactly those inputs, verifies it, and asserts
+they are carried — coupled to blind_replicator's real reads (a source-scan
+sanity check breaks if it starts reading a different file). Previously the
+bundle only proved member integrity structurally; now the T1 sufficiency claim
+is connected to the actual reconstruction machinery. Files: tests/test_offline_bundle.py.
+Checks: pytest (22 passed), ruff clean. No runtime change.
