@@ -9,7 +9,7 @@ import shutil
 import subprocess
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 import pandas as pd
 import pytest
@@ -2619,6 +2619,44 @@ def test_aug9_legacy_history_allows_only_unchanged_first_parent_descendants(
 
     state = final_publication.public_status(root=root, today=TODAY)
     assert state["status"] == "legacy_proof_limited"
+
+
+def test_first_parent_blob_history_is_checked_in_two_batched_git_walks(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = _legacy_history_repo(tmp_path)
+    subprocess.run(
+        ["git", "commit", "-q", "--allow-empty", "-m", "unchanged descendant"],
+        cwd=root,
+        check=True,
+    )
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    real_run = subprocess.run
+    commands: list[tuple[str, ...]] = []
+
+    def counted_run(*args: Any, **kwargs: Any) -> subprocess.CompletedProcess[Any]:
+        command = args[0]
+        assert isinstance(command, list)
+        commands.append(tuple(str(part) for part in command))
+        return real_run(*args, **kwargs)
+
+    monkeypatch.setattr(final_publication.subprocess, "run", counted_run)
+    assert final_publication._first_parent_paths_never_changed(
+        root,
+        final_publication._LEGACY_AUG9_INTRODUCTION,
+        head,
+        ("docs/data/latest.json", "docs/data/history.json"),
+    )
+    assert len(commands) == 2
+    assert commands[0][:3] == ("git", "rev-list", "--first-parent")
+    assert commands[1][:3] == ("git", "log", "--first-parent")
 
 
 def test_aug9_legacy_history_refuses_mutation_followed_by_exact_revert(

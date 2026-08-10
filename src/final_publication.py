@@ -21,7 +21,7 @@ import re
 import shutil
 import subprocess
 import tempfile
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
@@ -286,50 +286,60 @@ def _git_blob(root: Path, commit: str, relative: str) -> bytes:
     return result.stdout
 
 
-def _git_blob_oid(root: Path, commit: str, relative: str) -> str | None:
-    """Return a path's blob identity at one commit, including absence."""
-
-    result = subprocess.run(
-        ["git", "rev-parse", "--verify", f"{commit}:{relative}"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-    )
-    value = result.stdout.strip()
-    if result.returncode != 0:
-        return None
-    return value if re.fullmatch(r"[0-9a-f]{40,64}", value) else None
-
-
 def _first_parent_path_never_changed(
     root: Path,
     introduction: str,
     head: str,
     relative: str,
 ) -> bool:
-    """Require byte identity at every first-parent transition after intro."""
+    """Require no path-changing commit on the exact first-parent chain."""
 
-    chain: list[tuple[str, str]] = []
-    current = head
-    while current != introduction:
-        result = subprocess.run(
-            ["git", "rev-list", "--parents", "-n", "1", current],
-            cwd=root,
-            capture_output=True,
-            text=True,
-        )
-        parts = result.stdout.split()
-        if result.returncode != 0 or not parts or parts[0] != current or len(parts) < 2:
-            return False
-        first_parent = parts[1]
-        chain.append((first_parent, current))
-        current = first_parent
-    for parent, child in reversed(chain):
-        if _git_blob_oid(root, parent, relative) != _git_blob_oid(
-            root, child, relative
-        ):
-            return False
-    return True
+    return _first_parent_paths_never_changed(root, introduction, head, (relative,))
+
+
+def _first_parent_paths_never_changed(
+    root: Path,
+    introduction: str,
+    head: str,
+    relatives: Sequence[str],
+) -> bool:
+    """Check append-only path history with two Git walks, not O(paths*commits).
+
+    Endpoint equality is insufficient because a value can be changed and later
+    restored.  ``git log --first-parent --name-only`` reports every path whose
+    blob changed at any transition in the range, including deletion/re-add and
+    merge-result changes.  The separate first-parent ancestry walk preserves
+    the old refusal when ``introduction`` is reachable only through a merge's
+    non-first parent.
+    """
+
+    paths = tuple(relatives)
+    if not paths or len(paths) != len(set(paths)) or any(not path for path in paths):
+        return False
+    ancestry = subprocess.run(
+        ["git", "rev-list", "--first-parent", head],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    if ancestry.returncode != 0 or introduction not in ancestry.stdout.splitlines():
+        return False
+    changes = subprocess.run(
+        [
+            "git",
+            "log",
+            "--first-parent",
+            "--format=",
+            "--name-only",
+            f"{introduction}..{head}",
+            "--",
+            *paths,
+        ],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    return changes.returncode == 0 and not changes.stdout.strip()
 
 
 def _first_parent_index_surface_never_changed(
@@ -1710,16 +1720,19 @@ def _legacy_proof_limited(root: Path, target: date) -> bool:
         return False
     historical: dict[str, bytes] = {}
     try:
+        if not _first_parent_paths_never_changed(
+            root,
+            introduction,
+            head,
+            tuple(_LEGACY_AUG9_BLOBS),
+        ):
+            return False
         for relative, expected_sha in _LEGACY_AUG9_BLOBS.items():
             introduced = _git_blob(root, introduction, relative)
             if _sha256(introduced) != expected_sha:
                 return False
             historical[relative] = introduced
             if (root / relative).read_bytes() != introduced:
-                return False
-            if not _first_parent_path_never_changed(
-                root, introduction, head, relative
-            ):
                 return False
         for relative, expected_sha in _LEGACY_AUG9_HISTORICAL_BLOBS.items():
             introduced = _git_blob(root, introduction, relative)
