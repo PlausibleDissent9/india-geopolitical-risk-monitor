@@ -214,3 +214,15 @@ The mechanically-buildable core is complete and tested: deterministic manifest
   - Release registration + site-side hash pinning: BLOCKED — needs a real
     release and a push/deploy (forbidden). Reserved code
     bundle_release_unregistered.
+
+## T13 — Verify the offline-bundle batch adds no new full-suite failure
+Status: DONE (verification; no code change)
+T10-T12 were built after the T9 full-suite triage, so I re-ran the complete
+suite (`pytest -q`) to confirm they introduce no repo-wide regression
+(conformance / registration / hygiene invariant). Result: the failure set is
+IDENTICAL to the T9 baseline — 36 consequence_plan, 20 scenario_proof, 13
+clause_reader_shadow, 12 clause_source_view, 2 nary_association_trace, 2
+decision_switch (all perf-cascade, Codex lane) + 1 test_freshness (external
+live-site). Zero new failures from the offline bundle. The whole 13-commit
+local batch is now confirmed to add nothing beyond the two documented blockers.
+origin/main still 331a807 (Codex has not landed; perf cascade unchanged).
