@@ -203,6 +203,15 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
 .delta { font-size: var(--fs-body); color: var(--muted); margin: 0 0 20px; font-variant-numeric: tabular-nums; }
 .nowcast { font-size: var(--fs-small); color: var(--muted); margin-top: 10px; max-width: 46ch; }
 .nowcast .prov { color: var(--elevated); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-micro); }
+/* A finalized measure behind its own published target says so, next to the
+ * date rather than in a footnote. --elevated, not --severe: the series is
+ * late, which is a caveat on freshness, not a claim that anything is wrong
+ * with the numbers themselves. */
+.stale-flag {
+  color: var(--elevated);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
 .nowcast-channels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .nowcast-chip { display: inline-flex; align-items: baseline; gap: 6px; padding: 3px 9px; border: 1px solid var(--rule); border-radius: 999px; text-decoration: none; color: var(--muted); font-size: var(--fs-fine); }
 .nowcast-chip:hover { border-color: var(--elevated); color: var(--ink); }
@@ -681,14 +690,4 @@ h2 { position: relative; }
      that is actually new. */
   .nowcast-channels { display: none; }
   .nowcast { margin-top: 8px; }
-}
-
-/* A finalized measure behind its own published target says so, next to the
- * date rather than in a footnote. --elevated, not --severe: the series is
- * late, which is a caveat on freshness, not a claim that anything is wrong
- * with the numbers themselves. */
-.stale-flag {
-  color: var(--elevated);
-  font-weight: 600;
-  letter-spacing: 0.02em;
 }
