@@ -123,7 +123,36 @@ jobs:
     # the defect scripts/gate.sh exists to prevent. Raising the number
     # keeps the promise tonight; someone should decide whether nine lanes
     # each re-running a 20-minute suite is the architecture we want.
-    timeout-minutes: 60
+    #
+    # 60 WAS STILL A GUESS, AND IT FAILED. #38 and #40 both exceeded it.
+    # The "~20 min" above was inferred from a commit step that also
+    # contained a rebase and a push. The suite's own cost, read off the CI
+    # job's "Tests + coverage" step rather than a whole-run duration:
+    #
+    #   ci #531  67b48ed   13.9 min
+    #   ci #532  cf2ee4d0   37.1 min
+    #
+    # Two CONSECUTIVE commits. One of them added 23 minutes, and
+    # --durations puts 96 seconds of it in a single test that recompiles
+    # its fixture per adversarial vector. That is reported in
+    # .agents/from-claude.md and is not mine to fix.
+    #
+    #   heal (--heal 5)          11.0 - 11.1 min   measured #26, #27
+    #   pipeline (run_daily)     14.9 - 20.8 min   measured #27, #26
+    #   gate inside the push     37.1 min          measured ci #532
+    #   commit / rebase / push   ~2 min
+    #                            ---------------
+    #   worst case                ~71 min against a 60-minute cap
+    #
+    # 90, from that arithmetic plus ~19 minutes of headroom, because the
+    # suite has now moved twice in one night and a cap that only just fits
+    # is a cap that fails on the next commit.
+    #
+    # This is the third raise tonight and it should be the last one that
+    # works by arithmetic rather than by fixing the cause. If the 96-second
+    # test is optimised, the honest move is to bring this number back down
+    # rather than keep the headroom and forget why it is here.
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
