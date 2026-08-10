@@ -1,0 +1,33 @@
+{
+  "schema_version": "0.1.0",
+  "profile_id": "igrm:live-query-admission-batch-profile:0.1.0",
+  "effective": "2026-08-10",
+  "status": "synthetic_contract_only",
+  "default_policy": "deny",
+  "normative_files": [
+    {"kind": "batch_contract", "path": "governance/live_query_admission_batch_contract.json", "sha256": "1c939a6a99646cf294e65c679721252f151b34a762ce65f04948aeb3e0b566a5"},
+    {"kind": "batch_vectors", "path": "governance/live_query_admission_batch_adversarial_vectors.json", "sha256": "b316f365548e886645a8b8e95179a6ef0acd3b91414909d0001cf0281973e19f"},
+    {"kind": "admission_contract", "path": "governance/live_query_admission_contract.json", "sha256": "5cae8288ff544df090e228e787bb46f89cd2dd5e400c518a7593f36f1ca7ee00"},
+    {"kind": "admission_profile", "path": "governance/live_query_admission_profile.json", "sha256": "eedc35b0b17bf63a6858706cd1904ec5b0b37e09490fd5ebc261941184f23a74"},
+    {"kind": "admission_runtime", "path": "src/live_query_admission.py", "sha256": "8962619ffda3abab14a9d626c0b0aeaf53a748d7ef7de5cd31f8bc05bae549e3"}
+  ],
+  "upstream": {
+    "compiler": "src.live_query_admission.admit",
+    "verifier": "src.live_query_admission.verify_admission",
+    "caller_supplied_universe": false,
+    "caller_supplied_order": false,
+    "caller_supplied_admission": false
+  },
+  "trust_boundary": {
+    "signed": false,
+    "authenticated": false,
+    "synthetic": true,
+    "contract_only": true,
+    "source_execution_performed": false,
+    "result_execution_performed": false,
+    "production_authority": false,
+    "public_authority": false,
+    "requested_at_semantics": "caller_declared_unauthenticated",
+    "implementation_binding_authenticated": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "igrm:live-query-admission-batch-adversarial:0.1.0",
+  "default_policy": "deny",
+  "cases": [
+    {"case_id": "valid_admitted_seed", "expected_status": "valid"},
+    {"case_id": "valid_refused_seed_same_batch", "expected_status": "valid"},
+    {"case_id": "admission_record_invalid", "expected_status": "refused", "expected_reason": "batch_upstream_receipt_invalid"},
+    {"case_id": "denominator_shrink", "expected_status": "refused", "expected_reason": "batch_denominator_invalid"},
+    {"case_id": "duplicate_admission", "expected_status": "refused", "expected_reason": "batch_duplicate_admission"},
+    {"case_id": "index_reorder", "expected_status": "refused", "expected_reason": "batch_index_invalid"},
+    {"case_id": "universe_digest_mismatch", "expected_status": "refused", "expected_reason": "batch_universe_invalid"},
+    {"case_id": "cross_time_universe_splice", "expected_status": "refused", "expected_reason": "batch_snapshot_drift"},
+    {"case_id": "receipt_root_mismatch", "expected_status": "refused", "expected_reason": "batch_receipt_root_invalid"},
+    {"case_id": "implementation_binding_mismatch", "expected_status": "refused", "expected_reason": "batch_implementation_binding_invalid"},
+    {"case_id": "contract_drift", "expected_status": "refused", "expected_reason": "batch_contract_drift"},
+    {"case_id": "profile_drift", "expected_status": "refused", "expected_reason": "batch_profile_drift"},
+    {"case_id": "profile_invalid", "expected_status": "refused", "expected_reason": "batch_profile_invalid"},
+    {"case_id": "vector_registry_invalid", "expected_status": "refused", "expected_reason": "batch_vector_registry_invalid"},
+    {"case_id": "duplicate_json_key", "expected_status": "refused", "expected_reason": "batch_json_duplicate_key"},
+    {"case_id": "structure_invalid", "expected_status": "refused", "expected_reason": "batch_structure_invalid"},
+    {"case_id": "typed_canonical_invalid", "expected_status": "refused", "expected_reason": "batch_typed_canonical_invalid"},
+    {"case_id": "receipt_digest_invalid", "expected_status": "refused", "expected_reason": "batch_receipt_digest_mismatch"},
+    {"case_id": "receipt_recompile_mismatch", "expected_status": "refused", "expected_reason": "batch_receipt_recompile_mismatch"}
+  ]
+}
