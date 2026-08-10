@@ -138,10 +138,16 @@ jobs:
           # and 45m of runner time every 2h is already the wrong price for
           # publishing one provisional payload. What changes is that the lane
           # now says so in its own log instead of dying mid-sentence.
-          if ! timeout 40m bash scripts/publish_push.sh "nowcast: $(date -u +%FT%TZ)"; then
+          # 36m, not 40m: the steps before this one cost ~7 minutes, so
+          # under the 45m JOB cap this step's real budget is ~38m. The
+          # first version of this bound said 40m -- which the job cap
+          # would always beat, so the diagnostic below could never
+          # print. A timeout that cannot fire before the harsher one is
+          # decoration; verified against run #86's step timings.
+          if ! timeout 36m bash scripts/publish_push.sh "nowcast: $(date -u +%FT%TZ)"; then
             rc=$?
             if [ "$rc" -eq 124 ]; then
-              echo "::error::nowcast publish exceeded 40m. This step is the"
+              echo "::error::nowcast publish exceeded 36m. This step is the"
               echo "::error::committed gate, not the commit. See analysis/"
               echo "::error::nowcast_lane_gate_cost_2026-08-10.md -- the fix is"
               echo "::error::the shared gate's duration, not this lane's cap."
