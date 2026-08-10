@@ -75,10 +75,10 @@ jobs:
         # wasted runner-minute for a threshold that can eat the contract
         # is not a trade; it was a bug wearing a rule's clothes.
         run: |
-          TODAY=$(date -u +%F)
-          GEN=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
-          if [ "$GEN" != "$TODAY" ]; then
-            echo "latest generated $GEN != $TODAY; dispatching morning-contract lane"
+          TARGET=$(date -u -d "yesterday" +%F)
+          FINAL_DATE=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['date'])" 2>/dev/null || echo "")
+          if [ "$FINAL_DATE" != "$TARGET" ]; then
+            echo "latest finalized date $FINAL_DATE != D-1 target $TARGET; dispatching morning-contract lane"
             # -f so an HTTP error fails this step LOUDLY. 2026-08-04: the
             # original `curl -s` returned exit 0 on any API rejection, so a
             # guarantor that dispatched nothing still showed green -- the
@@ -91,7 +91,7 @@ jobs:
             echo "dispatch HTTP $CODE"; cat /tmp/dispatch_body || true
             [ "$CODE" = "204" ]
           else
-            echo "final already published today ($GEN); no dispatch"
+            echo "exact D-1 final already published ($FINAL_DATE); no dispatch"
           fi
       - name: Compute provisional today-so-far
         run: python -m src.nowcast

@@ -266,7 +266,8 @@ def validate_repository(
         if "actions/checkout@" in text:
             _checkout_has_full_history(name, text, checkout_sha)
 
-        if publisher_marker in text:
+        direct_frozen_cas = "git push origin HEAD:main" in text
+        if publisher_marker in text or direct_frozen_cas:
             publishing_lanes.append(name)
             if permissions.get("contents") != "write":
                 _fail("publisher_contents_write_missing", name)
@@ -275,6 +276,19 @@ def validate_repository(
             if text.count(token_fragment) != 1:
                 _fail("publisher_ephemeral_token_missing", name)
             _checkout_has_full_history(name, text, checkout_sha)
+            if direct_frozen_cas and publisher_marker not in text:
+                required_cas_fragments = (
+                    "git checkout --detach \"$BASE_COMMIT\"",
+                    'REMOTE_COMMIT=$(git rev-parse origin/main)',
+                    'git push origin HEAD:main',
+                    "unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN",
+                    "git worktree add --detach",
+                    "bash scripts/gate.sh --committed",
+                )
+                if any(fragment not in text for fragment in required_cas_fragments):
+                    _fail("publisher_frozen_cas_incomplete", name)
+                if "git pull --rebase" in text or "checkout --theirs" in text:
+                    _fail("publisher_frozen_cas_conflict_resolution_present", name)
 
     if observed_actions_write != allowed_actions_write:
         _fail(

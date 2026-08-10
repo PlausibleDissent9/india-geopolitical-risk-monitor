@@ -72,15 +72,15 @@ jobs:
       - name: Is today's final published?
         id: check
         run: |
-          TODAY=$(date -u +%F)
-          GEN=$(python3 -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
-          echo "today=$TODAY generated=$GEN"
-          if [ "$GEN" = "$TODAY" ]; then
+          TARGET=$(date -u -d "yesterday" +%F)
+          FINAL_DATE=$(python3 -c "import json; print(json.load(open('docs/data/latest.json'))['date'])" 2>/dev/null || echo "")
+          echo "target=$TARGET finalized_date=$FINAL_DATE"
+          if [ "$FINAL_DATE" = "$TARGET" ]; then
             echo "stale=false" >> "$GITHUB_OUTPUT"
-            echo "final for $TODAY already published; watchdog stands down"
+            echo "exact D-1 final for $TARGET already published; watchdog stands down"
           else
             echo "stale=true" >> "$GITHUB_OUTPUT"
-            echo "final is $GEN, expected $TODAY -- the morning lane has not published"
+            echo "final is $FINAL_DATE, expected $TARGET -- the morning lane has not published"
           fi
 
       - name: Is a morning run already waiting for the lane?

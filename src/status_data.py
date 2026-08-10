@@ -17,7 +17,9 @@ promise, and reliability.json carries its record.
 from __future__ import annotations
 
 import csv
+import html
 import json
+import re
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -163,6 +165,62 @@ ALIGNMENTS: list[dict[str, str]] = [
             "labels and show the evidence unfiltered."),
     },
 ]
+
+
+def _static_final_message(state: dict[str, Any]) -> str:
+    target = html.escape(str(state.get("target_date") or "unknown"))
+    latest = html.escape(str(state.get("latest_finalized_date") or "none"))
+    if state.get("finalized") is True:
+        return (
+            f"Final publication current: exact D-1 target <b>{target}</b> is "
+            "finalized. A provisional nowcast is a separate, non-final measure."
+        )
+    labels = {
+        "source_unavailable": "the registered source is unavailable",
+        "acquisition_failed": "source acquisition or validation failed",
+        "pipeline_failed": "publication validation failed",
+        "delayed_final": "final publication is delayed",
+    }
+    label = labels.get(str(state.get("status")), "final publication is delayed")
+    return (
+        f"Delayed final: exact D-1 target <b>{target}</b> is not finalized "
+        f"because {label}. The latest finalized measure remains "
+        f"<b>{latest}</b>. A provisional nowcast is not a substitute for "
+        "the missing final."
+    )
+
+
+def write_static_final_disclosure(
+    state: dict[str, Any], root: Path = ROOT
+) -> None:
+    """Bake the current final-vs-target state into both no-JS surfaces."""
+
+    message = _static_final_message(state)
+    replacements = {
+        root / "docs/index.html": (
+            "final-publication-static",
+            '<p class="final-publication-status" '
+            f'id="final-publication-status">{message}</p>',
+        ),
+        root / "docs/status.html": (
+            "final-publication-status-static",
+            f'<p class="prose" id="final-publication-state">{message}</p>',
+        ),
+    }
+    for path, (marker, content) in replacements.items():
+        raw = path.read_text(encoding="utf-8")
+        pattern = re.compile(
+            rf"<!--{re.escape(marker)}:start-->.*?"
+            rf"<!--{re.escape(marker)}:end-->",
+            re.DOTALL,
+        )
+        replacement = (
+            f"<!--{marker}:start-->{content}<!--{marker}:end-->"
+        )
+        updated, count = pattern.subn(replacement, raw)
+        if count != 1:
+            raise RuntimeError(f"static final disclosure marker invalid: {path}")
+        path.write_text(updated, encoding="utf-8")
 
 
 def _csv_last_date(path: Path, date_col: str | None = None) -> str | None:
@@ -361,7 +419,8 @@ def main() -> None:
     sources = check_sources(today)
     alignments = check_alignments()
     aligned_count = sum(1 for a in alignments if a["aligned"] is True)
-    from src import stamp_meta
+    from src import final_publication, stamp_meta
+    final_state = final_publication.public_status(today=today)
     payload: dict[str, Any] = {
         "_meta": {
             **stamp_meta.universal_fields("status.json"),
@@ -387,10 +446,12 @@ def main() -> None:
         "sources": sources,
         "lanes": check_lanes(),
         "alignments": alignments,
+        "final_publication": final_state,
         "morning_contract": reliability,
     }
     (SITE_DATA / "status.json").write_text(
         json.dumps(payload, indent=1) + "\n", encoding="utf-8")
+    write_static_final_disclosure(final_state)
     ok = sum(1 for s in sources if s["ok"])
     print(f"[status] wrote status.json: {ok}/{len(sources)} "
           f"sources within window; "

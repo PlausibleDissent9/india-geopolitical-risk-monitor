@@ -534,6 +534,30 @@ function renderNowcast(nc) {
   el.hidden = false;
 }
 
+function renderFinalPublicationStatus(payload) {
+  const state = payload && payload.final_publication;
+  const el = document.getElementById("final-publication-status");
+  if (!el || !state) return;
+  if (state.finalized === true) {
+    el.hidden = true;
+    return;
+  }
+  const labels = {
+    source_unavailable: "registered source unavailable",
+    acquisition_failed: "source acquisition or validation failed",
+    pipeline_failed: "publication validation failed",
+    delayed_final: "final publication delayed",
+  };
+  const label = labels[state.status] || "final publication delayed";
+  const latest = state.latest_finalized_date
+    ? ` The latest finalized measure remains ${esc(state.latest_finalized_date)}.`
+    : " No finalized measure is currently available.";
+  el.innerHTML = `<strong>Delayed final.</strong> ${esc(state.target_date)}: ` +
+    `${esc(label)}.${latest} A provisional nowcast is not a substitute for ` +
+    `the missing final.`;
+  el.hidden = false;
+}
+
 async function init() {
   bindRanges();
   let history = null;
@@ -557,6 +581,9 @@ async function init() {
   try {
     renderNowcast(await loadJSON("data/nowcast.json"));
   } catch (e) { /* absent nowcast is the normal state outside its hours */ }
+  try {
+    renderFinalPublicationStatus(await loadJSON("data/status.json"));
+  } catch (e) { console.warn("status.json not available yet", e); }
   if (history) {
     buildToggles(history);
     renderChart();

@@ -202,6 +202,7 @@ h2 { font-size: var(--fs-h2); letter-spacing: -0.01em; }
 }
 .delta { font-size: var(--fs-body); color: var(--muted); margin: 0 0 20px; font-variant-numeric: tabular-nums; }
 .nowcast { font-size: var(--fs-small); color: var(--muted); margin-top: 10px; max-width: 46ch; }
+.final-publication-status { font-size: var(--fs-small); color: var(--ink); margin-top: 10px; max-width: 58ch; padding: 9px 11px; border-left: 3px solid var(--elevated); background: color-mix(in srgb, var(--elevated) 10%, transparent); }
 .nowcast .prov { color: var(--elevated); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-micro); }
 /* A finalized measure behind its own published target says so, next to the
  * date rather than in a footnote. --elevated, not --severe: the series is

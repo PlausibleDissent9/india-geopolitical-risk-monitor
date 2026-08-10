@@ -58,9 +58,25 @@ def test_the_shared_push_script_exists_and_is_executable():
     assert SCRIPT.stat().st_mode & 0o111, "publish_push.sh is not executable"
 
 
-def test_no_lane_hand_rolls_its_own_push():
-    offenders = [name for name, text in _pushing_lanes().items()
-                 if "publish_push.sh" not in text]
+def test_no_lane_hand_rolls_an_unregistered_push():
+    """The final-recovery lane is the one deliberate CAS-only exception.
+
+    It cannot use the generic derived-file conflict resolver for final/history
+    bytes. Its frozen-parent, exact-gate path is independently checked by the
+    security-integrity registry and the publication-contract tests.
+    """
+    offenders = [
+        name
+        for name, text in _pushing_lanes().items()
+        if "publish_push.sh" not in text
+        and not (
+            name == "morning.yml"
+            and "git push origin HEAD:main" in text
+            and 'REMOTE_COMMIT=$(git rev-parse origin/main)' in text
+            and "bash scripts/gate.sh --committed" in text
+            and "git pull --rebase" not in text
+        )
+    ]
     assert not offenders, (
         f"these lanes push without the shared script: {offenders}. Three "
         "hand-rolled shapes with three different bugs is what this "

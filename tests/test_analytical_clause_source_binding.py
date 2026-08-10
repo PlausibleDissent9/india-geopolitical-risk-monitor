@@ -2041,7 +2041,52 @@ def test_every_clause_field_except_self_hash_is_protected(tmp_path: Path) -> Non
 
 def test_normative_adversarial_registry_is_complete_and_executed(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    # verify_source_bound_compilation intentionally recompiles the incumbent
+    # from source on every vector.  Most of the 97 vectors mutate only the
+    # supplied output/proof, so that repeated compilation is byte-identical
+    # work.  Memoize only inside this registry test, keyed by a hash inventory
+    # of every fixture input.  Every public verifier and every normative vector
+    # still executes; a case that changes any source byte gets a distinct key.
+    real_compile = ac.compile_source_bound_clauses
+    compilation_cache: dict[
+        tuple[str, str, tuple[tuple[str, str], ...]],
+        tuple[dict[str, Any], dict[str, Any]],
+    ] = {}
+    compiler_calls = 0
+
+    def cached_exact_compile(
+        manifest_path: Path,
+        query_id: str = PATH_QUERY,
+        *,
+        root: Path | None = None,
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        nonlocal compiler_calls
+        bundle_root = (root or manifest_path.resolve().parents[1]).resolve()
+        # These are the fixture inputs traversed by the canonical compiler.
+        # Deliberately exclude any proof/output artifacts a vector may write
+        # elsewhere under tmp_path: mutating an output must still execute the
+        # verifier, but cannot invalidate an unchanged source compilation.
+        source_roots = ("canonical", "frames", "governance", "rules", "schemas")
+        inventory = tuple(
+            (
+                path.relative_to(bundle_root).as_posix(),
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+            )
+            for directory in source_roots
+            for path in sorted((bundle_root / directory).rglob("*"))
+            if path.is_file()
+        )
+        key = (str(manifest_path.resolve()), query_id, inventory)
+        if key not in compilation_cache:
+            compiler_calls += 1
+            compilation_cache[key] = real_compile(
+                manifest_path, query_id, root=bundle_root
+            )
+        return deepcopy(compilation_cache[key])
+
+    monkeypatch.setattr(ac, "compile_source_bound_clauses", cached_exact_compile)
     registry = json.loads(VECTORS.read_text(encoding="utf-8"))
     fixture, source, proof = _compiled(tmp_path / "base")
     executed: set[str] = set()
@@ -2069,6 +2114,11 @@ def test_normative_adversarial_registry_is_complete_and_executed(
         executed.add(case_id)
     assert executed == {row["case_id"] for row in registry["cases"]}
     assert len(executed) == 97
+    assert compiler_calls <= len(executed) // 4
+    print(
+        f"[normative-registry] executed={len(executed)} "
+        f"exact_source_compilations={compiler_calls}"
+    )
 
 
 def test_source_profile_pins_incumbent_and_upstream_exact_bytes() -> None:
