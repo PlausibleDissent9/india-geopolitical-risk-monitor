@@ -121,6 +121,15 @@ def _clause_refs(clause: Mapping[str, Any]) -> list[Mapping[str, Any]]:
     return cast(list[Mapping[str, Any]], refs)
 
 
+def _require(mapping: object, key: str, detail: str) -> Any:
+    """Fetch a required field, refusing (never crashing) if the object is
+    malformed. correction_closure takes caller-supplied manifests, so a
+    manifest missing a field must refuse per refusal-first, not KeyError."""
+    if not isinstance(mapping, Mapping) or key not in mapping:
+        _fail("manifest_scope_not_recomputable", detail)
+    return mapping[key]
+
+
 def _clause_id_of(clause: Mapping[str, Any]) -> str:
     cid = clause.get("clause_id")
     if not isinstance(cid, str) or not cid:
@@ -376,11 +385,13 @@ def correction_closure(
     affected_artifacts: set[str] = set()
     for manifest in manifests:
         _reject_caller_edges(manifest)
-        mid = manifest["manifest_id"]
+        mid = _require(manifest, "manifest_id", "manifest_missing_id")
+        selection_scope = _require(manifest, "selection_scope", "manifest_missing_selection_scope")
+        artifact_refs = _require(manifest, "output_artifact_refs", "manifest_missing_artifact_refs")
         # Recompute the scope against the POST-operation release.
-        scope_result = compute_scope(source_clauses, manifest["selection_scope"], contract)
+        scope_result = compute_scope(source_clauses, selection_scope, contract)
         selected = set(scope_result["selected_clause_ids"])
-        selected_clauses = [c for c in source_clauses if c["clause_id"] in selected]
+        selected_clauses = [c for c in source_clauses if _clause_id_of(c) in selected]
 
         # Reverse dependency: a selected clause references any predecessor.
         reverse = any(
@@ -391,8 +402,8 @@ def correction_closure(
             (union_keys & _clause_object_keys(c)) for c in selected_clauses)
         if reverse or forward:
             affected.add(mid)
-            for art in manifest["output_artifact_refs"]:
-                affected_artifacts.add(art["artifact_id"])
+            for art in artifact_refs:
+                affected_artifacts.add(_require(art, "artifact_id", "artifact_missing_id"))
 
     if prior_affected is not None:
         dropped = set(prior_affected) - affected

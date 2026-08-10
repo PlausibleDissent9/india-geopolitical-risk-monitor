@@ -381,6 +381,22 @@ def test_malformed_clause_refuses_cleanly_not_crashes() -> None:
         assert err.value.code == "manifest_scope_not_recomputable", bad_clause
 
 
+def test_malformed_manifest_in_correction_closure_refuses_cleanly(tmp_path: Path) -> None:
+    """Same refusal-first class as malformed clauses, on the correction_closure
+    path: manifests is a caller parameter, so a manifest missing manifest_id /
+    selection_scope / output_artifact_refs must refuse, never KeyError."""
+    source = _bundle(tmp_path)
+    op = _op("supersede", [("entity", CRUDE)], [])
+    for bad in (
+        {"output_artifact_refs": [], "selection_scope": _scope(CRUDE)},  # no manifest_id
+        {"manifest_id": "m", "output_artifact_refs": []},                # no selection_scope
+        {"manifest_id": "m", "selection_scope": _scope(CRUDE)},          # no output_artifact_refs
+    ):
+        with pytest.raises(pm.ProductManifestError) as err:
+            pm.correction_closure([bad], source, op)
+        assert err.value.code == "manifest_scope_not_recomputable", bad
+
+
 def test_scope_binding_wrong_key_refuses(tmp_path: Path) -> None:
     source = _bundle(tmp_path)
     manifest = _manifest(source, CRUDE)

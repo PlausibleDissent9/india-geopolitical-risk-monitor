@@ -279,3 +279,23 @@ Files: src/product_manifest.py, tests/test_product_manifest.py.
 Checks: pytest (26 passed), ruff + mypy clean. New test drives four malformed
 clauses. The structural-pin acceptance test (#1) correctly caught the membership
 line refactor and was updated to the new expression, not loosened.
+
+## T18 — Product Compiler: refuse malformed manifests in correction_closure
+Status: DONE (local commit; NOT pushed)
+Continued the T17 adversarial pass: correction_closure takes caller-supplied
+`manifests` and read manifest["manifest_id"], ["selection_scope"],
+["output_artifact_refs"], art["artifact_id"] directly -> a malformed manifest
+raised a bare KeyError (same refusal-first gap as T17, other entry point).
+Fix: a _require accessor refuses manifest_scope_not_recomputable (no new code)
+on any missing field. Both caller-facing entry points (compute_scope,
+correction_closure) now refuse malformed input cleanly.
+Files: src/product_manifest.py, tests/test_product_manifest.py.
+Checks: pytest (27 passed), ruff + mypy clean.
+
+## ORIGIN ADVANCED (external state, not the unblock)
+origin/main moved 331a807 -> c2eafd2 "multilingual chunk cache: ...22:44Z" by
+igrm-bot -- an AUTOMATED lane data commit, NOT Codex. Touches no perf-cascade
+file, adds no channel entry. The perf cascade is STILL blocked. My local batch
+stays based on 331a807; the documented drop-command (git rebase --onto 642f317
+3f593cb) remains valid on my branch, so no rebase performed. A human pushing my
+work would rebase onto c2eafd2 (clean -- zero file overlap with my commits).
