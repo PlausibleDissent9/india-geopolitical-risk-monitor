@@ -84,6 +84,23 @@ view_contract_invalid). In-isolation evidence: `pytest tests/test_product_manife
 = 25 passed; drift suite = 3 passed; `tests/test_typed_canonical_bytes_reference.py`
 = 12 passed (perf output proven byte-identical).
 
+## T8 — TASKS.md trips the reader-facing-markdown scan (independent of perf)
+Status: DONE (local commit; NOT pushed)
+Independent failure surfaced by the T7 gate, unrelated to the perf blocker:
+`tests/test_claims_discipline.py::test_the_scanned_markdown_equals_the_tracked_reader_facing_set`
+reported "in the manifest but not scanned: TASKS.md". A new tracked .md is
+reader-facing by default; the test's own mechanism is a named exclusion with a
+reason. Added `"TASKS.md"` to `MD_EXCLUDED` (same category as IGRM_MAX_SPEC.md /
+CONTINUITY.md — an internal working document the site never links).
+Files changed: `tests/test_claims_discipline.py`, `TASKS.md`.
+Commands run: `pytest tests/test_claims_discipline.py` (6 passed).
+Negative/positive pair: before the exclusion the test failed naming TASKS.md;
+after, it passes; the test's stale-entry guard keeps the exclusion honest (it
+must name a real tracked file).
+Full-suite triage: the ONLY independent failure was this one. All other
+failures (clause_reader_shadow, clause_source_view, consequence_plan) are the
+perf cascade into Codex's runtime source constants — see PERF BLOCKER.
+
 ## PERF BLOCKER — the typed-canonical optimization cascades into Codex's runtime source
 Classification: [architectural gap / cross-lane] — NOT a safe single-lane fix.
 Commit: local `3f593cb` "The 96-second test was one accidental O(n*depth) byte-copy"

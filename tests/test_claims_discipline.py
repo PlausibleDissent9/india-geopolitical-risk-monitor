@@ -64,6 +64,9 @@ MD_EXCLUDED = {
     "DESIGN_SYSTEM.md": "design working notes",
     "IGRM_MAX_SPEC.md": "the internal build spec, a working document",
     "NOTES_FOR_ISHAN.md": "working notes addressed to the founder",
+    "TASKS.md": "the execution-worker task ledger, a working document in the "
+                "same category as IGRM_MAX_SPEC.md; the site never links a "
+                "reader here",
     "sectors_nse_amendment_DRAFT.md": "an unmerged draft amendment",
     "analysis/": "internal audits and run logs; the site never links a reader here",
     "auditor/": "the versioned machine-coding rubric, a registered instrument",
