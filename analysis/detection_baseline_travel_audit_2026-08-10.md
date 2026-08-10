@@ -186,11 +186,57 @@ honest prose qualification passes without quoting a number. Mutation-verified:
 stripping the back-extension refusal sentence and stripping the CI from the
 divergence tile are each caught at the exact line.
 
-## 7. What this audit still does not establish
+## 7. The remaining follow-ups, run — all clean
 
-The robustness gulf (0.527) and the syndication multiplier have not been put
-through the same test. Neither has any number that appears only inside
-`docs/data/*.json` prose fields, since this pass scoped payloads out on the
-grounds that a human does not read a claim there — that reasoning is defensible
-for `_meta.what` strings but not obviously right for the `finding` and
-`reading` fields, which the site renders. That is the next pass.
+Three checks that found nothing. Recorded because a negative result from a
+method is part of what the method is worth, and because two of the three were
+my scan being wrong again.
+
+**Rendered payload prose — clean.** The pass above scoped `docs/data/*.json`
+out, arguing a human does not read a claim there. That is defensible for
+`_meta.what` but not for `finding`, `reading`, `interpretation`, `note`,
+`summary` and `decision_language`, which the site renders to a reader. Twelve
+such fields across eleven payloads carry numbers; **zero** quote a favourable
+figure without a qualifier in the same rendered string.
+
+**Dictionary robustness — not a defect, and the reverse pattern.** `0.527` is
+the *unfavourable* number, the lowest of the five channels. The project already
+publishes it prominently and says so: `docs/validation.html` calls it "the
+lowest robustness correlation, and it is informative";
+`paper/founder_interview.md` calls it "genuinely" low. Nothing to fix — this is
+the pattern working in the direction it should.
+
+**Normalization-window stability — my scan was wrong.** A check for high
+robustness figures published without the low flagged ρ = 0.96–0.99 in
+`paper/WORKING_PAPER.md`. Those describe **normalization-window** stability
+(365-day and 1095-day against the primary 730-day window), which is a different
+analysis from **dictionary-variant** robustness. Pairing them would have been
+an error, not a fix. The file is also the superseded v0.1 scaffold.
+
+**Robustness variant coverage — checked, fine.** `robustness_series.json` shows
+`null` in the first week of every `narrow`/`broad` array, which reads at a
+glance like an empty series behind a rendered chart. It is not: 208–212 of 240
+weeks are populated per channel against 238 for `primary`. No defect.
+
+### A caveat about the method itself
+
+Across this sweep the ratio scan flagged **eight** sites that turned out to be
+correct prose: `README.md` and `docs/datasheet.md` (pointer language the pattern
+did not accept), two listings (prose qualification instead of a number),
+`methodology.md` twice and `docs/datasheet.md` again ("95% interval", not "95%
+CI"), and two in `WORKING_PAPER.md` (a different quantity entirely). Against
+four real defects found.
+
+That ratio is the honest headline about this technique. It finds a class of
+defect that reading cannot, and it accuses correct writing about twice as often
+as it catches bad writing. Every hit has to be read in context before anything
+is changed — a fixer working from the scan output alone would have damaged
+prose that was already right in half the files it touched.
+
+## 8. What this audit still does not establish
+
+The syndication multiplier has not been put through the test. Neither has any
+claim whose qualifier is a *structural* limitation rather than a competing
+number — rights coverage, corpus scope, the English-language bias — where there
+is no second figure to require proximity to, and where the same distribution
+question therefore needs a different instrument.

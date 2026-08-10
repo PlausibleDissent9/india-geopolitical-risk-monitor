@@ -117,4 +117,34 @@ jobs:
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
           git add docs/data/nowcast.json || true
-          bash scripts/publish_push.sh "nowcast: $(date -u +%FT%TZ)"
+          # Bounded BELOW the job cap on purpose, so this step fails with a
+          # diagnostic instead of the job being killed anonymously at 45m.
+          #
+          # Measured per-step, runs #82-#85 (2026-08-10): pip 0.3-0.5,
+          # guarantor 0.0, compute 3.5-6.5, stamp 0.0, and THIS step
+          # 38.2-39.2. The commit step is ~85% of the lane, and it is not
+          # committing -- publish_push.sh runs the full committed gate before
+          # it pushes, and the gate is currently ~37m because one registry
+          # test costs 96s inside a suite nine publishing lanes each run in
+          # full.
+          #
+          # So 6.5 + 39 + 0.5 = 45.7 against a 45m cap: runs #83, #84 and #85
+          # each computed a good nowcast, stamped it, and then threw it away.
+          # GitHub reports a timeout kill as `cancelled`, which is why this
+          # read as concurrency eviction in the run list for hours.
+          #
+          # The cap is NOT raised here. A third raise would be the second one
+          # that treats a shared-gate cost as if it were this lane's problem,
+          # and 45m of runner time every 2h is already the wrong price for
+          # publishing one provisional payload. What changes is that the lane
+          # now says so in its own log instead of dying mid-sentence.
+          if ! timeout 40m bash scripts/publish_push.sh "nowcast: $(date -u +%FT%TZ)"; then
+            rc=$?
+            if [ "$rc" -eq 124 ]; then
+              echo "::error::nowcast publish exceeded 40m. This step is the"
+              echo "::error::committed gate, not the commit. See analysis/"
+              echo "::error::nowcast_lane_gate_cost_2026-08-10.md -- the fix is"
+              echo "::error::the shared gate's duration, not this lane's cap."
+            fi
+            exit "$rc"
+          fi
