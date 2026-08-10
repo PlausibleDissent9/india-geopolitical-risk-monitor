@@ -190,3 +190,27 @@ manifest first, so a rights-restricted or tampered member refuses before any
 bytes are written. Files: src/offline_bundle.py, tests/test_offline_bundle.py.
 Checks: pytest (17 passed), ruff + mypy clean. 3 new tests: byte-determinism +
 real-zip-contents, rights refusal before writing, timestamp-pinned-not-now.
+
+## T12 — Offline bundle: stdlib reader-side verifier
+Status: DONE (local commit; NOT pushed)
+`verify_bundle_bytes(bundle_bytes)` re-verifies a bundle using ONLY zipfile +
+hashlib + json — no IGRM runtime a reader would have to trust. Checks every
+zip member's bytes against the manifest's declared digest and that no zip member
+escaped the manifest. Files: src/offline_bundle.py, tests/test_offline_bundle.py.
+Checks: pytest (21 passed), ruff + mypy clean. 4 new tests: faithful bundle
+verifies; tampered member -> digest_mismatch; stowaway member -> manifest_
+incomplete; stdlib-only property asserted by source scan (no event_ledger /
+build_manifest / typed-canonical in the verifier body).
+
+## OFFLINE BUNDLE — remaining sub-slices are hard-blocked
+The mechanically-buildable core is complete and tested: deterministic manifest
+(T10) + deterministic zip (T11) + stdlib verifier (T12). Remaining sub-slices:
+  - Founder-signature verification: HARD-BLOCKED by an ABSOLUTE rule ("never
+    generate/handle founder signatures"). Not a pending decision — a permanent
+    prohibition this worker will never violate. Reserved code
+    bundle_signature_missing stays reserved.
+  - .ots timestamp verification: BLOCKED — external (network + OpenTimestamps +
+    a real Bitcoin anchor). Reserved code bundle_timestamp_unverifiable.
+  - Release registration + site-side hash pinning: BLOCKED — needs a real
+    release and a push/deploy (forbidden). Reserved code
+    bundle_release_unregistered.

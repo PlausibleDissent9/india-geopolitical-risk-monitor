@@ -214,6 +214,40 @@ def build_bundle_bytes(
     return buffer.getvalue()
 
 
+def verify_bundle_bytes(bundle_bytes: bytes) -> dict[str, Any]:
+    """Reader-side verification of a bundle, using ONLY the standard library.
+
+    A reader who distrusts the site opens the zip, reads its manifest.json, and
+    re-hashes every member against the digest the manifest declares. This uses
+    zipfile + hashlib + json alone -- no IGRM code, no typed-canonical runtime,
+    nothing the reader would have to trust. It is the "convenience, never an
+    authority" verifier of design/offline_audit_bundle.md: it checks that the
+    zip's member bytes match the manifest's member digests and that no zip
+    member escaped the manifest. It deliberately does NOT re-check the manifest
+    self-digest (that needs the typed-canonical runtime) nor a signature nor a
+    timestamp -- those are separate, and two of them are out of a reader's hands.
+    """
+    with zipfile.ZipFile(io.BytesIO(bundle_bytes)) as zf:
+        bad = zf.testzip()
+        if bad is not None:
+            _fail("bundle_member_digest_mismatch", f"corrupt_zip_entry:{bad}")
+        try:
+            manifest = json.loads(zf.read("manifest.json"), object_pairs_hook=_unique_object)
+        except (KeyError, json.JSONDecodeError) as exc:
+            raise OfflineBundleError("bundle_manifest_incomplete",
+                                     "manifest.json_missing_or_unreadable") from exc
+        declared = {m["path"]: m["sha256"] for m in manifest.get("members", [])}
+        present = {n for n in zf.namelist() if n != "manifest.json"}
+        if present != set(declared):
+            _fail("bundle_manifest_incomplete",
+                  "zip_members_and_manifest_members_differ")
+        for path, want in declared.items():
+            got = hashlib.sha256(zf.read(path)).hexdigest()
+            if got != want:
+                _fail("bundle_member_digest_mismatch", path)
+    return {"verified": True, "member_count": len(declared)}
+
+
 def main(argv: Sequence[str] | None = None) -> None:  # pragma: no cover - CLI
     parser = argparse.ArgumentParser(
         description="Validate the offline-bundle contract loads deny-by-default.")

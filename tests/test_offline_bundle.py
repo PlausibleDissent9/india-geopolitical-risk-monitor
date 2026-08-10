@@ -141,6 +141,63 @@ def test_bundle_zip_member_timestamp_is_pinned_not_now() -> None:
                 "would then depend on when it was built")
 
 
+# --- stdlib reader-side verifier (T12 sub-slice) ----------------------------
+
+def test_verifier_accepts_a_faithful_bundle() -> None:
+    data = ob.build_bundle_bytes(_members())
+    result = ob.verify_bundle_bytes(data)
+    assert result["verified"] is True
+    assert result["member_count"] == len(PUBLIC)
+
+
+def test_verifier_rejects_a_tampered_member() -> None:
+    import io
+    import zipfile
+    data = ob.build_bundle_bytes(_members())
+    # rebuild a zip with one member's bytes altered but the manifest unchanged
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        manifest_bytes = zf.read("manifest.json")
+        contents = {n: zf.read(n) for n in zf.namelist()}
+    contents[PUBLIC[0]] = contents[PUBLIC[0]] + b"tamper"
+    contents["manifest.json"] = manifest_bytes  # unchanged: digests now stale
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, "w") as zf:
+        for name in sorted(contents):
+            zf.writestr(name, contents[name])
+    with pytest.raises(ob.OfflineBundleError) as err:
+        ob.verify_bundle_bytes(out.getvalue())
+    assert err.value.code == "bundle_member_digest_mismatch"
+
+
+def test_verifier_rejects_a_zip_member_not_in_the_manifest() -> None:
+    import io
+    import zipfile
+    data = ob.build_bundle_bytes(_members())
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        contents = {n: zf.read(n) for n in zf.namelist()}
+    contents["docs/data/latest.json_stowaway"] = b"{}"  # not in the manifest
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, "w") as zf:
+        for name in sorted(contents):
+            zf.writestr(name, contents[name])
+    with pytest.raises(ob.OfflineBundleError) as err:
+        ob.verify_bundle_bytes(out.getvalue())
+    assert err.value.code == "bundle_manifest_incomplete"
+
+
+def test_verifier_uses_only_the_standard_library() -> None:
+    """The verifier's worth is that a reader need trust nothing but Python's
+    stdlib. Assert the function body touches no IGRM runtime -- no
+    event_ledger, no build_manifest, no typed-canonical."""
+    import inspect
+    body = inspect.getsource(ob.verify_bundle_bytes)
+    for forbidden in ("event_ledger", "build_manifest", "typed_record_sha256",
+                      "typed_canonical", "_typed_sha"):
+        assert forbidden not in body, (
+            f"verify_bundle_bytes references {forbidden!r}; the stdlib-only "
+            "property (a reader trusts nothing but Python) is broken")
+
+
 def test_malformed_member_shape_refuses() -> None:
     with pytest.raises(ob.OfflineBundleError) as err:
         ob.build_manifest([{"path": PUBLIC[0]}])  # missing declared_sha256
