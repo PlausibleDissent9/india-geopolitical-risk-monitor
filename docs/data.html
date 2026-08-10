@@ -235,7 +235,7 @@ const NICE = {
     ["data/history.csv", "daily percentile scores since 2017; column <code>" + ch + "</code>"],
     ["data/latest.json", "today's finalized score: <code>channels." + ch + ".score</code>"],
     ["data/receipts.json", "today's matched articles: <code>channels." + ch + ".articles</code>, lane-labeled"],
-    ["data/uncertainty.json", "95% sampling band on recent days: <code>days.&lt;date&gt;." + ch + "</code>"],
+    ["data/uncertainty.json", "frozen 95% sampling bands for 2026-06-30 through 2026-08-07 only: <code>days.&lt;date&gt;." + ch + "</code>; later dates are absent, not zero"],
     ["data/episodes.json", "detected coverage episodes: filter rows by <code>channel == \"" + ch + "\"</code>"],
     ["data/event_study.json", "post-episode market cells with 95% CIs: <code>channels." + ch + ".outcomes</code>"],
     ["data/robustness_series.json", "primary vs dictionary variants, weekly: <code>channels." + ch + "</code>"],

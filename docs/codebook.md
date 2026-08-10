@@ -429,9 +429,10 @@ interval, and both bounds pass through the same splice ratio
 (`ngram_calibration.json`) and the same trailing-percentile transform
 as the published point value. The composite band is the mean of
 channel bounds — an envelope, conservative because channel sampling
-errors are independent. Days before `_meta.first_banded_date` were
-computed over the full monitored corpus and carry no band; absence of
-a band is a statement about the estimation design, not missing data.
+errors are independent. The frozen artifact covers exactly
+`_meta.first_banded_date` through `_meta.last_banded_date` (currently
+2026-06-30 through 2026-08-07). Earlier and later published days carry no
+published band; absence is not a zero-width interval or a claim of certainty.
 
 ## docs/data/robustness_series.json
 

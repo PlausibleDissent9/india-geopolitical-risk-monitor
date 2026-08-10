@@ -6,7 +6,7 @@ import hashlib
 import json
 import subprocess
 from copy import deepcopy
-from datetime import date
+from datetime import date, timedelta
 from math import comb
 from pathlib import Path
 
@@ -335,8 +335,18 @@ def test_repository_registration_resolves_living_inputs_at_base_commit() -> None
         assert _sha(frozen) == by_path[path]["sha256"]
 
 
-def test_complete_source_frame_reproduces_contributions_and_draws_exact_sample(tmp_path: Path) -> None:
+def test_complete_source_frame_reproduces_contributions_and_draws_exact_sample(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root = _fixture_root(tmp_path)
+    original_read = fetch_ngrams.read_retained_identity_cache
+    source_reads: list[date] = []
+
+    def observed_read(day: date, **kwargs: object) -> bytes:
+        source_reads.append(day)
+        return original_read(day, **kwargs)
+
+    monkeypatch.setattr(fetch_ngrams, "read_retained_identity_cache", observed_read)
     rows, manifest = audit.build_frame("v3a", root)
     registration = audit._registration(root)
     selected, sample = audit.select_sample(rows, registration["cohorts"][0])
@@ -356,6 +366,9 @@ def test_complete_source_frame_reproduces_contributions_and_draws_exact_sample(t
         for channel in audit.CHANNELS
     }
     assert len({row["audit_id"] for row in selected}) == 2500
+    assert source_reads == [
+        date(2026, 8, 8) + timedelta(days=offset) for offset in range(42)
+    ]
 
 
 def test_source_frame_refuses_missing_days_and_changed_registered_code(tmp_path: Path) -> None:

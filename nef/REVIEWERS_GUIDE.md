@@ -16,7 +16,7 @@ where the known soft spots are — before you find them.*
 | The placebo diagnostic is unfavorable | validation.html | 52 of 115 placebo episodes overlap registered-episode days (45.2%), versus about 35.6% under duration-preserving random placement; inspect the placebo payload and rerun the documented command |
 | External human accuracy evidence is incomplete | validation.html; `validation/blind_audit_500/`; `validation/precision_v3/PROTOCOL.md` | Precision v2 was invalidated before coding after source-frame and estimand defects were found. Prospective v3 source-frame collection is split into a 42-day initial cohort (v3a) and a disjoint 48-day holdout (v3b); both designs are frozen, but collection is paused before its first attestation pending a signed retained-identity rights decision, and no v3 sample, label or result exists. |
 | Results are not an artifact of one term list | validation.html robustness | correlations AND the weekly overlay chart; the weak case (gulf narrow 0.527) is discussed by name on the page |
-| Recent daily scores carry quantified sampling noise | index chart band, uncertainty.json | Wilson-interval construction documented in the codebook; every published point sits inside its own band (checkable in one script) |
+| A fixed recent window carries quantified sampling noise | index chart band, uncertainty.json | Wilson-interval construction is published for exactly 2026-06-30 through 2026-08-07; later published points have no band and are not presented as zero-uncertainty |
 | Every number has receipts | receipts.html | most receipt articles are drawn from the same sampled corpus the score was computed over ("in scored sample" label) — the estimator's own evidence, enumerated |
 | The site publishes on time or admits it didn't | data.html reliability record | scored from git commit timestamps, not self-reporting; misses are permanent |
 | Machine consumers get stability promises | api.html | frozen contract v1.3.0, 30 endpoints; CI test fails if a served payload leaves the contract |
@@ -49,8 +49,9 @@ where the known soft spots are — before you find them.*
    log-sd per channel). Two channels' ratios rest on 1 overlap day —
    thin, disclosed, and improving as overlap accumulates.
 5. **Sampling design changed variance.** Ngrams-era scores are
-   estimated from ~30k-document daily samples; that is exactly why the
-   sampling bands exist and why they do not extend to API-era days.
+   estimated from ~30k-document daily samples. The frozen public band artifact
+   covers exactly 2026-06-30 through 2026-08-07; it does not extend to earlier
+   API-era days or later published days while retained-cache rights are pending.
 6. **Sub-national event geography has vintage gaps.** GDELT's FIPS
    coding predates Telangana and Ladakh; their events count under
    parent codes, the maps page hover says so per state.

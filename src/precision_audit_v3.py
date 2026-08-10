@@ -42,7 +42,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from src import precision_frame_v3
+from src import fetch_ngrams, precision_frame_v3
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRATION = ROOT / "validation" / "precision_v3" / "registration.json"
@@ -364,8 +364,13 @@ def build_frame(
             raise AuditV3Error(
                 f"{cohort_id} contains a recorded frame failure on {day}: {reason}"
             )
-        rebuilt = precision_frame_v3.build_day_attestation(
-            day, root, require_live_hashes=False
+        source_raw = fetch_ngrams.read_retained_identity_cache(day, root=root)
+        rebuilt = precision_frame_v3._build_day_attestation_from_authorized_bytes(
+            day,
+            source_raw,
+            root,
+            require_live_hashes=False,
+            require_strong_denominator=False,
         )
         if attestation != rebuilt:
             raise AuditV3Error(f"{day} attestation does not reproduce its source cache")
@@ -385,7 +390,17 @@ def build_frame(
             raise AuditV3Error("matcher or dictionary regime changed inside the cohort")
 
         source_path = _safe_path(root, attestation["source_cache"], "source cache")
-        source_raw, source = _read_object(source_path)
+        expected_source_path = (
+            root / "data" / "raw" / "ngram_days" / f"{day}.json"
+        ).resolve()
+        if source_path != expected_source_path:
+            raise AuditV3Error(f"{day} source cache path is not the registered day path")
+        try:
+            source = json.loads(source_raw)
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise AuditV3Error(f"{day} source cache is unreadable") from exc
+        if not isinstance(source, dict):
+            raise AuditV3Error(f"{day} source cache is not an object")
         if _sha256(source_raw) != attestation["source_cache_sha256"]:
             raise AuditV3Error(f"{day} source cache hash changed")
         evidence = source.get("_matcher_evidence")

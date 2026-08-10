@@ -23,9 +23,9 @@ Method, stated completely:
      narrower than this envelope; conservative by construction, stated.
 
 API-era days (before the ngrams switch) have no sampling design of
-this kind -- timelinevol is computed over the full monitored corpus --
-so bands exist only for sample-estimated days and the payload names
-the first banded date.
+this kind -- timelinevol is computed over the full monitored corpus.
+The payload names both ends of its exact frozen band window; neither
+earlier nor later dates inherit a band by implication.
 
   python -m src.uncertainty     writes docs/data/uncertainty.json
 """
@@ -86,19 +86,20 @@ def main() -> None:
             fetch_ngrams.read_retained_identity_cache(
                 day,
                 root=ROOT,
-                cache_path=cache,
             ),
         )
-        for day, cache in cache_days
+        for day, _cache in cache_days
     ]
     store = pd.read_csv(RAW / "gdelt_volume.csv",
                         parse_dates=["date"]).set_index("date")
     calib = json.loads((RAW / "ngram_calibration.json").read_text(encoding="utf-8"))
 
     days: dict[str, dict[str, list[float]]] = {}
-    for _cache_day, raw in cache_bytes:
+    for cache_day, raw in cache_bytes:
         rec = json.loads(raw)
         day = rec["date"]
+        if day != cache_day.isoformat():
+            raise ValueError("retained cache date does not match its authorized day")
         n = rec.get("n_docs_sampled") or 0
         ts = pd.Timestamp(day)
         if n <= 0 or ts not in store.index:
@@ -135,11 +136,13 @@ def main() -> None:
                      "transform as the published point value. The composite "
                      "band is the mean of channel bounds -- an envelope, "
                      "conservative because channel sampling errors are "
-                     "independent. Days before the first banded date were "
-                     "computed over the full monitored corpus (no sampling "
-                     "design of this kind), so they carry no band."),
+                     "independent. This artifact covers only the exact dates "
+                     "from first_banded_date through last_banded_date. Days "
+                     "outside that frozen window carry no published band; "
+                     "absence is not a zero-width interval."),
             "units": "percentile score bounds [lo, hi], 0-100",
             "first_banded_date": min(days) if days else None,
+            "last_banded_date": max(days) if days else None,
             "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
         "days": days,

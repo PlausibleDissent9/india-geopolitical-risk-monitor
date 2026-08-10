@@ -1363,7 +1363,6 @@ def require_promotion_receipt(
             fetch_ngrams.read_retained_identity_cache(
                 target,
                 root=root,
-                cache_path=cache_path,
                 rights_authority=parent.rights_authority,
             )
         )
