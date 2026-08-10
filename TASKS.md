@@ -101,6 +101,25 @@ Full-suite triage: the ONLY independent failure was this one. All other
 failures (clause_reader_shadow, clause_source_view, consequence_plan) are the
 perf cascade into Codex's runtime source constants — see PERF BLOCKER.
 
+## T9 — Full-suite triage: confirm no independent failure remains
+Status: DONE (triage complete; all remaining failures blocked)
+Ran the complete suite (`pytest -q`). After T8, failures group as:
+  - test_consequence_plan (36), test_scenario_proof (20),
+    test_clause_reader_shadow (13), test_clause_source_view (12),
+    test_nary_association_trace (2), test_decision_switch (2)
+    -> ALL perf-cascade into Codex's runtime source constants (PERF BLOCKER).
+  - test_freshness (1) `test_the_real_site_has_no_stale_or_undatable_payloads`
+    -> EXTERNAL DEPENDENCY. Reads the LIVE site (igrm.in); 6 payloads
+    (comparators, episode_terms, receipts, receipts_archive, spike_breadth,
+    validation) are stale there because today is 2026-08-11 and the publishing
+    lanes have not run successfully. Independent of local code; unfixable by
+    this worker (the remedy is a successful publish = push/deploy, forbidden,
+    plus lane recovery). Pre-existing environmental state, not introduced by
+    this batch.
+Conclusion: every remaining failure is blocked on (a) Codex's runtime source
+(perf-cascade), (b) the human push decision, or (c) an external publish. No
+independent, in-lane, non-blocked work remains.
+
 ## PERF BLOCKER — the typed-canonical optimization cascades into Codex's runtime source
 Classification: [architectural gap / cross-lane] — NOT a safe single-lane fix.
 Commit: local `3f593cb` "The 96-second test was one accidental O(n*depth) byte-copy"
