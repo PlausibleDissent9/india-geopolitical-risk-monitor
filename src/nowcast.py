@@ -45,7 +45,6 @@ _DYNAMIC_RIGHTS_FIELDS = {
     "evaluated_at_utc",
     "rights_as_of",
     "evaluated_age_days",
-    "release_deadline_utc",
 }
 
 
@@ -103,13 +102,55 @@ def require_release_rights(
         raise ngram_rights.NgramRightsError(
             "nowcast_rights_receipt_invalid"
         ) from exc
-    if blob.returncode != 0 or receipt.get("schema_version") != "1.0.0":
+    if (
+        blob.returncode != 0
+        or set(receipt) != {"schema_version", "post_fetch", "write_boundary"}
+        or receipt.get("schema_version") != "1.0.0"
+        or payload.get("provisional") is not True
+    ):
         raise ngram_rights.NgramRightsError("nowcast_rights_receipt_invalid")
+    try:
+        post_fetch = ngram_rights.validate_public_identity_rights_proof(
+            post_fetch, target=target
+        )
+        write_boundary = ngram_rights.validate_public_identity_rights_proof(
+            write_boundary, target=target
+        )
+        generated_text = payload["_meta"]["generated"]
+        if not isinstance(generated_text, str) or not generated_text.endswith("Z"):
+            raise ValueError
+        generated = datetime.fromisoformat(generated_text[:-1] + "+00:00")
+        as_of = datetime.strptime(str(payload["as_of_utc"]), "%H:%M").time()
+        post_fetch_at = datetime.fromisoformat(
+            post_fetch["evaluated_at_utc"][:-1] + "+00:00"
+        )
+        write_at = datetime.fromisoformat(
+            write_boundary["evaluated_at_utc"][:-1] + "+00:00"
+        )
+    except (KeyError, TypeError, ValueError, ngram_rights.NgramRightsError) as exc:
+        raise ngram_rights.NgramRightsError(
+            "nowcast_rights_receipt_invalid"
+        ) from exc
     current = ngram_rights.require_public_identity_rights(
         target=target,
         root=root,
         test_authority=rights_authority,
     )
+    current = ngram_rights.validate_public_identity_rights_proof(
+        current, target=target
+    )
+    current_at = datetime.fromisoformat(
+        current["evaluated_at_utc"][:-1] + "+00:00"
+    )
+    if (
+        current["rights_as_of"] != target.isoformat()
+        or generated.date() != target
+        or generated.time().replace(second=0, microsecond=0) != as_of
+        or generated > post_fetch_at
+        or post_fetch_at > write_at
+        or write_at > current_at
+    ):
+        raise ngram_rights.NgramRightsError("nowcast_time_order_invalid")
     current_binding = _rights_authority_binding(current)
     if (
         _rights_authority_binding(post_fetch) != current_binding

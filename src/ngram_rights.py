@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import re
 import subprocess
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
@@ -19,6 +20,29 @@ PUBLIC_IDENTITY_USES = {
     "publish_extract",
     "redistribute_full_record",
 }
+PUBLIC_IDENTITY_RIGHTS_PROOF_FIELDS = frozenset(
+    {
+        "source_id",
+        "decision_id",
+        "signer_id",
+        "reviewed_on",
+        "review_due",
+        "target_date",
+        "evaluated_at_utc",
+        "rights_as_of",
+        "max_current_age_days",
+        "evaluated_age_days",
+        "release_deadline_utc",
+        "permitted_uses",
+        "trusted_signer_public_key_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "decision_artifact_path",
+        "decision_artifact_sha256",
+        "decision_signature_path",
+        "decision_signature_sha256",
+    }
+)
 PRODUCTION_HUMAN_ROLES = frozenset(
     {"principal_investigator", "rights_reviewer"}
 )
@@ -56,6 +80,90 @@ def _sha256(raw: bytes) -> str:
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+def _parse_utc_second(value: object) -> datetime:
+    if not isinstance(value, str) or not value.endswith("Z"):
+        _fail("ngram_rights_proof_time_invalid")
+    try:
+        parsed = datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError:
+        _fail("ngram_rights_proof_time_invalid")
+    if (
+        parsed.utcoffset() != timedelta(0)
+        or parsed.microsecond != 0
+        or parsed.strftime("%Y-%m-%dT%H:%M:%SZ") != value
+    ):
+        _fail("ngram_rights_proof_time_invalid")
+    return parsed
+
+
+def validate_public_identity_rights_proof(
+    value: object, *, target: date
+) -> dict[str, Any]:
+    """Validate the complete closed proof emitted by the rights authority."""
+
+    if not isinstance(value, dict) or set(value) != (
+        PUBLIC_IDENTITY_RIGHTS_PROOF_FIELDS
+    ):
+        _fail("ngram_rights_proof_fields_invalid")
+    if (
+        value.get("source_id") != SOURCE_ID
+        or value.get("target_date") != target.isoformat()
+        or value.get("permitted_uses") != sorted(PUBLIC_IDENTITY_USES)
+    ):
+        _fail("ngram_rights_proof_binding_invalid")
+    try:
+        reviewed = date.fromisoformat(str(value["reviewed_on"]))
+        due = date.fromisoformat(str(value["review_due"]))
+        as_of = date.fromisoformat(str(value["rights_as_of"]))
+    except ValueError:
+        _fail("ngram_rights_proof_date_invalid")
+    evaluated_at = _parse_utc_second(value["evaluated_at_utc"])
+    deadline = _parse_utc_second(value["release_deadline_utc"])
+    max_age = value.get("max_current_age_days")
+    age = value.get("evaluated_age_days")
+    expected_age = (as_of - target).days
+    if (
+        evaluated_at.date() != as_of
+        or isinstance(max_age, bool)
+        or not isinstance(max_age, int)
+        or max_age < 0
+        or isinstance(age, bool)
+        or not isinstance(age, int)
+        or age != expected_age
+        or age < 0
+        or age > max_age
+        or reviewed > as_of
+        or due < as_of
+        or deadline.time() != datetime.max.time().replace(microsecond=0)
+        or deadline.date() < target
+        or deadline.date() > due
+        or deadline.date() > target + timedelta(days=max_age)
+        or evaluated_at > deadline
+    ):
+        _fail("ngram_rights_proof_temporal_invalid")
+    for key in (
+        "decision_id",
+        "signer_id",
+        "decision_artifact_path",
+        "decision_signature_path",
+    ):
+        if not isinstance(value.get(key), str) or not value[key]:
+            _fail("ngram_rights_proof_binding_invalid")
+    for key in (
+        "trusted_signer_public_key_sha256",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "decision_artifact_sha256",
+        "decision_signature_sha256",
+    ):
+        digest = value.get(key)
+        if not isinstance(digest, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", digest
+        ):
+            _fail("ngram_rights_proof_binding_invalid")
+    return dict(value)
 
 
 def _is_git_repository(root: Path) -> bool:
