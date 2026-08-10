@@ -62,6 +62,25 @@ Files changed: `tests/test_product_manifest.py`, `TASKS.md` (no runtime change).
 Commands run: `pytest tests/test_product_manifest.py` (23 passed), `ruff` (clean).
 Gates hit: pytest/ruff pass. Not shipped (do-not-push rule).
 
+## T6 — Complete the design's acceptance-test list (#1 structural, #4 monotonicity)
+Status: DONE (local commit; NOT pushed)
+Closed the two remaining acceptance-test gaps in design §9:
+#1 structural — asserts the runtime has no eval/exec/regex/glob path that could
+turn a caller binding into a selector, and that scope membership is an identity
+`in` check; #4 monotonicity — a property test over 60 random predecessor/
+successor sets asserting the affected set only grows as successors grow.
+Files changed: `tests/test_product_manifest.py`, `TASKS.md` (no runtime change).
+Commands run: `pytest tests/test_product_manifest.py` (25 passed), `ruff` (clean).
+Gates hit: pytest/ruff pass. Not shipped (do-not-push rule).
+NOTE: the assigned Product Compiler first slice is now fully spec-complete —
+all 8 attacks, all 8 acceptance tests, all 15 refusal codes triggered.
+
+## T7 — Verify the whole local batch is committed-gate green (no push)
+Status: DOING
+Reproducibility evidence: run `scripts/gate.sh --committed` (extracts HEAD, runs
+all 15 CI checks; does NOT push) to confirm the 6 local commits pass CI without
+shipping. Allowed under do-not-push (gating is verification, not deploy).
+
 ## T3 — Codex B2: Atlas Max join certifies an unpublished world
 Status: BLOCKED(codex-lane) — engine files are Codex's; audit filed at
 `analysis/max_join_audit_2026-08-10.md`, reported in `.agents/from-claude.md`.

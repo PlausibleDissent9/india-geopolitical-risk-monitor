@@ -10,6 +10,7 @@ and asserts every attack A1-A8 and the acceptance tests.
 from __future__ import annotations
 
 import importlib.util
+import random
 from pathlib import Path
 
 import pytest
@@ -310,6 +311,54 @@ def test_verify_rejects_a_tampered_record_digest(tmp_path: Path) -> None:
     with pytest.raises(pm.ProductManifestError) as err:
         pm.verify_compilation(external, source, manifest)
     assert err.value.code == "compilation_nondeterminism_detected"
+
+
+# --- acceptance #1: no caller-authored selection exists in the request path -
+
+def test_no_caller_authored_selection_path_exists_in_the_runtime() -> None:
+    """Acceptance test #1 (design §9). Membership must be by identity against a
+    registered predicate, never by evaluating caller-supplied text. Assert the
+    runtime contains no dynamic-evaluation or caller-regex path that could turn
+    a binding value into a selector: no eval/exec/compile, and the scope match
+    is an identity `in` check, not a pattern match."""
+    src = (ROOT / "src" / "product_manifest.py").read_text(encoding="utf-8")
+    for forbidden in ("eval(", "exec(", "re.compile(", "re.match(",
+                      "re.search(", "fnmatch", "glob("):
+        assert forbidden not in src, (
+            f"{forbidden!r} in product_manifest.py: a caller binding could "
+            "become a selector, re-opening the caller-authored-selection hole")
+    # The one membership operator is identity against the registered key.
+    assert "(match_type, bound_value) in keys" in src, (
+        "scope membership must be identity against the registered object key; "
+        "if this line changed, re-verify no pattern match slipped in")
+
+
+# --- acceptance #4: correction closure is monotone in P u S -----------------
+
+def test_correction_closure_is_monotone_in_predecessors_and_successors(tmp_path: Path) -> None:
+    """Acceptance test #4 (design §9). Adding a successor can only grow the
+    affected set, never shrink it. Property-checked over random key sets rather
+    than the single A2/A3 examples."""
+    source = _bundle(tmp_path)
+    manifests = [_manifest(source, CRUDE, "pm:crude"),
+                 _manifest(source, ORIGIN, "pm:origin")]
+    # a pool of real object keys the manifests' clauses actually reference
+    keys = sorted({(r["object_type"], r["object_id"])
+                   for c in source["clauses"]
+                   for r in c["proof_binding"]["source_object_refs"]
+                   if r["object_type"] in ("entity", "event")})
+    rng = random.Random(20260811)
+    for _ in range(60):
+        predecessors = rng.sample(keys, rng.randint(0, len(keys)))
+        base_succ = rng.sample(keys, rng.randint(0, len(keys)))
+        extra = rng.sample(keys, rng.randint(0, len(keys)))
+        op_small = _op("split", predecessors, base_succ)
+        op_large = _op("split", predecessors, sorted(set(base_succ) | set(extra)))
+        small = set(pm.correction_closure(manifests, source, op_small)["affected_manifest_ids"])
+        large = set(pm.correction_closure(manifests, source, op_large)["affected_manifest_ids"])
+        assert small <= large, (
+            f"closure shrank when successors grew: {small} not subset of {large} "
+            f"(P={predecessors}, added successors={extra})")
 
 
 # --- dedicated triggering case for each remaining refusal code --------------
