@@ -312,6 +312,49 @@ def test_verify_rejects_a_tampered_record_digest(tmp_path: Path) -> None:
     assert err.value.code == "compilation_nondeterminism_detected"
 
 
+# --- dedicated triggering case for each remaining refusal code --------------
+
+def test_scope_binding_wrong_key_refuses(tmp_path: Path) -> None:
+    source = _bundle(tmp_path)
+    manifest = _manifest(source, CRUDE)
+    manifest["selection_scope"]["bindings"] = {"wrong_key": CRUDE}
+    with pytest.raises(pm.ProductManifestError) as err:
+        pm.compile_product(source, manifest)
+    assert err.value.code == "manifest_scope_binding_not_in_domain"
+
+
+def test_duplicate_clause_id_in_universe_is_not_recomputable(tmp_path: Path) -> None:
+    source = _bundle(tmp_path)
+    dup = dict(source)
+    dup["clauses"] = list(source["clauses"]) + [source["clauses"][0]]  # duplicate id
+    manifest = _manifest(source, CRUDE)
+    with pytest.raises(pm.ProductManifestError) as err:
+        pm.compile_product(dup, manifest)
+    assert err.value.code == "manifest_scope_not_recomputable"
+
+
+def test_universe_exceeding_the_bound_refuses() -> None:
+    contract = pm.load_contract()
+    # synthetic universe over the 100k bound; each clause minimal but well-formed
+    big = [{"clause_id": f"clause:{i}",
+            "proof_binding": {"source_object_refs": []}}
+           for i in range(100_001)]
+    scope = {"predicate_id": "scope:objects_touching_entity",
+             "bindings": {"entity_id": CRUDE}}
+    with pytest.raises(pm.ProductManifestError) as err:
+        pm.compute_scope(big, scope, contract)
+    assert err.value.code == "manifest_universe_exceeds_bound"
+
+
+def test_empty_artifact_digest_refuses(tmp_path: Path) -> None:
+    source = _bundle(tmp_path)
+    manifest = _manifest(source, CRUDE)
+    manifest["output_artifact_refs"][0]["artifact_record_sha256"] = ""
+    with pytest.raises(pm.ProductManifestError) as err:
+        pm.compile_product(source, manifest)
+    assert err.value.code == "manifest_artifact_digest_mismatch"
+
+
 def test_every_contract_refusal_code_is_reachable_by_the_runtime() -> None:
     """Stronger than a subset check: every code the contract lists must be one
     the module can actually raise. A contract that claims a code the runtime

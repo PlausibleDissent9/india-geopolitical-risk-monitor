@@ -49,6 +49,19 @@ set in the SAME change (existing test correctly caught the addition — not
 loosened to a subset check).
 Gates hit: pytest/ruff pass. Not shipped (do-not-push rule).
 
+## T5 — Every ProductManifest refusal code must have a dedicated triggering test
+Status: DONE (local commit; NOT pushed)
+Codex acceptance test #5 (design §9): "every refusal code reachable by a test."
+Added a focused negative case that actually TRIGGERS each of the four codes that
+previously had none: wrong scope binding key -> manifest_scope_binding_not_in_domain;
+duplicate clause id in the universe -> manifest_scope_not_recomputable; a synthetic
+100_001-clause universe -> manifest_universe_exceeds_bound; empty artifact digest
+-> manifest_artifact_digest_mismatch. All 15 contract codes now have a triggering
+test, so the reachability set-assertion is backed by real firing, not just a list.
+Files changed: `tests/test_product_manifest.py`, `TASKS.md` (no runtime change).
+Commands run: `pytest tests/test_product_manifest.py` (23 passed), `ruff` (clean).
+Gates hit: pytest/ruff pass. Not shipped (do-not-push rule).
+
 ## T3 — Codex B2: Atlas Max join certifies an unpublished world
 Status: BLOCKED(codex-lane) — engine files are Codex's; audit filed at
 `analysis/max_join_audit_2026-08-10.md`, reported in `.agents/from-claude.md`.
