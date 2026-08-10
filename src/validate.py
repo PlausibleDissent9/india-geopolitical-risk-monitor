@@ -38,6 +38,17 @@ def _load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _previous_drift_domain_stats() -> dict:
+    """The domain samples the site already publishes, so a rerun whose
+    rate-limit gaps land on different channel-years cannot delete them."""
+    out = SITE_DATA / "validation.json"
+    if not out.exists():
+        return {}
+    existing = _load_json(out)
+    stats = existing.get("drift", {}).get("per_channel_domains", {})
+    return stats if isinstance(stats, dict) else {}
+
+
 def _merge_results(key: str, payload) -> None:
     out = SITE_DATA / "validation.json"
     existing = _load_json(out) if out.exists() else {}
@@ -282,7 +293,24 @@ def drift() -> None:
     first_ch, first_spec = next(iter(channels.items()))
     norm_q = fetch_gdelt.build_queries(first_spec["terms"], first_spec.get("anchor"))[0]
     print(f"[validate] corpus norm via {first_ch} query, {BACKFILL_START}..{today}")
-    raw = fetch_gdelt.fetch_corpus_norm(norm_q, BACKFILL_START, today)
+    try:
+        raw = fetch_gdelt.fetch_corpus_norm(norm_q, BACKFILL_START, today)
+    except RuntimeError as exc:
+        # The artlist sampling below fails soft per-year because it is a
+        # bonus diagnostic. THIS fetch is the promised denominator, so
+        # failing is correct -- but three weekly lane runs (drift #14-#16,
+        # 2026-08-07..09) died here as a bare exit 1 and were diagnosed by
+        # reproduction rather than by their own logs. The same command
+        # succeeded from a residential IP while CI failed at ~12 minutes:
+        # GDELT throttles shared runner IPs far harder, and the retry
+        # ladder exhausts. Name the site, name the cause, use a dedicated
+        # exit code the workflow can annotate.
+        print(f"[validate] drift ABORTED at the corpus-norm fetch "
+              f"(timelinevolraw): {exc}. Nothing was published. On a GitHub "
+              "runner a persistent DOC-API 429 is the usual cause; the "
+              "artlist sampling never ran, so its soft-fail is not the "
+              "story here.")
+        raise SystemExit(4) from exc
     norm = raw["norm"]
     norm.index = pd.to_datetime(norm.index)
     by_year = {
@@ -298,8 +326,18 @@ def drift() -> None:
     # were computable, which is the wrong thing to be hostage to. Each
     # year's sample now fails soft; whatever resolves publishes, and
     # the payload notes any gap.
+    # Which channel-years 429 varies run to run, so a wholesale replace
+    # DELETES previously published samples whenever this run's gaps land
+    # on years an earlier run measured. Found 2026-08-10: a local rerun
+    # would have removed four published channel-years (pakistan/2022,
+    # china/2025, gulf/2025, shipping/2025) that its own 429s missed.
+    # Same rule as the ngram heal: a rerun appends and refreshes, it
+    # never un-publishes. Carried entries keep their original sample
+    # date so a fresh timestamp cannot silently re-date an old sample.
+    previous = _previous_drift_domain_stats()
     domain_stats: dict = {}
     domain_gaps = 0
+    domain_carried = 0
     for ch, spec in channels.items():
         q = fetch_gdelt.build_queries(spec["terms"], spec.get("anchor"))[0]
         per_year: dict = {}
@@ -310,9 +348,18 @@ def drift() -> None:
                     maxrecords=100,
                 )
             except RuntimeError as e:
-                domain_gaps += 1
-                print(f"[validate] drift domains {ch}/{y} unavailable "
-                      f"({str(e)[:80]}); continuing")
+                kept = previous.get(ch, {}).get(str(y))
+                if kept is not None:
+                    per_year[str(y)] = {**kept, "sampled_on":
+                                        kept.get("sampled_on", "before 2026-08-10")}
+                    domain_carried += 1
+                    print(f"[validate] drift domains {ch}/{y} unavailable "
+                          f"({str(e)[:80]}); carrying the published sample "
+                          "forward unchanged")
+                else:
+                    domain_gaps += 1
+                    print(f"[validate] drift domains {ch}/{y} unavailable "
+                          f"({str(e)[:80]}); continuing")
                 continue
             domains = pd.Series([a["domain"] for a in arts if a["domain"]])
             if domains.empty:
@@ -322,6 +369,7 @@ def drift() -> None:
                 "n_articles_sampled": int(len(domains)),
                 "n_distinct_domains": int(domains.nunique()),
                 "herfindahl_top10": round(float((shares.head(10) ** 2).sum()), 4),
+                "sampled_on": today.isoformat(),
             }
         domain_stats[ch] = per_year
         print(f"[validate] drift domains: {ch} ({len(per_year)} years)")
@@ -336,11 +384,18 @@ def drift() -> None:
                 vol_corr[ch] = round(float(joined.corr().iloc[0, 1]), 3)
 
     note = ("Domain stats are approximations from relevance-sorted "
-            "samples (first sub-query per channel), not a census.")
+            "samples (first sub-query per channel), not a census. Each "
+            "year entry carries sampled_on: entries this run could not "
+            "refresh keep their published values and dates rather than "
+            "being deleted by a rate limit.")
+    if domain_carried:
+        note += (f" {domain_carried} channel-year samples carried forward "
+                 "unchanged from the published payload this run.")
     if domain_gaps:
         note += (f" {domain_gaps} channel-year domain samples were "
-                 "unavailable at computation time (source rate limits) "
-                 "and are omitted rather than guessed.")
+                 "unavailable at computation time (source rate limits), "
+                 "have no published predecessor, and are omitted rather "
+                 "than guessed.")
     _merge_results("drift", {
         "note": note,
         "mean_daily_corpus_by_year": by_year,

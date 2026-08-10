@@ -42,7 +42,22 @@ jobs:
           python-version: "3.11"
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Compute coverage drift
-        run: python -m src.validate drift
+        # Exit 4 is validate.py's named abort for the corpus-norm fetch
+        # (the promised denominator). Mapping it to an annotation here is
+        # what makes the failure readable without step-log access -- runs
+        # #14-#16 each died as an anonymous "exit code 1" and cost a
+        # local reproduction to diagnose.
+        run: |
+          if ! python -m src.validate drift; then
+            rc=$?
+            if [ "$rc" -eq 4 ]; then
+              echo "::error::drift aborted at the corpus-norm fetch: GDELT"
+              echo "::error::DOC-API throttling of runner IPs is the usual"
+              echo "::error::cause (429 after full retries). See the step"
+              echo "::error::log's [validate] drift ABORTED line."
+            fi
+            exit "$rc"
+          fi
       - name: S5 Media Cloud cross-validation (weekly; fail-closed sans key)
         continue-on-error: true
         timeout-minutes: 15
