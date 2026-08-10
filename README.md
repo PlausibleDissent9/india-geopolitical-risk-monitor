@@ -19,7 +19,10 @@ methodology. Weekly commentary is the author's. See `methodology.md`.
 > [source-frame collection](validation/precision_v3/PROTOCOL.md) has two
 > disjoint prospective cohorts: v3a covers 42 score days from 2026-08-08 and
 > v3b is a 48-day out-of-time holdout. Their seeds, sample sizes, code and
-> pass rules were frozen before the first source day. A day attestation is
+> pass rules were frozen before the first source day. Collection is paused
+> before its first attestation while retained source-identity processing lacks
+> a current signed rights decision; the protocol is frozen, not silently
+> restarted or backfilled. A day attestation is
 > acquisition evidence, not a precision result. The published
 > `precision.json` remains an explicitly uncalibrated machine/founder
 > diagnostic, not an independent human result.

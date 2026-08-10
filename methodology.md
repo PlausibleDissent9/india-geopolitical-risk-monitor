@@ -151,6 +151,12 @@ at `docs/data/splice_sensitivity.json`. It will not be recomputed unless a
 current signed source decision permits that evidence use. Neither artifact is
 a corrected history or may be substituted silently for the primary.
 
+The published sampling-band artifact is likewise a fixed historical window:
+`docs/data/uncertainty.json` covers 2026-06-30 through 2026-08-07. It remains
+available for those dated scores but does not claim coverage of later days and
+will not be recomputed from retained identity-bearing caches without a current
+signed decision covering the complete study window.
+
 A future measurement version may
 adopt new ratios only after at least 14 independently observed overlap
 days exist for every channel, the score-level impact is published, and
@@ -618,7 +624,8 @@ in this section is a forecast.
   read **99.5 the morning after the Pahalgam attack** and 96–98 through
   Article 370, so nothing urgent is lost. The daily series is unchanged
   and fully published as the tape (chart underlay, episodes, receipts,
-  sampling bands, and alerts all remain daily); `composite`/`score`
+  and alerts remain daily; the separately bounded historical sampling-band
+  artifact has the frozen window disclosed above); `composite`/`score`
   keep their frozen contract meaning forever, and the weekly fields are
   additive. No historical value of any series changed.
 - **2026-08-06, v1.7.0 (tone as a second axis; G-track layer 1).**

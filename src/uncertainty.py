@@ -33,12 +33,12 @@ from __future__ import annotations
 
 import json
 import math
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import pandas as pd
 
-from .fetch_ngrams import group_specs
+from . import fetch_ngrams
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
@@ -71,15 +71,33 @@ def trailing_pct(window_values: pd.Series, x: float) -> float:
 
 
 def main() -> None:
-    specs = group_specs()
+    specs = fetch_ngrams.group_specs()
     channels = sorted({s["channel"] for s in specs.values()})
+    cache_days = [
+        (date.fromisoformat(cache.stem), cache)
+        for cache in sorted(DAY_CACHE.glob("*.json"))
+    ]
+    # Authorize every retained day before parsing any of them. A decision
+    # that licenses only the newest day cannot silently unlock an older
+    # identity-bearing study window.
+    cache_bytes = [
+        (
+            day,
+            fetch_ngrams.read_retained_identity_cache(
+                day,
+                root=ROOT,
+                cache_path=cache,
+            ),
+        )
+        for day, cache in cache_days
+    ]
     store = pd.read_csv(RAW / "gdelt_volume.csv",
                         parse_dates=["date"]).set_index("date")
     calib = json.loads((RAW / "ngram_calibration.json").read_text(encoding="utf-8"))
 
     days: dict[str, dict[str, list[float]]] = {}
-    for cache in sorted(DAY_CACHE.glob("*.json")):
-        rec = json.loads(cache.read_text(encoding="utf-8"))
+    for _cache_day, raw in cache_bytes:
+        rec = json.loads(raw)
         day = rec["date"]
         n = rec.get("n_docs_sampled") or 0
         ts = pd.Timestamp(day)

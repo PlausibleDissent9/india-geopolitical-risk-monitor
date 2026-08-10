@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -362,7 +363,7 @@ def test_prior_commit_anchor_rejects_coordinated_cas_and_validator_reseal(
     _write_registry(root, registry)
 
     result = subprocess.run(
-        [str(ROOT / ".venv/bin/python"), "-m", "src.security_integrity", "--check"],
+        [sys.executable, "-m", "src.security_integrity", "--check"],
         cwd=root,
         env={**os.environ, "PYTHONPATH": str(root)},
         capture_output=True,
@@ -460,7 +461,7 @@ def test_coordinated_successor_reseal_cannot_claim_independent_trust(
     _write_registry(root, registry)
 
     result = subprocess.run(
-        [str(ROOT / ".venv/bin/python"), "-m", "src.security_integrity", "--write"],
+        [sys.executable, "-m", "src.security_integrity", "--write"],
         cwd=root,
         env={**os.environ, "PYTHONPATH": str(root)},
         capture_output=True,
