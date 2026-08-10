@@ -74,6 +74,14 @@
     {"case_id": "consumer_dependency_drift", "expected_status": "refused", "expected_reason": "consumer_dependency_drift"},
     {"case_id": "consumer_future_effective", "expected_status": "refused", "expected_reason": "consumer_profile_not_effective"},
     {"case_id": "consumer_cross_query_splice", "expected_status": "refused", "expected_reason": "consumer_source_binding_invalid"},
-    {"case_id": "consumer_complete_clause_partition_claim", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"}
+    {"case_id": "consumer_complete_clause_partition_claim", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_selector_value_class_drift", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_selector_cardinality_drift", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_selector_denominator_drift", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_selector_coordinated_signature_drift", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_runtime_value_class_mismatch", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_runtime_missingness_mismatch", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_omission_vocabulary_add_and_use", "expected_status": "refused", "expected_reason": "consumer_omission_invalid"},
+    {"case_id": "consumer_template_cross_scope_splice", "expected_status": "refused", "expected_reason": "consumer_limitation_scope_invalid"}
   ]
 }

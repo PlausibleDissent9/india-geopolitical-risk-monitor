@@ -14,6 +14,7 @@ import json
 from collections.abc import Mapping, Sequence
 from datetime import date
 from pathlib import Path
+from types import MappingProxyType
 from typing import Any, NoReturn, cast
 
 from . import analytical_clause as ac
@@ -37,18 +38,156 @@ _OUTPUT_ROLES = {
     "output:offline_audit_bundle": "offline",
 }
 _BRANCH_IDS = ("branch:path_found", "branch:no_path")
-_CARDINALITIES = {"exactly_one", "exact_bundle_denominator"}
-_VALUE_CLASSES = {
-    "boolean",
-    "citation_metadata",
-    "date",
-    "datetime",
-    "identifier",
-    "integer",
-    "object",
-    "text",
-}
+_ATOMICITY = "one_complete_analytical_clause_value"
+_REGISTERED_SOURCE_FIELD_SIGNATURES: Mapping[
+    str, tuple[str, str, str | None, str]
+] = MappingProxyType(
+    {
+        "coverage.row": ("exact_bundle_denominator", "object", "coverage_rows", _ATOMICITY),
+        "event.canonical_label": ("exactly_one", "text", None, _ATOMICITY),
+        "event.class": ("exactly_one", "identifier", None, _ATOMICITY),
+        "event.last_verified_at": ("exactly_one", "datetime", None, _ATOMICITY),
+        "event.record_status": ("exactly_one", "identifier", None, _ATOMICITY),
+        "event.starts_at": ("exactly_one", "datetime", None, _ATOMICITY),
+        "evidence.content_availability": (
+            "exact_bundle_denominator",
+            "identifier",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.identity": (
+            "exact_bundle_denominator",
+            "object",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.observed_at": (
+            "exact_bundle_denominator",
+            "datetime",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.public_url": (
+            "exact_bundle_denominator",
+            "citation_metadata",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.published_at": (
+            "exact_bundle_denominator",
+            "datetime",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.rights_use": (
+            "exact_bundle_denominator",
+            "identifier",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.source_id": (
+            "exact_bundle_denominator",
+            "identifier",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.title": (
+            "exact_bundle_denominator",
+            "citation_metadata",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "evidence.verification_status": (
+            "exact_bundle_denominator",
+            "identifier",
+            "evidence_items",
+            _ATOMICITY,
+        ),
+        "provenance.source_object_ref": (
+            "exact_bundle_denominator",
+            "object",
+            "object_evidence_rows",
+            _ATOMICITY,
+        ),
+        "release.generated_at": ("exactly_one", "datetime", None, _ATOMICITY),
+        "target.canonical_name": ("exactly_one", "text", None, _ATOMICITY),
+        "target.identity": ("exactly_one", "object", None, _ATOMICITY),
+        "traversal.max_hops": ("exactly_one", "integer", None, _ATOMICITY),
+        "traversal.max_paths": ("exactly_one", "integer", None, _ATOMICITY),
+        "traversal.returned_paths": ("exactly_one", "integer", None, _ATOMICITY),
+        "traversal.status": ("exactly_one", "identifier", None, _ATOMICITY),
+        "traversal.truncated": ("exactly_one", "boolean", None, _ATOMICITY),
+    }
+)
 _LITERAL_VALUE_CLASSES = {"fixed_identifier", "fixed_nonfactual_text"}
+_REGISTERED_OMISSION_REASON_IDS = (
+    "omission:archive_construction_not_clause_backed",
+    "omission:not_used_by_consumer",
+    "omission:reader_datum_not_clause_backed",
+    "omission:template_body_not_registered",
+)
+_REGISTERED_TEMPLATE_SCOPE_SIGNATURES: Mapping[
+    str, tuple[str, tuple[str, ...]]
+] = MappingProxyType(
+    {
+        "template:audit.bundle.shell.v1": (
+            "output:offline_audit_bundle",
+            ("scope:output.all_views", "scope:output.offline_audit_bundle"),
+        ),
+        "template:board.brief.shell.v1": (
+            "output:board_brief",
+            ("scope:output.all_views", "scope:output.board_brief"),
+        ),
+        "template:board.decision.boundary.v1": (
+            "output:board_brief",
+            ("scope:output.all_views", "scope:output.board_brief"),
+        ),
+        "template:board.event.record.v1": (
+            "output:board_brief",
+            ("scope:output.all_views", "scope:output.board_brief"),
+        ),
+        "template:board.linkage.no_path.v1": (
+            "output:board_brief",
+            ("scope:output.all_views", "scope:output.board_brief"),
+        ),
+        "template:board.linkage.path_found.v1": (
+            "output:board_brief",
+            ("scope:output.all_views", "scope:output.board_brief"),
+        ),
+        "template:newsroom.card.shell.v1": (
+            "output:newsroom_claim_card",
+            ("scope:output.all_views", "scope:output.newsroom_claim_card"),
+        ),
+        "template:newsroom.event.record.v1": (
+            "output:newsroom_claim_card",
+            (
+                "scope:claim.card.event_record",
+                "scope:output.all_views",
+                "scope:output.newsroom_claim_card",
+            ),
+        ),
+        "template:newsroom.release_structure.no_path.v1": (
+            "output:newsroom_claim_card",
+            (
+                "scope:claim.card.release_structure",
+                "scope:output.all_views",
+                "scope:output.newsroom_claim_card",
+            ),
+        ),
+        "template:newsroom.release_structure.path_found.v1": (
+            "output:newsroom_claim_card",
+            (
+                "scope:claim.card.release_structure",
+                "scope:output.all_views",
+                "scope:output.newsroom_claim_card",
+            ),
+        ),
+        "template:research.package.shell.v1": (
+            "output:research_package",
+            ("scope:output.all_views", "scope:output.research_package"),
+        ),
+    }
+)
 _REFUSAL_CODES = {
     "consumer_branch_invalid",
     "consumer_dependency_drift",
@@ -90,6 +229,77 @@ def _day(value: object, code: str) -> date:
         return ac._day(value, code)
     except ac.AnalyticalClauseError as exc:
         raise EvidenceOutputConsumerContractError(code, exc.detail) from exc
+
+
+def _instant(value: object, code: str) -> None:
+    try:
+        ac._instant(value, code)
+    except ac.AnalyticalClauseError as exc:
+        raise EvidenceOutputConsumerContractError(code, exc.detail) from exc
+
+
+def _registered_selector_rows() -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for source_field in sorted(_REGISTERED_SOURCE_FIELD_SIGNATURES):
+        signature = _REGISTERED_SOURCE_FIELD_SIGNATURES[source_field]
+        rows.append(
+            {
+                "source_field": source_field,
+                "cardinality": signature[0],
+                "value_class": signature[1],
+                "denominator_key": signature[2],
+                "atomicity": signature[3],
+            }
+        )
+    return rows
+
+
+def _validate_selected_clause(
+    source_field: str,
+    clause: Mapping[str, Any],
+    signature: tuple[str, str, str | None, str],
+) -> None:
+    proof = clause.get("proof_binding")
+    if not isinstance(proof, dict) or proof.get("source_field") != source_field:
+        _fail("consumer_selector_invalid", source_field)
+    value = clause.get("value")
+    missingness = clause.get("missingness")
+    value_class = signature[1]
+    if value is None:
+        if missingness != "source_missing" or value_class not in {
+            "citation_metadata",
+            "datetime",
+        }:
+            _fail("consumer_selector_invalid", source_field)
+        return
+    if missingness != "present":
+        _fail("consumer_selector_invalid", source_field)
+
+    valid = False
+    if value_class == "boolean":
+        valid = isinstance(value, bool)
+    elif value_class == "integer":
+        valid = isinstance(value, int) and not isinstance(value, bool)
+    elif value_class in {"citation_metadata", "identifier", "text"}:
+        valid = isinstance(value, str)
+    elif value_class == "object":
+        valid = isinstance(value, dict)
+    elif value_class == "date":
+        try:
+            _day(value, "consumer_selector_invalid")
+        except EvidenceOutputConsumerContractError:
+            valid = False
+        else:
+            valid = True
+    elif value_class == "datetime":
+        try:
+            _instant(value, "consumer_selector_invalid")
+        except EvidenceOutputConsumerContractError:
+            valid = False
+        else:
+            valid = True
+    if not valid:
+        _fail("consumer_selector_invalid", source_field)
 
 
 def _safe_file(relative: object, code: str) -> Path:
@@ -298,40 +508,12 @@ def validate_profile_document(
     valid_scope_ids = set(limitation_registry["output_profiles"])
 
     selector_rows = profile.get("source_field_selectors")
-    if not isinstance(selector_rows, list):
+    if selector_rows != _registered_selector_rows():
         _fail("consumer_selector_invalid")
-    selectors: dict[str, Mapping[str, Any]] = {}
-    for row in selector_rows:
-        if (
-            not isinstance(row, dict)
-            or set(row)
-            != {
-                "source_field",
-                "cardinality",
-                "value_class",
-                "denominator_key",
-                "atomicity",
-            }
-            or not isinstance(row.get("source_field"), str)
-            or row["source_field"] in selectors
-            or row.get("cardinality") not in _CARDINALITIES
-            or row.get("value_class") not in _VALUE_CLASSES
-            or row.get("atomicity") != "one_complete_analytical_clause_value"
-            or row["source_field"].startswith(("guardrail:", "output_limitation:"))
-        ):
-            _fail("consumer_selector_invalid")
-        if (row["cardinality"] == "exactly_one") != (row["denominator_key"] is None):
-            _fail("consumer_selector_invalid", cast(str, row["source_field"]))
-        if row["denominator_key"] not in {
-            None,
-            "coverage_rows",
-            "evidence_items",
-            "object_evidence_rows",
-        }:
-            _fail("consumer_selector_invalid", cast(str, row["source_field"]))
-        selectors[cast(str, row["source_field"])] = row
-    if list(selectors) != sorted(selectors):
-        _fail("consumer_selector_invalid")
+    selectors = {
+        cast(str, row["source_field"]): cast(Mapping[str, Any], row)
+        for row in cast(list[dict[str, Any]], selector_rows)
+    }
 
     branch_rows = profile.get("branches")
     if not isinstance(branch_rows, list):
@@ -391,11 +573,10 @@ def validate_profile_document(
     if tuple(branches) != _BRANCH_IDS:
         _fail("consumer_branch_invalid")
 
-    omission_ids = _closed_string_list(
-        profile.get("omission_reason_ids"), "consumer_omission_invalid"
-    )
-    if not omission_ids or any(not item.startswith("omission:") for item in omission_ids):
+    omission_value = profile.get("omission_reason_ids")
+    if omission_value != list(_REGISTERED_OMISSION_REASON_IDS):
         _fail("consumer_omission_invalid")
+    omission_ids = list(_REGISTERED_OMISSION_REASON_IDS)
 
     template_rows = profile.get("templates")
     if not isinstance(template_rows, list):
@@ -432,6 +613,15 @@ def validate_profile_document(
         )
         if not set(scopes) <= valid_scope_ids:
             _fail("consumer_limitation_scope_invalid")
+        scope_signature = _REGISTERED_TEMPLATE_SCOPE_SIGNATURES.get(
+            cast(str, row["template_id"])
+        )
+        if (
+            scope_signature is None
+            or row.get("consumer_id") != scope_signature[0]
+            or scopes != list(scope_signature[1])
+        ):
+            _fail("consumer_limitation_scope_invalid")
         if not set(required) <= set(selectors) or not set(
             literals
         ) <= _LITERAL_VALUE_CLASSES:
@@ -442,7 +632,7 @@ def validate_profile_document(
         ) <= set(required):
             _fail("consumer_branch_invalid", cast(str, row["template_id"]))
         templates[cast(str, row["template_id"])] = row
-    if list(templates) != sorted(templates):
+    if list(templates) != sorted(_REGISTERED_TEMPLATE_SCOPE_SIGNATURES):
         _fail("consumer_template_invalid")
 
     consumers_value = profile.get("consumers")
@@ -632,12 +822,13 @@ def validate_resolution(
         if not isinstance(proof, dict) or not isinstance(proof.get("source_field"), str):
             _fail("consumer_selector_invalid")
         by_field.setdefault(cast(str, proof["source_field"]), []).append(clause)
-    for source_field, selector in selectors.items():
+    for source_field in selectors:
+        signature = _REGISTERED_SOURCE_FIELD_SIGNATURES[source_field]
         selected = by_field.get(source_field, [])
         expected_count = (
             1
-            if selector["cardinality"] == "exactly_one"
-            else denominators.get(cast(str, selector["denominator_key"]))
+            if signature[0] == "exactly_one"
+            else denominators.get(cast(str, signature[2]))
         )
         if (
             isinstance(expected_count, bool)
@@ -647,6 +838,8 @@ def validate_resolution(
             or len({clause["clause_id"] for clause in selected}) != len(selected)
         ):
             _fail("consumer_selector_invalid", source_field)
+        for clause in selected:
+            _validate_selected_clause(source_field, clause, signature)
     coverage_clauses = by_field.get("coverage.row", [])
     if any(
         clause.get("value") != clause["proof_binding"].get("coverage_binding")

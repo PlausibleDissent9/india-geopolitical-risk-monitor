@@ -9,7 +9,7 @@
     "release_signer_id": "signer:oges.fixture.release"
   },
   "normative_files": [
-    {"kind": "adversarial_vectors", "path": "governance/analytical_clause_adversarial_vectors.json", "sha256": "c211b616d60b52853259db0648c47e2463535a87c17c8928e739d432cc3326e3"},
+    {"kind": "adversarial_vectors", "path": "governance/analytical_clause_adversarial_vectors.json", "sha256": "1bd70771544c9e02f64ecb4e797e25fafda8e878b2b538ea89049753584a4187"},
     {"kind": "analytical_clause_contract", "path": "governance/analytical_clause_contract.json", "sha256": "0ab5b9544f08f75454bc7f8e8ea7e9aea7bc54bed0e7d4144dcdc2662cd11325"},
     {"kind": "analytical_clause_limitations", "path": "governance/analytical_clause_limitation_registry.json", "sha256": "57d8c70e45d2f39370c7061773648d4b67cedf467e01876b52fa0f4d490f4776"},
     {"kind": "analytical_clause_runtime", "path": "src/analytical_clause.py", "sha256": "e0960fa6eb4704cd35fcf3c601e30cd79ca6a3d4772914da99b4ab6f33598160"},

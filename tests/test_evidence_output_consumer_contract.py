@@ -41,6 +41,19 @@ def _refuses(code: str):
     )
 
 
+def _mutated_selected_clause(
+    source: dict[str, Any], source_field: str, value: Any, missingness: str
+) -> dict[str, Any]:
+    mutation = copy.deepcopy(source)
+    for index, clause in enumerate(mutation["clauses"]):
+        if clause["proof_binding"]["source_field"] == source_field:
+            clause["value"] = value
+            clause["missingness"] = missingness
+            mutation["clauses"][index] = ac._seal(clause)
+            return ac._seal(mutation)
+    raise AssertionError(source_field)
+
+
 def test_profile_is_a_downstream_inactive_extension_not_a_source_dependency(
     tmp_path: Path,
 ) -> None:
@@ -113,6 +126,8 @@ def test_profile_uses_source_fields_not_query_specific_clause_ids(
     assert '"clause_id"' not in encoded
     assert "query:analytical_clause.fixture" not in encoded
     selectors = profile["source_field_selectors"]
+    assert len(selectors) == len(consumer._REGISTERED_SOURCE_FIELD_SIGNATURES) == 24
+    assert selectors == consumer._registered_selector_rows()
     assert [row["source_field"] for row in selectors] == sorted(
         row["source_field"] for row in selectors
     )
@@ -126,8 +141,8 @@ def test_profile_uses_source_fields_not_query_specific_clause_ids(
     }
 
 
-@pytest.mark.parametrize("attack", ["unknown", "duplicate", "aggregate"])
-def test_unknown_duplicate_or_non_atomic_selector_refuses(
+@pytest.mark.parametrize("attack", ["unknown", "duplicate"])
+def test_unknown_or_duplicate_selector_refuses(
     tmp_path: Path, attack: str
 ) -> None:
     _, source = _compiled(tmp_path)
@@ -142,8 +157,6 @@ def test_unknown_duplicate_or_non_atomic_selector_refuses(
         profile["source_field_selectors"].append(
             copy.deepcopy(profile["source_field_selectors"][0])
         )
-    else:
-        profile["source_field_selectors"][0]["atomicity"] = "renderer_aggregate"
     with _refuses("consumer_selector_invalid"):
         if attack == "unknown":
             consumer.validate_resolution(
@@ -153,6 +166,89 @@ def test_unknown_duplicate_or_non_atomic_selector_refuses(
             consumer.validate_profile_document(
                 profile, release_effective=date(2026, 8, 8), source_bundle=source
             )
+
+
+@pytest.mark.parametrize(
+    "attack",
+    [
+        "value_class",
+        "cardinality",
+        "denominator_key",
+        "atomicity",
+        "coordinated_cardinality_denominator",
+    ],
+)
+def test_every_registered_selector_signature_dimension_is_fixed(
+    tmp_path: Path, attack: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    row = next(
+        row
+        for row in profile["source_field_selectors"]
+        if row["source_field"] == "event.canonical_label"
+    )
+    if attack == "value_class":
+        row["value_class"] = "date"
+    elif attack == "cardinality":
+        row["cardinality"] = "exact_bundle_denominator"
+    elif attack == "denominator_key":
+        row["denominator_key"] = "evidence_items"
+    elif attack == "atomicity":
+        row["atomicity"] = "renderer_aggregate"
+    else:
+        row["cardinality"] = "exact_bundle_denominator"
+        row["denominator_key"] = "evidence_items"
+    with _refuses("consumer_selector_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+
+
+@pytest.mark.parametrize(
+    "attack",
+    ["value_class", "coordinated_cardinality_denominator"],
+)
+def test_hostile_review_selector_reproductions_refuse_during_resolution(
+    tmp_path: Path, attack: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    row = next(
+        row
+        for row in profile["source_field_selectors"]
+        if row["source_field"] == "event.canonical_label"
+    )
+    if attack == "value_class":
+        row["value_class"] = "date"
+    else:
+        row["cardinality"] = "exact_bundle_denominator"
+        row["denominator_key"] = "evidence_items"
+    with _refuses("consumer_selector_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
+        )
+
+
+@pytest.mark.parametrize(
+    "source_field,value,missingness",
+    [
+        ("event.canonical_label", 20260808, "present"),
+        ("traversal.max_hops", True, "present"),
+        ("event.starts_at", "2026-08-08", "present"),
+        ("event.canonical_label", None, "source_missing"),
+        ("evidence.public_url", None, "not_applicable"),
+    ],
+)
+def test_registered_runtime_value_and_missingness_semantics_refuse_mismatch(
+    tmp_path: Path, source_field: str, value: Any, missingness: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    mutation = _mutated_selected_clause(source, source_field, value, missingness)
+    with _refuses("consumer_selector_invalid"):
+        consumer.validate_resolution(
+            _profile(source), mutation, consumer.expected_source_binding(mutation)
+        )
 
 
 @pytest.mark.parametrize("literal_class", ["integer", "date", "citation_metadata"])
@@ -223,6 +319,30 @@ def test_only_registered_limitation_scope_ids_are_consumable(
         )
 
 
+def test_registered_template_cannot_splice_another_consumers_scope(
+    tmp_path: Path,
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    template = next(
+        row
+        for row in profile["templates"]
+        if row["template_id"] == "template:board.brief.shell.v1"
+    )
+    template["limitation_scope_ids"] = [
+        "scope:output.all_views",
+        "scope:output.research_package",
+    ]
+    with _refuses("consumer_limitation_scope_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_limitation_scope_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
+        )
+
+
 @pytest.mark.parametrize("attack", ["unknown", "free_text", "overlap", "missing"])
 def test_omission_reasons_are_closed_and_partition_is_unambiguous(
     tmp_path: Path, attack: str
@@ -253,6 +373,27 @@ def test_omission_reasons_are_closed_and_partition_is_unambiguous(
     with _refuses("consumer_omission_invalid"):
         consumer.validate_profile_document(
             profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+
+
+def test_coordinated_omission_vocabulary_add_and_use_refuses_end_to_end(
+    tmp_path: Path,
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    invented = "omission:invented_semantic_justification"
+    profile["omission_reason_ids"].append(invented)
+    profile["omission_reason_ids"].sort()
+    profile["consumers"][0]["omitted_registered_selector_fields"][0][
+        "reason_id"
+    ] = invented
+    with _refuses("consumer_omission_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_omission_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
         )
 
 

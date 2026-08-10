@@ -7,7 +7,7 @@
   "validator_runtime": {
     "kind": "evidence_output_consumer_contract_validator",
     "path": "src/evidence_output_consumer_contract.py",
-    "sha256": "1c8c97bbddf7068835d43edcbc9083d17d84a9f9f2a6af9630178b44be4501e4",
+    "sha256": "e32d9c3d380b669db7733f197dd8135ee88fbf4f0d4cd01722e3cb54681c783d",
     "authority": "consumer_contract_validator_not_clause_authority"
   },
   "registry_extension": {
@@ -40,7 +40,7 @@
     {
       "kind": "analytical_clause_source_profile",
       "path": "governance/analytical_clause_source_profile.json",
-      "sha256": "c636062434d32092004b41e68cbfe4b50189cf9e620d1e873b40911061adfa8f",
+      "sha256": "5cf50f126a9c40f91959c7a9c56fac68166772ae00abe4efa18309db1902d520",
       "authority": "consumer_dependency_not_clause_authority"
     }
   ],
