@@ -243,37 +243,57 @@ def _typed_canonical_bytes(value: object) -> bytes:
     its resulting digest rather than relying on implementation-default JSON.
     """
 
+    # One shared accumulator instead of a join per container: the joined
+    # form re-copied every descendant's bytes once per ancestor level --
+    # O(n * depth) copying -- and the registry test alone drove 76.6
+    # million recursive calls through it (profiled 2026-08-10, 79% of
+    # that test's runtime; the committed gate's ~37 minutes traced to
+    # here through nine publishing lanes). The encoding this emits is
+    # BYTE-IDENTICAL to the joined form -- the typed-canonical profile,
+    # every sealed digest, and docs/typed-canonical.js are unaffected,
+    # and tests/test_typed_canonical_bytes_reference.py holds this
+    # implementation against a frozen copy of the original.
+    out = bytearray()
+    _typed_canonical_into(value, out)
+    return bytes(out)
+
+
+def _typed_canonical_into(value: object, out: bytearray) -> None:
     if value is None:
-        return b"n;"
+        out += b"n;"
+        return
     if isinstance(value, bool):
-        return b"b1;" if value else b"b0;"
+        out += b"b1;" if value else b"b0;"
+        return
     if isinstance(value, (int, float)):
         number = float(value)
         if not math.isfinite(number) or (
             number.is_integer() and abs(number) > MAX_SAFE_JSON_INTEGER
         ):
             _fail("typed_canonical_number_invalid")
-        return b"d" + struct.pack(">d", number).hex().encode("ascii") + b";"
+        out += b"d"
+        out += struct.pack(">d", number).hex().encode("ascii")
+        out += b";"
+        return
     if isinstance(value, str):
         try:
             encoded = value.encode("utf-8")
         except UnicodeEncodeError:
             _fail("typed_canonical_string_invalid")
-        return (
-            b"s"
-            + str(len(encoded)).encode("ascii")
-            + b":"
-            + encoded.hex().encode("ascii")
-            + b";"
-        )
+        out += b"s"
+        out += str(len(encoded)).encode("ascii")
+        out += b":"
+        out += encoded.hex().encode("ascii")
+        out += b";"
+        return
     if isinstance(value, list):
-        return (
-            b"a"
-            + str(len(value)).encode("ascii")
-            + b":"
-            + b"".join(_typed_canonical_bytes(item) for item in value)
-            + b";"
-        )
+        out += b"a"
+        out += str(len(value)).encode("ascii")
+        out += b":"
+        for item in value:
+            _typed_canonical_into(item, out)
+        out += b";"
+        return
     if isinstance(value, dict):
         if any(not isinstance(key, str) for key in value):
             _fail("typed_canonical_object_key_invalid")
@@ -281,21 +301,23 @@ def _typed_canonical_bytes(value: object) -> bytes:
             keys = sorted(value, key=lambda key: key.encode("utf-8"))
         except UnicodeEncodeError:
             _fail("typed_canonical_string_invalid")
-        return (
-            b"o"
-            + str(len(keys)).encode("ascii")
-            + b":"
-            + b"".join(
-                _typed_canonical_bytes(key) + _typed_canonical_bytes(value[key])
-                for key in keys
-            )
-            + b";"
-        )
+        out += b"o"
+        out += str(len(keys)).encode("ascii")
+        out += b":"
+        for key in keys:
+            _typed_canonical_into(key, out)
+            _typed_canonical_into(value[key], out)
+        out += b";"
+        return
     _fail("typed_canonical_type_invalid")
 
 
 def _typed_canonical_sha256(value: object) -> str:
-    return hashlib.sha256(_typed_canonical_bytes(value)).hexdigest()
+    # Hash the accumulator directly; the bytes() copy in
+    # _typed_canonical_bytes exists for callers that keep the encoding.
+    out = bytearray()
+    _typed_canonical_into(value, out)
+    return hashlib.sha256(out).hexdigest()
 
 
 def _file_sha256(path: Path) -> str:

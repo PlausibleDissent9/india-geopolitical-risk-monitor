@@ -16,14 +16,14 @@
     "offline_output": false
   },
   "fixed_authorities": {
-    "consumer_profile": {"path": "governance/evidence_output_renderer_consumer_profile.json", "file_sha256": "996baf2336e96434a49fa71b01501847e4c002e3d8ee2a7ab52d0b5da4aec450", "semantic_projection_sha256": "18d23cba41b67e75e780025c124bbd2c92da50683711958431c2e882570fb1b0"},
+    "consumer_profile": {"path": "governance/evidence_output_renderer_consumer_profile.json", "file_sha256": "946b1cb6649a0e484212830202c6d7900e15836254451d95b04371e7c87e39a3", "semantic_projection_sha256": "18d23cba41b67e75e780025c124bbd2c92da50683711958431c2e882570fb1b0"},
     "consumer_validator": {"path": "src/evidence_output_consumer_contract.py", "file_sha256": "b197c7d6637480fdb853cfbad877671492940eea71118f59c5e4e47f3a8a9ebe"},
     "limitation_registry": {"path": "governance/analytical_clause_limitation_registry.json", "file_sha256": "57d8c70e45d2f39370c7061773648d4b67cedf467e01876b52fa0f4d490f4776"},
     "public_common_schema": {"path": "schemas/common.schema.json", "file_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"},
     "public_output_schema": {"path": "schemas/evidence-output-set.schema.json", "file_sha256": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780"},
     "receipt_schema": {"path": "governance/schemas/clause-reader-compilation-receipt.schema.json", "file_sha256": "f1c691e993f3e052a5e3c8c91f7b15d654c3190cfb8bb4d50e8b272c22a32792"},
     "template_profile": {"path": "governance/clause_reader_template_profile.json", "file_sha256": "e502fb224f5d3ef275ee3321483dd481eabd2f2ffec92bdf3f52790f20048724", "semantic_projection_sha256": "5124eb47b7669b60f864246f9c6164def3003bdc0616268d7eab5be13382b2d7"},
-    "view_contract": {"path": "governance/clause_source_view_contract.json", "file_sha256": "7cae18b976d1c599de2b35fd09897f935fbbb621114bdab21335492052663b47"},
+    "view_contract": {"path": "governance/clause_source_view_contract.json", "file_sha256": "d9957043855874bd82a2e1b01082f11a8bf8b84eb757a6e70c0119be440845e6"},
     "view_runtime": {"path": "src/clause_source_view.py", "file_sha256": "5e612518227056d94ebd1b10728ec70fd8be76f60aceadf6621254f2f36cac5c"},
     "adversarial_vectors": {"path": "governance/clause_reader_shadow_adversarial_vectors.json", "file_sha256": "cd80558282ae986ff337da2eea3d80190aa84c41afcdd045e781f90d4966f2ef"}
   },
