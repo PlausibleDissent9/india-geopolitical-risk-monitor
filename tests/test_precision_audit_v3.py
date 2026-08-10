@@ -11,6 +11,7 @@ from math import comb
 from pathlib import Path
 
 import pytest
+from src import fetch_ngrams
 from src import precision_audit_v3 as audit
 from src import precision_frame_v3 as frame
 
@@ -50,8 +51,8 @@ def _source_day(root: Path, day: date, per_channel: int = 12) -> None:
         }
         for channel in audit.CHANNELS
     }
-    matched: dict[str, list[str]] = {}
-    metadata: dict[str, dict[str, str]] = {}
+    matched_raw: dict[str, list[str]] = {}
+    metadata_raw: dict[str, dict[str, str]] = {}
     shares: dict[str, float] = {}
     for channel_index, channel in enumerate(audit.CHANNELS):
         group = f"{channel}/q1"
@@ -59,13 +60,31 @@ def _source_day(root: Path, day: date, per_channel: int = 12) -> None:
         for item in range(per_channel):
             key = f"{stamps[(channel_index * per_channel + item) % 48]}:{channel_index}-{item}"
             keys.append(key)
-            metadata[key] = {
+            metadata_raw[key] = {
                 "date": f"{day:%Y%m%d}",
                 "title": f"{channel} prospective evidence {day} item {item}",
                 "url": f"https://{channel}.example/{day}/{item}",
             }
-        matched[group] = keys
+        matched_raw[group] = keys
         shares[group] = round(100 * per_channel / 1000, 6)
+    raw_english = {key for keys in matched_raw.values() for key in keys}
+    index = 0
+    while len(raw_english) < 1000:
+        raw_english.add(f"{stamps[index % len(stamps)]}:english-{index}")
+        index += 1
+    identities = {
+        key: fetch_ngrams._document_identity(key) for key in raw_english
+    }
+    if len(identities) != 1000:
+        raise AssertionError("precision fixture denominator cardinality drifted")
+    english = sorted(identities.values())
+    matched = {
+        group: sorted(identities[key] for key in keys)
+        for group, keys in matched_raw.items()
+    }
+    metadata = {
+        identities[key]: value for key, value in metadata_raw.items()
+    }
     encoded_specs = json.dumps(specs, sort_keys=True, separators=(",", ":")).encode()
     payload = {
         "date": day.isoformat(),
@@ -75,7 +94,7 @@ def _source_day(root: Path, day: date, per_channel: int = 12) -> None:
         "partial": False,
         "shares": shares,
         "_matcher_evidence": {
-            "schema_version": frame.SCHEMA_VERSION,
+            "schema_version": frame.STRONG_MATCHER_EVIDENCE_VERSION,
             "day": day.isoformat(),
             "located_stamps": stamps,
             "loaded_stamps": stamps,
@@ -84,6 +103,11 @@ def _source_day(root: Path, day: date, per_channel: int = 12) -> None:
             "matcher_specs_sha256": _sha(encoded_specs),
             "dictionaries_sha256": _sha(dictionary_bytes),
             "production_matcher_sha256": _sha(matcher_bytes),
+            "english_document_identities": english,
+            "english_document_counts_by_stamp": {
+                stamp: sum(key.startswith(f"{stamp}:") for key in english)
+                for stamp in stamps
+            },
             "india_document_keys": [],
             "matched_document_keys": matched,
             "article_meta": metadata,

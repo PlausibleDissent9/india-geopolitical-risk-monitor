@@ -39,7 +39,8 @@ def _pushing_lanes() -> dict[str, str]:
     return {p.name: p.read_text(encoding="utf-8")
             for p in sorted(WORKFLOWS.glob("*.yml"))
             if "git push" in p.read_text(encoding="utf-8")
-            or "publish_push.sh" in p.read_text(encoding="utf-8")}
+            or "publish_push.sh" in p.read_text(encoding="utf-8")
+            or "publish_final_cas.sh" in p.read_text(encoding="utf-8")}
 
 
 def test_the_lane_set_is_not_empty():
@@ -59,7 +60,7 @@ def test_the_shared_push_script_exists_and_is_executable():
 
 
 def test_no_lane_hand_rolls_an_unregistered_push():
-    """The final-recovery lane is the one deliberate CAS-only exception.
+    """The final-recovery lane uses its registered CAS-only implementation.
 
     It cannot use the generic derived-file conflict resolver for final/history
     bytes. Its frozen-parent, exact-gate path is independently checked by the
@@ -69,13 +70,7 @@ def test_no_lane_hand_rolls_an_unregistered_push():
         name
         for name, text in _pushing_lanes().items()
         if "publish_push.sh" not in text
-        and not (
-            name == "morning.yml"
-            and "git push origin HEAD:main" in text
-            and 'REMOTE_COMMIT=$(git rev-parse origin/main)' in text
-            and "bash scripts/gate.sh --committed" in text
-            and "git pull --rebase" not in text
-        )
+        and "publish_final_cas.sh" not in text
     ]
     assert not offenders, (
         f"these lanes push without the shared script: {offenders}. Three "

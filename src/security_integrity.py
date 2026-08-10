@@ -173,6 +173,17 @@ def _checkout_has_full_history(name: str, text: str, action_sha: str) -> None:
             _fail("workflow_checkout_credentials_persist", name)
 
 
+def _shell_function(text: str, name: str) -> str:
+    matches = list(
+        re.finditer(
+            rf"(?ms)^{re.escape(name)}\(\) \{{\n(?P<body>.*?)^\}}\s*$", text
+        )
+    )
+    if len(matches) != 1:
+        _fail("publisher_final_cas_function_count_invalid", name)
+    return matches[0].group("body")
+
+
 def validate_repository(
     *, root: Path = ROOT, registry: dict[str, Any] | None = None
 ) -> dict[str, Any]:
@@ -189,6 +200,9 @@ def validate_repository(
     )
     gate_path, _ = _verify_registered_file(
         root, publisher.get("gate_script"), "gate_script"
+    )
+    final_cas_path, _ = _verify_registered_file(
+        root, publisher.get("final_cas_script"), "final_cas_script"
     )
 
     action_records = value.get("actions")
@@ -266,8 +280,11 @@ def validate_repository(
         if "actions/checkout@" in text:
             _checkout_has_full_history(name, text, checkout_sha)
 
+        final_cas_marker = f"bash {final_cas_path}"
         direct_frozen_cas = "git push origin HEAD:main" in text
-        if publisher_marker in text or direct_frozen_cas:
+        if direct_frozen_cas:
+            _fail("publisher_direct_push_outside_registered_script", name)
+        if publisher_marker in text or final_cas_marker in text:
             publishing_lanes.append(name)
             if permissions.get("contents") != "write":
                 _fail("publisher_contents_write_missing", name)
@@ -276,19 +293,8 @@ def validate_repository(
             if text.count(token_fragment) != 1:
                 _fail("publisher_ephemeral_token_missing", name)
             _checkout_has_full_history(name, text, checkout_sha)
-            if direct_frozen_cas and publisher_marker not in text:
-                required_cas_fragments = (
-                    "git checkout --detach \"$BASE_COMMIT\"",
-                    'REMOTE_COMMIT=$(git rev-parse origin/main)',
-                    'git push origin HEAD:main',
-                    "unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN",
-                    "git worktree add --detach",
-                    "bash scripts/gate.sh --committed",
-                )
-                if any(fragment not in text for fragment in required_cas_fragments):
-                    _fail("publisher_frozen_cas_incomplete", name)
-                if "git pull --rebase" in text or "checkout --theirs" in text:
-                    _fail("publisher_frozen_cas_conflict_resolution_present", name)
+            if final_cas_marker in text and text.count(final_cas_marker) != 1:
+                _fail("publisher_final_cas_workflow_invocation_invalid", name)
 
     if observed_actions_write != allowed_actions_write:
         _fail(
@@ -320,6 +326,29 @@ def validate_repository(
         if not prior_guards or push.start() - prior_guards[-1].end() > 80:
             _fail("publisher_push_not_immediately_gated")
 
+    final_cas_text = _safe_path(
+        root, final_cas_path, "security_final_cas_script_path_invalid"
+    ).read_text(encoding="utf-8")
+    if final_cas_text.count("git push origin HEAD:main") != 1:
+        _fail("publisher_final_cas_push_count_invalid")
+    if "git pull --rebase" in final_cas_text or "checkout --theirs" in final_cas_text:
+        _fail("publisher_frozen_cas_conflict_resolution_present")
+    if "unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN" not in final_cas_text:
+        _fail("publisher_token_not_cleared_before_gate")
+    push_body = _shell_function(final_cas_text, "push_frozen_parent")
+    remote_index = push_body.find("REMOTE_COMMIT=$(git rev-parse origin/main)")
+    equality_index = push_body.find('[ "$REMOTE_COMMIT" != "$BASE_COMMIT" ]')
+    direct_push_index = push_body.find("git push origin HEAD:main")
+    if not 0 <= remote_index < equality_index < direct_push_index:
+        _fail("publisher_final_cas_remote_guard_order_invalid")
+    gated_body = _shell_function(final_cas_text, "publish_gated_candidate")
+    gate_index = gated_body.find(gate_command)
+    cas_index = gated_body.find("push_frozen_parent")
+    if not 0 <= gate_index < cas_index:
+        _fail("publisher_final_cas_gate_order_invalid")
+    if re.search(r"(?m)^\s*(?:if|case|while|until|for)\b|\b(?:true|false)\b|&&|\|\|", gated_body):
+        _fail("publisher_final_cas_dead_code_guard_present")
+
     limitations = _string_list(
         value.get("limitations"), "security_limitations_missing"
     )
@@ -347,6 +376,7 @@ def validate_repository(
             "repository_controls_only": True,
             "workflow_directory": value["workflow_directory"],
             "publisher_push_script": push_path,
+            "final_cas_push_script": final_cas_path,
             "canonical_gate_script": gate_path,
         },
         "controls": {
@@ -383,7 +413,7 @@ def validate_repository(
                 "status": "pass",
                 "policy": "refuse_publish_on_red_candidate",
                 "command": gate_command,
-                "push_paths_verified": len(pushes),
+                "push_paths_verified": len(pushes) + 1,
             },
         },
         "publishing_lanes": sorted(publishing_lanes),

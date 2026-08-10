@@ -3,6 +3,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import shutil
+import subprocess
 from datetime import date
 from pathlib import Path
 from typing import Callable
@@ -10,7 +13,12 @@ from typing import Callable
 import pandas as pd
 import pytest
 import requests
-from src import fetch_gdelt, fetch_ngrams, final_publication, run_daily
+from src import (
+    fetch_gdelt,
+    fetch_ngrams,
+    final_publication,
+    run_daily,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 TODAY = date(2026, 8, 10)
@@ -39,7 +47,16 @@ def _specs() -> dict[str, dict]:
 
 def _complete_result(root: Path) -> dict:
     stamps = [_stamp(index) for index in range(48)]
-    keys = [f"{stamps[0]}:A", f"{stamps[1]}:B"]
+    raw_keys = [f"{stamps[0]}:A", f"{stamps[1]}:B"]
+    raw_english = [*raw_keys]
+    raw_english.extend(
+        f"{stamps[index % len(stamps)]}:filler-{index}" for index in range(98)
+    )
+    identities = {
+        key: fetch_ngrams._document_identity(key) for key in raw_english
+    }
+    english = sorted(identities.values())
+    keys = [identities[key] for key in raw_keys]
     canonical_specs = fetch_ngrams._canonical_specs(_specs())
     return {
         "date": TARGET.isoformat(),
@@ -49,7 +66,7 @@ def _complete_result(root: Path) -> dict:
         "partial": False,
         "shares": {"pakistan_west/q1": 2.0},
         "_matcher_evidence": {
-            "schema_version": "1.0.0",
+            "schema_version": fetch_ngrams.MATCHER_EVIDENCE_VERSION,
             "day": TARGET.isoformat(),
             "located_stamps": stamps,
             "loaded_stamps": stamps,
@@ -64,6 +81,11 @@ def _complete_result(root: Path) -> dict:
             "production_matcher_sha256": _sha(
                 (root / "src/fetch_ngrams.py").read_bytes()
             ),
+            "english_document_identities": english,
+            "english_document_counts_by_stamp": {
+                stamp: sum(key.startswith(f"{stamp}:") for key in english)
+                for stamp in stamps
+            },
             "india_document_keys": keys,
             "matched_document_keys": {"pakistan_west/q1": keys},
             "article_meta": {
@@ -76,6 +98,27 @@ def _complete_result(root: Path) -> dict:
             },
         },
     }
+
+
+def _legacy_result(root: Path) -> dict:
+    result = _complete_result(root)
+    stamps = [_stamp(index) for index in range(48)]
+    raw = [f"{stamps[0]}:A", f"{stamps[1]}:B"]
+    evidence = result["_matcher_evidence"]
+    evidence["schema_version"] = "1.0.0"
+    evidence.pop("english_document_identities")
+    evidence.pop("english_document_counts_by_stamp")
+    evidence["india_document_keys"] = raw
+    evidence["matched_document_keys"] = {"pakistan_west/q1": raw}
+    evidence["article_meta"] = {
+        key: {
+            "date": f"{TARGET:%Y%m%d}",
+            "title": f"Legacy eligible article {index}",
+            "url": f"https://legacy.example.test/{index}",
+        }
+        for index, key in enumerate(raw)
+    }
+    return result
 
 
 def _publication_root(tmp_path: Path) -> Path:
@@ -108,7 +151,20 @@ def _publication_root(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
     (root / "docs/data/latest.json").write_text(
-        json.dumps({"date": PREFIX_DAY.isoformat()}) + "\n", encoding="utf-8"
+        json.dumps(
+            {
+                "date": PREFIX_DAY.isoformat(),
+                "composite": 49.0,
+                "composite7": 49.0,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (root / "docs/data/history.json").write_text(
+        json.dumps({"dates": [PREFIX_DAY.isoformat()], "composite": [49.0]})
+        + "\n",
+        encoding="utf-8",
     )
     (root / "docs/data/status.json").write_text(
         json.dumps({"_meta": {"generated": "2026-08-09T00:00:00Z"}}) + "\n",
@@ -125,6 +181,61 @@ def _publication_root(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
     return root
+
+
+def _trust(root: Path) -> final_publication.NonGitTestTrustRoot:
+    return final_publication.non_git_test_trust_root(root, "a" * 40)
+
+
+def _write_target_outputs(root: Path) -> None:
+    (root / "docs/data/latest.json").write_text(
+        json.dumps(
+            {
+                "date": TARGET.isoformat(),
+                "composite": 50.0,
+                "composite7": 50.0,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (root / "docs/data/history.json").write_text(
+        json.dumps(
+            {
+                "dates": [PREFIX_DAY.isoformat(), TARGET.isoformat()],
+                "composite": [49.0, 50.0],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def _stamp_attacks() -> dict[str, list[str]]:
+    valid = [_stamp(index) for index in range(48)]
+    return {
+        "clustered_48": [f"{TARGET:%Y%m%d}00{index:02d}00" for index in range(48)],
+        "invalid_calendar": ["20260230000100", *valid[1:]],
+        "invalid_hour": [f"{TARGET:%Y%m%d}240100", *valid[1:]],
+        "invalid_minute": [f"{TARGET:%Y%m%d}006000", *valid[1:]],
+        "nonzero_seconds": [f"{TARGET:%Y%m%d}000001", *valid[1:]],
+        "duplicate_bucket": [*valid[:-1], f"{TARGET:%Y%m%d}230100"],
+    }
+
+
+def _rewrite_stamps(result: dict, stamps: list[str]) -> None:
+    evidence = result["_matcher_evidence"]
+    evidence["located_stamps"] = stamps
+    evidence["loaded_stamps"] = stamps
+
+
+def _reseal_receipt_marker(root: Path, receipt: dict) -> None:
+    receipt_path = root / f"data/raw/final_publication_receipts/{TARGET}.json"
+    receipt_path.write_text(json.dumps(receipt, indent=1) + "\n", encoding="utf-8")
+    marker_path = root / final_publication.STATUS_RELATIVE
+    marker = json.loads(marker_path.read_text(encoding="utf-8"))
+    marker["receipt"]["sha256"] = _sha(final_publication._canonical_bytes(receipt))
+    marker_path.write_text(json.dumps(marker, indent=1) + "\n", encoding="utf-8")
 
 
 def _acquire(
@@ -146,6 +257,7 @@ def test_exact_d_minus_one_complete_frame_promotes_target_only(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     root = _publication_root(tmp_path)
+    trust = _trust(root)
     store_prefix = (root / "data/raw/gdelt_volume.csv").read_bytes()
     provenance_prefix = (root / "data/raw/provenance.csv").read_bytes()
 
@@ -162,7 +274,10 @@ def test_exact_d_minus_one_complete_frame_promotes_target_only(
     )
     assert "2026-08-10" not in store.decode()
     receipt = final_publication.require_promotion_receipt(
-        TARGET, root=root, require_bridge_receipt=True
+        TARGET,
+        root=root,
+        require_bridge_receipt=True,
+        non_git_test_trust=trust,
     )
     assert receipt is not None
     assert receipt["frame"]["n_samples_located"] == 48
@@ -253,6 +368,165 @@ def test_every_incomplete_frame_shape_refuses_without_canonical_writes(
     assert not (root / f"data/raw/ngram_days/{TARGET}.json").exists()
 
 
+@pytest.mark.parametrize("attack", sorted(_stamp_attacks()))
+def test_fresh_acquisition_refuses_invalid_or_duplicate_bucket_stamps(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    attack: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    result = _complete_result(root)
+    _rewrite_stamps(result, _stamp_attacks()[attack])
+    store_before = (root / "data/raw/gdelt_volume.csv").read_bytes()
+
+    status = _acquire(root, monkeypatch, result)
+
+    assert status["status"] == "acquisition_failed"
+    assert (root / "data/raw/gdelt_volume.csv").read_bytes() == store_before
+    assert not (root / f"data/raw/ngram_days/{TARGET}.json").exists()
+
+
+@pytest.mark.parametrize("attack", sorted(_stamp_attacks()))
+def test_promotion_revalidates_real_half_hour_bucket_coverage(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    attack: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    trust = _trust(root)
+    assert _acquire(root, monkeypatch, _complete_result(root))["status"] == (
+        "target_ready"
+    )
+    cache = root / f"data/raw/ngram_days/{TARGET}.json"
+    payload = json.loads(cache.read_text(encoding="utf-8"))
+    _rewrite_stamps(payload, _stamp_attacks()[attack])
+    cache.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(
+        final_publication.FinalPublicationError,
+        match="^promotion_receipt_invalid$",
+    ) as exc:
+        final_publication.require_promotion_receipt(
+            TARGET,
+            root=root,
+            require_bridge_receipt=True,
+            non_git_test_trust=trust,
+        )
+    assert "frame_invalid" in exc.value.detail
+
+
+@pytest.mark.parametrize("fail_after", range(1, 6))
+def test_candidate_bundle_failpoint_restores_every_canonical_value_path(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    fail_after: int,
+) -> None:
+    root = _publication_root(tmp_path)
+    store = root / "data/raw/gdelt_volume.csv"
+    provenance = root / "data/raw/provenance.csv"
+    before = {store: store.read_bytes(), provenance: provenance.read_bytes()}
+    original = final_publication._atomic_write
+    calls = 0
+
+    def interrupted(path: Path, data: bytes) -> None:
+        nonlocal calls
+        calls += 1
+        original(path, data)
+        if calls == fail_after:
+            raise RuntimeError("simulated process interruption")
+
+    monkeypatch.setattr(final_publication, "_atomic_write", interrupted)
+    status = _acquire(root, monkeypatch, _complete_result(root))
+
+    assert status["status"] == "acquisition_failed"
+    assert {store: store.read_bytes(), provenance: provenance.read_bytes()} == before
+    assert not (root / f"data/raw/ngram_days/{TARGET}.json").exists()
+    assert not (
+        root / f"data/raw/final_publication_receipts/{TARGET}.json"
+    ).exists()
+    marker = json.loads((root / final_publication.STATUS_RELATIVE).read_text())
+    assert marker["status"] == "acquisition_failed"
+
+
+def test_failed_daily_staging_drops_an_interrupted_unverified_bundle(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "repo"
+    shutil.copytree(ROOT / "src", root / "src")
+    (root / "scripts").mkdir()
+    shutil.copy2(
+        ROOT / "scripts/stage_daily_outputs.sh",
+        root / "scripts/stage_daily_outputs.sh",
+    )
+    shutil.copy2(ROOT / "dictionaries.json", root / "dictionaries.json")
+    (root / "data/raw").mkdir(parents=True)
+    (root / "docs").mkdir()
+    (root / "notes-inbox").mkdir()
+    (root / "docs/index.html").write_text("frozen docs\n", encoding="utf-8")
+    (root / "notes-inbox/.keep").write_text("\n", encoding="utf-8")
+    (root / ".trigger").write_text("frozen\n", encoding="utf-8")
+    store = root / "data/raw/gdelt_volume.csv"
+    provenance = root / "data/raw/provenance.csv"
+    store.write_text("date,pakistan_west\n2026-08-08,0.25\n", encoding="utf-8")
+    provenance.write_text(
+        "date,source,basis\n2026-08-08,ngram_bridge,recorded\n",
+        encoding="utf-8",
+    )
+    (root / "data/raw/ngram_calibration.json").write_text(
+        json.dumps({"pakistan_west": {"ratio": 2.0}}) + "\n",
+        encoding="utf-8",
+    )
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Daily staging test"),
+        ("config", "user.email", "daily-staging@example.invalid"),
+        ("add", "."),
+        ("commit", "-q", "-m", "frozen parent"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    store_before = store.read_bytes()
+    provenance_before = provenance.read_bytes()
+    store.write_bytes(store_before + b"2026-08-09,1.0\n")
+    provenance.write_bytes(
+        provenance_before + b"2026-08-09,ngram_bridge,recorded\n"
+    )
+    cache = root / f"data/raw/ngram_days/{TARGET}.json"
+    receipt = root / f"data/raw/final_publication_receipts/{TARGET}.json"
+    cache.parent.mkdir(parents=True)
+    receipt.parent.mkdir(parents=True)
+    cache.write_text(json.dumps({"date": TARGET.isoformat()}), encoding="utf-8")
+    receipt.write_text(json.dumps({"target_date": TARGET.isoformat()}), encoding="utf-8")
+    (root / final_publication.STATUS_RELATIVE).write_text(
+        json.dumps({"target_date": TARGET.isoformat(), "status": "target_ready"}),
+        encoding="utf-8",
+    )
+
+    env = os.environ.copy()
+    env["PYTHON"] = str(ROOT / ".venv/bin/python")
+    subprocess.run(
+        ["bash", "scripts/stage_daily_outputs.sh", "failure"],
+        cwd=root,
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    staged = subprocess.run(
+        ["git", "diff", "--cached", "--name-only"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    assert staged == []
+    assert store.read_bytes() == store_before
+    assert provenance.read_bytes() == provenance_before
+    assert not cache.exists()
+    assert not receipt.exists()
+    assert not (root / final_publication.STATUS_RELATIVE).exists()
+
+
 def test_typed_network_classification_distinguishes_404_from_transport_failure(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -340,7 +614,7 @@ def test_typed_network_classification_treats_5xx_as_acquisition_failure(
     assert status["status"] == "acquisition_failed"
 
 
-def test_already_finalized_is_typed_and_does_not_reacquire(
+def test_forged_latest_date_is_not_treated_as_already_finalized(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     root = _publication_root(tmp_path)
@@ -356,13 +630,38 @@ def test_already_finalized_is_typed_and_does_not_reacquire(
         compute_day=lambda *_args: pytest.fail("already-finalized target reacquired"),
     )
 
-    assert status["status"] == "already_finalized"
+    assert status["status"] == "acquisition_failed"
+    assert "lacks a valid finalized proof" in status["reason"]
+    public = final_publication.public_status(root=root, today=TODAY)
+    assert public["finalized"] is False
+    assert public["latest_finalized_date"] is None
+    assert public["source_receipt"] is None
+
+
+def test_frozen_legacy_target_remains_visible_only_as_proof_limited(
+    tmp_path: Path,
+) -> None:
+    root = _publication_root(tmp_path)
+    cache = root / f"data/raw/ngram_days/{TARGET}.json"
+    cache.parent.mkdir(parents=True)
+    cache.write_text(json.dumps(_legacy_result(root)), encoding="utf-8")
+    _write_target_outputs(root)
+
+    public = final_publication.public_status(root=root, today=TODAY)
+
+    assert public["status"] == "legacy_proof_limited"
+    assert public["latest_finalized_date"] == TARGET.isoformat()
+    assert public["finalized"] is False
+    assert public["source_receipt"] is None
+    assert "48 half-hour windows are verified" in public["reason"]
+    assert "cannot be independently reconstructed" in public["reason"]
 
 
 def test_receipt_revalidation_refuses_bound_input_drift(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     root = _publication_root(tmp_path)
+    trust = _trust(root)
     assert _acquire(root, monkeypatch, _complete_result(root))["status"] == "target_ready"
     calibration = root / "data/raw/ngram_calibration.json"
     calibration.write_text(
@@ -375,8 +674,138 @@ def test_receipt_revalidation_refuses_bound_input_drift(
         match="^promotion_receipt_invalid$",
     ):
         final_publication.require_promotion_receipt(
-            TARGET, root=root, require_bridge_receipt=True
+            TARGET,
+            root=root,
+            require_bridge_receipt=True,
+            non_git_test_trust=trust,
         )
+
+
+@pytest.mark.parametrize(
+    ("attack", "detail"),
+    (
+        ("store_prefix", "store_prefix_differs_from_frozen_parent"),
+        ("provenance_prefix", "provenance_prefix_differs_from_frozen_parent"),
+        ("target_row", "target_row_does_not_recompute"),
+        ("base_splice", "frozen_parent_binding_mismatch"),
+    ),
+)
+def test_coordinated_receipt_and_marker_reseals_cannot_self_attest(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    attack: str,
+    detail: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    trust = _trust(root)
+    assert _acquire(root, monkeypatch, _complete_result(root))["status"] == (
+        "target_ready"
+    )
+    receipt_path = root / f"data/raw/final_publication_receipts/{TARGET}.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if attack == "store_prefix":
+        store = root / "data/raw/gdelt_volume.csv"
+        store.write_text(
+            store.read_text(encoding="utf-8").replace("2026-08-08,0.25", "2026-08-08,99"),
+            encoding="utf-8",
+        )
+        prefix = store.read_bytes().splitlines(keepends=True)[:-1]
+        receipt["append_contract"]["store_prefix_sha256"] = _sha(b"".join(prefix))
+    elif attack == "provenance_prefix":
+        provenance = root / "data/raw/provenance.csv"
+        provenance.write_text(
+            provenance.read_text(encoding="utf-8").replace(
+                "2026-08-08,ngram_bridge,recorded",
+                "2026-08-08,gdelt_doc_api,recorded",
+            ),
+            encoding="utf-8",
+        )
+        prefix = provenance.read_bytes().splitlines(keepends=True)[:-1]
+        receipt["append_contract"]["provenance_prefix_sha256"] = _sha(
+            b"".join(prefix)
+        )
+    elif attack == "target_row":
+        store = root / "data/raw/gdelt_volume.csv"
+        store.write_text(
+            store.read_text(encoding="utf-8").replace("2026-08-09,1.0", "2026-08-09,0.5"),
+            encoding="utf-8",
+        )
+        receipt["bindings"]["candidate_row_sha256"] = _sha(
+            final_publication._canonical_bytes(
+                {"date": TARGET.isoformat(), "pakistan_west": 0.5}
+            )
+        )
+    else:
+        receipt["base_commit"] = "b" * 40
+        marker_path = root / final_publication.STATUS_RELATIVE
+        marker = json.loads(marker_path.read_text(encoding="utf-8"))
+        marker["base_commit"] = "b" * 40
+        marker_path.write_text(json.dumps(marker, indent=1) + "\n", encoding="utf-8")
+    _reseal_receipt_marker(root, receipt)
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_promotion_receipt(
+            TARGET,
+            root=root,
+            require_bridge_receipt=True,
+            non_git_test_trust=trust,
+        )
+    assert exc.value.detail == detail
+
+
+@pytest.mark.parametrize("attack", ("no_receipt", "wrong_status", "receipt_drift"))
+def test_mark_finalized_requires_live_target_ready_proof_and_written_target(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    attack: str,
+) -> None:
+    root = _publication_root(tmp_path)
+    trust = _trust(root)
+    _write_target_outputs(root)
+    if attack == "no_receipt":
+        pass
+    else:
+        # Acquisition sees the D-2 public prefix, then the pipeline writes D-1.
+        (root / "docs/data/latest.json").write_text(
+            json.dumps(
+                {
+                    "date": PREFIX_DAY.isoformat(),
+                    "composite": 49.0,
+                    "composite7": 49.0,
+                }
+            ),
+            encoding="utf-8",
+        )
+        assert _acquire(root, monkeypatch, _complete_result(root))["status"] == (
+            "target_ready"
+        )
+        _write_target_outputs(root)
+        if attack == "wrong_status":
+            marker_path = root / final_publication.STATUS_RELATIVE
+            marker = json.loads(marker_path.read_text(encoding="utf-8"))
+            marker["status"] = "pipeline_failed"
+            marker_path.write_text(json.dumps(marker), encoding="utf-8")
+        else:
+            receipt_path = root / f"data/raw/final_publication_receipts/{TARGET}.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["bindings"]["candidate_row_sha256"] = "0" * 64
+            receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+
+    with pytest.raises(final_publication.FinalPublicationError):
+        final_publication.mark_finalized(
+            TARGET,
+            root=root,
+            non_git_test_trust=trust,
+        )
+
+    public = final_publication.public_status(
+        root=root,
+        today=TODAY,
+        non_git_test_trust=trust,
+    )
+    assert public["status"] != "finalized"
+    assert public["finalized"] is False
+    assert public["source_receipt"] is None
 
 
 def test_cached_ineligible_day_cannot_stick_or_override_fresh_validation(
@@ -453,14 +882,14 @@ def test_written_latest_and_history_must_end_at_finite_target(tmp_path: Path) ->
 
     latest["composite"] = None
     (site / "latest.json").write_text(json.dumps(latest), encoding="utf-8")
-    with pytest.raises(SystemExit, match="null or non-finite"):
+    with pytest.raises(SystemExit, match="non_finite_target"):
         run_daily._require_written_target(TARGET, site_data=site)
 
     latest["composite"] = 50.0
     history["dates"][-1] = TODAY.isoformat()
     (site / "latest.json").write_text(json.dumps(latest), encoding="utf-8")
     (site / "history.json").write_text(json.dumps(history), encoding="utf-8")
-    with pytest.raises(SystemExit, match="do not end at exact D-1"):
+    with pytest.raises(SystemExit, match="written_latest_history_do_not_end"):
         run_daily._require_written_target(TARGET, site_data=site)
 
 
@@ -542,12 +971,14 @@ def test_refusal_ignores_unpushed_finalized_marker(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     candidate = _publication_root(tmp_path / "candidate")
+    trust = _trust(candidate)
     assert _acquire(candidate, monkeypatch, _complete_result(candidate))["status"] == "target_ready"
-    (candidate / "docs/data/latest.json").write_text(
-        json.dumps({"date": TARGET.isoformat(), "composite": 99.9}),
-        encoding="utf-8",
+    _write_target_outputs(candidate)
+    finalized = final_publication.mark_finalized(
+        TARGET,
+        root=candidate,
+        non_git_test_trust=trust,
     )
-    finalized = final_publication.mark_finalized(TARGET, root=candidate)
     assert finalized["latest_finalized_date"] == TARGET.isoformat()
 
     # The workflow constructs disclosure from the frozen parent and copies
@@ -622,34 +1053,38 @@ def test_gdelt_target_vintage_preserves_old_prefix_and_excludes_d0(
 
 def test_morning_gate_is_bounded_once_per_candidate_and_cas_only() -> None:
     workflow = (ROOT / ".github/workflows/morning.yml").read_text(encoding="utf-8")
+    publisher = (ROOT / "scripts/publish_final_cas.sh").read_text(encoding="utf-8")
     assert (
         "python -m pytest -q tests/test_dictionaries.py "
         "tests/test_registration_freezes.py"
     ) in workflow
     assert "python -m pytest -q\n" not in workflow
     assert "bash scripts/publish_push.sh" not in workflow
-    assert workflow.count("bash scripts/gate.sh --committed") == 2
-    assert 'REMOTE_COMMIT=$(git rev-parse origin/main)' in workflow
-    assert workflow.count('git push origin HEAD:main') == 1
-    assert "/usr/bin/time -v" in workflow
-    assert "git worktree add --detach" in workflow
+    assert workflow.count("bash scripts/publish_final_cas.sh") == 1
+    assert workflow.count("git push origin HEAD:main") == 0
+    assert publisher.count("bash scripts/gate.sh --committed") == 1
+    assert publisher.count("git push origin HEAD:main") == 1
+    assert 'REMOTE_COMMIT=$(git rev-parse origin/main)' in publisher
+    assert "/usr/bin/time -v" in publisher
+    assert "git worktree add --detach" in publisher
     publish_lane = workflow.split(
         "- name: Gate and CAS-publish final or value-free refusal", 1
     )[1]
-    refusal_function = publish_lane.split("publish_refusal()", 1)[1]
     assert "id: publish" in publish_lane
+    refusal_function = publisher.split("publish_refusal()", 1)[1]
     assert "git add data/raw/final_publication_status.json docs/data/status.json" in refusal_function
     assert "failure disclosure attempted to stage candidate value bytes" in refusal_function
-    assert '--failure-stage "$FAILURE_STAGE"' in refusal_function
-    assert "FAILURE_STAGE=source" in refusal_function
+    assert '--failure-stage "$failure_stage"' in refusal_function
+    assert "failure_stage=source" in refusal_function
     assert "steps.pipeline.outcome == 'success'" in workflow
     assert "steps.audit.outcome == 'success'" in workflow
-    assert '${{ steps.derived.outcome }}" = "success"' in workflow
-    success_dispatch = publish_lane.rsplit(
-        'if [ "${{ steps.source.outcome }}" = "success" ]', 1
+    assert '"${{ steps.derived.outcome }}"' in workflow
+    assert '[ "$DERIVED_OUTCOME" = "success" ]' in publisher
+    success_dispatch = publisher.rsplit(
+        'if [ "$SOURCE_OUTCOME" = "success" ]', 1
     )[1]
-    assert "if publish_final; then" in success_dispatch
-    assert "publish_refusal" not in success_dispatch.split("fi", 1)[0]
+    assert "publish_final" in success_dispatch
+    assert "publish_refusal" not in success_dispatch.split("else", 1)[0]
     for command in (
         "timeout --signal=TERM 14m python -m src.final_publication",
         "timeout --signal=TERM 7m python -m src.run_daily --final-only",
@@ -658,10 +1093,9 @@ def test_morning_gate_is_bounded_once_per_candidate_and_cas_only() -> None:
     ):
         assert command in workflow
     assert "timeout --signal=TERM 27m" not in workflow
-    assert "CI #533 (run 31360365274)" in workflow
     assert "36m42s" in workflow and "24m55s" in workflow
     assert "0.687s locally" in workflow and "run #43" in workflow
-    assert "availability boundary" in workflow
+    assert "job cap remains the only" in workflow
 
 
 def test_rescue_predicates_and_public_pages_use_final_date_contract() -> None:
@@ -677,10 +1111,19 @@ def test_rescue_predicates_and_public_pages_use_final_date_contract() -> None:
     homepage = (ROOT / "docs/index.html").read_text(encoding="utf-8")
     app = (ROOT / "docs/app.js").read_text(encoding="utf-8")
     status_page = (ROOT / "docs/status.html").read_text(encoding="utf-8")
+    status = json.loads((ROOT / "docs/data/status.json").read_text(encoding="utf-8"))
+    final_state = status["final_publication"]
     assert 'id="final-publication-status"' in homepage
     assert 'id="final-publication-status" hidden' not in homepage
-    assert "exact D-1 target <b>2026-08-09</b>" in homepage
-    assert "latest finalized measure remains <b>2026-08-08</b>" in homepage
-    assert "A provisional nowcast is not a substitute" in app
-    assert "exact D-1 target <b>2026-08-09</b>" in status_page
-    assert "A provisional nowcast is not a substitute" in status_page
+    for text in (homepage, status_page):
+        assert "Legacy final with proof limitation" in text
+        assert "target <b>2026-08-09</b> remains published" in text
+        assert "48 half-hour windows are verified" in text
+        assert "cannot be independently reconstructed" in text
+        assert "No new-contract source receipt is claimed" in text
+        assert "provisional nowcast remains separate and non-final" in text
+    assert "provisional nowcast remains separate and non-final" in app
+    assert final_state["status"] == "legacy_proof_limited"
+    assert final_state["latest_finalized_date"] == TARGET.isoformat()
+    assert final_state["finalized"] is False
+    assert final_state["source_receipt"] is None

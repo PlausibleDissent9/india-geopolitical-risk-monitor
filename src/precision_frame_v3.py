@@ -33,6 +33,12 @@ WINDOW_START = date(2026, 8, 8)
 WINDOW_END = date(2026, 11, 5)
 EXPECTED_SAMPLES = 48
 SCHEMA_VERSION = "1.0.0"
+STRONG_MATCHER_EVIDENCE_VERSION = "1.1.0"
+LEGACY_MATCHER_EVIDENCE_VERSION = "1.0.0"
+# These two days were already frozen with schema 1.0 before reconstructable
+# denominator membership existed. They may remain visible only with the
+# explicit proof-limited label; no later final may use the legacy evidence.
+LEGACY_EVIDENCE_LAST_DAY = date(2026, 8, 9)
 
 
 class FrameValidationError(ValueError):
@@ -66,6 +72,60 @@ def _string_list(value: object, label: str) -> list[str]:
     if len(value) != len(set(value)):
         raise FrameValidationError(f"{label} contains duplicates")
     return value
+
+
+def _validate_half_hour_stamp_frame(stamps: list[str], day: date) -> None:
+    """Require one real UTC source stamp in every registered half-hour bucket."""
+
+    buckets: list[int] = []
+    for stamp in stamps:
+        if len(stamp) != 14 or not stamp.isdigit():
+            raise FrameValidationError("loaded stamp is not a valid UTC timestamp")
+        try:
+            parsed = datetime.strptime(stamp, "%Y%m%d%H%M%S").replace(
+                tzinfo=timezone.utc
+            )
+        except ValueError as exc:
+            raise FrameValidationError(
+                "loaded stamp is not a valid UTC timestamp"
+            ) from exc
+        if parsed.date() != day:
+            raise FrameValidationError("loaded stamp is outside the requested UTC day")
+        if parsed.second != 0:
+            raise FrameValidationError("loaded stamp seconds must be 00")
+        buckets.append(parsed.hour * 2 + parsed.minute // 30)
+
+    expected = set(range(EXPECTED_SAMPLES))
+    observed = set(buckets)
+    if len(buckets) != len(observed):
+        raise FrameValidationError(
+            "loaded stamps contain more than one sample in a half-hour bucket"
+        )
+    if observed != expected:
+        raise FrameValidationError(
+            "loaded stamps do not cover every registered half-hour bucket"
+        )
+
+
+def _identity_list(
+    value: object,
+    label: str,
+    loaded_stamps: set[str],
+) -> list[str]:
+    identities = _string_list(value, label)
+    if identities != sorted(identities):
+        raise FrameValidationError(f"{label} must be sorted")
+    for identity in identities:
+        stamp, separator, digest = identity.partition(":")
+        if (
+            not separator
+            or stamp not in loaded_stamps
+            or re.fullmatch(r"[0-9a-f]{64}", digest) is None
+        ):
+            raise FrameValidationError(
+                f"{label} contains an invalid or cross-stamp identity"
+            )
+    return identities
 
 
 def _canonical_specs_sha256(specs: object) -> str:
@@ -135,6 +195,7 @@ def build_day_attestation(
     root: Path = ROOT,
     *,
     require_live_hashes: bool = True,
+    require_strong_denominator: bool = False,
 ) -> dict[str, Any]:
     """Verify one score cache and return its compact, label-free attestation."""
     if not WINDOW_START <= day <= WINDOW_END:
@@ -161,8 +222,20 @@ def build_day_attestation(
         raise FrameValidationError("empty production denominator")
 
     evidence = payload.get("_matcher_evidence")
-    if not isinstance(evidence, dict) or evidence.get("schema_version") != SCHEMA_VERSION:
+    if not isinstance(evidence, dict):
         raise FrameValidationError("production matcher evidence is missing or unsupported")
+    evidence_version = evidence.get("schema_version")
+    strong_denominator = evidence_version == STRONG_MATCHER_EVIDENCE_VERSION
+    legacy_denominator = (
+        evidence_version == LEGACY_MATCHER_EVIDENCE_VERSION
+        and day <= LEGACY_EVIDENCE_LAST_DAY
+    )
+    if not strong_denominator and not legacy_denominator:
+        raise FrameValidationError("production matcher evidence is missing or unsupported")
+    if require_strong_denominator and not strong_denominator:
+        raise FrameValidationError(
+            "final publication requires matcher evidence schema 1.1.0"
+        )
     if evidence.get("day") != day.isoformat():
         raise FrameValidationError("matcher-evidence day mismatch")
     specs = evidence.get("matcher_specs")
@@ -179,9 +252,7 @@ def build_day_attestation(
         raise FrameValidationError("sample-depth fields disagree with stamp evidence")
     if located != loaded or missing:
         raise FrameValidationError("not every located production sample was loaded")
-    prefix = day.strftime("%Y%m%d")
-    if any(len(stamp) != 14 or not stamp.isdigit() or not stamp.startswith(prefix) for stamp in loaded):
-        raise FrameValidationError("loaded stamp has an invalid day or shape")
+    _validate_half_hour_stamp_frame(loaded, day)
 
     if not isinstance(specs, dict) or not specs:
         raise FrameValidationError("matcher specification is empty")
@@ -195,17 +266,53 @@ def build_day_attestation(
     if not isinstance(article_meta, dict):
         raise FrameValidationError("article metadata is missing")
 
-    india_keys = set(
-        _string_list(evidence.get("india_document_keys"), "india_document_keys")
-    )
     loaded_set = set(loaded)
-    for key in india_keys:
-        if key.split(":", 1)[0] not in loaded_set:
+    english_keys: set[str] | None = None
+    if strong_denominator:
+        english_keys = set(
+            _identity_list(
+                evidence.get("english_document_identities"),
+                "english_document_identities",
+                loaded_set,
+            )
+        )
+        if len(english_keys) != denominator:
+            raise FrameValidationError(
+                "English denominator cardinality does not match n_docs_sampled"
+            )
+        counts = evidence.get("english_document_counts_by_stamp")
+        expected_counts = {
+            stamp: sum(key.startswith(f"{stamp}:") for key in english_keys)
+            for stamp in loaded
+        }
+        if counts != expected_counts:
+            raise FrameValidationError(
+                "English denominator per-stamp counts do not reproduce membership"
+            )
+        india_keys = set(
+            _identity_list(
+                evidence.get("india_document_keys"),
+                "india_document_keys",
+                loaded_set,
+            )
+        )
+        if not india_keys <= english_keys:
+            raise FrameValidationError(
+                "India evidence is not a subset of English documents"
+            )
+    else:
+        india_keys = set(
+            _string_list(
+                evidence.get("india_document_keys"), "india_document_keys"
+            )
+        )
+        if any(key.split(":", 1)[0] not in loaded_set for key in india_keys):
             raise FrameValidationError("India evidence points outside loaded stamps")
 
     source_sha = _sha256(raw)
     groups: dict[str, dict[str, Any]] = {}
     channel_units: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    all_matched_keys: set[str] = set()
     for group in sorted(specs):
         spec = specs[group]
         if not isinstance(spec, dict) or not isinstance(spec.get("channel"), str):
@@ -213,9 +320,26 @@ def build_day_attestation(
         anchor = spec.get("anchor")
         if anchor not in {None, "india"}:
             raise FrameValidationError(f"unsupported production anchor for {group}")
-        keys = set(_string_list(matched[group], f"matched_document_keys.{group}"))
-        if any(key.split(":", 1)[0] not in loaded_set for key in keys):
-            raise FrameValidationError(f"{group} points outside loaded stamps")
+        if strong_denominator:
+            keys = set(
+                _identity_list(
+                    matched[group], f"matched_document_keys.{group}", loaded_set
+                )
+            )
+            assert english_keys is not None
+            if not keys <= english_keys:
+                raise FrameValidationError(
+                    f"{group} matched evidence is not a subset of English documents"
+                )
+        else:
+            keys = set(
+                _string_list(
+                    matched[group], f"matched_document_keys.{group}"
+                )
+            )
+            if any(key.split(":", 1)[0] not in loaded_set for key in keys):
+                raise FrameValidationError(f"{group} points outside loaded stamps")
+        all_matched_keys.update(keys)
         eligible = keys & india_keys if anchor == "india" else keys
         for key in eligible:
             record = article_meta.get(key)
@@ -246,6 +370,11 @@ def build_day_attestation(
             "reconstructed_share": reconstructed,
         }
 
+    if strong_denominator and set(article_meta) != all_matched_keys:
+        raise FrameValidationError(
+            "article metadata keys do not exactly match the frozen matched frame"
+        )
+
     channels: dict[str, dict[str, int]] = {}
     for channel, units in sorted(channel_units.items()):
         distinct_documents = {key for _, key in units}
@@ -270,6 +399,12 @@ def build_day_attestation(
         "n_samples_loaded": loaded_n,
         "missing_stamps": missing,
         "n_english_documents": denominator,
+        "matcher_evidence_schema_version": evidence_version,
+        "denominator_evidence": (
+            "hashed_identity_membership_v1.1"
+            if strong_denominator
+            else "source_reported_denominator_legacy_v1.0"
+        ),
         "matcher_specs_sha256": specs_hash,
         "dictionaries_sha256": evidence["dictionaries_sha256"],
         "production_matcher_sha256": evidence["production_matcher_sha256"],

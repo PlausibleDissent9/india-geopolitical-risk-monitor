@@ -175,11 +175,22 @@ def _static_final_message(state: dict[str, Any]) -> str:
             f"Final publication current: exact D-1 target <b>{target}</b> is "
             "finalized. A provisional nowcast is a separate, non-final measure."
         )
+    if state.get("status") == "legacy_proof_limited":
+        return (
+            f"Legacy final with proof limitation: target <b>{target}</b> remains "
+            "published and its 48 half-hour windows are verified, but the "
+            "English denominator was source-reported and cannot be independently "
+            "reconstructed. No new-contract source receipt is claimed. A "
+            "provisional nowcast remains separate and non-final."
+        )
     labels = {
         "source_unavailable": "the registered source is unavailable",
         "acquisition_failed": "source acquisition or validation failed",
         "pipeline_failed": "publication validation failed",
         "delayed_final": "final publication is delayed",
+        "legacy_proof_limited": (
+            "the published legacy frame has an unreconstructable denominator"
+        ),
     }
     label = labels.get(str(state.get("status")), "final publication is delayed")
     return (

@@ -17,9 +17,11 @@ import io
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import tempfile
+from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, NoReturn
@@ -37,6 +39,7 @@ _PUBLIC_STATES = {
     "pipeline_failed",
     "target_ready",
     "finalized",
+    "legacy_proof_limited",
 }
 
 
@@ -47,6 +50,32 @@ class FinalPublicationError(RuntimeError):
         super().__init__(classification)
         self.classification = classification
         self.detail = detail
+
+
+@dataclass(frozen=True)
+class NonGitTestTrustRoot:
+    """Explicit immutable parent bytes for a non-git unit-test fixture.
+
+    Production callers cannot use this escape hatch: resolution rejects it
+    whenever ``root`` has a Git HEAD or is the canonical repository.
+    """
+
+    commit: str
+    store: bytes
+    provenance: bytes
+    calibration: bytes
+    dictionaries: bytes
+    matcher: bytes
+
+
+@dataclass(frozen=True)
+class _ParentSnapshot:
+    commit: str
+    store: bytes
+    provenance: bytes
+    calibration: bytes
+    dictionaries: bytes
+    matcher: bytes
 
 
 def _fail(classification: str, detail: str = "") -> NoReturn:
@@ -99,6 +128,70 @@ def _git_head(root: Path) -> str | None:
     return value if result.returncode == 0 and len(value) == 40 else None
 
 
+def _git_commit(root: Path, ref: str) -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    value = result.stdout.strip()
+    if result.returncode != 0 or re.fullmatch(r"[0-9a-f]{40}", value) is None:
+        _fail("promotion_trust_invalid", f"unresolvable_git_parent:{ref}")
+    return value
+
+
+def _git_blob(root: Path, commit: str, relative: str) -> bytes:
+    result = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"],
+        cwd=root,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        _fail("promotion_trust_invalid", f"parent_blob_missing:{relative}")
+    return result.stdout
+
+
+def non_git_test_trust_root(root: Path, commit: str) -> NonGitTestTrustRoot:
+    """Capture explicit parent bytes only for a non-git test fixture."""
+
+    if root.resolve() == ROOT.resolve() or _git_head(root) is not None:
+        _fail("promotion_trust_invalid", "test_trust_forbidden_in_git_repository")
+    if re.fullmatch(r"[0-9a-f]{40}", commit) is None:
+        _fail("promotion_trust_invalid", "test_trust_commit_invalid")
+    return NonGitTestTrustRoot(
+        commit=commit,
+        store=(root / "data/raw/gdelt_volume.csv").read_bytes(),
+        provenance=(root / "data/raw/provenance.csv").read_bytes(),
+        calibration=(root / "data/raw/ngram_calibration.json").read_bytes(),
+        dictionaries=(root / "dictionaries.json").read_bytes(),
+        matcher=(root / "src/fetch_ngrams.py").read_bytes(),
+    )
+
+
+def _parent_snapshot(
+    root: Path,
+    trusted_parent: str | None,
+    non_git_test_trust: NonGitTestTrustRoot | None,
+) -> _ParentSnapshot:
+    if non_git_test_trust is not None:
+        if root.resolve() == ROOT.resolve() or _git_head(root) is not None:
+            _fail("promotion_trust_invalid", "test_trust_forbidden_in_git_repository")
+        if trusted_parent not in {None, non_git_test_trust.commit}:
+            _fail("promotion_trust_invalid", "test_trust_parent_mismatch")
+        return _ParentSnapshot(**vars(non_git_test_trust))
+
+    commit = _git_commit(root, trusted_parent or "HEAD")
+    return _ParentSnapshot(
+        commit=commit,
+        store=_git_blob(root, commit, "data/raw/gdelt_volume.csv"),
+        provenance=_git_blob(root, commit, "data/raw/provenance.csv"),
+        calibration=_git_blob(root, commit, "data/raw/ngram_calibration.json"),
+        dictionaries=_git_blob(root, commit, "dictionaries.json"),
+        matcher=_git_blob(root, commit, "src/fetch_ngrams.py"),
+    )
+
+
 def _read_latest_day(root: Path) -> date | None:
     path = root / "docs/data/latest.json"
     try:
@@ -137,7 +230,7 @@ def _status_payload(
     return payload
 
 
-def _atomic_write(path: Path, data: bytes) -> None:
+def _atomic_replace(path: Path, data: bytes) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, raw_tmp = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     tmp = Path(raw_tmp)
@@ -150,6 +243,47 @@ def _atomic_write(path: Path, data: bytes) -> None:
     finally:
         if tmp.exists():
             tmp.unlink()
+
+
+def _atomic_write(path: Path, data: bytes) -> None:
+    """Failpoint seam for one atomic replacement inside a candidate bundle."""
+
+    _atomic_replace(path, data)
+
+
+def _commit_candidate_bundle(writes: list[tuple[Path, bytes]]) -> None:
+    """Replace a prepared bundle and roll every path back on an exception.
+
+    A process kill cannot run Python rollback, so failed-workflow staging also
+    validates or discards these exact paths. Together, the target_ready marker
+    is the visibility boundary and a partial bundle has no commit path.
+    """
+
+    originals = {
+        path: path.read_bytes() if path.exists() else None for path, _ in writes
+    }
+    try:
+        for path, data in writes:
+            _atomic_write(path, data)
+    except BaseException as exc:
+        rollback_errors: list[str] = []
+        for path, _ in reversed(writes):
+            original = originals[path]
+            try:
+                if original is None:
+                    path.unlink(missing_ok=True)
+                else:
+                    _atomic_replace(path, original)
+            except OSError:
+                rollback_errors.append(path.as_posix())
+        if rollback_errors:
+            raise FinalPublicationError(
+                "acquisition_failed",
+                "candidate_bundle_rollback_failed:" + ",".join(rollback_errors),
+            ) from exc
+        raise FinalPublicationError(
+            "acquisition_failed", "candidate_bundle_commit_interrupted"
+        ) from exc
 
 
 def record_status(
@@ -194,6 +328,7 @@ def _validate_frame_candidate(
             target,
             candidate_root,
             require_live_hashes=True,
+            require_strong_denominator=True,
         )
 
 
@@ -356,6 +491,23 @@ def acquire_target(
     frozen_commit = base_commit or _git_head(root)
     latest = _read_latest_day(root)
     if latest == target:
+        state = public_status(root=root, today=target + timedelta(days=1))
+        if state["status"] == "legacy_proof_limited":
+            return record_status(
+                target,
+                "legacy_proof_limited",
+                state["reason"],
+                root=root,
+                base_commit=frozen_commit,
+            )
+        if state["status"] != "finalized":
+            return record_status(
+                target,
+                "acquisition_failed",
+                "published target lacks a valid finalized proof",
+                root=root,
+                base_commit=frozen_commit,
+            )
         return record_status(
             target,
             "already_finalized",
@@ -455,12 +607,27 @@ def acquire_target(
         },
     )
     # No canonical source/provenance write occurs before every candidate byte
-    # and the value-free state have been prepared successfully.
-    _atomic_write(root / "data/raw/ngram_days" / f"{target}.json", cache_bytes)
-    _atomic_write(root / "data/raw/gdelt_volume.csv", store_candidate)
-    _atomic_write(root / "data/raw/provenance.csv", provenance_candidate)
-    _atomic_write(root / receipt_path, _json_bytes(receipt))
-    _atomic_write(root / STATUS_RELATIVE, _json_bytes(status))
+    # and the value-free state have been prepared successfully. If any
+    # replacement raises, restore the whole pre-acquisition bundle before
+    # recording a value-free refusal.
+    try:
+        _commit_candidate_bundle(
+            [
+                (root / "data/raw/ngram_days" / f"{target}.json", cache_bytes),
+                (root / "data/raw/gdelt_volume.csv", store_candidate),
+                (root / "data/raw/provenance.csv", provenance_candidate),
+                (root / receipt_path, _json_bytes(receipt)),
+                (root / STATUS_RELATIVE, _json_bytes(status)),
+            ]
+        )
+    except FinalPublicationError as exc:
+        return record_status(
+            target,
+            "acquisition_failed",
+            exc.detail,
+            root=root,
+            base_commit=frozen_commit,
+        )
     return status
 
 
@@ -478,7 +645,65 @@ def _strip_last_csv_row(raw: bytes, expected_day: date, label: str) -> bytes:
         ) from exc
     if not rows or rows[-1].get("date") != expected_day.isoformat():
         _fail("promotion_receipt_invalid", f"{label}_target_row_missing")
+    if sum(row.get("date") == expected_day.isoformat() for row in rows) != 1:
+        _fail("promotion_receipt_invalid", f"{label}_target_row_not_unique")
     return b"".join(lines[:-1])
+
+
+def _require_parent_prefix(raw: bytes, target: date, label: str) -> None:
+    try:
+        rows = list(csv.DictReader(io.StringIO(raw.decode("utf-8"))))
+        days = [date.fromisoformat(row["date"]) for row in rows]
+    except (UnicodeError, csv.Error, KeyError, ValueError) as exc:
+        raise FinalPublicationError(
+            "promotion_trust_invalid", f"parent_{label}_unreadable"
+        ) from exc
+    if (
+        not rows
+        or days != sorted(days)
+        or len(days) != len(set(days))
+        or days[-1] != target - timedelta(days=1)
+    ):
+        _fail("promotion_trust_invalid", f"parent_{label}_is_not_exact_d2_prefix")
+
+
+def require_written_final_target(target: date, *, site_data: Path) -> None:
+    """Reopen public bytes and require one finite exact-target final."""
+
+    try:
+        latest = json.loads((site_data / "latest.json").read_text(encoding="utf-8"))
+        history = json.loads((site_data / "history.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise FinalPublicationError(
+            "final_output_target_mismatch", "written_final_payloads_unreadable"
+        ) from exc
+    target_iso = target.isoformat()
+    dates = history.get("dates")
+    composites = history.get("composite")
+    if (
+        latest.get("date") != target_iso
+        or not isinstance(dates, list)
+        or not dates
+        or max(dates) != target_iso
+        or dates[-1] != target_iso
+        or not isinstance(composites, list)
+        or len(composites) != len(dates)
+    ):
+        _fail(
+            "final_output_target_mismatch",
+            "written_latest_history_do_not_end_at_target",
+        )
+    for label, value in (
+        ("latest.composite", latest.get("composite")),
+        ("latest.composite7", latest.get("composite7")),
+        ("history.composite[target]", composites[-1]),
+    ):
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(float(value))
+        ):
+            _fail("final_output_target_mismatch", f"non_finite_target:{label}")
 
 
 def require_promotion_receipt(
@@ -486,15 +711,20 @@ def require_promotion_receipt(
     *,
     root: Path = ROOT,
     require_bridge_receipt: bool = False,
-) -> dict[str, Any] | None:
+    trusted_parent: str | None = None,
+    non_git_test_trust: NonGitTestTrustRoot | None = None,
+    required_marker_status: str = "target_ready",
+) -> dict[str, Any]:
     """Revalidate the exact bridge candidate before it may become final.
 
     Legacy healing can leave a source cache and calibrated store row without
     proving the frame was complete.  Presence of either bridge provenance or
     a target-day ngram cache therefore makes the transform receipt mandatory.
-    A DOC-only target is outside this bridge promotion boundary.
+    No DOC-only target is silently exempt: that source needs a separately
+    registered proof mode before it may become final.
     """
 
+    parent = _parent_snapshot(root, trusted_parent, non_git_test_trust)
     cache_path = root / "data/raw/ngram_days" / f"{target}.json"
     provenance_path = root / "data/raw/provenance.csv"
     try:
@@ -512,8 +742,13 @@ def require_promotion_receipt(
         cache_path.exists()
         or any(row.get("source") == provenance.NGRAM_BRIDGE for row in target_provenance)
     )
-    if not bridge_target and not require_bridge_receipt:
-        return None
+    if not bridge_target:
+        classification = (
+            "promotion_receipt_invalid"
+            if require_bridge_receipt
+            else "final_proof_mode_unregistered"
+        )
+        _fail(classification, "registered_ngram_bridge_proof_missing")
 
     receipt_path = root / RECEIPTS_RELATIVE / f"{target}.json"
     marker_path = root / STATUS_RELATIVE
@@ -524,6 +759,7 @@ def require_promotion_receipt(
         provenance_raw = provenance_path.read_bytes()
         calibration_raw = (root / "data/raw/ngram_calibration.json").read_bytes()
         calibration = json.loads(calibration_raw)
+        cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise FinalPublicationError(
             "promotion_receipt_invalid", "receipt_or_bound_input_unreadable"
@@ -536,6 +772,11 @@ def require_promotion_receipt(
     }
     if any(receipt.get(key) != value for key, value in expected_identity.items()):
         _fail("promotion_receipt_invalid", "receipt_identity_mismatch")
+    if (
+        receipt.get("base_commit") != parent.commit
+        or marker.get("base_commit") != parent.commit
+    ):
+        _fail("promotion_receipt_invalid", "frozen_parent_binding_mismatch")
     if len(target_provenance) != 1 or target_provenance[0] != {
         "date": target.isoformat(),
         "source": provenance.NGRAM_BRIDGE,
@@ -547,16 +788,24 @@ def require_promotion_receipt(
     expected_relative = (RECEIPTS_RELATIVE / f"{target}.json").as_posix()
     if (
         marker.get("target_date") != target.isoformat()
-        or marker.get("status") != "target_ready"
+        or marker.get("status") != required_marker_status
         or not isinstance(receipt_ref, dict)
         or receipt_ref.get("path") != expected_relative
         or receipt_ref.get("sha256") != _sha256(_canonical_bytes(receipt))
     ):
         _fail("promotion_receipt_invalid", "target_ready_status_binding_invalid")
 
-    attestation = precision_frame_v3.build_day_attestation(
-        target, root, require_live_hashes=True
-    )
+    try:
+        attestation = precision_frame_v3.build_day_attestation(
+            target,
+            root,
+            require_live_hashes=True,
+            require_strong_denominator=True,
+        )
+    except precision_frame_v3.FrameValidationError as exc:
+        raise FinalPublicationError(
+            "promotion_receipt_invalid", f"frame_invalid:{exc}"
+        ) from exc
     frame = receipt.get("frame")
     if not isinstance(frame, dict) or frame != {
         "validator": "src.precision_frame_v3.build_day_attestation",
@@ -571,6 +820,14 @@ def require_promotion_receipt(
     bindings = receipt.get("bindings")
     if not isinstance(bindings, dict):
         _fail("promotion_receipt_invalid", "transform_bindings_missing")
+    if calibration_raw != parent.calibration:
+        _fail("promotion_receipt_invalid", "calibration_differs_from_frozen_parent")
+    if (root / "dictionaries.json").read_bytes() != parent.dictionaries:
+        _fail("promotion_receipt_invalid", "dictionary_differs_from_frozen_parent")
+    if (root / "src/fetch_ngrams.py").read_bytes() != parent.matcher:
+        _fail("promotion_receipt_invalid", "matcher_differs_from_frozen_parent")
+    if not isinstance(calibration, dict):
+        _fail("promotion_receipt_invalid", "calibration_root_invalid")
     expected_calibration_records = {
         channel: _sha256(_canonical_bytes(calibration[channel]))
         for channel in sorted(calibration)
@@ -594,28 +851,58 @@ def require_promotion_receipt(
     provenance_prefix = _strip_last_csv_row(
         provenance_raw, target, "provenance"
     )
+    _require_parent_prefix(parent.store, target, "store")
+    _require_parent_prefix(parent.provenance, target, "provenance")
+    if store_prefix != parent.store:
+        _fail("promotion_receipt_invalid", "store_prefix_differs_from_frozen_parent")
+    if provenance_prefix != parent.provenance:
+        _fail(
+            "promotion_receipt_invalid",
+            "provenance_prefix_differs_from_frozen_parent",
+        )
     append_contract = receipt.get("append_contract")
     if not isinstance(append_contract, dict) or append_contract != {
-        "store_prefix_sha256": _sha256(store_prefix),
-        "provenance_prefix_sha256": _sha256(provenance_prefix),
+        "store_prefix_sha256": _sha256(parent.store),
+        "provenance_prefix_sha256": _sha256(parent.provenance),
         "old_prefix_equal": True,
         "target_rows_appended": 1,
         "d0_excluded": True,
     }:
         _fail("promotion_receipt_invalid", "append_contract_mismatch")
 
-    store_rows = list(csv.DictReader(io.StringIO(store_raw.decode("utf-8"))))
-    candidate_row: dict[str, object] = {"date": target.isoformat()}
-    for field, value in store_rows[-1].items():
-        if field != "date":
-            try:
-                candidate_row[field] = float(value)
-            except (TypeError, ValueError) as exc:
-                raise FinalPublicationError(
-                    "promotion_receipt_invalid", "candidate_row_non_numeric"
-                ) from exc
+    store_reader = csv.DictReader(io.StringIO(store_raw.decode("utf-8")))
+    store_rows = list(store_reader)
+    store_fields = list(store_reader.fieldnames or [])[1:]
+    evidence = cache_payload.get("_matcher_evidence")
+    specs = evidence.get("matcher_specs") if isinstance(evidence, dict) else None
+    if not isinstance(specs, dict):
+        _fail("promotion_receipt_invalid", "matcher_specs_missing")
+    sums = fetch_ngrams._channel_sums(cache_payload, specs)
+    if set(store_fields) != set(sums) or set(store_fields) != set(calibration):
+        _fail("promotion_receipt_invalid", "target_channel_set_invalid")
+    expected_row: dict[str, object] = {"date": target.isoformat()}
+    actual_row: dict[str, object] = {"date": target.isoformat()}
+    for field in store_fields:
+        row = calibration[field]
+        ratio = row.get("ratio") if isinstance(row, dict) else None
+        if (
+            isinstance(ratio, bool)
+            or not isinstance(ratio, (int, float))
+            or not math.isfinite(float(ratio))
+            or float(ratio) <= 0
+        ):
+            _fail("promotion_receipt_invalid", f"calibration_ratio_invalid:{field}")
+        expected_row[field] = sums[field] / float(ratio)
+        try:
+            actual_row[field] = float(store_rows[-1][field])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise FinalPublicationError(
+                "promotion_receipt_invalid", "candidate_row_non_numeric"
+            ) from exc
+    if actual_row != expected_row:
+        _fail("promotion_receipt_invalid", "target_row_does_not_recompute")
     if bindings.get("candidate_row_sha256") != _sha256(
-        _canonical_bytes(candidate_row)
+        _canonical_bytes(expected_row)
     ):
         _fail("promotion_receipt_invalid", "candidate_row_hash_mismatch")
     return receipt
@@ -626,26 +913,35 @@ def mark_finalized(
     *,
     root: Path = ROOT,
     base_commit: str | None = None,
+    non_git_test_trust: NonGitTestTrustRoot | None = None,
 ) -> dict[str, Any]:
-    latest = _read_latest_day(root)
-    if latest != target:
-        _fail(
-            "final_output_target_mismatch",
-            f"latest={latest} target={target.isoformat()}",
-        )
     prior: dict[str, Any] = {}
     try:
         prior = json.loads((root / STATUS_RELATIVE).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         pass
-    receipt = prior.get("receipt") if prior.get("target_date") == target.isoformat() else None
+    if (
+        prior.get("target_date") != target.isoformat()
+        or prior.get("status") != "target_ready"
+        or not isinstance(prior.get("receipt"), dict)
+    ):
+        _fail("final_proof_missing", "target_ready_receipt_binding_required")
+    receipt = require_promotion_receipt(
+        target,
+        root=root,
+        require_bridge_receipt=True,
+        trusted_parent=base_commit,
+        non_git_test_trust=non_git_test_trust,
+        required_marker_status="target_ready",
+    )
+    require_written_final_target(target, site_data=root / "docs/data")
     return record_status(
         target,
         "finalized",
         "the exact D-1 finalized score is published",
         root=root,
-        base_commit=base_commit or prior.get("base_commit"),
-        receipt=receipt,
+        base_commit=receipt["base_commit"],
+        receipt=prior["receipt"],
     )
 
 
@@ -668,6 +964,7 @@ def record_pipeline_failed(
         "source_unavailable",
         "acquisition_failed",
         "pipeline_failed",
+        "legacy_proof_limited",
     }:
         return prior
     if failure_stage not in {"source", "pipeline", "audit", "derived"}:
@@ -705,8 +1002,68 @@ def record_pipeline_failed(
     return payload
 
 
+def _committed_receipt_parent(root: Path, marker: dict[str, Any]) -> str | None:
+    """Derive a committed receipt's trust root without trusting its own base."""
+
+    head = _git_head(root)
+    base = marker.get("base_commit")
+    receipt_ref = marker.get("receipt")
+    if head is None or not isinstance(base, str) or not isinstance(receipt_ref, dict):
+        return None
+    if base == head:
+        # The candidate is prepared but not committed yet; HEAD is the frozen
+        # parent supplied by the workflow, so this is still externally rooted.
+        return head
+    relative = receipt_ref.get("path")
+    if not isinstance(relative, str) or relative.startswith("/") or ".." in Path(relative).parts:
+        return None
+    result = subprocess.run(
+        ["git", "log", "--diff-filter=A", "--format=%H", "--", relative],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    introductions = result.stdout.splitlines() if result.returncode == 0 else []
+    if len(introductions) != 1:
+        return None
+    introduction = introductions[0]
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", introduction, head], cwd=root
+    )
+    if ancestor.returncode != 0:
+        return None
+    try:
+        parent = _git_commit(root, f"{introduction}^")
+        introduced_bytes = _git_blob(root, introduction, relative)
+        current_bytes = (root / relative).read_bytes()
+    except (FinalPublicationError, OSError):
+        return None
+    return parent if parent == base and current_bytes == introduced_bytes else None
+
+
+def _legacy_proof_limited(root: Path, target: date) -> bool:
+    """Recognize the frozen v1.0 frame without upgrading its denominator proof."""
+
+    try:
+        attestation = precision_frame_v3.build_day_attestation(
+            target,
+            root,
+            require_live_hashes=False,
+            require_strong_denominator=False,
+        )
+    except precision_frame_v3.FrameValidationError:
+        return False
+    return attestation.get("denominator_evidence") == (
+        "source_reported_denominator_legacy_v1.0"
+    )
+
+
 def public_status(
-    *, root: Path = ROOT, today: date | None = None
+    *,
+    root: Path = ROOT,
+    today: date | None = None,
+    trusted_parent: str | None = None,
+    non_git_test_trust: NonGitTestTrustRoot | None = None,
 ) -> dict[str, Any]:
     target = required_target(today)
     latest = _read_latest_day(root)
@@ -722,15 +1079,58 @@ def public_status(
         "acquisition_failed",
         "pipeline_failed",
     }
+    proven_final = False
+    if latest == target and marker_matches and marker.get("status") == "finalized":
+        proof_parent = trusted_parent
+        if proof_parent is None and non_git_test_trust is None:
+            proof_parent = _committed_receipt_parent(root, marker)
+        if proof_parent is not None or non_git_test_trust is not None:
+            try:
+                require_promotion_receipt(
+                    target,
+                    root=root,
+                    require_bridge_receipt=True,
+                    trusted_parent=proof_parent,
+                    non_git_test_trust=non_git_test_trust,
+                    required_marker_status="finalized",
+                )
+                require_written_final_target(target, site_data=root / "docs/data")
+                proven_final = True
+            except FinalPublicationError:
+                proven_final = False
+
+    legacy_limited = (
+        latest == target and not proven_final and _legacy_proof_limited(root, target)
+    )
+    reported_latest = latest
     if marker_failure and isinstance(marker.get("latest_finalized_date"), str):
         try:
-            latest = date.fromisoformat(marker["latest_finalized_date"])
+            reported_latest = date.fromisoformat(marker["latest_finalized_date"])
         except ValueError:
-            latest = None
+            reported_latest = None
+        if reported_latest == target:
+            # A value-free failure marker may have been written while dirty
+            # candidate site bytes already named the target. Never repeat that
+            # unproven date as the finalized number of record.
+            reported_latest = None
+    elif latest == target and not proven_final and not legacy_limited:
+        prior = marker.get("latest_finalized_date")
+        try:
+            parsed_prior = date.fromisoformat(prior) if isinstance(prior, str) else None
+        except ValueError:
+            parsed_prior = None
+        reported_latest = parsed_prior if parsed_prior != target else None
 
-    if latest == target and not marker_failure:
+    if proven_final:
         status = "finalized"
         reason = "The exact D-1 finalized score is published."
+    elif legacy_limited:
+        status = "legacy_proof_limited"
+        reason = (
+            "The D-1 number remains published under the legacy frame: all 48 "
+            "half-hour windows are verified, but its English denominator is "
+            "source-reported and cannot be independently reconstructed."
+        )
     elif marker_failure:
         status = marker["status"]
         reason = marker.get("reason") or "The D-1 final is unavailable."
@@ -742,26 +1142,33 @@ def public_status(
         )
     return {
         "target_date": target.isoformat(),
-        "latest_finalized_date": latest.isoformat() if latest else None,
+        "latest_finalized_date": (
+            reported_latest.isoformat() if reported_latest else None
+        ),
         "status": status,
         "reason": reason,
         "finalized": status == "finalized",
         "provisional_substitution_allowed": False,
         "value_fields_published": False,
-        "source_receipt": (
-            marker.get("receipt")
-            if marker.get("target_date") == target.isoformat()
-            else None
-        ),
+        "source_receipt": marker.get("receipt") if proven_final else None,
     }
 
 
 def write_public_status(
-    *, root: Path = ROOT, today: date | None = None
+    *,
+    root: Path = ROOT,
+    today: date | None = None,
+    trusted_parent: str | None = None,
+    non_git_test_trust: NonGitTestTrustRoot | None = None,
 ) -> dict[str, Any]:
     """Update only the value-free final state in existing public status bytes."""
 
-    state = public_status(root=root, today=today)
+    state = public_status(
+        root=root,
+        today=today,
+        trusted_parent=trusted_parent,
+        non_git_test_trust=non_git_test_trust,
+    )
     path = root / "docs/data/status.json"
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -788,6 +1195,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--acquire-target", type=date.fromisoformat)
     parser.add_argument("--record-pipeline-failed", type=date.fromisoformat)
+    parser.add_argument("--check-promotion-receipt", type=date.fromisoformat)
     parser.add_argument(
         "--failure-stage",
         choices=("source", "pipeline", "audit", "derived"),
@@ -796,11 +1204,13 @@ def main() -> None:
     parser.add_argument("--write-public-status", action="store_true")
     parser.add_argument("--today", type=date.fromisoformat)
     parser.add_argument("--base-commit")
+    parser.add_argument("--trusted-parent")
     args = parser.parse_args()
     selected = sum(
         (
             args.acquire_target is not None,
             args.record_pipeline_failed is not None,
+            args.check_promotion_receipt is not None,
             args.write_public_status,
         )
     )
@@ -813,6 +1223,14 @@ def main() -> None:
             failure_stage=args.failure_stage,
         )
         print(json.dumps(status, indent=1))
+        return
+    if args.check_promotion_receipt is not None:
+        receipt = require_promotion_receipt(
+            args.check_promotion_receipt,
+            require_bridge_receipt=True,
+            trusted_parent=args.trusted_parent,
+        )
+        print(json.dumps(receipt, indent=1))
         return
     if args.write_public_status:
         print(json.dumps(write_public_status(today=args.today), indent=1))
