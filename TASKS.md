@@ -76,10 +76,42 @@ NOTE: the assigned Product Compiler first slice is now fully spec-complete —
 all 8 attacks, all 8 acceptance tests, all 15 refusal codes triggered.
 
 ## T7 — Verify the whole local batch is committed-gate green (no push)
-Status: DOING
-Reproducibility evidence: run `scripts/gate.sh --committed` (extracts HEAD, runs
-all 15 CI checks; does NOT push) to confirm the 6 local commits pass CI without
-shipping. Allowed under do-not-push (gating is verification, not deploy).
+Status: PARTIAL — Product Compiler + drift verified green IN ISOLATION; the
+committed gate on the full HEAD is RED because of the perf commit (see PERF
+BLOCKER). Command run: `scripts/gate.sh --committed` -> GATE_EXIT=1
+(FAILED: pytest; scenario_proof_profile_digest_mismatch + clause_source_view
+view_contract_invalid). In-isolation evidence: `pytest tests/test_product_manifest.py`
+= 25 passed; drift suite = 3 passed; `tests/test_typed_canonical_bytes_reference.py`
+= 12 passed (perf output proven byte-identical).
+
+## PERF BLOCKER — the typed-canonical optimization cascades into Codex's runtime source
+Classification: [architectural gap / cross-lane] — NOT a safe single-lane fix.
+Commit: local `3f593cb` "The 96-second test was one accidental O(n*depth) byte-copy"
+(Codex's B1). The fix is CORRECT: output is proven byte-identical by
+`tests/test_typed_canonical_bytes_reference.py`. The problem is the pin cascade.
+Optimizing `src/event_ledger.py` (a shared hashed primitive) changes its source
+digest, which must be re-pinned everywhere it is referenced. The complete
+cascade (computed, no signed file in it):
+  - governance: source_profile, nary_association_trace, consumer_profile,
+    clause_source_view_contract, clause_reader_shadow_contract,
+    capability_attestation_registry   (data pins — safe to edit)
+  - docs/data/evolution.json           (data pin — safe to edit)
+  - standard/oges/extensions/{decision-switch, mechanism-constraint-scenario,
+    nary-association-trace, consequence-plan}/*.json  (Codex extension data pins)
+  - AND hardcoded `_REGISTERED_*_SHA256` CONSTANTS in THREE Codex runtime modules:
+    `src/clause_source_view.py`, `src/clause_reader_shadow.py`,
+    `src/evidence_output_consumer_contract.py`  <-- source code, Codex's lane.
+Refusal-first decision: this worker does not edit Codex's runtime source
+constants (lane boundary; "do not alter unrelated files"; "keep scope minimal").
+Not bypassed, not force-fixed.
+Recommended resolutions (human/Codex):
+  (a) Codex lands the perf change and re-derives his three source constants +
+      extension pins in his lane (natural owner: it is his B1, his constants); OR
+  (b) to push the clean Product Compiler + drift work now WITHOUT the perf
+      commit, a human drops it from the local stack:
+        git rebase --onto 642f317 3f593cb   # replays the 5 PC commits onto drift
+      then re-gate. (642f317 = drift commit; 3f593cb = perf commit to drop.)
+Data/files needed from human: a decision on (a) vs (b). No data missing.
 
 ## T3 — Codex B2: Atlas Max join certifies an unpublished world
 Status: BLOCKED(codex-lane) — engine files are Codex's; audit filed at
