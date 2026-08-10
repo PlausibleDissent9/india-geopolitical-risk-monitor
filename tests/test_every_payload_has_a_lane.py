@@ -57,6 +57,21 @@ INVOKED_BY_ANOTHER_MODULE = {
         "analysis/ai_gpr_benchmark_registration.json; a recurring lane would "
         "either fail its vintage checks or violate the registration"
     ),
+    "splice_sensitivity": (
+        "frozen historical study through 2026-08-09: recomputation reads "
+        "retained identity-bearing NGram evidence and is rights-refused until "
+        "a current signed decision covers the complete study window"
+    ),
+    "uncertainty": (
+        "frozen historical sampling-band study through 2026-08-07: "
+        "recomputation reads retained identity-bearing NGram evidence and is "
+        "rights-refused until a signed decision covers the complete window"
+    ),
+    "precision_frame_v3": (
+        "prospective protocol frozen before its first attestation: frame "
+        "collection reads retained identity-bearing NGram evidence and is "
+        "paused until a current signed processing decision exists"
+    ),
 }
 
 WRITES_PAYLOAD = re.compile(

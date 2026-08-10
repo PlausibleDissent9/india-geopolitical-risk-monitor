@@ -20,7 +20,10 @@ from __future__ import annotations
 import csv
 import json
 import math
+from datetime import date
 from pathlib import Path
+
+from src import fetch_ngrams
 
 ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT = ROOT / "analysis" / "splice_overlap_api_091c25e.csv"
@@ -36,7 +39,14 @@ CHANNELS = (
 
 
 def _ngram_channel_sums(day: str) -> dict[str, float]:
-    payload = json.loads((CACHE / f"{day}.json").read_text(encoding="utf-8"))
+    parsed_day = date.fromisoformat(day)
+    payload = json.loads(
+        fetch_ngrams.read_retained_identity_cache(
+            parsed_day,
+            root=ROOT,
+            cache_path=CACHE / f"{day}.json",
+        )
+    )
     shares = payload["shares"]
     return {
         channel: sum(

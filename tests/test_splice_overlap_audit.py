@@ -1,9 +1,53 @@
 """Regression locks for the independent splice-calibration audit."""
 from pathlib import Path
 
+import pytest
+from analysis import splice_overlap_audit
 from analysis.splice_overlap_audit import audit
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+@pytest.fixture(autouse=True)
+def _synthetic_cache_rights(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        splice_overlap_audit.fetch_ngrams.ngram_rights,
+        "require_public_identity_rights",
+        lambda **_kwargs: {"status": "synthetic_authorized_fixture"},
+    )
+
+
+def test_direct_audit_reader_refuses_before_retained_cache_bytes(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = splice_overlap_audit.CACHE / "2026-07-01.json"
+    reads: list[Path] = []
+    original = Path.read_bytes
+
+    def refused(**_kwargs: object) -> dict[str, object]:
+        raise splice_overlap_audit.fetch_ngrams.ngram_rights.NgramRightsError(
+            "ngram_rights_decision_review_required"
+        )
+
+    def observed(path: Path) -> bytes:
+        if path == source:
+            reads.append(path)
+        return original(path)
+
+    monkeypatch.setattr(
+        splice_overlap_audit.fetch_ngrams.ngram_rights,
+        "require_public_identity_rights",
+        refused,
+    )
+    monkeypatch.setattr(Path, "read_bytes", observed)
+
+    with pytest.raises(
+        splice_overlap_audit.fetch_ngrams.ngram_rights.NgramRightsError,
+        match="^ngram_rights_decision_review_required$",
+    ):
+        splice_overlap_audit._ngram_channel_sums("2026-07-01")
+
+    assert reads == []
 
 
 def test_audit_uses_genuinely_additional_overlap_where_available():

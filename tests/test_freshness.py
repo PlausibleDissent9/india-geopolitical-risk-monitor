@@ -127,6 +127,15 @@ def test_evolution_contract_is_static_but_live_health_is_not_hidden() -> None:
     assert "hourly evolution audit reads current freshness separately" in reason
 
 
+def test_rights_blocked_historical_studies_do_not_create_false_daily_slas() -> None:
+    splice = freshness.EXEMPT["splice_sensitivity.json"]
+    uncertainty = freshness.EXEMPT["uncertainty.json"]
+    assert "frozen 2026-07-01..2026-08-09" in splice
+    assert "frozen 2026-06-30..2026-08-07" in uncertainty
+    assert "signed decision" in splice
+    assert "signed decision" in uncertainty
+
+
 @pytest.mark.live
 def test_the_real_site_has_no_stale_or_undatable_payloads():
     """Belt and braces against the live tree, so this cannot pass in

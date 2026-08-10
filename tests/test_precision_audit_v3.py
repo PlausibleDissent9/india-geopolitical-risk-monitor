@@ -18,6 +18,15 @@ from src import precision_frame_v3 as frame
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.fixture(autouse=True)
+def _synthetic_cache_rights(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        frame.ngram_rights,
+        "require_public_identity_rights",
+        lambda **_kwargs: {"status": "synthetic_authorized_fixture"},
+    )
+
+
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 

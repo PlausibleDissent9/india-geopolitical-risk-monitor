@@ -240,22 +240,10 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         timeout-minutes: 5
         run: python -m src.evolution_engine --write
-      - name: Preserve prospective precision-v3 production frame
-        # The invalid v2 audit rebuilt its article frame after publication
-        # and accidentally sampled a different corpus and a unioned-document
-        # estimand. From 2026-08-08 onward fetch_ngrams stores the exact
-        # loaded stamps, matcher specification and group-qualified document
-        # keys inside the production score cache. This gate reconstructs
-        # every group share exactly and writes an append-only, label-free day
-        # attestation. An ineligible source day is preserved as a permanent
-        # FRAME_FAILURE record: it invalidates that cohort without hiding the
-        # calendar day. A regime change remains visible and later days continue
-        # as failure attestations rather than silently starting a new regime.
-        # Tool/runtime failures still make the job red; the final index remains
-        # recoverable through the independent morning lane.
-        if: github.event.inputs.backfill != 'true'
-        timeout-minutes: 5
-        run: python -m src.precision_frame_v3 --record-latest
+      # Precision-v3 frame recording remains dormant while retained NGram
+      # identities lack a current signed processing decision. The CLI itself
+      # also refuses before reading cache bytes; a daily workflow must not turn
+      # a rights refusal into either a failed-frame record or an implicit pass.
       - name: China monitor (V8; registered 2026-08-06, resumes from chunk cache)
         # Runner IPs are clean where the laptop's got heated; the
         # settled-chunk cache carries backfill progress across runs, so
@@ -295,11 +283,9 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: python -m src.sector_sensitivity
-      - name: Sampling bands (MI3; offline, from the day caches)
-        if: github.event.inputs.backfill != 'true'
-        continue-on-error: true
-        timeout-minutes: 5
-        run: python -m src.uncertainty
+      # uncertainty.json is a frozen 2026-06-30..2026-08-07 study. Rebuilding
+      # it reads retained identity-bearing caches and stays disabled until a
+      # current signed decision covers the complete historical window.
       - name: Receipts at scoring depth (bounded daily evidence scan)
         # Runs after the pipeline step so latest.json already carries
         # today's date -- otherwise this would publish receipts one day

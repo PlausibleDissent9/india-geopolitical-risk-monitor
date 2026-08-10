@@ -77,6 +77,16 @@ MAX_AGE_DAYS: dict[str, int] = {
 
 # Exempt, each with the reason it is exempt. Short on purpose.
 EXEMPT: dict[str, str] = {
+    "splice_sensitivity.json": (
+        "a frozen 2026-07-01..2026-08-09 historical sensitivity study; "
+        "recomputation reads retained identity-bearing NGram evidence and "
+        "remains refused until a current signed decision covers that use"
+    ),
+    "uncertainty.json": (
+        "a frozen 2026-06-30..2026-08-07 sampling-band study; recomputation "
+        "reads retained identity-bearing NGram evidence and remains refused "
+        "until a current signed decision covers the full historical window"
+    ),
     "daily_brief.json": (
         "withdrawn 2026-08-08 after factual-grounding failures; the fixed "
         "null tombstone remains through at least 2026-11-06 under the API "

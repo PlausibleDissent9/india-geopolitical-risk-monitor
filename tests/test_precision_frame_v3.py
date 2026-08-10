@@ -15,6 +15,15 @@ ROOT = Path(__file__).resolve().parents[1]
 DAY = date(2026, 8, 8)
 
 
+@pytest.fixture(autouse=True)
+def _synthetic_cache_rights(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        frame.ngram_rights,
+        "require_public_identity_rights",
+        lambda **_kwargs: {"status": "synthetic_authorized_fixture"},
+    )
+
+
 def _stamp(index: int, day: date = DAY) -> str:
     minute = index * 30
     return f"{day:%Y%m%d}{minute // 60:02d}{minute % 60:02d}00"
@@ -240,6 +249,37 @@ def test_day_attestation_preserves_group_contribution_multiplicity(
     )
     assert result["labels_seen"] is False
     assert result["precision_estimated"] is False
+
+
+def test_day_attestation_refuses_rights_before_source_cache_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = _write_source_cache(tmp_path)
+    reads: list[Path] = []
+    original = Path.read_bytes
+
+    def refused(**_kwargs: object) -> dict[str, object]:
+        raise frame.ngram_rights.NgramRightsError(
+            "ngram_rights_decision_review_required"
+        )
+
+    def observed(path: Path) -> bytes:
+        if path == source:
+            reads.append(path)
+        return original(path)
+
+    monkeypatch.setattr(frame.ngram_rights, "require_public_identity_rights", refused)
+    monkeypatch.setattr(Path, "read_bytes", observed)
+
+    with pytest.raises(
+        frame.ngram_rights.NgramRightsError,
+        match="^ngram_rights_decision_review_required$",
+    ):
+        frame.build_day_attestation(
+            DAY, tmp_path, require_live_hashes=False
+        )
+
+    assert reads == []
 
 
 def _offset_stamps(day: date) -> list[str]:
@@ -523,11 +563,11 @@ def test_independent_dictionary_parser_matches_the_production_specification() ->
     )
 
 
-def test_daily_workflow_records_the_latest_eligible_source_day() -> None:
+def test_daily_workflow_does_not_read_precision_frames_without_rights() -> None:
     workflow = (ROOT / ".github" / "workflows" / "daily.yml").read_text()
     command = "python -m src.precision_frame_v3 --record-latest"
-    assert command in workflow
-    assert workflow.index("- name: Run pipeline") < workflow.index(command)
+    assert command not in workflow
+    assert "Precision-v3 frame recording remains dormant" in workflow
 
 
 def test_public_surfaces_distinguish_frame_collection_from_a_result() -> None:
@@ -541,6 +581,8 @@ def test_public_surfaces_distinguish_frame_collection_from_a_result() -> None:
         raw = path.read_text(encoding="utf-8").lower().replace(">", " ")
         text = " ".join(raw.split())
         assert "source-frame collection" in text, path
+        assert "paused" in text, path
+        assert "signed" in text and "rights" in text, path
         assert "not a precision result" in text or "no v3 sample" in text, path
         assert "42" in text and "v3a" in text, path
         assert "48" in text and "v3b" in text, path

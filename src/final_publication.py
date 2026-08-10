@@ -856,14 +856,16 @@ def _validate_frame_candidate(
         candidate_root = Path(raw)
         cache = candidate_root / "data/raw/ngram_days" / f"{target}.json"
         cache.parent.mkdir(parents=True)
-        cache.write_bytes(json.dumps(result).encode("utf-8"))
+        candidate_bytes = json.dumps(result).encode("utf-8")
+        cache.write_bytes(candidate_bytes)
         (candidate_root / "src").mkdir()
         shutil.copyfile(root / "dictionaries.json", candidate_root / "dictionaries.json")
         shutil.copyfile(
             root / "src/fetch_ngrams.py", candidate_root / "src/fetch_ngrams.py"
         )
-        return precision_frame_v3.build_day_attestation(
+        return precision_frame_v3._build_day_attestation_from_authorized_bytes(
             target,
+            candidate_bytes,
             candidate_root,
             require_live_hashes=True,
             require_strong_denominator=True,
@@ -1357,7 +1359,18 @@ def require_promotion_receipt(
         provenance_raw = provenance_path.read_bytes()
         calibration_raw = (root / "data/raw/ngram_calibration.json").read_bytes()
         calibration = json.loads(calibration_raw)
-        cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
+        cache_payload = json.loads(
+            fetch_ngrams.read_retained_identity_cache(
+                target,
+                root=root,
+                cache_path=cache_path,
+                rights_authority=parent.rights_authority,
+            )
+        )
+    except ngram_rights.NgramRightsError as exc:
+        raise FinalPublicationError(
+            "promotion_receipt_invalid", f"rights_not_authorized:{exc.code}"
+        ) from exc
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise FinalPublicationError(
             "promotion_receipt_invalid", "receipt_or_bound_input_unreadable"
@@ -1399,6 +1412,7 @@ def require_promotion_receipt(
             root,
             require_live_hashes=True,
             require_strong_denominator=True,
+            rights_authority=parent.rights_authority,
         )
     except precision_frame_v3.FrameValidationError as exc:
         raise FinalPublicationError(

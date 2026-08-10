@@ -462,32 +462,14 @@ def _cached_day(
 ) -> dict | None:
     cache = DAY_CACHE / f"{day.isoformat()}.json"
     if cache.exists():
-        from . import final_publication
-
-        # Every ordinary cache is authority-gated before its bytes enter the
-        # process.  The one historical exception may be read once only to
-        # authenticate its exact registered Git blob; parsing remains barred
-        # until that identity check succeeds.
-        legacy_target = final_publication.is_registered_legacy_cache_target(day)
-        if not legacy_target:
-            ngram_rights.require_public_identity_rights(
-                target=day,
+        return _decode_cached_day(
+            read_retained_identity_cache(
+                day,
                 root=ROOT,
-                test_authority=rights_authority,
+                cache_path=cache,
+                rights_authority=rights_authority,
             )
-        raw = cache.read_bytes()
-        legacy_exception = final_publication.is_exact_legacy_cache_exception(
-            ROOT, day, cache_bytes=raw
         )
-        if legacy_exception:
-            return _decode_cached_day(raw)
-        if legacy_target:
-            ngram_rights.require_public_identity_rights(
-                target=day,
-                root=ROOT,
-                test_authority=rights_authority,
-            )
-        return _decode_cached_day(raw)
     result = compute_day(day, specs, rights_authority=rights_authority)
     if result is not None:
         ngram_rights.require_public_identity_rights(
@@ -498,6 +480,47 @@ def _cached_day(
         DAY_CACHE.mkdir(parents=True, exist_ok=True)
         cache.write_text(json.dumps(result), encoding="utf-8")
     return result
+
+
+def read_retained_identity_cache(
+    day: date,
+    *,
+    root: Path = ROOT,
+    cache_path: Path | None = None,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> bytes:
+    """Read one retained identity cache only behind the shared authority.
+
+    Every consumer uses this boundary rather than opening ``ngram_days``
+    directly. The sole pre-authority byte probe is the registered Aug-9
+    historical object: its bytes are parsed only after the exact Git object,
+    digest and first-parent history have been authenticated.
+    """
+
+    from . import final_publication
+
+    cache = cache_path or (
+        root / "data" / "raw" / "ngram_days" / f"{day.isoformat()}.json"
+    )
+    legacy_target = final_publication.is_registered_legacy_cache_target(day)
+    if not legacy_target:
+        ngram_rights.require_public_identity_rights(
+            target=day,
+            root=root,
+            test_authority=rights_authority,
+        )
+    raw = cache.read_bytes()
+    if final_publication.is_exact_legacy_cache_exception(
+        root, day, cache_bytes=raw
+    ):
+        return raw
+    if legacy_target:
+        ngram_rights.require_public_identity_rights(
+            target=day,
+            root=root,
+            test_authority=rights_authority,
+        )
+    return raw
 
 
 def _decode_cached_day(raw: bytes) -> dict:

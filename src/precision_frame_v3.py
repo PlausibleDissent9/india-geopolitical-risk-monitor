@@ -22,6 +22,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from src import fetch_ngrams, ngram_rights
 from src.fetch_gdelt import build_queries
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -196,6 +197,7 @@ def build_day_attestation(
     *,
     require_live_hashes: bool = True,
     require_strong_denominator: bool = False,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> dict[str, Any]:
     """Verify one score cache and return its compact, label-free attestation."""
     if not WINDOW_START <= day <= WINDOW_END:
@@ -204,7 +206,43 @@ def build_day_attestation(
             f"{WINDOW_START}..{WINDOW_END}"
         )
     source_path = root / "data" / "raw" / "ngram_days" / f"{day}.json"
-    raw, payload = _read_object(source_path)
+    raw = fetch_ngrams.read_retained_identity_cache(
+        day,
+        root=root,
+        cache_path=source_path,
+        rights_authority=rights_authority,
+    )
+    return _build_day_attestation_from_authorized_bytes(
+        day,
+        raw,
+        root,
+        require_live_hashes=require_live_hashes,
+        require_strong_denominator=require_strong_denominator,
+    )
+
+
+def _build_day_attestation_from_authorized_bytes(
+    day: date,
+    raw: bytes,
+    root: Path,
+    *,
+    require_live_hashes: bool,
+    require_strong_denominator: bool,
+) -> dict[str, Any]:
+    """Validate bytes already acquired inside the governed source call."""
+
+    if not WINDOW_START <= day <= WINDOW_END:
+        raise FrameValidationError(
+            f"{day} is outside the prospective window "
+            f"{WINDOW_START}..{WINDOW_END}"
+    )
+    source_path = root / "data" / "raw" / "ngram_days" / f"{day}.json"
+    try:
+        payload = json.loads(raw)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise FrameValidationError(f"unreadable JSON: {source_path}") from exc
+    if not isinstance(payload, dict):
+        raise FrameValidationError(f"JSON root is not an object: {source_path}")
     if payload.get("date") != day.isoformat():
         raise FrameValidationError("cache date does not match requested day")
 
@@ -423,6 +461,8 @@ def build_failure_attestation(
     day: date,
     error: FrameValidationError,
     root: Path = ROOT,
+    *,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> dict[str, Any]:
     """Preserve an ineligible calendar day without laundering it as absent.
 
@@ -440,8 +480,18 @@ def build_failure_attestation(
     source_sha: str | None = None
     observed: dict[str, Any] | None = None
     try:
-        raw, payload = _read_object(source_path)
-    except FrameValidationError:
+        raw = fetch_ngrams.read_retained_identity_cache(
+            day,
+            root=root,
+            cache_path=source_path,
+            rights_authority=rights_authority,
+        )
+        payload = json.loads(raw)
+        if not isinstance(payload, dict):
+            raise FrameValidationError(
+                f"JSON root is not an object: {source_path}"
+            )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, FrameValidationError):
         payload = None
     if payload is not None:
         source_sha = _sha256(raw)
@@ -494,7 +544,13 @@ def build_failure_attestation(
     }
 
 
-def _record_payload(day: date, payload: dict[str, Any], root: Path) -> Path:
+def _record_payload(
+    day: date,
+    payload: dict[str, Any],
+    root: Path,
+    *,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> Path:
     """Write one eligible or failed calendar attestation exactly once."""
     encoded = (json.dumps(payload, indent=1, sort_keys=True) + "\n").encode()
     destination = root / "data" / "raw" / "precision_v3_days" / f"{day}.json"
@@ -556,7 +612,20 @@ def _record_payload(day: date, payload: dict[str, Any], root: Path) -> Path:
         if not isinstance(source_sha_expected, str):
             raise FrameValidationError(f"prior source hash is invalid: {prior_path}")
         try:
-            source_sha = _sha256(source_path.read_bytes())
+            source_day = date.fromisoformat(source_path.stem)
+        except ValueError as exc:
+            raise FrameValidationError(
+                f"prior source cache day is invalid: {source_path}"
+            ) from exc
+        try:
+            source_sha = _sha256(
+                fetch_ngrams.read_retained_identity_cache(
+                    source_day,
+                    root=root,
+                    cache_path=source_path,
+                    rights_authority=rights_authority,
+                )
+            )
         except OSError as exc:
             raise FrameValidationError(f"prior source cache is missing: {source_path}") from exc
         if source_sha != source_sha_expected:
@@ -590,12 +659,18 @@ def record_day(
     root: Path = ROOT,
     *,
     require_live_hashes: bool = True,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> Path:
     """Write one eligible attestation; refuse an ineligible or revised day."""
     payload = build_day_attestation(
-        day, root, require_live_hashes=require_live_hashes
+        day,
+        root,
+        require_live_hashes=require_live_hashes,
+        rights_authority=rights_authority,
     )
-    return _record_payload(day, payload, root)
+    return _record_payload(
+        day, payload, root, rights_authority=rights_authority
+    )
 
 
 def record_day_outcome(
@@ -603,16 +678,26 @@ def record_day_outcome(
     root: Path = ROOT,
     *,
     require_live_hashes: bool = True,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> Path:
     """Record either eligibility or an immutable frame failure for the day."""
     try:
         payload = build_day_attestation(
-            day, root, require_live_hashes=require_live_hashes
+            day,
+            root,
+            require_live_hashes=require_live_hashes,
+            rights_authority=rights_authority,
         )
-        return _record_payload(day, payload, root)
+        return _record_payload(
+            day, payload, root, rights_authority=rights_authority
+        )
     except FrameValidationError as exc:
-        payload = build_failure_attestation(day, exc, root)
-        return _record_payload(day, payload, root)
+        payload = build_failure_attestation(
+            day, exc, root, rights_authority=rights_authority
+        )
+        return _record_payload(
+            day, payload, root, rights_authority=rights_authority
+        )
 
 
 def _latest_day(root: Path) -> date:
