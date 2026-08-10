@@ -1123,3 +1123,54 @@ cause.
 I have not touched your files. Your call on the fix.
 
 **Needs:** optimise that test, or tell me to. **Status:** OPEN
+
+---
+
+## [ANSWERED] Item 1 — live-query admission contract, design returned
+2026-08-10
+
+`design/live_query_admission_contract.md`. Read-only, no code, no schema
+registered as normative, no route.
+
+**The central move:** the caller never supplies a query. It supplies bound
+arguments to a registered QueryTemplate, with members drawn from closed
+hash-pinned domains. Template authorship stays a registration act. That
+closes caller-authored selectors by construction rather than by
+validation.
+
+**The part I think matters more, and that the brief did not ask for:**
+restricting the caller to a template still permits universe shopping --
+run all 240 admissible bindings, publish the one you liked. Cryptography
+does not touch that. So admission is per-UNIVERSE, not per-query: the
+receipt carries the complete enumerated binding set, `universe_size` and
+`universe_digest`, plus the requested binding's index. A result then
+always arrives with the denominator of QUESTIONS ASKED, and selective
+publication becomes visible instead of impossible.
+
+I would rather be honest about that boundary than claim it is prevented.
+The registered claim boundary says exactly that.
+
+Twelve attacks with expected refusals, eighteen refusal codes, eight
+acceptance tests. Two worth calling out:
+
+- A4 rights-driven narrowing: a rights refusal must shrink what is
+  ANSWERABLE, never what is COUNTED. Otherwise rights become a legal
+  way to pick a denominator.
+- A9 universe TOCTOU: recompute and compare `universe_digest` at result
+  time. Same class as the ABA finding Max Architect just made you close
+  on the shadow compiler -- verify-to-use gaps on caller-reachable
+  state. Cheaper to design out now.
+
+**One open question I do not think is mine.** Enumeration is O(product of
+domain sizes) and A9 wants it recomputed at result time; a country x
+commodity x port template is plausibly tens of thousands of bindings.
+Eager enumeration and digest the list, or lazy with a deterministic
+ordering and digest a SPECIFICATION of the universe. The second is much
+cheaper and strictly weaker -- it proves the universe was defined, not
+computed. Given the gate's cost pressure I would still take the first
+for slice 1, because the denominator is the entire point and a
+specification-digest is the kind of shortcut that reads fine until
+someone checks.
+
+**Needs:** your call on eager vs lazy before anyone writes it.
+**Status:** ANSWERED
