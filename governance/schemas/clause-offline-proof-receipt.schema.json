@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/clause-offline-proof-receipt.schema.json",
+  "title": "IGRM internal clause reader proof archive receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "proof_id",
+    "record_sha256",
+    "bindings",
+    "active_branch_id",
+    "outputs",
+    "members",
+    "denominators",
+    "verification",
+    "trust",
+    "boundary"
+  ],
+  "properties": {
+    "object_type": {"const": "clause_reader_proof_archive_receipt"},
+    "schema_version": {"const": "0.1.0"},
+    "proof_id": {"type": "string", "pattern": "^clause-reader-proof:[0-9a-f]{24}$"},
+    "record_sha256": {"$ref": "#/$defs/sha256"},
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_bundle_ref",
+        "role_proof_bundle_ref",
+        "view_receipt_ref",
+        "reader_receipt_ref",
+        "archive_contract_ref",
+        "archive_runtime_ref",
+        "authority_refs",
+        "installed_dependency_refs"
+      ],
+      "properties": {
+        "source_bundle_ref": {"$ref": "#/$defs/namedCapturedRef"},
+        "role_proof_bundle_ref": {"$ref": "#/$defs/namedCapturedRef"},
+        "view_receipt_ref": {"$ref": "#/$defs/namedCapturedRef"},
+        "reader_receipt_ref": {"$ref": "#/$defs/namedCapturedRef"},
+        "archive_contract_ref": {"$ref": "#/$defs/contractRef"},
+        "archive_runtime_ref": {"$ref": "#/$defs/runtimeRef"},
+        "authority_refs": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"$ref": "#/$defs/fileRef"}
+        },
+        "installed_dependency_refs": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {"$ref": "#/$defs/fileRef"}
+        }
+      }
+    },
+    "active_branch_id": {"enum": ["branch:no_path", "branch:path_found"]},
+    "outputs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/outputRef"}
+    },
+    "members": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/memberRef"}
+    },
+    "denominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_denominator",
+        "upstream_receipt_denominator",
+        "output_denominator",
+        "authority_denominator",
+        "installed_dependency_denominator",
+        "role_denominator",
+        "role_pair_denominator",
+        "source_clause_denominator",
+        "listed_member_denominator",
+        "archive_entry_denominator"
+      ],
+      "properties": {
+        "input_denominator": {"const": 2},
+        "upstream_receipt_denominator": {"const": 2},
+        "output_denominator": {"const": 3},
+        "authority_denominator": {"const": 4},
+        "installed_dependency_denominator": {"const": 10},
+        "role_denominator": {"const": 7},
+        "role_pair_denominator": {"const": 21},
+        "source_clause_denominator": {"type": "integer", "minimum": 1},
+        "listed_member_denominator": {"const": 11},
+        "archive_entry_denominator": {"const": 12}
+      }
+    },
+    "verification": {
+      "const": {
+        "external_archive_digest_required": true,
+        "separately_trusted_installed_verifier_required": true,
+        "network_required": false,
+        "archive_extraction_required": false,
+        "bundled_code_execution_required": false,
+        "exact_clause_recompilation_required": true
+      }
+    },
+    "trust": {
+      "const": {
+        "synthetic": true,
+        "contract_only": true,
+        "self_hash_integrity_only": true,
+        "signed": false,
+        "authenticated": false,
+        "nonpublic": true,
+        "nonproduction": true
+      }
+    },
+    "boundary": {
+      "const": {
+        "proof_transport_only": true,
+        "public_behavior_changed": false,
+        "publication_approved": false,
+        "offline_audience_output_created": false,
+        "product_manifest_created": false,
+        "source_replay_performed": false,
+        "source_truth_claimed": false,
+        "rights_approval_claimed": false,
+        "output_equivalence_claimed": false,
+        "production_authority": false,
+        "public_authority": false
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "positiveInteger": {"type": "integer", "minimum": 1},
+    "namedCapturedRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_id", "record_sha256", "captured_bytes_sha256"],
+      "properties": {
+        "object_id": {"type": "string", "minLength": 1},
+        "record_sha256": {"$ref": "#/$defs/sha256"},
+        "captured_bytes_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "contractRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_id", "file_sha256"],
+      "properties": {
+        "contract_id": {"const": "igrm:clause-reader-proof-archive:0.1.0"},
+        "file_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "runtimeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation_sha256"],
+      "properties": {"implementation_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "fileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "file_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "file_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "outputRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "archive_path", "sha256", "bytes", "body_sha256"],
+      "properties": {
+        "output_id": {"enum": ["output:board_brief", "output:newsroom_claim_card", "output:research_package"]},
+        "archive_path": {"type": "string", "pattern": "^artifacts/[a-z-]+\\.json$"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "bytes": {"$ref": "#/$defs/positiveInteger"},
+        "body_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "memberRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "role", "sha256", "bytes"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "role": {
+          "enum": [
+            "source_bundle",
+            "role_proof_bundle",
+            "clause_source_view_receipt",
+            "clause_reader_compilation_receipt",
+            "shadow_artifact:board",
+            "shadow_artifact:newsroom",
+            "shadow_artifact:research",
+            "authority:source_profile",
+            "authority:consumer_profile",
+            "authority:template_profile",
+            "authority:limitation_registry"
+          ]
+        },
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "bytes": {"$ref": "#/$defs/positiveInteger"}
+      }
+    }
+  }
+}
