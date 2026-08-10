@@ -273,6 +273,49 @@ def _default_roles() -> set[str]:
             "priority_language", "offline"}
 
 
+def verify_compilation(
+    external_compilation: Mapping[str, Any],
+    source_bundle: Mapping[str, Any],
+    manifest: Mapping[str, Any],
+    *,
+    contract: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Verify an untrusted ProductCompilation by recomputing it from bytes.
+
+    An external caller (an audit bundle, a second runtime, a stored artifact)
+    presents a compilation. Trusting it would re-open the hole compile_product
+    closed: the whole point is that edges are recomputed, not supplied. So this
+    recomputes the compilation from the source bundle and manifest and compares.
+
+    - release ref must match           -> compilation_release_mismatch
+    - every edge set must match exactly -> compilation_edge_not_recomputed
+    - the record digest must match      -> compilation_nondeterminism_detected
+
+    A pass means the external compilation is the deterministic image of the
+    committed bytes; it is not trusted, it is reproduced.
+    """
+    contract = contract or load_contract()
+    recomputed = compile_product(source_bundle, manifest, contract=contract)
+
+    if external_compilation.get("source_release_ref") != recomputed["source_release_ref"]:
+        _fail("compilation_release_mismatch", external_compilation.get("manifest_id", ""))
+
+    for edge_key in ("object_clause_edges", "clause_manifest_edges",
+                     "manifest_artifact_edges", "resolved_clause_ids"):
+        if external_compilation.get(edge_key) != recomputed[edge_key]:
+            _fail("compilation_edge_not_recomputed", edge_key)
+
+    if external_compilation.get("record_sha256") != recomputed["record_sha256"]:
+        _fail("compilation_nondeterminism_detected", recomputed["record_sha256"])
+
+    return {
+        "verified": True,
+        "manifest_id": recomputed["manifest_id"],
+        "record_sha256": recomputed["record_sha256"],
+        "recomputed_from_bytes": True,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Correction blast-closure
 

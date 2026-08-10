@@ -231,21 +231,72 @@ def test_artifact_role_must_be_registered(tmp_path: Path) -> None:
     assert err.value.code == "manifest_artifact_not_registered_role_projection"
 
 
-def test_every_refusal_code_in_contract_is_a_real_string() -> None:
-    """The contract's refusal_codes list must match what the module can raise
-    for the codes this slice implements (documents the closed set)."""
+# --- verify_compilation: an external compilation is reproduced, not trusted ---
+
+def test_verify_compilation_reproduces_a_faithful_external_compilation(tmp_path: Path) -> None:
+    source = _bundle(tmp_path)
+    manifest = _manifest(source, CRUDE)
+    external = pm.compile_product(source, manifest)  # a faithful external artifact
+    result = pm.verify_compilation(external, source, manifest)
+    assert result["verified"] is True
+    assert result["recomputed_from_bytes"] is True
+
+
+def test_verify_rejects_a_tampered_release_ref(tmp_path: Path) -> None:
+    source = _bundle(tmp_path)
+    manifest = _manifest(source, CRUDE)
+    external = dict(pm.compile_product(source, manifest))
+    external["source_release_ref"] = {"release_id": "rel:forged", "release_signer_id": "x"}
+    with pytest.raises(pm.ProductManifestError) as err:
+        pm.verify_compilation(external, source, manifest)
+    assert err.value.code == "compilation_release_mismatch"
+
+
+def test_verify_rejects_a_tampered_edge_set(tmp_path: Path) -> None:
+    source = _bundle(tmp_path)
+    manifest = _manifest(source, CRUDE)
+    external = dict(pm.compile_product(source, manifest))
+    external["clause_manifest_edges"] = external["clause_manifest_edges"][:-1]  # drop one edge
+    with pytest.raises(pm.ProductManifestError) as err:
+        pm.verify_compilation(external, source, manifest)
+    assert err.value.code == "compilation_edge_not_recomputed"
+
+
+def test_verify_rejects_a_tampered_record_digest(tmp_path: Path) -> None:
+    source = _bundle(tmp_path)
+    manifest = _manifest(source, CRUDE)
+    external = dict(pm.compile_product(source, manifest))
+    # keep every edge faithful but claim a different record digest
+    external["record_sha256"] = "0" * 64
+    with pytest.raises(pm.ProductManifestError) as err:
+        pm.verify_compilation(external, source, manifest)
+    assert err.value.code == "compilation_nondeterminism_detected"
+
+
+def test_every_contract_refusal_code_is_reachable_by_the_runtime() -> None:
+    """Stronger than a subset check: every code the contract lists must be one
+    the module can actually raise. A contract that claims a code the runtime
+    cannot produce is claiming more than the code proves."""
     contract = pm.load_contract()
-    implemented = {
+    reachable = {
         "manifest_source_object_type_unregistered",
         "manifest_clause_ref_unregistered",
         "manifest_clause_digest_mismatch",
         "manifest_scope_predicate_unregistered",
         "manifest_scope_binding_not_in_domain",
+        "manifest_scope_not_recomputable",
         "manifest_universe_exceeds_bound",
         "manifest_caller_dependency_graph_supplied",
         "manifest_artifact_not_registered_role_projection",
+        "manifest_artifact_digest_mismatch",
+        "compilation_edge_not_recomputed",
+        "compilation_nondeterminism_detected",
+        "compilation_release_mismatch",
         "correction_closure_shrank_without_cause",
         "correction_lineage_operation_unvalidated",
     }
     registered = set(contract["refusal_codes"])
-    assert implemented <= registered, implemented - registered
+    assert registered == reachable, {
+        "in_contract_not_reachable": registered - reachable,
+        "reachable_not_in_contract": reachable - registered,
+    }
