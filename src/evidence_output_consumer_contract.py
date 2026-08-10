@@ -119,7 +119,13 @@ _REGISTERED_SOURCE_FIELD_SIGNATURES: Mapping[
         "traversal.truncated": ("exactly_one", "boolean", None, _ATOMICITY),
     }
 )
-_LITERAL_VALUE_CLASSES = {"fixed_identifier", "fixed_nonfactual_text"}
+_NULLABLE_SOURCE_FIELDS = frozenset(
+    {"evidence.public_url", "evidence.published_at"}
+)
+_REGISTERED_TEMPLATE_LITERAL_VALUE_CLASSES = (
+    "fixed_identifier",
+    "fixed_nonfactual_text",
+)
 _REGISTERED_OMISSION_REASON_IDS = (
     "omission:archive_construction_not_clause_backed",
     "omission:not_used_by_consumer",
@@ -201,6 +207,22 @@ _REFUSAL_CODES = {
     "consumer_source_binding_invalid",
     "consumer_template_invalid",
 }
+_SEMANTIC_PROJECTION_FIELDS = (
+    "effective",
+    "binding_rule",
+    "source_field_selectors",
+    "branches",
+    "omission_reason_ids",
+    "templates",
+    "consumers",
+    "migration_boundary",
+    "claim_boundary",
+)
+# This digest binds the inactive registry's complete semantic projection while
+# deliberately excluding operational dependency paths and hashes.
+_REGISTERED_SEMANTIC_PROJECTION_SHA256 = (
+    "ca36e57dfe247e610775b679699686eab7a3121994642d41799ccd329b3cf009"
+)
 
 
 class EvidenceOutputConsumerContractError(ValueError):
@@ -249,6 +271,7 @@ def _registered_selector_rows() -> list[dict[str, Any]]:
                 "value_class": signature[1],
                 "denominator_key": signature[2],
                 "atomicity": signature[3],
+                "nullable_source_missing": source_field in _NULLABLE_SOURCE_FIELDS,
             }
         )
     return rows
@@ -266,10 +289,7 @@ def _validate_selected_clause(
     missingness = clause.get("missingness")
     value_class = signature[1]
     if value is None:
-        if missingness != "source_missing" or value_class not in {
-            "citation_metadata",
-            "datetime",
-        }:
+        if missingness != "source_missing" or source_field not in _NULLABLE_SOURCE_FIELDS:
             _fail("consumer_selector_invalid", source_field)
         return
     if missingness != "present":
@@ -281,7 +301,7 @@ def _validate_selected_clause(
     elif value_class == "integer":
         valid = isinstance(value, int) and not isinstance(value, bool)
     elif value_class in {"citation_metadata", "identifier", "text"}:
-        valid = isinstance(value, str)
+        valid = isinstance(value, str) and bool(value)
     elif value_class == "object":
         valid = isinstance(value, dict)
     elif value_class == "date":
@@ -334,6 +354,17 @@ def _nested_strings(value: object) -> list[str]:
     if isinstance(value, list):
         return [item for nested in value for item in _nested_strings(nested)]
     return []
+
+
+def _semantic_projection_sha256(profile: Mapping[str, Any]) -> str:
+    projection = {field: profile.get(field) for field in _SEMANTIC_PROJECTION_FIELDS}
+    raw = json.dumps(
+        projection,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
 
 
 def _source_release_day(source_bundle: Mapping[str, Any]) -> date:
@@ -622,9 +653,9 @@ def validate_profile_document(
             or scopes != list(scope_signature[1])
         ):
             _fail("consumer_limitation_scope_invalid")
-        if not set(required) <= set(selectors) or not set(
-            literals
-        ) <= _LITERAL_VALUE_CLASSES:
+        if not set(required) <= set(selectors) or literals != list(
+            _REGISTERED_TEMPLATE_LITERAL_VALUE_CLASSES
+        ):
             _fail("consumer_template_invalid")
         branch_id = row["branch_id"]
         if branch_id is not None and not set(
@@ -750,6 +781,8 @@ def validate_profile_document(
         "all_source_clause_omission_receipt_available": False,
     }:
         _fail("consumer_migration_boundary_invalid")
+    if _semantic_projection_sha256(profile) != _REGISTERED_SEMANTIC_PROJECTION_SHA256:
+        _fail("consumer_profile_invalid")
     return selectors, templates
 
 

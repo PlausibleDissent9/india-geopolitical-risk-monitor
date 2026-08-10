@@ -82,6 +82,23 @@
     {"case_id": "consumer_runtime_value_class_mismatch", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
     {"case_id": "consumer_runtime_missingness_mismatch", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
     {"case_id": "consumer_omission_vocabulary_add_and_use", "expected_status": "refused", "expected_reason": "consumer_omission_invalid"},
-    {"case_id": "consumer_template_cross_scope_splice", "expected_status": "refused", "expected_reason": "consumer_limitation_scope_invalid"}
+    {"case_id": "consumer_template_cross_scope_splice", "expected_status": "refused", "expected_reason": "consumer_limitation_scope_invalid"},
+    {"case_id": "consumer_selector_nullability_policy_drift", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_runtime_nonnullable_datetime_null", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_runtime_nonnullable_citation_null", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_runtime_empty_text", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_runtime_empty_identifier", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_runtime_empty_citation_metadata", "expected_status": "refused", "expected_reason": "consumer_selector_invalid"},
+    {"case_id": "consumer_template_literal_class_shrink", "expected_status": "refused", "expected_reason": "consumer_template_invalid"},
+    {"case_id": "consumer_board_template_branch_pair_swap", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_newsroom_template_branch_pair_swap", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_branch_required_field_expansion", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_drop_required_fact_coordinated", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_shrink_gap_inventory_coordinated", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_registered_omission_reason_reassignment", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_uncovered_reason_reassignment", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_claim_boundary_public_equivalence", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_claim_boundary_wrong_type", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"},
+    {"case_id": "consumer_effective_backdated", "expected_status": "refused", "expected_reason": "consumer_profile_invalid"}
   ]
 }

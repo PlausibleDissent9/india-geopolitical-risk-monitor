@@ -138,6 +138,7 @@ def test_profile_uses_source_fields_not_query_specific_clause_ids(
         "value_class": "object",
         "denominator_key": "coverage_rows",
         "atomicity": "one_complete_analytical_clause_value",
+        "nullable_source_missing": False,
     }
 
 
@@ -175,6 +176,7 @@ def test_unknown_or_duplicate_selector_refuses(
         "cardinality",
         "denominator_key",
         "atomicity",
+        "nullable_source_missing",
         "coordinated_cardinality_denominator",
     ],
 )
@@ -196,6 +198,8 @@ def test_every_registered_selector_signature_dimension_is_fixed(
         row["denominator_key"] = "evidence_items"
     elif attack == "atomicity":
         row["atomicity"] = "renderer_aggregate"
+    elif attack == "nullable_source_missing":
+        row["nullable_source_missing"] = True
     else:
         row["cardinality"] = "exact_bundle_denominator"
         row["denominator_key"] = "evidence_items"
@@ -251,6 +255,65 @@ def test_registered_runtime_value_and_missingness_semantics_refuse_mismatch(
         )
 
 
+@pytest.mark.parametrize(
+    "source_field",
+    [
+        "event.starts_at",
+        "event.last_verified_at",
+        "evidence.observed_at",
+        "evidence.title",
+    ],
+)
+def test_only_registered_nullable_fields_accept_source_missing_null(
+    tmp_path: Path, source_field: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    mutation = _mutated_selected_clause(
+        source, source_field, None, "source_missing"
+    )
+    with _refuses("consumer_selector_invalid"):
+        consumer.validate_resolution(
+            _profile(source), mutation, consumer.expected_source_binding(mutation)
+        )
+
+
+@pytest.mark.parametrize(
+    "source_field", ["evidence.public_url", "evidence.published_at"]
+)
+def test_exact_registered_nullable_fields_accept_source_missing_null(
+    tmp_path: Path, source_field: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    mutation = _mutated_selected_clause(
+        source, source_field, None, "source_missing"
+    )
+    result = consumer.validate_resolution(
+        _profile(source), mutation, consumer.expected_source_binding(mutation)
+    )
+    assert result["status"] == "blocked_uncovered_reader_datums"
+
+
+@pytest.mark.parametrize(
+    "source_field",
+    [
+        "event.canonical_label",
+        "event.class",
+        "evidence.title",
+        "evidence.source_id",
+        "target.canonical_name",
+    ],
+)
+def test_registered_string_fields_refuse_present_empty_string(
+    tmp_path: Path, source_field: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    mutation = _mutated_selected_clause(source, source_field, "", "present")
+    with _refuses("consumer_selector_invalid"):
+        consumer.validate_resolution(
+            _profile(source), mutation, consumer.expected_source_binding(mutation)
+        )
+
+
 @pytest.mark.parametrize("literal_class", ["integer", "date", "citation_metadata"])
 def test_template_cannot_add_number_date_or_citation_as_an_undeclared_literal(
     tmp_path: Path, literal_class: str
@@ -263,6 +326,57 @@ def test_template_cannot_add_number_date_or_citation_as_an_undeclared_literal(
     with _refuses("consumer_template_invalid"):
         consumer.validate_profile_document(
             profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+
+
+def test_template_literal_value_classes_are_an_exact_semantic_signature(
+    tmp_path: Path,
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    profile["templates"][0]["literal_value_classes"].pop()
+    with _refuses("consumer_template_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_template_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
+        )
+
+
+@pytest.mark.parametrize(
+    "first_template_id,second_template_id",
+    [
+        (
+            "template:board.linkage.path_found.v1",
+            "template:board.linkage.no_path.v1",
+        ),
+        (
+            "template:newsroom.release_structure.path_found.v1",
+            "template:newsroom.release_structure.no_path.v1",
+        ),
+    ],
+)
+def test_template_branch_pair_swap_refuses_end_to_end(
+    tmp_path: Path, first_template_id: str, second_template_id: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    templates = {row["template_id"]: row for row in profile["templates"]}
+    first = templates[first_template_id]
+    second = templates[second_template_id]
+    first["branch_id"], second["branch_id"] = (
+        second["branch_id"],
+        first["branch_id"],
+    )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
         )
 
 
@@ -288,6 +402,89 @@ def test_branch_predicate_mismatch_and_missing_required_atom_refuse(
     with _refuses("consumer_selector_invalid"):
         consumer.validate_resolution(
             _profile(source), missing, consumer.expected_source_binding(missing)
+        )
+
+
+def test_coordinated_branch_required_field_expansion_refuses_end_to_end(
+    tmp_path: Path,
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    profile["branches"][0]["required_source_fields"].append(
+        "target.canonical_name"
+    )
+    profile["branches"][0]["required_source_fields"].sort()
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
+        )
+
+
+def test_coordinated_required_fact_drop_refuses_end_to_end(tmp_path: Path) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    template = next(
+        row
+        for row in profile["templates"]
+        if row["template_id"] == "template:board.event.record.v1"
+    )
+    template["required_source_fields"].remove("event.starts_at")
+    board = next(
+        row
+        for row in profile["consumers"]
+        if row["output_id"] == "output:board_brief"
+    )
+    board["required_source_fields"].remove("event.starts_at")
+    board["omitted_registered_selector_fields"].append(
+        {
+            "source_field": "event.starts_at",
+            "reason_id": "omission:not_used_by_consumer",
+        }
+    )
+    board["omitted_registered_selector_fields"].sort(
+        key=lambda row: row["source_field"]
+    )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
+        )
+
+
+def test_coordinated_gap_inventory_shrink_refuses_end_to_end(tmp_path: Path) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    board = next(
+        row
+        for row in profile["consumers"]
+        if row["output_id"] == "output:board_brief"
+    )
+    board["uncovered_reader_datums"].pop()
+    uncovered_ids = sorted(
+        {
+            row["datum_id"]
+            for output in profile["consumers"]
+            for row in output["uncovered_reader_datums"]
+        }
+    )
+    profile["migration_boundary"]["uncovered_datum_ids"] = uncovered_ids
+    profile["migration_boundary"]["uncovered_datum_denominator"] = len(
+        uncovered_ids
+    )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
         )
 
 
@@ -397,6 +594,35 @@ def test_coordinated_omission_vocabulary_add_and_use_refuses_end_to_end(
         )
 
 
+@pytest.mark.parametrize("row_kind", ["selector_omission", "uncovered_datum"])
+def test_registered_consumer_reason_assignments_are_exact(
+    tmp_path: Path, row_kind: str
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    board = next(
+        row
+        for row in profile["consumers"]
+        if row["output_id"] == "output:board_brief"
+    )
+    if row_kind == "selector_omission":
+        board["omitted_registered_selector_fields"][0]["reason_id"] = (
+            "omission:reader_datum_not_clause_backed"
+        )
+    else:
+        board["uncovered_reader_datums"][0]["reason_id"] = (
+            "omission:template_body_not_registered"
+        )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
+        )
+
+
 @pytest.mark.parametrize(
     "dependency_kind",
     [
@@ -442,6 +668,38 @@ def test_future_profile_and_cross_query_or_release_splice_refuse(
     release_splice["release_record_sha256"] = "f" * 64
     with _refuses("consumer_source_binding_invalid"):
         consumer.validate_resolution(valid_profile, path_source, release_splice)
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("claim_boundary", "Production and public output equivalence is established."),
+        ("claim_boundary", True),
+        ("effective", "1970-01-01"),
+    ],
+)
+def test_claim_boundary_and_effective_date_are_exact_semantic_identity(
+    tmp_path: Path, field: str, value: Any
+) -> None:
+    _, source = _compiled(tmp_path)
+    profile = copy.deepcopy(_profile(source))
+    profile[field] = value
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_profile_document(
+            profile, release_effective=date(2026, 8, 8), source_bundle=source
+        )
+    with _refuses("consumer_profile_invalid"):
+        consumer.validate_resolution(
+            profile, source, consumer.expected_source_binding(source)
+        )
+
+
+def test_complete_semantic_projection_is_code_owned(tmp_path: Path) -> None:
+    _, source = _compiled(tmp_path)
+    profile = _profile(source)
+    assert consumer._semantic_projection_sha256(profile) == (
+        consumer._REGISTERED_SEMANTIC_PROJECTION_SHA256
+    )
 
 
 def test_all_uncovered_reader_data_are_explicit_and_block_every_consumer(

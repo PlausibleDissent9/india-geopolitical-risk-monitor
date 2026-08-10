@@ -7,7 +7,7 @@
   "validator_runtime": {
     "kind": "evidence_output_consumer_contract_validator",
     "path": "src/evidence_output_consumer_contract.py",
-    "sha256": "e32d9c3d380b669db7733f197dd8135ee88fbf4f0d4cd01722e3cb54681c783d",
+    "sha256": "d837f3fd72fed9c0977c279f573e32cf6b9f4bd91eace7eef0dc19d4b3092b19",
     "authority": "consumer_contract_validator_not_clause_authority"
   },
   "registry_extension": {
@@ -40,7 +40,7 @@
     {
       "kind": "analytical_clause_source_profile",
       "path": "governance/analytical_clause_source_profile.json",
-      "sha256": "5cf50f126a9c40f91959c7a9c56fac68166772ae00abe4efa18309db1902d520",
+      "sha256": "bedb840a8f0350eb6646f7f4337e62d7c118fc949f91338d78cb77aafa75b190",
       "authority": "consumer_dependency_not_clause_authority"
     }
   ],
@@ -56,30 +56,30 @@
     "activation": false
   },
   "source_field_selectors": [
-    {"source_field": "coverage.row", "cardinality": "exact_bundle_denominator", "value_class": "object", "denominator_key": "coverage_rows", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "event.canonical_label", "cardinality": "exactly_one", "value_class": "text", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "event.class", "cardinality": "exactly_one", "value_class": "identifier", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "event.last_verified_at", "cardinality": "exactly_one", "value_class": "datetime", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "event.record_status", "cardinality": "exactly_one", "value_class": "identifier", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "event.starts_at", "cardinality": "exactly_one", "value_class": "datetime", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.content_availability", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.identity", "cardinality": "exact_bundle_denominator", "value_class": "object", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.observed_at", "cardinality": "exact_bundle_denominator", "value_class": "datetime", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.public_url", "cardinality": "exact_bundle_denominator", "value_class": "citation_metadata", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.published_at", "cardinality": "exact_bundle_denominator", "value_class": "datetime", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.rights_use", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.source_id", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.title", "cardinality": "exact_bundle_denominator", "value_class": "citation_metadata", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "evidence.verification_status", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "provenance.source_object_ref", "cardinality": "exact_bundle_denominator", "value_class": "object", "denominator_key": "object_evidence_rows", "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "release.generated_at", "cardinality": "exactly_one", "value_class": "datetime", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "target.canonical_name", "cardinality": "exactly_one", "value_class": "text", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "target.identity", "cardinality": "exactly_one", "value_class": "object", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "traversal.max_hops", "cardinality": "exactly_one", "value_class": "integer", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "traversal.max_paths", "cardinality": "exactly_one", "value_class": "integer", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "traversal.returned_paths", "cardinality": "exactly_one", "value_class": "integer", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "traversal.status", "cardinality": "exactly_one", "value_class": "identifier", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"},
-    {"source_field": "traversal.truncated", "cardinality": "exactly_one", "value_class": "boolean", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value"}
+    {"source_field": "coverage.row", "cardinality": "exact_bundle_denominator", "value_class": "object", "denominator_key": "coverage_rows", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "event.canonical_label", "cardinality": "exactly_one", "value_class": "text", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "event.class", "cardinality": "exactly_one", "value_class": "identifier", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "event.last_verified_at", "cardinality": "exactly_one", "value_class": "datetime", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "event.record_status", "cardinality": "exactly_one", "value_class": "identifier", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "event.starts_at", "cardinality": "exactly_one", "value_class": "datetime", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "evidence.content_availability", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "evidence.identity", "cardinality": "exact_bundle_denominator", "value_class": "object", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "evidence.observed_at", "cardinality": "exact_bundle_denominator", "value_class": "datetime", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "evidence.public_url", "cardinality": "exact_bundle_denominator", "value_class": "citation_metadata", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": true},
+    {"source_field": "evidence.published_at", "cardinality": "exact_bundle_denominator", "value_class": "datetime", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": true},
+    {"source_field": "evidence.rights_use", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "evidence.source_id", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "evidence.title", "cardinality": "exact_bundle_denominator", "value_class": "citation_metadata", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "evidence.verification_status", "cardinality": "exact_bundle_denominator", "value_class": "identifier", "denominator_key": "evidence_items", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "provenance.source_object_ref", "cardinality": "exact_bundle_denominator", "value_class": "object", "denominator_key": "object_evidence_rows", "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "release.generated_at", "cardinality": "exactly_one", "value_class": "datetime", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "target.canonical_name", "cardinality": "exactly_one", "value_class": "text", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "target.identity", "cardinality": "exactly_one", "value_class": "object", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "traversal.max_hops", "cardinality": "exactly_one", "value_class": "integer", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "traversal.max_paths", "cardinality": "exactly_one", "value_class": "integer", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "traversal.returned_paths", "cardinality": "exactly_one", "value_class": "integer", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "traversal.status", "cardinality": "exactly_one", "value_class": "identifier", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false},
+    {"source_field": "traversal.truncated", "cardinality": "exactly_one", "value_class": "boolean", "denominator_key": null, "atomicity": "one_complete_analytical_clause_value", "nullable_source_missing": false}
   ],
   "branches": [
     {

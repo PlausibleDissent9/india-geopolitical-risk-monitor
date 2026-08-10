@@ -1677,6 +1677,8 @@ def _case_refusal(
             elif case_id == "consumer_selector_coordinated_signature_drift":
                 selector["cardinality"] = "exact_bundle_denominator"
                 selector["denominator_key"] = "evidence_items"
+            elif case_id == "consumer_selector_nullability_policy_drift":
+                selector["nullable_source_missing"] = True
             else:
                 raise AssertionError(case_id)
             consumer.validate_profile_document(
@@ -1687,13 +1689,22 @@ def _case_refusal(
         elif case_id in {
             "consumer_runtime_value_class_mismatch",
             "consumer_runtime_missingness_mismatch",
+            "consumer_runtime_nonnullable_datetime_null",
+            "consumer_runtime_nonnullable_citation_null",
+            "consumer_runtime_empty_text",
+            "consumer_runtime_empty_identifier",
+            "consumer_runtime_empty_citation_metadata",
         }:
             mutation = deepcopy(source)
-            source_field = (
-                "event.canonical_label"
-                if case_id == "consumer_runtime_value_class_mismatch"
-                else "evidence.public_url"
-            )
+            source_field = {
+                "consumer_runtime_value_class_mismatch": "event.canonical_label",
+                "consumer_runtime_missingness_mismatch": "evidence.public_url",
+                "consumer_runtime_nonnullable_datetime_null": "event.starts_at",
+                "consumer_runtime_nonnullable_citation_null": "evidence.title",
+                "consumer_runtime_empty_text": "event.canonical_label",
+                "consumer_runtime_empty_identifier": "event.class",
+                "consumer_runtime_empty_citation_metadata": "evidence.title",
+            }[case_id]
             clause = next(
                 row
                 for row in mutation["clauses"]
@@ -1702,9 +1713,18 @@ def _case_refusal(
             if case_id == "consumer_runtime_value_class_mismatch":
                 clause["value"] = 20260808
                 clause["missingness"] = "present"
-            else:
+            elif case_id == "consumer_runtime_missingness_mismatch":
                 clause["value"] = None
                 clause["missingness"] = "not_applicable"
+            elif case_id in {
+                "consumer_runtime_nonnullable_datetime_null",
+                "consumer_runtime_nonnullable_citation_null",
+            }:
+                clause["value"] = None
+                clause["missingness"] = "source_missing"
+            else:
+                clause["value"] = ""
+                clause["missingness"] = "present"
             clause.update(ac._seal(clause))
             mutation = ac._seal(mutation)
             consumer.validate_resolution(
@@ -1720,12 +1740,52 @@ def _case_refusal(
                 release_effective=date(2026, 8, 8),
                 source_bundle=source,
             )
+        elif case_id == "consumer_template_literal_class_shrink":
+            consumer_profile["templates"][0]["literal_value_classes"].pop()
+            consumer.validate_profile_document(
+                consumer_profile,
+                release_effective=date(2026, 8, 8),
+                source_bundle=source,
+            )
         elif case_id == "consumer_branch_predicate_mismatch":
             consumer_profile["branches"][0]["predicate"]["value"] = "no_path"
             consumer.validate_profile_document(
                 consumer_profile,
                 release_effective=date(2026, 8, 8),
                 source_bundle=source,
+            )
+        elif case_id in {
+            "consumer_board_template_branch_pair_swap",
+            "consumer_newsroom_template_branch_pair_swap",
+        }:
+            prefix = (
+                "template:board.linkage"
+                if case_id == "consumer_board_template_branch_pair_swap"
+                else "template:newsroom.release_structure"
+            )
+            templates = {
+                row["template_id"]: row for row in consumer_profile["templates"]
+            }
+            path_template = templates[f"{prefix}.path_found.v1"]
+            no_path_template = templates[f"{prefix}.no_path.v1"]
+            path_template["branch_id"], no_path_template["branch_id"] = (
+                no_path_template["branch_id"],
+                path_template["branch_id"],
+            )
+            consumer.validate_resolution(
+                consumer_profile,
+                source,
+                consumer.expected_source_binding(source),
+            )
+        elif case_id == "consumer_branch_required_field_expansion":
+            consumer_profile["branches"][0]["required_source_fields"].append(
+                "target.canonical_name"
+            )
+            consumer_profile["branches"][0]["required_source_fields"].sort()
+            consumer.validate_resolution(
+                consumer_profile,
+                source,
+                consumer.expected_source_binding(source),
             )
         elif case_id == "consumer_missing_required_clause":
             mutation = deepcopy(source)
@@ -1787,6 +1847,24 @@ def _case_refusal(
                 source,
                 consumer.expected_source_binding(source),
             )
+        elif case_id == "consumer_registered_omission_reason_reassignment":
+            consumer_profile["consumers"][0][
+                "omitted_registered_selector_fields"
+            ][0]["reason_id"] = "omission:reader_datum_not_clause_backed"
+            consumer.validate_resolution(
+                consumer_profile,
+                source,
+                consumer.expected_source_binding(source),
+            )
+        elif case_id == "consumer_uncovered_reason_reassignment":
+            consumer_profile["consumers"][0]["uncovered_reader_datums"][0][
+                "reason_id"
+            ] = "omission:template_body_not_registered"
+            consumer.validate_resolution(
+                consumer_profile,
+                source,
+                consumer.expected_source_binding(source),
+            )
         elif case_id == "consumer_dependency_drift":
             consumer_profile["consumer_dependencies"][0]["sha256"] = "0" * 64
             consumer.validate_profile_document(
@@ -1820,6 +1898,77 @@ def _case_refusal(
                 consumer_profile,
                 release_effective=date(2026, 8, 8),
                 source_bundle=source,
+            )
+        elif case_id == "consumer_drop_required_fact_coordinated":
+            template = next(
+                row
+                for row in consumer_profile["templates"]
+                if row["template_id"] == "template:board.event.record.v1"
+            )
+            template["required_source_fields"].remove("event.starts_at")
+            board = next(
+                row
+                for row in consumer_profile["consumers"]
+                if row["output_id"] == "output:board_brief"
+            )
+            board["required_source_fields"].remove("event.starts_at")
+            board["omitted_registered_selector_fields"].append(
+                {
+                    "source_field": "event.starts_at",
+                    "reason_id": "omission:not_used_by_consumer",
+                }
+            )
+            board["omitted_registered_selector_fields"].sort(
+                key=lambda row: row["source_field"]
+            )
+            consumer.validate_resolution(
+                consumer_profile,
+                source,
+                consumer.expected_source_binding(source),
+            )
+        elif case_id == "consumer_shrink_gap_inventory_coordinated":
+            board = next(
+                row
+                for row in consumer_profile["consumers"]
+                if row["output_id"] == "output:board_brief"
+            )
+            board["uncovered_reader_datums"].pop()
+            uncovered_ids = sorted(
+                {
+                    row["datum_id"]
+                    for output in consumer_profile["consumers"]
+                    for row in output["uncovered_reader_datums"]
+                }
+            )
+            consumer_profile["migration_boundary"][
+                "uncovered_datum_ids"
+            ] = uncovered_ids
+            consumer_profile["migration_boundary"][
+                "uncovered_datum_denominator"
+            ] = len(uncovered_ids)
+            consumer.validate_resolution(
+                consumer_profile,
+                source,
+                consumer.expected_source_binding(source),
+            )
+        elif case_id in {
+            "consumer_claim_boundary_public_equivalence",
+            "consumer_claim_boundary_wrong_type",
+            "consumer_effective_backdated",
+        }:
+            field, value = {
+                "consumer_claim_boundary_public_equivalence": (
+                    "claim_boundary",
+                    "Production and public output equivalence is established.",
+                ),
+                "consumer_claim_boundary_wrong_type": ("claim_boundary", True),
+                "consumer_effective_backdated": ("effective", "1970-01-01"),
+            }[case_id]
+            consumer_profile[field] = value
+            consumer.validate_resolution(
+                consumer_profile,
+                source,
+                consumer.expected_source_binding(source),
             )
         else:
             raise AssertionError(case_id)
@@ -1919,7 +2068,7 @@ def test_normative_adversarial_registry_is_complete_and_executed(
             assert exc.value.code == row["expected_reason"], case_id
         executed.add(case_id)
     assert executed == {row["case_id"] for row in registry["cases"]}
-    assert len(executed) == 80
+    assert len(executed) == 97
 
 
 def test_source_profile_pins_incumbent_and_upstream_exact_bytes() -> None:
