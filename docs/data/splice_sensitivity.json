@@ -5,8 +5,8 @@
   "independent_denominator": "Last pre-bridge DOC-API store, git commit 091c25e, paired with retained NGrams day caches",
   "known_limitations": "Only 18 independent days are available for the three re-estimated channels; daily observations may be serially dependent. US Trade and Shipping remain untested beyond n=1.",
   "affected_start": "2026-07-01",
-  "affected_end": "2026-08-08",
-  "n_adjusted_store_days": 39,
+  "affected_end": "2026-08-09",
+  "n_adjusted_store_days": 40,
   "adjusted_store_dates": [
    "2026-07-01",
    "2026-07-02",
@@ -46,9 +46,10 @@
    "2026-08-05",
    "2026-08-06",
    "2026-08-07",
-   "2026-08-08"
+   "2026-08-08",
+   "2026-08-09"
   ],
-  "generated": "2026-08-09",
+  "generated": "2026-08-10",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -140,7 +141,8 @@
   "2026-08-05",
   "2026-08-06",
   "2026-08-07",
-  "2026-08-08"
+  "2026-08-08",
+  "2026-08-09"
  ],
  "daily": {
   "primary": {
@@ -183,7 +185,8 @@
     90.2,
     65.1,
     68.0,
-    59.3
+    59.3,
+    65.2
    ],
    "china_east": [
     68.9,
@@ -224,7 +227,8 @@
     4.5,
     5.3,
     27.3,
-    26.4
+    26.4,
+    5.5
    ],
    "gulf_energy": [
     81.6,
@@ -265,7 +269,8 @@
     78.5,
     77.7,
     76.3,
-    77.8
+    77.8,
+    78.5
    ],
    "composite": [
     66.2,
@@ -306,7 +311,8 @@
     58.4,
     48.9,
     55.9,
-    63.8
+    63.8,
+    54.5
    ]
   },
   "independent_ratio_sensitivity": {
@@ -349,7 +355,8 @@
     87.0,
     57.1,
     59.3,
-    50.2
+    50.2,
+    57.1
    ],
    "china_east": [
     81.5,
@@ -390,7 +397,8 @@
     8.4,
     10.4,
     42.2,
-    41.7
+    41.7,
+    11.1
    ],
    "gulf_energy": [
     81.6,
@@ -431,7 +439,8 @@
     78.4,
     77.7,
     76.2,
-    77.8
+    77.8,
+    78.5
    ],
    "composite": [
     68.1,
@@ -472,7 +481,8 @@
     58.5,
     48.3,
     57.1,
-    65.0
+    65.0,
+    54.0
    ]
   },
   "delta": {
@@ -515,7 +525,8 @@
     -3.2,
     -8.0,
     -8.7,
-    -9.1
+    -9.1,
+    -8.1
    ],
    "china_east": [
     12.6,
@@ -556,7 +567,8 @@
     3.9,
     5.0,
     14.9,
-    15.3
+    15.3,
+    5.6
    ],
    "gulf_energy": [
     0.0,
@@ -597,6 +609,7 @@
     -0.1,
     0.0,
     -0.1,
+    0.0,
     0.0
    ],
    "composite": [
@@ -638,7 +651,8 @@
     0.1,
     -0.6,
     1.2,
-    1.2
+    1.2,
+    -0.5
    ]
   }
  },
@@ -683,7 +697,8 @@
     89.9,
     88.9,
     86.9,
-    85.8
+    85.8,
+    81.5
    ],
    "china_east": [
     88.3,
@@ -724,7 +739,8 @@
     46.2,
     29.9,
     26.2,
-    24.1
+    24.1,
+    8.2
    ],
    "gulf_energy": [
     82.1,
@@ -765,7 +781,8 @@
     78.0,
     77.3,
     77.0,
-    77.5
+    77.5,
+    77.3
    ],
    "composite": [
     71.9,
@@ -806,7 +823,8 @@
     66.2,
     61.5,
     60.1,
-    62.7
+    62.7,
+    58.8
    ]
   },
   "independent_ratio_sensitivity": {
@@ -849,7 +867,8 @@
     86.2,
     84.4,
     81.3,
-    79.6
+    79.6,
+    73.1
    ],
    "china_east": [
     89.3,
@@ -890,7 +909,8 @@
     66.5,
     53.4,
     50.3,
-    48.5
+    48.5,
+    26.9
    ],
    "gulf_energy": [
     82.1,
@@ -931,7 +951,8 @@
     77.9,
     77.3,
     77.0,
-    77.5
+    77.5,
+    77.3
    ],
    "composite": [
     71.4,
@@ -972,7 +993,8 @@
     69.5,
     65.3,
     63.8,
-    66.3
+    66.3,
+    60.8
    ]
   },
   "delta": {
@@ -1015,7 +1037,8 @@
     -3.7,
     -4.5,
     -5.6,
-    -6.2
+    -6.2,
+    -8.5
    ],
    "china_east": [
     1.0,
@@ -1056,7 +1079,8 @@
     20.3,
     23.5,
     24.1,
-    24.4
+    24.4,
+    18.7
    ],
    "gulf_energy": [
     0.0,
@@ -1095,6 +1119,7 @@
     0.0,
     -0.1,
     -0.1,
+    0.0,
     0.0,
     0.0,
     0.0
@@ -1138,7 +1163,8 @@
     3.3,
     3.8,
     3.7,
-    3.6
+    3.6,
+    2.1
    ]
   }
  },
@@ -1147,12 +1173,12 @@
    "pakistan_west": {
     "median_absolute_shift": 7.57,
     "maximum_absolute_shift": 10.94,
-    "latest_shift": -9.12
+    "latest_shift": -8.13
    },
    "china_east": {
-    "median_absolute_shift": 13.6,
+    "median_absolute_shift": 13.32,
     "maximum_absolute_shift": 18.65,
-    "latest_shift": 15.29
+    "latest_shift": 5.61
    },
    "gulf_energy": {
     "median_absolute_shift": 0.0,
@@ -1162,19 +1188,19 @@
    "composite": {
     "median_absolute_shift": 1.26,
     "maximum_absolute_shift": 2.97,
-    "latest_shift": 1.23
+    "latest_shift": -0.5
    }
   },
   "trailing_7_day": {
    "pakistan_west": {
     "median_absolute_shift": 8.45,
     "maximum_absolute_shift": 11.41,
-    "latest_shift": -6.2
+    "latest_shift": -8.45
    },
    "china_east": {
-    "median_absolute_shift": 21.83,
+    "median_absolute_shift": 21.76,
     "maximum_absolute_shift": 25.63,
-    "latest_shift": 24.37
+    "latest_shift": 18.73
    },
    "gulf_energy": {
     "median_absolute_shift": 0.0,
@@ -1182,9 +1208,9 @@
     "latest_shift": 0.0
    },
    "composite": {
-    "median_absolute_shift": 2.68,
+    "median_absolute_shift": 2.62,
     "maximum_absolute_shift": 4.11,
-    "latest_shift": 3.63
+    "latest_shift": 2.06
    }
   }
  }
