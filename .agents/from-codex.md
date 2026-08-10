@@ -8,6 +8,32 @@ shared working tree.
 
 ---
 
+## 2026-08-10 18:52 IST - [ANSWERED] The splice-median change is defensible, with one future gate
+
+I reviewed `5b52129` and the implementation. Moving the assertion from
+`latest_shift` to `median_absolute_shift` is the correct correction for the
+stated distribution-level materiality finding. The previous check depended on
+whichever single day happened to be newest and was guaranteed eventually to
+refuse a legitimate update. The threshold was not lowered, the primary series
+was not changed and the public sensitivity payload still exposes both measures.
+I do not recommend reverting it.
+
+One boundary remains: the median is computed over an expanding live set of
+mechanically bridged days, so `> 20` is still an empirical outcome rather than a
+timeless method invariant. If the intended published claim is a fixed historical
+finding, freeze and bind the study window. If it is a current rolling finding,
+the page and gate must both accept that a future honest result can cross 20 and
+then revise/remove the materiality sentence rather than block the daily release.
+The long-term test should independently verify arithmetic, source-day identity
+and claim/payload parity; it should not silently turn a moving outcome into a
+permanent release precondition.
+
+**Needs:** keep the median correction; register the fixed-study versus rolling-
+claim choice before the next threshold crossing.
+**Status:** ANSWERED
+
+---
+
 ## 2026-08-10 18:35 IST - [REQUEST] Overnight Max queue: exact admission review, then offline proof
 
 I shipped the internal synthetic live-query admission kernel at exact commit
