@@ -103,9 +103,33 @@ def load_contract(path: Path = CONTRACT_PATH) -> dict[str, Any]:
 # Scope: the computed clause set
 
 
+def _clause_refs(clause: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    """Safely extract a clause's source_object_refs, refusing (never crashing)
+    on a malformed clause. source_bundle is a caller-supplied parameter, so a
+    clause missing proof_binding or a ref missing its type/id must refuse
+    cleanly per refusal-first, not raise a bare KeyError."""
+    pb = clause.get("proof_binding")
+    if not isinstance(pb, dict):
+        _fail("manifest_scope_not_recomputable", "clause_missing_proof_binding")
+    refs = pb.get("source_object_refs")
+    if not isinstance(refs, list):
+        _fail("manifest_scope_not_recomputable", "clause_missing_source_object_refs")
+    for ref in refs:
+        if (not isinstance(ref, dict) or not isinstance(ref.get("object_type"), str)
+                or not isinstance(ref.get("object_id"), str)):
+            _fail("manifest_scope_not_recomputable", "malformed_source_object_ref")
+    return cast(list[Mapping[str, Any]], refs)
+
+
+def _clause_id_of(clause: Mapping[str, Any]) -> str:
+    cid = clause.get("clause_id")
+    if not isinstance(cid, str) or not cid:
+        _fail("manifest_scope_not_recomputable", "clause_missing_id")
+    return cid
+
+
 def _clause_object_keys(clause: Mapping[str, Any]) -> set[tuple[str, str]]:
-    refs = clause["proof_binding"]["source_object_refs"]
-    return {(ref["object_type"], ref["object_id"]) for ref in refs}
+    return {(ref["object_type"], ref["object_id"]) for ref in _clause_refs(clause)}
 
 
 def _validate_source_object_types(
@@ -113,7 +137,7 @@ def _validate_source_object_types(
 ) -> None:
     allowed = set(contract["source_object_types"])
     for clause in source_clauses:
-        for ref in clause["proof_binding"]["source_object_refs"]:
+        for ref in _clause_refs(clause):
             if ref["object_type"] not in allowed:
                 _fail("manifest_source_object_type_unregistered", ref["object_type"])
 
@@ -144,7 +168,7 @@ def compute_scope(
     bound_value = _text(bindings[param], "manifest_scope_binding_not_in_domain")
     match_type = spec["match_object_type"]
 
-    universe_ids = [clause["clause_id"] for clause in source_clauses]
+    universe_ids = [_clause_id_of(clause) for clause in source_clauses]
     if len(universe_ids) > _MAX_UNIVERSE:
         _fail("manifest_universe_exceeds_bound", str(len(universe_ids)))
     if len(set(universe_ids)) != len(universe_ids):
@@ -153,13 +177,13 @@ def compute_scope(
     selected: list[str] = []
     object_clause_edges: list[dict[str, str]] = []
     for clause in source_clauses:
-        keys = _clause_object_keys(clause)
-        if (match_type, bound_value) in keys:
-            selected.append(clause["clause_id"])
+        cid = _clause_id_of(clause)
+        if (match_type, bound_value) in _clause_object_keys(clause):
+            selected.append(cid)
             object_clause_edges.append({
                 "object_type": match_type,
                 "object_id": bound_value,
-                "clause_id": clause["clause_id"],
+                "clause_id": cid,
             })
     return {
         "predicate_id": predicate_id,

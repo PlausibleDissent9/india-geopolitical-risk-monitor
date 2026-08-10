@@ -265,3 +265,17 @@ symlink leaf and a member reached through a symlinked parent.
 Files: src/offline_bundle.py, tests/test_offline_bundle.py.
 Checks: pytest (23 passed), ruff + mypy clean. New test creates a symlink to an
 out-of-tree secret and asserts the member refuses before its target is read.
+
+## T17 — Product Compiler: refuse malformed clauses cleanly (refusal-first)
+Status: DONE (local commit; NOT pushed)
+Adversarial self-review of product_manifest: source_bundle is a caller
+parameter, but compute_scope read clause["proof_binding"]["source_object_refs"]
+and clause["clause_id"] directly -> a malformed clause raised a bare KeyError,
+not a typed refusal (refusal-first violation: "if unverifiable, refuse, never
+approximate"). Fix: _clause_refs / _clause_id_of accessors refuse
+manifest_scope_not_recomputable on a clause missing proof_binding, missing
+source_object_refs, a ref missing object_type/object_id, or missing clause_id.
+Files: src/product_manifest.py, tests/test_product_manifest.py.
+Checks: pytest (26 passed), ruff + mypy clean. New test drives four malformed
+clauses. The structural-pin acceptance test (#1) correctly caught the membership
+line refactor and was updated to the new expression, not loosened.

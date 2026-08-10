@@ -328,7 +328,7 @@ def test_no_caller_authored_selection_path_exists_in_the_runtime() -> None:
             f"{forbidden!r} in product_manifest.py: a caller binding could "
             "become a selector, re-opening the caller-authored-selection hole")
     # The one membership operator is identity against the registered key.
-    assert "(match_type, bound_value) in keys" in src, (
+    assert "(match_type, bound_value) in _clause_object_keys(clause)" in src, (
         "scope membership must be identity against the registered object key; "
         "if this line changed, re-verify no pattern match slipped in")
 
@@ -362,6 +362,24 @@ def test_correction_closure_is_monotone_in_predecessors_and_successors(tmp_path:
 
 
 # --- dedicated triggering case for each remaining refusal code --------------
+
+def test_malformed_clause_refuses_cleanly_not_crashes() -> None:
+    """Adversarial self-review: source_bundle is a caller parameter, so a clause
+    missing proof_binding (or clause_id, or a well-formed ref) must refuse with a
+    typed code per refusal-first, never raise a bare KeyError."""
+    contract = pm.load_contract()
+    scope = _scope(CRUDE)
+    for bad_clause in (
+        {"clause_id": "c1", "record_sha256": "0" * 64},   # no proof_binding
+        {"clause_id": "c1", "proof_binding": {}},          # no source_object_refs
+        {"clause_id": "c1",
+         "proof_binding": {"source_object_refs": [{"object_id": "x"}]}},  # ref missing type
+        {"proof_binding": {"source_object_refs": []}},     # no clause_id
+    ):
+        with pytest.raises(pm.ProductManifestError) as err:
+            pm.compute_scope([bad_clause], scope, contract)
+        assert err.value.code == "manifest_scope_not_recomputable", bad_clause
+
 
 def test_scope_binding_wrong_key_refuses(tmp_path: Path) -> None:
     source = _bundle(tmp_path)
