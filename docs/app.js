@@ -547,8 +547,18 @@ function renderFinalPublicationStatus(payload) {
     acquisition_failed: "source acquisition or validation failed",
     pipeline_failed: "publication validation failed",
     delayed_final: "final publication delayed",
+    legacy_proof_limited: "legacy final published with limited denominator proof",
   };
   const label = labels[state.status] || "final publication delayed";
+  if (state.status === "legacy_proof_limited") {
+    el.innerHTML = `<strong>Legacy final with proof limitation.</strong> ` +
+      `${esc(state.target_date)} remains published with all 48 half-hour ` +
+      `windows verified, but its English denominator was source-reported ` +
+      `and cannot be independently reconstructed. No new-contract source ` +
+      `receipt is claimed. A provisional nowcast remains separate and non-final.`;
+    el.hidden = false;
+    return;
+  }
   const latest = state.latest_finalized_date
     ? ` The latest finalized measure remains ${esc(state.latest_finalized_date)}.`
     : " No finalized measure is currently available.";

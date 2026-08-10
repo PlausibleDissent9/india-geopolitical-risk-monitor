@@ -54,7 +54,7 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
         "status": "pass",
         "policy": "refuse_publish_on_red_candidate",
         "command": "bash scripts/gate.sh --committed",
-        "push_paths_verified": 2,
+        "push_paths_verified": 3,
     }
     # 13 since 2026-08-09: historical-intelligence.yml. This count is an
     # inventory lock -- a lane that appears without a deliberate edit here
@@ -139,7 +139,7 @@ def test_new_actions_write_permission_is_refused(security_tree: Path) -> None:
 def test_direct_final_recovery_cas_must_keep_frozen_parent_guard(
     security_tree: Path,
 ) -> None:
-    path = security_tree / ".github" / "workflows" / "morning.yml"
+    path = security_tree / "scripts" / "publish_final_cas.sh"
     path.write_text(
         path.read_text(encoding="utf-8").replace(
             'REMOTE_COMMIT=$(git rev-parse origin/main)',
@@ -148,7 +148,43 @@ def test_direct_final_recovery_cas_must_keep_frozen_parent_guard(
         ),
         encoding="utf-8",
     )
-    _refusal(security_tree, "publisher_frozen_cas_incomplete")
+    _rehash_registered_script(security_tree, "final_cas_script")
+    _refusal(security_tree, "publisher_final_cas_remote_guard_order_invalid")
+
+
+def test_registered_final_publisher_refuses_a_second_or_earlier_push(
+    security_tree: Path,
+) -> None:
+    path = security_tree / "scripts" / "publish_final_cas.sh"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            "  /usr/bin/time -v bash scripts/gate.sh --committed",
+            "  git push origin HEAD:main\n"
+            "  /usr/bin/time -v bash scripts/gate.sh --committed",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    _rehash_registered_script(security_tree, "final_cas_script")
+    _refusal(security_tree, "publisher_final_cas_push_count_invalid")
+
+
+def test_registered_final_publisher_refuses_dead_code_gate_fragments(
+    security_tree: Path,
+) -> None:
+    path = security_tree / "scripts" / "publish_final_cas.sh"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            "  /usr/bin/time -v bash scripts/gate.sh --committed",
+            "  if false; then\n"
+            "    /usr/bin/time -v bash scripts/gate.sh --committed\n"
+            "  fi",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    _rehash_registered_script(security_tree, "final_cas_script")
+    _refusal(security_tree, "publisher_final_cas_dead_code_guard_present")
 
 
 def test_job_level_permission_override_is_refused(security_tree: Path) -> None:

@@ -182,11 +182,15 @@ jobs:
           TARGET=$(date -u -d "yesterday" +%F)
           git fetch --quiet origin main
           REMOTE_DATE=$(git show origin/main:docs/data/latest.json 2>/dev/null | python -c "import json,sys; print(json.load(sys.stdin)['date'])" 2>/dev/null || echo "")
-          if [ "$REMOTE_DATE" = "$TARGET" ]; then
-            echo "final for $TARGET already on origin/main; nothing to do"
+          REMOTE_PROOF_STATUS=$(git show origin/main:docs/data/status.json 2>/dev/null | python -c "import json,sys; print(json.load(sys.stdin).get('final_publication',{}).get('status',''))" 2>/dev/null || echo "")
+          if [ "$REMOTE_DATE" = "$TARGET" ] && [ "$REMOTE_PROOF_STATUS" = "finalized" ]; then
+            echo "new-contract final for $TARGET already on origin/main; nothing to do"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          elif [ "$REMOTE_DATE" = "$TARGET" ] && [ "$REMOTE_PROOF_STATUS" = "legacy_proof_limited" ]; then
+            echo "legacy final for $TARGET remains visible with proof limitation; not mislabeling it as new-contract finalized"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
-            echo "remote tip has $REMOTE_DATE, contract target is $TARGET"
+            echo "remote tip has date=$REMOTE_DATE proof=$REMOTE_PROOF_STATUS, contract target is $TARGET"
             echo "skip=false" >> "$GITHUB_OUTPUT"
             BASE_COMMIT=$(git rev-parse origin/main)
             # Freeze the exact target and main parent before acquisition.
@@ -312,98 +316,15 @@ jobs:
         env:
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PUBLISH_TOKEN="${IGRM_PUBLISH_TOKEN:?IGRM_PUBLISH_TOKEN is required}"
-          AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$PUBLISH_TOKEN" | base64 | tr -d '\n')"
-          unset IGRM_PUBLISH_TOKEN PUBLISH_TOKEN GH_TOKEN GITHUB_TOKEN
-
-          push_frozen_parent() {
-            git fetch --quiet origin main || return 1
-            REMOTE_COMMIT=$(git rev-parse origin/main) || return 1
-            if [ "$REMOTE_COMMIT" != "${{ steps.guard.outputs.base_commit }}" ]; then
-              echo "::error::CAS refusal: candidate parent ${{ steps.guard.outputs.base_commit }}, current main $REMOTE_COMMIT; rebuild required"
-              return 1
-            fi
-            GIT_CONFIG_COUNT=1 \
-              GIT_CONFIG_KEY_0='http.https://github.com/.extraheader' \
-              GIT_CONFIG_VALUE_0="$AUTH_HEADER" \
-              git push origin HEAD:main
-          }
-
-          publish_final() {
-            git config user.name "igrm-bot"
-            git config user.email "actions@github.com"
-            git add docs data/raw || return 1
-            git commit -m "data: final ${{ steps.guard.outputs.target }} via morning-contract lane" || return 1
-            # One exact gate for one frozen candidate SHA. Never rebase or
-            # resolve final/history conflicts; a changed parent must rebuild.
-            # Do not impose an inner deadline on the exact gate yet. Public
-            # CI #533 (run 31360365274), step "Tests + coverage", took 36m42s
-            # on c76d5be; CI #534 on current a2a05b6 took 24m55s. The older
-            # 24.1m publisher observation is not a safe upper bound across
-            # hosted-runner variance, and a 27m timeout would kill a valid
-            # candidate. The unchanged 60m job cap therefore remains a known
-            # availability boundary pending a separately budgeted gate job.
-            /usr/bin/time -v bash scripts/gate.sh --committed || return 1
-            push_frozen_parent
-          }
-
-          publish_refusal() {
-            # Build from the frozen parent in a disjoint worktree. The main
-            # runner may even contain a committed failed value candidate; no
-            # such byte can become an ancestor of this status-only commit.
-            STATUS_ROOT="$(mktemp -d)/status-candidate"
-            git worktree add --detach "$STATUS_ROOT" \
-              "${{ steps.guard.outputs.base_commit }}" || return 1
-            if [ -f data/raw/final_publication_status.json ]; then
-              mkdir -p "$STATUS_ROOT/data/raw"
-              cp data/raw/final_publication_status.json \
-                "$STATUS_ROOT/data/raw/final_publication_status.json"
-            fi
-            cd "$STATUS_ROOT" || return 1
-            git config user.name "igrm-bot"
-            git config user.email "actions@github.com"
-            FAILURE_STAGE=pipeline
-            if [ "${{ steps.source.outcome }}" != "success" ]; then
-              FAILURE_STAGE=source
-            elif [ "${{ steps.pipeline.outcome }}" != "success" ]; then
-              FAILURE_STAGE=pipeline
-            elif [ "${{ steps.audit.outcome }}" != "success" ]; then
-              FAILURE_STAGE=audit
-            elif [ "${{ steps.derived.outcome }}" != "success" ]; then
-              FAILURE_STAGE=derived
-            fi
-            python -m src.final_publication \
-              --record-pipeline-failed "${{ steps.guard.outputs.target }}" \
-              --failure-stage "$FAILURE_STAGE" \
-              --base-commit "${{ steps.guard.outputs.base_commit }}" || return 1
-            python -m src.final_publication --write-public-status \
-              --today "$(date -u -d '${{ steps.guard.outputs.target }} + 1 day' +%F)" \
-              || return 1
-            git add data/raw/final_publication_status.json docs/data/status.json \
-              docs/index.html docs/status.html || return 1
-            if git diff --cached --name-only | grep -Eq \
-              '^(data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/ngram_days/|data/raw/final_publication_receipts/)'; then
-              echo "::error::failure disclosure attempted to stage candidate value bytes"
-              return 1
-            fi
-            git commit -m "status: final ${{ steps.guard.outputs.target }} unavailable" || return 1
-            /usr/bin/time -v bash scripts/gate.sh --committed || return 1
-            push_frozen_parent
-          }
-
-          if [ "${{ steps.source.outcome }}" = "success" ] && \
-             [ "${{ steps.pipeline.outcome }}" = "success" ] && \
-             [ "${{ steps.audit.outcome }}" = "success" ] && \
-             [ "${{ steps.derived.outcome }}" = "success" ]; then
-            # This exact candidate consumes the one full-gate budget for the
-            # job. A gate/CAS refusal exits red; the separately budgeted
-            # watchdog retries/discloses it instead of starting a second full
-            # gate inside a nearly exhausted 60-minute job.
-            if publish_final; then
-              exit 0
-            else
-              rc=$?
-              exit "$rc"
-            fi
-          fi
-          publish_refusal
+          # The hash-pinned script owns the only direct push. It gates exactly
+          # one candidate, compares origin/main to the frozen parent, and
+          # refuses rather than rebasing final/history conflicts. Public CI
+          # has varied from 24m55s to 36m42s, so the job cap remains the only
+          # gate deadline pending a separately budgeted gate architecture.
+          bash scripts/publish_final_cas.sh \
+            "${{ steps.guard.outputs.target }}" \
+            "${{ steps.guard.outputs.base_commit }}" \
+            "${{ steps.source.outcome }}" \
+            "${{ steps.pipeline.outcome }}" \
+            "${{ steps.audit.outcome }}" \
+            "${{ steps.derived.outcome }}"

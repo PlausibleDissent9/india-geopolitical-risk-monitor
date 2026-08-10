@@ -28,13 +28,18 @@ def _write_source_cache(
     root: Path,
     day: date = DAY,
     dictionary_bytes: bytes = b'{"version":"test"}\n',
+    *,
+    strong: bool | None = None,
+    stamps: list[str] | None = None,
 ) -> Path:
     matcher_bytes = b"# frozen production matcher fixture\n"
     (root / "src").mkdir(parents=True, exist_ok=True)
     (root / "dictionaries.json").write_bytes(dictionary_bytes)
     (root / "src" / "fetch_ngrams.py").write_bytes(matcher_bytes)
 
-    stamps = [_stamp(index, day) for index in range(48)]
+    if strong is None:
+        strong = day > frame.LEGACY_EVIDENCE_LAST_DAY
+    stamps = stamps or [_stamp(index, day) for index in range(48)]
     first = f"{stamps[0]}:A"
     second = f"{stamps[1]}:B"
     specs = {
@@ -52,8 +57,12 @@ def _write_source_cache(
     specs_sha = _sha(
         json.dumps(specs, sort_keys=True, separators=(",", ":")).encode()
     )
-    evidence = {
-        "schema_version": frame.SCHEMA_VERSION,
+    evidence: dict[str, object] = {
+        "schema_version": (
+            frame.STRONG_MATCHER_EVIDENCE_VERSION
+            if strong
+            else frame.LEGACY_MATCHER_EVIDENCE_VERSION
+        ),
         "day": day.isoformat(),
         "located_stamps": stamps,
         "loaded_stamps": stamps,
@@ -62,12 +71,8 @@ def _write_source_cache(
         "matcher_specs_sha256": specs_sha,
         "dictionaries_sha256": _sha(dictionary_bytes),
         "production_matcher_sha256": _sha(matcher_bytes),
-        "india_document_keys": [first, second],
-        "matched_document_keys": {
-            "pakistan_west/q1": [first, second],
-            "pakistan_west/q2": [first],
-        },
-        "article_meta": {
+    }
+    article_meta = {
             first: {
                 "date": f"{day:%Y%m%d}",
                 "title": "Border and ceasefire item",
@@ -78,8 +83,44 @@ def _write_source_cache(
                 "title": "Border item",
                 "url": "https://two.example/b",
             },
-        },
     }
+    if strong:
+        raw_english = [first, second]
+        raw_english.extend(
+            f"{stamps[index % len(stamps)]}:filler-{index}" for index in range(98)
+        )
+        identities = {
+            key: fetch_ngrams._document_identity(key) for key in raw_english
+        }
+        english = sorted(identities.values())
+        evidence.update(
+            {
+                "english_document_identities": english,
+                "english_document_counts_by_stamp": {
+                    stamp: sum(key.startswith(f"{stamp}:") for key in english)
+                    for stamp in stamps
+                },
+                "india_document_keys": [identities[first], identities[second]],
+                "matched_document_keys": {
+                    "pakistan_west/q1": [identities[first], identities[second]],
+                    "pakistan_west/q2": [identities[first]],
+                },
+                "article_meta": {
+                    identities[key]: value for key, value in article_meta.items()
+                },
+            }
+        )
+    else:
+        evidence.update(
+            {
+                "india_document_keys": [first, second],
+                "matched_document_keys": {
+                    "pakistan_west/q1": [first, second],
+                    "pakistan_west/q2": [first],
+                },
+                "article_meta": article_meta,
+            }
+        )
     payload = {
         "date": day.isoformat(),
         "n_docs_sampled": 100,
@@ -158,14 +199,17 @@ def test_production_scan_captures_exact_matcher_evidence(
     assert evidence["located_stamps"] == [stamp]
     assert evidence["loaded_stamps"] == [stamp]
     assert evidence["missing_stamps"] == []
-    assert evidence["matched_document_keys"]["pakistan_west/q1"] == [
-        f"{stamp}:A",
-        f"{stamp}:B",
-    ]
+    first = fetch_ngrams._document_identity(f"{stamp}:A")
+    second = fetch_ngrams._document_identity(f"{stamp}:B")
+    assert evidence["english_document_identities"] == sorted([first, second])
+    assert evidence["english_document_counts_by_stamp"] == {stamp: 2}
+    assert evidence["matched_document_keys"]["pakistan_west/q1"] == sorted(
+        [first, second]
+    )
     assert evidence["matched_document_keys"]["pakistan_west/q2"] == [
-        f"{stamp}:A"
+        first
     ]
-    assert evidence["article_meta"][f"{stamp}:A"]["url"] == "https://one.example/a"
+    assert evidence["article_meta"][first]["url"] == "https://one.example/a"
 
 
 def test_day_attestation_preserves_group_contribution_multiplicity(
@@ -186,8 +230,131 @@ def test_day_attestation_preserves_group_contribution_multiplicity(
     }
     assert result["groups"]["pakistan_west/q1"]["reconstructed_share"] == 2.0
     assert result["groups"]["pakistan_west/q2"]["reconstructed_share"] == 1.0
+    assert result["denominator_evidence"] == (
+        "source_reported_denominator_legacy_v1.0"
+    )
     assert result["labels_seen"] is False
     assert result["precision_estimated"] is False
+
+
+def _offset_stamps(day: date) -> list[str]:
+    return [
+        f"{day:%Y%m%d}{index // 2:02d}{(index % 2) * 30 + 1:02d}00"
+        for index in range(48)
+    ]
+
+
+def _invalid_stamp_frames(day: date) -> dict[str, list[str]]:
+    valid = _offset_stamps(day)
+    return {
+        "clustered_48": [f"{day:%Y%m%d}00{index:02d}00" for index in range(48)],
+        "invalid_calendar": ["20260230000100", *valid[1:]],
+        "invalid_hour": [f"{day:%Y%m%d}240100", *valid[1:]],
+        "invalid_minute": [f"{day:%Y%m%d}006000", *valid[1:]],
+        "nonzero_seconds": [f"{day:%Y%m%d}000101", *valid[1:]],
+        "duplicate_bucket": [*valid[:-1], f"{day:%Y%m%d}230100"],
+    }
+
+
+def test_strong_frame_accepts_first_available_minute_in_every_bucket(
+    tmp_path: Path,
+) -> None:
+    day = date(2026, 8, 10)
+    _write_source_cache(tmp_path, day, strong=True, stamps=_offset_stamps(day))
+
+    attestation = frame.build_day_attestation(
+        day,
+        tmp_path,
+        require_live_hashes=False,
+        require_strong_denominator=True,
+    )
+
+    assert attestation["n_samples_loaded"] == 48
+    assert attestation["denominator_evidence"] == "hashed_identity_membership_v1.1"
+
+
+@pytest.mark.parametrize("attack", sorted(_invalid_stamp_frames(date(2026, 8, 10))))
+def test_strong_frame_refuses_invalid_or_duplicate_bucket_stamps(
+    tmp_path: Path,
+    attack: str,
+) -> None:
+    day = date(2026, 8, 10)
+    _write_source_cache(
+        tmp_path,
+        day,
+        strong=True,
+        stamps=_invalid_stamp_frames(day)[attack],
+    )
+
+    with pytest.raises(frame.FrameValidationError):
+        frame.build_day_attestation(
+            day,
+            tmp_path,
+            require_live_hashes=False,
+            require_strong_denominator=True,
+        )
+
+
+@pytest.mark.parametrize(
+    "attack",
+    (
+        "denominator_reseal",
+        "duplicate_english",
+        "cross_stamp_english",
+        "india_not_subset",
+        "matched_not_subset",
+        "per_stamp_count",
+    ),
+)
+def test_strong_denominator_membership_attacks_fail_closed(
+    tmp_path: Path,
+    attack: str,
+) -> None:
+    path = _write_source_cache(tmp_path, strong=True)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    evidence = payload["_matcher_evidence"]
+    english = evidence["english_document_identities"]
+    outsider = f"{_stamp(0)}:{'f' * 64}"
+    if attack == "denominator_reseal":
+        payload["n_docs_sampled"] = 200
+        payload["shares"] = {
+            "pakistan_west/q1": 1.0,
+            "pakistan_west/q2": 0.5,
+        }
+    elif attack == "duplicate_english":
+        english.append(english[0])
+        payload["n_docs_sampled"] += 1
+    elif attack == "cross_stamp_english":
+        english[0] = f"20260807000000:{english[0].split(':', 1)[1]}"
+    elif attack == "india_not_subset":
+        evidence["india_document_keys"].append(outsider)
+    elif attack == "matched_not_subset":
+        evidence["matched_document_keys"]["pakistan_west/q1"].append(outsider)
+    else:
+        evidence["english_document_counts_by_stamp"][_stamp(0)] += 1
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(frame.FrameValidationError):
+        frame.build_day_attestation(
+            DAY,
+            tmp_path,
+            require_live_hashes=False,
+            require_strong_denominator=True,
+        )
+
+
+def test_new_publication_cannot_fall_back_to_legacy_denominator(
+    tmp_path: Path,
+) -> None:
+    _write_source_cache(tmp_path, strong=False)
+
+    with pytest.raises(frame.FrameValidationError, match="schema 1.1.0"):
+        frame.build_day_attestation(
+            DAY,
+            tmp_path,
+            require_live_hashes=False,
+            require_strong_denominator=True,
+        )
 
 
 @pytest.mark.parametrize(

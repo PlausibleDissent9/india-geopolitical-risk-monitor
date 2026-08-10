@@ -71,6 +71,8 @@ SAMPLES_PER_DAY = 48
 # so every minute of a sampling window is probed until the first hit.
 HEADERS = {"User-Agent": "IGRM/1.0 (ngrams bridge, per maintainer guidance)"}
 PUBLISH_LAG_DAYS = 1          # today's files are still accumulating
+DOCUMENT_IDENTITY_DOMAIN = b"igrm-ngram-document-identity-v1\0"
+MATCHER_EVIDENCE_VERSION = "1.1.0"
 
 
 class NgramAcquisitionError(RuntimeError):
@@ -121,28 +123,54 @@ def _sha256_path(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _document_identity(key: str) -> str:
+    """Commit a source document identity without redistributing its raw ID."""
+
+    stamp, separator, source_id = key.partition(":")
+    if not separator or not stamp or not source_id:
+        raise ValueError("document key must contain stamp and source ID")
+    digest = hashlib.sha256(
+        DOCUMENT_IDENTITY_DOMAIN
+        + stamp.encode("ascii")
+        + b"\0"
+        + source_id.encode("utf-8")
+    ).hexdigest()
+    return f"{stamp}:{digest}"
+
+
 def _matcher_evidence(
     day: date,
     specs: dict[str, dict],
     located_stamps: list[str],
     loaded_stamps: list[str],
     missing_stamps: list[str],
+    english_docs: set[str],
     india_docs: set[str],
     matched: dict[str, set[str]],
     article_meta: dict[str, dict[str, str]],
 ) -> dict:
-    """Freeze the exact numerator frame in the production day cache.
+    """Freeze the exact numerator and denominator frame in the day cache.
 
     This is prospective study infrastructure, not a precision result.  It
     prevents a future audit from reconstructing a look-alike corpus after the
     score has already been published (the defect that invalidated audit v2).
+    Denominator membership is a domain-separated hash commitment, not raw
+    source IDs or source content.  This is an integrity/recomputation choice;
+    it does not assert redistribution approval, which remains an independent
+    rights review.
     """
+    identities = {key: _document_identity(key) for key in english_docs}
+    english_identities = sorted(identities.values())
+    counts_by_stamp = {
+        stamp: sum(identity.startswith(f"{stamp}:") for identity in english_identities)
+        for stamp in loaded_stamps
+    }
     canonical_specs = _canonical_specs(specs)
     encoded_specs = json.dumps(
         canonical_specs, sort_keys=True, separators=(",", ":")
     ).encode("utf-8")
     return {
-        "schema_version": "1.0.0",
+        "schema_version": MATCHER_EVIDENCE_VERSION,
         "day": day.isoformat(),
         "located_stamps": located_stamps,
         "loaded_stamps": loaded_stamps,
@@ -151,12 +179,15 @@ def _matcher_evidence(
         "matcher_specs_sha256": hashlib.sha256(encoded_specs).hexdigest(),
         "dictionaries_sha256": _sha256_path(ROOT / "dictionaries.json"),
         "production_matcher_sha256": _sha256_path(Path(__file__)),
-        "india_document_keys": sorted(india_docs),
+        "english_document_identities": english_identities,
+        "english_document_counts_by_stamp": counts_by_stamp,
+        "india_document_keys": sorted(identities[key] for key in india_docs),
         "matched_document_keys": {
-            group: sorted(keys) for group, keys in sorted(matched.items())
+            group: sorted(identities[key] for key in keys)
+            for group, keys in sorted(matched.items())
         },
         "article_meta": {
-            key: article_meta[key] for key in sorted(article_meta)
+            identities[key]: article_meta[key] for key in sorted(article_meta)
         },
     }
 
@@ -388,6 +419,7 @@ def compute_day(
             stamps,
             loaded_stamps,
             missing_stamps,
+            en_docs,
             india_docs,
             matched,
             article_meta,

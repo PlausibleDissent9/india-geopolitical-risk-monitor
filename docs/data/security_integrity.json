@@ -13,7 +13,7 @@
   "exact_post_rebase_publication_gate": {
    "command": "bash scripts/gate.sh --committed",
    "policy": "refuse_publish_on_red_candidate",
-   "push_paths_verified": 2,
+   "push_paths_verified": 3,
    "status": "pass"
   },
   "full_history_for_frozen_evidence": {
@@ -76,6 +76,7 @@
  ],
  "scope": {
   "canonical_gate_script": "scripts/gate.sh",
+  "final_cas_push_script": "scripts/publish_final_cas.sh",
   "publisher_push_script": "scripts/publish_push.sh",
   "repository_controls_only": true,
   "workflow_directory": ".github/workflows"

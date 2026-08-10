@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -152,40 +151,12 @@ def _require_written_target(
     """Reopen the public bytes and prove they publish the exact target."""
 
     try:
-        latest = json.loads((site_data / "latest.json").read_text(encoding="utf-8"))
-        history = json.loads((site_data / "history.json").read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        final_publication.require_written_final_target(target, site_data=site_data)
+    except final_publication.FinalPublicationError as exc:
         raise SystemExit(
-            "[fail-loud] written final payloads are unreadable"
+            "[fail-loud] written latest/history do not end at finite exact D-1 target: "
+            f"{exc.detail}"
         ) from exc
-    target_iso = target.isoformat()
-    dates = history.get("dates")
-    composites = history.get("composite")
-    if (
-        latest.get("date") != target_iso
-        or not isinstance(dates, list)
-        or not dates
-        or max(dates) != target_iso
-        or dates[-1] != target_iso
-        or not isinstance(composites, list)
-        or len(composites) != len(dates)
-    ):
-        raise SystemExit(
-            "[fail-loud] written latest/history do not end at exact D-1 target"
-        )
-    for label, value in (
-        ("latest.composite", latest.get("composite")),
-        ("latest.composite7", latest.get("composite7")),
-        ("history.composite[target]", composites[-1]),
-    ):
-        if (
-            isinstance(value, bool)
-            or not isinstance(value, (int, float))
-            or not math.isfinite(float(value))
-        ):
-            raise SystemExit(
-                f"[fail-loud] written target score is null or non-finite: {label}"
-            )
 
 
 def _published_day() -> date | None:
@@ -262,11 +233,12 @@ def main() -> None:
     # A target measured by the registered ngram bridge may be promoted only
     # from the exact 48/48, hash-bound candidate prepared above.  This also
     # fails closed over legacy heal caches that were written before promotion
-    # receipts existed.  A DOC-only target has no bridge receipt by design.
+    # receipts existed. DOC-only publication has no registered proof mode yet
+    # and is refused rather than silently exempted.
     try:
         final_publication.require_promotion_receipt(
             target,
-            require_bridge_receipt=args.final_only,
+            require_bridge_receipt=True,
         )
     except final_publication.FinalPublicationError as exc:
         raise SystemExit(
