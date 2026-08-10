@@ -2727,6 +2727,19 @@ def test_aug9_legacy_history_refuses_ssr_score_mutation_then_exact_revert(
             "<section><h2>Official finalized composite score</h2>"
             f"<div>{'filler ' * 80}<strong>99.9</strong></div></section>"
         ),
+        (
+            "<section><div><h2>Official finalized composite score</h2></div>"
+            "<div><p>99.9</p></div></section>"
+        ),
+        (
+            "<section><div><p>99.9</p></div>"
+            "<div><h2>Official finalized composite score</h2></div></section>"
+        ),
+        (
+            "<article><div><div><h2>Official final score</h2></div></div>"
+            f"<div>{'<span>filler</span>' * 80}<strong>99.9</strong></div>"
+            "</article>"
+        ),
         "<p>Official finalized composite score: 99.9</p>",
         "<table><tr><th>Official final score</th><td>99.9</td></tr></table>",
         '<meta name="official-final-score" content="99.9">',
