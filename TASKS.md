@@ -43,12 +43,15 @@ This walks every tracked JSON, finds every {path, sha256|file_sha256} pin, and
 names the mismatches directly. It is a verifier, never a fixer: a wrong pin is
 either a stale cascade or a tampering signal, and only a human should decide
 which.
-IMPORTANT FINDING — not every stale pin is a bug. Pristine `origin/main`
-already carries 13, ALL in deliberately frozen artifacts (blind_audit_500 and
-precision_v3 registrations, the consequence_plan replay fixture, one design
-contract). A registration pins versions AS OF registration; "updating" one
-would falsify a historical record. That baseline is what proved my own work
-introduced exactly one regression, and that only it needed fixing.
+IMPORTANT FINDING — not every stale pin is a bug. Frozen artifacts
+(registrations, completion records) pin versions AS OF a moment that has
+passed; "updating" one would falsify a historical record. That baseline is
+what proved my own work introduced exactly one regression, and that only it
+needed fixing.
+CORRECTION (later the same day, T26): the count in the first version of this
+entry was 13 and it was WRONG. Eight of those were false positives from a bug
+in my own verifier -- see T26. The true figure is 5, across three files, and
+the replay fixture needs no exemption at all.
 NOT yet wired into CI: doing so requires an explicit, documented frozen-pin
 allowlist so the 13 do not turn the gate red. Left as the next slice rather
 than shipped half-done.
@@ -118,6 +121,28 @@ target", rendered with role="status". The logic distinguishes NOT YET DUE from
 LATE using the 00:30 UTC deadline, so it does not cry wolf before 06:00 IST.
 Nothing to fix. Reported as a negative result rather than converted into a
 change.
+
+## T26 — My own verifier resolved 18 pins against the wrong files
+Status: DONE (local commit) — found by attacking my own work, not by a failure
+`scripts/verify_digest_pins.py` resolved a pin by trying the REPO ROOT first
+and only then walking outward from the owner. That is wrong wherever a
+self-contained fixture shadows a repo directory, and the consequence_plan
+replay fixture ships its own `schemas/` and `governance/` trees. Its registry
+pins `schemas/common.schema.json` meaning ITS copy; root-first compared the
+repo's copy. 18 pins were verified against the wrong bytes.
+Two consequences, the second worse than the first:
+  1. The "13 frozen drifts" I reported was wrong. Eight were false positives.
+     The true count is 5, and the replay fixture is internally consistent.
+  2. I had EXEMPTED that fixture from checking on the strength of those false
+     positives. A healthy file excused from verification would have hidden
+     real drift in it forever -- a checker taught to look away, which is the
+     exact silent-green failure this repo keeps removing.
+Fix: resolve NEAREST BASE FIRST (the repo root is simply the last ancestor
+tried, not a special case), and remove the fixture's exemption so it is
+actively verified -- which it now passes. Regression test pins the ordering by
+asserting a shadowed pin resolves to the fixture's own copy.
+Lesson recorded: an exemption granted on the strength of a failure you have
+not explained is how a checker becomes decoration.
 
 ## GATE STATE
 `scripts/gate.sh --publish` on HEAD `cb206bb` (29 commits): all 15 CI checks

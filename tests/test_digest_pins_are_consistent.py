@@ -48,11 +48,34 @@ def test_the_frozen_exemption_list_is_an_inventory_lock() -> None:
     assert set(pins.FROZEN_OWNERS) == {
         "validation/blind_audit_500/registration.json",
         "validation/precision_v3/registration.json",
-        "validation/consequence_plan/replay_fixture/knowledge/ledger.json",
         "design/igrm_max_launch_contract.json",
     }, ("the frozen-pin exemption list changed. Adding one is allowed, but it "
         "must be deliberate and carry its reason -- update this lock in the "
         "same commit, and never to a pattern or an inequality.")
+
+
+def test_a_shadowing_fixture_resolves_to_its_own_copy_not_the_repos() -> None:
+    """Pins resolve NEAREST BASE FIRST, and the ordering is load-bearing.
+
+    The consequence_plan replay fixture ships its own schemas/ and governance/
+    trees. Its registry pins "schemas/common.schema.json" meaning ITS copy. An
+    earlier _resolve tried the repo root first and compared the repo's copy --
+    silently verifying 18 pins against the wrong files, then reporting the
+    fixture as drifted when it was consistent. The exemption that false
+    positive earned excused a healthy file from checking, which is the worse
+    half: a checker that has been taught to look away.
+    """
+    fixture = ROOT / "validation/consequence_plan/replay_fixture"
+    owner = fixture / "governance" / "canonical_schema_registry.json"
+    if not owner.is_file():
+        return  # fixture reshaped; the audit assertions still cover the repo
+
+    resolved = pins._resolve(owner, "schemas/common.schema.json")
+    assert resolved is not None, "the fixture's own schema no longer resolves"
+    assert resolved == fixture / "schemas" / "common.schema.json", (
+        f"a shadowing fixture pin resolved to {resolved}, not to the "
+        "fixture's own copy; root-first resolution has come back")
+    assert resolved != ROOT / "schemas" / "common.schema.json"
     for owner, reason in pins.FROZEN_OWNERS.items():
         assert len(reason) > 20, f"{owner} is exempt without a stated reason"
 
