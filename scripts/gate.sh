@@ -160,6 +160,20 @@ if [ "$PUBLISH" -eq 1 ]; then
     echo "gate: --publish refuses to append a second -m to CI's pytest command"
     exit 1
   fi
+  # The marker is APPENDED to the line, so the line must be a single command.
+  # If CI's pytest step ever grows a shell operator -- `pytest -q && echo` --
+  # appending puts the marker on the LAST command instead, and pytest then
+  # runs WITH the live suite inside a publish gate. That is the deadlock
+  # returning through a silent hole, which is worse than the original bug
+  # because the gate would look narrowed and not be. Several CI lines already
+  # use `&&` (the conformance-artifact diffs); none is the pytest line today,
+  # and this refuses the day one is.
+  if grep -E 'pytest' "$CMDS_FILE" | grep -qE '(&&|\|\||[|;])'; then
+    echo "gate: --publish refuses: CI's pytest step contains a shell operator,"
+    echo "      so appending a marker would apply it to the wrong command."
+    echo "      Split the step in ci.yml, or narrow it there instead."
+    exit 1
+  fi
   NARROWED="$(mktemp)"
   # shellcheck disable=SC2016
   sed -E 's/(^.*pytest.*$)/\1 -m "not live"/' "$CMDS_FILE" > "$NARROWED"

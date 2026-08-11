@@ -81,6 +81,48 @@ def test_plain_print_still_matches_ci_verbatim() -> None:
         "the plain gate must NOT exclude live tests; only --publish may")
 
 
+def test_publish_refuses_rather_than_mis_narrowing_a_compound_pytest_step() -> None:
+    """The marker is APPENDED, so the pytest step must be a single command.
+
+    Found by attacking my own change rather than by it failing: if CI's pytest
+    step ever became `python -m pytest -q && echo done`, appending would
+    produce `... && echo done -m "not live"`. The marker lands on echo, pytest
+    runs WITH the live suite, and the deadlock returns INVISIBLY -- a gate that
+    looks narrowed and is not, which is worse than the bug it replaced.
+
+    Refusing is the only safe answer, and it is exercised here against a real
+    mutated ci.yml in a scratch copy of the repo, not asserted about in prose.
+    """
+    import shutil
+    import subprocess
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        work = Path(tmp) / "repo"
+        (work / ".github" / "workflows").mkdir(parents=True)
+        (work / "scripts").mkdir()
+        shutil.copy(GATE, work / "scripts" / "gate.sh")
+        ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        # Exactly the hazardous shape, and nothing else about CI changed.
+        mutated = ci.replace(
+            "run: python -m pytest --cov=src --cov-report=term-missing -q",
+            "run: python -m pytest --cov=src -q && echo done")
+        assert mutated != ci, "the fixture no longer matches CI's pytest step"
+        (work / ".github" / "workflows" / "ci.yml").write_text(mutated, encoding="utf-8")
+
+        proc = subprocess.run(
+            ["bash", str(work / "scripts" / "gate.sh"), "--publish", "--print"],
+            cwd=work, capture_output=True, text=True)
+
+    assert proc.returncode != 0, (
+        "--publish accepted a compound pytest step; it would have narrowed the "
+        f"wrong command.\nstdout: {proc.stdout}")
+    assert "shell operator" in proc.stdout + proc.stderr, (
+        f"the refusal does not explain itself: {proc.stdout}{proc.stderr}")
+    assert 'echo done -m "not live"' not in proc.stdout, (
+        "--publish emitted the mis-narrowed command instead of refusing")
+
+
 def test_every_push_path_uses_the_publish_gate() -> None:
     """The deadlock came from the push paths calling the FULL gate. Pin both
     call sites, or the fix silently reverts the next time one is edited.
