@@ -28,14 +28,14 @@
     "workflow_marker": "publish_push.sh",
     "required_install_fragment": "pip install -r requirements.txt -r requirements-dev.txt",
     "required_token_fragment": "IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
-    "required_gate_command": "bash scripts/gate.sh --committed",
+    "required_gate_command": "bash scripts/gate.sh --publish",
     "push_script": {
       "path": "scripts/publish_push.sh",
-      "sha256": "4e4e33dffc538af5b37b3debde4df922cc3c576adbd28f3d916108b9b19b6978"
+      "sha256": "97128d2f936fca80e6f245f180dff76ec037c051189aa9255a26493cff95e74e"
     },
     "gate_script": {
       "path": "scripts/gate.sh",
-      "sha256": "a923a6f863d6a142ceaf8d249fa383d24da45c1aacdbf4e19ad80b172eef6ce9"
+      "sha256": "32c3f7dc64bae52e93d0d07dfc3bad9bbd0ded9ea5e9974e81d1f7600cac4daf"
     }
   },
   "limitations": [

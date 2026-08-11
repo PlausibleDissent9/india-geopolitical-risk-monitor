@@ -11,7 +11,7 @@
  },
  "controls": {
   "exact_post_rebase_publication_gate": {
-   "command": "bash scripts/gate.sh --committed",
+   "command": "bash scripts/gate.sh --publish",
    "policy": "refuse_publish_on_red_candidate",
    "push_paths_verified": 2,
    "status": "pass"
