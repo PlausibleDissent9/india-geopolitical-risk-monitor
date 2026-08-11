@@ -29,13 +29,13 @@
       "authority_id": "source_profile",
       "source_path": "governance/analytical_clause_source_profile.json",
       "archive_path": "authority/analytical-clause-source-profile.json",
-      "file_sha256": "bedb840a8f0350eb6646f7f4337e62d7c118fc949f91338d78cb77aafa75b190"
+      "file_sha256": "49d035294b6b38097cd3670ffe58daa94351f2f8c6d7cfdc6a689b140cfee469"
     },
     {
       "authority_id": "consumer_profile",
       "source_path": "governance/evidence_output_renderer_consumer_profile.json",
       "archive_path": "authority/evidence-output-renderer-consumer-profile.json",
-      "file_sha256": "996baf2336e96434a49fa71b01501847e4c002e3d8ee2a7ab52d0b5da4aec450"
+      "file_sha256": "946b1cb6649a0e484212830202c6d7900e15836254451d95b04371e7c87e39a3"
     },
     {
       "authority_id": "template_profile",
@@ -52,11 +52,11 @@
   ],
   "installed_dependencies": [
     {"path": "governance/analytical_clause_contract.json", "file_sha256": "0ab5b9544f08f75454bc7f8e8ea7e9aea7bc54bed0e7d4144dcdc2662cd11325"},
-    {"path": "governance/clause_source_view_contract.json", "file_sha256": "7cae18b976d1c599de2b35fd09897f935fbbb621114bdab21335492052663b47"},
-    {"path": "governance/clause_reader_shadow_contract.json", "file_sha256": "c7a2b4bdb9aad312a43f23059dc9446b3e67de72edccd2d3ddecf259d8f21333"},
+    {"path": "governance/clause_source_view_contract.json", "file_sha256": "d9957043855874bd82a2e1b01082f11a8bf8b84eb757a6e70c0119be440845e6"},
+    {"path": "governance/clause_reader_shadow_contract.json", "file_sha256": "b04a793e8b15e6de4cd1cb6d6b6edc97b218ba7447c2820dfa799e0d9680e0ac"},
     {"path": "src/analytical_clause.py", "file_sha256": "e0960fa6eb4704cd35fcf3c601e30cd79ca6a3d4772914da99b4ab6f33598160"},
-    {"path": "src/clause_source_view.py", "file_sha256": "5e612518227056d94ebd1b10728ec70fd8be76f60aceadf6621254f2f36cac5c"},
-    {"path": "src/clause_reader_shadow.py", "file_sha256": "3499dc07489ec799bb0a9be7df0ef0f633204f92019bb854e935c08f7493dbaf"},
+    {"path": "src/clause_source_view.py", "file_sha256": "019606f92bfd3e6b6adc5d073b857aa4506f53759678d1776ff05010820f455d"},
+    {"path": "src/clause_reader_shadow.py", "file_sha256": "8600ab98bf5d1c6fd9466d3ab55fc3d24bffbf95278c89ca3b525dde93e457cb"},
     {"path": "governance/schemas/clause-source-view-receipt.schema.json", "file_sha256": "f5b51f430db12666839a60fb24d2421c4c72fe3410ae8ae490298a8c53480dfb"},
     {"path": "governance/schemas/clause-reader-compilation-receipt.schema.json", "file_sha256": "f1c691e993f3e052a5e3c8c91f7b15d654c3190cfb8bb4d50e8b272c22a32792"},
     {"path": "schemas/common.schema.json", "file_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"},
