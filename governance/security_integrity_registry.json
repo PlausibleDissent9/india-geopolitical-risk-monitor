@@ -6,7 +6,7 @@
   "workflow_directory": ".github/workflows",
   "implementation": {
     "path": "src/security_integrity.py",
-    "sha256": "8279eb072640eb3a0a2e3b1ff4a03b43bae52ca3730590f0242af231bd9ea9f4"
+    "sha256": "1f87f9aeeea7f94c9722235d9f4473c3f2560a4d03227a520b379b6202612d49"
   },
   "actions": {
     "actions/checkout": {
@@ -31,7 +31,7 @@
     "required_gate_command": "bash scripts/gate.sh --committed",
     "push_script": {
       "path": "scripts/publish_push.sh",
-      "sha256": "b69c93a6a702e10214c5e763877ec60fef46c17182d2247b31675c65647cb2ac"
+      "sha256": "63c917f720d29051cc6d94768f73dbede386334bf0384cc7c2b4f4105506ca40"
     },
     "gate_script": {
       "path": "scripts/gate.sh",
@@ -39,7 +39,7 @@
     },
     "final_cas_script": {
       "path": "scripts/publish_final_cas.sh",
-      "sha256": "ffa989cb07547dfc58695f0ac1bdcf6228b772ca7af634154347e66a7c170716"
+      "sha256": "c5e9723e3c48de75cd411eef174f5919741ee1f80f2273016ce9fe6f97ad9426"
     }
   },
   "limitations": [

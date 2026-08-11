@@ -27,8 +27,8 @@ def test_public_report_refuses_event_values_until_source_rights_are_signed() -> 
         "missing": [],
     }
     assert state["public_api_endpoints"] == {
-        "registered": 116,
-        "present": 116,
+        "registered": 117,
+        "present": 117,
         "missing": [],
     }
     atlas = state["global_atlas"]

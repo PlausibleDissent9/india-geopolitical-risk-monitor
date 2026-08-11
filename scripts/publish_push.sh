@@ -79,6 +79,42 @@ if [ "${1:-}" = "--explain-gate-log" ]; then
   exit 0
 fi
 
+# Refresh derived integrity metadata only after the lane commit has been
+# rebased onto the exact remote parent. The generator consumes Git's stage-0
+# index, not mutable endpoint files. If the lane commit became empty and HEAD
+# is exactly upstream, do not amend somebody else's commit merely to refresh
+# metadata: there is no candidate from this lane to publish.
+refresh_public_api_byte_manifest() {
+  local head upstream
+  head=$(git rev-parse --verify HEAD) || return 1
+  upstream=$(git rev-parse --verify origin/main) || return 1
+  if [ "$head" = "$upstream" ]; then
+    echo "[publish] lane candidate is an upstream no-op; manifest unchanged"
+    return 0
+  fi
+  if [ -n "$(git diff --name-only)" ]; then
+    echo "::error::manifest refresh refused: endpoint worktree has unstaged bytes"
+    return 1
+  fi
+  python -m scripts.generate_public_api_byte_manifest || return 1
+  git add -- docs/data/public_api_byte_manifest.json || return 1
+  python -m scripts.generate_public_api_byte_manifest --check-index || return 1
+  if ! git diff --cached --quiet; then
+    git commit --amend --no-edit || return 1
+  fi
+  if [ -n "$(git diff --name-only)" ] || [ -n "$(git diff --cached --name-only)" ]; then
+    echo "::error::manifest refresh left a dirty candidate"
+    return 1
+  fi
+}
+
+# Executable regression seam for the exact production function. It needs no
+# credential and performs no push; tests use a local origin/main.
+if [ "${1:-}" = "--refresh-public-api-byte-manifest" ]; then
+  refresh_public_api_byte_manifest
+  exit $?
+fi
+
 MSG="${1:?usage: publish_push.sh <commit message>}"
 DERIVED_RE='^(docs/|data/raw/)'
 
@@ -225,6 +261,7 @@ fi
 pushed=0
 for i in 1 2 3 4 5; do
   if git pull --rebase origin main; then
+    if ! refresh_public_api_byte_manifest; then exit 1; fi
     if ! gate_candidate; then exit 1; fi
     if git_push; then pushed=1; break; fi
   else
@@ -242,6 +279,7 @@ for i in 1 2 3 4 5; do
     elif ! GIT_EDITOR=true git rebase --continue; then
       git rebase --abort || true
     else
+      if ! refresh_public_api_byte_manifest; then exit 1; fi
       if ! gate_candidate; then exit 1; fi
       if git_push; then pushed=1; break; fi
     fi

@@ -1,0 +1,12 @@
+{
+ "schema_version": "0.1.0",
+ "profile_id": "igrm:public-api-byte-manifest:0.1.0",
+ "status": "repository_self_consistency_only",
+ "effective": "2026-08-10",
+ "dependencies": {
+  "governance/public_api_byte_manifest_contract.json": "ada9049bd7a25a39696a5a7cd3f02578679c69a4eff52ba92a8961272ece7c78",
+  "governance/schemas/public-api-byte-manifest.schema.json": "317a74560235bb850d27477b39b40d3fba2e25bb017e6b2fe7e1788719bb7605",
+  "scripts/generate_public_api_byte_manifest.py": "00903584da46753e1a9b039f587aba4dad1cccc8c83ebeac5733feb865206d87",
+  "src/public_api_byte_manifest.py": "88388704995b849d4a4820807b4bee412a04d4d9fee14e08ceac58206a7e2730"
+ }
+}

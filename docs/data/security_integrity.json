@@ -37,6 +37,19 @@
    "status": "pass",
    "workflow_count": 19
   },
+  "public_api_byte_manifest_barrier": {
+   "atomic_hosted_snapshot": false,
+   "authenticated_deployment": false,
+   "final_candidate_classes": [
+    "final",
+    "refusal"
+   ],
+   "generic_post_rebase_refresh_paths": 2,
+   "self_excluded_endpoint": "data/public_api_byte_manifest.json",
+   "signed": false,
+   "source": "captured_git_index_or_tree",
+   "status": "repository_self_consistency_only"
+  },
   "publisher_credential_isolation": {
    "checkout_persist_credentials": false,
    "status": "pass",

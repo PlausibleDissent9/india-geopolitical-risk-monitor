@@ -22,10 +22,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-# Patch release: public descriptions now distinguish a band that exists for an
-# exact date from a null/unavailable band. No endpoint or field shape changed.
-CONTRACT_VERSION = "2.3.1"
-FROZEN_DATE = "2026-08-09"
+# Additive minor release: a deterministic, self-excluding byte inventory is a
+# new endpoint. Existing endpoint fields and meanings are unchanged.
+CONTRACT_VERSION = "2.4.0"
+FROZEN_DATE = "2026-08-10"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
 # a frozen promise must not drift as a side effect of a pipeline run. Keep
@@ -40,6 +40,13 @@ UNIVERSAL_META = {
 # Fallback descriptions for payloads with no _meta.what/_meta.definition to
 # borrow from. Kept short; the full construction lives in codebook.md.
 DESCRIPTIONS = {
+    "public_api_byte_manifest.json": "Unsigned, deterministic SHA-256 byte "
+    "inventory for every other endpoint in this contract. It is generated "
+    "from one captured Git candidate index/tree, self-excludes to avoid "
+    "recursive hashing, and requires an independently obtained digest of "
+    "its own raw bytes for external comparison. It does not authenticate "
+    "the hosted deployment, prove multi-request atomicity, establish source "
+    "truth or rights, or certify security.",
     "historical_intelligence.json": "Historical Intelligence v1 over the "
     "frozen 1979-2019 attention archive: regime baselines with their own "
     "denominators and coverage, candidate structural breaks with a seeded "
@@ -292,6 +299,23 @@ def _description(name: str, data) -> str:
 # frozen payload cannot carry. test_api_contract_is_derived asserts
 # generated == committed, so drift in either direction now fails.
 OVERRIDES: dict = {
+    "data/public_api_byte_manifest.json": {
+        "description": DESCRIPTIONS["public_api_byte_manifest.json"],
+        "stability": "deterministic repository-candidate snapshot; unsigned",
+        "frozen_fields": [
+            "_meta",
+            "object_type",
+            "schema_version",
+            "profile",
+            "api_contract",
+            "universe",
+            "entries",
+            "excluded_entries",
+            "totals",
+            "integrity",
+            "claim_boundary",
+        ],
+    },
     "data/event_ledger.json": {
         "description": DESCRIPTIONS["event_ledger.json"],
         "stability": "stable blocked/authorized union; append-only authorized vintages",
