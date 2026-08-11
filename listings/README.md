@@ -13,5 +13,5 @@ by a machine — these bundles are the machine's half of the deal.
 | R users | `../r/igrm.R` (single-file client, no package bureaucracy) | Nothing — it ships in the repo; CRAN packaging can follow if demand appears |
 
 Shared facts every listing states: data CC BY 4.0, code MIT, daily
-refresh by ~06:00 IST, series since 2017, salience-not-risk construct
+refresh by ~06:30 IST, series since 2017, salience-not-risk construct
 definition verbatim, citation string, DOI when minted.

@@ -240,7 +240,7 @@ its residual.
    absorbed by the share denominator and the trailing percentile; residual
    disclosed.
 8. **Timezone convention.** GDELT days are UTC; Indian market days are IST;
-   the daily run, final by 6:00 AM IST, treats "today" as the UTC date. A same-day
+   the daily run, final by 6:30 AM IST, treats "today" as the UTC date. A same-day
    Indian-evening event lands on the correct UTC day but after the NSE
    close, event-study windows therefore start at the first trading day on
    or after the episode start, never before.
@@ -267,7 +267,7 @@ Base URL: https://igrm.in/
 - auth: none
 - cors: Access-Control-Allow-Origin: *
 - rate_limit: none stated; ordinary politeness (poll daily, not per-request)
-- refresh: daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)
+- refresh: daily by 06:30 IST (01:00 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)
 
 *Source: docs/data/api_contract.json, _meta.base_url and _meta.access*
 
@@ -293,7 +293,7 @@ Contact: ishankrishna9@gmail.com
 
 ### Will the dataset be updated? How often?
 
-Refresh: daily by 06:00 IST (00:30 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)
+Refresh: daily by 06:30 IST (01:00 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)
 
 Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.
 

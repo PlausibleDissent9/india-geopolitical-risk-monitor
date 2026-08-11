@@ -1,6 +1,7 @@
 """
 Reliability record from git evidence: every daily-publish commit's
-timestamp vs the morning contract (final by 06:00 IST). The repository
+timestamp vs the morning contract (final by 06:30 IST since 2026-08-11,
+06:00 before it). The repository
 is the log; nothing self-reported.
 
 Writes docs/data/reliability.json: per measured day, the first commit
@@ -23,7 +24,32 @@ OUT = ROOT / "docs" / "data" / "reliability.json"
 
 IST = timezone(timedelta(hours=5, minutes=30))
 CONTRACT_START = "2026-08-02"
-CONTRACT_HOUR = 6  # final by 06:00 IST
+
+# The published target, and the date each version of it took effect.
+#
+# THE DEADLINE IS NOT RETROACTIVE. On 2026-08-11 the public target moved from
+# 06:00 to 06:30 IST, because 06:00 gave the pipeline a 30-minute window
+# against 48-54 minutes of measured work (see
+# analysis/six_am_contract_arithmetic_2026-08-11.md). Scoring the whole
+# history against the NEW, later deadline would silently repaint days that
+# were genuinely late under the promise in force at the time -- a public
+# reliability record that improves when you relax the promise is worthless.
+#
+# So each day is judged against the target that was published on that day.
+# Newest first; the first entry whose date is <= the measured day wins.
+CONTRACT_SCHEDULE = (
+    ("2026-08-11", timedelta(hours=6, minutes=30)),
+    ("2026-08-02", timedelta(hours=6)),
+)
+
+
+def contract_offset(day: str) -> timedelta:
+    """The publication deadline in force for measured day `day`, as an offset
+    from midnight of D+1."""
+    for effective, offset in CONTRACT_SCHEDULE:
+        if day >= effective:
+            return offset
+    return CONTRACT_SCHEDULE[-1][1]
 
 
 def main() -> None:
@@ -70,9 +96,9 @@ def main() -> None:
     for day in sorted(first):
         rec = first[day]
         pub = datetime.strptime(rec["published_ist"], "%Y-%m-%d %H:%M")
-        # Contract: day D final by 06:00 IST on D+1.
+        # Contract: day D final by the target published on day D, on D+1.
         deadline = (datetime.strptime(day, "%Y-%m-%d")
-                    + timedelta(days=1, hours=CONTRACT_HOUR))
+                    + timedelta(days=1) + contract_offset(day))
         in_contract = day >= CONTRACT_START
         days.append({
             "day": day, **rec,
@@ -95,9 +121,17 @@ def main() -> None:
         "_meta": {
             "what": ("The morning contract's measured record, computed from "
                      "git commit timestamps, nothing self-reported: day D "
-                     "final by 06:00 IST on D+1. Pre-contract days shown as "
-                     "context. Misses stay listed forever."),
+                     "final by the target published on day D, on D+1 -- 06:30 "
+                     "IST from 2026-08-11, 06:00 IST before it. Each day is "
+                     "scored against the promise in force at the time, never "
+                     "re-scored against a later one. Pre-contract days shown "
+                     "as context. Misses stay listed forever."),
             "contract_start": CONTRACT_START,
+            "contract_schedule": [
+                {"effective_from": day, "deadline_ist_on_d_plus_1":
+                 f"{offset.seconds // 3600:02d}:{offset.seconds % 3600 // 60:02d}"}
+                for day, offset in reversed(CONTRACT_SCHEDULE)
+            ],
             "generated": datetime.now(IST).strftime("%Y-%m-%d %H:%M IST"),
         },
         "on_time": on_time, "scored_days": len(scored),

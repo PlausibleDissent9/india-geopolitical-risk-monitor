@@ -25,7 +25,7 @@ WHAT THIS FILE CHECKS
 That the guard is wired in and its deadline rule survives. The arithmetic
 itself was verified in a browser against five fixed clocks, including the
 two that matter most: silent when the data is current, and silent before the
-00:30 UTC deadline when the newest day is not late but merely not yet due.
+01:00 UTC deadline when the newest day is not late but merely not yet due.
 """
 from __future__ import annotations
 
@@ -52,15 +52,22 @@ def test_the_staleness_check_exists_and_is_called() -> None:
 
 
 def test_the_publication_deadline_rule_survives() -> None:
-    """The measured day closes 00:00 UTC and publishes by 00:30 UTC. Before
+    """The measured day closes 00:00 UTC and publishes by 01:00 UTC. Before
     that the newest day is NOT late, it is not due -- warning there would
-    cry wolf every night and train readers to ignore the flag."""
+    cry wolf every night and train readers to ignore the flag.
+
+    01:00, not 00:30, since 2026-08-11: the published target moved to 06:30
+    IST because 06:00 gave the whole pipeline a 30-minute window against 48-54
+    minutes of measured work. The deadline the page judges lateness by must be
+    the deadline the site actually promises, or the flag lies in one direction
+    or the other."""
     src = _source()
     block = re.search(r"function markIfBehindTarget\(.*?\n\}", src, re.S)
     assert block, "markIfBehindTarget body not found"
     body = block.group(0)
-    assert "getUTCMinutes() >= 30" in body and "getUTCHours() > 0" in body, (
-        "the 00:30 UTC publication deadline is no longer part of the rule")
+    assert "getUTCHours() >= 1" in body, (
+        "the 01:00 UTC (06:30 IST) publication deadline is no longer part of "
+        "the rule")
     assert "behind >= 1" in body, (
         "the guard no longer requires a full day behind before warning")
 

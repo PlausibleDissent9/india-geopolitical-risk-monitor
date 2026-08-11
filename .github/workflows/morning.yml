@@ -278,6 +278,34 @@ jobs:
           python -m src.outlet_drift
           python -m src.assistant_answers
           python -m src.status_data
+          # THE THREE THAT CAN REFUSE THIS LANE'S OWN CANDIDATE.
+          #
+          # The block above was assembled from the payloads whose TESTS
+          # rebuild and compare them. It missed the other half: the registries
+          # whose CI step is `python -m src.X --check`, which refuse just as
+          # hard and are what actually killed runs #53, #54, #55 and #57 on
+          # 2026-08-11:
+          #
+          #   publish refused: the committed CI gate is red on 68294b02.
+          #   Failing check: python -m src.event_ledger --check
+          #   EventLedgerError: event_ledger_report_stale
+          #
+          # Thirty-five modules run in daily.yml and not here, and adding all
+          # of them would blow the window -- most fetch the network or scan
+          # corpora. Exactly FOUR have a CI --check that can fail this gate,
+          # so exactly four belong here. They read the committed stores, need
+          # no network, and cost about two seconds together (measured).
+          #
+          # product_catalog is in this list only because
+          # tests/test_contract_lane_regenerates_what_ci_checks.py found it.
+          # Reading daily.yml and diffing it against this lane by hand missed
+          # it -- daily.yml does not run it either, so a comparison between
+          # the two lanes could never have found it. The relation that matters
+          # is ci.yml --check vs THIS lane, and only the test states it.
+          python -m src.world_state
+          python -m src.event_ledger
+          python -m src.evolution_engine
+          python -m src.product_catalog --write
       - name: Commit and push
         if: steps.guard.outputs.skip != 'true'
         env:

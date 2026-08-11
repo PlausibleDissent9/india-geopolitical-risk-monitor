@@ -490,7 +490,7 @@ guessed.
 ## docs/data/reliability.json
 
 The morning contract's measured record, computed from git commit
-timestamps: day D final by 06:00 IST on D+1. Pre-contract days appear
+timestamps: day D final by 06:30 IST on D+1 (06:00 before 2026-08-11). Pre-contract days appear
 as context; misses stay listed forever.
 
 ## docs/data/predictions.json

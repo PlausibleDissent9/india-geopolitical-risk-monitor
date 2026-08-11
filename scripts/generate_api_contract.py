@@ -457,7 +457,7 @@ def build() -> dict:
                 "auth": "none",
                 "cors": "Access-Control-Allow-Origin: *",
                 "rate_limit": "none stated; ordinary politeness (poll daily, not per-request)",
-                "refresh": "daily by 06:00 IST (00:30 UTC) for the final "
+                "refresh": "daily by 06:30 IST (01:00 UTC) for the final "
                 "day; nowcast.json refreshes about every two hours "
                 "after and is excluded from this freeze (payload "
                 "shape may still change, disclosed in its own "

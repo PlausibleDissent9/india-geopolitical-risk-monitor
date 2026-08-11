@@ -19,7 +19,7 @@ related measures rather than validation.
 
 **Delivery:** static CSV/JSON over HTTPS, CORS-open, no auth
 (https://igrm.in/data/history.csv); field stability under a versioned
-public API contract; daily by ~06:00 IST with a public reliability
+public API contract; daily by ~06:30 IST with a public reliability
 record that lists its own misses.
 
 **Licensing:** data CC BY 4.0 — free tier appropriate; attribution

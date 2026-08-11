@@ -4,7 +4,7 @@
 **Maintainer:** Ishan Krishna (independent researcher)
 **Homepage:** https://igrm.in — **machine endpoint:** https://igrm.in/data/history.csv
 **License:** CC BY 4.0 (data), MIT (pipeline)
-**Update cadence:** daily, final by ~06:00 IST; public reliability
+**Update cadence:** daily, final by ~06:30 IST; public reliability
 record at https://igrm.in/status.html
 
 **Series offered (daily, 2017-present):** composite press-salience

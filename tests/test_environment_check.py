@@ -18,7 +18,7 @@ def test_committed_requirement_files_are_exact_and_installed() -> None:
     This asserted both files at once, which is true of ci.yml, the local
     gate and reproduce.yml -- and false of daily.yml and morning.yml,
     which install requirements.txt alone and then run this very suite as
-    their first step. So the nightly publish and the 06:00 IST contract
+    their first step. So the nightly publish and the 06:30 IST contract
     both failed on ruff and mypy being absent, which is exactly how those
     lanes are built on purpose. daily-update #100 died here at 15:53Z on
     2026-08-08 having computed nothing.

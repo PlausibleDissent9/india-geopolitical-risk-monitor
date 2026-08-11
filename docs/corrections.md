@@ -231,7 +231,7 @@ was real. Tolerance corrected to 0.101 for that one check with the
 derivation in a comment. Also armored the same day: the daily
 schedule's crons have never fired on time in this repository, so the
 reliably-firing nowcast workflow now dispatches the daily run whenever
-yesterday's final is unpublished past 00:30 UTC.
+yesterday's final is unpublished past 01:00 UTC.
 
 ## 2026-08-09: the status page could not have reported the stall it existed to report
 

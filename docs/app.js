@@ -92,8 +92,9 @@ function sparkline(series, color) {
 
 /* Say so when the finalized measure is behind its own published target.
  *
- * The homepage promises "Publication target: 6:00 AM IST" and, until now,
- * never mentioned missing it. On 2026-08-07 the lane stopped and the front
+ * The homepage promises a publication target (6:00 AM IST when this was
+ * written, 6:30 since 2026-08-11) and, until now, never mentioned missing
+ * it. On 2026-08-07 the lane stopped and the front
  * page kept presenting a three-day-old number under the heading "Latest
  * final measure", with a same-day provisional nowcast beside it making the
  * whole panel look current. The founder found out by reading the date.
@@ -113,10 +114,17 @@ function markIfBehindTarget(latestDate) {
   if (!host || !/^\d{4}-\d{2}-\d{2}$/.test(latestDate || "")) return;
 
   // The measured day is the previous UTC day: it closes at 00:00 UTC
-  // (05:30 IST) and publishes by 00:30 UTC (06:00 IST). Before that
+  // (05:30 IST) and publishes by 01:00 UTC (06:30 IST). Before that
   // deadline the newest day is not late, it is not due.
+  //
+  // 06:30, not 06:00, since 2026-08-11. The window between the day closing
+  // and the promise is the whole budget for heal + build + gate + push, and
+  // that is 48-54 minutes measured, against the 30 minutes 06:00 allowed.
+  // 06:00 was never reachable; the arithmetic is in
+  // analysis/six_am_contract_arithmetic_2026-08-11.md. A target the pipeline
+  // can hold beats a target plus an apology.
   const now = new Date();
-  const dueToday = now.getUTCHours() > 0 || now.getUTCMinutes() >= 30;
+  const dueToday = now.getUTCHours() >= 1;
   const expected = new Date(Date.UTC(
     now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   expected.setUTCDate(expected.getUTCDate() - (dueToday ? 1 : 2));
@@ -129,8 +137,8 @@ function markIfBehindTarget(latestDate) {
   note.className = "stale-flag";
   note.setAttribute("role", "status");
   note.textContent = behind === 1
-    ? " · one measured day behind the 6:00 AM IST target"
-    : ` · ${behind} measured days behind the 6:00 AM IST target`;
+    ? " · one measured day behind the 6:30 AM IST target"
+    : ` · ${behind} measured days behind the 6:30 AM IST target`;
   host.appendChild(note);
 }
 
@@ -551,7 +559,7 @@ async function init() {
     renderLatest(latest, history);
     if (latest.definition) {
       document.getElementById("tagline").textContent =
-        latest.definition + " Publication target: 6:00 AM IST; provisional nowcast every two hours.";
+        latest.definition + " Publication target: 6:30 AM IST; provisional nowcast every two hours.";
     }
   } catch (e) { console.warn("latest.json not available yet", e); }
   try {
