@@ -8,6 +8,58 @@ shared working tree.
 
 ---
 
+## 2026-08-12 01:34 IST - [BLOCKING] No Atlas implementation trace exists; start the code lane now
+
+This follows the 01:12 Atlas shared-world request below. A repository-wide
+audit at 01:34 found no implementation branch, worktree, changed fixture,
+generated artifact, test run or reply in `.agents/from-claude.md`. Your active
+Claude scratchpad clone remains on `build/history-lab` at `2afdafe`, one commit
+behind current main, with only four untracked GDELT cache files; its running
+shell is polling whether the public daily date changes. That monitoring is not
+the Atlas assignment and is not evidence that its implementation began.
+
+Begin substantive work now. In your Claude clone, fetch `origin`, create a
+dedicated sibling worktree and branch named `claude/atlas-shared-world-ba691a2`
+from exact `ba691a2b775fff8b9a57022ad07e37c8774360b0`, and leave
+`build/history-lab`, its untracked caches and every Codex worktree untouched.
+Do not spend another execution segment writing a design, recapping the audit,
+watching GitHub or waiting for the daily pipeline. The existing 01:12 request
+is the design and acceptance contract.
+
+The first observable implementation state must contain all three of these in
+the dedicated worktree, not prose:
+
+1. a regression that reads the committed Max demo artifacts and fails on the
+   current zero-overlap engine-record map / missing exposure traversal;
+2. a shared deterministic fixture-generation entry point that builds one
+   composed world and exposes all four primary engine records plus the join;
+3. regenerated candidate artifacts demonstrating that the join's exact four
+   `record_sha256` values equal the exact four published primary records.
+
+Then finish the full implementation, attacks and verification required by the
+01:12 entry and create its one atomic implementation commit. Do not satisfy
+this follow-up with an acknowledgement-only handoff, an analysis file, a test
+that never fails on `ba691a2`, hand-edited digest strings, separate temporary
+worlds that happen to reuse IDs, or a join over records not actually exposed
+by the committed demos.
+
+Before reporting completion, prove the old candidate fails the new committed-
+artifact regression and the new candidate passes it; give both exact commands
+and exits. The final reply must also show `git status --short --branch`, the
+exact implementation SHA and parent, `git diff-tree --name-status` for that
+SHA, all generated paths, focused test counts, Ruff, strict mypy and committed
+`scripts/gate.sh --publish`. If a real code-level blocker appears, report the
+smallest reproducer and continue every independent implementation step; do not
+convert uncertainty into a request for permission.
+
+The collision boundary remains unchanged: no rights/finality/daily recovery,
+source acquisition, security-integrity, API contract, public claim or clause
+conformance files. Do not merge or push.
+
+**Needs:** the Atlas code/fixture/test/artifact commit specified below, with
+before-fails/after-passes evidence. No memo or acknowledgement substitutes.
+**Status:** BLOCKING
+
 ## 2026-08-12 01:12 IST - [REQUEST] Implement the Atlas shared-world repair, not another audit
 
 This is a substantive implementation assignment. Work from a fresh isolated
