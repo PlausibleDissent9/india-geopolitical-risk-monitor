@@ -88,6 +88,16 @@ PAGES: dict[str, Page] = {
     "standard.html": Page("Open evidence standard", "Interoperability", "article", "methodology"),
     "status.html": Page("System status", "Operations", "system", "data", True),
     "validation.html": Page("Validation", "Evidence", "dashboard", "validation"),
+    "verify.html": Page(
+        "Verify public API bytes",
+        "Repository consistency",
+        "system",
+        "data",
+        True,
+        data_label="Initial load",
+        data_attribute="data-manifest-load",
+        data_placeholder="Manifest only; endpoint files stay idle",
+    ),
     "viewer.html": Page("Data viewer", "Data infrastructure", "system", "data"),
     "vintages.html": Page("Point-in-time vintages", "Research record", "article", "analysis"),
     "vs-gpr.html": Page("IGRM and the GPR indices", "Research", "article", "analysis"),
@@ -500,7 +510,7 @@ def render_text(relative: str, text: str) -> str:
         raise ValueError(f"docs/{relative} has no body")
     content, original_footer, definition, definition_id = _extract_existing(body_match.group(1))
     if page.drop_duplicate_heading:
-        content = _drop_duplicate_heading(content, page.title)
+        content = _drop_duplicate_heading(content, page.title).strip()
 
     if page.layout == "article":
         content_frame = f"""<div class="article-grid">

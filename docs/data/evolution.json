@@ -18,7 +18,7 @@
       "historical_intelligence_contract": "c75ea9d5f0224739157a92c982d52f87fec2bf1161550a4d971b95c4f3ad9752",
       "historical_intelligence_implementation": "355287f23a8373881c2e84032350422c7d135a7fab7abaff2625b72c91dc0612",
       "event_ledger": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18",
-      "product_route_set": "747d5a8886e7dc2355537d45e364480ca4451418bbce5642628fa5256be9d968",
+      "product_route_set": "2a03c0a0449354809a31550e7fcf17377c21db016deb8bf641c87c47388b7314",
       "api_endpoint_set": "41aacee6a0f80e421a742242c4f0df63efd5951d411ac778e886619bf07dd5a4",
       "capability_attestation_registry": "a57812bd345d37adb56d5212a4fb8f47a68aa4ac0b46d97b7a46e2385f11af7a",
       "max_launch_contract": "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc",
@@ -179,8 +179,8 @@
   ],
   "measured_state": {
     "public_product_routes": {
-      "registered": 36,
-      "present": 36,
+      "registered": 37,
+      "present": 37,
       "missing": []
     },
     "public_api_endpoints": {
@@ -1820,8 +1820,8 @@
         "reliability"
       ],
       "evidence": {
-        "registered_public_routes": 36,
-        "present_public_routes": 36
+        "registered_public_routes": 37,
+        "present_public_routes": 37
       },
       "next_gate": "Run the institutional design and interaction standard over every protected route, followed by independent cross-viewport review."
     }
