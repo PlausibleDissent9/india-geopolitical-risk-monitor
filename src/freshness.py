@@ -32,6 +32,7 @@ Three rules keep this honest rather than decorative:
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import sys
 from datetime import date, datetime, timezone
@@ -71,6 +72,7 @@ MAX_AGE_DAYS: dict[str, int] = {
     # over a seven-day lane is not a tight standard, it is a false one.
     # Numbers below are the cadence plus slack, read off the crons.
     "robustness_series.json": 10,  # validate.yml, cron "0 14 * * 0"
+    "validation.json": 10,  # validate.yml, cron "0 14 * * 0"
     "energy_context.json": 45,  # drift.yml cron "40 22 * * 0"; JODI itself
     # reports with a 1-3 month lag, the same reason jodi_energy.json is 45
 }
@@ -107,6 +109,11 @@ EXEMPT: dict[str, str] = {
         "a frozen promise, not a readout -- it is regenerated only when a "
         "maintainer deliberately freezes a baseline, and a rolling "
         "timestamp on it would defeat the point"
+    ),
+    "public_api_byte_manifest.json": (
+        "a deterministic inventory of one captured Git candidate; it changes "
+        "only when a declared endpoint byte changes and deliberately carries "
+        "no wall clock because clock churn would defeat byte identity"
     ),
     "product_catalog.json": (
         "a versioned public-route contract, not a daily readout; it changes "
@@ -173,6 +180,44 @@ EXEMPT: dict[str, str] = {
         "produces a qualifying row, not on a daily cadence"
     ),
     "freshness.json": "this audit's own output",
+}
+
+# Exact, temporary freeze identities for outputs whose daily lane has stopped
+# closing.  This is deliberately narrower than a name-only exemption: the
+# current public blob and its bounded coverage are disclosed, while any byte
+# change immediately re-enters the ordinary cadence audit.  That prevents a
+# future writer from inheriting a permanent exemption by reusing the filename.
+FROZEN_BLOB_EXEMPT: dict[str, tuple[str, str]] = {
+    "comparators.json": (
+        "a7ec23147892f7559d0525775d7d3dfaa1732525ee669739b7b6ff9f73d5974b",
+        "exact frozen blob only; latest complete comparator week is "
+        "2026-08-03 and no later acquisition has landed, so it must not be "
+        "read as current; any byte change resumes the daily cadence audit",
+    ),
+    "episode_terms.json": (
+        "5f6dbe2a4471f48272e1d46842e25cba4762663e824a125f30d322c425dbe0ed",
+        "exact frozen identity-derived attribution for 2026-08-05..2026-08-06; "
+        "recomputation remains refused without applicable signed source rights; "
+        "any byte change resumes the daily cadence audit",
+    ),
+    "receipts.json": (
+        "039c8fcf159a669603b4abca3cf24f4c454ec3030233c9fbad5cedeb6c3ae376",
+        "exact frozen identity-bearing evidence for measured day 2026-08-06; "
+        "recomputation remains refused without applicable signed source rights; "
+        "any byte change resumes the daily cadence audit",
+    ),
+    "receipts_archive.json": (
+        "3ea52f467d7836abb55d8bd542aeca964242690dc86e316cd16d717ca0ea562d",
+        "exact frozen identity-bearing archive for 2026-07-31..2026-08-06; "
+        "recomputation remains refused without applicable signed source rights; "
+        "any byte change resumes the daily cadence audit",
+    ),
+    "spike_breadth.json": (
+        "a84e9fa77cddaafd6dd58cd7fc509ec71c7e320335e5b376f1ca2ed18b9b595c",
+        "exact frozen identity-derived breadth record for 2026-08-05..2026-08-06; "
+        "recomputation remains refused without applicable signed source rights; "
+        "any byte change resumes the daily cadence audit",
+    ),
 }
 
 # CSV exemptions, same discipline as the JSON ones: a written reason,
@@ -389,6 +434,23 @@ def audit(today: date | None = None) -> list[dict[str, Any]]:
         if name in EXEMPT:
             rows.append({"payload": name, "status": "exempt", "reason": EXEMPT[name]})
             continue
+        frozen = FROZEN_BLOB_EXEMPT.get(name)
+        if frozen is not None:
+            expected_sha, reason = frozen
+            try:
+                actual_sha = hashlib.sha256(path.read_bytes()).hexdigest()
+            except OSError:
+                actual_sha = ""
+            if actual_sha == expected_sha:
+                rows.append(
+                    {
+                        "payload": name,
+                        "status": "exempt",
+                        "reason": reason,
+                        "exact_frozen_blob_sha256": expected_sha,
+                    }
+                )
+                continue
         gen = _generated(path)
         limit = MAX_AGE_DAYS.get(name, DEFAULT_MAX_AGE_DAYS)
         if gen is None:

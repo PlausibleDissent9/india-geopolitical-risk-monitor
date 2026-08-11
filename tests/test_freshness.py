@@ -6,6 +6,7 @@ and gets quoted exactly as confidently as a fresh one.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import date
 
@@ -112,6 +113,23 @@ def test_every_exemption_carries_a_reason():
     for name, reason in freshness.EXEMPT.items():
         assert isinstance(reason, str) and len(reason) > 20, (
             f"{name} is exempt without a real reason")
+
+
+def test_bounded_frozen_exemptions_match_exact_public_blobs() -> None:
+    for name, (expected_sha, reason) in freshness.FROZEN_BLOB_EXEMPT.items():
+        actual = hashlib.sha256(
+            (freshness.SITE_DATA / name).read_bytes()
+        ).hexdigest()
+        assert actual == expected_sha
+        assert isinstance(reason, str) and len(reason) > 20
+
+
+def test_changed_frozen_name_reenters_the_daily_audit(tmp_path, monkeypatch):
+    monkeypatch.setattr(freshness, "SITE_DATA", tmp_path)
+    _write(tmp_path, "receipts.json", {"generated": "2026-08-01T00:00:00Z"})
+    row = freshness.audit(today=date(2026, 8, 11))[0]
+    assert row["status"] == "STALE"
+    assert "exact_frozen_blob_sha256" not in row
 
 
 def test_withdrawn_brief_tombstone_is_intentionally_static():
