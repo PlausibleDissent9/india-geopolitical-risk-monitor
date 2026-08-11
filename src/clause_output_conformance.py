@@ -43,7 +43,7 @@ LIMITATION_REGISTRY_PATH = (
     ROOT / "governance" / "analytical_clause_limitation_registry.json"
 )
 
-_CONTRACT_SHA256 = "a44ab95c22bc4cf53067ffc3de97cc3009e3a33c5db0e719ded4c178a228edb7"
+_CONTRACT_SHA256 = "fc390542cc05eb46c8c159f3cc75b485fa36ba5c3c10da8f073e8b9e8c07990c"
 _MANIFEST_RELATIVE_PATH = "canonical/release.json"
 _QUERY_IDS = (
     "query:analytical_clause.fixture.path_found",
