@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "catalog_version": "1.1.0",
-  "effective": "2026-08-09",
+  "catalog_version": "1.2.0",
+  "effective": "2026-08-11",
   "status": "public_route_contract",
   "scope_boundary": "This catalog records public surfaces and their present maturity. A listed route is not evidence that the full 24 October launch outcome for its pillar is complete.",
   "primary_navigation": [
@@ -283,6 +283,13 @@
       "purpose": "Episode detection, baselines, robustness, comparisons and disclosed unfavorable diagnostics."
     },
     {
+      "path": "verify.html",
+      "label": "API byte verifier",
+      "pillar_id": "institution",
+      "status": "live",
+      "purpose": "An on-demand same-origin byte-consistency check for the complete declared API manifest, optionally anchored by a separately obtained digest."
+    },
+    {
       "path": "viewer.html",
       "label": "Data viewer",
       "pillar_id": "evidence_engine",
@@ -352,6 +359,7 @@
     "start.html",
     "status.html",
     "validation.html",
+    "verify.html",
     "viewer.html",
     "vintages.html",
     "vs-gpr.html",

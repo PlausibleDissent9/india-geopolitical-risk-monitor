@@ -100,8 +100,8 @@ def validate_catalog(catalog: dict[str, Any] | None = None) -> dict[str, Any]:
     value = catalog or _read_object(CATALOG_PATH, "catalog_unreadable")
     if (
         value.get("schema_version") != "1.0.0"
-        or value.get("catalog_version") != "1.1.0"
-        or value.get("effective") != "2026-08-09"
+        or value.get("catalog_version") != "1.2.0"
+        or value.get("effective") != "2026-08-11"
         or value.get("status") != "public_route_contract"
     ):
         _fail("catalog_identity_invalid")

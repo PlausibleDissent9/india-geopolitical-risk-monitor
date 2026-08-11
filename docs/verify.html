@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify public API bytes, India Geopolitical Risk Monitor</title>
+<meta name="description" content="Check every declared IGRM API artifact against the public byte manifest, with an optional independently obtained manifest digest.">
+<link rel="canonical" href="https://igrm.in/verify.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312233D'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' font-weight='bold' fill='%23FAFAF7' text-anchor='middle'%3EIG%3C/text%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
+<script>document.documentElement.dataset.theme = localStorage.igrmTheme || "dark";</script>
+<link rel="stylesheet" href="site.css?v=044019ad">
+</head>
+<body class="site-page layout-system" data-page="verify.html" data-root=".">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="masthead site-masthead">
+  <div class="site-shell nav-shell">
+    <a class="brand" href="./" aria-label="IGRM home">
+      <span class="brand-mark" aria-hidden="true">IG</span>
+      <span class="brand-copy"><strong>IGRM</strong><small>Public research instrument</small></span>
+    </a>
+    <nav class="mast-links" aria-label="Primary navigation">
+      <a href="start.html">Start here</a>
+      <a href="products.html">Explore</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="validation.html">Validation</a>
+      <a href="analysis.html">Research</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="data-cta current" href="data.html">Open data <span aria-hidden="true">↗</span></a>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light theme">Light</button>
+    </div>
+  </div>
+</header>
+<div class="site-shell page-frame">
+  <section class="page-heading" aria-labelledby="page-title">
+    <div class="page-heading-copy">
+      <p class="page-kicker">Repository consistency</p>
+      <h1 id="page-title">Verify public API bytes</h1>
+    </div>
+    <dl class="page-meta" aria-label="Publication context">
+      <div><dt>Initial load</dt><dd data-manifest-load>Manifest only; endpoint files stay idle</dd></div>
+      <div><dt>Freshness</dt><dd><a href="status.html">Source-by-source status</a></dd></div>
+    </dl>
+  </section>
+  <main id="main-content" class="page-content" tabindex="-1">
+    <!--site-shell:content-start-->
+    <p>This browser tool compares the declared public API files with the exact SHA-256 and byte lengths in the <a href="data/public_api_byte_manifest.json" download>public API byte manifest</a>.</p>
+
+  <div class="contract-strip" aria-labelledby="manifest-boundary-title">
+    <b id="manifest-boundary-title">Byte consistency, not authentication</b>
+    <p>The manifest is unsigned. Without a digest obtained independently of this website, a match proves only that same-origin files agree with the same-origin manifest. Even with an external digest, this page does not establish source truth, rights, finality, atomic hosting, security certification, or the authenticity of the JavaScript performing the check.</p>
+  </div>
+
+  <h2>1. Inspect the manifest</h2>
+  <p id="manifest-status" class="status" role="status" aria-live="polite">The browser has not loaded the manifest.</p>
+  <dl class="page-meta" aria-label="Manifest summary">
+    <div><dt>Raw manifest SHA-256</dt><dd><code id="manifest-raw-sha">loading…</code></dd></div>
+    <div><dt>Declared files</dt><dd><span id="manifest-count">—</span> files · <span id="manifest-bytes">—</span></dd></div>
+  </dl>
+
+  <h2>2. Add an external anchor if you have one</h2>
+  <p><label for="expected-manifest-sha"><b>Expected raw manifest SHA-256</b></label></p>
+  <input id="expected-manifest-sha" type="text" inputmode="text" autocomplete="off" spellcheck="false" maxlength="64" aria-describedby="expected-sha-help">
+  <p id="expected-sha-help" class="kv">Optional. Paste a 64-character digest obtained through an independent channel, or use <code>#sha256=&lt;digest&gt;</code> in the URL. The page never supplies its own digest as an independent anchor.</p>
+
+  <h2>3. Fetch and compare the declared files</h2>
+  <p>This is an explicit, on-demand check: <b>116 requests and about 6.9 MiB</b> for the current manifest. Only the manifest is loaded before you press the button.</p>
+  <div id="low-bandwidth-warning" class="meta-box" hidden>
+    <b>Reduced-data preference detected</b>
+    <p>This operation downloads every declared API file.</p>
+    <label><input id="bandwidth-override" type="checkbox"> Download them anyway</label>
+  </div>
+  <p><button class="btn primary" id="verify-api-bytes" type="button" disabled>Verify declared API bytes</button></p>
+  <p id="verification-progress" class="status" role="status" aria-live="polite">0 files checked.</p>
+  <p id="verification-status" class="contract-strip" role="alert">No verification has run.</p>
+
+  <div class="tblwrap"><table class="status-table" id="verification-results" hidden>
+    <thead><tr><th>Path</th><th>Expected size</th><th>Status</th><th>Detail</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+
+  <noscript>
+    <section class="meta-box">
+      <h2>Manual verification without JavaScript</h2>
+      <p>Download <a href="data/public_api_byte_manifest.json">the raw manifest</a> and calculate its SHA-256 with <code>sha256sum public_api_byte_manifest.json</code> (or <code>shasum -a 256</code> on macOS). Compare that value with a digest obtained independently. Then download the listed files and compare each raw file with its declared <code>bytes</code> and <code>sha256</code>. A same-site manifest without an independent digest is not an authenticity check.</p>
+    </section>
+  </noscript>
+
+  <script src="verify.js?v=16627add"></script>
+    <!--site-shell:content-end-->
+  </main>
+  <footer class="site-footer">
+    <div class="footer-context">
+      <!--site-shell:footer-start-->
+      <p>Association, not causation. Not investment advice.</p>
+      <!--site-shell:footer-end-->
+    </div>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="./">India Geopolitical Risk Monitor</a>
+        <p>Public research instrument · India-specific press salience</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="products.html">Explore IGRM</a>
+        <a href="atlas.html">Atlas</a>
+        <a href="maps.html">Maps</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="validation.html">Validation</a>
+        <a href="history.html">1979&ndash;2019 history</a>
+        <a href="data.html">Data</a>
+        <a href="corrections.html">Corrections</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="site.js?v=88fb47ea"></script>
+</body>
+</html>
