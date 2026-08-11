@@ -193,15 +193,21 @@ jobs:
             [ "$ok" = "1" ]
           else
             # THE NIGHTLY PATH, BOUNDED SEPARATELY FROM THE BACKFILL.
-            # Measured incremental runs: 11.6 (#102), 13.8 (#95), 17.5
-            # (#97), 20.7 (#99) minutes. 30m is ~45% above the worst of
-            # those, so a fetch that exceeds it is not slow, it is stuck.
+            # The NGram healer above is the one acquisition boundary. Running
+            # run_daily online here used to open a second GDELT DOC 14-day-tail
+            # fetch after the store was already healed. On daily #114 it spent
+            # the entire 30-minute bound there and produced nothing. It could
+            # also overwrite NGram-regime tail cells with a different source
+            # regime. Offline mode consumes the exact healed store and committed
+            # market cache; the backfill branch above remains deliberately live.
+            #
+            # Measured pre-fix incremental runs: 11.6 (#102), 13.8 (#95), 17.5
+            # (#97), 20.7 (#99) minutes. The bound remains until post-fix
+            # telemetry justifies lowering it; never remove the bound by feel.
             # Failing here is strictly better than hanging: the job's
             # concurrency lane is released, so the 06:21 or 20:53 backup
             # cron gets to try instead of queueing behind a corpse.
-            # Revise this number from the measured distribution, not by
-            # feel -- and never by removing the bound.
-            timeout 30m python -m src.run_daily
+            IGRM_OFFLINE=1 timeout 30m python -m src.run_daily
           fi
       - name: Global Event and Episode Ledger (aggregate observation foundation)
         if: github.event.inputs.backfill != 'true'

@@ -211,7 +211,14 @@ jobs:
         run: python -m src.fetch_ngrams --heal 5
       - name: Run pipeline (final index only)
         if: steps.guard.outputs.skip != 'true'
-        run: python -m src.run_daily
+        # The healer immediately above is this lane's one source-acquisition
+        # boundary. Without offline mode, run_daily opens a second GDELT DOC
+        # tail acquisition (multiple requests with seven-minute read ceilings)
+        # after the NGram store is already healed. That duplicate path hit the
+        # job budget while also risking a mixed-regime overwrite of the store.
+        # Offline run_daily consumes the exact healed store and committed market
+        # cache, then performs only deterministic transformation/publication.
+        run: IGRM_OFFLINE=1 python -m src.run_daily
       - name: Dual-computation audit (fail-loud gate before any push)
         if: steps.guard.outputs.skip != 'true'
         run: python -m src.audit
