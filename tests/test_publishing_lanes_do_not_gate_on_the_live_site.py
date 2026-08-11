@@ -24,6 +24,25 @@ once rather than left to whoever edits a workflow next.
 ci.yml is deliberately NOT exempted by name: it is covered by the rule itself,
 because it does not publish. That is exactly where these assertions belong --
 running on main as monitoring, where a stale site is an alert and not a lock.
+
+SCOPE, STATED HONESTLY
+A workflow can reach pytest two ways, and the original deadlock used the
+second one -- so a guard that only saw the first would not have caught the bug
+it exists to prevent:
+
+  DIRECT    a `run:` line in the workflow itself. Only daily.yml and
+            morning.yml do this. Covered below.
+  INDIRECT  a shell script the workflow invokes. Eleven of the thirteen
+            publishing lanes reach pytest ONLY this way, through
+            publish_push.sh -> gate.sh. That path is pinned by
+            tests/test_gate_publish_mode.py, which asserts both push paths use
+            --publish and that --publish narrows nothing but the pytest line.
+
+Both are checked here rather than left as an assumption about the other file:
+the script scan below fails if any shell script the repo ships invokes pytest
+without excluding the live suite. Naming the scope matters as much as the
+check -- a guard believed to cover more than it does is how the next one gets
+through.
 """
 from __future__ import annotations
 
@@ -68,6 +87,45 @@ def test_no_publishing_lane_runs_the_live_suite_in_its_gate() -> None:
         "when publishing matters most. Add -m \"not live\"; the live "
         "assertions belong in ci.yml, which does not publish:\n  "
         + "\n  ".join(offenders))
+
+
+def test_no_shipped_script_invokes_pytest_without_excluding_the_live_suite() -> None:
+    """The INDIRECT half of the scope above.
+
+    The publish deadlock reached pytest through publish_push.sh -> gate.sh, not
+    through a `run:` line, so the workflow scan alone would have missed it
+    entirely. A script that runs a bare pytest is reachable from eleven
+    publishing lanes at once, which makes it the more dangerous of the two
+    shapes, not the lesser.
+
+    Only INVOCATIONS count. gate.sh legitimately mentions "pytest" in its
+    refusal messages and in the sed that appends the marker; those are not
+    runs, and matching them would make this fail on the very code that
+    implements the rule.
+    """
+    scripts = sorted((WORKFLOWS.parents[1] / "scripts").glob("*.sh"))
+    assert scripts, "no shell scripts found; the path has drifted"
+
+    # Written as explicit string logic rather than one regex on purpose: the
+    # first version used `^\s*(?!#)`, which backtracks to zero whitespace and
+    # so happily matched every comment mentioning pytest, including the ones
+    # in gate.sh explaining this very rule.
+    offenders = []
+    for script in scripts:
+        for raw in script.read_text(encoding="utf-8").splitlines():
+            line = raw.strip()
+            if not line or line.startswith("#") or line.startswith("echo "):
+                continue
+            if not re.search(r"(python -m pytest|(?<![\w/.])pytest)\b", line):
+                continue
+            # Manipulating a pytest command is not running one.
+            if re.search(r"\b(sed|grep|awk)\b", line):
+                continue
+            if "not live" not in line:
+                offenders.append(f"{script.name}: {line}")
+    assert not offenders, (
+        "these shipped scripts run the live suite, and eleven publishing lanes "
+        "reach pytest only through scripts like these:\n  " + "\n  ".join(offenders))
 
 
 def test_ci_still_runs_the_live_suite_somewhere() -> None:
