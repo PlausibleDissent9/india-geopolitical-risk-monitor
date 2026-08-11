@@ -1,10 +1,10 @@
-"""Daily publication must transform the healed store without refetching it.
+"""Daily publication must transform the accepted store without refetching it.
 
-Both production workflows run the NGram healer immediately before run_daily.
-An online run_daily then opens a second GDELT DOC acquisition over a 14-day
-tail, mixing source regimes and consuming the lane's complete timeout. The
-post-heal transformation therefore runs with IGRM_OFFLINE; explicit backfills
-remain online and separately bounded.
+Both production workflows run the exact-target final-publication acquisition
+before run_daily. An online run_daily then opens a second GDELT DOC acquisition
+over a 14-day tail, mixing source regimes and consuming the lane's complete
+timeout. The post-acquisition transformation therefore runs with IGRM_OFFLINE;
+explicit backfills remain online and separately bounded.
 """
 from __future__ import annotations
 
@@ -22,12 +22,20 @@ def test_both_post_heal_pipelines_are_offline() -> None:
     morning = (WORKFLOWS / "morning.yml").read_text(encoding="utf-8")
     daily = (WORKFLOWS / "daily.yml").read_text(encoding="utf-8")
 
-    assert morning.index("python -m src.fetch_ngrams --heal 5") < morning.index(
-        "IGRM_OFFLINE=1 python -m src.run_daily"
+    acquisition = "--acquire-target"
+    morning_pipeline = (
+        "IGRM_OFFLINE=1 /usr/bin/time -v timeout --signal=TERM 7m "
+        "python -m src.run_daily --final-only"
     )
-    assert daily.index("python -m src.fetch_ngrams --heal 35") < daily.index(
-        "IGRM_OFFLINE=1 timeout 30m python -m src.run_daily"
+    daily_pipeline = "IGRM_OFFLINE=1 timeout 30m python -m src.run_daily"
+    assert morning.index(acquisition) < morning.index(
+        morning_pipeline
     )
+    assert daily.index(acquisition) < daily.index(
+        daily_pipeline
+    )
+    assert "python -m src.fetch_ngrams --heal" not in morning
+    assert "python -m src.fetch_ngrams --heal" not in daily
     assert "IGRM_OFFLINE=1 python -m src.run_daily --backfill" not in daily
 
 

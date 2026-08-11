@@ -25,9 +25,11 @@ security certification and not a claim that IGRM is institutionally secure.
   dispatching lanes may request `actions: write`.
 - Every publishing lane installs both exact runtime and development
   requirements.
-- After every successful rebase and immediately before either push path,
-  `scripts/publish_push.sh` runs `bash scripts/gate.sh --committed` against
-  the exact candidate commit. A red candidate is refused even if that loses
+- After every successful rebase and immediately before every push path, the
+  registered publishers run `bash scripts/gate.sh --publish` against the exact
+  candidate commit. This mode still extracts and checks committed `HEAD`; it
+  excludes only live-site assertions about the deployment being replaced and
+  non-gating coverage output. A red candidate is refused even if that loses
   the scheduled update.
 - The repository write token is supplied only to the final publication step,
   converted to a non-exported ephemeral Git header, and removed from the

@@ -33,6 +33,7 @@ ACTION_RE = re.compile(r"uses:\s*(?P<action>[^@\s]+)@(?P<ref>[^\s#]+)")
 PERMISSIONS_RE = re.compile(r"^permissions:\n(?P<body>(?:  [^\n]+\n)+)", re.M)
 PERMISSION_ROW_RE = re.compile(r"^  (?P<scope>[a-z-]+): (?P<level>read|write|none)$", re.M)
 HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
+FINAL_CAS_GATE_COMMAND = "bash scripts/gate.sh --publish"
 
 # These bodies are deliberately tiny, reviewable shell grammars. The full
 # script is registry-pinned; these independent implementation pins prevent an
@@ -43,7 +44,7 @@ FINAL_CAS_FUNCTION_SHA256 = {
         "5b1b35c93e04107f700430b24afc197dc68b91b46c3d1b5e0f2c765687b77f25"
     ),
     "publish_gated_candidate": (
-        "a855c2a570525e63f30f8974548ac0de584e23c07facd81912215e8bf5d75856"
+        "d5ac0aa01f94393637d100157f5db32a81e5e75781004dbfb21aeef26eb1134a"
     ),
     "push_frozen_parent": (
         "2370b61bca5ed688272960332f69045cfbb18908bb72793a56c05d615797508b"
@@ -290,6 +291,25 @@ def _validate_against_predecessor_projection(
         script_result.stdout
     ).hexdigest() != TRUSTED_FINAL_CAS_SCRIPT_SHA256:
         _fail("security_prior_cas_anchor_invalid")
+    registry_result = subprocess.run(
+        [
+            "git",
+            "show",
+            f"{TRUSTED_SECURITY_BASELINE_COMMIT}:"
+            "governance/security_integrity_registry.json",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+    )
+    if registry_result.returncode != 0:
+        _fail("security_prior_registry_anchor_unavailable")
+    try:
+        predecessor_registry = json.loads(registry_result.stdout)
+    except json.JSONDecodeError:
+        _fail("security_prior_registry_anchor_invalid")
+    predecessor_publisher = predecessor_registry.get("publisher")
+    if not isinstance(predecessor_publisher, dict):
+        _fail("security_prior_registry_anchor_invalid")
     predecessor_script = script_result.stdout.decode("utf-8")
     current_script = (root / "scripts/publish_final_cas.sh").read_text(
         encoding="utf-8"
@@ -327,19 +347,34 @@ def _validate_against_predecessor_projection(
         projected_registry["publisher"]["final_cas_script"]["sha256"] = (
             TRUSTED_FINAL_CAS_SCRIPT_SHA256
         )
+        projected_registry["publisher"]["required_gate_command"] = (
+            predecessor_publisher["required_gate_command"]
+        )
         with tempfile.TemporaryDirectory(prefix="igrm-security-parent-") as temp:
             projected = Path(temp)
             shutil.copytree(
                 root / ".github/workflows", projected / ".github/workflows"
             )
-            for record in (
-                projected_registry["publisher"]["push_script"],
-                projected_registry["publisher"]["gate_script"],
-            ):
+            for key in ("push_script", "gate_script"):
+                record = predecessor_publisher.get(key)
+                if not isinstance(record, dict):
+                    _fail("security_prior_registry_anchor_invalid")
+                projected_registry["publisher"][key] = record
                 relative = Path(record["path"])
                 destination = projected / relative
                 destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(root / relative, destination)
+                anchored = subprocess.run(
+                    [
+                        "git",
+                        "show",
+                        f"{TRUSTED_SECURITY_BASELINE_COMMIT}:{relative.as_posix()}",
+                    ],
+                    cwd=ROOT,
+                    capture_output=True,
+                )
+                if anchored.returncode != 0:
+                    _fail("security_prior_registered_file_unavailable", key)
+                destination.write_bytes(anchored.stdout)
             final_relative = Path(
                 projected_registry["publisher"]["final_cas_script"]["path"]
             )
@@ -550,7 +585,7 @@ def validate_repository(
         '[ "$parent_count" != "1" ]',
         'candidate_parent=$(git rev-parse "$FROZEN_CANDIDATE_SHA^")',
         '[ "$candidate_parent" != "$BASE_COMMIT" ]',
-        gate_command,
+        FINAL_CAS_GATE_COMMAND,
         "push_frozen_parent",
     )
     for body, markers, code in (
@@ -640,6 +675,7 @@ def validate_repository(
                 "status": "self_consistent_unattested_transition",
                 "policy": "refuse_publish_on_red_candidate",
                 "command": gate_command,
+                "final_cas_command": FINAL_CAS_GATE_COMMAND,
                 "push_paths_verified": len(pushes) + 1,
                 "transition_authority": "unavailable_no_external_signature",
             },

@@ -93,9 +93,11 @@ publish_gated_candidate() {
     echo "::error::candidate refusal: publisher commit parent $candidate_parent is not frozen base $BASE_COMMIT"
     return 1
   fi
-  # One exact gate over the one candidate SHA. A changed remote is a refusal,
-  # never authority to rebase or auto-resolve final/history bytes.
-  /usr/bin/time -v bash scripts/gate.sh --committed
+  # One exact gate over the one candidate SHA. --publish still extracts HEAD,
+  # but excludes live-site assertions about the deployment this candidate is
+  # intended to replace (and non-gating coverage output). A changed remote is
+  # a refusal, never authority to rebase or auto-resolve final/history bytes.
+  /usr/bin/time -v bash scripts/gate.sh --publish
   push_frozen_parent
 }
 

@@ -63,6 +63,7 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
         # by excluding assertions about the already-served site, which
         # deadlocked every publisher (see scripts/gate.sh).
         "command": "bash scripts/gate.sh --publish",
+        "final_cas_command": "bash scripts/gate.sh --publish",
         "push_paths_verified": 3,
         "transition_authority": "unavailable_no_external_signature",
     }
@@ -169,9 +170,9 @@ def test_registered_final_publisher_refuses_a_second_or_earlier_push(
     path = security_tree / "scripts" / "publish_final_cas.sh"
     path.write_text(
         path.read_text(encoding="utf-8").replace(
-            "  /usr/bin/time -v bash scripts/gate.sh --committed",
+            "  /usr/bin/time -v bash scripts/gate.sh --publish",
             "  git push origin HEAD:main\n"
-            "  /usr/bin/time -v bash scripts/gate.sh --committed",
+            "  /usr/bin/time -v bash scripts/gate.sh --publish",
             1,
         ),
         encoding="utf-8",
@@ -186,9 +187,9 @@ def test_registered_final_publisher_refuses_dead_code_gate_fragments(
     path = security_tree / "scripts" / "publish_final_cas.sh"
     path.write_text(
         path.read_text(encoding="utf-8").replace(
-            "  /usr/bin/time -v bash scripts/gate.sh --committed",
+            "  /usr/bin/time -v bash scripts/gate.sh --publish",
             "  if false; then\n"
-            "    /usr/bin/time -v bash scripts/gate.sh --committed\n"
+            "    /usr/bin/time -v bash scripts/gate.sh --publish\n"
             "  fi",
             1,
         ),

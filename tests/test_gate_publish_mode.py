@@ -170,7 +170,7 @@ def test_every_push_path_uses_the_publish_gate() -> None:
     same deadlock, so while the site was stale it could not push anything --
     including the commit that fixes the deadlock.
     """
-    for name in ("publish_push.sh", "ship.sh"):
+    for name in ("publish_push.sh", "publish_final_cas.sh", "ship.sh"):
         text = (ROOT / "scripts" / name).read_text(encoding="utf-8")
         assert "gate.sh --publish" in text, (
             f"{name} no longer uses the publish gate; a live-site assertion "

@@ -430,6 +430,11 @@ def test_identity_retaining_acquisition_requires_current_signed_rights_before_fe
     monkeypatch: pytest.MonkeyPatch,
     rights_attack: str,
 ) -> None:
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 12, 0, tzinfo=timezone.utc),
+    )
     root = _publication_root(tmp_path)
     if rights_attack == "missing":
         (root / "governance/rights_decisions/ngrams.sig").unlink()
@@ -519,6 +524,11 @@ def test_compute_day_and_nowcast_refuse_before_any_source_or_identity_work(
     monkeypatch: pytest.MonkeyPatch,
     rights_attack: str,
 ) -> None:
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 12, 0, tzinfo=timezone.utc),
+    )
     direct_root = _publication_root(tmp_path / "direct")
     _apply_ngram_rights_attack(direct_root, rights_attack)
     probes: list[str] = []
@@ -1185,7 +1195,13 @@ def test_production_rights_refuse_repository_added_signer_authority(
 
 def test_explicit_non_git_authority_is_the_only_synthetic_positive(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 12, 0, tzinfo=timezone.utc),
+    )
     root = _publication_root(tmp_path)
     proof = ngram_rights.require_public_identity_rights(
         target=TARGET,
@@ -3296,7 +3312,8 @@ def test_morning_gate_is_bounded_once_per_candidate_and_cas_only() -> None:
     assert "bash scripts/publish_push.sh" not in workflow
     assert workflow.count("bash scripts/publish_final_cas.sh") == 1
     assert workflow.count("git push origin HEAD:main") == 0
-    assert publisher.count("bash scripts/gate.sh --committed") == 1
+    assert publisher.count("bash scripts/gate.sh --publish") == 1
+    assert "bash scripts/gate.sh --committed" not in publisher
     assert publisher.count('git push origin "$FROZEN_CANDIDATE_SHA:main"') == 1
     assert "remote_commit=$(git rev-parse origin/main)" in publisher
     assert 'candidate_head=$(git rev-parse HEAD)' in publisher
