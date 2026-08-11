@@ -227,9 +227,12 @@ def test_the_gate_status_is_not_laundered_through_a_pipe(tmp_path):
     unverified bytes -- the precise defect this repo has already paid for.
     The capture must therefore not introduce a pipe."""
     body = _gate_candidate_source()
-    assert "gate.sh --committed >" in body, (
+    # The flag is --publish since 2026-08-11 (see gate.sh); this test is about
+    # the CAPTURE, not the flag, so it matches whichever gate invocation the
+    # publisher uses and still forbids a pipe around it.
+    assert re.search(r"gate\.sh --\w+ >", body), (
         "the gate output is not captured by redirection")
-    assert not re.search(r"gate\.sh --committed[^\n]*\|", body), (
+    assert not re.search(r"gate\.sh --\w+[^\n]*\|", body), (
         "the gate is piped, which launders its exit status")
 
 

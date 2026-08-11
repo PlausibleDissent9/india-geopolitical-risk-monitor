@@ -53,7 +53,12 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
     assert report["controls"]["exact_post_rebase_publication_gate"] == {
         "status": "pass",
         "policy": "refuse_publish_on_red_candidate",
-        "command": "bash scripts/gate.sh --committed",
+        # --publish since 2026-08-11. The control is unchanged in strength:
+        # it still requires a full gate on the committed candidate by exact
+        # command string, and still refuses a red one. --publish differs only
+        # by excluding assertions about the already-served site, which
+        # deadlocked every publisher (see scripts/gate.sh).
+        "command": "bash scripts/gate.sh --publish",
         "push_paths_verified": 2,
     }
     # 13 since 2026-08-09: historical-intelligence.yml. This count is an

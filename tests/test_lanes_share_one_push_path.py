@@ -132,7 +132,14 @@ def test_every_rebased_candidate_runs_the_committed_gate_before_push():
     must exit rather than trading integrity for the day's availability."""
 
     text = SCRIPT.read_text(encoding="utf-8")
-    assert "bash scripts/gate.sh --committed" in text
+    # --publish, not --committed, since 2026-08-11. It still gates the exact
+    # COMMITTED candidate (--publish implies --committed inside gate.sh); the
+    # only difference is that assertions about the ALREADY-SERVED site are
+    # excluded, because a stale site was refusing the very pushes that would
+    # refresh it. The property this test defends -- a red candidate exits
+    # rather than trading integrity for availability -- is unchanged, and
+    # tests/test_gate_publish_mode.py pins that nothing else was narrowed.
+    assert "bash scripts/gate.sh --publish" in text
     assert "SECURITY REFUSAL" in text
     assert text.count("if ! gate_candidate; then exit 1; fi") == 2
     assert "unset IGRM_PUBLISH_TOKEN" in text
