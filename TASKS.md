@@ -488,3 +488,20 @@ Run #83's own annotations separate two causes cleanly:
    conjure data upstream will not serve. Classification: external
    dependency; retry on later runs, escalate to founder if it persists
    across days.
+
+## T28 — S1 fetcher SHIPPED: RBI WSS reserves, sessionless, triple-validated
+Status: DONE
+- Files: src/fetch_rbi_wss.py (new), tests/test_fetch_rbi_wss.py (new),
+  data/raw/rbi_wss_reserves.csv (first 3 weeks banked)
+- Commands: `python -m src.fetch_rbi_wss --latest 3` (live), pytest, ruff, mypy
+- Evidence: THREE parsed weeks each match the DBIE gateway independently to
+  the million: 692,866 / 682,354 / 676,237 US$ Mn. Refusal-first: no table,
+  no as-on date, or missing row raises; a run banking nothing exits nonzero.
+- Gates: parse tests 3/3 pass; ruff clean; mypy clean. NOT wired into any CI
+  gate or lane cap — it is a fetcher, run on demand or by a future lane.
+- Next: transmission-table integration is a display/design decision for the
+  founder (which macro rows join the table and with what caption).
+NOTE: another writer (PlausibleDissent9 account, Codex-style) is actively
+rebuilding the morning publication lane; standing down from all lane surfaces
+until their iteration lands. My seven publish-chain fixes are on main beneath
+their work.
