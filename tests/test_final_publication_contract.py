@@ -24,12 +24,31 @@ from src import (
     ngram_rights,
     nowcast,
     run_daily,
+    status_data,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
 TODAY = date(2026, 8, 10)
 TARGET = date(2026, 8, 9)
 PREFIX_DAY = date(2026, 8, 8)
+
+
+@pytest.fixture(autouse=True)
+def _freeze_synthetic_rights_clock(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Keep the dated synthetic rights fixtures stable across real UTC days.
+
+    Tests of expiry, revocation, max age, and midnight rollover replace this
+    clock explicitly. Letting all other cases read the wall clock makes the
+    fixed Aug-9/Aug-10 fixtures change meaning merely because CI ran later.
+    """
+
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 12, 0, tzinfo=timezone.utc),
+    )
 
 
 def _sha(data: bytes) -> str:
@@ -2718,11 +2737,17 @@ def test_aug9_legacy_history_refuses_merge_path_change_followed_by_revert(
     tmp_path: Path,
 ) -> None:
     root = _legacy_history_repo(tmp_path)
+    # The committed publication gate extracts an exact detached HEAD. Do not
+    # make this Git-history attack depend on the caller having checked out a
+    # named branch, or `git switch -` will try (and refuse) a commit SHA.
+    subprocess.run(
+        ["git", "switch", "-q", "-c", "legacy-base"], cwd=root, check=True
+    )
     subprocess.run(["git", "switch", "-q", "-c", "legacy-side"], cwd=root, check=True)
     latest = root / "docs/data/latest.json"
     latest.write_bytes(latest.read_bytes() + b"\n")
     _commit_legacy_path(root, "docs/data/latest.json", "side mutates pinned latest")
-    subprocess.run(["git", "switch", "-q", "-"], cwd=root, check=True)
+    subprocess.run(["git", "switch", "-q", "legacy-base"], cwd=root, check=True)
     subprocess.run(
         ["git", "merge", "-q", "--no-ff", "legacy-side", "-m", "merge path mutation"],
         cwd=root,
@@ -3700,25 +3725,47 @@ def test_rescue_predicates_and_public_pages_use_final_date_contract() -> None:
         assert "['_meta']['generated']" not in workflow
         assert 'date -u -d "yesterday" +%F' in workflow
 
-    homepage = (ROOT / "docs/index.html").read_text(encoding="utf-8")
+    homepage_path = ROOT / "docs/index.html"
+    status_page_path = ROOT / "docs/status.html"
+    homepage_bytes = homepage_path.read_bytes()
+    status_page_bytes = status_page_path.read_bytes()
+    homepage = homepage_bytes.decode("utf-8")
     app = (ROOT / "docs/app.js").read_text(encoding="utf-8")
-    status_page = (ROOT / "docs/status.html").read_text(encoding="utf-8")
     status = json.loads((ROOT / "docs/data/status.json").read_text(encoding="utf-8"))
     final_state = status["final_publication"]
     assert 'id="final-publication-status"' in homepage
     assert 'id="final-publication-status" hidden' not in homepage
-    for text in (homepage, status_page):
-        assert "Bounded historical publication" in text
-        assert "target <b>2026-08-09</b> remains visible" in text
-        assert "exactly match commit 9077ea4" in text
-        assert "source acquisition receipt" in text
-        assert "reconstructable English denominator" in text
-        assert "cache-to-store calibration/transform receipt" in text
-        assert "store-to-public score derivation receipt" in text
-        assert "source-retention and redistribution rights review" in text
-        assert "provisional nowcast remains separate and non-final" in text
+    for relative, current_bytes in (
+        ("docs/index.html", homepage_bytes),
+        ("docs/status.html", status_page_bytes),
+    ):
+        assert status_data.static_final_disclosure_bytes(
+            final_state, relative, current_bytes
+        ) == current_bytes
     assert "nowcast remains separate and non-final" in app
-    assert final_state["status"] == "legacy_proof_limited"
-    assert final_state["latest_finalized_date"] == TARGET.isoformat()
     assert final_state["finalized"] is False
     assert final_state["source_receipt"] is None
+
+
+def test_static_final_disclosure_keeps_the_bounded_legacy_boundary() -> None:
+    message = status_data._static_final_message(
+        {
+            "target_date": TARGET.isoformat(),
+            "latest_finalized_date": TARGET.isoformat(),
+            "status": "legacy_proof_limited",
+            "finalized": False,
+        }
+    )
+
+    for expected in (
+        "Bounded historical publication",
+        "target <b>2026-08-09</b> remains visible",
+        "exactly match commit 9077ea4",
+        "source acquisition receipt",
+        "reconstructable English denominator",
+        "cache-to-store calibration/transform receipt",
+        "store-to-public score derivation receipt",
+        "source-retention and redistribution rights review",
+        "provisional nowcast remains separate and non-final",
+    ):
+        assert expected in message
