@@ -161,11 +161,20 @@ def test_browser_and_python_share_typed_release_projection(
                         "cross-runtime parity runs in ci.yml and the lane's "
                         "first step, where .git exists")
         raise
+    # NOW, not a literal date. This test signs over _build_candidate() -- LIVE
+    # data whose evidence advances every day -- and the ledger refuses a
+    # release that precedes its evidence. The hardcoded "2026-08-09" passed
+    # while the committed ledger was older than it and then failed the first
+    # time a lane regenerated the ledger past it (morning #64,
+    # authorized_release_precedes_evidence): the test froze time while its
+    # input moved. now() is always >= the candidate's bound dates and inside
+    # the future-clock guard. The other tests keep their literal dates
+    # correctly: they sign SYNTHETIC candidates whose bound dates are frozen.
     release = _signed_release(
         candidate,
         {"authorized": True, "snapshot": "cross-runtime"},
         None,
-        "2026-08-09T00:00:00Z",
+        datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         _release_signer(monkeypatch),
     )
     release_path = tmp_path / "signed-release.json"
