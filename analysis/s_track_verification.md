@@ -107,3 +107,25 @@ rbidocs.rbi.org.in URL pattern from traffic; then verify one file parses.
 Note: `website.rbi.org.in`'s WSS page geo-redirects a browser to the home
 page but serves static HTML to curl with a UA -- its document list is
 JS-rendered either way. The old-site ASPX route is the workable one.
+
+## S1 VERIFIED END-TO-END (2026-08-11, night): sessionless source proven
+
+The WSS extract page renders the DATA INLINE -- no file download, no session:
+
+    GET https://rbi.org.in/Scripts/BS_viewWssExtract.aspx?SelectedDate=8/07/2026
+
+returns HTTP 200 with Table 2 "Foreign Exchange Reserves" as HTML: columns
+Rs Cr / US$ Mn, rows Total Reserves and components, "As on Jul. 31, 2026".
+Edition dates are enumerable via the page's ddlYear/ddlMonth form (the row
+link's postback resolves to the plain SelectedDate URL above).
+
+CROSS-VALIDATION, the part that makes this real: the page's Total Reserves
+is US$ 692,866 Mn; the DBIE gateway's own SPA traffic tonight independently
+carried 6.92866E11 for the same week. Two separate RBI surfaces, identical
+value to the million. This is a verified source, not a guessed endpoint.
+
+Fetcher spec (next session, zero unknowns left): enumerate Friday editions
+via SelectedDate; parse Table 2 rows (Total Reserves, FCA, Gold, SDRs, IMF
+position) in US$ Mn; weekly cadence; cite "Reserve Bank of India, Weekly
+Statistical Supplement" with the edition date. Public webpage, no auth --
+none of the DBIE session-minting concerns apply.
