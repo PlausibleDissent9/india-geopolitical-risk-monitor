@@ -20,9 +20,9 @@
       "event_ledger": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18",
       "product_route_set": "747d5a8886e7dc2355537d45e364480ca4451418bbce5642628fa5256be9d968",
       "api_endpoint_set": "239ce5065c90299d6e6ae226e2ed3a229d6d33f9ca491582ef8824c96dd084a6",
-      "capability_attestation_registry": "a57812bd345d37adb56d5212a4fb8f47a68aa4ac0b46d97b7a46e2385f11af7a",
+      "capability_attestation_registry": "290aa6dd322516f1aa6610a1cb00798253e705b6fbb71f0d625753aad80ef101",
       "max_launch_contract": "d99fc11864b97beb31b7067914b1d06458331113773d050b3bae78150def96fc",
-      "capability_attestation_implementation": "d0b8d74c716b22c2cbfa6df79e4b68a300625aedd20ec0083de5895f0ac3bd93",
+      "capability_attestation_implementation": "390119425a5abde96cc3d5086d927a811655494357e97651c215b7547c50de14",
       "capability_attestation_schema": "33d58dc86cec7b1f9bcdb87c09a822c652b0584827ea7840001c4c190cecce1c",
       "gap_atom_schema": "61128a377f0bc0f0f018530cb92f07411264145247768380a72381f747a34190"
     }
@@ -526,8 +526,8 @@
           "artifact_id": "plan_profile",
           "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36",
-          "observed_sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36",
+          "expected_sha256": "9fb95c3bcf13328962cc651f42c7b831a20d8040bf4db08beba187d5b3228196",
+          "observed_sha256": "9fb95c3bcf13328962cc651f42c7b831a20d8040bf4db08beba187d5b3228196",
           "status": "verified"
         }
       ],
@@ -725,8 +725,8 @@
           "artifact_id": "trace_profile",
           "path": "standard/oges/extensions/nary-association-trace/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "935f8e1f038ad6d927ebeffbb595dd727b977985613eac1365e4fd157e5f2e56",
-          "observed_sha256": "935f8e1f038ad6d927ebeffbb595dd727b977985613eac1365e4fd157e5f2e56",
+          "expected_sha256": "eb75ef7d3ee158c3ad04cbc7245abe38da3dc2efb21dcabd7455453477808acc",
+          "observed_sha256": "eb75ef7d3ee158c3ad04cbc7245abe38da3dc2efb21dcabd7455453477808acc",
           "status": "verified"
         }
       ],
@@ -782,16 +782,16 @@
           "artifact_id": "plan_profile",
           "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36",
-          "observed_sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36",
+          "expected_sha256": "9fb95c3bcf13328962cc651f42c7b831a20d8040bf4db08beba187d5b3228196",
+          "observed_sha256": "9fb95c3bcf13328962cc651f42c7b831a20d8040bf4db08beba187d5b3228196",
           "status": "verified"
         },
         {
           "artifact_id": "trace_profile",
           "path": "standard/oges/extensions/nary-association-trace/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "935f8e1f038ad6d927ebeffbb595dd727b977985613eac1365e4fd157e5f2e56",
-          "observed_sha256": "935f8e1f038ad6d927ebeffbb595dd727b977985613eac1365e4fd157e5f2e56",
+          "expected_sha256": "eb75ef7d3ee158c3ad04cbc7245abe38da3dc2efb21dcabd7455453477808acc",
+          "observed_sha256": "eb75ef7d3ee158c3ad04cbc7245abe38da3dc2efb21dcabd7455453477808acc",
           "status": "verified"
         }
       ],
@@ -820,8 +820,8 @@
           "artifact_id": "scenario_proof_profile",
           "path": "standard/oges/extensions/mechanism-constraint-scenario/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "9108c910bb3ecc93a81f9f2835a077540d3645fe9e26e44ded820f4eb07023cf",
-          "observed_sha256": "9108c910bb3ecc93a81f9f2835a077540d3645fe9e26e44ded820f4eb07023cf",
+          "expected_sha256": "e56ef6273234977fec2bfbf6736a10201bcc937215f76566ebb2257707247a5a",
+          "observed_sha256": "e56ef6273234977fec2bfbf6736a10201bcc937215f76566ebb2257707247a5a",
           "status": "verified"
         }
       ],
@@ -955,8 +955,8 @@
           "artifact_id": "plan_profile",
           "path": "standard/oges/extensions/consequence-plan/0.1.0/profile.json",
           "evidence_class": "contract",
-          "expected_sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36",
-          "observed_sha256": "f3082cd73e16d529f562016d26412fe0d98d95c118c1f8a716687b151e0bbf36",
+          "expected_sha256": "9fb95c3bcf13328962cc651f42c7b831a20d8040bf4db08beba187d5b3228196",
+          "observed_sha256": "9fb95c3bcf13328962cc651f42c7b831a20d8040bf4db08beba187d5b3228196",
           "status": "verified"
         }
       ],

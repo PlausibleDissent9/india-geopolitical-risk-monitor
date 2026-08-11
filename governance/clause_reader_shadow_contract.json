@@ -24,7 +24,7 @@
     "receipt_schema": {"path": "governance/schemas/clause-reader-compilation-receipt.schema.json", "file_sha256": "f1c691e993f3e052a5e3c8c91f7b15d654c3190cfb8bb4d50e8b272c22a32792"},
     "template_profile": {"path": "governance/clause_reader_template_profile.json", "file_sha256": "e502fb224f5d3ef275ee3321483dd481eabd2f2ffec92bdf3f52790f20048724", "semantic_projection_sha256": "5124eb47b7669b60f864246f9c6164def3003bdc0616268d7eab5be13382b2d7"},
     "view_contract": {"path": "governance/clause_source_view_contract.json", "file_sha256": "d9957043855874bd82a2e1b01082f11a8bf8b84eb757a6e70c0119be440845e6"},
-    "view_runtime": {"path": "src/clause_source_view.py", "file_sha256": "5e612518227056d94ebd1b10728ec70fd8be76f60aceadf6621254f2f36cac5c"},
+    "view_runtime": {"path": "src/clause_source_view.py", "file_sha256": "019606f92bfd3e6b6adc5d073b857aa4506f53759678d1776ff05010820f455d"},
     "adversarial_vectors": {"path": "governance/clause_reader_shadow_adversarial_vectors.json", "file_sha256": "cd80558282ae986ff337da2eea3d80190aa84c41afcdd045e781f90d4966f2ef"}
   },
   "dependency_boundary": {

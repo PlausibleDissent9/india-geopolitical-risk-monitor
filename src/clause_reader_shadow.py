@@ -46,7 +46,7 @@ CONSUMER_VALIDATOR_PATH = ROOT / "src" / "evidence_output_consumer_contract.py"
 _VERSION = "0.1.0"
 _CONTRACT_ID = "igrm:clause-reader-shadow:0.1.0"
 _REGISTERED_CONTRACT_SHA256 = (
-    "c7a2b4bdb9aad312a43f23059dc9446b3e67de72edccd2d3ddecf259d8f21333"
+    "b04a793e8b15e6de4cd1cb6d6b6edc97b218ba7447c2820dfa799e0d9680e0ac"
 )
 _REGISTERED_TEMPLATE_SEMANTIC_PROJECTION_SHA256 = (
     "5124eb47b7669b60f864246f9c6164def3003bdc0616268d7eab5be13382b2d7"

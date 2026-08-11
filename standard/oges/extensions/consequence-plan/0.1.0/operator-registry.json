@@ -2,7 +2,7 @@
   "schema_version": "0.1.0",
   "default_policy": "deny",
   "dependencies": [
-    {"path": "src/event_ledger.py", "sha256": "66d2ec85f88a87c1cacc4c03a0ae271c24a4decb9d52557c6ffedf10d859977a", "role": "typed_canonical_encoder"},
+    {"path": "src/event_ledger.py", "sha256": "49f4b3996a0c7e2d7654ae459a28feb458c202290388671241e752953f136c40", "role": "typed_canonical_encoder"},
     {"path": "src/evidence_assistant.py", "sha256": "5b7f41ad7ed510609fd7ab3debf3a73fdb5f7464d8a31fdfc7ed777ea1521b3e", "role": "legacy_answer_engine"},
     {"path": "src/knowledge_replay.py", "sha256": "3ef7790be23349350b3d87195709a5d438c443a85a077c4662f64fb3b79fd7b8", "role": "signed_replay_engine"},
     {"path": "validation/event_ledger_canonicalization.json", "sha256": "405c30bfc8668bc5842d6e33e5e31660c0f0f18b0fd8fa40929621eb061c5442", "role": "cross_runtime_typed_fixture"}
