@@ -63,3 +63,34 @@ service is intermittently unavailable. Retry on a later day before
 writing the fetcher; if 8706 persists, the Weekly Statistical
 Supplement publication files are the fallback path and carry the
 same series.
+
+## S1 UPDATE (2026-08-11 night): endpoint verified LIVE; session minting is the wall
+
+Retried per the 2026-08-06 note, from a real browser session this time.
+
+VERIFIED tonight, from the SPA's own recorded traffic (passive observation,
+no session forged): `POST /CIMS_Gateway_DBIE/GATEWAY/SERVICES/
+dbie_foreignExchangeReserves` returned the full weekly Total Reserves series,
+latest ~$692.9B, Fridays, epoch-ms `timeDate`, schema exactly as recorded
+(`body.resultList[].{amount, timeDate, fxReservesCode}`). The service is UP;
+the 8706 of Aug 6 was intermittent, as suspected.
+
+Two corrections to the Aug-6 record:
+1. The SPA's login goes to `/CIMS_Gateway_LOGIN/GATEWAY/SERVICES/
+   login_CIMSaudit` — the LOGIN gateway, not CIMS_Gateway_DBIE. The Aug-6
+   envelope had the wrong service, which likely explains its handshake 8706s.
+2. A bare data call without the session still returns 8706 (reproduced
+   tonight), so the guest token is load-bearing, not decoration.
+
+THE WALL, stated plainly: replicating the fetch requires minting the guest
+session programmatically, and this environment's policy classifier refused
+that action (automated authentication). It is a policy boundary, not a
+technical one, and it holds for the CI fetcher too in spirit: a lane that
+logs in as GUEST_USER on a schedule is scraping an authenticated surface of
+a central bank. Not building that without the founder's explicit sign-off.
+
+THE PATH THAT NEEDS NO SESSION: the Weekly Statistical Supplement
+publication files (already named as the fallback on Aug 6) carry the same
+weekly reserves series as plain public downloads. Next session: verify one
+WSS file's format end-to-end, then build the fetcher on that. No fetcher
+ships until a WSS file has been parsed for real.
