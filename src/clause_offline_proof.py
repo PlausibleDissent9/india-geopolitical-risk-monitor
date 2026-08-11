@@ -31,7 +31,7 @@ CONTRACT_PATH = ROOT / "governance" / "clause_offline_proof_contract.json"
 _VERSION = "0.1.0"
 _CONTRACT_ID = "igrm:clause-reader-proof-archive:0.1.0"
 _REGISTERED_CONTRACT_SHA256 = (
-    "0e3cdb66cd5984bb3ed13665a80d474ce451649af400de6568c248047d9ae34b"
+    "09321dbbbd1752422e407f81aa1b254bde623742a2bb597e7e5fb4cf89447a55"
 )
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _CONSTRUCTION_DATE = (1980, 1, 1, 0, 0, 0)
