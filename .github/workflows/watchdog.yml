@@ -69,18 +69,23 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Is today's final published?
+      - name: Is the target final published?
         id: check
+        # A write timestamp is not a measurement date. A degraded run can
+        # rewrite latest.json today while still carrying an older final, so
+        # `_meta.generated == today` can suppress every recovery attempt.
+        # The morning contract is about the completed UTC day: on day D the
+        # exact target is D-1, and only latest.date can satisfy it.
         run: |
-          TODAY=$(date -u +%F)
-          GEN=$(python3 -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
-          echo "today=$TODAY generated=$GEN"
-          if [ "$GEN" = "$TODAY" ]; then
+          TARGET=$(date -u -d "yesterday" +%F)
+          MEASURED=$(python3 -c "import json; print(json.load(open('docs/data/latest.json'))['date'])" 2>/dev/null || echo "")
+          echo "target=$TARGET measured=$MEASURED"
+          if [ "$MEASURED" = "$TARGET" ]; then
             echo "stale=false" >> "$GITHUB_OUTPUT"
-            echo "final for $TODAY already published; watchdog stands down"
+            echo "final for $TARGET already published; watchdog stands down"
           else
             echo "stale=true" >> "$GITHUB_OUTPUT"
-            echo "final is $GEN, expected $TODAY -- the morning lane has not published"
+            echo "final is $MEASURED, expected $TARGET -- the morning lane has not published"
           fi
 
       - name: Is a morning run already waiting for the lane?
