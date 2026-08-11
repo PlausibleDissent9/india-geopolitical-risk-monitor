@@ -75,10 +75,14 @@ jobs:
         # wasted runner-minute for a threshold that can eat the contract
         # is not a trade; it was a bug wearing a rule's clothes.
         run: |
-          TODAY=$(date -u +%F)
-          GEN=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['_meta']['generated'][:10])" 2>/dev/null || echo "")
-          if [ "$GEN" != "$TODAY" ]; then
-            echo "latest generated $GEN != $TODAY; dispatching morning-contract lane"
+          # Finality belongs to the completed UTC measurement day, not the
+          # timestamp on the file. A degraded run can rewrite latest.json
+          # today while still carrying an older measurement and must not make
+          # this recovery path stand down.
+          TARGET=$(date -u -d "yesterday" +%F)
+          MEASURED=$(python -c "import json; print(json.load(open('docs/data/latest.json'))['date'])" 2>/dev/null || echo "")
+          if [ "$MEASURED" != "$TARGET" ]; then
+            echo "latest measured $MEASURED != target $TARGET; dispatching morning-contract lane"
             # -f so an HTTP error fails this step LOUDLY. 2026-08-04: the
             # original `curl -s` returned exit 0 on any API rejection, so a
             # guarantor that dispatched nothing still showed green -- the
@@ -91,7 +95,7 @@ jobs:
             echo "dispatch HTTP $CODE"; cat /tmp/dispatch_body || true
             [ "$CODE" = "204" ]
           else
-            echo "final already published today ($GEN); no dispatch"
+            echo "final for $TARGET already published; no dispatch"
           fi
       - name: Compute provisional today-so-far
         run: python -m src.nowcast
