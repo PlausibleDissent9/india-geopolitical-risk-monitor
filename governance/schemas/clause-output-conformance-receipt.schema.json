@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/governance/schemas/clause-output-conformance-receipt.schema.json",
+  "title": "IGRM closed synthetic clause/output conformance receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "conformance_id",
+    "record_sha256",
+    "status",
+    "bindings",
+    "queries",
+    "denominators",
+    "excluded_output_ids",
+    "trust",
+    "boundary"
+  ],
+  "properties": {
+    "object_type": {"const": "clause_output_conformance_receipt"},
+    "schema_version": {"const": "0.1.0"},
+    "conformance_id": {"type": "string", "pattern": "^clause-output-conformance:[0-9a-f]{24}$"},
+    "record_sha256": {"$ref": "#/$defs/sha256"},
+    "status": {"const": "exact_closed_synthetic_universe_conformance"},
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_ref",
+        "runtime_ref",
+        "source_profile_ref",
+        "release_ref",
+        "fixture_snapshot_ref"
+      ],
+      "properties": {
+        "contract_ref": {"$ref": "#/$defs/fileRef"},
+        "runtime_ref": {"$ref": "#/$defs/fileRef"},
+        "source_profile_ref": {"$ref": "#/$defs/fileRef"},
+        "release_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["release_id", "record_sha256"],
+          "properties": {
+            "release_id": {"$ref": "#/$defs/stableId"},
+            "record_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
+        "fixture_snapshot_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["root_sha256", "file_denominator", "total_bytes", "manifest_path"],
+          "properties": {
+            "root_sha256": {"$ref": "#/$defs/sha256"},
+            "file_denominator": {"type": "integer", "minimum": 1, "maximum": 512},
+            "total_bytes": {"type": "integer", "minimum": 1, "maximum": 67108864},
+            "manifest_path": {"const": "canonical/release.json"}
+          }
+        }
+      }
+    },
+    "queries": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/queryResult"}
+    },
+    "denominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registered_query_denominator",
+        "compared_query_denominator",
+        "comparison_cell_denominator",
+        "proof_archive_denominator",
+        "path_found_branch_denominator",
+        "no_path_branch_denominator",
+        "compared_output_denominator",
+        "excluded_output_denominator"
+      ],
+      "properties": {
+        "registered_query_denominator": {"const": 2},
+        "compared_query_denominator": {"const": 2},
+        "comparison_cell_denominator": {"const": 6},
+        "proof_archive_denominator": {"const": 2},
+        "path_found_branch_denominator": {"const": 1},
+        "no_path_branch_denominator": {"const": 1},
+        "compared_output_denominator": {"const": 3},
+        "excluded_output_denominator": {"const": 1}
+      }
+    },
+    "excluded_output_ids": {
+      "type": "array",
+      "prefixItems": [{"const": "output:offline_audit_bundle"}],
+      "items": false,
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "trust": {"$ref": "#/$defs/trust"},
+    "boundary": {"$ref": "#/$defs/boundary"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "stableId": {"type": "string", "minLength": 3, "maxLength": 200, "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]*$"},
+    "fileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "file_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 3, "maxLength": 200, "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"},
+        "file_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "recordRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_sha256"],
+      "properties": {"record_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "proofArchiveRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proof_id", "sha256", "bytes", "verification_status"],
+      "properties": {
+        "proof_id": {"$ref": "#/$defs/stableId"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "bytes": {"type": "integer", "minimum": 1, "maximum": 16777216},
+        "verification_status": {"const": "valid_internal_clause_recompilation"}
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output_id",
+        "role_id",
+        "document_sha256",
+        "body_sha256",
+        "artifact_sha256",
+        "artifact_bytes",
+        "artifact_descriptor_sha256",
+        "comparison_status"
+      ],
+      "properties": {
+        "output_id": {"enum": ["output:board_brief", "output:newsroom_claim_card", "output:research_package"]},
+        "role_id": {"enum": ["board", "newsroom", "research"]},
+        "document_sha256": {"$ref": "#/$defs/sha256"},
+        "body_sha256": {"$ref": "#/$defs/sha256"},
+        "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "artifact_bytes": {"type": "integer", "minimum": 1},
+        "artifact_descriptor_sha256": {"$ref": "#/$defs/sha256"},
+        "comparison_status": {"const": "exact_document_body_artifact_descriptor_and_limitations"}
+      }
+    },
+    "commonScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_id", "limitation_ids", "limitation_denominator", "limitation_digest_sha256", "shadow_outer_wrapper_absent_denominator"],
+      "properties": {
+        "scope_id": {"const": "scope:output.all_views"},
+        "limitation_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/stableId"}
+        },
+        "limitation_denominator": {"type": "integer", "minimum": 1},
+        "limitation_digest_sha256": {"$ref": "#/$defs/sha256"},
+        "shadow_outer_wrapper_absent_denominator": {"const": 3}
+      }
+    },
+    "queryResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query_id",
+        "active_branch_id",
+        "source_bundle_ref",
+        "role_proof_bundle_ref",
+        "view_receipt_ref",
+        "reader_receipt_ref",
+        "proof_archive_ref",
+        "incumbent_output_set_ref",
+        "comparisons",
+        "common_scope"
+      ],
+      "properties": {
+        "query_id": {"enum": ["query:analytical_clause.fixture.path_found", "query:analytical_clause.fixture.no_path"]},
+        "active_branch_id": {"enum": ["branch:path_found", "branch:no_path"]},
+        "source_bundle_ref": {"$ref": "#/$defs/recordRef"},
+        "role_proof_bundle_ref": {"$ref": "#/$defs/recordRef"},
+        "view_receipt_ref": {"$ref": "#/$defs/recordRef"},
+        "reader_receipt_ref": {"$ref": "#/$defs/recordRef"},
+        "proof_archive_ref": {"$ref": "#/$defs/proofArchiveRef"},
+        "incumbent_output_set_ref": {"$ref": "#/$defs/recordRef"},
+        "comparisons": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/comparison"}
+        },
+        "common_scope": {"$ref": "#/$defs/commonScope"}
+      }
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["synthetic", "contract_only", "self_hash_integrity_only", "signed", "authenticated", "nonpublic", "nonproduction"],
+      "properties": {
+        "synthetic": {"const": true},
+        "contract_only": {"const": true},
+        "self_hash_integrity_only": {"const": true},
+        "signed": {"const": false},
+        "authenticated": {"const": false},
+        "nonpublic": {"const": true},
+        "nonproduction": {"const": true}
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "closed_synthetic_universe_only",
+        "general_equivalence",
+        "real_data_equivalence",
+        "public_activation",
+        "product_manifest",
+        "correction_blast",
+        "publication_authority",
+        "offline_audit_bundle_compared",
+        "live_query_admission_consumed",
+        "semantic_mapping_registered"
+      ],
+      "properties": {
+        "closed_synthetic_universe_only": {"const": true},
+        "general_equivalence": {"const": false},
+        "real_data_equivalence": {"const": false},
+        "public_activation": {"const": false},
+        "product_manifest": {"const": false},
+        "correction_blast": {"const": false},
+        "publication_authority": {"const": false},
+        "offline_audit_bundle_compared": {"const": false},
+        "live_query_admission_consumed": {"const": false},
+        "semantic_mapping_registered": {"const": false}
+      }
+    }
+  }
+}
