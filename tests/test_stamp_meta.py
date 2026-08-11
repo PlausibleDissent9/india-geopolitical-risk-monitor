@@ -64,6 +64,7 @@ def test_the_frozen_contract_is_never_rewritten():
     """api_contract.json is a promise about field stability. Rewriting
     it as a side effect is precisely what it exists to prevent."""
     assert "api_contract.json" in stamp_meta.SKIP
+    assert "public_api_byte_manifest.json" in stamp_meta.SKIP
 
 
 @pytest.mark.live

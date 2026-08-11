@@ -81,6 +81,16 @@ provider citation and raw-value redistribution limit. The generic metadata
 stamper skips it because changing even an innocuous envelope field would
 break the published result hash.
 
+`public_api_byte_manifest.json` is the second deliberate deterministic
+exception. Its `_meta` includes its meaning, licence, citation, codebook and
+source URL, but no generation clock: a wall-clock field would churn the bytes
+even when none of the 116 hashed endpoints changed. The file hashes one
+captured Git candidate index/tree, excludes exactly itself to avoid recursion,
+and is skipped by the generic stamper after generation. It is unsigned. An
+independently obtained SHA-256 digest of the manifest's own raw bytes is needed
+for an external comparison; the file does not authenticate a deployment or
+claim that 116 separate hosted requests were served atomically.
+
 *This was a promise before it was a fact.* Until 2026-08-07 the licence,
 citation and codebook link appeared in **three** payloads out of
 sixty-four, while this paragraph claimed all of them — so most downloads
@@ -535,6 +545,21 @@ fields" (JSON keys or CSV columns) promised stable within major
 version 2, plus the contract's promise, deprecation policy, and access
 terms in `_meta`. Rendered for humans at `docs/api.html`. See
 methodology.md section 12 for the versioning rule.
+
+## docs/data/public_api_byte_manifest.json
+
+Deterministic byte inventory for every contract endpoint except itself. Each
+entry binds the public path, repository path, contract format, Git mode, byte
+length and SHA-256 digest. `universe` publishes all three denominators: 117
+contract endpoints, 116 hashed endpoints and one exact self-exclusion. The
+generator reads one stage-0 Git index or named Git tree; mutable worktree
+overlays are not inputs. The generic publisher refreshes it after rebase and
+before the committed gate, while the final-publication CAS adds it to both
+the rights-authorized final class and the exact value-free refusal class.
+
+This is repository-candidate consistency only. It is not a signature,
+deployment attestation, rights decision, source-truth proof, atomic-hosting
+claim, penetration test or security certification.
 
 ## docs/data/daily_brief.json
 

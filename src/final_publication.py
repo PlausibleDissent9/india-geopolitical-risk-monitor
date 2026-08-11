@@ -134,6 +134,7 @@ _VALUE_FREE_REFUSAL_PATHS = {
     "docs/index.html",
     "docs/status.html",
 }
+_PUBLIC_API_BYTE_MANIFEST_PATH = "docs/data/public_api_byte_manifest.json"
 _REFUSAL_REASONS = {
     "source_unavailable": (
         "source",
@@ -2122,6 +2123,46 @@ def require_release_rights(
         )
 
 
+def _tree_has_path(root: Path, treeish: str, relative: str) -> bool:
+    result = subprocess.run(
+        ["git", "cat-file", "-e", f"{treeish}:{relative}"],
+        cwd=root,
+        capture_output=True,
+    )
+    return result.returncode == 0
+
+
+def _require_candidate_api_manifest(
+    *, root: Path, candidate_sha: str, base_commit: str
+) -> bool:
+    """Recompute the manifest when this contract exists in the lineage.
+
+    Old synthetic publication fixtures predate the manifest and remain valid
+    tests of the earlier rights/finality boundary. Once either the parent or
+    candidate contains the manifest, removing or failing to recompute it is a
+    hard refusal. The manifest is derived metadata only: caller code still
+    proves the final/refusal class and legal changed-path set independently.
+    """
+
+    parent_has = _tree_has_path(
+        root, base_commit, _PUBLIC_API_BYTE_MANIFEST_PATH
+    )
+    candidate_has = _tree_has_path(
+        root, candidate_sha, _PUBLIC_API_BYTE_MANIFEST_PATH
+    )
+    if not parent_has and not candidate_has:
+        return False
+    if not candidate_has:
+        _fail("release_candidate_unproven", "api_manifest_missing")
+    try:
+        from . import public_api_byte_manifest
+
+        public_api_byte_manifest.verify_tree(candidate_sha, root=root)
+    except public_api_byte_manifest.PublicAPIByteManifestError as exc:
+        _fail("release_candidate_unproven", f"api_manifest_invalid:{exc.code}")
+    return True
+
+
 def _require_release_candidate_from_snapshot(
     candidate_class: str,
     *,
@@ -2148,6 +2189,11 @@ def _require_release_candidate_from_snapshot(
     ).stdout.split()
     if len(lineage) != 2 or lineage[1] != base_commit:
         _fail("release_candidate_unproven", "candidate_parent_invalid")
+    manifest_required = _require_candidate_api_manifest(
+        root=root,
+        candidate_sha=candidate_sha,
+        base_commit=base_commit,
+    )
     if candidate_class == "final":
         proof = _require_release_rights_from_snapshot(
             root=root, expected_candidate_sha=expected_candidate_sha
@@ -2184,9 +2230,10 @@ def _require_release_candidate_from_snapshot(
         if len(fields) != 2 or fields[0] not in {"A", "M"}:
             _fail("release_candidate_unproven", "refusal_diff_status_invalid")
         changed.add(fields[1])
-    if (
-        changed != _VALUE_FREE_REFUSAL_PATHS
-    ):
+    expected_refusal_paths = set(_VALUE_FREE_REFUSAL_PATHS)
+    if manifest_required:
+        expected_refusal_paths.add(_PUBLIC_API_BYTE_MANIFEST_PATH)
+    if changed != expected_refusal_paths:
         _fail("release_candidate_unproven", "refusal_diff_not_value_free")
     marker_path = root / STATUS_RELATIVE
     try:

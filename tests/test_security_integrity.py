@@ -68,6 +68,16 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
         "transition_authority": "unavailable_no_external_signature",
     }
     assert report["scope"]["successor_transition_external_authority"] is False
+    assert report["controls"]["public_api_byte_manifest_barrier"] == {
+        "status": "repository_self_consistency_only",
+        "generic_post_rebase_refresh_paths": 2,
+        "final_candidate_classes": ["final", "refusal"],
+        "source": "captured_git_index_or_tree",
+        "self_excluded_endpoint": "data/public_api_byte_manifest.json",
+        "signed": False,
+        "authenticated_deployment": False,
+        "atomic_hosted_snapshot": False,
+    }
     # 13 since 2026-08-09: historical-intelligence.yml. This count is an
     # inventory lock -- a lane that appears without a deliberate edit here
     # is a lane nobody reviewed, so the number is meant to be updated in
@@ -305,6 +315,38 @@ def test_registered_but_unguarded_push_script_is_still_refused(
     )
     _rehash_registered_script(security_tree, "push_script")
     _refusal(security_tree, "publisher_push_guard_count_invalid")
+
+
+def test_registered_generic_publisher_cannot_skip_manifest_refresh(
+    security_tree: Path,
+) -> None:
+    path = security_tree / "scripts" / "publish_push.sh"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            "    if ! refresh_public_api_byte_manifest; then exit 1; fi",
+            "    true # manifest refresh removed",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    _rehash_registered_script(security_tree, "push_script")
+    _refusal(security_tree, "publisher_manifest_refresh_count_invalid")
+
+
+def test_registered_final_publisher_stages_manifest_for_both_classes(
+    security_tree: Path,
+) -> None:
+    path = security_tree / "scripts" / "publish_final_cas.sh"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            "  stage_public_api_byte_manifest\n",
+            "  true # manifest stage removed\n",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    _rehash_registered_script(security_tree, "final_cas_script")
+    _refusal(security_tree, "publisher_final_manifest_call_count_invalid")
 
 
 def test_registered_security_implementation_cannot_drift(security_tree: Path) -> None:

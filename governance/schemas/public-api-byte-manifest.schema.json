@@ -1,0 +1,92 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://igrm.in/governance/schemas/public-api-byte-manifest.schema.json",
+ "title": "IGRM Public API Byte Manifest 0.1",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["_meta", "object_type", "schema_version", "profile", "api_contract", "universe", "entries", "excluded_entries", "totals", "integrity", "claim_boundary"],
+ "properties": {
+  "_meta": {"type": "object"},
+  "object_type": {"const": "igrm.public_api_byte_manifest"},
+  "schema_version": {"const": "0.1.0"},
+  "profile": {"$ref": "#/$defs/fileRef"},
+  "api_contract": {
+   "type": "object", "additionalProperties": false,
+   "required": ["path", "raw_sha256", "contract_version", "endpoint_denominator"],
+   "properties": {
+    "path": {"const": "docs/data/api_contract.json"},
+    "raw_sha256": {"$ref": "#/$defs/sha256"},
+    "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "endpoint_denominator": {"type": "integer", "minimum": 1}
+   }
+  },
+  "universe": {
+   "type": "object", "additionalProperties": false,
+   "required": ["basis", "endpoint_denominator", "hashed_endpoint_denominator", "excluded_endpoint_denominator", "order", "endpoint_set_sha256"],
+   "properties": {
+    "basis": {"const": "api_contract.endpoints"},
+    "endpoint_denominator": {"type": "integer", "minimum": 1},
+    "hashed_endpoint_denominator": {"type": "integer", "minimum": 0},
+    "excluded_endpoint_denominator": {"const": 1},
+    "order": {"const": "public_path_utf8_byte_ascending"},
+    "endpoint_set_sha256": {"$ref": "#/$defs/sha256"}
+   }
+  },
+  "entries": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
+  "excluded_entries": {
+   "type": "array", "minItems": 1, "maxItems": 1,
+   "items": {
+    "type": "object", "additionalProperties": false,
+    "required": ["path", "repository_path", "reason"],
+    "properties": {
+     "path": {"const": "data/public_api_byte_manifest.json"},
+     "repository_path": {"const": "docs/data/public_api_byte_manifest.json"},
+     "reason": {"const": "self_exclusion_avoids_recursive_digest"}
+    }
+   }
+  },
+  "totals": {
+   "type": "object", "additionalProperties": false,
+   "required": ["hashed_entries", "hashed_bytes", "max_entry_bytes", "max_hashed_bytes"],
+   "properties": {
+    "hashed_entries": {"type": "integer", "minimum": 0},
+    "hashed_bytes": {"type": "integer", "minimum": 0},
+    "max_entry_bytes": {"const": 4194304},
+    "max_hashed_bytes": {"const": 12582912}
+   }
+  },
+  "integrity": {
+   "type": "object", "additionalProperties": false,
+   "required": ["algorithm", "entries_sha256", "external_manifest_digest_required", "signed", "authenticated_deployment", "atomic_hosted_snapshot"],
+   "properties": {
+    "algorithm": {"const": "SHA-256"},
+    "entries_sha256": {"$ref": "#/$defs/sha256"},
+    "external_manifest_digest_required": {"const": true},
+    "signed": {"const": false},
+    "authenticated_deployment": {"const": false},
+    "atomic_hosted_snapshot": {"const": false}
+   }
+  },
+  "claim_boundary": {"type": "string", "minLength": 1}
+ },
+ "$defs": {
+  "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+  "fileRef": {
+   "type": "object", "additionalProperties": false,
+   "required": ["path", "raw_sha256"],
+   "properties": {"path": {"type": "string"}, "raw_sha256": {"$ref": "#/$defs/sha256"}}
+  },
+  "entry": {
+   "type": "object", "additionalProperties": false,
+   "required": ["path", "repository_path", "format", "git_mode", "bytes", "sha256"],
+   "properties": {
+    "path": {"type": "string", "minLength": 1},
+    "repository_path": {"type": "string", "minLength": 1},
+    "format": {"enum": ["json", "csv", "rss"]},
+    "git_mode": {"const": "100644"},
+    "bytes": {"type": "integer", "minimum": 0, "maximum": 4194304},
+    "sha256": {"$ref": "#/$defs/sha256"}
+   }
+  }
+ }
+}

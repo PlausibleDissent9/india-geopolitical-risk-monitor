@@ -32,6 +32,25 @@ TARGET = date(2026, 8, 9)
 PREFIX_DAY = date(2026, 8, 8)
 
 
+@pytest.fixture(autouse=True)
+def _freeze_default_ngram_rights_clock(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Keep dated rights fixtures stable as the real UTC calendar advances.
+
+    Tests that exercise a boundary crossing replace this clock explicitly.
+    Every other synthetic publication fixture is defined relative to TODAY,
+    so letting wall time leak into it turns future-decision and age attacks
+    into accidental positives after the fixture date passes.
+    """
+
+    monkeypatch.setattr(
+        ngram_rights,
+        "_utc_now",
+        lambda: datetime(2026, 8, 10, 12, 0, tzinfo=timezone.utc),
+    )
+
+
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -3400,6 +3419,16 @@ def _publisher_e2e_repo(tmp_path: Path) -> tuple[Path, Path, str]:
     rights_python.write_text(
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
+        "if [ \"${1:-}\" = '-m' ] && "
+        "[ \"${2:-}\" = 'scripts.generate_public_api_byte_manifest' ]; then\n"
+        "  if [ \"${3:-}\" != '--check-index' ]; then\n"
+        "    mkdir -p docs/data\n"
+        "    printf '{\"object_type\":\"igrm.public_api_byte_manifest\","
+        "\"test_fixture_only\":true}\n' > "
+        "docs/data/public_api_byte_manifest.json\n"
+        "  fi\n"
+        "  exit 0\n"
+        "fi\n"
         "if [ \"${3:-}\" = '--record-pipeline-failed' ]; then\n"
         "  mkdir -p data/raw\n"
         "  printf '{\"status\":\"acquisition_failed\"}\\n' > "
@@ -3632,6 +3661,7 @@ def test_final_cas_expired_rights_still_publish_value_free_refusal(
     assert set(changed) == {
         "data/raw/final_publication_status.json",
         "docs/data/status.json",
+        "docs/data/public_api_byte_manifest.json",
         "docs/index.html",
         "docs/status.html",
     }

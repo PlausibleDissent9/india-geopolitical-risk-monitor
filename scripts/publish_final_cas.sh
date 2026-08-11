@@ -101,10 +101,19 @@ publish_gated_candidate() {
   push_frozen_parent
 }
 
+stage_public_api_byte_manifest() {
+  # Candidate outputs are already in the stage-0 index. Capture and hash that
+  # exact set once, then add only the deterministic self-excluded manifest.
+  python -m scripts.generate_public_api_byte_manifest
+  git add -- docs/data/public_api_byte_manifest.json
+  python -m scripts.generate_public_api_byte_manifest --check-index
+}
+
 publish_final() {
   git config user.name "igrm-bot"
   git config user.email "actions@github.com"
   git add docs data/raw
+  stage_public_api_byte_manifest
   publish_gated_candidate "data: final $TARGET via morning-contract lane" final
 }
 
@@ -141,6 +150,7 @@ publish_refusal() {
     --today "$(date -u -d "$TARGET + 1 day" +%F)"
   git add data/raw/final_publication_status.json docs/data/status.json \
     docs/index.html docs/status.html
+  stage_public_api_byte_manifest
   if git diff --cached --name-only | grep -Eq \
     '^(data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/ngram_days/|data/raw/final_publication_receipts/)'; then
     echo "::error::failure disclosure attempted to stage candidate value bytes"

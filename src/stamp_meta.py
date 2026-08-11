@@ -50,6 +50,10 @@ BASE_URL = "https://igrm.in/data/"
 # a side effect, which is exactly what it exists to prevent.
 SKIP = {
     "api_contract.json",
+    # Deterministic candidate-byte inventory. Any post-generation metadata
+    # mutation would make its published bytes differ from the exact candidate
+    # object validated by the publication barrier.
+    "public_api_byte_manifest.json",
     # Registration commit 58ca6c0 promises the generated benchmark output
     # verbatim. Its own _meta carries the source, hashes, registration,
     # provider citation and redistribution limit; a generic post-run stamp

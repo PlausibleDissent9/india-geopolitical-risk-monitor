@@ -1,0 +1,35 @@
+{
+ "schema_version": "0.1.0",
+ "contract_id": "igrm:public-api-byte-manifest:0.1.0",
+ "status": "repository_self_consistency_only",
+ "what": "A deterministic inventory of the exact Git candidate bytes for every API-contract endpoint except the manifest itself.",
+ "public_path": "docs/data/public_api_byte_manifest.json",
+ "api_path": "data/public_api_byte_manifest.json",
+ "api_contract_path": "docs/data/api_contract.json",
+ "self_exclusion_rule": "The API contract must list the public manifest exactly once. The manifest hashes every other contract endpoint and excludes exactly itself to avoid recursion.",
+ "source_rule": "Generation and verification consume one captured stage-0 Git index or one named Git tree. They never mix indexed/tree bytes with mutable worktree endpoint bytes.",
+ "path_rule": "Every endpoint maps exactly to docs/<contract path>; paths are NFC POSIX relative paths, unique under both exact and Unicode casefold identity, and every Git mode is exactly 100644.",
+ "ordering_rule": "Endpoint entries are ordered by UTF-8 bytes of the public contract path.",
+ "limits": {
+  "max_entry_bytes": 4194304,
+  "max_hashed_bytes": 12582912
+ },
+ "claim_boundary": "The artifact proves deterministic repository-candidate byte consistency under SHA-256 when its own raw-byte digest is obtained from an independent boundary. It is unsigned and does not authenticate a deployment, prove that multiple hosted requests were atomic, establish source truth or rights, or certify security.",
+ "refusal_codes": [
+  "api_contract_invalid",
+  "candidate_dependency_drift",
+  "candidate_git_object_invalid",
+  "candidate_git_read_failed",
+  "candidate_index_unmerged",
+  "candidate_mode_invalid",
+  "candidate_path_collision",
+  "candidate_path_invalid",
+  "candidate_required_path_missing",
+  "candidate_size_limit_exceeded",
+  "manifest_body_invalid",
+  "manifest_contract_drift",
+  "manifest_self_exclusion_invalid",
+  "manifest_snapshot_mismatch",
+  "profile_invalid"
+ ]
+}
