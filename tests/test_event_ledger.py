@@ -129,6 +129,20 @@ def test_browser_and_python_share_typed_release_projection(
     node = shutil.which("node")
     if node is None:
         pytest.skip("node is not available in this environment")
+    if not (ROOT / ".git").exists():
+        # The publish gate runs this suite in a tree extracted with
+        # `git archive` -- no .git at all. This test needs repository state
+        # twice over (the candidate baseline AND the release-signing
+        # context), and enumerating the refusal codes those raise proved
+        # WRONG within hours: the first skip caught
+        # candidate_baseline_unavailable (morning #59/#60), and run #63 then
+        # died on authorized_release_* from the signing path instead. The
+        # honest condition is the environment itself, which is objectively
+        # detectable, not whichever refusal fires first inside it. Parity
+        # still runs everywhere .git exists: ci.yml on every push to main,
+        # and the contract lane's own first step.
+        pytest.skip("no .git (extracted candidate tree); cross-runtime "
+                    "parity runs in ci.yml and the lane's first step")
     try:
         candidate = event_ledger._build_candidate()
     except event_ledger.EventLedgerError as exc:
