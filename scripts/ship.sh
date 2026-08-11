@@ -26,7 +26,16 @@ COMMIT="$(git rev-parse HEAD)"
 
 OUT="$(mktemp)"
 trap 'rm -f "$OUT"' EXIT
-if ! bash scripts/gate.sh --committed > "$OUT" 2>&1; then
+# --publish, for the same reason publish_push.sh uses it: the `live` tests
+# fetch igrm.in and assert about the payloads the site is ALREADY SERVING,
+# which cannot say anything about the commit being pushed. Leaving them in
+# meant a stale site refused every push, including the pushes that would
+# refresh it -- and including, absurdly, the push of the fix for that
+# deadlock. Everything that describes the candidate still runs: registry
+# refusals, conformance diffs, ruff, mypy, the non-live suite with coverage.
+# ci.yml still runs the live assertions on main, where a stale site is an
+# alert rather than a lock. See scripts/gate.sh for the full reasoning.
+if ! bash scripts/gate.sh --publish > "$OUT" 2>&1; then
   echo "ship: COMMITTED GATE RED -- not pushing. Failures:"
   grep -E "FAILED|error:" "$OUT" | head -10
   exit 1

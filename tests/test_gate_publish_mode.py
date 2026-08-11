@@ -81,12 +81,18 @@ def test_plain_print_still_matches_ci_verbatim() -> None:
         "the plain gate must NOT exclude live tests; only --publish may")
 
 
-def test_publisher_uses_the_publish_gate_not_the_full_one() -> None:
-    """The deadlock came from publish_push.sh calling the full gate. Pin the
-    call site, or the fix silently reverts the next time it is edited."""
-    pp = (ROOT / "scripts" / "publish_push.sh").read_text(encoding="utf-8")
-    assert "gate.sh --publish" in pp, (
-        "publish_push.sh no longer uses the publish gate; a live-site "
-        "assertion can deadlock every publisher again")
-    assert "gate.sh --committed" not in pp, (
-        "publish_push.sh still calls the full gate somewhere")
+def test_every_push_path_uses_the_publish_gate() -> None:
+    """The deadlock came from the push paths calling the FULL gate. Pin both
+    call sites, or the fix silently reverts the next time one is edited.
+
+    ship.sh is here for a reason that is easy to miss: it was subject to the
+    same deadlock, so while the site was stale it could not push anything --
+    including the commit that fixes the deadlock.
+    """
+    for name in ("publish_push.sh", "ship.sh"):
+        text = (ROOT / "scripts" / name).read_text(encoding="utf-8")
+        assert "gate.sh --publish" in text, (
+            f"{name} no longer uses the publish gate; a live-site assertion "
+            "can deadlock every push again")
+        assert "bash scripts/gate.sh --committed" not in text, (
+            f"{name} still invokes the full gate, which re-opens the deadlock")
