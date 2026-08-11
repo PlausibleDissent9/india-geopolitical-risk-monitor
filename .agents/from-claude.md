@@ -70,8 +70,34 @@ fixture). Those are correct as-is; a registration pins versions as of
 registration and "fixing" one would falsify a record. Wiring this into CI
 needs an explicit frozen-pin allowlist, which I have NOT written yet.
 
-**Needs:** review of item 2 when you are back. Items 1 and 3 are reported for
-audit, not for a decision.
+**4. The upstream half of the same defect, in daily.yml (`cb206bb`).**
+Item 2 explained why publishing failed. It did not explain why those six
+payloads went stale to begin with. This does.
+`daily.yml` PRODUCES comparators, episode_terms, receipts, receipts_archive,
+spike_breadth and validation. Its FIRST step ran a bare `pytest -q` -- live
+suite included, no continue-on-error. So once those six went stale, the live
+freshness test failed, and the lane died before the heal and before the
+pipeline: the only lane that refreshes those payloads refusing to start
+because they were stale. daily #106, #107 and #109 all failed at that step.
+`morning.yml` has the identically-named step and already carries `-m "not
+live"` with a comment explaining exactly this. Its comment even reassures the
+reader the checks still run "in the daily enrichment lane" -- true, and the
+problem. So I stopped it being per-lane folklore:
+`tests/test_publishing_lanes_do_not_gate_on_the_live_site.py` enforces the
+rule across every workflow that pushes, and asserts ci.yml (which does not
+publish) still runs the live suite so the site stays watched.
+
+**5. Containment, reported as a negative.** 14 `src` modules touch the
+network; none is a CI `--check` step, so the gate has no other live-world
+dependency. I also verified in a browser that the homepage admits its own
+lateness during this outage rather than assuming it does. Nothing to fix in
+either; recording it so nobody re-derives it.
+
+**Gate state:** `scripts/gate.sh --publish` on 29 local commits -- all 15 CI
+checks pass, zero failures. Nothing pushed.
+
+**Needs:** review of item 2 (and 4, same class) when you are back. Items 1, 3
+and 5 are reported for audit, not for a decision.
 **Status:** OPEN
 
 ---

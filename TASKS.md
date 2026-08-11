@@ -82,6 +82,48 @@ re-registration of an authorized change, including `required_gate_command`.
 CONSEQUENCE: the number cannot publish until this reaches origin/main. Every
 run before it will die the same way.
 
+## T24 — The UPSTREAM deadlock: the lane that refreshes the stale payloads
+Status: DONE (local commit `cb206bb`) — this is the actual root cause
+T23 explained why publishing failed. It did not explain why those six payloads
+went stale in the first place. This does, and it is the same defect one level
+up.
+`daily.yml` PRODUCES comparators, episode_terms, receipts, receipts_archive,
+spike_breadth and validation. Its FIRST step, "Enforce dictionary rules
+(ex-ante rule)", ran a bare `pytest -q` -- live suite included -- with no
+continue-on-error. So once those six went stale, the live freshness test
+failed, and the lane died before the heal and before the pipeline, unable to
+refresh the very payloads whose staleness was killing it.
+Measured, not inferred: daily #106, #107 and #109 all failed at that step.
+morning.yml has the identically-named step, already carries `-m "not live"`,
+and documents why. daily.yml never got the fix -- and morning.yml's comment
+even reassures the reader these checks still run "in the daily enrichment
+lane", which was true and was the problem.
+Fix: the same one-line narrowing, plus
+`tests/test_publishing_lanes_do_not_gate_on_the_live_site.py`, which enforces
+the rule across EVERY workflow that pushes (one lane learning a lesson
+privately is how it comes back) and separately asserts ci.yml still runs the
+live suite, so the served site stays watched.
+Verified by reverting daily.yml to the defective form: the guard fails naming
+file and command; passes when restored.
+
+## T25 — Containment check and a clean negative
+Status: DONE (no change needed)
+Asked whether the deadlock class exists outside pytest gates. 14 `src` modules
+touch the network; NONE is invoked as a CI `--check` step, so the gate has no
+other live-world dependency. The class is closed by T23 + T24 + the guard.
+Separately verified, in a browser against the live site rather than by reading
+code, that the homepage admits its own lateness during this real outage:
+"Composite (7-day) - 2026-08-09 - one measured day behind the 6:00 AM IST
+target", rendered with role="status". The logic distinguishes NOT YET DUE from
+LATE using the 00:30 UTC deadline, so it does not cry wolf before 06:00 IST.
+Nothing to fix. Reported as a negative result rather than converted into a
+change.
+
+## GATE STATE
+`scripts/gate.sh --publish` on HEAD `cb206bb` (29 commits): all 15 CI checks
+pass, zero failures. Nothing is pushed; the founder's push decision is the
+only remaining step for the number to publish.
+
 ---
 
 ## T1 — Product Compiler contract must not claim refusal codes the runtime cannot raise
