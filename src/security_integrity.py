@@ -534,6 +534,32 @@ def validate_repository(
         prior_guards = [guard for guard in guards if guard.end() < push.start()]
         if not prior_guards or push.start() - prior_guards[-1].end() > 80:
             _fail("publisher_push_not_immediately_gated")
+    refresh_calls = list(
+        re.finditer(
+            r"^\s+if ! refresh_public_api_byte_manifest; then exit 1; fi\s*$",
+            push_text,
+            re.M,
+        )
+    )
+    if len(refresh_calls) != 2:
+        _fail("publisher_manifest_refresh_count_invalid")
+    refresh_body = _shell_function(
+        push_text, "refresh_public_api_byte_manifest"
+    )
+    refresh_markers = (
+        "head=$(git rev-parse --verify HEAD)",
+        "upstream=$(git rev-parse --verify origin/main)",
+        'if [ "$head" = "$upstream" ]; then',
+        "python -m scripts.generate_public_api_byte_manifest",
+        "git add -- docs/data/public_api_byte_manifest.json",
+        "python -m scripts.generate_public_api_byte_manifest --check-index",
+        "git commit --amend --no-edit",
+    )
+    refresh_offsets = [refresh_body.find(marker) for marker in refresh_markers]
+    if any(offset < 0 for offset in refresh_offsets) or refresh_offsets != sorted(
+        refresh_offsets
+    ):
+        _fail("publisher_manifest_refresh_order_invalid")
 
     final_cas_text = _safe_path(
         root, final_cas_path, "security_final_cas_script_path_invalid"
@@ -549,6 +575,23 @@ def validate_repository(
         name: _shell_function(final_cas_text, name)
         for name in FINAL_CAS_FUNCTION_SHA256
     }
+    manifest_stage_body = _shell_function(
+        final_cas_text, "stage_public_api_byte_manifest"
+    )
+    expected_manifest_stage = (
+        "  # Candidate outputs are already in the stage-0 index. Capture and hash that\n"
+        "  # exact set once, then add only the deterministic self-excluded manifest.\n"
+        "  python -m scripts.generate_public_api_byte_manifest\n"
+        "  git add -- docs/data/public_api_byte_manifest.json\n"
+        "  python -m scripts.generate_public_api_byte_manifest --check-index\n"
+    )
+    if manifest_stage_body != expected_manifest_stage:
+        _fail("publisher_final_manifest_stage_invalid")
+    manifest_stage_calls = list(
+        re.finditer(r"^  stage_public_api_byte_manifest\s*$", final_cas_text, re.M)
+    )
+    if len(manifest_stage_calls) != 2:
+        _fail("publisher_final_manifest_call_count_invalid")
     for name, expected_sha in FINAL_CAS_FUNCTION_SHA256.items():
         if hashlib.sha256(bodies[name].encode("utf-8")).hexdigest() != expected_sha:
             _fail("publisher_final_cas_function_digest_invalid", name)
@@ -678,6 +721,16 @@ def validate_repository(
                 "final_cas_command": FINAL_CAS_GATE_COMMAND,
                 "push_paths_verified": len(pushes) + 1,
                 "transition_authority": "unavailable_no_external_signature",
+            },
+            "public_api_byte_manifest_barrier": {
+                "status": "repository_self_consistency_only",
+                "generic_post_rebase_refresh_paths": 2,
+                "final_candidate_classes": ["final", "refusal"],
+                "source": "captured_git_index_or_tree",
+                "self_excluded_endpoint": "data/public_api_byte_manifest.json",
+                "signed": False,
+                "authenticated_deployment": False,
+                "atomic_hosted_snapshot": False,
             },
         },
         "publishing_lanes": sorted(publishing_lanes),

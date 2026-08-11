@@ -3567,6 +3567,16 @@ def _publisher_e2e_repo(tmp_path: Path) -> tuple[Path, Path, str]:
     rights_python.write_text(
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
+        "if [ \"${1:-}\" = '-m' ] && "
+        "[ \"${2:-}\" = 'scripts.generate_public_api_byte_manifest' ]; then\n"
+        "  if [ \"${3:-}\" != '--check-index' ]; then\n"
+        "    mkdir -p docs/data\n"
+        "    printf '{\"object_type\":\"igrm.public_api_byte_manifest\","
+        "\"test_fixture_only\":true}\n' > "
+        "docs/data/public_api_byte_manifest.json\n"
+        "  fi\n"
+        "  exit 0\n"
+        "fi\n"
         "if [ \"${3:-}\" = '--record-pipeline-failed' ]; then\n"
         "  mkdir -p data/raw\n"
         "  printf '{\"status\":\"acquisition_failed\"}\\n' > "
@@ -3799,6 +3809,7 @@ def test_final_cas_expired_rights_still_publish_value_free_refusal(
     assert set(changed) == {
         "data/raw/final_publication_status.json",
         "docs/data/status.json",
+        "docs/data/public_api_byte_manifest.json",
         "docs/index.html",
         "docs/status.html",
     }
