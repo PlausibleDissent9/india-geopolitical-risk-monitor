@@ -1,0 +1,143 @@
+{
+  "schema_version": "0.1.0",
+  "contract_id": "igrm:clause-output-conformance:0.1.0",
+  "effective": "2026-08-11",
+  "status": "internal_synthetic_contract_only",
+  "default_policy": "deny",
+  "public_routes": [],
+  "api": {
+    "compiler": "compile_clause_output_conformance",
+    "verifier": "verify_clause_output_conformance",
+    "compiler_positional_inputs": ["manifest_path"],
+    "verifier_positional_inputs": ["manifest_path", "receipt"],
+    "caller_query_event_target_bounds_profile_output_or_selector_arguments": false,
+    "caller_source_bundle_role_proof_view_reader_or_archive_arguments": false
+  },
+  "fixed_files": {
+    "receipt_schema": {
+      "path": "governance/schemas/clause-output-conformance-receipt.schema.json",
+      "file_sha256": "896c04415e2a56d6ab93c7417ae229ff4e44d741e89bdd3691258deeef9a91aa"
+    },
+    "adversarial_vectors": {
+      "path": "governance/clause_output_conformance_adversarial_vectors.json",
+      "file_sha256": "528cb7a61d622f5ffa01153ba3c3ef177b44b2f716d39c798debf41d1015098a"
+    }
+  },
+  "installed_dependencies": [
+    {"path": "governance/analytical_clause_source_profile.json", "file_sha256": "bedb840a8f0350eb6646f7f4337e62d7c118fc949f91338d78cb77aafa75b190"},
+    {"path": "governance/analytical_clause_limitation_registry.json", "file_sha256": "57d8c70e45d2f39370c7061773648d4b67cedf467e01876b52fa0f4d490f4776"},
+    {"path": "governance/clause_source_view_contract.json", "file_sha256": "7cae18b976d1c599de2b35fd09897f935fbbb621114bdab21335492052663b47"},
+    {"path": "governance/clause_reader_shadow_contract.json", "file_sha256": "c7a2b4bdb9aad312a43f23059dc9446b3e67de72edccd2d3ddecf259d8f21333"},
+    {"path": "governance/clause_offline_proof_contract.json", "file_sha256": "0e3cdb66cd5984bb3ed13665a80d474ce451649af400de6568c248047d9ae34b"},
+    {"path": "governance/evidence_output_registry.json", "file_sha256": "24d5c1367f50546ee8188e0e7a9b4ff574f3369ec75c7f0e8807dd14c1c00447"},
+    {"path": "governance/exposure_projection_registry.json", "file_sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66"},
+    {"path": "schemas/common.schema.json", "file_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"},
+    {"path": "schemas/evidence-output-set.schema.json", "file_sha256": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780"},
+    {"path": "src/analytical_clause.py", "file_sha256": "e0960fa6eb4704cd35fcf3c601e30cd79ca6a3d4772914da99b4ab6f33598160"},
+    {"path": "src/canonical_objects.py", "file_sha256": "3d07e0e8e14537e61b3a5559fba1f56c114ec32151c09066abba64f184d2e934"},
+    {"path": "src/exposure_graph.py", "file_sha256": "a6e0c9af3309336c28016bdf7e293e315772306b4db1056f49da54d9fc683780"},
+    {"path": "src/clause_source_view.py", "file_sha256": "5e612518227056d94ebd1b10728ec70fd8be76f60aceadf6621254f2f36cac5c"},
+    {"path": "src/clause_reader_shadow.py", "file_sha256": "3499dc07489ec799bb0a9be7df0ef0f633204f92019bb854e935c08f7493dbaf"},
+    {"path": "src/clause_offline_proof.py", "file_sha256": "26859f2d6a4f38584b5a21be25f55ba195b5ce810f6cf4ed45f92db0fd8b231a"},
+    {"path": "src/evidence_outputs.py", "file_sha256": "d483f6b6f6fa210e30d91da04fe830009616dd49603e8a2fbf4edbc3afe3da9f"}
+  ],
+  "fixture_snapshot": {
+    "manifest_relative_path": "canonical/release.json",
+    "max_file_denominator": 512,
+    "max_entry_bytes": 8388608,
+    "max_total_bytes": 67108864,
+    "symlinks": "refuse",
+    "nonregular_entries": "refuse",
+    "capture_rule": "one_immutable_byte_snapshot_materialized_to_private_temporary_root",
+    "post_capture_caller_root_reads": false
+  },
+  "closed_query_universe": {
+    "authority": "governance/analytical_clause_source_profile.json",
+    "registered_query_ids": [
+      "query:analytical_clause.fixture.path_found",
+      "query:analytical_clause.fixture.no_path"
+    ],
+    "registered_query_denominator": 2,
+    "expected_branches": ["branch:path_found", "branch:no_path"],
+    "path_found_branch_denominator": 1,
+    "no_path_branch_denominator": 1,
+    "caller_query_selection": false
+  },
+  "comparison": {
+    "compared_output_ids": [
+      "output:board_brief",
+      "output:newsroom_claim_card",
+      "output:research_package"
+    ],
+    "compared_output_denominator": 3,
+    "comparison_cell_denominator": 6,
+    "per_cell": [
+      "exact_document_canonical_bytes",
+      "exact_body_canonical_bytes",
+      "exact_pretty_artifact_bytes",
+      "exact_artifact_descriptor",
+      "exact_citations",
+      "exact_rendered_limitation_arrays"
+    ],
+    "common_scope": "scope:output.all_views",
+    "common_scope_authority": "governance/analytical_clause_limitation_registry.json",
+    "excluded_output_ids": ["output:offline_audit_bundle"],
+    "excluded_output_reason": "incumbent_audience_audit_zip_and_clause_proof_archive_are_distinct_products"
+  },
+  "proof": {
+    "proof_archive_denominator": 2,
+    "builder": "src.clause_offline_proof.build_clause_offline_proof",
+    "verifier": "src.clause_offline_proof.verify_clause_offline_proof",
+    "external_digest": "compiler_computed_then_passed_as_required_verifier_input",
+    "archive_retained_in_receipt": false
+  },
+  "verification": {
+    "installed_dependency_snapshot": "exact_pre_and_post_compile_byte_equality",
+    "runtime_snapshot": "exact_pre_and_post_compile_byte_equality",
+    "receipt_schema": "draft_2020_12",
+    "receipt_self_hash": "integrity_only",
+    "verify": "capture_fixture_again_recompile_complete_universe_and_require_exact_receipt_bytes"
+  },
+  "trust": {
+    "synthetic": true,
+    "contract_only": true,
+    "self_hash_integrity_only": true,
+    "signed": false,
+    "authenticated": false,
+    "nonpublic": true,
+    "nonproduction": true
+  },
+  "boundary": {
+    "closed_synthetic_universe_only": true,
+    "general_equivalence": false,
+    "real_data_equivalence": false,
+    "public_activation": false,
+    "product_manifest": false,
+    "correction_blast": false,
+    "publication_authority": false,
+    "offline_audit_bundle_compared": false,
+    "live_query_admission_consumed": false,
+    "semantic_mapping_registered": false
+  },
+  "claim_boundary": "For the complete two-query synthetic AnalyticalClause registry at these exact governance and runtime bytes, the three clause-reader shadow documents, bodies, artifact bytes, descriptors, citations and limitation arrays exactly equal the corresponding incumbent evidence outputs, both clause proof archives independently recompile, and the incumbent common outer limitation scope equals the registered scope. This does not establish general or real-data equivalence, source truth, rights, publication or production authority, ProductManifest or correction closure, offline-audience equivalence, live-query execution mapping, forecasting, utility, adoption or impact.",
+  "refusal_codes": [
+    "conformance_artifact_mismatch",
+    "conformance_common_scope_mismatch",
+    "conformance_contract_drift",
+    "conformance_contract_invalid",
+    "conformance_dependency_drift",
+    "conformance_fixture_invalid",
+    "conformance_incumbent_invalid",
+    "conformance_json_duplicate_key",
+    "conformance_output_mismatch",
+    "conformance_proof_invalid",
+    "conformance_query_universe_invalid",
+    "conformance_reader_invalid",
+    "conformance_receipt_invalid",
+    "conformance_recompile_mismatch",
+    "conformance_record_digest_mismatch",
+    "conformance_runtime_drift",
+    "conformance_source_invalid",
+    "conformance_view_invalid"
+  ]
+}

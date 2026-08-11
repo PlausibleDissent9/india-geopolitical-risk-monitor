@@ -1,0 +1,31 @@
+{
+  "schema_version": "0.1.0",
+  "registry_id": "igrm:clause-output-conformance-adversarial:0.1.0",
+  "status": "normative_executable",
+  "case_denominator": 22,
+  "cases": [
+    {"case_id": "valid_complete_two_query_universe", "mutation": "none", "expected": "valid"},
+    {"case_id": "valid_deterministic_recompile", "mutation": "alternate_call_same_manifest", "expected": "valid"},
+    {"case_id": "valid_equal_metadata_multi_evidence_no_dedup", "mutation": "equal_metadata_multi_evidence", "expected": "valid"},
+    {"case_id": "refuse_nullable_metadata_when_incumbent_archive_refuses", "mutation": "nullable_metadata_incumbent_refusal", "expected": "conformance_incumbent_invalid"},
+    {"case_id": "refuse_contract_digest_drift", "mutation": "contract_digest_drift", "expected": "conformance_contract_drift"},
+    {"case_id": "refuse_contract_semantic_drift", "mutation": "contract_semantic_drift", "expected": "conformance_contract_invalid"},
+    {"case_id": "refuse_installed_dependency_drift", "mutation": "dependency_drift", "expected": "conformance_dependency_drift"},
+    {"case_id": "refuse_manifest_outside_registered_layout", "mutation": "fixture_manifest_path", "expected": "conformance_fixture_invalid"},
+    {"case_id": "refuse_query_universe_shrink", "mutation": "query_universe_shrink", "expected": "conformance_query_universe_invalid"},
+    {"case_id": "refuse_source_compiler_failure", "mutation": "source_compiler_failure", "expected": "conformance_source_invalid"},
+    {"case_id": "refuse_view_compiler_failure", "mutation": "view_compiler_failure", "expected": "conformance_view_invalid"},
+    {"case_id": "refuse_reader_compiler_failure", "mutation": "reader_compiler_failure", "expected": "conformance_reader_invalid"},
+    {"case_id": "refuse_proof_archive_failure", "mutation": "proof_archive_failure", "expected": "conformance_proof_invalid"},
+    {"case_id": "refuse_incumbent_compiler_failure", "mutation": "incumbent_compiler_failure", "expected": "conformance_incumbent_invalid"},
+    {"case_id": "refuse_output_document_mismatch", "mutation": "output_document_mismatch", "expected": "conformance_output_mismatch"},
+    {"case_id": "refuse_artifact_descriptor_mismatch", "mutation": "artifact_descriptor_mismatch", "expected": "conformance_artifact_mismatch"},
+    {"case_id": "refuse_outer_common_scope_mismatch", "mutation": "common_scope_mismatch", "expected": "conformance_common_scope_mismatch"},
+    {"case_id": "refuse_receipt_shape_mutation", "mutation": "receipt_shape_mutation", "expected": "conformance_receipt_invalid"},
+    {"case_id": "refuse_receipt_record_digest_mutation", "mutation": "receipt_record_digest_mutation", "expected": "conformance_record_digest_mismatch"},
+    {"case_id": "refuse_resealed_receipt_mutation", "mutation": "receipt_resealed_mutation", "expected": "conformance_recompile_mismatch"},
+    {"case_id": "refuse_runtime_changes_during_compile", "mutation": "runtime_drift", "expected": "conformance_runtime_drift"},
+    {"case_id": "refuse_duplicate_json_key", "mutation": "duplicate_json_key", "expected": "conformance_json_duplicate_key"}
+  ],
+  "claim_boundary": "These cases execute the internal closed synthetic conformance compiler and verifier only. They do not establish general or real-data equivalence, source truth, rights, publication authority, ProductManifest or correction closure, production readiness, adoption, utility or impact."
+}
