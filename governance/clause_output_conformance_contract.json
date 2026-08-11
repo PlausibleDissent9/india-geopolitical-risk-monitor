@@ -24,11 +24,11 @@
     }
   },
   "installed_dependencies": [
-    {"path": "governance/analytical_clause_source_profile.json", "file_sha256": "bedb840a8f0350eb6646f7f4337e62d7c118fc949f91338d78cb77aafa75b190"},
+    {"path": "governance/analytical_clause_source_profile.json", "file_sha256": "49d035294b6b38097cd3670ffe58daa94351f2f8c6d7cfdc6a689b140cfee469"},
     {"path": "governance/analytical_clause_limitation_registry.json", "file_sha256": "57d8c70e45d2f39370c7061773648d4b67cedf467e01876b52fa0f4d490f4776"},
-    {"path": "governance/clause_source_view_contract.json", "file_sha256": "7cae18b976d1c599de2b35fd09897f935fbbb621114bdab21335492052663b47"},
-    {"path": "governance/clause_reader_shadow_contract.json", "file_sha256": "c7a2b4bdb9aad312a43f23059dc9446b3e67de72edccd2d3ddecf259d8f21333"},
-    {"path": "governance/clause_offline_proof_contract.json", "file_sha256": "0e3cdb66cd5984bb3ed13665a80d474ce451649af400de6568c248047d9ae34b"},
+    {"path": "governance/clause_source_view_contract.json", "file_sha256": "d9957043855874bd82a2e1b01082f11a8bf8b84eb757a6e70c0119be440845e6"},
+    {"path": "governance/clause_reader_shadow_contract.json", "file_sha256": "b04a793e8b15e6de4cd1cb6d6b6edc97b218ba7447c2820dfa799e0d9680e0ac"},
+    {"path": "governance/clause_offline_proof_contract.json", "file_sha256": "09321dbbbd1752422e407f81aa1b254bde623742a2bb597e7e5fb4cf89447a55"},
     {"path": "governance/evidence_output_registry.json", "file_sha256": "24d5c1367f50546ee8188e0e7a9b4ff574f3369ec75c7f0e8807dd14c1c00447"},
     {"path": "governance/exposure_projection_registry.json", "file_sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66"},
     {"path": "schemas/common.schema.json", "file_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1"},
@@ -36,9 +36,9 @@
     {"path": "src/analytical_clause.py", "file_sha256": "e0960fa6eb4704cd35fcf3c601e30cd79ca6a3d4772914da99b4ab6f33598160"},
     {"path": "src/canonical_objects.py", "file_sha256": "3d07e0e8e14537e61b3a5559fba1f56c114ec32151c09066abba64f184d2e934"},
     {"path": "src/exposure_graph.py", "file_sha256": "a6e0c9af3309336c28016bdf7e293e315772306b4db1056f49da54d9fc683780"},
-    {"path": "src/clause_source_view.py", "file_sha256": "5e612518227056d94ebd1b10728ec70fd8be76f60aceadf6621254f2f36cac5c"},
-    {"path": "src/clause_reader_shadow.py", "file_sha256": "3499dc07489ec799bb0a9be7df0ef0f633204f92019bb854e935c08f7493dbaf"},
-    {"path": "src/clause_offline_proof.py", "file_sha256": "26859f2d6a4f38584b5a21be25f55ba195b5ce810f6cf4ed45f92db0fd8b231a"},
+    {"path": "src/clause_source_view.py", "file_sha256": "019606f92bfd3e6b6adc5d073b857aa4506f53759678d1776ff05010820f455d"},
+    {"path": "src/clause_reader_shadow.py", "file_sha256": "8600ab98bf5d1c6fd9466d3ab55fc3d24bffbf95278c89ca3b525dde93e457cb"},
+    {"path": "src/clause_offline_proof.py", "file_sha256": "4569cc4355fe50e619b349507abb9ddce52c0e2ad48477f6020e816f1281f7e9"},
     {"path": "src/evidence_outputs.py", "file_sha256": "d483f6b6f6fa210e30d91da04fe830009616dd49603e8a2fbf4edbc3afe3da9f"}
   ],
   "fixture_snapshot": {
