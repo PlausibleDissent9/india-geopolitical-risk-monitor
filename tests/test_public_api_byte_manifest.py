@@ -58,7 +58,7 @@ def candidate_repo(tmp_path: Path, candidate_tree: str) -> Generator[Path, None,
             handle.extractall(root)
     _git(root, "init", "-q")
     _git(root, "config", "user.name", "Manifest test")
-    _git(root, "config", "user.email", "manifest@example.invalid")
+    _git(root, "config", "user.email", "actions@github.com")
     _git(root, "add", "--all")
     _git(root, "commit", "-q", "-m", "candidate")
     outer_index = os.environ.pop("GIT_INDEX_FILE", None)
@@ -285,7 +285,7 @@ def test_post_rebase_refresh_amends_exact_lane_candidate(candidate_repo: Path, t
     upstream = tmp_path / "upstream"
     _git(tmp_path, "clone", "-q", str(remote), str(upstream))
     _git(upstream, "config", "user.name", "Upstream test")
-    _git(upstream, "config", "user.email", "upstream@example.invalid")
+    _git(upstream, "config", "user.email", "actions@github.com")
     readme = upstream / "README.md"
     readme.write_bytes(readme.read_bytes() + b"\n")
     _git(upstream, "add", "--", "README.md")

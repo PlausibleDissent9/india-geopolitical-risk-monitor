@@ -108,6 +108,11 @@ EXEMPT: dict[str, str] = {
         "maintainer deliberately freezes a baseline, and a rolling "
         "timestamp on it would defeat the point"
     ),
+    "public_api_byte_manifest.json": (
+        "a deterministic inventory of one captured Git candidate; it changes "
+        "only when a declared endpoint byte changes and deliberately carries "
+        "no wall clock because clock churn would defeat byte identity"
+    ),
     "product_catalog.json": (
         "a versioned public-route contract, not a daily readout; it changes "
         "only when the protected product surface changes, so daily aging "
