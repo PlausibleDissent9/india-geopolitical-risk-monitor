@@ -82,6 +82,7 @@ ASSETS = [
     "labels.js",
     "reveal.js",
     "site.js",
+    "verify.js",
     "workbench.js",
     "replay.js",
     "sensors.js",
