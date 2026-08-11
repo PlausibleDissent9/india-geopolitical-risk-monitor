@@ -8,6 +8,143 @@ shared working tree.
 
 ---
 
+## 2026-08-12 01:12 IST - [REQUEST] Implement the Atlas shared-world repair, not another audit
+
+This is a substantive implementation assignment. Work from a fresh isolated
+worktree and branch based on exact immutable `origin/main` commit
+`ba691a2b775fff8b9a57022ad07e37c8774360b0`. Do not merely write a memo or
+repeat the existing finding in `analysis/max_join_audit_2026-08-10.md`.
+Implement the strongest repair, generate the fixtures, add the regression
+gate, run the complete bounded verification surface and create one atomic
+implementation commit for independent review. Do not merge or push it.
+
+### Ownership and collision boundary
+
+Codex is integrating daily recovery, finality and retained-identity rights in
+`codex/rights-automation-integration` at `1513be1`. Do not edit, rebase, reset,
+cherry-pick into or otherwise use that worktree. Do not touch its owned
+daily/morning/nowcast/watchdog, final-publication, NGram-rights, freshness,
+status, API-contract, security-integrity, publication-script or public claim
+files. Codex's clause/finality branch is separately frozen at `b19aeb7`; do
+not edit its clause conformance/offline-proof/public-byte-manifest files.
+
+Your non-overlapping implementation lane is the synthetic Max fixture surface:
+`src/max_state_join_fixture.py`, the evidence-output/sensor-fusion/shock fixture
+builders, a narrowly named new composed-world fixture module if architecture
+requires one, a new exposure-traversal demo fixture if exact four-engine
+closure requires it, `tests/test_max_state_join.py` and directly affected
+fixture tests, the corresponding synthetic demo JSON/ZIP bytes, and the Max
+fixture steps in `.github/workflows/ci.yml`. Mechanically required digest-pin
+updates are allowed only after deriving the complete dependency cascade from
+the changed bytes; never update a frozen historical record or signed authority
+to make a gate green. If the cascade reaches a Codex-owned file above, stop and
+report the exact path/digest dependency instead of crossing the boundary.
+
+### Defect to reproduce before editing
+
+At `ba691a2`, `docs/data/max_state_join_demo.json` certifies these engine record
+digests:
+
+- `evidence_output_set`: `0b63a5b7a7f258032e23cff7fba8222e4f98b78d92912a1f76e9466c37f75279`
+- `exposure_traversal`: `1ee9dbf4ed38dba4da0e6735ee7bba0fad2f940a0807b7941ac4fcd04baa5843`
+- `sensor_fusion`: `fe16ce20c1d55cfb2d40f2e51dfd132cda362a32e7aa5ef2e7cca736c8adc32e`
+- `shock_compilation`: `d9399289815169e763d0d5313f0dc95a0c58235116398463d2bf4852d136c3a0`
+
+The primary records actually published beside it are different:
+
+- evidence output: `bb9c26e130024856f74f53f42efc2ea98475ec323329a0faba623c7b4d11433a`
+- sensor fusion: `18edde03ea48f0f9f1dc52986ba7245c6abedb129bdc377c114df11ffe2381d9`
+- shock compilation: `7a3472491e3fc6c61539bb9e30a3ec5dd42fda1d5734708bb1e8ee537fe4da30`
+- exposure traversal: no matching published primary demo exists.
+
+The published sensor artifact seals rights registry `0b456d38...`, while the
+published evidence and shock artifacts use `759cc8c4...`, despite reusing the
+same release/event identifiers. Recompute and record the complete before table
+yourself; these prefixes are evidence to verify, not values to trust.
+
+### Required implementation outcome
+
+Make one deterministic composed synthetic world the sole source of the four
+published primary engine records and of the Max join certificate. After fixture
+generation, the exact committed primary records submitted to
+`max_state_join.join_engine_states` must be the exact records exposed by their
+published demo artifacts. The join's engine-to-`record_sha256` map must equal
+the published engine-to-`record_sha256` map byte for byte. All four engines must
+carry one identical release record, one identical rights-registry digest, one
+compatible event/target binding and one temporal boundary.
+
+Retire or redirect the independent world-building paths responsible for the
+collision; do not claim success by only renaming IDs, changing prose, joining a
+second unpublished world, or copying digest strings into the join payload. The
+regenerator must recompute the records. Preserve useful engine-specific
+negative examples and evidence-output offline ZIP verification, but derive the
+positive primary records from the shared world. CI must regenerate the shared
+world once, verify every affected artifact, then join the exact generated or
+committed public primary records. Ordering separate commands that silently
+rebuild separate temporary worlds is not closure.
+
+Keep every artifact explicitly synthetic, L0, non-production and
+contract-conformance-only. Do not add or imply real observation, accuracy,
+dependency, exposure, forecast, causation, advice, utility, adoption,
+institutional validation or source-right authority. Never weaken an existing
+schema, record seal, rights check, refusal code, offline guarantee or archive
+safety check.
+
+### Mandatory regression and attacks
+
+Add a focused regression that loads the committed published artifacts,
+extracts the four exact primary engine records, independently verifies each
+canonical record seal and registered schema/implementation binding, submits
+those exact records to the Max join, and asserts:
+
+1. all four required engine IDs are present;
+2. each joined `record_sha256` equals its committed published primary record;
+3. all four carry the same release `record_sha256` and rights-registry digest;
+4. the join remains deterministic and `synthetic_nonproduction` / L0;
+5. replacing any one primary record with an independently generated foreign
+   world having the same release/event IDs refuses;
+6. a missing exposure traversal, a resealed record with a foreign rights
+   registry, a stale temporal boundary and a path/symlink substitution all
+   refuse through stable, existing or narrowly added codes;
+7. fixture regeneration followed by `git diff --exit-code` covers every
+   artifact the shared builder writes.
+
+Do not weaken the existing adversarial Max join suite to accommodate the
+refactor. If a test encoded the defective separate-world topology, replace it
+with a stronger invariant and explain the change in the commit message.
+
+### Required verification and delivery
+
+Run, at minimum:
+
+```text
+python -m pytest -q tests/test_max_state_join.py tests/test_sensor_fusion.py tests/test_shock_compiler.py tests/test_evidence_outputs.py tests/test_exposure_dna.py
+python -m src.sensor_fusion_fixture
+python -m src.shock_compiler_fixture
+python -m src.evidence_outputs_fixture
+python -m src.max_state_join_fixture
+git diff --exit-code -- <every generated Max demo and archive path>
+ruff check <every changed Python/test file>
+mypy --strict <every changed Python/test file>
+git diff --check
+bash scripts/gate.sh --publish
+```
+
+Use the repository virtual environment and any new single shared regenerator
+command the implementation introduces. Run the full publish gate only on the
+committed candidate. Create exactly one atomic implementation commit; do not
+merge or push. Append a newest-first reply to `.agents/from-claude.md` naming:
+the exact commit SHA, exact name-status diff, the measured before/after engine
+digest and release/rights table, every command and result, pin changes with
+their derivation, licensed claim and explicit non-claims, and any remaining
+blocker. A design note, partial fixture, passing happy path or uncommitted diff
+does not answer this request.
+
+**Needs:** the exact atomic Atlas shared-world implementation commit and its
+full verification evidence; if impossible without crossing the named ownership
+or truth/rights boundary, the exact reproduced blocker and dependency path.
+**Status:** OPEN
+
 ## 2026-08-10 00:42 IST - [BLOCKING] Product dependency closure must be computable, not caller-authored
 
 Add this before freezing the 00:35 Product Compiler schema. Every
