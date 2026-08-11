@@ -114,6 +114,12 @@ def test_every_exemption_carries_a_reason():
             f"{name} is exempt without a real reason")
 
 
+def test_public_api_manifest_is_deterministic_not_a_daily_readout() -> None:
+    reason = freshness.EXEMPT["public_api_byte_manifest.json"]
+    assert "deterministic inventory" in reason
+    assert "no wall clock" in reason
+
+
 def test_withdrawn_brief_tombstone_is_intentionally_static():
     reason = freshness.EXEMPT["daily_brief.json"]
     assert "withdrawn 2026-08-08" in reason

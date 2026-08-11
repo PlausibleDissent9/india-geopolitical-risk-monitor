@@ -10,7 +10,7 @@
   "contract_version": "2.4.0",
   "endpoint_denominator": 117,
   "path": "docs/data/api_contract.json",
-  "raw_sha256": "b7597c917e7a99363a708e889e29cb6d9688a90349efc1a8e692b6f8c3eb9f87"
+  "raw_sha256": "a7858b22360953593a91b7ed027984ec9b8442bd23e227946be57bb4b00b4aae"
  },
  "claim_boundary": "The artifact proves deterministic repository-candidate byte consistency under SHA-256 when its own raw-byte digest is obtained from an independent boundary. It is unsigned and does not authenticate a deployment, prove that multiple hosted requests were atomic, establish source truth or rights, or certify security.",
  "entries": [
@@ -212,7 +212,7 @@
    "git_mode": "100644",
    "path": "data/evolution.json",
    "repository_path": "docs/data/evolution.json",
-   "sha256": "7da4268491ef7aee33aef40ef67ce1c9735e33d58c72ee57cbe2bebe11386100"
+   "sha256": "3af46f9d93a8d5ac3946a8833b1fee67b750c39c05249d7c108174963e3826e4"
   },
   {
    "bytes": 4892,
@@ -375,12 +375,12 @@
    "sha256": "f6146f74d6ebfc08042d4d091f586f8e9ce8ec129e5eec5f06985781b9286a27"
   },
   {
-   "bytes": 1097,
+   "bytes": 1098,
    "format": "json",
    "git_mode": "100644",
    "path": "data/nowcast.json",
    "repository_path": "docs/data/nowcast.json",
-   "sha256": "178aec1072d90b1212c1ccf7ccab915f57d23d89b740ac195cefb6ce368b6b24"
+   "sha256": "0ed21143aceebaf7c79dfbdad95533753e7f73deebc28da91f724c7c6e5d06ec"
   },
   {
    "bytes": 9664,
@@ -391,12 +391,12 @@
    "sha256": "2069d8fd6dcd25c311aa1bd1e650c87fb047ba90910e703802a6affc8b525452"
   },
   {
-   "bytes": 1126,
+   "bytes": 1127,
    "format": "json",
    "git_mode": "100644",
    "path": "data/permanence.json",
    "repository_path": "docs/data/permanence.json",
-   "sha256": "d46c09db10f4b178d103e0f8afc83ae11d3eb12e9c24b24c5138425c42156694"
+   "sha256": "801f90f7a1ff570f6cd3a8a267f80ebcfad241f2e639968ffdb0ab32b590b596"
   },
   {
    "bytes": 1131,
@@ -455,12 +455,12 @@
    "sha256": "3ea52f467d7836abb55d8bd542aeca964242690dc86e316cd16d717ca0ea562d"
   },
   {
-   "bytes": 1994,
+   "bytes": 2054,
    "format": "json",
    "git_mode": "100644",
    "path": "data/reliability.json",
    "repository_path": "docs/data/reliability.json",
-   "sha256": "0014086d2a590066ff48a20ed0ebf9bb8b91c226ef68e003620dd73ee11e8ae2"
+   "sha256": "20652f72a2817c7cdf53300daca0de6274af2e2ce6734df5294e71bdfce1c644"
   },
   {
    "bytes": 12418,
@@ -615,12 +615,12 @@
    "sha256": "9380c060d0cf55cd1299c6b0bfc4cabfb9f57df1df504f3cc824805810e5fa70"
   },
   {
-   "bytes": 3967,
+   "bytes": 4023,
    "format": "json",
    "git_mode": "100644",
    "path": "data/security_integrity.json",
    "repository_path": "docs/data/security_integrity.json",
-   "sha256": "ebde42461a2c1a7d2f4c94308e3f53fa4e9e48d3f06ddb3d174b3a6462c6954e"
+   "sha256": "82d1ba026a6a1cf7a2c6728a9527e905c36424e1e76fc087223f9748ae1f216e"
   },
   {
    "bytes": 24668,
@@ -954,7 +954,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "11f8f56ed0d6cea8f1ffd51421e72d976972060377c85a45076e144a33ac78dc",
+  "entries_sha256": "92df759f838c3863d297ca1cf65dde73a4c99a8d6e6ce509ca2cbd28134ae3c4",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -965,7 +965,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7227051,
+  "hashed_bytes": 7227463,
   "hashed_entries": 116,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
