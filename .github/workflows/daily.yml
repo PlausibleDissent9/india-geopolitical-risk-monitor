@@ -69,7 +69,28 @@ jobs:
           python-version: "3.11"
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Enforce dictionary rules (ex-ante rule)
-        run: python -m pytest -q
+        # -m "not live", matching morning.yml, and for a reason that is
+        # sharper here than there. morning.yml already documents that
+        # assertions about the CURRENT state of published payloads must not
+        # gate a publish. This lane is where ignoring that closed a loop:
+        #
+        #   THIS LANE PRODUCES comparators, episode_terms, receipts,
+        #   receipts_archive, spike_breadth and validation. Those six went
+        #   stale on the live site. The live freshness test therefore failed.
+        #   It ran HERE, as this lane's FIRST step, with no
+        #   continue-on-error -- so the lane died before the heal, before the
+        #   pipeline, before it could refresh the very payloads whose
+        #   staleness killed it. Six stale payloads, and the only lane that
+        #   refreshes them refusing to start because they were stale.
+        #
+        # Measured: daily #109 (2026-08-11) failed at this step, as did #107
+        # and #106. Every publisher then failed too, because the six stale
+        # payloads that nothing could refresh also failed the gate inside
+        # publish_push.sh (fixed separately, see scripts/gate.sh --publish).
+        #
+        # The live assertions are not lost: ci.yml runs them on every push to
+        # main, where a stale site is an alert rather than a lock.
+        run: python -m pytest -q -m "not live"
       - name: Ngram bridge - heal recent days (maintainer-sanctioned path)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
