@@ -158,7 +158,13 @@ gate_candidate() {
   # Deliberately not piped into tee: a pipeline reports the LAST command's
   # status, and laundering a gate's exit status through a pipe is the exact
   # defect this repo has already paid for once.
-  bash scripts/gate.sh --committed > "$log" 2>&1
+  # --publish, not --committed: identical except that the live-site
+  # assertions are excluded. They describe the payloads igrm.in is ALREADY
+  # serving, so they cannot judge this candidate, and including them
+  # deadlocked every publisher on 2026-08-11 (a stale site refused the
+  # pushes that would have refreshed it). gate.sh documents the reasoning;
+  # ci.yml still runs them on main as monitoring.
+  bash scripts/gate.sh --publish > "$log" 2>&1
   rc=$?
   cat "$log"
   if [ "$rc" -ne 0 ]; then
