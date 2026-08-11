@@ -129,7 +129,24 @@ def test_browser_and_python_share_typed_release_projection(
     node = shutil.which("node")
     if node is None:
         pytest.skip("node is not available in this environment")
-    candidate = event_ledger._build_candidate()
+    try:
+        candidate = event_ledger._build_candidate()
+    except event_ledger.EventLedgerError as exc:
+        if exc.code == "candidate_baseline_unavailable":
+            # The publish gate runs this suite inside a tree extracted with
+            # `git archive`, which has no .git -- and the candidate baseline
+            # is read from git history by design (a signed release must prove
+            # its parent, and an extracted tree cannot). This test therefore
+            # CANNOT run there, and failing is wrong: it would refuse every
+            # publish over history the candidate does not carry, which is the
+            # same defect as the live-site tests removed from that gate on
+            # 2026-08-11 -- and it did exactly that, morning runs #59 and #60.
+            # The parity property still runs everywhere .git exists: ci.yml on
+            # every push to main, and the contract lane's own first step.
+            pytest.skip("git history unavailable (extracted candidate tree); "
+                        "cross-runtime parity runs in ci.yml and the lane's "
+                        "first step, where .git exists")
+        raise
     release = _signed_release(
         candidate,
         {"authorized": True, "snapshot": "cross-runtime"},
