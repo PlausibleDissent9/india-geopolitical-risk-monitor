@@ -11,3 +11,5 @@ insurance fire 2026-08-11T09:35Z UTC: #55 may hit its 90m cap on the pre-speedup
 fired 2026-08-11T13:05Z UTC: event_ledger/world_state/evolution_engine/product_catalog now regenerated in-lane (9a30a15)
 
 fired 2026-08-11T15:44Z UTC: parity test now skips in the extracted gate tree (ac2ed3e)
+
+fired 2026-08-11T19:18Z UTC: parity skip now environment-conditioned (2afdafe); all three dawn crons silently dropped, nothing queued
