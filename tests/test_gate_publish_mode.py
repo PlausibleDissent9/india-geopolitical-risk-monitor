@@ -59,15 +59,54 @@ def test_publish_excludes_live_marked_tests() -> None:
         f"--publish did not exclude the live suite: {pytest_cmds[0]!r}")
 
 
-def test_publish_keeps_coverage_and_every_registry_check() -> None:
+def test_publish_keeps_every_check_that_can_actually_fail() -> None:
     """The candidate-describing checks are the point of the gate; --publish
-    must not quietly drop coverage or a --check refusal along the way."""
+    must not quietly drop a --check refusal, a lint or a type run."""
     published = " \n".join(_run("--publish", "--print"))
-    assert "--cov=src" in published, "--publish dropped coverage"
     for required in ("check_environment", "security_integrity", "product_catalog",
                      "world_state", "event_ledger", "evolution_engine",
-                     "ruff check .", "mypy"):
+                     "knowledge_replay_fixture", "sensor_fusion_fixture",
+                     "exposure_dna_fixture", "shock_compiler_fixture",
+                     "evidence_outputs_fixture", "max_state_join_fixture",
+                     "ruff check .", "mypy", "pytest"):
         assert required in published, f"--publish dropped the {required} check"
+
+
+def test_publish_drops_coverage_because_coverage_cannot_fail() -> None:
+    """Coverage is measured and never enforced, so it cannot decide whether a
+    candidate is fit to serve -- and it is the most expensive thing in the
+    gate (423s suite vs 993s gate, measured 2026-08-11), paid by nine lanes
+    inside their own caps.
+
+    This is guarded, not assumed: if anyone adds a coverage FLOOR, coverage
+    becomes a check that can fail, and dropping it from the publish gate would
+    then be a real loss. The assertion below fails in that case, forcing the
+    decision back to a human instead of silently discarding a new gate.
+    """
+    import re as _re
+    published = " \n".join(_run("--publish", "--print"))
+    assert "--cov" not in published, (
+        "--publish still runs coverage on nine lanes' critical path")
+
+    config = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert not _re.search(r"fail[_-]under", config), (
+        "a coverage FLOOR now exists, so coverage can fail the build and is no "
+        "longer merely a report -- reinstate it in the publish gate, or move "
+        "the floor somewhere the publisher does not pay for it")
+    for stray in ("setup.cfg", "pytest.ini", "tox.ini", ".coveragerc"):
+        path = ROOT / stray
+        if path.is_file():
+            assert not _re.search(r"fail[_-]under", path.read_text(encoding="utf-8")), (
+                f"{stray} introduced a coverage floor; see the reasoning above")
+
+
+def test_ci_itself_still_measures_coverage() -> None:
+    """Dropping coverage from the PUBLISH gate is only honest if it still runs
+    where a person reads it. ci.yml is that place, and it does not publish."""
+    ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "--cov=src" in ci, (
+        "ci.yml no longer measures coverage anywhere; the publish gate drops "
+        "it on the assumption that CI still reports it")
 
 
 def test_plain_print_still_matches_ci_verbatim() -> None:

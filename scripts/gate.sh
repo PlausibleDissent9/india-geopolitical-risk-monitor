@@ -174,9 +174,31 @@ if [ "$PUBLISH" -eq 1 ]; then
     echo "      Split the step in ci.yml, or narrow it there instead."
     exit 1
   fi
+  # COVERAGE IS A REPORT, NOT A GATE, so it does not belong on the critical
+  # path of nine publishing lanes.
+  #
+  # There is no fail_under anywhere in the repo -- not in pyproject.toml, and
+  # there is no setup.cfg, pytest.ini, tox.ini or .coveragerc to hide one in.
+  # `--cov=src --cov-report=term-missing` therefore PRINTS a percentage and
+  # can never fail the build. In ci.yml that number is worth having: a person
+  # reads it on main. In a bot lane at 05:35 nobody reads it, and it is the
+  # single most expensive thing in the gate.
+  #
+  # Measured on this laptop, 2026-08-11: the non-live suite is 423s without
+  # coverage and the whole gate is 993s with it. Coverage more than doubles
+  # the dominant step, and nine lanes each pay it inside their own cap. That
+  # is the arithmetic behind morning.yml's cap being raised 20 -> 35 -> 45 ->
+  # 60 -> 90 in one night, and behind nowcast throwing away good nowcasts at
+  # 39 minutes in its commit step.
+  #
+  # Dropping it here is the same argument as dropping the live tests: a check
+  # that CANNOT fail cannot be what makes a candidate fit to serve. Every
+  # check that can fail still runs, unchanged. ci.yml still measures coverage
+  # on every push to main.
   NARROWED="$(mktemp)"
   # shellcheck disable=SC2016
-  sed -E 's/(^.*pytest.*$)/\1 -m "not live"/' "$CMDS_FILE" > "$NARROWED"
+  sed -E 's/(^.*pytest.*$)/\1 -m "not live"/' "$CMDS_FILE" \
+    | sed -E 's/ --cov-report=[^ ]*//g; s/ --cov=[^ ]*//g' > "$NARROWED"
   mv "$NARROWED" "$CMDS_FILE"
   if [ "$PRINT" -eq 0 ]; then
     echo "gate: --publish mode -- live-site assertions excluded (they describe"
