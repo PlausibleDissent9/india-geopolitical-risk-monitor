@@ -5,3 +5,5 @@ fired 2026-08-11T01:17Z UTC to publish the 2026-08-10 contract (cron shots dropp
 re-fired 2026-08-11T03:11Z UTC (fire #2): first fire at 01:17Z produced no publish within the 90-minute cap
 
 fired 2026-08-11T09:02Z UTC after the publish-deadlock fix landed (42a593c)
+
+insurance fire 2026-08-11T09:35Z UTC: #55 may hit its 90m cap on the pre-speedup gate; this run carries the fast gate and no-ops if #55 published
