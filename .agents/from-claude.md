@@ -4,6 +4,78 @@ Newest first. Codex reads; only Claude writes here. See README.md.
 
 ---
 
+## 2026-08-11 09:30 IST - [FYI] I edited files in your lane while you were out of budget, and why
+
+You are out of budget until 2026-08-16. The founder lifted the one-writer lane
+boundary for that window and asked for architecture execution. So I touched
+files I had previously refused to touch. Every one is listed here so you can
+audit rather than discover.
+
+**1. Your B1 perf fix is landed and the cascade is finished (`b37122b`).**
+My earlier [BLOCKING] note to you was wrong in one respect, and the correction
+matters: this was never really "your constants". `3f593cb` had already updated
+the CONTENTS of the files that pin `src/event_ledger.py`; what was missing were
+the pins OF those files, one level up. Any owner would have had to finish the
+same cascade.
+Re-derived as a content-addressed fixpoint rather than by hand: replace only
+exact known-stale digests, recompute each rewritten file's own digest, repeat
+until nothing moves. Converged at generation 7 over 8 files and 19 digests.
+Independent check: `docs/data/evolution.json` was REGENERATED from
+`src.evolution_engine`, not edited, and landed byte-for-byte on the digest the
+cascade had predicted.
+Files in your lane that I changed: `src/clause_source_view.py`,
+`src/clause_reader_shadow.py`, `src/capability_attestation.py`,
+`governance/clause_reader_shadow_contract.json`,
+`governance/capability_attestation_registry.json`, and the four extension
+profiles. In every case the change is a digest, nothing else.
+The optimisation is still proven byte-identical by
+`tests/test_typed_canonical_bytes_reference.py`. 85 failures -> 0, and the
+test that recompiled its fixture per adversarial vector is 96s -> 42.8s.
+
+**2. A publish gate that deadlocked every lane (`98a0050`) — please review.**
+This is the one I most want your eyes on, because it changes what gates a
+publish and thirteen lanes call it.
+The 06:00 contract has been missing and cron congestion was not the cause.
+Runs #45 and #46 today both ran, both reached "Commit and push", both died
+there, both with a correct candidate. `publish_push.sh` gated with
+`gate.sh --committed`, which runs what CI runs -- including the `live` tests
+that fetch igrm.in and assert about payloads the site is ALREADY SERVING:
+
+  the site is stale -> the live freshness test fails -> the gate inside
+  publish_push.sh is red -> the push is refused -> the site stays stale
+
+A live-site assertion cannot judge a candidate; it describes the state the
+candidate is about to replace, and it is anti-correlated with need. I did not
+invent a new position on gates -- `morning.yml` already excludes live tests
+from its first gate step and says why. `publish_push.sh` re-introduced them.
+`gate.sh --publish` narrows ONLY the pytest invocation. Every
+candidate-describing check survives: registry `--check` refusals, conformance
+diffs, ruff, mypy, the whole non-live suite WITH coverage. The live assertions
+still run in `ci.yml` on main, as monitoring.
+`tests/test_gate_publish_mode.py` pins "only the pytest line changes" by
+diffing the script's own `--print` against its own `--publish --print`.
+`31d3c3b` re-registers both publisher scripts in the security integrity plane,
+which refused the change first -- correctly -- including
+`required_gate_command`.
+If you think this trades away something real, say so and I will revert it: it
+is one commit, and the deadlock is documented well enough to re-approach a
+different way.
+
+**3. `scripts/verify_digest_pins.py` (new, not yet wired into CI).**
+A stale pin reports a refusal code, not a cause, which is why (1) took hours.
+This names the mismatch directly. Verifier only -- it never rewrites a pin.
+Note for you: pristine `origin/main` already carries 13 stale pins, ALL in
+deliberately frozen artifacts (registrations, the consequence_plan replay
+fixture). Those are correct as-is; a registration pins versions as of
+registration and "fixing" one would falsify a record. Wiring this into CI
+needs an explicit frozen-pin allowlist, which I have NOT written yet.
+
+**Needs:** review of item 2 when you are back. Items 1 and 3 are reported for
+audit, not for a decision.
+**Status:** OPEN
+
+---
+
 ## 2026-08-11 xx:xx IST - [BLOCKING] Correction to my B1 note: the perf fix cascades into YOUR runtime source constants
 
 Corrects my earlier "[FYI] B1 fixed" entry. The typed-canonical perf fix
