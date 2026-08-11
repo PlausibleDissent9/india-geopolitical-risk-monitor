@@ -472,3 +472,19 @@ This class is exhausted; further review would be diminishing. Five consecutive
 loop iterations each found a real, distinct refusal-first/robustness gap that
 the initial test suites missed -- the value of a fresh adversarial pass on
 one's own recent code. origin/main still c2eafd2 (no Codex landing).
+
+## T27 — Multilingual lane: staging hole fixed; V5 itself is upstream-stalled
+Status: staging fix DONE (this commit); V5 data BLOCKED-EXTERNAL
+Run #83's own annotations separate two causes cleanly:
+1. `publish refused before rebase ... Files: docs/data/reliability.json` --
+   the lane regenerates reliability.json (wall-clock _meta, always differs)
+   and staged narrower than it writes. Fixed: `git add docs data/raw`, the
+   lesson daily/morning/notes each paid for on 2026-08-09. Same latent hole
+   fixed in bq-backext.yml (runs stamps, staged narrow); bq-gfg-probe and
+   events-backfill verified genuinely narrow writers, left alone.
+2. "batch landed no series and the fetch failed (10 -> ). Upstream is
+   refusing us; V5 is stalled rather than merely unfinished." -- external:
+   the multilingual source refused the fetch itself. No publishing fix can
+   conjure data upstream will not serve. Classification: external
+   dependency; retry on later runs, escalate to founder if it persists
+   across days.

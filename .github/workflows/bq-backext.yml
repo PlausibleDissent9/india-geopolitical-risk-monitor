@@ -61,6 +61,11 @@ jobs:
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
-          git add data/raw/back_extension_monthly.csv docs/data/back_extension.json analysis/backext_run_log.md 2>/dev/null || git add analysis/backext_run_log.md
+          # docs wholesale, not one JSON: this lane runs the stamp steps,
+          # which rewrite docs/*.html and reliability.json on their own
+          # schedule, and an unstaged rewrite kills publish_push.sh before
+          # the rebase (multilingual #83, 2026-08-11, and the 2026-08-09
+          # trio before it). Same class, fixed here before it fires.
+          git add docs data/raw/back_extension_monthly.csv analysis/backext_run_log.md 2>/dev/null || git add analysis/backext_run_log.md
           bash scripts/publish_push.sh "back-extension: M1 store + graded anchors $(date -u +%F)"
 # run-stamp: 2026-08-06T11:37:27Z cap sized to measured 22.25GB need

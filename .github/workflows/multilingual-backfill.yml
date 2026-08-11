@@ -116,7 +116,16 @@ jobs:
         run: |
           git config user.name "igrm-bot"
           git config user.email "actions@github.com"
-          git add data/raw/gdelt_chunks data/raw/multilingual_salience.csv docs/data/multilingual.json 2>/dev/null || true
+          # docs + data/raw, not a hand-picked list. Run #83 (2026-08-11):
+          # a step above rewrote docs/data/reliability.json (its _meta stamp
+          # is wall-clock, so every regeneration differs), the narrow add
+          # left it unstaged, and publish_push.sh refused before the rebase
+          # -- the identical lesson daily.yml, morning.yml and notes.yml
+          # each already paid for on 2026-08-09. Staging docs wholesale is
+          # also correct on its own terms: what this lane writes under docs
+          # is this lane's output, and a stamped page left behind points
+          # readers at a stylesheet that no longer exists.
+          git add docs data/raw 2>/dev/null || true
           bash scripts/publish_push.sh "multilingual chunk cache: $(date -u +%FT%TZ)"
           echo "n=$(python -c "from src import multilingual as m; print(len(m.expected_keys()) - len(m.missing_keys()))")" >> "$GITHUB_OUTPUT"
       - name: Re-trigger while incomplete and progressing
