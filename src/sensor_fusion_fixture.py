@@ -11,7 +11,6 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
-import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
@@ -424,12 +423,18 @@ def _fuse(fixture: SensorFixture, window: tuple[str, str]) -> dict[str, Any]:
 
 
 def build_demo() -> dict[str, Any]:
-    """Return the deterministic synthetic public demo payload."""
+    """Return the public payload from the one composed Max fixture world."""
 
-    with tempfile.TemporaryDirectory(prefix="igrm-sensor-fixture-") as tmp:
-        fixture = build_fixture(Path(tmp))
-        complete = _fuse(fixture, _COMPLETE_WINDOW)
-        narrow = _fuse(fixture, _NARROW_WINDOW)
+    from src import max_state_join_fixture
+
+    return max_state_join_fixture.build_published_artifacts().sensor_fusion
+
+
+def _build_demo_payload(
+    complete: dict[str, Any], narrow: dict[str, Any]
+) -> dict[str, Any]:
+    """Wrap already-fused records without rebuilding a private world."""
+
     return {
         "_meta": {
             "schema": "igrm-sensor-fusion-demo-v1",

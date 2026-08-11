@@ -17,7 +17,7 @@
   "complete_matrix": {
     "object_type": "sensor_fusion",
     "schema_version": "1.0.0",
-    "record_sha256": "18edde03ea48f0f9f1dc52986ba7245c6abedb129bdc377c114df11ffe2381d9",
+    "record_sha256": "fe16ce20c1d55cfb2d40f2e51dfd132cda362a32e7aa5ef2e7cca736c8adc32e",
     "release": {
       "release_id": "rel:oges.fixture.2026-08-08",
       "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
@@ -45,8 +45,8 @@
     },
     "query": {
       "event_id": "evt:oges.fixture.policy.001",
-      "window_start": "2026-08-08T08:30:00Z",
-      "window_end": "2026-08-08T11:00:00Z",
+      "window_start": "2026-08-08T00:00:00Z",
+      "window_end": "2026-08-08T12:00:00Z",
       "knowledge_cutoff": "2026-08-08T13:00:00Z",
       "selection_rule": "event_linked_release_evidence_observed_in_window_and_retrieved_by_cutoff",
       "join_policy": "collate_only_never_average_or_convert"

@@ -44,6 +44,8 @@ jobs:
         run: python -m src.shock_compiler_fixture && git diff --exit-code -- docs/data/shock_compiler_demo.json
       - name: Evidence Output Engine synthetic conformance artifacts are current
         run: python -m src.evidence_outputs_fixture && git diff --exit-code -- docs/data/evidence_outputs_demo.json docs/downloads/igrm-evidence-outputs-demo.zip
+      - name: Exposure traversal shared-world artifact is current
+        run: python -m src.exposure_traversal_fixture && git diff --exit-code -- docs/data/exposure_traversal_demo.json
       - name: Max engines describe one governed state
         run: python -m src.max_state_join_fixture && git diff --exit-code -- docs/data/max_state_join_demo.json
       - name: Lint (ruff)

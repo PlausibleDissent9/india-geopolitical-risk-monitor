@@ -17,8 +17,8 @@
   },
   "download": {
     "url": "https://igrm.in/downloads/igrm-evidence-outputs-demo.zip",
-    "sha256": "e8928d75e14222416da4f6f0f8fffef88fca78b1b0cf49f1ab3fffe705c33efa",
-    "bytes": 176511,
+    "sha256": "095154edbed552cb35a388e4141315bbf3302754a2b33e8a89c9f3ec54bf7eed",
+    "bytes": 234586,
     "media_type": "application/zip",
     "authentication_warning": "Authenticate this digest outside the ZIP before extraction; never execute code merely because it is bundled."
   },
@@ -29,16 +29,16 @@
   "output_set": {
     "object_type": "evidence_output_set",
     "schema_version": "1.0.0",
-    "record_sha256": "bb9c26e130024856f74f53f42efc2ea98475ec323329a0faba623c7b4d11433a",
+    "record_sha256": "0b63a5b7a7f258032e23cff7fba8222e4f98b78d92912a1f76e9466c37f75279",
     "release": {
       "release_id": "rel:oges.fixture.2026-08-08",
-      "record_sha256": "e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4",
+      "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
       "generated_at": "2026-08-08T13:00:00Z",
       "effective_date": "2026-08-08",
       "release_signer_id": "signer:oges.fixture.release",
       "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
       "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
-      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_registry_sha256": "0b456d38b6bbe486f0c4121918669294c50b12652c705390ee88ed92839aed05",
       "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
       "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
     },
@@ -65,7 +65,7 @@
       "event": {
         "object_type": "event",
         "object_id": "evt:oges.fixture.policy.001",
-        "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282"
+        "record_sha256": "224bc5ff74fc47232c5f5fd35cfbcf56a3071e2f2e90fffbf53dbe9b59411121"
       },
       "target": {
         "object_type": "entity",
@@ -94,9 +94,44 @@
           "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b"
         },
         {
+          "object_type": "evidence_item",
+          "object_id": "evd:sensor.fixture.attention.001",
+          "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4"
+        },
+        {
+          "object_type": "evidence_item",
+          "object_id": "evd:sensor.fixture.coded_event.001",
+          "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d"
+        },
+        {
+          "object_type": "evidence_item",
+          "object_id": "evd:sensor.fixture.energy.001",
+          "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2"
+        },
+        {
+          "object_type": "evidence_item",
+          "object_id": "evd:sensor.fixture.market.001",
+          "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962"
+        },
+        {
+          "object_type": "evidence_item",
+          "object_id": "evd:sensor.fixture.news.001",
+          "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec"
+        },
+        {
+          "object_type": "evidence_item",
+          "object_id": "evd:sensor.fixture.physical.001",
+          "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c"
+        },
+        {
+          "object_type": "evidence_item",
+          "object_id": "evd:sensor.fixture.trade.001",
+          "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f"
+        },
+        {
           "object_type": "event",
           "object_id": "evt:oges.fixture.policy.001",
-          "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282"
+          "record_sha256": "224bc5ff74fc47232c5f5fd35cfbcf56a3071e2f2e90fffbf53dbe9b59411121"
         },
         {
           "object_type": "universe_release",
@@ -116,10 +151,94 @@
           "verification_status": "official_record",
           "content_availability": "hash_metadata_only",
           "rights_use": "cite_metadata"
+        },
+        {
+          "evidence_id": "evd:sensor.fixture.attention.001",
+          "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4",
+          "source_id": "sensor_fixture_attention",
+          "title": "Synthetic public attention observation",
+          "public_url": "https://example.test/sensor-fixture/public_attention/001",
+          "published_at": "2026-08-08T10:45:00Z",
+          "observed_at": "2026-08-08T10:45:00Z",
+          "verification_status": "single_source",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
+        },
+        {
+          "evidence_id": "evd:sensor.fixture.coded_event.001",
+          "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d",
+          "source_id": "sensor_fixture_coded_event",
+          "title": "Synthetic coded event observation",
+          "public_url": "https://example.test/sensor-fixture/coded_event/001",
+          "published_at": "2026-08-08T09:30:00Z",
+          "observed_at": "2026-08-08T09:30:00Z",
+          "verification_status": "single_source",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
+        },
+        {
+          "evidence_id": "evd:sensor.fixture.energy.001",
+          "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2",
+          "source_id": "sensor_fixture_energy",
+          "title": "Synthetic energy transmission observation",
+          "public_url": "https://example.test/sensor-fixture/energy_transmission/001",
+          "published_at": "2026-08-08T10:15:00Z",
+          "observed_at": "2026-08-08T10:15:00Z",
+          "verification_status": "single_source",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
+        },
+        {
+          "evidence_id": "evd:sensor.fixture.market.001",
+          "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962",
+          "source_id": "sensor_fixture_market",
+          "title": "Synthetic market transmission observation",
+          "public_url": "https://example.test/sensor-fixture/market_transmission/001",
+          "published_at": "2026-08-08T10:30:00Z",
+          "observed_at": "2026-08-08T10:30:00Z",
+          "verification_status": "single_source",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
+        },
+        {
+          "evidence_id": "evd:sensor.fixture.news.001",
+          "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec",
+          "source_id": "sensor_fixture_news",
+          "title": "Synthetic news observation",
+          "public_url": "https://example.test/sensor-fixture/news/001",
+          "published_at": "2026-08-08T09:15:00Z",
+          "observed_at": "2026-08-08T09:15:00Z",
+          "verification_status": "single_source",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
+        },
+        {
+          "evidence_id": "evd:sensor.fixture.physical.001",
+          "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c",
+          "source_id": "sensor_fixture_physical",
+          "title": "Synthetic physical transmission observation",
+          "public_url": "https://example.test/sensor-fixture/physical_transmission/001",
+          "published_at": "2026-08-08T09:45:00Z",
+          "observed_at": "2026-08-08T09:45:00Z",
+          "verification_status": "single_source",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
+        },
+        {
+          "evidence_id": "evd:sensor.fixture.trade.001",
+          "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f",
+          "source_id": "sensor_fixture_trade",
+          "title": "Synthetic trade transmission observation",
+          "public_url": "https://example.test/sensor-fixture/trade_transmission/001",
+          "published_at": "2026-08-08T10:00:00Z",
+          "observed_at": "2026-08-08T10:00:00Z",
+          "verification_status": "single_source",
+          "content_availability": "hash_metadata_only",
+          "rights_use": "cite_metadata"
         }
       ],
       "structural_paths": 1,
-      "traversal_record_sha256": "1ae8ce8b887692773122f730da74e9cd667b43ea40f14735c28441d1f1ac81c9",
+      "traversal_record_sha256": "1ee9dbf4ed38dba4da0e6735ee7bba0fad2f940a0807b7941ac4fcd04baa5843",
       "traversal_truncated": false
     },
     "outputs": {
@@ -149,9 +268,44 @@
             "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b"
           },
           {
+            "object_type": "evidence_item",
+            "object_id": "evd:sensor.fixture.attention.001",
+            "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4"
+          },
+          {
+            "object_type": "evidence_item",
+            "object_id": "evd:sensor.fixture.coded_event.001",
+            "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d"
+          },
+          {
+            "object_type": "evidence_item",
+            "object_id": "evd:sensor.fixture.energy.001",
+            "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2"
+          },
+          {
+            "object_type": "evidence_item",
+            "object_id": "evd:sensor.fixture.market.001",
+            "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962"
+          },
+          {
+            "object_type": "evidence_item",
+            "object_id": "evd:sensor.fixture.news.001",
+            "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec"
+          },
+          {
+            "object_type": "evidence_item",
+            "object_id": "evd:sensor.fixture.physical.001",
+            "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c"
+          },
+          {
+            "object_type": "evidence_item",
+            "object_id": "evd:sensor.fixture.trade.001",
+            "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f"
+          },
+          {
             "object_type": "event",
             "object_id": "evt:oges.fixture.policy.001",
-            "record_sha256": "26102763555fb5639cd60ea4004c3f2eb35226a3201873b9f9d3b7a3a557d282"
+            "record_sha256": "224bc5ff74fc47232c5f5fd35cfbcf56a3071e2f2e90fffbf53dbe9b59411121"
           },
           {
             "object_type": "universe_release",
@@ -169,6 +323,90 @@
             "published_at": "2026-08-08T09:00:00Z",
             "observed_at": "2026-08-08T09:00:00Z",
             "verification_status": "official_record",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.attention.001",
+            "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4",
+            "source_id": "sensor_fixture_attention",
+            "title": "Synthetic public attention observation",
+            "public_url": "https://example.test/sensor-fixture/public_attention/001",
+            "published_at": "2026-08-08T10:45:00Z",
+            "observed_at": "2026-08-08T10:45:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.coded_event.001",
+            "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d",
+            "source_id": "sensor_fixture_coded_event",
+            "title": "Synthetic coded event observation",
+            "public_url": "https://example.test/sensor-fixture/coded_event/001",
+            "published_at": "2026-08-08T09:30:00Z",
+            "observed_at": "2026-08-08T09:30:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.energy.001",
+            "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2",
+            "source_id": "sensor_fixture_energy",
+            "title": "Synthetic energy transmission observation",
+            "public_url": "https://example.test/sensor-fixture/energy_transmission/001",
+            "published_at": "2026-08-08T10:15:00Z",
+            "observed_at": "2026-08-08T10:15:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.market.001",
+            "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962",
+            "source_id": "sensor_fixture_market",
+            "title": "Synthetic market transmission observation",
+            "public_url": "https://example.test/sensor-fixture/market_transmission/001",
+            "published_at": "2026-08-08T10:30:00Z",
+            "observed_at": "2026-08-08T10:30:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.news.001",
+            "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec",
+            "source_id": "sensor_fixture_news",
+            "title": "Synthetic news observation",
+            "public_url": "https://example.test/sensor-fixture/news/001",
+            "published_at": "2026-08-08T09:15:00Z",
+            "observed_at": "2026-08-08T09:15:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.physical.001",
+            "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c",
+            "source_id": "sensor_fixture_physical",
+            "title": "Synthetic physical transmission observation",
+            "public_url": "https://example.test/sensor-fixture/physical_transmission/001",
+            "published_at": "2026-08-08T09:45:00Z",
+            "observed_at": "2026-08-08T09:45:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.trade.001",
+            "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f",
+            "source_id": "sensor_fixture_trade",
+            "title": "Synthetic trade transmission observation",
+            "public_url": "https://example.test/sensor-fixture/trade_transmission/001",
+            "published_at": "2026-08-08T10:00:00Z",
+            "observed_at": "2026-08-08T10:00:00Z",
+            "verification_status": "single_source",
             "content_availability": "hash_metadata_only",
             "rights_use": "cite_metadata"
           }
@@ -195,17 +433,17 @@
             }
           ]
         },
-        "citation": "Krishna, Ishan (2026). IGRM evidence-bound research package for evt:oges.fixture.policy.001 to ent:commodity.synthetic_crude. Canonical release rel:oges.fixture.2026-08-08 (record SHA-256 e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4), generated 2026-08-08T13:00:00Z. India Geopolitical Risk Monitor. https://igrm.in/standard.html",
+        "citation": "Krishna, Ishan (2026). IGRM evidence-bound research package for evt:oges.fixture.policy.001 to ent:commodity.synthetic_crude. Canonical release rel:oges.fixture.2026-08-08 (record SHA-256 8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8), generated 2026-08-08T13:00:00Z. India Geopolitical Risk Monitor. https://igrm.in/standard.html",
         "limitations": [
           "citation_identifies_release_and_compilation_not_source_truth",
           "object_index_is_query_bounded",
           "structural_paths_do_not_measure_realized_effect"
         ],
         "artifact": {
-          "filename": "igrm-research-2d8bcf03c756.json",
+          "filename": "igrm-research-36fc2e215ee8.json",
           "media_type": "application/json",
-          "sha256": "e65d9ee3282c4dc8cd909fb01923cd1a743b31ddbbd8e0cea8d198b78152fb9c",
-          "bytes": 3081
+          "sha256": "12be25e0c5414220dfdd0eaa3e6022e0a839ac3c6c5a5521848b46eba769ed0f",
+          "bytes": 8393
         }
       },
       "board_brief": {
@@ -222,7 +460,14 @@
               "evt:oges.fixture.policy.001"
             ],
             "evidence_ids": [
-              "evd:oges.fixture.official.001"
+              "evd:oges.fixture.official.001",
+              "evd:sensor.fixture.attention.001",
+              "evd:sensor.fixture.coded_event.001",
+              "evd:sensor.fixture.energy.001",
+              "evd:sensor.fixture.market.001",
+              "evd:sensor.fixture.news.001",
+              "evd:sensor.fixture.physical.001",
+              "evd:sensor.fixture.trade.001"
             ]
           },
           {
@@ -234,7 +479,14 @@
               "ent:commodity.synthetic_crude"
             ],
             "evidence_ids": [
-              "evd:oges.fixture.official.001"
+              "evd:oges.fixture.official.001",
+              "evd:sensor.fixture.attention.001",
+              "evd:sensor.fixture.coded_event.001",
+              "evd:sensor.fixture.energy.001",
+              "evd:sensor.fixture.market.001",
+              "evd:sensor.fixture.news.001",
+              "evd:sensor.fixture.physical.001",
+              "evd:sensor.fixture.trade.001"
             ]
           },
           {
@@ -246,7 +498,14 @@
               "ent:commodity.synthetic_crude"
             ],
             "evidence_ids": [
-              "evd:oges.fixture.official.001"
+              "evd:oges.fixture.official.001",
+              "evd:sensor.fixture.attention.001",
+              "evd:sensor.fixture.coded_event.001",
+              "evd:sensor.fixture.energy.001",
+              "evd:sensor.fixture.market.001",
+              "evd:sensor.fixture.news.001",
+              "evd:sensor.fixture.physical.001",
+              "evd:sensor.fixture.trade.001"
             ]
           }
         ],
@@ -256,10 +515,10 @@
           "structural_path_not_causation"
         ],
         "artifact": {
-          "filename": "igrm-board-2d8bcf03c756.json",
+          "filename": "igrm-board-36fc2e215ee8.json",
           "media_type": "application/json",
-          "sha256": "6fb6d97942e6cb1ad4af0a33b8c97ed3f27d2b6e60fe45144a52fe661aecc2ee",
-          "bytes": 1880
+          "sha256": "93fd60a82eca4f7da5f7ab3306d721bbc93fd8a48fc8f8838c6896455d46dad8",
+          "bytes": 2762
         }
       },
       "newsroom_claim_card": {
@@ -275,7 +534,14 @@
               "evt:oges.fixture.policy.001"
             ],
             "evidence_ids": [
-              "evd:oges.fixture.official.001"
+              "evd:oges.fixture.official.001",
+              "evd:sensor.fixture.attention.001",
+              "evd:sensor.fixture.coded_event.001",
+              "evd:sensor.fixture.energy.001",
+              "evd:sensor.fixture.market.001",
+              "evd:sensor.fixture.news.001",
+              "evd:sensor.fixture.physical.001",
+              "evd:sensor.fixture.trade.001"
             ],
             "status": "compiled_from_registered_fields",
             "limitations": [
@@ -291,7 +557,14 @@
               "ent:commodity.synthetic_crude"
             ],
             "evidence_ids": [
-              "evd:oges.fixture.official.001"
+              "evd:oges.fixture.official.001",
+              "evd:sensor.fixture.attention.001",
+              "evd:sensor.fixture.coded_event.001",
+              "evd:sensor.fixture.energy.001",
+              "evd:sensor.fixture.market.001",
+              "evd:sensor.fixture.news.001",
+              "evd:sensor.fixture.physical.001",
+              "evd:sensor.fixture.trade.001"
             ],
             "status": "compiled_from_registered_fields",
             "limitations": [
@@ -312,6 +585,90 @@
             "verification_status": "official_record",
             "content_availability": "hash_metadata_only",
             "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.attention.001",
+            "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4",
+            "source_id": "sensor_fixture_attention",
+            "title": "Synthetic public attention observation",
+            "public_url": "https://example.test/sensor-fixture/public_attention/001",
+            "published_at": "2026-08-08T10:45:00Z",
+            "observed_at": "2026-08-08T10:45:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.coded_event.001",
+            "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d",
+            "source_id": "sensor_fixture_coded_event",
+            "title": "Synthetic coded event observation",
+            "public_url": "https://example.test/sensor-fixture/coded_event/001",
+            "published_at": "2026-08-08T09:30:00Z",
+            "observed_at": "2026-08-08T09:30:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.energy.001",
+            "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2",
+            "source_id": "sensor_fixture_energy",
+            "title": "Synthetic energy transmission observation",
+            "public_url": "https://example.test/sensor-fixture/energy_transmission/001",
+            "published_at": "2026-08-08T10:15:00Z",
+            "observed_at": "2026-08-08T10:15:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.market.001",
+            "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962",
+            "source_id": "sensor_fixture_market",
+            "title": "Synthetic market transmission observation",
+            "public_url": "https://example.test/sensor-fixture/market_transmission/001",
+            "published_at": "2026-08-08T10:30:00Z",
+            "observed_at": "2026-08-08T10:30:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.news.001",
+            "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec",
+            "source_id": "sensor_fixture_news",
+            "title": "Synthetic news observation",
+            "public_url": "https://example.test/sensor-fixture/news/001",
+            "published_at": "2026-08-08T09:15:00Z",
+            "observed_at": "2026-08-08T09:15:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.physical.001",
+            "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c",
+            "source_id": "sensor_fixture_physical",
+            "title": "Synthetic physical transmission observation",
+            "public_url": "https://example.test/sensor-fixture/physical_transmission/001",
+            "published_at": "2026-08-08T09:45:00Z",
+            "observed_at": "2026-08-08T09:45:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
+          },
+          {
+            "evidence_id": "evd:sensor.fixture.trade.001",
+            "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f",
+            "source_id": "sensor_fixture_trade",
+            "title": "Synthetic trade transmission observation",
+            "public_url": "https://example.test/sensor-fixture/trade_transmission/001",
+            "published_at": "2026-08-08T10:00:00Z",
+            "observed_at": "2026-08-08T10:00:00Z",
+            "verification_status": "single_source",
+            "content_availability": "hash_metadata_only",
+            "rights_use": "cite_metadata"
           }
         ],
         "correction_route": "https://igrm.in/corrections.html",
@@ -321,27 +678,34 @@
           "structural_path_not_causation"
         ],
         "artifact": {
-          "filename": "igrm-claim-card-2d8bcf03c756.json",
+          "filename": "igrm-claim-card-36fc2e215ee8.json",
           "media_type": "application/json",
-          "sha256": "7983f96a8993fce6376c8452b4c5021d6fade8d869c816ced8fb2d39f7940f09",
-          "bytes": 2078
+          "sha256": "0c902243268c365aa1b2e7d3ed7c2475782412a1e569b308695d77a268b402b3",
+          "bytes": 6620
         }
       },
       "offline_audit_bundle": {
         "output_id": "output:offline_audit_bundle",
         "artifact": {
-          "filename": "igrm-audit-2d8bcf03c756.zip",
+          "filename": "igrm-audit-36fc2e215ee8.zip",
           "media_type": "application/zip",
-          "sha256": "e8928d75e14222416da4f6f0f8fffef88fca78b1b0cf49f1ab3fffe705c33efa",
-          "bytes": 176511
+          "sha256": "095154edbed552cb35a388e4141315bbf3302754a2b33e8a89c9f3ec54bf7eed",
+          "bytes": 234586
         },
         "format": "deterministic_zip_store_v1",
-        "bundle_manifest_sha256": "6ff5515ffd2d9f1142a6efedfb6a0a23ccfbbdb0add92a54e33ecb983056418a",
-        "file_count": 40,
+        "bundle_manifest_sha256": "cf0c45f5f2f7ca09ea2883cd8ad2e84d1d79d872bbd10682256db09eb42a0fb5",
+        "file_count": 61,
         "canonical_validation_supported": true,
         "external_verifier_required": true,
         "excluded_evidence_content": [
-          "evd:oges.fixture.official.001"
+          "evd:oges.fixture.official.001",
+          "evd:sensor.fixture.attention.001",
+          "evd:sensor.fixture.coded_event.001",
+          "evd:sensor.fixture.energy.001",
+          "evd:sensor.fixture.market.001",
+          "evd:sensor.fixture.news.001",
+          "evd:sensor.fixture.physical.001",
+          "evd:sensor.fixture.trade.001"
         ],
         "limitations": [
           "authenticate_external_verifier_before_execution",

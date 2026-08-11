@@ -1,0 +1,443 @@
+{
+  "_meta": {
+    "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
+    "codebook": "https://igrm.in/standard.html",
+    "date": "2026-08-08",
+    "forecast_probability_causation_advice_or_scalar_score": false,
+    "generated": "2026-08-08T13:00:00Z",
+    "license": "CC BY 4.0",
+    "method": "method:igrm.exposure_graph_projection@1.0.0",
+    "production_release": false,
+    "real_event_entity_source_right_or_exposure_claims": false,
+    "schema": "igrm-exposure-traversal-demo-v1",
+    "scope": "synthetic_test_vector_only",
+    "source": "https://igrm.in/data/exposure_traversal_demo.json",
+    "what": "Deterministic synthetic exposure traversal from the same signed release as every other published Max engine record."
+  },
+  "synthetic_labels": {
+    "ent:commodity.synthetic_crude": "Synthetic crude input",
+    "evt:oges.fixture.policy.001": "Synthetic policy action"
+  },
+  "traversal": {
+    "contract": {
+      "common_schema_sha256": "56e167e287f4d670ac654ac5118d6b9688c801518038e5ac2f3ec55bca9f83d1",
+      "projection_registry_sha256": "31eb94019296d92e45fd3c28f6c5923261df6dae095498e17e1262a6e2063a66",
+      "schema_id": "https://igrm.in/schemas/exposure-traversal.schema.json",
+      "schema_sha256": "ad0ff5d1988f05b0368bef4bb69e1f916357f19b14c0066f00be1a1553491f69",
+      "schema_version": "1.0.0"
+    },
+    "coverage": [
+      {
+        "counts": {
+          "excluded": 0,
+          "included": 1,
+          "stale": 0,
+          "total_eligible": 1,
+          "unmappable": 0
+        },
+        "covered_entity_id": "ent:commodity.synthetic_crude",
+        "entity_type": "commodity",
+        "member_status": "included",
+        "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef",
+        "reference_date": "2026-08-08",
+        "universe_release_id": "unv:oges.fixture.commodities.1"
+      }
+    ],
+    "event": {
+      "ends_at": null,
+      "entry_entities": [
+        {
+          "effective_on_release": true,
+          "entity_id": "ent:commodity.synthetic_crude",
+          "entity_type": "commodity",
+          "lifecycle_state": "active",
+          "location_evidence_ids": [],
+          "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2",
+          "roles": [
+            "affected"
+          ]
+        },
+        {
+          "effective_on_release": true,
+          "entity_id": "ent:country.synthetic_origin",
+          "entity_type": "country",
+          "lifecycle_state": "active",
+          "location_evidence_ids": [
+            "evd:oges.fixture.official.001"
+          ],
+          "record_sha256": "d1bdfbdbf915e67238c5f16bdde3ae6da05c1812a2abf62402e5444c366530ec",
+          "roles": [
+            "actor",
+            "location_primary"
+          ]
+        }
+      ],
+      "event_id": "evt:oges.fixture.policy.001",
+      "evidence_links": [
+        {
+          "asserted_at": "2026-08-08T09:00:00Z",
+          "evidence_id": "evd:oges.fixture.official.001",
+          "role": "official_confirmation"
+        },
+        {
+          "asserted_at": "2026-08-08T09:15:00Z",
+          "evidence_id": "evd:sensor.fixture.news.001",
+          "role": "context"
+        },
+        {
+          "asserted_at": "2026-08-08T09:30:00Z",
+          "evidence_id": "evd:sensor.fixture.coded_event.001",
+          "role": "context"
+        },
+        {
+          "asserted_at": "2026-08-08T09:45:00Z",
+          "evidence_id": "evd:sensor.fixture.physical.001",
+          "role": "context"
+        },
+        {
+          "asserted_at": "2026-08-08T10:00:00Z",
+          "evidence_id": "evd:sensor.fixture.trade.001",
+          "role": "context"
+        },
+        {
+          "asserted_at": "2026-08-08T10:15:00Z",
+          "evidence_id": "evd:sensor.fixture.energy.001",
+          "role": "context"
+        },
+        {
+          "asserted_at": "2026-08-08T10:30:00Z",
+          "evidence_id": "evd:sensor.fixture.market.001",
+          "role": "context"
+        },
+        {
+          "asserted_at": "2026-08-08T10:45:00Z",
+          "evidence_id": "evd:sensor.fixture.attention.001",
+          "role": "context"
+        }
+      ],
+      "first_known_at": "2026-08-08T10:00:00Z",
+      "last_verified_at": "2026-08-08T11:00:00Z",
+      "lifecycle_state": "active",
+      "publication_phase": "final",
+      "record_sha256": "224bc5ff74fc47232c5f5fd35cfbcf56a3071e2f2e90fffbf53dbe9b59411121",
+      "record_status": "confirmed",
+      "starts_at": "2026-08-08T09:00:00Z"
+    },
+    "evidence": [
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "4cd387cee0d680f2c088ab21feea092221f36b3b7ae34e9fc0cd13354565c5c7",
+        "evidence_id": "evd:oges.fixture.official.001",
+        "privacy_class": "public",
+        "record_sha256": "7f42db8560b458e33830772c9c9d488a0ec60699c28d7083bcc2d79b4b963a1b",
+        "rights_decision_id": "oges-fixture-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "oges_fixture_source",
+        "verification_status": "official_record"
+      },
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "47e65efa544fb048465717f2b82dad920025c5d4fa51bd9ea74a923f9a8bf873",
+        "evidence_id": "evd:sensor.fixture.attention.001",
+        "privacy_class": "public",
+        "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4",
+        "rights_decision_id": "sensor-fixture-public_attention-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "sensor_fixture_attention",
+        "verification_status": "single_source"
+      },
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "32780a8aa705dac8f8e298d45030d83ea75bf6ca733c3bff0ce69aa209069ee6",
+        "evidence_id": "evd:sensor.fixture.coded_event.001",
+        "privacy_class": "public",
+        "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d",
+        "rights_decision_id": "sensor-fixture-coded_event-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "sensor_fixture_coded_event",
+        "verification_status": "single_source"
+      },
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "7bac1bbd6cb02421509684b5765431e04fc8529b0d4df8c3be9b25a14b2337e2",
+        "evidence_id": "evd:sensor.fixture.energy.001",
+        "privacy_class": "public",
+        "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2",
+        "rights_decision_id": "sensor-fixture-energy_transmission-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "sensor_fixture_energy",
+        "verification_status": "single_source"
+      },
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "d22f787f9ab63841cb66431956bd4e9a1da6fc3d6727e5c2af5c5bd86d300633",
+        "evidence_id": "evd:sensor.fixture.market.001",
+        "privacy_class": "public",
+        "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962",
+        "rights_decision_id": "sensor-fixture-market_transmission-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "sensor_fixture_market",
+        "verification_status": "single_source"
+      },
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "89fce067e72ecf5f578e2dd2e187d91025925683a54e53d54e2590642d037600",
+        "evidence_id": "evd:sensor.fixture.news.001",
+        "privacy_class": "public",
+        "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec",
+        "rights_decision_id": "sensor-fixture-news-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "sensor_fixture_news",
+        "verification_status": "single_source"
+      },
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "22cbb5fee38aa0634d3002792678efdd345fef35c6cc521f9612559b40ea6906",
+        "evidence_id": "evd:sensor.fixture.physical.001",
+        "privacy_class": "public",
+        "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c",
+        "rights_decision_id": "sensor-fixture-physical_transmission-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "sensor_fixture_physical",
+        "verification_status": "single_source"
+      },
+      {
+        "content_availability": "hash_metadata_only",
+        "content_sha256": "d473efd377cb4e54dad174031deb7740d2482b31711309871ceb1f8c8421e3e3",
+        "evidence_id": "evd:sensor.fixture.trade.001",
+        "privacy_class": "public",
+        "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f",
+        "rights_decision_id": "sensor-fixture-trade_transmission-decision-2026-08-08",
+        "rights_use": "cite_metadata",
+        "source_id": "sensor_fixture_trade",
+        "verification_status": "single_source"
+      }
+    ],
+    "limitations": [
+      "active_release_records_only",
+      "confidence_not_probability",
+      "event_entry_not_exposure_cause",
+      "event_status_not_ground_truth",
+      "exposure_not_realized_loss",
+      "magnitude_values_not_rendered",
+      "path_search_bounded",
+      "stored_edge_direction_only",
+      "structural_connection_not_causation"
+    ],
+    "method": {
+      "implementation_sha256": "a6e0c9af3309336c28016bdf7e293e315772306b4db1056f49da54d9fc683780",
+      "method_id": "method:igrm.exposure_graph_projection",
+      "version": "1.0.0"
+    },
+    "object_evidence": [
+      {
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "object_id": "edg:oges.fixture.origin_crude.001",
+        "object_type": "exposure_edge",
+        "record_sha256": "2cf03fae03288b3db6fe09e0320704878c11c82c0fb714658788995433c74708"
+      },
+      {
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "object_id": "ent:commodity.synthetic_crude",
+        "object_type": "entity",
+        "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2"
+      },
+      {
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "object_id": "ent:country.synthetic_origin",
+        "object_type": "entity",
+        "record_sha256": "d1bdfbdbf915e67238c5f16bdde3ae6da05c1812a2abf62402e5444c366530ec"
+      },
+      {
+        "evidence_ids": [
+          "evd:oges.fixture.official.001",
+          "evd:sensor.fixture.attention.001",
+          "evd:sensor.fixture.coded_event.001",
+          "evd:sensor.fixture.energy.001",
+          "evd:sensor.fixture.market.001",
+          "evd:sensor.fixture.news.001",
+          "evd:sensor.fixture.physical.001",
+          "evd:sensor.fixture.trade.001"
+        ],
+        "object_id": "evt:oges.fixture.policy.001",
+        "object_type": "event",
+        "record_sha256": "224bc5ff74fc47232c5f5fd35cfbcf56a3071e2f2e90fffbf53dbe9b59411121"
+      },
+      {
+        "evidence_ids": [
+          "evd:oges.fixture.official.001"
+        ],
+        "object_id": "unv:oges.fixture.commodities.1",
+        "object_type": "universe_release",
+        "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef"
+      }
+    ],
+    "object_type": "exposure_traversal",
+    "paths": [
+      {
+        "edge_ids": [
+          "edg:oges.fixture.origin_crude.001"
+        ],
+        "entity_ids": [
+          "ent:country.synthetic_origin",
+          "ent:commodity.synthetic_crude"
+        ],
+        "entry_entity_id": "ent:country.synthetic_origin",
+        "entry_roles": [
+          "actor",
+          "location_primary"
+        ],
+        "hops": [
+          {
+            "coverage": {
+              "counts": {
+                "excluded": 0,
+                "included": 1,
+                "stale": 0,
+                "total_eligible": 1,
+                "unmappable": 0
+              },
+              "covered_entity_id": "ent:commodity.synthetic_crude",
+              "entity_type": "commodity",
+              "member_status": "included",
+              "record_sha256": "841dfbb0c4d04829e01a9c1bfa800739235bd2b77853789598a5780f64fe9aef",
+              "reference_date": "2026-08-08",
+              "universe_release_id": "unv:oges.fixture.commodities.1"
+            },
+            "edge_id": "edg:oges.fixture.origin_crude.001",
+            "edge_type": "import_dependence",
+            "effective_end": null,
+            "effective_start": "2026-06-30",
+            "evidence_ids": [
+              "evd:oges.fixture.official.001"
+            ],
+            "exposure_direction": "inbound_to_india",
+            "limitation_codes": [],
+            "observed_at": "2026-08-08T10:00:00Z",
+            "quantification_status": "quantified",
+            "record_sha256": "2cf03fae03288b3db6fe09e0320704878c11c82c0fb714658788995433c74708",
+            "source_entity_id": "ent:country.synthetic_origin",
+            "target_entity_id": "ent:commodity.synthetic_crude"
+          }
+        ],
+        "limitation_codes": []
+      }
+    ],
+    "projection_counts": {
+      "edge_records_lifecycle_excluded": 0,
+      "edge_records_projected": 1,
+      "edge_records_temporal_excluded": 0,
+      "edge_records_total": 1,
+      "entity_records_effective": 3,
+      "entity_records_total": 3,
+      "universe_records_eligible": 1,
+      "universe_records_total": 1
+    },
+    "query": {
+      "event_edge_temporal_relation": "event_entities_to_release_effective_graph",
+      "event_id": "evt:oges.fixture.policy.001",
+      "max_hops": 4,
+      "max_paths": 25,
+      "selection_rule": "bounded_breadth_first_stored_direction_simple_paths",
+      "target_entity_id": "ent:commodity.synthetic_crude",
+      "temporal_basis": "canonical_release_effective_date"
+    },
+    "record_sha256": "1ee9dbf4ed38dba4da0e6735ee7bba0fad2f940a0807b7941ac4fcd04baa5843",
+    "release": {
+      "effective_date": "2026-08-08",
+      "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
+      "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
+      "release_id": "rel:oges.fixture.2026-08-08",
+      "release_signer_id": "signer:oges.fixture.release",
+      "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3",
+      "rights_registry_sha256": "0b456d38b6bbe486f0c4121918669294c50b12652c705390ee88ed92839aed05",
+      "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
+      "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66"
+    },
+    "result": {
+      "returned_paths": 1,
+      "status": "paths_found",
+      "truncated": false
+    },
+    "rights": [
+      {
+        "authority_class": "official_primary",
+        "decision_artifact_sha256": "072f57a4db318e9fb18ad2326e5153a2856c6b3a159f5a92dfb6c21b312d3590",
+        "decision_id": "oges-fixture-decision-2026-08-08",
+        "independence_group": "oges_fixture_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "oges_fixture_source"
+      },
+      {
+        "authority_class": "public_platform",
+        "decision_artifact_sha256": "e652f282210f00dc40a1eb1581ca286826994c8b8d7ce3b66180aa2ffa98d21d",
+        "decision_id": "sensor-fixture-public_attention-decision-2026-08-08",
+        "independence_group": "sensor_fixture_public_attention_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_attention"
+      },
+      {
+        "authority_class": "provider_coded_dataset",
+        "decision_artifact_sha256": "6777fac85bd607028305f83779d16fa2fb0f7653390f35f2a691c7b4f45a1d0d",
+        "decision_id": "sensor-fixture-coded_event-decision-2026-08-08",
+        "independence_group": "sensor_fixture_coded_event_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_coded_event"
+      },
+      {
+        "authority_class": "research_dataset",
+        "decision_artifact_sha256": "54a082933659ec3fcda43365c006e166b203a4ef6ac118628567568987bd23f7",
+        "decision_id": "sensor-fixture-energy_transmission-decision-2026-08-08",
+        "independence_group": "sensor_fixture_energy_transmission_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_energy"
+      },
+      {
+        "authority_class": "market_data",
+        "decision_artifact_sha256": "616b21078c9bd7b3fd63a8990b1cd4b80b3f00736bdab078e02e538440890916",
+        "decision_id": "sensor-fixture-market_transmission-decision-2026-08-08",
+        "independence_group": "sensor_fixture_market_transmission_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_market"
+      },
+      {
+        "authority_class": "independent_reporting",
+        "decision_artifact_sha256": "f873a1c5e5bec78feb1be08f3f43ca8409d8e389b95b223cedf6d81078478402",
+        "decision_id": "sensor-fixture-news-decision-2026-08-08",
+        "independence_group": "sensor_fixture_news_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_news"
+      },
+      {
+        "authority_class": "research_dataset",
+        "decision_artifact_sha256": "f065ca5fef0bc977c5338e6064b5931478c3397c1fb883f6534da20171d4d5a7",
+        "decision_id": "sensor-fixture-physical_transmission-decision-2026-08-08",
+        "independence_group": "sensor_fixture_physical_transmission_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_physical"
+      },
+      {
+        "authority_class": "research_dataset",
+        "decision_artifact_sha256": "3003adf5e1fce6022ec954b7096f284a3f5bcf3f26056c7e1f008d4799a48b78",
+        "decision_id": "sensor-fixture-trade_transmission-decision-2026-08-08",
+        "independence_group": "sensor_fixture_trade_transmission_provider",
+        "signer_id": "signer:oges.fixture.rights",
+        "source_id": "sensor_fixture_trade"
+      }
+    ],
+    "schema_version": "1.0.0",
+    "target": {
+      "effective_on_release": true,
+      "entity_id": "ent:commodity.synthetic_crude",
+      "entity_type": "commodity",
+      "lifecycle_state": "active",
+      "record_sha256": "6e2d0bf78e987dae95c55a36f90d92213c73c1a0802285ef24bb02f004cc82b2"
+    }
+  }
+}

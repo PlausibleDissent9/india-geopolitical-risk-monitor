@@ -23,12 +23,12 @@
   "scenario": {
     "object_type": "shock_scenario",
     "schema_version": "1.0.0",
-    "record_sha256": "91da1986c1571add12479249440eecc5949d4e3d658c9a311e9012bdffaa3ee6",
+    "record_sha256": "0e042ec31cf183c42e1fa2f16437d73dfd5a277488efa9d9c5cb8d829d1f6ed1",
     "scenario_id": "scenario:shock.fixture.origin_flow.001",
     "created_at": "2026-08-08T13:05:00Z",
     "release": {
       "release_id": "rel:oges.fixture.2026-08-08",
-      "record_sha256": "e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4",
+      "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
       "generated_at": "2026-08-08T13:00:00Z",
       "effective_date": "2026-08-08"
     },
@@ -112,16 +112,16 @@
   "compilation": {
     "object_type": "shock_compilation",
     "schema_version": "1.0.0",
-    "record_sha256": "7a3472491e3fc6c61539bb9e30a3ec5dd42fda1d5734708bb1e8ee537fe4da30",
+    "record_sha256": "d9399289815169e763d0d5313f0dc95a0c58235116398463d2bf4852d136c3a0",
     "release": {
       "release_id": "rel:oges.fixture.2026-08-08",
-      "record_sha256": "e6cc1e337d78c355e64eb47614cbe9824f537b7c513be9a01369cbfd53f4e2c4",
+      "record_sha256": "8fd9d220e10228552ad8a1f4b492d129278243d48882c9b37ec1c7cb758d95e8",
       "generated_at": "2026-08-08T13:00:00Z",
       "effective_date": "2026-08-08",
       "release_signer_id": "signer:oges.fixture.release",
       "schema_registry_sha256": "582f0d859edb29fbc5a303e57a34c1bff789360078593dafb78a36f7edc9cc66",
       "method_registry_sha256": "c79605b5df4ad6e073b5417f9638a5e67a6022a970290be4f8a0e2fd4b4fe720",
-      "rights_registry_sha256": "759cc8c4c928baf1ceedb31a1b3fcff3e0f6fd1fc22f40467040163849577abf",
+      "rights_registry_sha256": "0b456d38b6bbe486f0c4121918669294c50b12652c705390ee88ed92839aed05",
       "rights_signers_sha256": "ce155ed0dd3aa62102b1d182a2a97e6a84d727df6620df1acd5366ef8224194e",
       "release_signers_sha256": "6d5ddae4236179d5547c5aae89f1923de1deb2eed126c73ad682bea64edb7dd3"
     },
@@ -147,7 +147,7 @@
     },
     "scenario": {
       "scenario_id": "scenario:shock.fixture.origin_flow.001",
-      "record_sha256": "91da1986c1571add12479249440eecc5949d4e3d658c9a311e9012bdffaa3ee6",
+      "record_sha256": "0e042ec31cf183c42e1fa2f16437d73dfd5a277488efa9d9c5cb8d829d1f6ed1",
       "created_at": "2026-08-08T13:05:00Z",
       "knowledge_cutoff": "2026-08-08T13:00:00Z",
       "event_id": "evt:oges.fixture.policy.001",
@@ -223,7 +223,7 @@
       ]
     },
     "traversal": {
-      "record_sha256": "1ae8ce8b887692773122f730da74e9cd667b43ea40f14735c28441d1f1ac81c9",
+      "record_sha256": "1ee9dbf4ed38dba4da0e6735ee7bba0fad2f940a0807b7941ac4fcd04baa5843",
       "method_id": "method:igrm.exposure_graph_projection",
       "method_version": "1.0.0",
       "selection_rule": "bounded_breadth_first_stored_direction_simple_paths",
@@ -503,6 +503,83 @@
         "content_availability": "hash_metadata_only",
         "privacy_class": "public",
         "verification_status": "official_record"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.attention.001",
+        "record_sha256": "b7fed9998a9da3c9d11cfa17e044925b6eb35e4699b6a3b27a30bbf1e2722fe4",
+        "source_id": "sensor_fixture_attention",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "sensor-fixture-public_attention-decision-2026-08-08",
+        "content_sha256": "47e65efa544fb048465717f2b82dad920025c5d4fa51bd9ea74a923f9a8bf873",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "single_source"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.coded_event.001",
+        "record_sha256": "24b31e03e7f7c6175a2acf979388e60184deef14968ffc7705bd107e134b910d",
+        "source_id": "sensor_fixture_coded_event",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "sensor-fixture-coded_event-decision-2026-08-08",
+        "content_sha256": "32780a8aa705dac8f8e298d45030d83ea75bf6ca733c3bff0ce69aa209069ee6",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "single_source"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.energy.001",
+        "record_sha256": "d651b9b7e57ce92589924f9797be21cc6f02568a0819c79b3feb5623a6be0ee2",
+        "source_id": "sensor_fixture_energy",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "sensor-fixture-energy_transmission-decision-2026-08-08",
+        "content_sha256": "7bac1bbd6cb02421509684b5765431e04fc8529b0d4df8c3be9b25a14b2337e2",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "single_source"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.market.001",
+        "record_sha256": "4b620a15f2aa2c0bafe5ffd907b233fa14d5c061529d3adb7ae408759428a962",
+        "source_id": "sensor_fixture_market",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "sensor-fixture-market_transmission-decision-2026-08-08",
+        "content_sha256": "d22f787f9ab63841cb66431956bd4e9a1da6fc3d6727e5c2af5c5bd86d300633",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "single_source"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.news.001",
+        "record_sha256": "54d6cbda07b02c8135e34c5efbb160a73a9ddb42ddbb6db168961385b7ff7bec",
+        "source_id": "sensor_fixture_news",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "sensor-fixture-news-decision-2026-08-08",
+        "content_sha256": "89fce067e72ecf5f578e2dd2e187d91025925683a54e53d54e2590642d037600",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "single_source"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.physical.001",
+        "record_sha256": "21a500169e53fb688f55235155e32c28fde6d4cc7a01105fc1336ce9547ff50c",
+        "source_id": "sensor_fixture_physical",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "sensor-fixture-physical_transmission-decision-2026-08-08",
+        "content_sha256": "22cbb5fee38aa0634d3002792678efdd345fef35c6cc521f9612559b40ea6906",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "single_source"
+      },
+      {
+        "evidence_id": "evd:sensor.fixture.trade.001",
+        "record_sha256": "9b1d86e46dffc33e60e861bb7cf46fe9e7c88e3acd7d6b5d58e05f609be2e78f",
+        "source_id": "sensor_fixture_trade",
+        "rights_use": "cite_metadata",
+        "rights_decision_id": "sensor-fixture-trade_transmission-decision-2026-08-08",
+        "content_sha256": "d473efd377cb4e54dad174031deb7740d2482b31711309871ceb1f8c8421e3e3",
+        "content_availability": "hash_metadata_only",
+        "privacy_class": "public",
+        "verification_status": "single_source"
       }
     ],
     "rights": [
@@ -513,6 +590,62 @@
         "signer_id": "signer:oges.fixture.rights",
         "independence_group": "oges_fixture_provider",
         "authority_class": "official_primary"
+      },
+      {
+        "source_id": "sensor_fixture_attention",
+        "decision_id": "sensor-fixture-public_attention-decision-2026-08-08",
+        "decision_artifact_sha256": "e652f282210f00dc40a1eb1581ca286826994c8b8d7ce3b66180aa2ffa98d21d",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "sensor_fixture_public_attention_provider",
+        "authority_class": "public_platform"
+      },
+      {
+        "source_id": "sensor_fixture_coded_event",
+        "decision_id": "sensor-fixture-coded_event-decision-2026-08-08",
+        "decision_artifact_sha256": "6777fac85bd607028305f83779d16fa2fb0f7653390f35f2a691c7b4f45a1d0d",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "sensor_fixture_coded_event_provider",
+        "authority_class": "provider_coded_dataset"
+      },
+      {
+        "source_id": "sensor_fixture_energy",
+        "decision_id": "sensor-fixture-energy_transmission-decision-2026-08-08",
+        "decision_artifact_sha256": "54a082933659ec3fcda43365c006e166b203a4ef6ac118628567568987bd23f7",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "sensor_fixture_energy_transmission_provider",
+        "authority_class": "research_dataset"
+      },
+      {
+        "source_id": "sensor_fixture_market",
+        "decision_id": "sensor-fixture-market_transmission-decision-2026-08-08",
+        "decision_artifact_sha256": "616b21078c9bd7b3fd63a8990b1cd4b80b3f00736bdab078e02e538440890916",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "sensor_fixture_market_transmission_provider",
+        "authority_class": "market_data"
+      },
+      {
+        "source_id": "sensor_fixture_news",
+        "decision_id": "sensor-fixture-news-decision-2026-08-08",
+        "decision_artifact_sha256": "f873a1c5e5bec78feb1be08f3f43ca8409d8e389b95b223cedf6d81078478402",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "sensor_fixture_news_provider",
+        "authority_class": "independent_reporting"
+      },
+      {
+        "source_id": "sensor_fixture_physical",
+        "decision_id": "sensor-fixture-physical_transmission-decision-2026-08-08",
+        "decision_artifact_sha256": "f065ca5fef0bc977c5338e6064b5931478c3397c1fb883f6534da20171d4d5a7",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "sensor_fixture_physical_transmission_provider",
+        "authority_class": "research_dataset"
+      },
+      {
+        "source_id": "sensor_fixture_trade",
+        "decision_id": "sensor-fixture-trade_transmission-decision-2026-08-08",
+        "decision_artifact_sha256": "3003adf5e1fce6022ec954b7096f284a3f5bcf3f26056c7e1f008d4799a48b78",
+        "signer_id": "signer:oges.fixture.rights",
+        "independence_group": "sensor_fixture_trade_transmission_provider",
+        "authority_class": "research_dataset"
       }
     ],
     "gaps": [],

@@ -36,6 +36,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEMO = ROOT / "docs" / "data" / "max_state_join_demo.json"
 REGISTRY = ROOT / "governance" / "max_state_join_registry.json"
 SCHEMA = ROOT / "schemas" / "max-state-join.schema.json"
+PUBLISHED_DATA = ROOT / "docs" / "data"
 
 _EVENT_ID = "evt:oges.fixture.policy.001"
 _TARGET_ID = "ent:commodity.synthetic_crude"
@@ -578,6 +579,141 @@ def test_the_published_demo_is_the_current_deterministic_output():
     assert DEMO.is_file(), "docs/data/max_state_join_demo.json is missing"
     published = json.loads(DEMO.read_text(encoding="utf-8"))
     assert published == fixture.build_demo()
+
+
+def test_four_published_primary_records_are_the_exact_records_joined(composed):
+    """Regress the public split-world defect using committed bytes, not builders."""
+
+    records = fixture.load_published_engine_records()
+    for record in records.values():
+        assert canonical.canonical_record_sha256(record) == record["record_sha256"]
+
+    joined = join.join_engine_states(
+        records,
+        rights_root=composed["world"].root,
+        rights_registry_path=composed["rights_registry"],
+        rights_signers_path=composed["rights_signers"],
+    )
+    certified = {
+        row["engine_id"]: row["record_sha256"] for row in joined["engines"]
+    }
+    committed = json.loads(DEMO.read_text(encoding="utf-8"))["join"]
+    expected = {
+        row["engine_id"]: row["record_sha256"] for row in committed["engines"]
+    }
+    assert certified == expected == {
+        engine_id: record["record_sha256"]
+        for engine_id, record in records.items()
+    }
+
+
+def test_published_records_bind_one_release_rights_digest_and_event(composed):
+    records = fixture.load_published_engine_records()
+    assert len({row["release"]["record_sha256"] for row in records.values()}) == 1
+    assert len(
+        {row["release"]["rights_registry_sha256"] for row in records.values()}
+    ) == 1
+
+    def event_references(node: object) -> list[str]:
+        if isinstance(node, dict):
+            own = [node["event_id"]] if isinstance(node.get("event_id"), str) else []
+            return own + [
+                event_id
+                for value in node.values()
+                for event_id in event_references(value)
+            ]
+        if isinstance(node, list):
+            return [
+                event_id for value in node for event_id in event_references(value)
+            ]
+        return []
+
+    bound_events: set[str] = set()
+    for engine_id, record in records.items():
+        assert set(event_references(record)) == {_EVENT_ID}
+        bound_events.update(
+            row["identifier"]
+            for row in join._identity_bindings(engine_id, record)
+            if row["identifier_kind"] == "event_id"
+        )
+    assert bound_events == {_EVENT_ID}
+
+
+def test_published_records_refuse_an_independently_regenerated_world(composed):
+    records = fixture.load_published_engine_records()
+    with tempfile.TemporaryDirectory(prefix="igrm-join-foreign-") as temporary:
+        other = evidence_outputs_fixture.build_fixture(Path(temporary))
+        governance = other.root / "governance"
+        foreign = exposure_graph.project_event_exposure(
+            other.manifest,
+            _EVENT_ID,
+            _TARGET_ID,
+            root=other.root,
+            schema_registry_path=governance / "canonical_schema_registry.json",
+            rights_registry_path=governance / "source_rights_registry.json",
+            rights_signers_path=governance / "rights_signers.json",
+            method_registry_path=governance / "canonical_method_registry.json",
+            release_signers_path=governance / "release_signers.json",
+        )
+    records["exposure_traversal"] = foreign
+    with pytest.raises(join.MaxStateJoinError) as error:
+        join.join_engine_states(records)
+    assert error.value.code == "join_release_identity_disagreement"
+
+
+def test_published_records_refuse_missing_exposure_foreign_rights_and_stale_time():
+    records = fixture.load_published_engine_records()
+
+    without_exposure = dict(records)
+    del without_exposure["exposure_traversal"]
+    with pytest.raises(join.MaxStateJoinError) as error:
+        join.join_engine_states(without_exposure)
+    assert error.value.code == "join_engine_missing"
+
+    foreign_rights = copy.deepcopy(records)
+    foreign_rights["shock_compilation"]["release"]["rights_registry_sha256"] = "1" * 64
+    foreign_rights["shock_compilation"] = canonical.seal_record(
+        foreign_rights["shock_compilation"]
+    )
+    with pytest.raises(join.MaxStateJoinError) as error:
+        join.join_engine_states(foreign_rights)
+    assert error.value.code == "join_release_identity_disagreement"
+
+    stale_time = copy.deepcopy(records)
+    stale_time["shock_compilation"]["scenario"]["knowledge_cutoff"] = (
+        "2027-01-01T00:00:00Z"
+    )
+    stale_time["shock_compilation"] = canonical.seal_record(
+        stale_time["shock_compilation"]
+    )
+    with pytest.raises(join.MaxStateJoinError) as error:
+        join.join_engine_states(stale_time)
+    assert error.value.code == "join_knowledge_cutoff_after_release"
+
+
+def test_published_loader_refuses_a_symlinked_primary_record(tmp_path):
+    data = tmp_path / "data"
+    data.mkdir()
+    for name, _ in fixture._PUBLISHED_RECORDS.values():
+        source = PUBLISHED_DATA / name
+        target = data / name
+        if name == "exposure_traversal_demo.json":
+            target.symlink_to(source)
+        else:
+            target.write_bytes(source.read_bytes())
+    with pytest.raises(join.MaxStateJoinError) as error:
+        fixture.load_published_engine_records(data)
+    assert error.value.code == "join_published_path_invalid"
+
+
+def test_published_exposure_traversal_is_synthetic_nonproduction():
+    published = json.loads(
+        (PUBLISHED_DATA / "exposure_traversal_demo.json").read_text(encoding="utf-8")
+    )
+    assert published["_meta"]["scope"] == "synthetic_test_vector_only"
+    assert published["_meta"]["production_release"] is False
+    assert published["_meta"]["real_event_entity_source_right_or_exposure_claims"] is False
+    assert published["traversal"]["result"]["status"] == "paths_found"
 
 
 def test_the_published_demo_labels_itself_synthetic_and_claims_nothing():

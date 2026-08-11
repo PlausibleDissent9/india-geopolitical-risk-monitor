@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import json
 import shutil
-import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
@@ -181,11 +180,18 @@ def compile_fixture(fixture: ShockFixture) -> dict[str, Any]:
 
 
 def build_demo() -> dict[str, Any]:
-    """Return the deterministic synthetic public conformance vector."""
+    """Return the public payload from the one composed Max fixture world."""
 
-    with tempfile.TemporaryDirectory(prefix="igrm-shock-compiler-") as temporary:
-        fixture = build_fixture(Path(temporary))
-        compilation = compile_fixture(fixture)
+    from src import max_state_join_fixture
+
+    return max_state_join_fixture.build_published_artifacts().shock_compiler
+
+
+def _build_demo_payload(
+    scenario: dict[str, Any], compilation: dict[str, Any]
+) -> dict[str, Any]:
+    """Wrap an already-compiled shock without rebuilding a private world."""
+
     return {
         "_meta": {
             "schema": "igrm-shock-compiler-demo-v1",
@@ -208,7 +214,7 @@ def build_demo() -> dict[str, Any]:
             _TARGET_ID: "Synthetic crude input",
             _EDGE_ID: "Synthetic import-dependence edge",
         },
-        "scenario": fixture.scenario,
+        "scenario": scenario,
         "compilation": compilation,
     }
 

@@ -12,11 +12,10 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
-import tempfile
 from pathlib import Path
 from typing import Any
 
-from src import evidence_outputs, oges_fixture
+from src import oges_fixture
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_OUTPUT = ROOT / "docs" / "data" / "evidence_outputs_demo.json"
@@ -58,35 +57,21 @@ def build_fixture(destination: Path) -> oges_fixture.Fixture:
 
 
 def build_demo_artifacts() -> tuple[dict[str, Any], bytes]:
-    """Return the deterministic public JSON wrapper and audit ZIP bytes."""
+    """Return the public artifacts from the one composed Max fixture world."""
 
-    with tempfile.TemporaryDirectory(prefix="igrm-evidence-outputs-") as temporary:
-        fixture = build_fixture(Path(temporary))
-        governance = fixture.root / "governance"
-        output_set = evidence_outputs.compile_evidence_outputs(
-            fixture.manifest,
-            _EVENT_ID,
-            _TARGET_ID,
-            root=fixture.root,
-            schema_registry_path=governance / "canonical_schema_registry.json",
-            rights_registry_path=governance / "source_rights_registry.json",
-            rights_signers_path=governance / "rights_signers.json",
-            method_registry_path=governance / "canonical_method_registry.json",
-            release_signers_path=governance / "release_signers.json",
-            output_registry_path=governance / "evidence_output_registry.json",
-        )
-        archive = evidence_outputs.build_offline_audit_bundle(
-            fixture.manifest,
-            _EVENT_ID,
-            _TARGET_ID,
-            root=fixture.root,
-            schema_registry_path=governance / "canonical_schema_registry.json",
-            rights_registry_path=governance / "source_rights_registry.json",
-            rights_signers_path=governance / "rights_signers.json",
-            method_registry_path=governance / "canonical_method_registry.json",
-            release_signers_path=governance / "release_signers.json",
-            output_registry_path=governance / "evidence_output_registry.json",
-        )
+    # Local import avoids a module cycle: the composed fixture installs this
+    # module's contract, then publishes every engine record it actually joins.
+    from src import max_state_join_fixture
+
+    artifacts = max_state_join_fixture.build_published_artifacts()
+    return artifacts.evidence_outputs, artifacts.evidence_archive
+
+
+def _build_demo_payload(
+    output_set: dict[str, Any], archive: bytes
+) -> dict[str, Any]:
+    """Wrap one already-compiled output without rebuilding a private world."""
+
     archive_sha = hashlib.sha256(archive).hexdigest()
     described = output_set["outputs"]["offline_audit_bundle"]["artifact"]
     if archive_sha != described["sha256"] or len(archive) != described["bytes"]:
@@ -131,7 +116,7 @@ def build_demo_artifacts() -> tuple[dict[str, Any], bytes]:
         },
         "output_set": output_set,
     }
-    return payload, archive
+    return payload
 
 
 def build_demo() -> dict[str, Any]:

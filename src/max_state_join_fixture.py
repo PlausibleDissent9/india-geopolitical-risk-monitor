@@ -25,6 +25,7 @@ India, about any dependency, or about anything observed.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 from dataclasses import dataclass
@@ -57,6 +58,13 @@ _EDGE_ID = shock_compiler_fixture._EDGE_ID
 _WINDOW = ("2026-08-08T00:00:00Z", "2026-08-08T12:00:00Z")
 _CUTOFF = "2026-08-08T13:00:00Z"
 
+_PUBLISHED_RECORDS = {
+    "evidence_output_set": ("evidence_outputs_demo.json", "output_set"),
+    "exposure_traversal": ("exposure_traversal_demo.json", "traversal"),
+    "sensor_fusion": ("sensor_fusion_demo.json", "complete_matrix"),
+    "shock_compilation": ("shock_compiler_demo.json", "compilation"),
+}
+
 
 @dataclass(frozen=True)
 class ComposedWorld:
@@ -65,6 +73,18 @@ class ComposedWorld:
     root: Path
     manifest: Path
     scenario: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class PublishedArtifacts:
+    """Every public artifact derived from one invocation of the four engines."""
+
+    evidence_outputs: dict[str, Any]
+    evidence_archive: bytes
+    exposure_traversal: dict[str, Any]
+    sensor_fusion: dict[str, Any]
+    shock_compiler: dict[str, Any]
+    max_state_join: dict[str, Any]
 
 
 class _Governance(TypedDict):
@@ -187,12 +207,64 @@ def join_world(world: ComposedWorld) -> dict[str, Any]:
     )
 
 
-def build_demo() -> dict[str, Any]:
-    """Return the deterministic synthetic public conformance vector."""
+def _sensor_matrix(world: ComposedWorld, window: tuple[str, str]) -> dict[str, Any]:
+    governance = _governance(world.root)
+    return sensor_fusion.fuse_event_sensors(
+        world.manifest,
+        _EVENT_ID,
+        window[0],
+        window[1],
+        _CUTOFF,
+        root=world.root,
+        **governance,
+        fusion_registry_path=world.root / "governance" / "sensor_fusion_registry.json",
+    )
 
-    with tempfile.TemporaryDirectory(prefix="igrm-max-state-join-") as temporary:
-        world = build_world(Path(temporary))
-        join = join_world(world)
+
+def _evidence_archive(world: ComposedWorld) -> bytes:
+    governance = _governance(world.root)
+    return evidence_outputs.build_offline_audit_bundle(
+        world.manifest,
+        _EVENT_ID,
+        _TARGET_ID,
+        root=world.root,
+        **governance,
+        output_registry_path=world.root / "governance" / "evidence_output_registry.json",
+    )
+
+
+def _exposure_demo(traversal: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "_meta": {
+            "schema": "igrm-exposure-traversal-demo-v1",
+            "generated": "2026-08-08T13:00:00Z",
+            "date": "2026-08-08",
+            "what": (
+                "Deterministic synthetic exposure traversal from the same signed "
+                "release as every other published Max engine record."
+            ),
+            "scope": "synthetic_test_vector_only",
+            "production_release": False,
+            "real_event_entity_source_right_or_exposure_claims": False,
+            "forecast_probability_causation_advice_or_scalar_score": False,
+            "license": "CC BY 4.0",
+            "citation": (
+                "Krishna, Ishan (2026). India Geopolitical Risk Monitor. "
+                "https://igrm.in/"
+            ),
+            "source": "https://igrm.in/data/exposure_traversal_demo.json",
+            "codebook": "https://igrm.in/standard.html",
+            "method": "method:igrm.exposure_graph_projection@1.0.0",
+        },
+        "synthetic_labels": {
+            _EVENT_ID: "Synthetic policy action",
+            _TARGET_ID: "Synthetic crude input",
+        },
+        "traversal": traversal,
+    }
+
+
+def _join_demo(join: dict[str, Any]) -> dict[str, Any]:
     return {
         "_meta": {
             "schema": "igrm-max-state-join-demo-v1",
@@ -227,6 +299,81 @@ def build_demo() -> dict[str, Any]:
         },
         "join": join,
     }
+
+
+def build_published_artifacts() -> PublishedArtifacts:
+    """Build every public record from one release and join those exact records."""
+
+    with tempfile.TemporaryDirectory(prefix="igrm-max-shared-world-") as temporary:
+        world = build_world(Path(temporary))
+        engines = run_engines(world)
+        narrow = _sensor_matrix(world, sensor_fusion_fixture._NARROW_WINDOW)
+        archive = _evidence_archive(world)
+        join = max_state_join.join_engine_states(
+            engines,
+            rights_root=world.root,
+            rights_registry_path=world.root / "governance" / "source_rights_registry.json",
+            rights_signers_path=world.root / "governance" / "rights_signers.json",
+        )
+
+    evidence_payload = evidence_outputs_fixture._build_demo_payload(
+        engines["evidence_output_set"], archive
+    )
+    described = evidence_payload["download"]
+    if described["sha256"] != hashlib.sha256(archive).hexdigest():
+        raise RuntimeError("shared_world_archive_digest_mismatch")
+    return PublishedArtifacts(
+        evidence_outputs=evidence_payload,
+        evidence_archive=archive,
+        exposure_traversal=_exposure_demo(engines["exposure_traversal"]),
+        sensor_fusion=sensor_fusion_fixture._build_demo_payload(
+            engines["sensor_fusion"], narrow
+        ),
+        shock_compiler=shock_compiler_fixture._build_demo_payload(
+            world.scenario, engines["shock_compilation"]
+        ),
+        max_state_join=_join_demo(join),
+    )
+
+
+def load_published_engine_records(
+    data_root: Path = ROOT / "docs" / "data",
+) -> dict[str, dict[str, Any]]:
+    """Load the four committed primary records through fixed safe paths."""
+
+    if data_root.is_symlink() or not data_root.is_dir():
+        raise max_state_join.MaxStateJoinError("join_published_root_invalid")
+    base = data_root.resolve()
+    records: dict[str, dict[str, Any]] = {}
+    for engine_id, (name, pointer) in sorted(_PUBLISHED_RECORDS.items()):
+        path = data_root / name
+        if path.is_symlink():
+            raise max_state_join.MaxStateJoinError(
+                "join_published_path_invalid", engine_id
+            )
+        resolved = path.resolve()
+        try:
+            resolved.relative_to(base)
+        except ValueError as error:
+            raise max_state_join.MaxStateJoinError(
+                "join_published_path_invalid", engine_id
+            ) from error
+        wrapper, _ = max_state_join._read_json(
+            resolved, "join_published_document_unreadable"
+        )
+        record = wrapper.get(pointer)
+        if not isinstance(record, dict):
+            raise max_state_join.MaxStateJoinError(
+                "join_published_record_missing", f"{engine_id}:{pointer}"
+            )
+        records[engine_id] = cast(dict[str, Any], record)
+    return records
+
+
+def build_demo() -> dict[str, Any]:
+    """Return the deterministic synthetic public conformance vector."""
+
+    return build_published_artifacts().max_state_join
 
 
 def write_demo(path: Path = DEMO) -> None:
