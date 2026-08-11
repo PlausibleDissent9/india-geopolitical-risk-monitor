@@ -2274,7 +2274,13 @@ def _require_release_candidate_from_snapshot(
         parent_status["final_publication"] = state
         expected_bytes = {
             "data/raw/final_publication_status.json": marker_raw,
-            "docs/data/status.json": _json_bytes(parent_status),
+            # write_public_status preserves json.dumps' default ASCII escaping.
+            # Rebuild those exact bytes here as well: current public metadata
+            # contains Unicode punctuation, so _json_bytes(ensure_ascii=False)
+            # would reject the publisher's own deterministic refusal output.
+            "docs/data/status.json": (
+                json.dumps(parent_status, indent=1) + "\n"
+            ).encode("utf-8"),
         }
         from . import status_data
 

@@ -2116,6 +2116,12 @@ def _committed_value_free_refusal(tmp_path: Path) -> tuple[Path, str, str]:
     (root / "docs/status.html").write_bytes(
         (ROOT / "docs/status.html").read_bytes()
     )
+    status_path = root / "docs/data/status.json"
+    parent_status = json.loads(status_path.read_text(encoding="utf-8"))
+    parent_status.setdefault("_meta", {})["what"] = (
+        "Unicode punctuation – must retain deterministic JSON byte semantics"
+    )
+    status_path.write_text(json.dumps(parent_status, indent=1) + "\n", encoding="utf-8")
     for command in (
         ("init", "-q"),
         ("config", "user.name", "Refusal proof test"),
