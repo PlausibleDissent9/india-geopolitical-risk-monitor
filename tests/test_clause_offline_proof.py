@@ -274,11 +274,18 @@ def test_runtime_has_no_public_or_reverse_dependency(tmp_path: Path) -> None:
     assert "evidence_outputs" not in runtime
     assert "ProductManifest" not in runtime
     assert "docs/" not in runtime
-    assert not any(
-        "clause_offline_proof" in path.read_text(encoding="utf-8", errors="ignore")
+    consumers = {
+        path.name
         for path in ROOT.glob("src/*.py")
         if path.name != "clause_offline_proof.py"
-    )
+        and "clause_offline_proof"
+        in path.read_text(encoding="utf-8", errors="ignore")
+    }
+    # The proof archive remains absent from every public/runtime consumer.
+    # Its sole registered reverse dependency is the bounded internal
+    # conformance compiler, which verifies the complete two-query synthetic
+    # universe and does not expose an output route.
+    assert consumers == {"clause_output_conformance.py"}
     assert _verify(_build(tmp_path))["boundary"]["product_manifest_created"] is False
 
 
