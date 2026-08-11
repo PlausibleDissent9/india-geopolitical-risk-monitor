@@ -1753,11 +1753,11 @@
   "/data/reliability.json": {
    "get": {
     "operationId": "get_data_reliability_json",
-    "description": "The morning contract's measured record, computed from git commit timestamps, nothing self-reported: day D final by 06:00 IST on D+1. Pre-contract days shown as context. Misses stay listed forever.",
+    "description": "The morning contract's measured record, computed from git commit timestamps, nothing self-reported: day D final by the target published on day D, on D+1 -- 06:30 IST from 2026-08-11, 06:00 IST before it. Each day is scored against the promise in force at the time, never re-scored against a later one. Pre-contract days shown as context. Misses stay listed forever.",
     "x-igrm-stability": "stable",
     "responses": {
      "200": {
-      "description": "The morning contract's measured record, computed from git commit timestamps, nothing self-reported: day D final by 06:00 IST on D+1. Pre-contract days shown as context. Misses stay listed forever.",
+      "description": "The morning contract's measured record, computed from git commit timestamps, nothing self-reported: day D final by the target published on day D, on D+1 -- 06:30 IST from 2026-08-11, 06:00 IST before it. Each day is scored against the promise in force at the time, never re-scored against a later one. Pre-contract days shown as context. Misses stay listed forever.",
       "content": {
        "application/json": {
         "schema": {
