@@ -397,6 +397,21 @@ def test_malformed_manifest_in_correction_closure_refuses_cleanly(tmp_path: Path
         assert err.value.code == "manifest_scope_not_recomputable", bad
 
 
+def test_malformed_source_bundle_refuses_cleanly(tmp_path: Path) -> None:
+    """source_bundle is a caller parameter for compile_product and
+    correction_closure; a bundle missing clauses / source_release must refuse,
+    never KeyError."""
+    contract = pm.load_contract()
+    manifest = _manifest(_bundle(tmp_path), CRUDE)
+    op = _op("supersede", [("entity", CRUDE)], [])
+    with pytest.raises(pm.ProductManifestError) as e1:
+        pm.compile_product({"source_release": {}}, manifest, contract=contract)
+    assert e1.value.code == "manifest_scope_not_recomputable"
+    with pytest.raises(pm.ProductManifestError) as e2:
+        pm.correction_closure([manifest], {}, op, contract=contract)
+    assert e2.value.code == "manifest_scope_not_recomputable"
+
+
 def test_scope_binding_wrong_key_refuses(tmp_path: Path) -> None:
     source = _bundle(tmp_path)
     manifest = _manifest(source, CRUDE)

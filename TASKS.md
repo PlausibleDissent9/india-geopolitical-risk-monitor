@@ -314,3 +314,22 @@ is a dict with str path+sha256, and reject duplicate member paths -> all
 bundle_manifest_incomplete. Files: src/offline_bundle.py, tests/test_offline_bundle.py.
 Checks: pytest (28 passed), ruff + mypy clean. 5 parametrized hostile-manifest
 cases. origin/main still c2eafd2 (no Codex landing).
+
+## T20 — Product Compiler: refuse malformed source_bundle (completes the class)
+Status: DONE (local commit; NOT pushed)
+Final malformed-input surface: compile_product read source_bundle["clauses"] +
+["source_release"] and correction_closure read source_bundle_after["clauses"]
+raw -> KeyError on a malformed bundle. A _source_clauses helper + _require now
+refuse manifest_scope_not_recomputable. Files: src/product_manifest.py,
+tests/test_product_manifest.py. Checks: pytest (28 passed), ruff + mypy clean.
+
+## REFUSAL-FIRST HARDENING COMPLETE (both modules, all caller inputs)
+Adversarial self-review over five passes hardened every caller-supplied input:
+  Product Compiler:  clauses (T17) + manifests (T18) + source_bundle (T20)
+  Offline bundle:    symlink/path-escape on build (T16) + hostile manifest on
+                     the untrusted verifier path (T19)
+Every entry point now refuses cleanly with a typed code instead of crashing.
+This class is exhausted; further review would be diminishing. Five consecutive
+loop iterations each found a real, distinct refusal-first/robustness gap that
+the initial test suites missed -- the value of a fresh adversarial pass on
+one's own recent code. origin/main still c2eafd2 (no Codex landing).

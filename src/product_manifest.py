@@ -123,11 +123,19 @@ def _clause_refs(clause: Mapping[str, Any]) -> list[Mapping[str, Any]]:
 
 def _require(mapping: object, key: str, detail: str) -> Any:
     """Fetch a required field, refusing (never crashing) if the object is
-    malformed. correction_closure takes caller-supplied manifests, so a
-    manifest missing a field must refuse per refusal-first, not KeyError."""
+    malformed. compile_product / correction_closure take caller-supplied
+    manifests and source bundles, so a missing field must refuse per
+    refusal-first, not KeyError."""
     if not isinstance(mapping, Mapping) or key not in mapping:
         _fail("manifest_scope_not_recomputable", detail)
     return mapping[key]
+
+
+def _source_clauses(source_bundle: object) -> Sequence[Mapping[str, Any]]:
+    clauses = _require(source_bundle, "clauses", "source_bundle_missing_clauses")
+    if not isinstance(clauses, list):
+        _fail("manifest_scope_not_recomputable", "source_bundle_clauses_not_list")
+    return cast(Sequence[Mapping[str, Any]], clauses)
 
 
 def _clause_id_of(clause: Mapping[str, Any]) -> str:
@@ -233,9 +241,9 @@ def compile_product(
     _reject_caller_edges(manifest)
     man = _object(manifest, _MANIFEST_FIELDS, "manifest_scope_not_recomputable")
 
-    source_clauses = source_bundle["clauses"]
+    source_clauses = _source_clauses(source_bundle)
     _validate_source_object_types(source_clauses, contract)
-    by_id = {c["clause_id"]: c for c in source_clauses}
+    by_id = {_clause_id_of(c): c for c in source_clauses}
 
     scope_result = compute_scope(source_clauses, man["selection_scope"], contract)
     recomputed_ids = scope_result["selected_clause_ids"]
@@ -287,7 +295,8 @@ def compile_product(
     compilation = {
         "object_type": "product_compilation",
         "manifest_id": man["manifest_id"],
-        "source_release_ref": dict(source_bundle["source_release"]),
+        "source_release_ref": dict(
+            _require(source_bundle, "source_release", "source_bundle_missing_source_release")),
         "resolved_clause_ids": list(recomputed_ids),
         "object_clause_edges": scope_result["object_clause_edges"],
         "clause_manifest_edges": clause_manifest_edges,
@@ -378,7 +387,7 @@ def correction_closure(
                   for k in lineage_operation["successors"]}
     union_keys = predecessors | successors
 
-    source_clauses = source_bundle_after["clauses"]
+    source_clauses = _source_clauses(source_bundle_after)
     _validate_source_object_types(source_clauses, contract)
 
     affected: set[str] = set()
