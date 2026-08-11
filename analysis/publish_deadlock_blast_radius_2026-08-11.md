@@ -43,9 +43,25 @@ Every one of those steps invokes `publish_push.sh`.
 ## What this does NOT establish
 
 - **events-backfill has been failing since 2026-08-02**, well before the six
-  payloads went stale. Its failure predates the deadlock and is therefore a
-  SEPARATE defect that this fix should not be credited with resolving. Not
-  investigated here.
+  payloads went stale, so its failure predates the deadlock and this fix
+  should not be credited with resolving it.
+
+  INVESTIGATED AFTERWARDS, and the first sentence above needs qualifying. The
+  lane is a self-chaining backfill fired by a trigger file, not a nightly job:
+  it last ran on 2026-08-02 (two runs in the same minute, racing, both dying
+  at "Commit progress" in 2 and 5 minutes -- far too fast to be the gate) and
+  has been dormant since. Dormant is not the same as broken, and it is costing
+  nothing.
+  What matters is whether it left a hole, and it did not. `_missing_days()`
+  reports THREE incomplete days, 2026-08-07 to 2026-08-09 -- recent days, not
+  a gap in history, so the historical backfill completed regardless of that
+  failure. Those three days are filled by `daily.yml`, which runs
+  `fetch_events --update 5` at line 107 and has been dying at its FIRST step
+  since 2026-08-08, never reaching it.
+  So the three gaps are a SYMPTOM of the same root cause, not a separate
+  defect, and `--update 5` will close them on the first healthy daily run. No
+  fix is needed here, and calling this "a separate defect" without looking was
+  a claim I had not earned.
 - **notes.yml is not currently failing** (last success 2026-08-07, nothing red
   after it). It is listed above only because it shares the push path.
 - **drift.yml and bq-gfg-probe.yml fail at their own compute steps**, not at a
