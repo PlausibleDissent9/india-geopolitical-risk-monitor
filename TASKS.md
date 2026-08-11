@@ -299,3 +299,18 @@ file, adds no channel entry. The perf cascade is STILL blocked. My local batch
 stays based on 331a807; the documented drop-command (git rebase --onto 642f317
 3f593cb) remains valid on my branch, so no rebase performed. A human pushing my
 work would rebase onto c2eafd2 (clean -- zero file overlap with my commits).
+
+## T19 — Offline bundle: verifier must not crash on a hostile manifest (untrusted input)
+Status: DONE (local commit; NOT pushed)
+Highest-stakes adversarial find: verify_bundle_bytes is the READER-facing,
+UNTRUSTED-input path (a reader verifying a possibly hostile bundle), and it
+built {m["path"]: m["sha256"] for m in manifest.get("members",[])} with no shape
+checks -> four crash modes on a crafted manifest.json: member missing sha256
+(KeyError), member missing path (KeyError), members not a list (TypeError),
+manifest not an object (AttributeError). A bundle crafted to crash the verifier
+is a real robustness/DoS gap. Refusal-first demands a clean refusal on the
+reader path. Fix: validate manifest is an object, members is a list, each member
+is a dict with str path+sha256, and reject duplicate member paths -> all
+bundle_manifest_incomplete. Files: src/offline_bundle.py, tests/test_offline_bundle.py.
+Checks: pytest (28 passed), ruff + mypy clean. 5 parametrized hostile-manifest
+cases. origin/main still c2eafd2 (no Codex landing).

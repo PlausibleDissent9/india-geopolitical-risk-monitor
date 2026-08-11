@@ -234,6 +234,28 @@ def test_verifier_rejects_a_zip_member_not_in_the_manifest() -> None:
     assert err.value.code == "bundle_manifest_incomplete"
 
 
+@pytest.mark.parametrize("manifest_obj", [
+    {"members": [{"path": "docs/data/latest.json"}]},   # member missing sha256
+    {"members": [{"sha256": "0" * 64}]},                 # member missing path
+    {"members": "not-a-list"},                           # members not a list
+    [1, 2, 3],                                            # manifest not an object
+    {"members": [{"path": "a", "sha256": "0" * 64},
+                 {"path": "a", "sha256": "1" * 64}]},     # duplicate member path
+])
+def test_verifier_refuses_a_hostile_manifest_cleanly(manifest_obj: object) -> None:
+    """The verifier processes UNTRUSTED input. A bundle crafted with a malformed
+    manifest.json must refuse cleanly (refusal-first), never crash the reader."""
+    import io
+    import json
+    import zipfile
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, "w") as zf:
+        zf.writestr("manifest.json", json.dumps(manifest_obj))
+    with pytest.raises(ob.OfflineBundleError) as err:
+        ob.verify_bundle_bytes(out.getvalue())
+    assert err.value.code == "bundle_manifest_incomplete"
+
+
 def test_verifier_uses_only_the_standard_library() -> None:
     """The verifier's worth is that a reader need trust nothing but Python's
     stdlib. Assert the function body touches no IGRM runtime -- no

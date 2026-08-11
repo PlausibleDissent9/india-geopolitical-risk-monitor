@@ -245,7 +245,22 @@ def verify_bundle_bytes(bundle_bytes: bytes) -> dict[str, Any]:
         except (KeyError, json.JSONDecodeError) as exc:
             raise OfflineBundleError("bundle_manifest_incomplete",
                                      "manifest.json_missing_or_unreadable") from exc
-        declared = {m["path"]: m["sha256"] for m in manifest.get("members", [])}
+        # The bundle is UNTRUSTED here (a reader verifying a possibly hostile
+        # bundle), so every shape is checked before use: a malformed manifest
+        # must refuse cleanly, never crash. Refusal-first on the reader path.
+        if not isinstance(manifest, dict):
+            _fail("bundle_manifest_incomplete", "manifest_not_object")
+        raw_members = manifest.get("members")
+        if not isinstance(raw_members, list):
+            _fail("bundle_manifest_incomplete", "members_not_list")
+        declared: dict[str, str] = {}
+        for m in raw_members:
+            if (not isinstance(m, dict) or not isinstance(m.get("path"), str)
+                    or not isinstance(m.get("sha256"), str)):
+                _fail("bundle_manifest_incomplete", "malformed_manifest_member")
+            if m["path"] in declared:
+                _fail("bundle_manifest_incomplete", "duplicate_manifest_member")
+            declared[m["path"]] = m["sha256"]
         present = {n for n in zf.namelist() if n != "manifest.json"}
         if present != set(declared):
             _fail("bundle_manifest_incomplete",
