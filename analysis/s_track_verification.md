@@ -94,3 +94,16 @@ publication files (already named as the fallback on Aug 6) carry the same
 weekly reserves series as plain public downloads. Next session: verify one
 WSS file's format end-to-end, then build the fetcher on that. No fetcher
 ships until a WSS file has been parsed for real.
+
+## S1 WSS path (2026-08-11, late): index located, extract is a postback form
+
+Verified same-origin on rbi.org.in: the WSS home is `/Scripts/BS_ViewWSS.aspx`
+(200) and the data extract lives at `/Scripts/BS_viewWssExtract.aspx` (200,
+~70KB). Its table/date selection is an ASPX postback -- the static HTML
+carries no rdocs file links, so the file URL is minted by the form. NEXT
+CONCRETE STEP: open the extract page in a browser session, select Table 1
+(foreign exchange reserves) and a week, and capture the resulting
+rbidocs.rbi.org.in URL pattern from traffic; then verify one file parses.
+Note: `website.rbi.org.in`'s WSS page geo-redirects a browser to the home
+page but serves static HTML to curl with a UA -- its document list is
+JS-rendered either way. The old-site ASPX route is the workable one.
