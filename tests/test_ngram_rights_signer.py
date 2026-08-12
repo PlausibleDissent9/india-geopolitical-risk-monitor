@@ -28,7 +28,17 @@ def test_signer_has_no_yes_mode_and_binds_official_terms() -> None:
     assert "git push" not in source
 
 
-def test_repository_remains_unsigned_unpinned_and_score_claim_blocked() -> None:
+def test_repository_signed_state_is_exactly_the_founder_reviewed_decision() -> None:
+    """The 2026-08-12 transition: registry, signer, artifact and pin must agree.
+
+    Before the founder-run aggregate-2.0 review this test asserted the unsigned
+    state. It now pins the signed state with the same hostility: any drift in
+    the approved row, the enrolled signer, the artifact digest, or the
+    production trust pin fails here before it can reach the acquisition gate.
+    """
+    import base64
+
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
     from src import ngram_rights
 
     registry = json.loads(
@@ -37,11 +47,40 @@ def test_repository_remains_unsigned_unpinned_and_score_claim_blocked() -> None:
     source = next(
         row for row in registry["sources"] if row["source_id"] == ngram_rights.SOURCE_ID
     )
-    assert source["decision_state"] == "review_required"
-    assert source["signer_id"] is None
-    assert source["permitted_uses"] == []
+    assert source["decision_state"] == "approved"
+    assert source["signer_id"] == "human:igrm-ngram-rights-reviewer"
+    assert source["permitted_uses"] == ["model_processing", "publish_derived_value"]
     assert source["terms_url"] == "https://www.gdeltproject.org/about.html"
-    assert ngram_rights.PRODUCTION_TRUSTED_SIGNERS == {}
+    assert source["reviewed_on"] == "2026-08-12"
+    assert source["review_due"] == "2026-11-10"
+    assert source["max_current_age_days"] == 3
+
+    signers = json.loads(
+        (ROOT / "governance/rights_signers.json").read_text(encoding="utf-8")
+    )
+    signer = next(
+        row for row in signers["signers"]
+        if row["signer_id"] == source["signer_id"]
+    )
+    assert signer["role"] == "rights_reviewer"
+    assert signer["revoked_on"] is None
+
+    # The production code pin is exactly the enrolled signer -- no more entries.
+    assert ngram_rights.PRODUCTION_TRUSTED_SIGNERS == {
+        signer["signer_id"]: (
+            signer["public_key_ed25519_base64"],
+            signer["role"],
+        )
+    }
+
+    # The committed artifact bytes still verify under the pinned public key.
+    artifact = (ROOT / source["decision_artifact_path"]).read_bytes()
+    signature = (ROOT / source["decision_signature_path"]).read_bytes()
+    assert len(signature) == 64
+    assert hashlib.sha256(artifact).hexdigest() == source["decision_artifact_sha256"]
+    Ed25519PublicKey.from_public_bytes(
+        base64.b64decode(signer["public_key_ed25519_base64"], validate=True)
+    ).verify(signature, artifact)
 
 
 def test_signer_refuses_noninteractive_execution_before_key_or_bundle_write(
@@ -86,6 +125,30 @@ def _generated_bundle(
     review_due: str = "2027-08-12",
 ) -> tuple[Path, Ed25519PrivateKey]:
     from scripts import ngram_rights_sign
+
+    # The live repository now carries the applied 2026-08-12 review, and the
+    # tool's rotation guard rightly refuses to re-sign an enrolled signer_id.
+    # These attacks target the tool itself, so they run against a snapshot
+    # root frozen in the pre-transition state: current registry rows, but no
+    # enrolled signer. Only these two files are read by build_bundle.
+    pristine = tmp_path / "pre-transition-root"
+    (pristine / "governance").mkdir(parents=True)
+    shutil.copy2(
+        ROOT / "governance/source_rights_registry.json",
+        pristine / "governance/source_rights_registry.json",
+    )
+    (pristine / "governance/rights_signers.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0.0",
+                "effective": "2026-08-08",
+                "default_policy": "deny",
+                "signers": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(ngram_rights_sign, "ROOT", pristine)
 
     private_key = Ed25519PrivateKey.generate()
     proposed = ngram_rights_sign._source_row(

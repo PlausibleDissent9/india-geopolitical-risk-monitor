@@ -53,11 +53,18 @@ DAILY_AGGREGATE_RIGHTS_PROOF_FIELDS = PUBLIC_IDENTITY_RIGHTS_PROOF_FIELDS | {
     "signer_revoked_on",
 }
 PRODUCTION_HUMAN_ROLES = frozenset({"principal_investigator", "rights_reviewer"})
-# Production is intentionally empty-by-default. An actual authorization must
-# add the exact human signer ID, Ed25519 public key and closed role here in a
-# reviewed code transition as well as in the signed governance registries.
-# Merely adding a self-generated key to mutable repository JSON is not trust.
-PRODUCTION_TRUSTED_SIGNERS: dict[str, tuple[str, str]] = {}
+# Production trust requires the exact human signer ID, Ed25519 public key and
+# closed role here in a reviewed code transition as well as in the signed
+# governance registries. Merely adding a self-generated key to mutable
+# repository JSON is not trust. The entry below binds the founder-run
+# 2026-08-12 aggregate-2.0 rights review; its signed decision artifact is
+# governance/rights_decisions/gdelt_web_ngrams_v5-aggregate-2.0.json.
+PRODUCTION_TRUSTED_SIGNERS: dict[str, tuple[str, str]] = {
+    "human:igrm-ngram-rights-reviewer": (
+        "qcS/4lMEpmUO0RhFRkVILagrVBIhMsSfVYksZmRvgFQ=",
+        "rights_reviewer",
+    ),
+}
 
 
 @dataclass(frozen=True)
