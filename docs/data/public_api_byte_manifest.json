@@ -399,12 +399,12 @@
    "sha256": "2069d8fd6dcd25c311aa1bd1e650c87fb047ba90910e703802a6affc8b525452"
   },
   {
-   "bytes": 1127,
+   "bytes": 1126,
    "format": "json",
    "git_mode": "100644",
    "path": "data/permanence.json",
    "repository_path": "docs/data/permanence.json",
-   "sha256": "801f90f7a1ff570f6cd3a8a267f80ebcfad241f2e639968ffdb0ab32b590b596"
+   "sha256": "2cca7a9683ee7f0c21dcbf26f5a6b13ee5f41322a4f0d0c125d1d05321d0b5e0"
   },
   {
    "bytes": 1131,
@@ -679,12 +679,12 @@
    "sha256": "fe0cc510309b38fd21471c1e775c6f02624b69f11cc592f0395828c6e710c333"
   },
   {
-   "bytes": 6858,
+   "bytes": 6550,
    "format": "json",
    "git_mode": "100644",
    "path": "data/status.json",
    "repository_path": "docs/data/status.json",
-   "sha256": "c159107af3f1439f1a21bd7287f5a59163d5e6d068be46a452410e571102e604"
+   "sha256": "12494989234b9d05e2037bf88ce7f2b03d25c22500a3775fa8e5d3a9989edaa0"
   },
   {
    "bytes": 15401,
@@ -962,7 +962,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "762825a00fccb605fc17556577df2c7bb55cbd25899925918a15574251bfb5c7",
+  "entries_sha256": "4c02d53f455843e66a1b9ce1e8ae3239f106bbc6c4730ddccc7ddcd455b1df59",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -973,7 +973,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7271572,
+  "hashed_bytes": 7271263,
   "hashed_entries": 117,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
