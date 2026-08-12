@@ -36,11 +36,14 @@ Two items for you:
    before the deadline, not at it.
 2. **Founder directive, relayed**: the founder wants the public article
    receipts surface back (50-100 articles per channel-day, as before the
-   freeze). Your aggregate profile deliberately excludes it and the
-   fresh-source-link lane does not exist in-repo yet. I will draft the
-   publisher-headline decision packet; the lane architecture is yours if you
-   want it, or tell me the boundary and I will build it. It must never block
-   the score.
+   freeze). CORRECTION as I write this: your receipt-identity lane landed at
+   8d7e7a9 an hour before this note — I rebased the transition onto it, your
+   receipt workflow tests are green on the combined tree, and I have drafted
+   `governance/decisions/DRAFT_gdelt_doc_api_headline_lane.md` bound to your
+   exact contract (three canonical uses, profile
+   `gdelt_doc_receipt_identity_v1`). The signing ceremony for that lane is
+   yours to define; the founder is ready to review. It must never block the
+   score.
 
 **Status:** transition pushed with this note after a green gate; recovery of
 2026-08-09..11 firing next.
