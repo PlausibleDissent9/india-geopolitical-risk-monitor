@@ -8,6 +8,98 @@ shared working tree.
 
 ---
 
+## 2026-08-12 15:34 IST - [BLOCKING] Finish workflow outcomes as a wired durable control plane
+
+The founder explicitly requires Claude to work as a first-class substantive
+implementer and grants broad implementation/test/commit permission in this
+isolated lane. The one editorial exclusion is absolute: **do not write,
+generate, edit, stage, publish, or schedule the weekly note without a new
+explicit founder instruction.** Do not touch any weekly-note/datapack/risk-watch
+file, artifact, or workflow, and do not modify the existing `Weekly datapack
+(Fridays)` step while editing `daily.yml`.
+
+This worktree starts at exact current `origin/main`
+`f5e395b3eb992bde41bc248d73c309b201f6e3a0`. Your prior outcome branch is idle
+at `36fdc82670651c6037bc8c77227de317d0b1d149`. Its useful code commits are
+`27721ded008d9b63c0458538be319d84cfffb053` and
+`11950aceafd9544cb7a7a22a1f948047bacd51ce`; apply them **without committing**
+and finish the lane here so the deliverable is one atomic implementation commit
+on top of this handoff. Do not carry its memo/channel commits as implementation.
+
+The three P1s previously called blocked are no longer an excuse to stop. Current
+main contains the exact final-publication marker/receipt implementation in
+`src/final_publication.py`, frozen-candidate CAS implementation in
+`scripts/publish_final_cas.sh`, and the current workflow surfaces. Inspect and
+consume their settled interfaces; do not change those owned files.
+
+Build the whole assigned control plane, not an unused library:
+
+1. Add a closed, value-free, canonical workflow-outcome receipt whose terminal
+   classification is derived from trusted inputs, never asserted by a caller.
+   Bind workflow, run ID/attempt, head SHA, exact target measurement date,
+   authority epoch where relevant, every required-stage result, frozen parent,
+   gated candidate SHA/class, exact committed final/refusal artifact path and
+   blob digest, published commit, remote main observation, and CAS acceptance.
+   A final outcome must validate the exact final receipt and public status from
+   the published Git tree. A refusal must prove the score/latest date did not
+   advance. `already_current` must be derived from the exact remote tree.
+2. Implement closed validation and durable persistence. Store one canonical
+   digest-bound outcome per `(workflow, run_id, run_attempt, head, target)`;
+   reject conflicting second records, noncanonical bytes, reseals, symlinks,
+   path escapes, dirty/candidate mismatch, post-gate mutation, run/SHA splice,
+   remote movement, and a claimed final lacking the exact final receipt. Do not
+   use `$RUNNER_TEMP` or another job-local directory as a persistence claim.
+   Use a checked-in/durable workflow artifact or branch-safe remote mechanism
+   whose persistence and concurrency semantics are actually enforced and tested.
+3. Implement a bounded recovery decision that consumes validated persisted
+   receipts. At most one dispatch per exact failure identity/authority epoch;
+   never launder timeout, cancelled, missing, unexpected skipped, validation,
+   gate, infrastructure, or CAS failure into green. A rights-blocked result may
+   retry only after a strictly later validated authority epoch and must not
+   suppress recovery after authority changes.
+4. Wire an `always()` finalizer, receipt validation/persistence, red/green job
+   result, and bounded recovery consumer into **all three currently disjoint
+   workflows**: `.github/workflows/daily.yml`, `nowcast.yml`, and `watchdog.yml`.
+   The code must be invoked on real success, refusal, failure, cancellation, and
+   timeout paths. No workflow may report green merely because a value-free
+   disclosure was attempted or because the finalizer itself ran. Preserve every
+   existing source, rights, finality, security, gate, and CAS refusal.
+
+Required hostile end-to-end regressions include all five prior review attacks
+plus reason-text injection, numeric/value/URL leakage, rights refusal relabelled
+source outage, timeout relabelled refusal, generated/write timestamp called
+measurement freshness, stale target, missing/unexpected-skipped stage, duplicate
+or conflicting outcome, retry storm, later authority epoch, remote movement,
+candidate/worktree mismatch, post-gate mutation, symlink/path replacement, and
+workflow wiring that omits any terminal path. Tests must parse/execute the
+actual three workflow definitions; grep-only presence tests are insufficient.
+
+Strict ownership exclusions: do not touch `.github/workflows/morning.yml`;
+`src/ngram_rights.py`, `src/ngram_rights_contract.py`,
+`src/final_publication.py`, `scripts/publish_final_cas.sh`,
+`scripts/publish_push.sh`, `scripts/gate.sh`, security/integrity registries or
+tests, source-rights registries/signers/decisions, aggregate-profile files,
+Media Cloud files, receipt-identity files, public score/value payloads, Max/Atlas
+artifacts, any other worktree, or any weekly-note surface. If a hook in one of
+those files is genuinely necessary, expose the precise missing interface in
+`from-claude.md` **after** completing every disjoint part; do not edit through
+the boundary. You may add runtime/schema/store/finalizer/action/test files and
+edit only the three workflow YAMLs named above.
+
+Completion requires substantive generated artifacts, hostile tests, focused
+tests, Ruff, strict mypy over every changed Python file, `git diff --check`, and
+the full committed `scripts/gate.sh --publish` against the exact immutable
+candidate. Make exactly one atomic implementation commit, append its exact SHA,
+name-status diff, test commands/results, persistence proof, and licensed/nonclaim
+boundary to `.agents/from-claude.md`. Do not merge, push implementation or main,
+force-push, sign rights, publish data, spend money, expose secrets, or return a
+design memo as completion. Diagnose failures and continue unless a truth/rights
+gate proves a genuinely impossible interface.
+
+**Needs:** begin with failing hostile regressions, then deliver the fully wired,
+durable, gated one-commit implementation. No polling-only or memo-only turn.
+**Status:** BLOCKING
+
 ## 2026-08-12 07:56 IST - [BLOCKING] Stop state observed; create the additive worktree now
 
 Your clone has fetched stop commit `cd5bad6882c1efa8146fb8b46248efba91dd2b67`.
