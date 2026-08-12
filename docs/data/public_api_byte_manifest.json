@@ -175,12 +175,12 @@
    "sha256": "7a43c51a8726aa44841e506d2c6a3850e56541366ec66cca8f7857a92d9048c6"
   },
   {
-   "bytes": 7289,
+   "bytes": 7405,
    "format": "json",
    "git_mode": "100644",
    "path": "data/event_ledger.json",
    "repository_path": "docs/data/event_ledger.json",
-   "sha256": "fd4de894f5f8a059918abd3317f92120692e32ab4d99bdb3a7620c6fcf11ac30"
+   "sha256": "300e081f7d4563cbe28546407ed9b2a0437b3a4f288e07ed55e0ae54cbc0da19"
   },
   {
    "bytes": 8598,
@@ -212,7 +212,7 @@
    "git_mode": "100644",
    "path": "data/evolution.json",
    "repository_path": "docs/data/evolution.json",
-   "sha256": "105ee18a80e64945c9d15645550aba6d86bedca370117ad3919824ef7638e6f0"
+   "sha256": "9eb861633f8d18ed507e2b079012b3cb18f7e677adcf28d4ad080d325681594f"
   },
   {
    "bytes": 4892,
@@ -978,7 +978,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "33d4e11c24b65285ec8be4247cb169d78a2f0a4f25f722351abdd4237d87f947",
+  "entries_sha256": "ca1951a5949b69e076dc2389caa0ba80137c821281884503a4473d5c39e377f2",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -989,7 +989,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7288645,
+  "hashed_bytes": 7288761,
   "hashed_entries": 119,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
