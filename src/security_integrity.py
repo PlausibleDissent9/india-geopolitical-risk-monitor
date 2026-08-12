@@ -34,6 +34,12 @@ PERMISSIONS_RE = re.compile(r"^permissions:\n(?P<body>(?:  [^\n]+\n)+)", re.M)
 PERMISSION_ROW_RE = re.compile(r"^  (?P<scope>[a-z-]+): (?P<level>read|write|none)$", re.M)
 HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 FINAL_CAS_GATE_COMMAND = "bash scripts/gate.sh --publish"
+RECEIPT_IDENTITY_RELEASE_BLOCK = """  if [ "${IGRM_PUBLISH_CLASS:-}" = "receipt_identity" ]; then
+    local candidate
+    candidate=$(git rev-parse --verify HEAD) || return 1
+    python -m src.receipt_identity --check-release-rights "$candidate" || return 1
+  fi
+"""
 
 # These bodies are deliberately tiny, reviewable shell grammars. The full
 # script is registry-pinned; these independent implementation pins prevent an
@@ -524,6 +530,13 @@ def validate_repository(
         _fail("publisher_token_not_cleared_before_gate")
     if re.search(r"^\s*if git push", push_text, re.M):
         _fail("publisher_plain_git_push_present")
+    git_push_body = _shell_function(push_text, "git_push")
+    if git_push_body.count(RECEIPT_IDENTITY_RELEASE_BLOCK) != 1:
+        _fail("publisher_receipt_identity_release_guard_invalid")
+    receipt_guard = git_push_body.find(RECEIPT_IDENTITY_RELEASE_BLOCK)
+    credentialed_push = git_push_body.find("  GIT_CONFIG_COUNT=1 \\")
+    if receipt_guard < 0 or credentialed_push < 0 or receipt_guard > credentialed_push:
+        _fail("publisher_receipt_identity_release_guard_order_invalid")
     pushes = list(re.finditer(r"^\s*if git_push", push_text, re.M))
     guards = list(
         re.finditer(r"^\s*if ! gate_candidate; then exit 1; fi\s*$", push_text, re.M)
@@ -731,6 +744,15 @@ def validate_repository(
                 "signed": False,
                 "authenticated_deployment": False,
                 "atomic_hosted_snapshot": False,
+            },
+            "receipt_identity_release_rights": {
+                "status": "default_deny_inactive",
+                "candidate_source": "exact_100644_git_blobs",
+                "predecessor_policy": (
+                    "exact_remote_parent_100644_same_target_monotone"
+                ),
+                "evaluation": "after_final_rebase_immediately_before_push",
+                "score_dependency": False,
             },
         },
         "publishing_lanes": sorted(publishing_lanes),

@@ -1,0 +1,69 @@
+{
+ "_meta": {
+  "what": "Independent D-1 source-link availability for the five registered channels; it is not a score input and never substitutes for the legacy construction receipts.",
+  "license": "CC BY 4.0 applies only to IGRM-authored metadata; GDELT terms govern GDELT data and linked publisher works remain separately controlled.",
+  "citation": "Data supplied by the GDELT Project. https://www.gdeltproject.org/",
+  "codebook": "https://igrm.in/codebook.html",
+  "source": "https://igrm.in/data/receipt_identity.json",
+  "gdelt_attribution": "Data supplied by the GDELT Project. https://www.gdeltproject.org/",
+  "publisher_rights": "Headlines identify and link to publisher-controlled works; no publisher article body or full record is redistributed."
+ },
+ "schema_version": "1.0.0",
+ "state": "unavailable",
+ "target_date": "2026-08-11",
+ "generated_at": "2026-08-12T15:22:07Z",
+ "source_id": "gdelt_doc_api",
+ "independence_group": "gdelt_project",
+ "profile_id": "gdelt_doc_receipt_identity_v1",
+ "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f",
+ "predecessor": {
+  "state": "path_absent",
+  "commit_sha": "185049316005c2dcc63ca8fc929f43be54fa02d7",
+  "blob_git_sha1": null,
+  "blob_sha256": null,
+  "target_date": null
+ },
+ "channels": {
+  "pakistan_west": {
+   "state": "unavailable",
+   "reason_code": "rights_blocked"
+  },
+  "china_east": {
+   "state": "unavailable",
+   "reason_code": "rights_blocked"
+  },
+  "gulf_energy": {
+   "state": "unavailable",
+   "reason_code": "rights_blocked"
+  },
+  "us_trade": {
+   "state": "unavailable",
+   "reason_code": "rights_blocked"
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "rights_blocked"
+  }
+ },
+ "refusal": {
+  "code": "rights_blocked",
+  "blockers": [
+   "receipt_identity_profile_inactive",
+   "receipt_identity_source_decision_review_required"
+  ],
+  "authority_snapshot": {
+   "source_id": "gdelt_doc_api",
+   "profile_id": "gdelt_doc_receipt_identity_v1",
+   "target_date": "2026-08-11",
+   "evaluated_at_utc": "2026-08-12T15:22:07Z",
+   "source_decision_state": "review_required",
+   "source_decision_id": "pending:gdelt_doc_api",
+   "profile_activation_state": "inactive_pending_human_signature",
+   "authorization_status": "receipt_identity_source_decision_review_required",
+   "rights_registry_sha256": "8f3963bdc3ccb01bc59bcdb1cdb044df39d50987a199360522a239609d6508d1",
+   "rights_signers_sha256": "3e0688e9d5e0bc52b1c497e15e1cc3fc2b232f76769a9a9708dde9ba31b72252",
+   "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f"
+  }
+ },
+ "payload_seal_sha256": "87f73aecf89c2928373fa0cd19876b4f7335bd40a3ad3db1384baa59b84ec3d7"
+}

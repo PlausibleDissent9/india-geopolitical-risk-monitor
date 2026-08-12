@@ -17,14 +17,15 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
+from typing import Any, cast
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-# Additive minor release: the deterministic shared-world exposure traversal is
-# a new endpoint. Existing endpoint fields and meanings are unchanged.
-CONTRACT_VERSION = "2.5.0"
+# Additive minor release: the independent receipt-identity payload and its
+# closed schema are new endpoints. Existing endpoint meanings are unchanged.
+CONTRACT_VERSION = "2.6.0"
 FROZEN_DATE = "2026-08-12"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
@@ -217,6 +218,15 @@ PUBLIC_STATIC_JSON: dict[str, dict[str, str]] = {
         ),
         "stability": "static versioned public draft 0.1.0",
     },
+    "schemas/receipt-identity.schema.json": {
+        "description": (
+            "Closed schema for the independently retryable, rights-gated D-1 "
+            "receipt-identity lane. It permits only title, URL and domain "
+            "extracts in an authorized payload and a value-free unavailable "
+            "status while rights remain pending."
+        ),
+        "stability": "static versioned release profile 1.0.0",
+    },
     "schemas/knowledge-replay-ledger.schema.json": {
         "description": (
             "JSON Schema for the signed complete-release ledger used by the "
@@ -260,7 +270,7 @@ PUBLIC_STATIC_JSON: dict[str, dict[str, str]] = {
 }
 
 
-def _fields(data) -> list[str] | str:
+def _fields(data: Any) -> list[str] | str:
     if isinstance(data, dict):
         return list(data.keys())
     if isinstance(data, list):
@@ -270,16 +280,16 @@ def _fields(data) -> list[str] | str:
     return "scalar"
 
 
-def _description(name: str, data) -> str:
+def _description(name: str, data: Any) -> str:
     if isinstance(data, dict):
         meta = data.get("_meta")
         if isinstance(meta, dict):
             for key in ("what", "definition"):
                 if meta.get(key):
-                    return meta[key]
+                    return cast(str, meta[key])
         for key in ("definition", "note"):
             if data.get(key):
-                return data[key]
+                return cast(str, data[key])
     return DESCRIPTIONS.get(name, "")
 
 
@@ -298,7 +308,30 @@ def _description(name: str, data) -> str:
 # An entry here is the one sanctioned place for contract text that a
 # frozen payload cannot carry. test_api_contract_is_derived asserts
 # generated == committed, so drift in either direction now fails.
-OVERRIDES: dict = {
+OVERRIDES: dict[str, dict[str, Any]] = {
+    "data/receipt_identity.json": {
+        "description": (
+            "Independent exact D-1 source-link status for five registered "
+            "channels. The closed schema permits a value-free rights refusal "
+            "or, only after separate signed authorization, at most five "
+            "title/URL/domain records per channel; it never enters the score."
+        ),
+        "stability": "stable closed refusal/authorized union; independently retried",
+        "frozen_fields": [
+            "_meta",
+            "schema_version",
+            "state",
+            "target_date",
+            "generated_at",
+            "source_id",
+            "independence_group",
+            "profile_id",
+            "profile_sha256",
+            "predecessor",
+            "channels",
+            "payload_seal_sha256",
+        ],
+    },
     "data/exposure_traversal_demo.json": {
         "description": (
             "Deterministic synthetic L0 traversal from the same signed fixture "
@@ -399,8 +432,8 @@ OVERRIDES: dict = {
 }
 
 
-def build() -> dict:
-    endpoints = []
+def build() -> dict[str, Any]:
+    endpoints: list[dict[str, Any]] = []
 
     for path in sorted(SITE_DATA.glob("*.json")):
         if path.name in EXCLUDE:

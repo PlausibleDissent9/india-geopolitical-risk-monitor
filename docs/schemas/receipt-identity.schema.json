@@ -1,0 +1,336 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/receipt-identity.schema.json",
+  "title": "IGRM daily receipt identity",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "_meta",
+    "schema_version",
+    "state",
+    "target_date",
+    "generated_at",
+    "source_id",
+    "independence_group",
+    "profile_id",
+    "profile_sha256",
+    "predecessor",
+    "channels",
+    "payload_seal_sha256"
+  ],
+  "properties": {
+    "_meta": {"$ref": "#/$defs/meta"},
+    "schema_version": {"const": "1.0.0"},
+    "state": {"enum": ["available", "partial", "unavailable"]},
+    "target_date": {"type": "string", "format": "date"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "source_id": {"const": "gdelt_doc_api"},
+    "independence_group": {"const": "gdelt_project"},
+    "profile_id": {"const": "gdelt_doc_receipt_identity_v1"},
+    "profile_sha256": {"$ref": "#/$defs/sha256"},
+    "predecessor": {"$ref": "#/$defs/predecessor"},
+    "channels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pakistan_west", "china_east", "gulf_energy", "us_trade", "shipping"],
+      "properties": {
+        "pakistan_west": {"$ref": "#/$defs/channel"},
+        "china_east": {"$ref": "#/$defs/channel"},
+        "gulf_energy": {"$ref": "#/$defs/channel"},
+        "us_trade": {"$ref": "#/$defs/channel"},
+        "shipping": {"$ref": "#/$defs/channel"}
+      }
+    },
+    "authority": {"$ref": "#/$defs/authority"},
+    "refusal": {"$ref": "#/$defs/refusal"},
+    "payload_seal_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "oneOf": [
+    {"required": ["authority"], "not": {"required": ["refusal"]}},
+    {
+      "properties": {"state": {"const": "unavailable"}},
+      "required": ["refusal"],
+      "not": {"required": ["authority"]}
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitSha1": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "predecessor": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "commit_sha", "blob_git_sha1", "blob_sha256", "target_date"],
+          "properties": {
+            "state": {"const": "path_absent"},
+            "commit_sha": {"$ref": "#/$defs/gitSha1"},
+            "blob_git_sha1": {"type": "null"},
+            "blob_sha256": {"type": "null"},
+            "target_date": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "commit_sha", "blob_git_sha1", "blob_sha256", "target_date"],
+          "properties": {
+            "state": {"enum": ["different_target", "same_target"]},
+            "commit_sha": {"$ref": "#/$defs/gitSha1"},
+            "blob_git_sha1": {"$ref": "#/$defs/gitSha1"},
+            "blob_sha256": {"$ref": "#/$defs/sha256"},
+            "target_date": {"type": "string", "format": "date"}
+          }
+        }
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["what", "license", "citation", "codebook", "source", "gdelt_attribution", "publisher_rights"],
+      "properties": {
+        "what": {"const": "Independent D-1 source-link availability for the five registered channels; it is not a score input and never substitutes for the legacy construction receipts."},
+        "license": {"const": "CC BY 4.0 applies only to IGRM-authored metadata; GDELT terms govern GDELT data and linked publisher works remain separately controlled."},
+        "citation": {"const": "Data supplied by the GDELT Project. https://www.gdeltproject.org/"},
+        "codebook": {"const": "https://igrm.in/codebook.html"},
+        "source": {"const": "https://igrm.in/data/receipt_identity.json"},
+        "gdelt_attribution": {"const": "Data supplied by the GDELT Project. https://www.gdeltproject.org/"},
+        "publisher_rights": {"const": "Headlines identify and link to publisher-controlled works; no publisher article body or full record is redistributed."}
+      }
+    },
+    "article": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "url", "domain"],
+      "properties": {
+        "title": {"type": "string", "minLength": 1, "maxLength": 500},
+        "url": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "domain": {"type": "string", "minLength": 1, "maxLength": 253}
+      }
+    },
+    "channel": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "articles"],
+          "properties": {
+            "state": {"const": "available"},
+            "articles": {"type": "array", "maxItems": 5, "items": {"$ref": "#/$defs/article"}}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "reason_code"],
+          "properties": {
+            "state": {"const": "unavailable"},
+            "reason_code": {"enum": ["rights_blocked", "source_unavailable", "source_response_invalid"]}
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase", "proof"],
+      "properties": {
+        "phase": {"enum": ["pre_network", "post_fetch", "pre_write"]},
+        "proof": {"$ref": "#/$defs/proof"}
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "profile_id",
+        "decision_id",
+        "source_signer_id",
+        "source_signer_revoked_on",
+        "profile_signer_id",
+        "profile_signer_revoked_on",
+        "reviewed_on",
+        "review_due",
+        "profile_reviewed_on",
+        "profile_review_due",
+        "target_date",
+        "evaluated_at_utc",
+        "rights_as_of",
+        "max_current_age_days",
+        "evaluated_age_days",
+        "release_deadline_utc",
+        "permitted_uses",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "decision_artifact_path",
+        "decision_artifact_sha256",
+        "decision_signature_path",
+        "decision_signature_sha256",
+        "profile_sha256",
+        "profile_signature_path",
+        "profile_signature_sha256",
+        "profile_schema_sha256",
+        "dictionary_sha256",
+        "output_schema_sha256",
+        "source_signer_public_key_sha256",
+        "profile_signer_public_key_sha256"
+      ],
+      "properties": {
+        "source_id": {"const": "gdelt_doc_api"},
+        "profile_id": {"const": "gdelt_doc_receipt_identity_v1"},
+        "decision_id": {"type": "string", "minLength": 1},
+        "source_signer_id": {"type": "string", "minLength": 1},
+        "source_signer_revoked_on": {"type": ["string", "null"], "format": "date"},
+        "profile_signer_id": {"type": "string", "minLength": 1},
+        "profile_signer_revoked_on": {"type": ["string", "null"], "format": "date"},
+        "reviewed_on": {"type": "string", "format": "date"},
+        "review_due": {"type": "string", "format": "date"},
+        "profile_reviewed_on": {"type": "string", "format": "date"},
+        "profile_review_due": {"type": "string", "format": "date"},
+        "target_date": {"type": "string", "format": "date"},
+        "evaluated_at_utc": {"type": "string", "format": "date-time"},
+        "rights_as_of": {"type": "string", "format": "date"},
+        "max_current_age_days": {"type": "integer", "minimum": 0},
+        "evaluated_age_days": {"type": "integer", "minimum": 1},
+        "release_deadline_utc": {"type": "string", "format": "date-time"},
+        "permitted_uses": {"const": ["cite_metadata", "model_processing", "publish_extract"]},
+        "rights_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "#/$defs/sha256"},
+        "decision_artifact_path": {"type": "string", "minLength": 1},
+        "decision_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "decision_signature_path": {"type": "string", "minLength": 1},
+        "decision_signature_sha256": {"$ref": "#/$defs/sha256"},
+        "profile_sha256": {"$ref": "#/$defs/sha256"},
+        "profile_signature_path": {"type": "string", "minLength": 1},
+        "profile_signature_sha256": {"$ref": "#/$defs/sha256"},
+        "profile_schema_sha256": {"$ref": "#/$defs/sha256"},
+        "dictionary_sha256": {"$ref": "#/$defs/sha256"},
+        "output_schema_sha256": {"$ref": "#/$defs/sha256"},
+        "source_signer_public_key_sha256": {"$ref": "#/$defs/sha256"},
+        "profile_signer_public_key_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_uses", "evaluations"],
+      "properties": {
+        "required_uses": {"const": ["cite_metadata", "model_processing", "publish_extract"]},
+        "evaluations": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "prefixItems": [
+            {"allOf": [{"$ref": "#/$defs/evaluation"}, {"properties": {"phase": {"const": "pre_network"}}}]},
+            {"allOf": [{"$ref": "#/$defs/evaluation"}, {"properties": {"phase": {"const": "post_fetch"}}}]},
+            {"allOf": [{"$ref": "#/$defs/evaluation"}, {"properties": {"phase": {"const": "pre_write"}}}]}
+          ],
+          "items": false
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "profile_id",
+        "target_date",
+        "evaluated_at_utc",
+        "source_decision_state",
+        "source_decision_id",
+        "profile_activation_state",
+        "authorization_status",
+        "rights_registry_sha256",
+        "rights_signers_sha256",
+        "profile_sha256"
+      ],
+      "properties": {
+        "source_id": {"const": "gdelt_doc_api"},
+        "profile_id": {"const": "gdelt_doc_receipt_identity_v1"},
+        "target_date": {"type": "string", "format": "date"},
+        "evaluated_at_utc": {"type": "string", "format": "date-time"},
+        "source_decision_state": {"enum": ["approved", "denied", "expired", "review_required"]},
+        "source_decision_id": {"type": "string", "minLength": 1},
+        "profile_activation_state": {"enum": ["inactive_pending_human_signature", "active"]},
+        "authorization_status": {
+          "enum": [
+            "authorized",
+            "receipt_identity_profile_inactive",
+            "receipt_identity_profile_signature_invalid",
+            "receipt_identity_profile_signer_missing",
+            "receipt_identity_profile_signer_untrusted",
+            "receipt_identity_profile_dates_invalid",
+            "receipt_identity_source_decision_denied",
+            "receipt_identity_source_decision_expired",
+            "receipt_identity_source_decision_review_required",
+            "receipt_identity_source_decision_missing",
+            "receipt_identity_source_decision_future_dated",
+            "receipt_identity_source_dates_invalid",
+            "receipt_identity_source_use_not_permitted",
+            "receipt_identity_source_signer_missing",
+            "receipt_identity_source_signer_untrusted",
+            "receipt_identity_source_signer_revoked",
+            "receipt_identity_source_decision_expired_now",
+            "receipt_identity_source_max_age_invalid",
+            "receipt_identity_source_terms_mismatch",
+            "receipt_identity_source_decision_artifact_invalid",
+            "receipt_identity_source_decision_artifact_digest_mismatch",
+            "receipt_identity_source_decision_artifact_mismatch",
+            "receipt_identity_source_decision_signature_invalid",
+            "receipt_identity_rights_registry_future_dated",
+            "receipt_identity_target_not_completed_d_minus_1",
+            "receipt_identity_target_too_old"
+          ]
+        },
+        "rights_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "rights_signers_sha256": {"$ref": "#/$defs/sha256"},
+        "profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "refusal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "blockers", "authority_snapshot"],
+      "properties": {
+        "code": {"const": "rights_blocked"},
+        "blockers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "receipt_identity_profile_inactive",
+              "receipt_identity_profile_signature_invalid",
+              "receipt_identity_profile_signer_missing",
+              "receipt_identity_profile_signer_untrusted",
+              "receipt_identity_profile_dates_invalid",
+              "receipt_identity_source_decision_denied",
+              "receipt_identity_source_decision_expired",
+              "receipt_identity_source_decision_review_required",
+              "receipt_identity_source_decision_missing",
+              "receipt_identity_source_decision_future_dated",
+              "receipt_identity_source_dates_invalid",
+              "receipt_identity_source_use_not_permitted",
+              "receipt_identity_source_signer_missing",
+              "receipt_identity_source_signer_untrusted",
+              "receipt_identity_source_signer_revoked",
+              "receipt_identity_source_decision_expired_now",
+              "receipt_identity_source_max_age_invalid",
+              "receipt_identity_source_terms_mismatch",
+              "receipt_identity_source_decision_artifact_invalid",
+              "receipt_identity_source_decision_artifact_digest_mismatch",
+              "receipt_identity_source_decision_artifact_mismatch",
+              "receipt_identity_source_decision_signature_invalid",
+              "receipt_identity_rights_registry_future_dated",
+              "receipt_identity_target_not_completed_d_minus_1",
+              "receipt_identity_target_too_old"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "authority_snapshot": {"$ref": "#/$defs/snapshot"}
+      }
+    }
+  }
+}

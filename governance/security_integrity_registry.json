@@ -6,7 +6,7 @@
   "workflow_directory": ".github/workflows",
   "implementation": {
     "path": "src/security_integrity.py",
-    "sha256": "fdb9e153641c7ac75dcd04d677216f59cb405372d93286341877a6cc49aece44"
+    "sha256": "a4ddf8d9e3f153f9ca8f2772d1662e5878c0321cb7bbe8c42ce9c54b8a1c7e35"
   },
   "actions": {
     "actions/checkout": {
@@ -32,7 +32,7 @@
     "required_gate_command": "bash scripts/gate.sh --publish",
     "push_script": {
       "path": "scripts/publish_push.sh",
-      "sha256": "9042c470d5b5a739419bc62fe705122750ddf8e40a298ac2aa9e24bfb6fc797c"
+      "sha256": "4fbe5a9b85c68a923d5c9af0bce47d072bc53230bb91d18911701a8f1dcd2e91"
     },
     "gate_script": {
       "path": "scripts/gate.sh",
@@ -49,6 +49,7 @@
     "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
     "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
     "The rebased cbbdf45-equivalent predecessor projection at 1ba3618 does not independently authorize the successor release-rights insertion: coordinated changes to that insertion, its validator and this registry remain outside the machine-verifiable trust boundary until an external human-signed transition root exists.",
+    "The receipt-identity release check is repository self-consistency only: production source and profile signer trust remain empty, and this transition does not itself authorize headline quotation or source access.",
     "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
   ]
 }

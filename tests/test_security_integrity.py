@@ -78,11 +78,18 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
         "authenticated_deployment": False,
         "atomic_hosted_snapshot": False,
     }
-    # 13 since 2026-08-09: historical-intelligence.yml. This count is an
+    # 14 since 2026-08-12: receipt-identity.yml. This count is an
     # inventory lock -- a lane that appears without a deliberate edit here
     # is a lane nobody reviewed, so the number is meant to be updated in
     # the same commit that adds one, never loosened to an inequality.
-    assert len(report["publishing_lanes"]) == 13
+    assert len(report["publishing_lanes"]) == 14
+    assert report["controls"]["receipt_identity_release_rights"] == {
+        "status": "default_deny_inactive",
+        "candidate_source": "exact_100644_git_blobs",
+        "predecessor_policy": "exact_remote_parent_100644_same_target_monotone",
+        "evaluation": "after_final_rebase_immediately_before_push",
+        "score_dependency": False,
+    }
     assert report["controls"]["publisher_credential_isolation"] == {
         "status": "pass",
         "checkout_persist_credentials": False,
@@ -315,6 +322,36 @@ def test_registered_but_unguarded_push_script_is_still_refused(
     )
     _rehash_registered_script(security_tree, "push_script")
     _refusal(security_tree, "publisher_push_guard_count_invalid")
+
+
+def test_receipt_identity_release_rights_check_cannot_be_removed(
+    security_tree: Path,
+) -> None:
+    path = security_tree / "scripts" / "publish_push.sh"
+    text = path.read_text(encoding="utf-8")
+    assert security_integrity.RECEIPT_IDENTITY_RELEASE_BLOCK in text
+    path.write_text(
+        text.replace(security_integrity.RECEIPT_IDENTITY_RELEASE_BLOCK, "", 1),
+        encoding="utf-8",
+    )
+    _rehash_registered_script(security_tree, "push_script")
+    _refusal(security_tree, "publisher_receipt_identity_release_guard_invalid")
+
+
+def test_receipt_identity_release_rights_check_cannot_move_after_push(
+    security_tree: Path,
+) -> None:
+    path = security_tree / "scripts" / "publish_push.sh"
+    text = path.read_text(encoding="utf-8")
+    block = security_integrity.RECEIPT_IDENTITY_RELEASE_BLOCK
+    assert block in text
+    text = text.replace(block, "", 1).replace(
+        "  GIT_CONFIG_COUNT=1 \\", block + "  GIT_CONFIG_COUNT=1 \\", 1
+    )
+    # The exact guard still appears once, but no longer before credential setup.
+    path.write_text(text.replace(block, "", 1) + block, encoding="utf-8")
+    _rehash_registered_script(security_tree, "push_script")
+    _refusal(security_tree, "publisher_receipt_identity_release_guard_invalid")
 
 
 def test_registered_generic_publisher_cannot_skip_manifest_refresh(

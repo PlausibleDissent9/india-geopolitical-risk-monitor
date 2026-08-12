@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.5.0",
+  "contract_version": "2.6.0",
   "frozen_date": "2026-08-12",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
@@ -732,6 +732,26 @@
     "claim_boundary"
    ],
    "stability": "deterministic repository-candidate snapshot; unsigned"
+  },
+  {
+   "path": "data/receipt_identity.json",
+   "format": "json",
+   "description": "Independent exact D-1 source-link status for five registered channels. The closed schema permits a value-free rights refusal or, only after separate signed authorization, at most five title/URL/domain records per channel; it never enters the score.",
+   "frozen_fields": [
+    "_meta",
+    "schema_version",
+    "state",
+    "target_date",
+    "generated_at",
+    "source_id",
+    "independence_group",
+    "profile_id",
+    "profile_sha256",
+    "predecessor",
+    "channels",
+    "payload_seal_sha256"
+   ],
+   "stability": "stable closed refusal/authorized union; independently retried"
   },
   {
    "path": "data/receipts.json",
@@ -1512,6 +1532,23 @@
     "$defs"
    ],
    "stability": "static synthetic foundation 1.0.0"
+  },
+  {
+   "path": "schemas/receipt-identity.schema.json",
+   "format": "json",
+   "description": "Closed schema for the independently retryable, rights-gated D-1 receipt-identity lane. It permits only title, URL and domain extracts in an authorized payload and a value-free unavailable status while rights remain pending.",
+   "frozen_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "additionalProperties",
+    "required",
+    "properties",
+    "oneOf",
+    "$defs"
+   ],
+   "stability": "static versioned release profile 1.0.0"
   },
   {
    "path": "schemas/sensor-fusion.schema.json",

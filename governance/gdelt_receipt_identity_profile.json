@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0.0",
+  "profile_id": "gdelt_doc_receipt_identity_v1",
+  "profile_schema": {
+    "path": "governance/schemas/gdelt-receipt-identity-profile.schema.json",
+    "sha256": "2a1d4b94456137394e2de1dd02a3fc6624450e72c17e6192de98dc5e20ee3d4c"
+  },
+  "source": {
+    "source_id": "gdelt_doc_api",
+    "independence_group": "gdelt_project",
+    "api_endpoint": "https://api.gdeltproject.org/api/v2/doc/doc",
+    "terms_url": "https://www.gdeltproject.org/about.html"
+  },
+  "target": {
+    "date_policy": "completed_utc_day_d_minus_1",
+    "timezone": "UTC"
+  },
+  "channels": {
+    "ids": [
+      "pakistan_west",
+      "china_east",
+      "gulf_energy",
+      "us_trade",
+      "shipping"
+    ],
+    "dictionary": {
+      "path": "dictionaries.json",
+      "sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40"
+    },
+    "maximum_articles_per_channel": 5
+  },
+  "acquisition": {
+    "mode": "artlist",
+    "format": "json",
+    "sort": "hybridrel",
+    "max_records_per_query": 10,
+    "maximum_requests_per_run": 7,
+    "request_timeout_seconds": 45,
+    "request_interval_seconds": 15,
+    "query_policy": "registered_phrases_verbatim_partitioned_at_230_characters_with_registered_anchor_anded_outside_each_group"
+  },
+  "retention": {
+    "persistent_article_fields": [
+      "title",
+      "url",
+      "domain"
+    ],
+    "forbidden_fields": [
+      "article_body",
+      "author",
+      "byline",
+      "content",
+      "description",
+      "document_id",
+      "image",
+      "ngram",
+      "post",
+      "pre",
+      "raw_response",
+      "snippet",
+      "source_record"
+    ],
+    "raw_response_cache": false
+  },
+  "rights": {
+    "required_uses": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ],
+    "forbidden_uses": [
+      "publish_derived_value",
+      "redistribute_full_record"
+    ],
+    "evaluation_phases": [
+      "pre_network",
+      "post_fetch",
+      "pre_write"
+    ],
+    "release_evaluation": "after_final_rebase_immediately_before_push"
+  },
+  "attribution": {
+    "gdelt_citation": "Data supplied by the GDELT Project.",
+    "gdelt_link": "https://www.gdeltproject.org/",
+    "publisher_rights_notice": "Headlines identify and link to publisher-controlled works; no publisher article body or full record is redistributed.",
+    "license_notice": "CC BY 4.0 applies only to IGRM-authored metadata; GDELT terms govern GDELT data and linked publisher works remain separately controlled."
+  },
+  "output": {
+    "path": "docs/data/receipt_identity.json",
+    "schema": {
+      "path": "docs/schemas/receipt-identity.schema.json",
+      "sha256": "ca3b4dd87e8bb03600c3181034035c3c4d1074842e86f4a239bf396418093323"
+    },
+    "inactive_policy": "closed_value_free_status_only",
+    "active_policy": "closed_title_url_domain_extract_only",
+    "same_target_retry_policy": "available_channel_set_monotone_superset_with_exact_prior_article_rows",
+    "predecessor_policy": "exact_remote_parent_100644_blob_prewrite_and_prerelease",
+    "rights_withdrawal_policy": "value_free_unavailable_only_when_current_authority_refuses",
+    "legacy_relationship": "independent_display_lane_never_score_input_or_legacy_receipt_writer"
+  },
+  "activation": {
+    "state": "inactive_pending_human_signature",
+    "signer_id": null,
+    "reviewed_on": null,
+    "review_due": null,
+    "signature_path": null
+  }
+}

@@ -2,7 +2,7 @@
  "openapi": "3.1.0",
  "info": {
   "title": "India Geopolitical Risk Monitor (IGRM)",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "summary": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
   "description": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.\n\nAn analytical field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the date recorded here, before removal in the next major version. Operational or personal material served by mistake may be withdrawn immediately, with the removal recorded here.\n\nauth: none\ncors: Access-Control-Allow-Origin: *\nrate_limit: none stated; ordinary politeness (poll daily, not per-request)\nrefresh: daily by 06:30 IST (01:00 UTC) for the final day; nowcast.json refreshes about every two hours after and is excluded from this freeze (payload shape may still change, disclosed in its own _meta)",
   "license": {
@@ -1760,6 +1760,53 @@
           "totals": {},
           "integrity": {},
           "claim_boundary": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/data/receipt_identity.json": {
+   "get": {
+    "operationId": "get_data_receipt_identity_json",
+    "description": "Independent exact D-1 source-link status for five registered channels. The closed schema permits a value-free rights refusal or, only after separate signed authorization, at most five title/URL/domain records per channel; it never enters the score.",
+    "x-igrm-stability": "stable closed refusal/authorized union; independently retried",
+    "responses": {
+     "200": {
+      "description": "Independent exact D-1 source-link status for five registered channels. The closed schema permits a value-free rights refusal or, only after separate signed authorization, at most five title/URL/domain records per channel; it never enters the score.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "_meta",
+          "schema_version",
+          "state",
+          "target_date",
+          "generated_at",
+          "source_id",
+          "independence_group",
+          "profile_id",
+          "profile_sha256",
+          "predecessor",
+          "channels",
+          "payload_seal_sha256"
+         ],
+         "properties": {
+          "_meta": {},
+          "schema_version": {},
+          "state": {},
+          "target_date": {},
+          "generated_at": {},
+          "source_id": {},
+          "independence_group": {},
+          "profile_id": {},
+          "profile_sha256": {},
+          "predecessor": {},
+          "channels": {},
+          "payload_seal_sha256": {}
          }
         }
        }
@@ -3709,6 +3756,47 @@
           "additionalProperties": {},
           "required": {},
           "properties": {},
+          "$defs": {}
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/schemas/receipt-identity.schema.json": {
+   "get": {
+    "operationId": "get_schemas_receipt_identity_schema_json",
+    "description": "Closed schema for the independently retryable, rights-gated D-1 receipt-identity lane. It permits only title, URL and domain extracts in an authorized payload and a value-free unavailable status while rights remain pending.",
+    "x-igrm-stability": "static versioned release profile 1.0.0",
+    "responses": {
+     "200": {
+      "description": "Closed schema for the independently retryable, rights-gated D-1 receipt-identity lane. It permits only title, URL and domain extracts in an authorized payload and a value-free unavailable status while rights remain pending.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "$schema",
+          "$id",
+          "title",
+          "type",
+          "additionalProperties",
+          "required",
+          "properties",
+          "oneOf",
+          "$defs"
+         ],
+         "properties": {
+          "$schema": {},
+          "$id": {},
+          "title": {},
+          "type": {},
+          "additionalProperties": {},
+          "required": {},
+          "properties": {},
+          "oneOf": {},
           "$defs": {}
          }
         }

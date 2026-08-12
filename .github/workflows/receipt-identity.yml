@@ -1,0 +1,56 @@
+name: receipt-identity
+
+# A small independent evidence surface. Three daily attempts recover from a
+# transient GDELT failure without rerunning or blocking the aggregate score.
+# Pending rights still produce a fresh value-free status; no headline can be
+# fetched or released until both the source decision and the separate profile
+# carry valid trusted-human signatures.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 1 * * *"   # 07:07 IST
+    - cron: "37 7 * * *"   # 13:07 IST retry
+    - cron: "37 13 * * *"  # 19:07 IST retry
+
+permissions:
+  contents: write
+
+concurrency:
+  group: igrm-receipt-identity-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Build exact completed D-1 identity status or source links
+        id: acquire
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python -m src.receipt_identity
+      - name: Verify fresh closed payload
+        run: |
+          TARGET=$(date -u -d "$(date -u +%F) - 1 day" +%F)
+          python -m src.receipt_identity --verify-payload --expected-target "$TARGET"
+      - name: Stamp universal metadata and asset versions
+        run: |
+          python -m src.stamp_meta
+          python -m src.stamp_assets
+      - name: Publish independently of aggregate score
+        env:
+          IGRM_PUBLISH_CLASS: receipt_identity
+          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add -- docs/data/receipt_identity.json
+          bash scripts/publish_push.sh "receipts: D-1 identity status $(date -u +%F)"

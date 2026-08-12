@@ -7,10 +7,10 @@
   "what": "Deterministic byte inventory for every other frozen API-contract endpoint; self-excluded and unsigned."
  },
  "api_contract": {
-  "contract_version": "2.5.0",
-  "endpoint_denominator": 118,
+  "contract_version": "2.6.0",
+  "endpoint_denominator": 120,
   "path": "docs/data/api_contract.json",
-  "raw_sha256": "759ae1c2ffe8deda677494341409bcc2e14e3f523a86f7f3979a7ce9d43d290a"
+  "raw_sha256": "fb17cd65d315bc0bf8dc5b1a256c78a2c2da69e5fc2806198d19b4943b313c6c"
  },
  "claim_boundary": "The artifact proves deterministic repository-candidate byte consistency under SHA-256 when its own raw-byte digest is obtained from an independent boundary. It is unsigned and does not authenticate a deployment, prove that multiple hosted requests were atomic, establish source truth or rights, or certify security.",
  "entries": [
@@ -212,7 +212,7 @@
    "git_mode": "100644",
    "path": "data/evolution.json",
    "repository_path": "docs/data/evolution.json",
-   "sha256": "c5dca0b4ff9b44c90bb9161aaa61b582807ada28f2cf3d860c18303a309ac65c"
+   "sha256": "105ee18a80e64945c9d15645550aba6d86bedca370117ad3919824ef7638e6f0"
   },
   {
    "bytes": 4892,
@@ -447,6 +447,14 @@
    "sha256": "d6e258db2c4dd36ab27af2a633f87b4ff4581a7de7b72ce63f19fa23da1052f4"
   },
   {
+   "bytes": 2686,
+   "format": "json",
+   "git_mode": "100644",
+   "path": "data/receipt_identity.json",
+   "repository_path": "docs/data/receipt_identity.json",
+   "sha256": "4e7652e2dccf506b82991ad9c817e3e67b67fb1da4e7046f1858ac880446ec38"
+  },
+  {
    "bytes": 181789,
    "format": "json",
    "git_mode": "100644",
@@ -623,12 +631,12 @@
    "sha256": "9380c060d0cf55cd1299c6b0bfc4cabfb9f57df1df504f3cc824805810e5fa70"
   },
   {
-   "bytes": 4042,
+   "bytes": 4584,
    "format": "json",
    "git_mode": "100644",
    "path": "data/security_integrity.json",
    "repository_path": "docs/data/security_integrity.json",
-   "sha256": "28465ef0c7b137127d66658285ad64b76d2aef50bdafc62d6592fac9d447c852"
+   "sha256": "505465b8eaee24b1d5d6098e5ad0140976365fcc8be345c7f97f5092a5eaf192"
   },
   {
    "bytes": 24668,
@@ -911,6 +919,14 @@
    "sha256": "bd0bcc5551a6c550b3abdeaa6977a5d63947352f0b3d12d8186d7eb05e3c9246"
   },
   {
+   "bytes": 14135,
+   "format": "json",
+   "git_mode": "100644",
+   "path": "schemas/receipt-identity.schema.json",
+   "repository_path": "docs/schemas/receipt-identity.schema.json",
+   "sha256": "ca3b4dd87e8bb03600c3181034035c3c4d1074842e86f4a239bf396418093323"
+  },
+  {
    "bytes": 10737,
    "format": "json",
    "git_mode": "100644",
@@ -962,7 +978,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "d08a4865b121a9497900a73657a36ed3b496b367640aef76c6d67f78c75f864d",
+  "entries_sha256": "33d4e11c24b65285ec8be4247cb169d78a2f0a4f25f722351abdd4237d87f947",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -973,17 +989,17 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7271282,
-  "hashed_entries": 117,
+  "hashed_bytes": 7288645,
+  "hashed_entries": 119,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
  },
  "universe": {
   "basis": "api_contract.endpoints",
-  "endpoint_denominator": 118,
-  "endpoint_set_sha256": "2cc6abd766b3e1322229f10861f544d102e1adfe91969e68c13ddcf62f1cf146",
+  "endpoint_denominator": 120,
+  "endpoint_set_sha256": "ddad748516760bd0b86ee2fdb1e04daceeea9db332ff994bed605531459a3341",
   "excluded_endpoint_denominator": 1,
-  "hashed_endpoint_denominator": 117,
+  "hashed_endpoint_denominator": 119,
   "order": "public_path_utf8_byte_ascending"
  }
 }

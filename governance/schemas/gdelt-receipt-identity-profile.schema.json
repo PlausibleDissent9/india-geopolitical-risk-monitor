@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/schemas/gdelt-receipt-identity-profile.schema.json",
+  "title": "IGRM GDELT receipt-identity release profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "profile_schema",
+    "source",
+    "target",
+    "channels",
+    "acquisition",
+    "retention",
+    "rights",
+    "attribution",
+    "output",
+    "activation"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_id": {"const": "gdelt_doc_receipt_identity_v1"},
+    "profile_schema": {"$ref": "#/$defs/fileBinding"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "independence_group", "api_endpoint", "terms_url"],
+      "properties": {
+        "source_id": {"const": "gdelt_doc_api"},
+        "independence_group": {"const": "gdelt_project"},
+        "api_endpoint": {"const": "https://api.gdeltproject.org/api/v2/doc/doc"},
+        "terms_url": {"const": "https://www.gdeltproject.org/about.html"}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date_policy", "timezone"],
+      "properties": {
+        "date_policy": {"const": "completed_utc_day_d_minus_1"},
+        "timezone": {"const": "UTC"}
+      }
+    },
+    "channels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ids", "dictionary", "maximum_articles_per_channel"],
+      "properties": {
+        "ids": {
+          "const": ["pakistan_west", "china_east", "gulf_energy", "us_trade", "shipping"]
+        },
+        "dictionary": {"$ref": "#/$defs/fileBinding"},
+        "maximum_articles_per_channel": {"const": 5}
+      }
+    },
+    "acquisition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "format",
+        "sort",
+        "max_records_per_query",
+        "maximum_requests_per_run",
+        "request_timeout_seconds",
+        "request_interval_seconds",
+        "query_policy"
+      ],
+      "properties": {
+        "mode": {"const": "artlist"},
+        "format": {"const": "json"},
+        "sort": {"const": "hybridrel"},
+        "max_records_per_query": {"const": 10},
+        "maximum_requests_per_run": {"const": 7},
+        "request_timeout_seconds": {"const": 45},
+        "request_interval_seconds": {"const": 15},
+        "query_policy": {
+          "const": "registered_phrases_verbatim_partitioned_at_230_characters_with_registered_anchor_anded_outside_each_group"
+        }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["persistent_article_fields", "forbidden_fields", "raw_response_cache"],
+      "properties": {
+        "persistent_article_fields": {"const": ["title", "url", "domain"]},
+        "forbidden_fields": {
+          "const": [
+            "article_body",
+            "author",
+            "byline",
+            "content",
+            "description",
+            "document_id",
+            "image",
+            "ngram",
+            "post",
+            "pre",
+            "raw_response",
+            "snippet",
+            "source_record"
+          ]
+        },
+        "raw_response_cache": {"const": false}
+      }
+    },
+    "rights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_uses", "forbidden_uses", "evaluation_phases", "release_evaluation"],
+      "properties": {
+        "required_uses": {"const": ["cite_metadata", "model_processing", "publish_extract"]},
+        "forbidden_uses": {"const": ["publish_derived_value", "redistribute_full_record"]},
+        "evaluation_phases": {"const": ["pre_network", "post_fetch", "pre_write"]},
+        "release_evaluation": {"const": "after_final_rebase_immediately_before_push"}
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gdelt_citation", "gdelt_link", "publisher_rights_notice", "license_notice"],
+      "properties": {
+        "gdelt_citation": {"const": "Data supplied by the GDELT Project."},
+        "gdelt_link": {"const": "https://www.gdeltproject.org/"},
+        "publisher_rights_notice": {
+          "const": "Headlines identify and link to publisher-controlled works; no publisher article body or full record is redistributed."
+        },
+        "license_notice": {
+          "const": "CC BY 4.0 applies only to IGRM-authored metadata; GDELT terms govern GDELT data and linked publisher works remain separately controlled."
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "schema",
+        "inactive_policy",
+        "active_policy",
+        "same_target_retry_policy",
+        "predecessor_policy",
+        "rights_withdrawal_policy",
+        "legacy_relationship"
+      ],
+      "properties": {
+        "path": {"const": "docs/data/receipt_identity.json"},
+        "schema": {"$ref": "#/$defs/fileBinding"},
+        "inactive_policy": {"const": "closed_value_free_status_only"},
+        "active_policy": {"const": "closed_title_url_domain_extract_only"},
+        "same_target_retry_policy": {
+          "const": "available_channel_set_monotone_superset_with_exact_prior_article_rows"
+        },
+        "predecessor_policy": {
+          "const": "exact_remote_parent_100644_blob_prewrite_and_prerelease"
+        },
+        "rights_withdrawal_policy": {
+          "const": "value_free_unavailable_only_when_current_authority_refuses"
+        },
+        "legacy_relationship": {"const": "independent_display_lane_never_score_input_or_legacy_receipt_writer"}
+      }
+    },
+    "activation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "signer_id", "reviewed_on", "review_due", "signature_path"],
+          "properties": {
+            "state": {"const": "inactive_pending_human_signature"},
+            "signer_id": {"type": "null"},
+            "reviewed_on": {"type": "null"},
+            "review_due": {"type": "null"},
+            "signature_path": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "signer_id", "reviewed_on", "review_due", "signature_path"],
+          "properties": {
+            "state": {"const": "active"},
+            "signer_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+            "reviewed_on": {"type": "string", "format": "date"},
+            "review_due": {"type": "string", "format": "date"},
+            "signature_path": {
+              "type": "string",
+              "pattern": "^governance/rights_decisions/[A-Za-z0-9_.-]+\\.sig$"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "fileBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

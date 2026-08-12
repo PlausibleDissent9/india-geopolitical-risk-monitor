@@ -795,6 +795,37 @@ credibility (tier), then visible aptness, then arrival order.
 list. <code>_meta.method</code> says which lane(s) produced the file (the
 artlist-only fallback publishes when the corpus files are
 unavailable). Tiers order presentation only and never enter any score.</p>
+<h2>docs/data/receipt_identity.json</h2>
+<p>An independently retryable source-link surface for the exact completed UTC
+D-1 day. It is not a score input and never writes or substitutes for
+<code>receipts.json</code>, <code>receipts_archive.json</code>, the NGram caches, shares, history, or
+latest scores. Each of the five exact registered channels is either
+<code>available</code> with at most five deduplicated <code>{title,url,domain}</code> records or
+<code>unavailable</code> with a typed reason. An empty <code>articles</code> array means a completed
+request returned zero valid links; an unavailable block is missing evidence,
+not zero.</p>
+<p>The lane is default-deny. The committed profile remains
+<code>inactive_pending_human_signature</code>, the GDELT DOC source decision remains
+<code>review_required</code>, and production signer trust is empty, so the current public
+form is a value-free refusal and no source request occurs. Future activation
+requires both a trusted human-signed source decision and a separately signed
+closed profile authorizing exactly <code>cite_metadata</code>, <code>model_processing</code>, and
+<code>publish_extract</code>. It never requests, retains, or republishes article bodies,
+snippets, descriptions, bylines, images, story/document identifiers, raw
+responses, or full source records. GDELT requires attribution for use of its
+datasets. Headlines here identify and link to publisher-controlled works;
+GDELT's dataset terms are not presented as a publisher copyright sublicense.</p>
+<p>The receipts page renders these links only when <code>target_date</code> exactly matches
+the current published score date. A stale or future identity payload therefore
+cannot masquerade as the score day's evidence. Source or rights failure affects
+only this payload and never blocks the aggregate score.</p>
+<p>Same-target retries are monotone over the exact regular Git blob at the current
+remote parent. Every previously available channel retains its exact ordered
+article rows, while later retries may recover additional channels. The check is
+repeated against the exact candidate parent immediately before push, so a
+rebase cannot silently replace a stronger same-day payload with a weaker or
+different one. Only a current rights refusal may withdraw all article values;
+that transition emits the closed value-free unavailable state instead.</p>
 <h2>docs/data/uncertainty.json</h2>
 <p>95% sampling bands for sample-estimated daily scores, keyed
 <code>days.&lt;date&gt;.&lt;channel&gt; = [lo, hi]</code> in percentile-score units (0-100),
@@ -919,8 +950,8 @@ external utility or institutional adoption.</p>
 <h2>docs/data/public_api_byte_manifest.json</h2>
 <p>Deterministic byte inventory for every contract endpoint except itself. Each
 entry binds the public path, repository path, contract format, Git mode, byte
-length and SHA-256 digest. <code>universe</code> publishes all three denominators: 118
-contract endpoints, 117 hashed endpoints and one exact self-exclusion. The
+length and SHA-256 digest. <code>universe</code> publishes all three denominators: 120
+contract endpoints, 119 hashed endpoints and one exact self-exclusion. The
 generator reads one stage-0 Git index or named Git tree; mutable worktree
 overlays are not inputs. The generic publisher refreshes it after rebase and
 before the committed gate, while the final-publication CAS adds it to both

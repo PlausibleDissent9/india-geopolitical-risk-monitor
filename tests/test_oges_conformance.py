@@ -200,16 +200,17 @@ def test_every_public_oges_json_download_is_in_the_frozen_api_contract() -> None
     }
     assert expected <= endpoints.keys()
     for path in expected:
-        expected_stability = (
-            "static synthetic foundation 1.0.0"
-            if path in {
+        if path == "schemas/receipt-identity.schema.json":
+            expected_stability = "static versioned release profile 1.0.0"
+        elif path in {
                 "schemas/sensor-fusion.schema.json",
                 "schemas/exposure-dna.schema.json",
                 "schemas/shock-scenario.schema.json",
                 "schemas/shock-compilation.schema.json",
                 "schemas/evidence-output-set.schema.json",
                 "schemas/max-state-join.schema.json",
-            }
-            else "static versioned public draft 0.1.0"
-        )
+        }:
+            expected_stability = "static synthetic foundation 1.0.0"
+        else:
+            expected_stability = "static versioned public draft 0.1.0"
         assert endpoints[path]["stability"] == expected_stability

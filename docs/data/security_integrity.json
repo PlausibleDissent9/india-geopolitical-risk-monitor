@@ -21,10 +21,10 @@
   "full_history_for_frozen_evidence": {
    "fetch_depth": 0,
    "status": "pass",
-   "workflow_count": 18
+   "workflow_count": 19
   },
   "immutable_workflow_actions": {
-   "action_references": 36,
+   "action_references": 38,
    "reviewed_action_identities": 2,
    "status": "pass"
   },
@@ -37,7 +37,7 @@
     "watchdog.yml"
    ],
    "status": "pass",
-   "workflow_count": 19
+   "workflow_count": 20
   },
   "public_api_byte_manifest_barrier": {
    "atomic_hosted_snapshot": false,
@@ -59,12 +59,19 @@
    "token_scope": "final_publication_step_only"
   },
   "publisher_environment_parity": {
-   "publishing_lane_count": 13,
+   "publishing_lane_count": 14,
    "requirement_sets": [
     "requirements.txt",
     "requirements-dev.txt"
    ],
    "status": "pass"
+  },
+  "receipt_identity_release_rights": {
+   "candidate_source": "exact_100644_git_blobs",
+   "evaluation": "after_final_rebase_immediately_before_push",
+   "predecessor_policy": "exact_remote_parent_100644_same_target_monotone",
+   "score_dependency": false,
+   "status": "default_deny_inactive"
   }
  },
  "default_policy": "deny",
@@ -74,6 +81,7 @@
   "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
   "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
   "The rebased cbbdf45-equivalent predecessor projection at 1ba3618 does not independently authorize the successor release-rights insertion: coordinated changes to that insertion, its validator and this registry remain outside the machine-verifiable trust boundary until an external human-signed transition root exists.",
+  "The receipt-identity release check is repository self-consistency only: production source and profile signer trust remain empty, and this transition does not itself authorize headline quotation or source access.",
   "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
  ],
  "publishing_lanes": [
@@ -88,6 +96,7 @@
   "notes.yml",
   "nowcast.yml",
   "permanence.yml",
+  "receipt-identity.yml",
   "receipts-extended.yml",
   "validate.yml"
  ],

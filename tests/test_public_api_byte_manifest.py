@@ -77,16 +77,16 @@ def _refusal(code: str, call: Callable[[], object]) -> None:
 
 def test_candidate_manifest_is_exact_complete_and_schema_valid(candidate_tree: str) -> None:
     payload = manifest.verify_tree(candidate_tree)
-    assert payload["api_contract"]["endpoint_denominator"] == 118
+    assert payload["api_contract"]["endpoint_denominator"] == 120
     assert payload["universe"] == {
         "basis": "api_contract.endpoints",
-        "endpoint_denominator": 118,
+        "endpoint_denominator": 120,
         "endpoint_set_sha256": payload["universe"]["endpoint_set_sha256"],
         "excluded_endpoint_denominator": 1,
-        "hashed_endpoint_denominator": 117,
+        "hashed_endpoint_denominator": 119,
         "order": "public_path_utf8_byte_ascending",
     }
-    assert payload["totals"]["hashed_entries"] == 117
+    assert payload["totals"]["hashed_entries"] == 119
     assert payload["excluded_entries"] == [
         {
             "path": manifest.MANIFEST_API_PATH,

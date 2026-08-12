@@ -19,13 +19,13 @@ def test_contract_version_is_semver():
     assert re.match(r"^\d+\.\d+\.\d+$", version), version
 
 
-def test_additive_2_5_freeze_has_the_exact_endpoint_denominators() -> None:
+def test_additive_2_6_freeze_has_the_exact_endpoint_denominators() -> None:
     contract = _contract()
-    assert contract["_meta"]["contract_version"] == "2.5.0"
+    assert contract["_meta"]["contract_version"] == "2.6.0"
     assert contract["_meta"]["frozen_date"] == "2026-08-12"
-    assert len(contract["endpoints"]) == 118
+    assert len(contract["endpoints"]) == 120
     assert Counter(row["format"] for row in contract["endpoints"]) == {
-        "json": 112,
+        "json": 114,
         "csv": 5,
         "rss": 1,
     }
@@ -36,6 +36,16 @@ def test_additive_2_5_freeze_has_the_exact_endpoint_denominators() -> None:
     )
     assert traversal["stability"] == "static synthetic L0 conformance vector 1.0.0"
     assert "not a real event" in traversal["description"]
+    receipt_identity = next(
+        row
+        for row in contract["endpoints"]
+        if row["path"] == "data/receipt_identity.json"
+    )
+    assert receipt_identity["stability"].startswith("stable closed refusal/authorized")
+    assert "refusal" not in receipt_identity["frozen_fields"]
+    assert "authority" not in receipt_identity["frozen_fields"]
+    assert "predecessor" in receipt_identity["frozen_fields"]
+    assert "never enters the score" in receipt_identity["description"]
 
 
 def test_contract_is_self_citing_and_freezes_outcome_availability_fields():
@@ -88,6 +98,8 @@ def test_versioned_oges_profile_and_schemas_are_first_class_endpoints():
                 "schemas/evidence-output-set.schema.json",
                 "schemas/max-state-join.schema.json",
             }
+            else "static versioned release profile 1.0.0"
+            if path == "schemas/receipt-identity.schema.json"
             else "static versioned public draft 0.1.0"
         )
         assert endpoint["stability"] == expected_stability

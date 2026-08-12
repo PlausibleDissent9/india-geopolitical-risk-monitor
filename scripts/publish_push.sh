@@ -134,6 +134,11 @@ git_push() {
     candidate=$(git rev-parse --verify HEAD) || return 1
     python -m src.nowcast --check-release-rights "$candidate" || return 1
   fi
+  if [ "${IGRM_PUBLISH_CLASS:-}" = "receipt_identity" ]; then
+    local candidate
+    candidate=$(git rev-parse --verify HEAD) || return 1
+    python -m src.receipt_identity --check-release-rights "$candidate" || return 1
+  fi
   GIT_CONFIG_COUNT=1 \
     GIT_CONFIG_KEY_0='http.https://github.com/.extraheader' \
     GIT_CONFIG_VALUE_0="$AUTH_HEADER" \
