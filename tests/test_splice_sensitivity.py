@@ -50,9 +50,14 @@ def test_one_day_channels_are_not_silently_reestimated():
 
 
 def test_recomputation_refuses_before_identity_cache_processing_without_rights():
+    # The signed 2026-08-12 aggregate-2.0 decision approves the source for
+    # aggregate uses only, so the identity-cache path now refuses one gate
+    # later: not "review_required" but "use_not_permitted". Same boundary,
+    # same refusal-before-processing; the identity path stays closed until a
+    # separate identity-use decision exists.
     with pytest.raises(
         ngram_rights.NgramRightsError,
-        match="^ngram_rights_decision_review_required$",
+        match="^ngram_public_identity_use_not_permitted$",
     ):
         build()
 

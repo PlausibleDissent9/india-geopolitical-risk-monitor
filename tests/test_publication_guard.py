@@ -880,11 +880,14 @@ def test_forbidden_claim_classes_have_no_template(
 
 
 def test_committed_registry_is_deny_by_default_and_external_sources_are_pending() -> None:
-    """Trip CI deliberately when the founder makes the first signed approval.
+    """This tripwire fired, by design, at the founder's first signed approval.
 
-    That approval commit must update these initial-state assertions alongside
-    its signed artifact; an unexpected green transition would hide a policy
-    change at the trust boundary.
+    Its initial-state form asserted zero signers and zero approvals so that
+    the first approval commit was forced to update these assertions alongside
+    its signed artifact. That happened on 2026-08-12: the founder-run
+    aggregate-2.0 review approved exactly gdelt_web_ngrams_v5 with one
+    enrolled human signer. The test now asserts that state exactly, so any
+    SECOND approval or signer must again change this test in the same commit.
     """
     registry_path = ROOT / "governance" / "source_rights_registry.json"
     signers_path = ROOT / "governance" / "rights_signers.json"
@@ -896,16 +899,15 @@ def test_committed_registry_is_deny_by_default_and_external_sources_are_pending(
     _, strict_registry, _ = guard._read_json(registry_path, "unreadable")
     validated = guard._validate_rights_registry(strict_registry, ROOT, signers)
     assert registry["default_policy"] == "deny"
-    assert signers == {}
+    assert set(signers) == {"human:igrm-ngram-rights-reviewer"}
     assert len(registry["sources"]) >= 10
     assert set(validated) == {source["source_id"] for source in registry["sources"]}
 
     approved = [
         source for source in registry["sources"] if source["decision_state"] == "approved"
     ]
-    assert approved == []
+    assert [source["source_id"] for source in approved] == ["gdelt_web_ngrams_v5"]
     for source in registry["sources"]:
-        assert source["decision_state"] == "review_required"
         expected_lineage = (
             "bundle_declared"
             if source["source_id"] == "igrm_public_payloads"
@@ -914,6 +916,17 @@ def test_committed_registry_is_deny_by_default_and_external_sources_are_pending(
         assert source["lineage_policy"] == expected_lineage
         assert source["authority_class"] in guard._AUTHORITY_CLASSES
         assert isinstance(source["independence_group"], str)
+        if source["source_id"] == "gdelt_web_ngrams_v5":
+            assert source["decision_state"] == "approved"
+            assert source["permitted_uses"] == [
+                "model_processing",
+                "publish_derived_value",
+            ]
+            assert source["reviewed_on"] == "2026-08-12"
+            assert source["review_due"] == "2026-11-10"
+            assert source["signer_id"] == "human:igrm-ngram-rights-reviewer"
+            continue
+        assert source["decision_state"] == "review_required"
         assert source["permitted_uses"] == []
         assert source["reviewed_on"] is None
         assert source["review_due"] is None
