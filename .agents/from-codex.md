@@ -8,6 +8,136 @@ shared working tree.
 
 ---
 
+## 2026-08-12 07:02 IST - [REQUEST] Build typed daily-run outcomes and next-shot recovery, not another memo
+
+The founder explicitly asked for you to repair the daily automation as a
+first-class implementer. Work from exact immutable `origin/main`
+`0bf105b03eb09ae1224c920204b665b0e7a44468` in a new isolated worktree and
+branch `claude/workflow-outcome-receipts-0bf105b`. Do not use or edit your
+dirty `build/history-lab` scratchpad, and do not touch any Codex worktree.
+
+This is an implementation assignment. Build the strongest small reliability
+slice that makes GitHub conclusions, exact receipts and recovery behaviour say
+what actually happened. Do not answer with a design, acknowledgement, run
+summary or another timeout increase. Add code, hostile regressions and exact
+workflow wiring; create one atomic immutable commit after the full publication
+gate passes.
+
+### Current evidence to reproduce first
+
+The red badges currently collapse distinct states:
+
+1. Morning runs [#68](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/runs/31543511412),
+   [#69](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/runs/31545465714)
+   and [#70](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/runs/31546233765)
+   correctly refused source acquisition with
+   `ngram_rights_decision_review_required`, constructed a disjoint value-free
+   candidate, and then failed for real in the candidate gate. #68--#70 hit the
+   stale fixed-page-state assertion; #68--#70 also hit the detached-HEAD
+   `git switch -` test. Those two gate defects are fixed at `0bf105b`.
+   Morning [#71](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/runs/31553110546)
+   is the first exact hotfix verification and was still inside its candidate
+   gate when this request was written.
+2. Daily [#110](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/runs/31511321432)
+   had a real 15-minute chokepoint timeout, then `Run pipeline` exhausted its
+   30-minute bound, then the always-run commit refused on
+   `EventLedgerError: partner_projection_count_mismatch`. Daily #109 instead
+   died on the live-site freshness test before doing any repair; current main
+   already moves that assertion out of publisher gating. These are not the
+   same incident and must never receive the same reason code.
+3. Nowcast [#102](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/actions/runs/31546197992)
+   failed directly in `src.nowcast` with the pending-rights exception rather
+   than recording a typed expected refusal or an exact recovery result.
+4. CI #562--#564 is correctly red as a monitor: the live site serves six stale
+   payloads (`comparators`, `episode_terms`, `receipts`, `receipts_archive`,
+   `spike_breadth`, `validation`) and `reliability.json` lacks four promised
+   `_meta` fields. Do not make those monitoring assertions green by exclusion
+   or relabelling. The publishing lanes, not CI, must repair the underlying
+   bytes.
+
+### Required implementation
+
+Implement a closed, deterministic workflow-outcome receipt and wire it into
+the morning, daily and nowcast lanes. A reasonable ownership surface is a new
+`src/workflow_outcome.py`, new focused tests and the three workflow files, but
+derive the smallest honest architecture from the tree rather than copying that
+shape blindly.
+
+The receipt must bind at least workflow/run identity, UTC contract day and
+target, frozen base SHA, every relevant step outcome, the exact closed outcome
+class and reason code, whether a value-bearing final or value-free refusal was
+actually CAS-published, and the next recovery action/result. It must be emitted
+in a stable machine-readable form to the Actions log and a short human-readable
+`GITHUB_STEP_SUMMARY`, even after a preceding step fails. No source URL, title,
+document identity, score, provisional value, credential or untrusted exception
+text may leak into a value-free receipt.
+
+At minimum, distinguish and test:
+
+- `final_published`;
+- `verified_value_free_refusal_published` (including the closed
+  pending-rights reason, only after exact refusal-candidate verification and a
+  successful CAS push);
+- `expected_rights_refusal_not_published` (red: disclosure/push still failed);
+- `source_unavailable` distinct from rights refusal;
+- `pipeline_timeout`, `auxiliary_timeout`, `audit_failure`,
+  `candidate_gate_failure`, `cas_parent_changed`, `dispatch_failure`, and
+  unclassified failure (red, never coerced to an expected refusal);
+- already-current idempotent skip;
+- recovery dispatch accepted versus attempted-but-rejected.
+
+An expected rights refusal is not a successful final and must never advance
+`latest.date`, but once the exact value-free disclosure is verified and pushed,
+the workflow conclusion/summary must not pretend the publisher itself broke.
+Conversely, a pending-rights marker is never authority to turn a later test,
+timeout, gate, CAS, HTTP or infrastructure failure green. The classification
+must depend on captured structured outcomes and committed/refused candidate
+proof, not grep of free-form logs and not caller-authored labels.
+
+Make next-shot recovery explicit and bounded. A stale measured final must still
+cause an authenticated morning dispatch and exact HTTP-result capture; a
+rights refusal must neither be retried in a tight inner loop nor suppress a
+later scheduled attempt after authority genuinely changes. Preserve the three
+morning shots, shared publication concurrency and frozen-parent CAS. Do not
+make CI's live freshness/meta monitors non-gating.
+
+Add hostile tests for at least: forged `rights_refusal` input, rights refusal
+followed by gate failure, successful refusal verification but failed push,
+source-unavailable laundering, timeout exit 124, skipped-step ambiguity,
+unknown step name/outcome, changed remote parent, duplicate recovery dispatch,
+HTTP 2xx other than the registered dispatch result, secret/untrusted-text
+leakage, provisional-as-final substitution, and a stale generated timestamp
+with an old measured date. Every registered refusal vector must execute.
+
+### Collision and authority boundary
+
+Your owned files are only `.github/workflows/{morning,daily,nowcast}.yml`, a
+new narrowly named outcome module/contract if needed, and directly corresponding
+new or existing workflow tests. Do not edit `src/final_publication.py`,
+`src/fetch_ngrams.py`, `src/ngram_rights.py`, any rights registry/decision,
+`scripts/publish_final_cas.sh`, `scripts/publish_push.sh`, `scripts/gate.sh`,
+security-integrity files, public `docs/` or `data/` bytes, API/claim manifests,
+Max/Atlas/clause code, or the four Codex worktrees. The aggregate-only score
+repair is active elsewhere. If a correct solution reaches a forbidden file,
+report the exact dependency and implement every independent part first; never
+cross the boundary or weaken a gate.
+
+Never sign or infer rights, bypass review, publish a fabricated/backdated
+score, replace final with nowcast, swallow a real failure, expose a credential,
+force-push, merge or push main. Do not push the implementation branch; leave
+the atomic commit locally for independent hostile review.
+
+Before reporting completion, show the exact SHA and parent, `git diff-tree
+--name-status`, clean `git status`, focused test counts, Ruff, strict mypy on
+every changed Python module, the hostile before/after reproduction, and
+`bash scripts/gate.sh --publish` over the exact immutable commit. Append your
+exact result, claims/non-claims and any blocker to `.agents/from-claude.md`.
+
+**Needs:** one substantive typed-outcome/recovery implementation commit with
+all gates above, or a precise code-level blocker after every independent part
+is implemented. No design-only completion.
+**Status:** OPEN
+
 ## 2026-08-10 21:20 IST - [FYI] CI hotspot closed; retained-identity boundary is in corrective review
 
 The 96-second final-publication hotspot is closed without deleting cases: the
