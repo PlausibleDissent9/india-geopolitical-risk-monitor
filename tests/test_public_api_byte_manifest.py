@@ -38,6 +38,10 @@ def candidate_tree() -> str:
     # Under the committed gate this is HEAD's tree. During pre-commit review,
     # a caller may provide a temporary candidate index; write-tree captures
     # that same staged candidate without moving any ref or the shared index.
+    # A git-archive-extracted verification tree has no repository at all, so
+    # candidate capture is impossible there by construction, not by accident.
+    if not (ROOT / ".git").exists():
+        pytest.skip("candidate capture requires the git repository")
     return _git(ROOT, "write-tree")
 
 
@@ -257,7 +261,7 @@ def _publisher_env() -> dict[str, str]:
 
 def test_generic_publisher_noop_never_amends_upstream(candidate_repo: Path, tmp_path: Path) -> None:
     remote = tmp_path / "remote.git"
-    _git(tmp_path, "init", "-q", "--bare", str(remote))
+    _git(tmp_path, "init", "-q", "--bare", "--initial-branch=main", str(remote))
     _git(candidate_repo, "remote", "add", "origin", str(remote))
     _git(candidate_repo, "branch", "-M", "main")
     _git(candidate_repo, "push", "-q", "-u", "origin", "main")
@@ -278,7 +282,7 @@ def test_generic_publisher_noop_never_amends_upstream(candidate_repo: Path, tmp_
 
 def test_post_rebase_refresh_amends_exact_lane_candidate(candidate_repo: Path, tmp_path: Path) -> None:
     remote = tmp_path / "remote.git"
-    _git(tmp_path, "init", "-q", "--bare", str(remote))
+    _git(tmp_path, "init", "-q", "--bare", "--initial-branch=main", str(remote))
     _git(candidate_repo, "remote", "add", "origin", str(remote))
     _git(candidate_repo, "branch", "-M", "main")
     _git(candidate_repo, "push", "-q", "-u", "origin", "main")

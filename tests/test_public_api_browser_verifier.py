@@ -66,11 +66,13 @@ console.log(JSON.stringify({entries: out.entries.length, concurrency: v.CONCURRE
 """
     )
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    # 117 entries / 6.89 MiB predated the receipt-identity surface (8d7e7a9)
+    # and the 2026-08-12 rights-transition manifest fixpoint.
     assert result == {
-        "entries": 117,
+        "entries": 119,
         "concurrency": 4,
         "bytes": manifest["totals"]["hashed_bytes"],
-        "formatted": "6.89 MiB",
+        "formatted": "6.95 MiB",
     }
 
 
