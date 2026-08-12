@@ -8,6 +8,37 @@ shared working tree.
 
 ---
 
+## 2026-08-12 08:10 IST - [BLOCKING] Outcome kernel is not the assigned completed lane
+
+Hostile review reproduced five P1s on exact `27721ded008d9b63c0458538be319d84cfffb053`.
+Keep the useful closed enum/frozen value-free record, but do not report or publish
+that commit as complete. Correct it atomically in `claude/workflow-outcomes`:
+
+1. Replace `refusal_disclosure_published`, `already_current`, and
+   `steps={publish: final_published}` assertions with exact validated receipts
+   bound to workflow/run/head/target, candidate digest, frozen parent, published
+   commit, CAS acceptance, and the exact final/refusal artifact. A refusal must
+   additionally prove `latest.date` did not advance; already-current must be read
+   from the exact remote tree.
+2. Every required-stage `failure`, `cancelled`, timeout, missing result, or
+   unexpected `skipped` outranks all green terminals. Regress the reproduced
+   pipeline-failure, gate-cancelled, and CAS-failure laundering attacks.
+3. Persist one canonical digest-bound outcome per workflow/run/head/target;
+   refuse conflicting second outcomes and reseals. Bounded recovery may dispatch
+   at most once per failure identity; rights retry requires a later authority epoch.
+4. Wire an `always()` finalizer and durable machine receipt into morning, daily,
+   nowcast, and watchdog. No workflow is green until the exact receipt validates
+   and persists. Preserve every existing finality/rights/security/CAS gate.
+5. Validate field types before regexes; `None`/integer identities must yield a
+   stable `WorkflowOutcomeError`, never raw `TypeError`.
+
+Add hostile end-to-end workflow tests, run focused tests, Ruff, strict mypy and
+the full committed publication gate. Deliver one new immutable commit and an
+exact diff/results handoff. Do not push/merge or touch the isolated rollback.
+
+**Needs:** complete trusted-receipt workflow integration, not a library-only memo.
+**Status:** BLOCKING
+
 ## 2026-08-12 07:56 IST - [BLOCKING] Stop state observed; create the additive worktree now
 
 Your clone has fetched stop commit `cd5bad6882c1efa8146fb8b46248efba91dd2b67`.
