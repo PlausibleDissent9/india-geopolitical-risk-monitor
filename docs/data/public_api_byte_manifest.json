@@ -7,10 +7,10 @@
   "what": "Deterministic byte inventory for every other frozen API-contract endpoint; self-excluded and unsigned."
  },
  "api_contract": {
-  "contract_version": "2.4.0",
-  "endpoint_denominator": 117,
+  "contract_version": "2.5.0",
+  "endpoint_denominator": 118,
   "path": "docs/data/api_contract.json",
-  "raw_sha256": "a7858b22360953593a91b7ed027984ec9b8442bd23e227946be57bb4b00b4aae"
+  "raw_sha256": "759ae1c2ffe8deda677494341409bcc2e14e3f523a86f7f3979a7ce9d43d290a"
  },
  "claim_boundary": "The artifact proves deterministic repository-candidate byte consistency under SHA-256 when its own raw-byte digest is obtained from an independent boundary. It is unsigned and does not authenticate a deployment, prove that multiple hosted requests were atomic, establish source truth or rights, or certify security.",
  "entries": [
@@ -199,12 +199,12 @@
    "sha256": "b99b1fbf04954121d4361b76d756ea5c30b6548f551fba9c1a9493901fa8bec7"
   },
   {
-   "bytes": 16373,
+   "bytes": 34633,
    "format": "json",
    "git_mode": "100644",
    "path": "data/evidence_outputs_demo.json",
    "repository_path": "docs/data/evidence_outputs_demo.json",
-   "sha256": "9c6a8b8a1d8bd1a2d07db55bcb8aca348b80fa93ace2703c50deb38a6cf52267"
+   "sha256": "ef3b2bfc18200e0671b4fab24edeb781b6b1d4a5efc8a41acc97a310778b33e3"
   },
   {
    "bytes": 81613,
@@ -212,7 +212,7 @@
    "git_mode": "100644",
    "path": "data/evolution.json",
    "repository_path": "docs/data/evolution.json",
-   "sha256": "3af46f9d93a8d5ac3946a8833b1fee67b750c39c05249d7c108174963e3826e4"
+   "sha256": "3ffa6dbdcc5cbb0854ad22a3a9ab48dcbfdb299b38d2ad8417e5340bbf297a4b"
   },
   {
    "bytes": 4892,
@@ -237,6 +237,14 @@
    "path": "data/exposure_sectors.json",
    "repository_path": "docs/data/exposure_sectors.json",
    "sha256": "6b6b6e2daf0d4a4216404c8ec64bb8d31e8c3c8f50426ae9e7c9705360388f9a"
+  },
+  {
+   "bytes": 18472,
+   "format": "json",
+   "git_mode": "100644",
+   "path": "data/exposure_traversal_demo.json",
+   "repository_path": "docs/data/exposure_traversal_demo.json",
+   "sha256": "b40c081da9707c7174f88f767f4aaa33119de48fb26f5f562b3e8a190c5c1c20"
   },
   {
    "bytes": 2674,
@@ -455,12 +463,12 @@
    "sha256": "3ea52f467d7836abb55d8bd542aeca964242690dc86e316cd16d717ca0ea562d"
   },
   {
-   "bytes": 2054,
+   "bytes": 2543,
    "format": "json",
    "git_mode": "100644",
    "path": "data/reliability.json",
    "repository_path": "docs/data/reliability.json",
-   "sha256": "20652f72a2817c7cdf53300daca0de6274af2e2ce6734df5294e71bdfce1c644"
+   "sha256": "71fd985cf99fc00331163c007ee61f7365e9e5de33c9b4f0e918fc2f29b9d086"
   },
   {
    "bytes": 12418,
@@ -628,7 +636,7 @@
    "git_mode": "100644",
    "path": "data/sensor_fusion_demo.json",
    "repository_path": "docs/data/sensor_fusion_demo.json",
-   "sha256": "4dd9430c9d91b6ea80cac8c7ac275fbd7eb8789181f6f07d7c66737712dd024c"
+   "sha256": "90a87fe9246f84e2161b92ef642763c9b2a5d5045615b9a3689c448b19e62997"
   },
   {
    "bytes": 196949,
@@ -647,12 +655,12 @@
    "sha256": "e34cec407d2ad9393eb03e723c2a42a70ce20ebdc43c27017757c4c91b606941"
   },
   {
-   "bytes": 20972,
+   "bytes": 27860,
    "format": "json",
    "git_mode": "100644",
    "path": "data/shock_compiler_demo.json",
    "repository_path": "docs/data/shock_compiler_demo.json",
-   "sha256": "39f2dc541d61e671b030d9d1a64f8e8eece0165303a68f5abc1c1ae7121d5147"
+   "sha256": "fdbf054c1e4f8da69540a8056fbb14a9fc6a0bdefef0a05dc933a580cab010ed"
   },
   {
    "bytes": 2063,
@@ -954,7 +962,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "92df759f838c3863d297ca1cf65dde73a4c99a8d6e6ce509ca2cbd28134ae3c4",
+  "entries_sha256": "762825a00fccb605fc17556577df2c7bb55cbd25899925918a15574251bfb5c7",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -965,17 +973,17 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7227463,
-  "hashed_entries": 116,
+  "hashed_bytes": 7271572,
+  "hashed_entries": 117,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
  },
  "universe": {
   "basis": "api_contract.endpoints",
-  "endpoint_denominator": 117,
-  "endpoint_set_sha256": "76efa44d45af9cc7a436748e9181d1e3ab94068b03933f7b42756b0d33a34e5f",
+  "endpoint_denominator": 118,
+  "endpoint_set_sha256": "2cc6abd766b3e1322229f10861f544d102e1adfe91969e68c13ddcf62f1cf146",
   "excluded_endpoint_denominator": 1,
-  "hashed_endpoint_denominator": 116,
+  "hashed_endpoint_denominator": 117,
   "order": "public_path_utf8_byte_ascending"
  }
 }

@@ -7,6 +7,7 @@ Implementation: `src/max_state_join.py`
 Composed world: `src/max_state_join_fixture.py`
 Tests: `tests/test_max_state_join.py`
 Public vector: `docs/data/max_state_join_demo.json`
+Published traversal: `docs/data/exposure_traversal_demo.json`
 
 ## The defect this closes
 
@@ -35,6 +36,14 @@ under those identifiers. Every engine gate was green, because every
 engine gate was correct about its own inputs. A downstream reader
 joining a fusion matrix to a shock compilation on `event_id` would have
 performed a silent cross-world join with no error available anywhere.
+
+The convergence fixture now rebuilds the Evidence Output, Exposure Traversal,
+Sensor Fusion and Shock Compiler records from one shared synthetic root. The
+standalone traversal at `docs/data/exposure_traversal_demo.json` is therefore
+the exact traversal certified inside `docs/data/max_state_join_demo.json`, not
+a separately assembled look-alike. Both are fixed conformance vectors. The
+join computes `synthetic_nonproduction` and L0; this shared identity does not
+make any event, entity, source, right, dependency or exposure real.
 
 ## What the join does
 

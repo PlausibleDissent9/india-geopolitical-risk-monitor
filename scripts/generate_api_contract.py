@@ -22,10 +22,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "docs" / "data"
 DOCS = ROOT / "docs"
 
-# Additive minor release: a deterministic, self-excluding byte inventory is a
-# new endpoint. Existing endpoint fields and meanings are unchanged.
-CONTRACT_VERSION = "2.4.0"
-FROZEN_DATE = "2026-08-10"
+# Additive minor release: the deterministic shared-world exposure traversal is
+# a new endpoint. Existing endpoint fields and meanings are unchanged.
+CONTRACT_VERSION = "2.5.0"
+FROZEN_DATE = "2026-08-12"
 
 # api_contract.json is deliberately skipped by the daily metadata stamper:
 # a frozen promise must not drift as a side effect of a pipeline run. Keep
@@ -299,6 +299,16 @@ def _description(name: str, data) -> str:
 # frozen payload cannot carry. test_api_contract_is_derived asserts
 # generated == committed, so drift in either direction now fails.
 OVERRIDES: dict = {
+    "data/exposure_traversal_demo.json": {
+        "description": (
+            "Deterministic synthetic L0 traversal from the same signed fixture "
+            "release used by the published Max engine records. It demonstrates "
+            "bounded path selection, typed edges, explicit missingness and shared-"
+            "world identity only; it is not a real event, entity, source, rights, "
+            "dependency, exposure, forecast, causation, advice or adoption claim."
+        ),
+        "stability": "static synthetic L0 conformance vector 1.0.0",
+    },
     "data/public_api_byte_manifest.json": {
         "description": DESCRIPTIONS["public_api_byte_manifest.json"],
         "stability": "deterministic repository-candidate snapshot; unsigned",

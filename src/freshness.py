@@ -152,6 +152,11 @@ EXEMPT: dict[str, str] = {
         "the default limit, so the whole daily surface would have gone STALE on a "
         "test vector that is supposed to never change"
     ),
+    "exposure_traversal_demo.json": (
+        "a deterministic synthetic traversal from the fixed shared-Max-world "
+        "conformance vector, not a live dependency or exposure lane; its fixed "
+        "time and bytes are part of the public L0 test vector"
+    ),
     "max_state_join_demo.json": (
         "a deterministic synthetic cross-engine agreement certificate, not a live "
         "lane; its fixed time is part of the public test vector"

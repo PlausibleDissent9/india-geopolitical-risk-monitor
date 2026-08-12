@@ -133,6 +133,13 @@ def test_evolution_contract_is_static_but_live_health_is_not_hidden() -> None:
     assert "hourly evolution audit reads current freshness separately" in reason
 
 
+def test_exposure_traversal_is_a_fixed_synthetic_vector_not_a_daily_lane() -> None:
+    reason = freshness.EXEMPT["exposure_traversal_demo.json"]
+    assert "deterministic synthetic traversal" in reason
+    assert "fixed shared-Max-world" in reason
+    assert "public L0 test vector" in reason
+
+
 def test_rights_blocked_historical_studies_do_not_create_false_daily_slas() -> None:
     splice = freshness.EXEMPT["splice_sensitivity.json"]
     uncertainty = freshness.EXEMPT["uncertainty.json"]

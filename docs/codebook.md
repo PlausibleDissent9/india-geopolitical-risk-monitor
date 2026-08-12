@@ -84,12 +84,12 @@ break the published result hash.
 `public_api_byte_manifest.json` is the second deliberate deterministic
 exception. Its `_meta` includes its meaning, licence, citation, codebook and
 source URL, but no generation clock: a wall-clock field would churn the bytes
-even when none of the 116 hashed endpoints changed. The file hashes one
+even when none of the 117 hashed endpoints changed. The file hashes one
 captured Git candidate index/tree, excludes exactly itself to avoid recursion,
 and is skipped by the generic stamper after generation. It is unsigned. An
 independently obtained SHA-256 digest of the manifest's own raw bytes is needed
 for an external comparison; the file does not authenticate a deployment or
-claim that 116 separate hosted requests were served atomically.
+claim that 117 separate hosted requests were served atomically.
 
 *This was a promise before it was a fact.* Until 2026-08-07 the licence,
 citation and codebook link appeared in **three** payloads out of
@@ -546,12 +546,41 @@ version 2, plus the contract's promise, deprecation policy, and access
 terms in `_meta`. Rendered for humans at `docs/api.html`. See
 methodology.md section 12 for the versioning rule.
 
+## docs/data/exposure_traversal_demo.json
+
+A deterministic synthetic L0 traversal through the canonical exposure edges in
+the shared Max fixture world. It starts from the fixture event, selects only
+typed, method-bound paths allowed by the signed synthetic release, retains edge
+units and denominators, and carries explicit no-path and missingness semantics.
+Its release, object, method, schema, rights and temporal identities are the same
+ones certified across the other published Max engine records by
+`max_state_join_demo.json`.
+
+This is a fixed conformance vector, not a live lane. It establishes that the
+traversal contract composes without cross-world identity drift; it does not
+establish a real event, entity, source, right, dependency, exposure,
+propagation, forecast, causal relationship, recommendation or adoption.
+
+## docs/data/max_state_join_demo.json
+
+The deterministic shared-world certificate for the synthetic Evidence Output,
+Exposure Traversal, Sensor Fusion and Shock Compiler records. It verifies one
+release identity, no object identifier bound to competing content digests, one
+rights position per source, compatible temporal boundaries and exact declared
+coverage denominators. The certificate computes
+`evidence_class = synthetic_nonproduction` and `licensed_maturity = L0`.
+
+Agreement is not accuracy. This certificate proves composition of four engine
+contracts over one synthetic fixture; it does not re-derive their results or
+promote them into real observations, real exposure, production readiness,
+external utility or institutional adoption.
+
 ## docs/data/public_api_byte_manifest.json
 
 Deterministic byte inventory for every contract endpoint except itself. Each
 entry binds the public path, repository path, contract format, Git mode, byte
-length and SHA-256 digest. `universe` publishes all three denominators: 117
-contract endpoints, 116 hashed endpoints and one exact self-exclusion. The
+length and SHA-256 digest. `universe` publishes all three denominators: 118
+contract endpoints, 117 hashed endpoints and one exact self-exclusion. The
 generator reads one stage-0 Git index or named Git tree; mutable worktree
 overlays are not inputs. The generic publisher refreshes it after rebase and
 before the committed gate, while the final-publication CAS adds it to both

@@ -5,7 +5,7 @@ Every answer is extracted verbatim from committed repository sources by
 `scripts/generate_openapi.py`; a question with no committed answer says so rather than
 inventing one. Regenerate with: `python -m scripts.generate_openapi`.
 
-Contract version 2.4.0, frozen 2026-08-10. Machine-readable API description: https://igrm.in/openapi.json
+Contract version 2.5.0, frozen 2026-08-12. Machine-readable API description: https://igrm.in/openapi.json
 
 ## Motivation
 
@@ -68,7 +68,7 @@ the [standing comparison](vs-gpr.html).
 
 ### How many instances are there in total?
 
-The API contract (data/api_contract.json, version 2.4.0, frozen 2026-08-10) lists 117 endpoints: 111 JSON, 5 CSV, 1 RSS. The machine-readable OpenAPI 3.1 description is served at https://igrm.in/openapi.json.
+The API contract (data/api_contract.json, version 2.5.0, frozen 2026-08-12) lists 118 endpoints: 112 JSON, 5 CSV, 1 RSS. The machine-readable OpenAPI 3.1 description is served at https://igrm.in/openapi.json.
 
 *Source: docs/data/api_contract.json (counts computed at generation)*
 

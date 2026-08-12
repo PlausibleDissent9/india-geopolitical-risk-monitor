@@ -1,8 +1,8 @@
 {
  "_meta": {
   "what": "The frozen v2 API contract: every endpoint IGRM serves for machine consumption, the fields promised stable within this major version, and the policy governing changes.",
-  "contract_version": "2.4.0",
-  "frozen_date": "2026-08-10",
+  "contract_version": "2.5.0",
+  "frozen_date": "2026-08-12",
   "base_url": "https://igrm.in/",
   "promise": "Frozen fields are never removed, renamed, or repurposed to a different meaning within major version 2. New fields may be added to any payload at any time without a version bump. Any removal, rename, or type change requires a major version bump, announced here and in methodology.md's changelog before it ships.",
   "deprecation_policy": "An analytical field or endpoint marked deprecated stays live and unchanged in meaning for at least 90 days after the date recorded here, before removal in the next major version. Operational or personal material served by mistake may be withdrawn immediately, with the removal recorded here.",
@@ -381,6 +381,17 @@
     "sectors"
    ],
    "stability": "stable"
+  },
+  {
+   "path": "data/exposure_traversal_demo.json",
+   "format": "json",
+   "description": "Deterministic synthetic L0 traversal from the same signed fixture release used by the published Max engine records. It demonstrates bounded path selection, typed edges, explicit missingness and shared-world identity only; it is not a real event, entity, source, rights, dependency, exposure, forecast, causation, advice or adoption claim.",
+   "frozen_fields": [
+    "_meta",
+    "synthetic_labels",
+    "traversal"
+   ],
+   "stability": "static synthetic L0 conformance vector 1.0.0"
   },
   {
    "path": "data/forecasts.json",

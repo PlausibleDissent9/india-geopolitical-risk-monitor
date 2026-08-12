@@ -519,8 +519,8 @@ def test_public_evidence_output_bytes_are_unchanged() -> None:
         "governance/evidence_output_registry.json": "24d5c1367f50546ee8188e0e7a9b4ff574f3369ec75c7f0e8807dd14c1c00447",
         "schemas/evidence-output-set.schema.json": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780",
         "docs/schemas/evidence-output-set.schema.json": "eb044a106b8846de0464fdd32261200c392b0ccf78cb4ad5ed176b247298a780",
-        "docs/data/evidence_outputs_demo.json": "9c6a8b8a1d8bd1a2d07db55bcb8aca348b80fa93ace2703c50deb38a6cf52267",
-        "docs/downloads/igrm-evidence-outputs-demo.zip": "e8928d75e14222416da4f6f0f8fffef88fca78b1b0cf49f1ab3fffe705c33efa",
+        "docs/data/evidence_outputs_demo.json": "ef3b2bfc18200e0671b4fab24edeb781b6b1d4a5efc8a41acc97a310778b33e3",
+        "docs/downloads/igrm-evidence-outputs-demo.zip": "095154edbed552cb35a388e4141315bbf3302754a2b33e8a89c9f3ec54bf7eed",
     }
     assert {
         relative: hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()

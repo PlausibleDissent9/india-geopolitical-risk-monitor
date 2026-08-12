@@ -35,7 +35,7 @@ def _run_node(source: str) -> dict[str, object]:
 def test_page_is_explicit_on_demand_and_has_a_no_js_path() -> None:
     for required in (
         "Byte consistency, not authentication",
-        "116 requests and about 6.9 MiB",
+        "117 requests and about 6.9 MiB",
         "Only the manifest is loaded before you press the button",
         "same-site manifest without an independent digest is not an authenticity check",
         "sha256sum public_api_byte_manifest.json",
@@ -67,7 +67,7 @@ console.log(JSON.stringify({entries: out.entries.length, concurrency: v.CONCURRE
     )
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     assert result == {
-        "entries": 116,
+        "entries": 117,
         "concurrency": 4,
         "bytes": manifest["totals"]["hashed_bytes"],
         "formatted": "6.89 MiB",

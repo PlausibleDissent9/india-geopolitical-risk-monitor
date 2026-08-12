@@ -67,7 +67,8 @@ def test_publish_keeps_every_check_that_can_actually_fail() -> None:
                      "world_state", "event_ledger", "evolution_engine",
                      "knowledge_replay_fixture", "sensor_fusion_fixture",
                      "exposure_dna_fixture", "shock_compiler_fixture",
-                     "evidence_outputs_fixture", "max_state_join_fixture",
+                     "evidence_outputs_fixture", "exposure_traversal_fixture",
+                     "max_state_join_fixture",
                      "ruff check .", "mypy", "pytest"):
         assert required in published, f"--publish dropped the {required} check"
 

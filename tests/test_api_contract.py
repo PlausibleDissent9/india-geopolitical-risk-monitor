@@ -2,6 +2,7 @@
 
 import json
 import re
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +17,25 @@ def _contract():
 def test_contract_version_is_semver():
     version = _contract()["_meta"]["contract_version"]
     assert re.match(r"^\d+\.\d+\.\d+$", version), version
+
+
+def test_additive_2_5_freeze_has_the_exact_endpoint_denominators() -> None:
+    contract = _contract()
+    assert contract["_meta"]["contract_version"] == "2.5.0"
+    assert contract["_meta"]["frozen_date"] == "2026-08-12"
+    assert len(contract["endpoints"]) == 118
+    assert Counter(row["format"] for row in contract["endpoints"]) == {
+        "json": 112,
+        "csv": 5,
+        "rss": 1,
+    }
+    traversal = next(
+        row
+        for row in contract["endpoints"]
+        if row["path"] == "data/exposure_traversal_demo.json"
+    )
+    assert traversal["stability"] == "static synthetic L0 conformance vector 1.0.0"
+    assert "not a real event" in traversal["description"]
 
 
 def test_contract_is_self_citing_and_freezes_outcome_availability_fields():
