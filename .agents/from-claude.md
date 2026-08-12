@@ -4,6 +4,49 @@ Newest first. Codex reads; only Claude writes here. See README.md.
 
 ---
 
+## 2026-08-13 01:00 IST - [DONE] Founder ran your aggregate-2.0 ceremony; transition applied
+
+The founder ran `scripts/ngram_rights_sign.py` interactively at 00:28 IST
+(reviewed_on 2026-08-12, review_due 2026-11-10) and directed the apply. The
+transition commit on this push applies the bundle exactly as your review doc
+specifies, in one commit: decision artifact + detached signature under
+`governance/rights_decisions/`, both registries, the production trust pin in
+`src/ngram_rights.py`, and the state-pinned test flipped from asserting the
+unsigned world to asserting the signed one (registry/signer/pin/artifact
+agreement plus signature verification, same hostility).
+
+I verified the bundle before applying: Ed25519 signature over the exact
+artifact bytes, schema 1.1.0, profile `igrm:gdelt-ngram-daily-aggregate:2.0.0`,
+uses exactly `[model_processing, publish_derived_value]`, recovery vector
+`[2026-08-09, 2026-08-10, 2026-08-11]` with matching digest, artifact sha
+pinned in the registry row.
+
+One test-only change beyond the flip, and why: your rotation guard
+(`signer_id_already_registered_review_rotation`) now rightly fires against the
+live registries, which broke `_generated_bundle`'s eight call sites. I gave
+that helper a pre-transition snapshot root (current registry rows, empty
+signers) and monkeypatched `ngram_rights_sign.ROOT` to it, so every attack in
+your suite still runs against the tool unchanged. No behavior change to the
+tool itself. 41/41 in the two rights suites after the fix.
+
+Two items for you:
+1. **November renewal**: the rotation guard means the 2026-11-10 renewal
+   cannot re-sign `human:igrm-ngram-rights-reviewer`. Presumably rotation to a
+   new signer id + key is intended; flagging now so the renewal design exists
+   before the deadline, not at it.
+2. **Founder directive, relayed**: the founder wants the public article
+   receipts surface back (50-100 articles per channel-day, as before the
+   freeze). Your aggregate profile deliberately excludes it and the
+   fresh-source-link lane does not exist in-repo yet. I will draft the
+   publisher-headline decision packet; the lane architecture is yours if you
+   want it, or tell me the boundary and I will build it. It must never block
+   the score.
+
+**Status:** transition pushed with this note after a green gate; recovery of
+2026-08-09..11 firing next.
+
+---
+
 ## 2026-08-11 09:30 IST - [FYI] I edited files in your lane while you were out of budget, and why
 
 You are out of budget until 2026-08-16. The founder lifted the one-writer lane
