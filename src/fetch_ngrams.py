@@ -35,6 +35,7 @@ Usage:
   python -m src.fetch_ngrams 2026-07-05     # recompute one day (debug)
 Cache: data/raw/ngram_days/YYYY-MM-DD.json (one file per healed day).
 """
+
 from __future__ import annotations
 
 import gzip
@@ -53,11 +54,10 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-from . import ngram_rights
+from . import ngram_daily_attestation, ngram_rights
 from .fetch_gdelt import build_queries
 
-BASE = ("https://storage.googleapis.com/data.gdeltproject.org/"
-        "gdeltv5/weblegacy/ngrams/")
+BASE = "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/"
 ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "data" / "raw"
 DAY_CACHE = RAW_DIR / "ngram_days"
@@ -71,9 +71,10 @@ SAMPLES_PER_DAY = 48
 # The heartbeat drops files at arbitrary minutes (observed :01, :02, :16),
 # so every minute of a sampling window is probed until the first hit.
 HEADERS = {"User-Agent": "IGRM/1.0 (ngrams bridge, per maintainer guidance)"}
-PUBLISH_LAG_DAYS = 1          # today's files are still accumulating
+PUBLISH_LAG_DAYS = 1  # today's files are still accumulating
 DOCUMENT_IDENTITY_DOMAIN = b"igrm-ngram-document-identity-v1\0"
 MATCHER_EVIDENCE_VERSION = "1.1.0"
+DAILY_AGGREGATE_VERSION = "2.0.0"
 _IDENTITY_EVIDENCE_FIELDS = frozenset(
     {
         "english_document_identities",
@@ -112,7 +113,9 @@ def group_specs() -> dict[str, dict]:
             phrases = [tuple(_norm_tokens(t)) for t in remaining[:n_terms]]
             remaining = remaining[n_terms:]
             out[f"{ch}/q{qi + 1}"] = {
-                "channel": ch, "phrases": phrases, "anchor": anchor,
+                "channel": ch,
+                "phrases": phrases,
+                "anchor": anchor,
             }
     return out
 
@@ -140,10 +143,7 @@ def _document_identity(key: str) -> str:
     if not separator or not stamp or not source_id:
         raise ValueError("document key must contain stamp and source ID")
     digest = hashlib.sha256(
-        DOCUMENT_IDENTITY_DOMAIN
-        + stamp.encode("ascii")
-        + b"\0"
-        + source_id.encode("utf-8")
+        DOCUMENT_IDENTITY_DOMAIN + stamp.encode("ascii") + b"\0" + source_id.encode("utf-8")
     ).hexdigest()
     return f"{stamp}:{digest}"
 
@@ -176,9 +176,9 @@ def _matcher_evidence(
         for stamp in loaded_stamps
     }
     canonical_specs = _canonical_specs(specs)
-    encoded_specs = json.dumps(
-        canonical_specs, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")
+    encoded_specs = json.dumps(canonical_specs, sort_keys=True, separators=(",", ":")).encode(
+        "utf-8"
+    )
     return {
         "schema_version": MATCHER_EVIDENCE_VERSION,
         "day": day.isoformat(),
@@ -196,10 +196,59 @@ def _matcher_evidence(
             group: sorted(identities[key] for key in keys)
             for group, keys in sorted(matched.items())
         },
-        "article_meta": {
-            identities[key]: article_meta[key] for key in sorted(article_meta)
-        },
+        "article_meta": {identities[key]: article_meta[key] for key in sorted(article_meta)},
     }
+
+
+def _aggregate_attestation(
+    day: date,
+    specs: dict[str, dict],
+    located_stamps: list[str],
+    windows: list[dict],
+) -> dict:
+    """Seal the non-identity evidence retained by prospective daily runs."""
+
+    canonical_specs = _canonical_specs(specs)
+    groups = sorted(specs)
+    denominator = sum(int(row["english_denominator"]) for row in windows)
+    numerators = {
+        group: sum(int(row["group_numerators"][group]) for row in windows) for group in groups
+    }
+    shares = {group: round(100.0 * numerators[group] / denominator, 6) for group in groups}
+    channel_sums: dict[str, float] = {}
+    for group in groups:
+        channel = str(specs[group]["channel"])
+        channel_sums[channel] = channel_sums.get(channel, 0.0) + shares[group]
+    attestation = {
+        "schema_version": DAILY_AGGREGATE_VERSION,
+        "profile_id": ngram_daily_attestation.PROFILE_ID,
+        "day": day.isoformat(),
+        "expected_windows": SAMPLES_PER_DAY,
+        "located_windows": len(located_stamps),
+        "loaded_windows": len(windows),
+        "method_bindings": {
+            "profile_sha256": _sha256_path(ROOT / ngram_daily_attestation.PROFILE_RELATIVE),
+            "schema_sha256": _sha256_path(ROOT / ngram_daily_attestation.SCHEMA_RELATIVE),
+            "dictionaries_sha256": _sha256_path(ROOT / "dictionaries.json"),
+            "production_matcher_sha256": _sha256_path(Path(__file__)),
+            "validator_sha256": _sha256_path(ROOT / "src/ngram_daily_attestation.py"),
+            "calibration_sha256": _sha256_path(ROOT / "data/raw/ngram_calibration.json"),
+            "matcher_specs": canonical_specs,
+            "matcher_specs_sha256": hashlib.sha256(
+                ngram_daily_attestation.canonical_bytes(canonical_specs)
+            ).hexdigest(),
+        },
+        "windows": windows,
+        "aggregate_reconstruction": {
+            "window_order": list(range(SAMPLES_PER_DAY)),
+            "english_denominator": denominator,
+            "group_numerators": numerators,
+            "shares": shares,
+            "channel_sums": channel_sums,
+        },
+        "membership_reproducibility": ngram_daily_attestation.MEMBERSHIP_LIMIT,
+    }
+    return ngram_daily_attestation.seal(attestation)
 
 
 def _fetch(url: str) -> bytes | None:
@@ -214,7 +263,8 @@ def _fetch(url: str) -> bytes | None:
     if os.environ.get("IGRM_OFFLINE"):
         raise RuntimeError(
             f"[ngrams] IGRM_OFFLINE is set; refusing to fetch {url}. "
-            "Offline mode serves committed caches only.")
+            "Offline mode serves committed caches only."
+        )
     last_error: requests.RequestException | None = None
     for attempt in (1, 2):
         try:
@@ -240,14 +290,14 @@ def _probe_window(day: date, base_minute: int, window_min: int) -> str | None:
         raise RuntimeError(
             "[ngrams] IGRM_OFFLINE is set; refusing to probe for "
             f"{day} minute-files. Offline mode serves committed caches "
-            "only.")
+            "only."
+        )
     last_error: requests.RequestException | None = None
     for offset in range(window_min):
         m = base_minute + offset
         ts = f"{day:%Y%m%d}{m // 60:02d}{m % 60:02d}00"
         try:
-            r = requests.head(f"{BASE}{ts}.ngrams.txt.gz",
-                              timeout=30, headers=HEADERS)
+            r = requests.head(f"{BASE}{ts}.ngrams.txt.gz", timeout=30, headers=HEADERS)
             if r.status_code == 200:
                 return ts
             if r.status_code != 404:
@@ -263,8 +313,9 @@ def _probe_window(day: date, base_minute: int, window_min: int) -> str | None:
     return None
 
 
-def _day_minute_files(day: date, until_minute: int | None = None,
-                      samples: int = SAMPLES_PER_DAY) -> list[str]:
+def _day_minute_files(
+    day: date, until_minute: int | None = None, samples: int = SAMPLES_PER_DAY
+) -> list[str]:
     """One existing timestamp per sampling window (`samples` equal
     windows across the day; the scoring default is SAMPLES_PER_DAY, and
     samples=1440 degenerates to one-minute windows, i.e. every existing
@@ -309,9 +360,9 @@ def prefetch_pairs(stamps: list[str], workers: int = 4, ahead: int = 6):
     flight: an unbounded map would buffer every finished ~21MB blob
     ahead of a slow parser and can exhaust a 2GB droplet; six in flight
     caps the buffer near 150MB while keeping the workers saturated."""
+
     def fetch_pair(ts: str) -> tuple[str, bytes | None, bytes | None]:
-        return (ts, _fetch(f"{BASE}{ts}.toc.json.gz"),
-                _fetch(f"{BASE}{ts}.ngrams.txt.gz"))
+        return (ts, _fetch(f"{BASE}{ts}.toc.json.gz"), _fetch(f"{BASE}{ts}.ngrams.txt.gz"))
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
         pending: deque = deque()
@@ -329,12 +380,14 @@ def prefetch_pairs(stamps: list[str], workers: int = 4, ahead: int = 6):
 
 def _subseq(phrase: tuple[str, ...], tokens: list[str]) -> bool:
     n, m = len(tokens), len(phrase)
-    return any(tuple(tokens[i:i + m]) == phrase for i in range(n - m + 1))
+    return any(tuple(tokens[i : i + m]) == phrase for i in range(n - m + 1))
 
 
 def compute_day(
-    day: date, specs: dict[str, dict],
-    until_minute: int | None = None, min_docs: int = 5000,
+    day: date,
+    specs: dict[str, dict],
+    until_minute: int | None = None,
+    min_docs: int = 5000,
     *,
     rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> dict | None:
@@ -342,12 +395,10 @@ def compute_day(
     nowcast passes until_minute for a partial day and a lower min_docs
     (its payload discloses the sample size; the heal path keeps the
     full-day floor)."""
-    # This is the common network and identity-construction entry point used
-    # by finalized acquisition, calibration, debugging and nowcast. Rights
-    # must dominate the first source probe, not merely later cache/promotion
-    # paths. The current production registry is pending, so every caller
-    # refuses before touching the source until an applicable decision exists.
-    ngram_rights.require_public_identity_rights(
+    # The prospective 2.0 path processes source records ephemerally and
+    # persists aggregate evidence only. It still refuses before the first
+    # probe unless a human-signed exact two-use decision is current.
+    ngram_rights.require_daily_aggregate_rights(
         target=day, root=ROOT, test_authority=rights_authority
     )
     stamps = _day_minute_files(day, until_minute)
@@ -361,9 +412,9 @@ def compute_day(
     en_docs: set[str] = set()
     india_docs: set[str] = set()
     matched: dict[str, set[str]] = {g: set() for g in specs}
-    article_meta: dict[str, dict[str, str]] = {}
     loaded_stamps: list[str] = []
     missing_stamps: list[str] = []
+    window_rows: list[dict] = []
 
     for ts, toc_gz, ng_gz in prefetch_pairs(stamps):
         if not toc_gz or not ng_gz:
@@ -389,8 +440,7 @@ def compute_day(
                 }
         en_docs |= {f"{ts}:{i}" for i in toc_en}
 
-        with gzip.open(io.BytesIO(ng_gz), "rt", encoding="utf-8",
-                       errors="replace") as fh:
+        with gzip.open(io.BytesIO(ng_gz), "rt", encoding="utf-8", errors="replace") as fh:
             for raw in fh:
                 low = raw.lower()
                 if not trigger.search(low):
@@ -411,8 +461,40 @@ def compute_day(
                     for ph in s["phrases"]:
                         if len(ph) <= len(tokens) and _subseq(ph, tokens):
                             matched[g].add(key)
-                            article_meta.setdefault(key, toc_en[docid])
                             break
+
+        minute = int(ts[8:10]) * 60 + int(ts[10:12])
+        bucket = minute // 30
+        local_english = {f"{ts}:{docid}" for docid in toc_en}
+        local_india = {key for key in india_docs if key.startswith(f"{ts}:")}
+        local_numerators = {}
+        for group, spec in specs.items():
+            local_matches = {key for key in matched[group] if key.startswith(f"{ts}:")}
+            eligible = (
+                local_matches & local_india if spec.get("anchor") == "india" else local_matches
+            )
+            local_numerators[group] = len(eligible & local_english)
+        toc_url, ngram_url = ngram_daily_attestation.source_urls(ts)
+        window_rows.append(
+            {
+                "bucket": bucket,
+                "stamp": ts,
+                "source_objects": {
+                    "toc": {
+                        "url": toc_url,
+                        "sha256": hashlib.sha256(toc_gz).hexdigest(),
+                        "bytes": len(toc_gz),
+                    },
+                    "ngrams": {
+                        "url": ngram_url,
+                        "sha256": hashlib.sha256(ng_gz).hexdigest(),
+                        "bytes": len(ng_gz),
+                    },
+                },
+                "english_denominator": len(local_english),
+                "group_numerators": dict(sorted(local_numerators.items())),
+            }
+        )
 
     total = len(en_docs)
     if total < min_docs:  # a sample this thin is a feed gap, not a measurement
@@ -433,22 +515,14 @@ def compute_day(
         "n_samples_loaded": len(loaded_stamps),
         "partial": bool(missing_stamps or len(loaded_stamps) != len(stamps)),
         "shares": shares,
-        "_matcher_evidence": _matcher_evidence(
-            day,
-            specs,
-            stamps,
-            loaded_stamps,
-            missing_stamps,
-            en_docs,
-            india_docs,
-            matched,
-            article_meta,
+        "_aggregate_attestation": _aggregate_attestation(
+            day, specs, stamps, sorted(window_rows, key=lambda row: row["bucket"])
         ),
     }
     # Network work may cross a rights deadline or revocation boundary. Do not
     # hand identity-bearing evidence to any caller under a stale pre-fetch
     # decision; writers perform their own additional boundary check.
-    ngram_rights.require_public_identity_rights(
+    ngram_rights.require_daily_aggregate_rights(
         target=day, root=ROOT, test_authority=rights_authority
     )
     return result
@@ -462,23 +536,61 @@ def _cached_day(
 ) -> dict | None:
     cache = DAY_CACHE / f"{day.isoformat()}.json"
     if cache.exists():
-        return _decode_cached_day(
-            read_retained_identity_cache(
-                day,
-                root=ROOT,
-                rights_authority=rights_authority,
-            )
-        )
+        from . import final_publication
+
+        if final_publication.is_registered_legacy_cache_target(
+            day
+        ) and final_publication.is_exact_legacy_cache_exception(
+            ROOT, day, cache_bytes=cache.read_bytes()
+        ):
+            raw = read_retained_identity_cache(day, root=ROOT, rights_authority=rights_authority)
+        else:
+            raw = read_daily_aggregate_cache(day, root=ROOT, rights_authority=rights_authority)
+        return _decode_cached_day(raw)
     result = compute_day(day, specs, rights_authority=rights_authority)
     if result is not None:
-        ngram_rights.require_public_identity_rights(
-            target=day,
-            root=ROOT,
-            test_authority=rights_authority,
+        if result.get("partial") is not False or result.get("n_samples_loaded") != SAMPLES_PER_DAY:
+            # Partial source work remains ephemeral. It cannot be banked and
+            # later mistaken for a receipted daily candidate.
+            return result
+        # The final-publication boundary is the sole prospective cache writer;
+        # it commits cache, store, provenance, receipt and status atomically.
+        # Other consumers may use this result in memory but cannot bank an
+        # unreceipted candidate.
+        ngram_rights.require_daily_aggregate_rights(
+            target=day, root=ROOT, test_authority=rights_authority
         )
-        DAY_CACHE.mkdir(parents=True, exist_ok=True)
-        cache.write_text(json.dumps(result), encoding="utf-8")
     return result
+
+
+def read_daily_aggregate_cache(
+    day: date,
+    *,
+    root: Path = ROOT,
+    rights_authority: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> bytes:
+    """Read only the prospective aggregate cache behind its narrow rights."""
+
+    relative = Path("data/raw/ngram_days") / f"{day.isoformat()}.json"
+    cache = root / relative
+    if cache.is_symlink() or cache.resolve(strict=False) != root.resolve() / relative:
+        raise ngram_rights.NgramRightsError("ngram_cache_path_invalid")
+    ngram_rights.require_daily_aggregate_rights(
+        target=day, root=root, test_authority=rights_authority
+    )
+    raw = cache.read_bytes()
+    try:
+        payload = json.loads(raw)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        raise ngram_rights.NgramRightsError("ngram_cache_payload_invalid") from None
+    if (
+        not isinstance(payload, dict)
+        or payload.get("date") != day.isoformat()
+        or "_aggregate_attestation" not in payload
+        or "_matcher_evidence" in payload
+    ):
+        raise ngram_rights.NgramRightsError("ngram_cache_profile_invalid")
+    return raw
 
 
 def read_retained_identity_cache(
@@ -513,9 +625,7 @@ def read_retained_identity_cache(
             test_authority=rights_authority,
         )
     raw = cache.read_bytes()
-    exact_legacy = final_publication.is_exact_legacy_cache_exception(
-        root, day, cache_bytes=raw
-    )
+    exact_legacy = final_publication.is_exact_legacy_cache_exception(root, day, cache_bytes=raw)
     if legacy_target and not exact_legacy:
         ngram_rights.require_public_identity_rights(
             target=day,
@@ -571,10 +681,10 @@ def calibrate(days: list[date]) -> dict:
     for ch, rs in ratios.items():
         log_rs = [math.log(r) for r in rs]
         mean = math.exp(sum(log_rs) / len(log_rs))
-        sd = (sum((math.log(r) - sum(log_rs) / len(log_rs)) ** 2
-                  for r in rs) / max(len(rs) - 1, 1)) ** 0.5
-        calib[ch] = {"ratio": round(mean, 4), "log_sd": round(sd, 4),
-                     "n_days": len(rs)}
+        sd = (
+            sum((math.log(r) - sum(log_rs) / len(log_rs)) ** 2 for r in rs) / max(len(rs) - 1, 1)
+        ) ** 0.5
+        calib[ch] = {"ratio": round(mean, 4), "log_sd": round(sd, 4), "n_days": len(rs)}
         print(f"[ngrams] {ch}: ratio {mean:.2f} (log-sd {sd:.3f}, n={len(rs)})")
     path = RAW_DIR / "ngram_calibration.json"
     path.write_text(json.dumps(calib, indent=1), encoding="utf-8")
@@ -628,8 +738,7 @@ def main() -> None:
         result = _cached_day(date.fromisoformat(sys.argv[1]), group_specs())
         print(json.dumps(result, indent=1))
     else:
-        sys.exit("usage: python -m src.fetch_ngrams --heal N | "
-                 "--calibrate D0 D1 | YYYY-MM-DD")
+        sys.exit("usage: python -m src.fetch_ngrams --heal N | --calibrate D0 D1 | YYYY-MM-DD")
 
 
 if __name__ == "__main__":

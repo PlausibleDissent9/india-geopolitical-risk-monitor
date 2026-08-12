@@ -32,6 +32,8 @@ from urllib.parse import urlsplit
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
+from . import ngram_rights_contract
+
 ROOT = Path(__file__).resolve().parents[1]
 RIGHTS = ROOT / "governance" / "source_rights_registry.json"
 CLAIMS = ROOT / "governance" / "claim_eligibility_contract.json"
@@ -373,6 +375,7 @@ def _validate_rights_registry(
     result: dict[str, dict[str, Any]] = {}
     for raw in _list(registry["sources"], "rights_sources_invalid"):
         source = _object(raw, expected, "rights_source_fields_invalid")
+        verified_decision: dict[str, Any] | None = None
         source_id = _identifier(source["source_id"], "rights_source_id_invalid")
         if source_id in result:
             _fail("rights_source_duplicate")
@@ -470,29 +473,15 @@ def _validate_rights_registry(
                 )
             except (binascii.Error, InvalidSignature, ValueError):
                 _fail("rights_source_decision_signature_invalid")
+            artifact_schema = artifact.get("schema_version")
+            artifact_fields = (
+                ngram_rights_contract.AGGREGATE_DECISION_FIELDS
+                if artifact_schema == ngram_rights_contract.DECISION_SCHEMA_VERSION
+                else ngram_rights_contract.BASE_DECISION_FIELDS
+            )
             artifact = _object(
                 artifact,
-                {
-                    "schema_version",
-                    "source_id",
-                    "name",
-                    "provider",
-                    "role",
-                    "authority_class",
-                    "independence_group",
-                    "decision_id",
-                    "decision_owner",
-                    "signer_id",
-                    "reviewed_on",
-                    "review_due",
-                    "access_url",
-                    "terms_url",
-                    "access_basis",
-                    "lineage_policy",
-                    "max_current_age_days",
-                    "permitted_uses",
-                    "statement",
-                },
+                set(artifact_fields),
                 "rights_source_decision_artifact_fields_invalid",
             )
             _text(artifact["statement"], "rights_source_decision_statement_invalid")
@@ -515,10 +504,46 @@ def _validate_rights_registry(
                 "max_current_age_days",
                 "permitted_uses",
             }
-            if artifact["schema_version"] != "1.0.0" or any(
+            legacy_schema = artifact_schema == "1.0.0"
+            try:
+                expected_recovery_targets = (
+                    ngram_rights_contract.historical_recovery_targets(reviewed_day)
+                    if artifact_schema == ngram_rights_contract.DECISION_SCHEMA_VERSION
+                    else []
+                )
+            except ValueError:
+                _fail("rights_source_recovery_window_invalid")
+            aggregate_schema = (
+                artifact_schema == ngram_rights_contract.DECISION_SCHEMA_VERSION
+                and source_id == ngram_rights_contract.SOURCE_ID
+                and artifact["profile_id"] == ngram_rights_contract.PROFILE_ID
+                and artifact["official_terms_citation"]
+                == ngram_rights_contract.OFFICIAL_TERMS_CITATION
+                and artifact["terms_url"] == ngram_rights_contract.TERMS_URL
+                and artifact["historical_recovery_targets"]
+                == expected_recovery_targets
+                and artifact["historical_recovery_targets_sha256"]
+                == ngram_rights_contract.historical_recovery_targets_sha256(
+                    expected_recovery_targets
+                )
+            )
+            if (not legacy_schema and not aggregate_schema) or any(
                 artifact[field] != source[field] for field in matching_fields
             ):
                 _fail("rights_source_decision_artifact_mismatch")
+            verified_decision = {
+                "schema_version": artifact_schema,
+                "profile_id": artifact.get("profile_id"),
+                "official_terms_citation": artifact.get("official_terms_citation"),
+                "historical_recovery_targets": artifact.get(
+                    "historical_recovery_targets"
+                ),
+                "historical_recovery_targets_sha256": artifact.get(
+                    "historical_recovery_targets_sha256"
+                ),
+                "artifact_sha256": actual_artifact_sha,
+                "signature_sha256": hashlib.sha256(signature).hexdigest(),
+            }
         else:
             if (
                 reviewed is not None
@@ -531,7 +556,10 @@ def _validate_rights_registry(
                 or source["decision_signature_path"] is not None
             ):
                 _fail("rights_source_unapproved_permissions")
-        result[source_id] = source
+        validated_source = dict(source)
+        if verified_decision is not None:
+            validated_source["_verified_decision"] = verified_decision
+        result[source_id] = validated_source
     if not result:
         _fail("rights_sources_empty")
     return result

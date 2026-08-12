@@ -8,6 +8,7 @@ Backfill:  python -m src.run_daily --backfill        (from 2017-01-01)
 Order: GDELT volumes -> markets -> index -> episodes -> event study ->
 publish notes -> site outputs in docs/data/.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -40,15 +41,11 @@ def publish_latest_note() -> None:
     payload = {"filename": None, "markdown": ""}
     if mds:
         latest = mds[-1]
-        payload = {"filename": latest.name,
-                   "markdown": latest.read_text(encoding="utf-8")}
-    (site_data / "note_latest.json").write_text(
-        json.dumps(payload), encoding="utf-8")
+        payload = {"filename": latest.name, "markdown": latest.read_text(encoding="utf-8")}
+    (site_data / "note_latest.json").write_text(json.dumps(payload), encoding="utf-8")
 
 
-def _fail_loudly_on_partial_data(
-    volume: pd.DataFrame, required_final_day: date
-) -> pd.DataFrame:
+def _fail_loudly_on_partial_data(volume: pd.DataFrame, required_final_day: date) -> pd.DataFrame:
     """A silently thin dataset must fail the workflow, not publish
     (spec B7): partial data on the site is worse than a red run."""
     problems = []
@@ -62,8 +59,7 @@ def _fail_loudly_on_partial_data(
         # non-null values at the instant this process reads it.
         if any(day > required_final_day for day in idx.date):
             problems.append(
-                f"volume store contains rows after exact final target "
-                f"{required_final_day}"
+                f"volume store contains rows after exact final target {required_final_day}"
             )
         finalized = volume.loc[idx.date <= required_final_day].copy()
         if finalized.empty:
@@ -78,9 +74,7 @@ def _fail_loudly_on_partial_data(
         else:
             target_row = finalized.loc[idx.date == required_final_day]
             if len(target_row) != 1 or target_row.isna().any(axis=None):
-                problems.append(
-                    f"exact D-1 target {required_final_day} is incomplete"
-                )
+                problems.append(f"exact D-1 target {required_final_day} is incomplete")
         if not idx.empty and idx.max().date() != required_final_day:
             problems.append(
                 f"finalized frame ends {idx.max().date()}, expected {required_final_day}"
@@ -92,8 +86,7 @@ def _fail_loudly_on_partial_data(
         # otherwise publish an all-null site (percentiles need 180+ days).
         if (last - idx.min()).days < 400:
             problems.append(
-                f"store spans only {(last - idx.min()).days} days -- "
-                "run the backfill first"
+                f"store spans only {(last - idx.min()).days} days -- run the backfill first"
             )
         # Staleness is only a failure once the site has published before:
         # a first backfill whose recent tail was throttled still carries a
@@ -103,18 +96,18 @@ def _fail_loudly_on_partial_data(
         first_publish = not (SITE_DATA / "latest.json").exists()
         if stale_days > 5:
             if first_publish:
-                print(f"[warn] first publish: data ends {last.date()} "
-                      f"({stale_days} days ago); the next run fills the tail")
+                print(
+                    f"[warn] first publish: data ends {last.date()} "
+                    f"({stale_days} days ago); the next run fills the tail"
+                )
             else:
                 problems.append(f"data ends {last.date()}, more than 5 days ago")
-        tail = finalized.loc[pd.to_datetime(finalized.index)
-                             >= last - pd.Timedelta(days=30)]
+        tail = finalized.loc[pd.to_datetime(finalized.index) >= last - pd.Timedelta(days=30)]
         for ch in finalized.columns:
             if tail[ch].dropna().empty:
                 problems.append(f"channel {ch!r} has no data in its last 30 days")
     if problems:
-        raise SystemExit("[fail-loud] refusing to publish partial data: "
-                         + "; ".join(problems))
+        raise SystemExit("[fail-loud] refusing to publish partial data: " + "; ".join(problems))
     return finalized
 
 
@@ -138,9 +131,7 @@ def _require_exact_target_scores(
         if pd.isna(composite):
             problems.append(f"{label} target composite is null")
     if problems:
-        raise SystemExit(
-            "[fail-loud] refusing unscorable D-1 target: " + "; ".join(problems)
-        )
+        raise SystemExit("[fail-loud] refusing unscorable D-1 target: " + "; ".join(problems))
 
 
 def _require_written_target(
@@ -161,9 +152,7 @@ def _require_written_target(
 
 def _published_day() -> date | None:
     try:
-        value = json.loads(
-            (SITE_DATA / "latest.json").read_text(encoding="utf-8")
-        )["date"]
+        value = json.loads((SITE_DATA / "latest.json").read_text(encoding="utf-8"))["date"]
         day = date.fromisoformat(value)
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
         return None
@@ -189,7 +178,7 @@ def main() -> None:
     args = ap.parse_args()
     today_utc = args.contract_today or datetime.now(timezone.utc).date()
     target = args.target or final_publication.required_target(today_utc)
-    final_publication.require_exact_target(target, today_utc)
+    final_publication.require_ordered_target(target, root=ROOT, today=today_utc)
 
     with open(ROOT / "dictionaries.json", encoding="utf-8") as f:
         dictionaries = json.load(f)
@@ -247,8 +236,7 @@ def main() -> None:
         )
     except final_publication.FinalPublicationError as exc:
         raise SystemExit(
-            "[fail-loud] refusing unverified D-1 promotion: "
-            f"{exc.classification}: {exc.detail}"
+            f"[fail-loud] refusing unverified D-1 promotion: {exc.classification}: {exc.detail}"
         ) from exc
 
     print("[3/5] Index + episodes")
@@ -268,10 +256,8 @@ def main() -> None:
         print("[4/5] Event study unchanged (final-only lane)")
 
     print("[5/5] Publish")
-    labels = {ch: spec["label"] for ch, spec in dictionaries.items()
-              if not ch.startswith("_")}
-    build_index.write_site_outputs(scores, episodes, labels,
-                                   scores7=scores7)
+    labels = {ch: spec["label"] for ch, spec in dictionaries.items() if not ch.startswith("_")}
+    build_index.write_site_outputs(scores, episodes, labels, scores7=scores7)
     _require_written_target(target)
     if not args.final_only:
         publish_latest_note()

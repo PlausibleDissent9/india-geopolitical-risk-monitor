@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/governance/schemas/ngram-daily-aggregate-attestation.schema.json",
+  "title": "IGRM GDELT NGram daily aggregate attestation 2.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "day",
+    "expected_windows",
+    "located_windows",
+    "loaded_windows",
+    "method_bindings",
+    "windows",
+    "aggregate_reconstruction",
+    "membership_reproducibility",
+    "record_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0.0"},
+    "profile_id": {"const": "igrm:gdelt-ngram-daily-aggregate:2.0.0"},
+    "day": {"type": "string", "format": "date"},
+    "expected_windows": {"const": 48},
+    "located_windows": {"const": 48},
+    "loaded_windows": {"const": 48},
+    "method_bindings": {"type": "object"},
+    "windows": {"type": "array", "minItems": 48, "maxItems": 48},
+    "aggregate_reconstruction": {"type": "object"},
+    "membership_reproducibility": {"type": "string", "minLength": 1},
+    "record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -47,6 +47,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 # Same lane as the full daily pipeline: these two workflows push the same
 # files and must queue, never race. Concurrency groups are repo-wide, so
@@ -180,13 +181,25 @@ jobs:
         #    tests that.
         run: |
           CONTRACT_TODAY=$(date -u +%F)
-          TARGET=$(date -u -d "$CONTRACT_TODAY - 1 day" +%F)
+          CEILING=$(date -u -d "$CONTRACT_TODAY - 1 day" +%F)
           git fetch --quiet origin main
           BASE_COMMIT=$(git rev-parse origin/main)
           REMOTE_PARENT=$(mktemp -d)
           REMOTE_ROOT="$REMOTE_PARENT/origin-main"
           git worktree add --quiet --detach "$REMOTE_ROOT" "$BASE_COMMIT"
-          if python -m src.final_publication \
+          TARGET=$(python -m src.final_publication \
+            --next-target --today "$CONTRACT_TODAY" --root "$REMOTE_ROOT")
+          if [ "$TARGET" = "none" ]; then
+            echo "ordered backlog is already complete through $CEILING"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            git worktree remove --force "$REMOTE_ROOT"
+            rmdir "$REMOTE_PARENT"
+            exit 0
+          fi
+          # Backlog idempotence belongs to required_next_target above. The
+          # published-target proof intentionally remains a current D-1-only
+          # contract and is therefore consulted only at the ceiling.
+          if [ "$TARGET" = "$CEILING" ] && python -m src.final_publication \
               --check-published-target "$TARGET" \
               --today "$CONTRACT_TODAY" \
               --root "$REMOTE_ROOT"; then
@@ -200,6 +213,11 @@ jobs:
           rmdir "$REMOTE_PARENT"
           git checkout --detach "$BASE_COMMIT"
           echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          if [ "$TARGET" = "2026-08-09" ]; then
+            echo "mode=legacy-verification" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=publication" >> "$GITHUB_OUTPUT"
+          fi
           echo "contract_today=$CONTRACT_TODAY" >> "$GITHUB_OUTPUT"
           echo "base_commit=$BASE_COMMIT" >> "$GITHUB_OUTPUT"
       - name: Cheap disjoint preflight (dictionary and frozen calibration only)
@@ -209,7 +227,7 @@ jobs:
         # minutes before acquisition and repeated the same normative vectors
         # over a pre-candidate SHA. This bounded preflight checks only the two
         # inputs acquisition is about to trust.
-        run: python -m pytest -q tests/test_dictionaries.py tests/test_registration_freezes.py
+        run: python -m pytest -q -m "not live" tests/test_dictionaries.py tests/test_registration_freezes.py
       - name: Acquire immutable exact-target source frame
         id: source
         if: steps.guard.outputs.skip != 'true'
@@ -218,13 +236,18 @@ jobs:
         # 11m13s (#43); 14m adds 2m47s (25%) without consuming the gate's
         # separately declared budget.
         run: |
-          /usr/bin/time -v timeout --signal=TERM 14m python -m src.final_publication \
-            --acquire-target "${{ steps.guard.outputs.target }}" \
-            --today "${{ steps.guard.outputs.contract_today }}" \
-            --base-commit "${{ steps.guard.outputs.base_commit }}"
+          if [ "${{ steps.guard.outputs.mode }}" = "legacy-verification" ]; then
+            /usr/bin/time -v timeout --signal=TERM 14m python -m src.final_publication \
+              --verify-legacy-aggregate
+          else
+            /usr/bin/time -v timeout --signal=TERM 14m python -m src.final_publication \
+              --acquire-target "${{ steps.guard.outputs.target }}" \
+              --today "${{ steps.guard.outputs.contract_today }}" \
+              --base-commit "${{ steps.guard.outputs.base_commit }}"
+          fi
       - name: Run pipeline (final index only)
         id: pipeline
-        if: steps.guard.outputs.skip != 'true' && steps.source.outcome == 'success'
+        if: steps.guard.outputs.skip != 'true' && steps.guard.outputs.mode == 'publication' && steps.source.outcome == 'success'
         continue-on-error: true
         # This lane is store-only: no GDELT or markets acquisition. The exact
         # final-only code path (receipt revalidation, 3,486-row score/episode
@@ -240,7 +263,7 @@ jobs:
             --contract-today "${{ steps.guard.outputs.contract_today }}"
       - name: Dual-computation audit (fail-loud gate before any push)
         id: audit
-        if: steps.guard.outputs.skip != 'true' && steps.source.outcome == 'success' && steps.pipeline.outcome == 'success'
+        if: steps.guard.outputs.skip != 'true' && steps.guard.outputs.mode == 'publication' && steps.source.outcome == 'success' && steps.pipeline.outcome == 'success'
         continue-on-error: true
         run: /usr/bin/time -v timeout --signal=TERM 2m python -m src.audit
       - name: Reliability record from git evidence
@@ -329,6 +352,14 @@ jobs:
         env:
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          PIPELINE_FOR_CAS="${{ steps.pipeline.outcome }}"
+          AUDIT_FOR_CAS="${{ steps.audit.outcome }}"
+          DERIVED_FOR_CAS="${{ steps.derived.outcome }}"
+          if [ "${{ steps.guard.outputs.mode }}" = "legacy-verification" ]; then
+            PIPELINE_FOR_CAS="success"
+            AUDIT_FOR_CAS="success"
+            DERIVED_FOR_CAS="success"
+          fi
           # The hash-pinned script owns the only direct push. It gates exactly
           # one candidate, compares origin/main to the frozen parent, and
           # refuses rather than rebasing final/history conflicts. Public CI
@@ -338,6 +369,26 @@ jobs:
             "${{ steps.guard.outputs.target }}" \
             "${{ steps.guard.outputs.base_commit }}" \
             "${{ steps.source.outcome }}" \
-            "${{ steps.pipeline.outcome }}" \
-            "${{ steps.audit.outcome }}" \
-            "${{ steps.derived.outcome }}"
+            "$PIPELINE_FOR_CAS" \
+            "$AUDIT_FOR_CAS" \
+            "$DERIVED_FOR_CAS"
+      - name: Continue ordered backlog from the new immutable remote tip
+        if: steps.publish.outcome == 'success' && steps.guard.outputs.target != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CEILING=$(date -u -d "${{ steps.guard.outputs.contract_today }} - 1 day" +%F)
+          if [ "${{ steps.guard.outputs.target }}" != "$CEILING" ]; then
+            git fetch --quiet origin main
+            RESULT_COMMIT=$(git rev-parse origin/main)
+            PROOF=$(python scripts/dispatch_morning_successor.py \
+              --base "${{ steps.guard.outputs.base_commit }}" \
+              --result "$RESULT_COMMIT" \
+              --target "${{ steps.guard.outputs.target }}" \
+              --source-run "${{ github.run_id }}" \
+              --authority-epoch "${{ github.run_attempt }}")
+            printf '%s\n' "$PROOF"
+            if printf '%s' "$PROOF" | grep -q '"dispatch_authorized": true'; then
+              gh workflow run morning.yml
+            fi
+          fi

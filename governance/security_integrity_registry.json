@@ -20,6 +20,7 @@
   },
   "actions_write_workflows": [
     "events-backfill.yml",
+    "morning.yml",
     "multilingual-backfill.yml",
     "nowcast.yml",
     "watchdog.yml"
@@ -39,7 +40,7 @@
     },
     "final_cas_script": {
       "path": "scripts/publish_final_cas.sh",
-      "sha256": "78c82e70afbb075b4330940478d57d7470aedc69ab328974ccf1089ac34e0257"
+      "sha256": "77df374b2812c338cc1313de0bab90fa005f36398ce052c113775a89952b3bcd"
     }
   },
   "limitations": [

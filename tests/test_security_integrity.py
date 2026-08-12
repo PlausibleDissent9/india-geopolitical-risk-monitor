@@ -379,6 +379,10 @@ def test_prior_commit_anchor_rejects_coordinated_cas_and_validator_reseal(
         ROOT / "scripts/publish_push.sh",
         root / "scripts/publish_push.sh",
     )
+    shutil.copy2(
+        ROOT / ".github/workflows/morning.yml",
+        root / ".github/workflows/morning.yml",
+    )
     script_path = root / "scripts/publish_final_cas.sh"
     script = script_path.read_text(encoding="utf-8").replace(
         "  git fetch --quiet origin main",
@@ -435,6 +439,7 @@ def test_coordinated_successor_reseal_cannot_claim_independent_trust(
         "src/security_integrity.py",
         "scripts/publish_final_cas.sh",
         "scripts/publish_push.sh",
+        ".github/workflows/morning.yml",
         "governance/security_integrity_registry.json",
     ):
         shutil.copy2(ROOT / relative, root / relative)

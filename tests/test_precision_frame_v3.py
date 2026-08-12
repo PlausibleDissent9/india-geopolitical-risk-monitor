@@ -153,7 +153,7 @@ def test_production_scan_captures_exact_matcher_evidence(
 ) -> None:
     monkeypatch.setattr(
         fetch_ngrams.ngram_rights,
-        "require_public_identity_rights",
+        "require_daily_aggregate_rights",
         lambda **_kwargs: {"status": "synthetic_authorized_fixture"},
     )
     stamp = _stamp(0)
@@ -209,21 +209,18 @@ def test_production_scan_captures_exact_matcher_evidence(
     }
     assert result["n_samples_loaded"] == 1
     assert result["partial"] is False
-    evidence = result["_matcher_evidence"]
-    assert evidence["located_stamps"] == [stamp]
-    assert evidence["loaded_stamps"] == [stamp]
-    assert evidence["missing_stamps"] == []
-    first = fetch_ngrams._document_identity(f"{stamp}:A")
-    second = fetch_ngrams._document_identity(f"{stamp}:B")
-    assert evidence["english_document_identities"] == sorted([first, second])
-    assert evidence["english_document_counts_by_stamp"] == {stamp: 2}
-    assert evidence["matched_document_keys"]["pakistan_west/q1"] == sorted(
-        [first, second]
-    )
-    assert evidence["matched_document_keys"]["pakistan_west/q2"] == [
-        first
-    ]
-    assert evidence["article_meta"][first]["url"] == "https://one.example/a"
+    evidence = result["_aggregate_attestation"]
+    assert evidence["located_windows"] == 1
+    assert evidence["loaded_windows"] == 1
+    assert evidence["windows"][0]["english_denominator"] == 2
+    assert evidence["windows"][0]["group_numerators"] == {
+        "pakistan_west/q1": 2,
+        "pakistan_west/q2": 1,
+    }
+    encoded = json.dumps(evidence)
+    assert "one.example" not in encoded
+    assert "Border and ceasefire item" not in encoded
+    assert f"{stamp}:A" not in encoded
 
 
 def test_day_attestation_preserves_group_contribution_multiplicity(

@@ -1,0 +1,38 @@
+{
+  "schema_version": "2.0.0",
+  "profile_id": "igrm:gdelt-ngram-daily-aggregate:2.0.0",
+  "effective": "2026-08-12",
+  "status": "prospective_contract_not_authorized_for_production",
+  "source_id": "gdelt_web_ngrams_v5",
+  "expected_utc_half_hour_windows": 48,
+  "required_permitted_uses": [
+    "model_processing",
+    "publish_derived_value"
+  ],
+  "persisted_source_evidence": [
+    "canonical_toc_and_ngram_object_urls",
+    "exact_source_object_sha256_and_byte_length",
+    "per_window_english_denominator_count",
+    "per_registered_group_numerator_count",
+    "method_dictionary_matcher_calibration_and_profile_hashes",
+    "ordered_aggregate_reconstruction",
+    "calibrated_transform_receipt"
+  ],
+  "forbidden_persisted_evidence": [
+    "raw_document_ids",
+    "domain_derived_document_identity_hashes",
+    "titles",
+    "article_urls",
+    "snippets",
+    "source_records",
+    "raw_source_bytes"
+  ],
+  "membership_reproducibility": "Document membership can be reconstructed only by re-fetching every exact hash-pinned source object while it remains available; membership is not independently retained.",
+  "identity_vault": {
+    "status": "contract_only_blocked",
+    "implementation_present": false,
+    "activation_requires": "separate_current_human_signed_permission",
+    "current_profile_may_write": false
+  },
+  "claim_boundary": "A valid attestation reproduces only the registered target-day aggregate shares, channel sums and calibrated final store row from exact source-object and count evidence. It does not prove retained document membership, public identity, extract or full-record redistribution rights, source truth, precision, causation, forecast validity or production authorization."
+}

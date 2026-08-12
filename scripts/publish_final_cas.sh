@@ -112,6 +112,11 @@ stage_public_api_byte_manifest() {
 publish_final() {
   git config user.name "igrm-bot"
   git config user.email "actions@github.com"
+  if [ -f "data/raw/legacy_aggregate_verification/$TARGET.json" ]; then
+    git add "data/raw/legacy_aggregate_verification/$TARGET.json"
+    publish_gated_candidate "verification: bind $TARGET aggregate profile" verification
+    return
+  fi
   git add docs data/raw
   stage_public_api_byte_manifest
   publish_gated_candidate "data: final $TARGET via morning-contract lane" final

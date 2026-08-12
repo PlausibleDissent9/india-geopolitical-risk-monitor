@@ -9,6 +9,7 @@ This module deliberately publishes a separate, value-free operational state.
 A source refusal can therefore be visible without turning a provisional
 nowcast into a final score or banking an unvalidated target-day value.
 """
+
 from __future__ import annotations
 
 import csv
@@ -27,13 +28,41 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any, Callable, NoReturn
+from typing import Any, Callable, NoReturn, cast
 
-from . import fetch_ngrams, ngram_rights, precision_frame_v3, provenance
+from . import (
+    fetch_ngrams,
+    ngram_daily_attestation,
+    ngram_rights,
+    precision_frame_v3,
+    provenance,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 STATUS_RELATIVE = Path("data/raw/final_publication_status.json")
 RECEIPTS_RELATIVE = Path("data/raw/final_publication_receipts")
+LEGACY_AGGREGATE_RECEIPTS_RELATIVE = Path("data/raw/legacy_aggregate_verification")
+_LEGACY_PROTECTED_PATHS = (
+    "data/raw/ngram_days/2026-08-09.json",
+    "data/raw/gdelt_volume.csv",
+    "data/raw/provenance.csv",
+    "docs/data/latest.json",
+    "docs/data/history.json",
+)
+_LEGACY_RECEIPT_FIELDS = {
+    "schema_version",
+    "status",
+    "target_date",
+    "profile_id",
+    "aggregate_attestation",
+    "legacy_bytes_sha256",
+    "transform",
+    "rights",
+    "original_bytes_rewritten",
+    "public_score_claim_added",
+    "membership_reproducibility",
+    "record_sha256",
+}
 
 _LEGACY_AUG9_DAY = date(2026, 8, 9)
 _LEGACY_AUG9_INTRODUCTION = "9077ea4f27b4662ed6651828ee28183eed8fc727"
@@ -44,30 +73,16 @@ _LEGACY_AUG9_BLOBS = {
     "data/raw/gdelt_volume.csv": (
         "ad4766d872ca5ed95b8d1efe729480016e46040816be21ad32d02cc9984eb065"
     ),
-    "data/raw/provenance.csv": (
-        "940281c3e0c2f898dc246f41e2f0dbe42cb690ed1f2c2968fb0676cd5b0e9ad1"
-    ),
+    "data/raw/provenance.csv": ("940281c3e0c2f898dc246f41e2f0dbe42cb690ed1f2c2968fb0676cd5b0e9ad1"),
     "data/raw/ngram_calibration.json": (
         "02efb5a493878701f1890802133ee395e6e1775028c33f8986b0043235e87c2e"
     ),
-    "dictionaries.json": (
-        "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40"
-    ),
-    "docs/data/latest.json": (
-        "2af2170bd58fbcf98d4285124f2fede5d6a5d01628cc8674eaf4055acb37e049"
-    ),
-    "docs/data/history.json": (
-        "672d240e167ee95f3363395445cdf4ab98a0dcf5d89c5071f65d85d12329bdfe"
-    ),
-    "docs/data/history.csv": (
-        "b43ec447d9b009c18ffe9b20620a5bec9dfddb237bb33011e5fb2884bcc3ca9b"
-    ),
-    "docs/data/shares.csv": (
-        "c0bd5d30d81958c1d7e81cfc90fb98fed76d11cec31a24214a57d8685223317c"
-    ),
-    "docs/data/shares.json": (
-        "e34cec407d2ad9393eb03e723c2a42a70ce20ebdc43c27017757c4c91b606941"
-    ),
+    "dictionaries.json": ("4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40"),
+    "docs/data/latest.json": ("2af2170bd58fbcf98d4285124f2fede5d6a5d01628cc8674eaf4055acb37e049"),
+    "docs/data/history.json": ("672d240e167ee95f3363395445cdf4ab98a0dcf5d89c5071f65d85d12329bdfe"),
+    "docs/data/history.csv": ("b43ec447d9b009c18ffe9b20620a5bec9dfddb237bb33011e5fb2884bcc3ca9b"),
+    "docs/data/shares.csv": ("c0bd5d30d81958c1d7e81cfc90fb98fed76d11cec31a24214a57d8685223317c"),
+    "docs/data/shares.json": ("e34cec407d2ad9393eb03e723c2a42a70ce20ebdc43c27017757c4c91b606941"),
     "docs/data/assistant_answers.json": (
         "49b409a349d69e60a91688baabab066cdccb9f49069591bc7035799692624bb3"
     ),
@@ -89,12 +104,8 @@ _LEGACY_AUG9_BLOBS = {
     "docs/data/exposure_sectors.json": (
         "6b6b6e2daf0d4a4216404c8ec64bb8d31e8c3c8f50426ae9e7c9705360388f9a"
     ),
-    "docs/data/monthly.csv": (
-        "3433e7ab806d2d12aa850d67fe0ac5fa084c81d943af2fc4f4921f522af27b2d"
-    ),
-    "docs/data/monthly.json": (
-        "1f59a74e46246d603b22917d2d85b48b3355c04167d59b20d643bab34081c9d5"
-    ),
+    "docs/data/monthly.csv": ("3433e7ab806d2d12aa850d67fe0ac5fa084c81d943af2fc4f4921f522af27b2d"),
+    "docs/data/monthly.json": ("1f59a74e46246d603b22917d2d85b48b3355c04167d59b20d643bab34081c9d5"),
     "docs/data/negative_results.json": (
         "1e8679d50f5175fa382c5d81542f32cc67eb3143750761de72d7e69c8c9954c8"
     ),
@@ -107,17 +118,13 @@ _LEGACY_AUG9_BLOBS = {
     "docs/data/splice_sensitivity.json": (
         "fe0cc510309b38fd21471c1e775c6f02624b69f11cc592f0395828c6e710c333"
     ),
-    "docs/feed.xml": (
-        "8a8d3af902870f11d3cb1860685ab72664d97772ba2802a79b764e7f4811cc3e"
-    ),
+    "docs/feed.xml": ("8a8d3af902870f11d3cb1860685ab72664d97772ba2802a79b764e7f4811cc3e"),
 }
 _LEGACY_AUG9_HISTORICAL_BLOBS = {
     # This pins the matcher that produced the cache at its introduction
     # commit. The live matcher legitimately evolved to schema 1.1 afterward,
     # so it is not part of the unchanged public value-surface history below.
-    "src/fetch_ngrams.py": (
-        "0cbf9e9837e5d6bb51ddb558a4cd3397953907e9a4ba44133292fd7441629e39"
-    ),
+    "src/fetch_ngrams.py": ("0cbf9e9837e5d6bb51ddb558a4cd3397953907e9a4ba44133292fd7441629e39"),
 }
 _PUBLIC_STATES = {
     "already_finalized",
@@ -193,6 +200,9 @@ class NonGitTestTrustRoot:
     calibration: bytes
     dictionaries: bytes
     matcher: bytes
+    aggregate_profile: bytes
+    aggregate_schema: bytes
+    aggregate_validator: bytes
     rights_registry: bytes
     rights_signers: bytes
     rights_decision_files: dict[str, bytes]
@@ -207,6 +217,9 @@ class _ParentSnapshot:
     calibration: bytes
     dictionaries: bytes
     matcher: bytes
+    aggregate_profile: bytes
+    aggregate_schema: bytes
+    aggregate_validator: bytes
     rights_registry: bytes
     rights_signers: bytes
     rights_decision_files: dict[str, bytes]
@@ -225,6 +238,137 @@ def required_target(today: date | None = None) -> date:
     return (today or utc_today()) - timedelta(days=1)
 
 
+def required_next_target(*, root: Path = ROOT, today: date | None = None) -> date | None:
+    """Return the sole ordered backlog day eligible for the next commit.
+
+    This never skips an unpublished day and never includes UTC D0. The caller
+    must re-run it from the newly fetched remote tip after every publication.
+    """
+
+    latest = _read_latest_day(root)
+    ceiling = required_target(today)
+    if latest is None:
+        _fail("final_target_invalid", "latest_finalized_day_unreadable")
+    if latest == _LEGACY_AUG9_DAY and not _legacy_upgrade_receipt_is_bound(root):
+        return _LEGACY_AUG9_DAY
+    candidate = latest + timedelta(days=1)
+    return candidate if candidate <= ceiling else None
+
+
+def _legacy_upgrade_receipt_is_bound(root: Path) -> bool:
+    try:
+        _validated_legacy_receipt(root)
+    except (
+        FinalPublicationError,
+        ngram_daily_attestation.AggregateAttestationError,
+    ):
+        return False
+    return True
+
+
+def _legacy_blob(root: Path, relative: str) -> bytes:
+    commit = _git_head(root)
+    if commit is not None:
+        return _git_regular_blob(
+            root,
+            commit,
+            relative,
+            classification="legacy_verification_invalid",
+            detail="legacy_blob_not_regular",
+        )
+    path = root / relative
+    try:
+        if path.is_symlink() or not path.is_file() or (path.stat().st_mode & 0o111):
+            _fail("legacy_verification_invalid", f"legacy_blob_not_regular:{relative}")
+        return path.read_bytes()
+    except OSError as exc:
+        raise FinalPublicationError(
+            "legacy_verification_invalid", f"legacy_blob_missing:{relative}"
+        ) from exc
+
+
+def _validated_legacy_receipt(root: Path) -> dict[str, Any]:
+    relative = (
+        LEGACY_AGGREGATE_RECEIPTS_RELATIVE / f"{_LEGACY_AUG9_DAY}.json"
+    ).as_posix()
+    raw = _legacy_blob(root, relative)
+    try:
+        receipt = json.loads(raw)
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise FinalPublicationError(
+            "legacy_verification_invalid", "receipt_unreadable"
+        ) from exc
+    if not isinstance(receipt, dict) or set(receipt) != _LEGACY_RECEIPT_FIELDS:
+        _fail("legacy_verification_invalid", "receipt_fields_invalid")
+    body = {key: value for key, value in receipt.items() if key != "record_sha256"}
+    if receipt["record_sha256"] != _sha256(_canonical_bytes(body)):
+        _fail("legacy_verification_invalid", "receipt_seal_invalid")
+    hashes = receipt["legacy_bytes_sha256"]
+    transform = receipt["transform"]
+    if (
+        receipt["schema_version"] != "1.1.0"
+        or receipt["status"] != "legacy_verified_under_aggregate_profile"
+        or receipt["target_date"] != _LEGACY_AUG9_DAY.isoformat()
+        or receipt["profile_id"] != ngram_daily_attestation.PROFILE_ID
+        or receipt["original_bytes_rewritten"] is not False
+        or receipt["public_score_claim_added"] is not False
+        or receipt["membership_reproducibility"]
+        != ngram_daily_attestation.MEMBERSHIP_LIMIT
+        or not isinstance(hashes, dict)
+        or set(hashes) != set(_LEGACY_PROTECTED_PATHS)
+        or not isinstance(transform, dict)
+        or set(transform)
+        != {"calibration_sha256", "channel_values", "matched_existing_row"}
+        or transform["matched_existing_row"] is not True
+    ):
+        _fail("legacy_verification_invalid", "receipt_identity_invalid")
+    protected = {path: _legacy_blob(root, path) for path in _LEGACY_PROTECTED_PATHS}
+    if any(
+        not isinstance(hashes[path], str)
+        or not re.fullmatch(r"[0-9a-f]{64}", hashes[path])
+        or _sha256(protected[path]) != hashes[path]
+        for path in _LEGACY_PROTECTED_PATHS
+    ):
+        _fail("legacy_verification_invalid", "legacy_bound_byte_mismatch")
+    attestation = ngram_daily_attestation.validate(
+        receipt["aggregate_attestation"],
+        target=_LEGACY_AUG9_DAY,
+        specs=fetch_ngrams._canonical_specs(fetch_ngrams.group_specs()),
+        root=root,
+        expected_calibration_sha256=transform["calibration_sha256"],
+    )
+    calibration_raw = _legacy_blob(root, "data/raw/ngram_calibration.json")
+    if _sha256(calibration_raw) != transform["calibration_sha256"]:
+        _fail("legacy_verification_invalid", "calibration_binding_mismatch")
+    calibration = json.loads(calibration_raw)
+    channel_sums = attestation["aggregate_reconstruction"]["channel_sums"]
+    expected_values = {
+        channel: channel_sums[channel] / float(calibration[channel]["ratio"])
+        for channel in channel_sums
+    }
+    if transform["channel_values"] != expected_values:
+        _fail("legacy_verification_invalid", "legacy_transform_value_mismatch")
+    rows = list(
+        csv.DictReader(io.StringIO(protected["data/raw/gdelt_volume.csv"].decode("utf-8")))
+    )
+    observed = [row for row in rows if row.get("date") == _LEGACY_AUG9_DAY.isoformat()]
+    if len(observed) != 1 or any(
+        float(observed[0][channel]) != value for channel, value in expected_values.items()
+    ):
+        _fail("legacy_verification_invalid", "legacy_target_row_mismatch")
+    _validated_bound_aggregate_rights(receipt["rights"], _LEGACY_AUG9_DAY)
+    return cast(dict[str, Any], receipt)
+
+
+def require_ordered_target(target: date, *, root: Path = ROOT, today: date | None = None) -> None:
+    expected = required_next_target(root=root, today=today)
+    if expected is None or target != expected:
+        _fail(
+            "final_target_invalid",
+            "target_is_not_exact_next_unpublished_day_before_utc_d0",
+        )
+
+
 def require_exact_target(target: date, today: date | None = None) -> None:
     expected = required_target(today)
     if target != expected:
@@ -239,9 +383,9 @@ def _sha256(data: bytes) -> str:
 
 
 def _canonical_bytes(value: object) -> bytes:
-    return json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    ).encode("utf-8")
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode(
+        "utf-8"
+    )
 
 
 def _json_bytes(value: object) -> bytes:
@@ -360,9 +504,7 @@ def _first_parent_path_never_changed(
         chain.append((first_parent, current))
         current = first_parent
     for parent, child in reversed(chain):
-        if _git_blob_oid(root, parent, relative) != _git_blob_oid(
-            root, child, relative
-        ):
+        if _git_blob_oid(root, parent, relative) != _git_blob_oid(root, child, relative):
             return False
     return True
 
@@ -378,9 +520,7 @@ def _first_parent_index_surface_never_changed(
     current = head
     while True:
         try:
-            surface = _legacy_index_value_surface(
-                _git_blob(root, current, "docs/index.html")
-            )
+            surface = _legacy_index_value_surface(_git_blob(root, current, "docs/index.html"))
         except FinalPublicationError:
             return False
         if surface != expected:
@@ -439,9 +579,7 @@ def _legacy_index_value_surface(raw: bytes) -> tuple[str, ...] | None:
         r"<!--ssr:components-->.*?<!--/ssr:components-->",
     )
     for pattern in registered_patterns:
-        scrubbed, count = re.subn(
-            pattern, "", scrubbed, count=1, flags=re.DOTALL
-        )
+        scrubbed, count = re.subn(pattern, "", scrubbed, count=1, flags=re.DOTALL)
         if count != 1:
             return None
     if _contains_unregistered_final_claim(scrubbed):
@@ -476,8 +614,7 @@ def _contains_unregistered_final_claim(text: str) -> bool:
         rf"(?:\s+channel)?(?:\s+score)?)\s*(?:is|=|:|·)\s*{number}"
     )
     return any(
-        official_claim.search(context) or direct_claim.search(context)
-        for context in contexts
+        official_claim.search(context) or direct_claim.search(context) for context in contexts
     )
 
 
@@ -540,9 +677,7 @@ class _LegacyClaimContextParser(HTMLParser):
     def _attribute_text(attrs: list[tuple[str, str | None]]) -> str:
         return " ".join(f"{key} {value or ''}" for key, value in attrs)
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         lowered = tag.lower()
         parent = self._stack[-1]
         node = _LegacyClaimNode(lowered, attrs, [], [], parent)
@@ -550,9 +685,7 @@ class _LegacyClaimContextParser(HTMLParser):
         if lowered not in self._VOID_TAGS:
             self._stack.append(node)
 
-    def handle_startendtag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         self.handle_starttag(tag, attrs)
         self.handle_endtag(tag)
 
@@ -593,11 +726,7 @@ class _LegacyClaimContextParser(HTMLParser):
                 walk(child)
 
         def direct(node: _LegacyClaimNode) -> str:
-            return " ".join(
-                part
-                for part in (self._attribute_text(node.attrs), *node.text)
-                if part
-            )
+            return " ".join(part for part in (self._attribute_text(node.attrs), *node.text) if part)
 
         def subtree(node: _LegacyClaimNode) -> str:
             cache_key = id(node)
@@ -626,11 +755,7 @@ class _LegacyClaimContextParser(HTMLParser):
                         break
                     ancestor = ancestor.parent
             labelled_by = next(
-                (
-                    value
-                    for key, value in node.attrs
-                    if key.lower() == "aria-labelledby" and value
-                ),
+                (value for key, value in node.attrs if key.lower() == "aria-labelledby" and value),
                 None,
             )
             if labelled_by is not None:
@@ -641,9 +766,7 @@ class _LegacyClaimContextParser(HTMLParser):
                 # license a structural join in the residual surface.
                 if any(label is None for label in labels):
                     continue
-                label_context = " ".join(
-                    subtree(label) for label in labels if label is not None
-                )
+                label_context = " ".join(subtree(label) for label in labels if label is not None)
                 if self._CLAIM_LABEL.search(label_context):
                     contexts.append(f"{label_context} {subtree(node)}")
         return contexts
@@ -658,10 +781,7 @@ def _rights_decision_paths(registry_raw: bytes) -> list[str]:
     if not isinstance(sources, list):
         return []
     for source in sources:
-        if (
-            isinstance(source, dict)
-            and source.get("source_id") == ngram_rights.SOURCE_ID
-        ):
+        if isinstance(source, dict) and source.get("source_id") == ngram_rights.SOURCE_ID:
             paths = [
                 source.get("decision_artifact_path"),
                 source.get("decision_signature_path"),
@@ -689,6 +809,9 @@ def non_git_test_trust_root(root: Path, commit: str) -> NonGitTestTrustRoot:
         calibration=(root / "data/raw/ngram_calibration.json").read_bytes(),
         dictionaries=(root / "dictionaries.json").read_bytes(),
         matcher=(root / "src/fetch_ngrams.py").read_bytes(),
+        aggregate_profile=(root / ngram_daily_attestation.PROFILE_RELATIVE).read_bytes(),
+        aggregate_schema=(root / ngram_daily_attestation.SCHEMA_RELATIVE).read_bytes(),
+        aggregate_validator=(root / "src/ngram_daily_attestation.py").read_bytes(),
         rights_registry=rights_registry,
         rights_signers=(root / "governance/rights_signers.json").read_bytes(),
         rights_decision_files=decision_files,
@@ -709,9 +832,7 @@ def _parent_snapshot(
         return _ParentSnapshot(**vars(non_git_test_trust))
 
     commit = _git_commit(root, trusted_parent or "HEAD")
-    rights_registry = _git_blob(
-        root, commit, "governance/source_rights_registry.json"
-    )
+    rights_registry = _git_blob(root, commit, "governance/source_rights_registry.json")
     return _ParentSnapshot(
         commit=commit,
         store=_git_blob(root, commit, "data/raw/gdelt_volume.csv"),
@@ -719,6 +840,13 @@ def _parent_snapshot(
         calibration=_git_blob(root, commit, "data/raw/ngram_calibration.json"),
         dictionaries=_git_blob(root, commit, "dictionaries.json"),
         matcher=_git_blob(root, commit, "src/fetch_ngrams.py"),
+        aggregate_profile=_git_blob(
+            root, commit, ngram_daily_attestation.PROFILE_RELATIVE.as_posix()
+        ),
+        aggregate_schema=_git_blob(
+            root, commit, ngram_daily_attestation.SCHEMA_RELATIVE.as_posix()
+        ),
+        aggregate_validator=_git_blob(root, commit, "src/ngram_daily_attestation.py"),
         rights_registry=rights_registry,
         rights_signers=_git_blob(root, commit, "governance/rights_signers.json"),
         rights_decision_files={
@@ -747,6 +875,24 @@ def require_ngram_public_identity_rights(
         _fail("rights_not_authorized", exc.code)
 
 
+def require_ngram_daily_aggregate_rights(
+    *,
+    target: date,
+    root: Path = ROOT,
+    non_git_test_rights: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> dict[str, Any]:
+    """Translate the narrow aggregate-processing refusal."""
+
+    try:
+        return ngram_rights.require_daily_aggregate_rights(
+            target=target,
+            root=root,
+            test_authority=non_git_test_rights,
+        )
+    except ngram_rights.NgramRightsError as exc:
+        _fail("rights_not_authorized", exc.code)
+
+
 _RIGHTS_EVALUATION_FIELDS = {
     "evaluated_at_utc",
     "rights_as_of",
@@ -754,13 +900,16 @@ _RIGHTS_EVALUATION_FIELDS = {
 }
 
 
-def _validated_bound_rights(
-    value: object, target: date
-) -> dict[str, Any]:
+def _validated_bound_rights(value: object, target: date) -> dict[str, Any]:
     try:
-        return ngram_rights.validate_public_identity_rights_proof(
-            value, target=target
-        )
+        return ngram_rights.validate_public_identity_rights_proof(value, target=target)
+    except ngram_rights.NgramRightsError as exc:
+        _fail("promotion_receipt_invalid", exc.code)
+
+
+def _validated_bound_aggregate_rights(value: object, target: date) -> dict[str, Any]:
+    try:
+        return ngram_rights.validate_daily_aggregate_rights_proof(value, target=target)
     except ngram_rights.NgramRightsError as exc:
         _fail("promotion_receipt_invalid", exc.code)
 
@@ -832,9 +981,7 @@ def _commit_candidate_bundle(writes: list[tuple[Path, bytes]]) -> None:
     is the visibility boundary and a partial bundle has no commit path.
     """
 
-    originals = {
-        path: path.read_bytes() if path.exists() else None for path, _ in writes
-    }
+    originals = {path: path.read_bytes() if path.exists() else None for path, _ in writes}
     try:
         for path, data in writes:
             _atomic_write(path, data)
@@ -885,31 +1032,31 @@ def _validate_frame_candidate(
     result: dict[str, Any],
     root: Path,
 ) -> dict[str, Any]:
-    """Run the existing registered 48/48 validator on isolated bytes."""
+    """Validate the prospective 48/48 aggregate-only source profile."""
 
-    with tempfile.TemporaryDirectory(prefix="igrm-final-frame-") as raw:
-        candidate_root = Path(raw)
-        cache = candidate_root / "data/raw/ngram_days" / f"{target}.json"
-        cache.parent.mkdir(parents=True)
-        candidate_bytes = json.dumps(result).encode("utf-8")
-        cache.write_bytes(candidate_bytes)
-        (candidate_root / "src").mkdir()
-        shutil.copyfile(root / "dictionaries.json", candidate_root / "dictionaries.json")
-        shutil.copyfile(
-            root / "src/fetch_ngrams.py", candidate_root / "src/fetch_ngrams.py"
-        )
-        return precision_frame_v3._build_day_attestation_from_authorized_bytes(
-            target,
-            candidate_bytes,
-            candidate_root,
-            require_live_hashes=True,
-            require_strong_denominator=True,
-        )
+    specs = fetch_ngrams._canonical_specs(fetch_ngrams.group_specs())
+    calibration_sha = _sha256((root / "data/raw/ngram_calibration.json").read_bytes())
+    attestation = ngram_daily_attestation.validate(
+        result.get("_aggregate_attestation"),
+        target=target,
+        specs=specs,
+        root=root,
+        expected_calibration_sha256=calibration_sha,
+    )
+    reconstruction = attestation["aggregate_reconstruction"]
+    if (
+        result.get("date") != target.isoformat()
+        or result.get("n_samples") != ngram_daily_attestation.EXPECTED_WINDOWS
+        or result.get("n_samples_loaded") != ngram_daily_attestation.EXPECTED_WINDOWS
+        or result.get("partial") is not False
+        or result.get("n_docs_sampled") != reconstruction["english_denominator"]
+        or result.get("shares") != reconstruction["shares"]
+    ):
+        _fail("acquisition_failed", "aggregate_result_binding_invalid")
+    return attestation
 
 
-def _calibration(
-    root: Path, channels: list[str]
-) -> tuple[bytes, dict[str, dict[str, Any]]]:
+def _calibration(root: Path, channels: list[str]) -> tuple[bytes, dict[str, dict[str, Any]]]:
     path = root / "data/raw/ngram_calibration.json"
     try:
         raw = path.read_bytes()
@@ -980,9 +1127,7 @@ def _provenance_candidate(root: Path, target: date) -> tuple[bytes, bytes]:
     if days[-1] != target - timedelta(days=1) or any(day >= target for day in days):
         _fail("acquisition_failed", "provenance_not_target_append_only")
     line_buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(
-        line_buffer, fieldnames=provenance.FIELDS, lineterminator="\n"
-    )
+    writer = csv.DictWriter(line_buffer, fieldnames=provenance.FIELDS, lineterminator="\n")
     writer.writerow(
         {
             "date": target.isoformat(),
@@ -1008,8 +1153,9 @@ def _transform_receipt(
     provenance_prefix: bytes,
     candidate_row_sha256: str,
     rights_proof: dict[str, Any],
+    source_cache_sha256: str,
 ) -> dict[str, Any]:
-    evidence = result["_matcher_evidence"]
+    evidence = result["_aggregate_attestation"]
     return {
         "schema_version": "1.0.0",
         "receipt_id": f"igrm:final-publication:{target.isoformat()}",
@@ -1018,12 +1164,14 @@ def _transform_receipt(
         "status": "eligible_immutable_target_candidate",
         "source": provenance.NGRAM_BRIDGE,
         "frame": {
-            "validator": "src.precision_frame_v3.build_day_attestation",
+            "validator": "src.ngram_daily_attestation.validate",
             "attestation_sha256": _sha256(_canonical_bytes(attestation)),
-            "source_cache_sha256": attestation["source_cache_sha256"],
-            "n_samples_located": attestation["n_samples_located"],
-            "n_samples_loaded": attestation["n_samples_loaded"],
-            "missing_stamps": attestation["missing_stamps"],
+            "source_cache_sha256": source_cache_sha256,
+            "n_samples_located": attestation["located_windows"],
+            "n_samples_loaded": attestation["loaded_windows"],
+            "missing_stamps": [],
+            "profile_id": ngram_daily_attestation.PROFILE_ID,
+            "document_membership_retained": False,
         },
         "bindings": {
             "calibration_sha256": _sha256(calibration_raw),
@@ -1031,9 +1179,12 @@ def _transform_receipt(
                 channel: _sha256(_canonical_bytes(calibration[channel]))
                 for channel in sorted(calibration)
             },
-            "dictionary_sha256": evidence["dictionaries_sha256"],
-            "matcher_sha256": evidence["production_matcher_sha256"],
-            "matcher_specs_sha256": evidence["matcher_specs_sha256"],
+            "source_profile_sha256": evidence["method_bindings"]["profile_sha256"],
+            "source_schema_sha256": evidence["method_bindings"]["schema_sha256"],
+            "source_validator_sha256": evidence["method_bindings"]["validator_sha256"],
+            "dictionary_sha256": evidence["method_bindings"]["dictionaries_sha256"],
+            "matcher_sha256": evidence["method_bindings"]["production_matcher_sha256"],
+            "matcher_specs_sha256": evidence["method_bindings"]["matcher_specs_sha256"],
             "candidate_row_sha256": candidate_row_sha256,
             "rights": rights_proof,
         },
@@ -1046,7 +1197,96 @@ def _transform_receipt(
         },
         "value_fields_published": False,
         "provisional_substitution_allowed": False,
+        "document_membership_retained": False,
+        "membership_reproducibility": ngram_daily_attestation.MEMBERSHIP_LIMIT,
     }
+
+
+def verify_legacy_under_aggregate_profile(
+    *,
+    root: Path = ROOT,
+    compute_day: Callable[
+        [date, dict[str, dict[str, Any]]], dict[str, Any] | None
+    ]
+    | None = None,
+    non_git_test_rights: ngram_rights.NonGitTestRightsAuthority | None = None,
+) -> dict[str, Any]:
+    """Re-acquire Aug-9 under profile 2.0 without rewriting legacy bytes."""
+
+    target = _LEGACY_AUG9_DAY
+    receipt_path = root / LEGACY_AGGREGATE_RECEIPTS_RELATIVE / f"{target}.json"
+    if receipt_path.exists():
+        existing = _validated_legacy_receipt(root)
+        require_ngram_daily_aggregate_rights(
+            target=target, root=root, non_git_test_rights=non_git_test_rights
+        )
+        return existing
+    legacy_paths = tuple(Path(path) for path in _LEGACY_PROTECTED_PATHS)
+    before = {path.as_posix(): (root / path).read_bytes() for path in legacy_paths}
+    if not is_exact_legacy_cache_exception(
+        root, target, cache_bytes=before[legacy_paths[0].as_posix()]
+    ):
+        _fail("legacy_verification_invalid", "registered_legacy_bytes_not_exact")
+    require_ngram_daily_aggregate_rights(
+        target=target, root=root, non_git_test_rights=non_git_test_rights
+    )
+    specs = fetch_ngrams.group_specs()
+    producer = compute_day or fetch_ngrams.compute_day
+    result = (
+        fetch_ngrams.compute_day(target, specs, rights_authority=non_git_test_rights)
+        if producer is fetch_ngrams.compute_day
+        else producer(target, specs)
+    )
+    if result is None:
+        _fail("legacy_verification_refused", "source_object_unavailable")
+    require_ngram_daily_aggregate_rights(
+        target=target, root=root, non_git_test_rights=non_git_test_rights
+    )
+    try:
+        attestation = _validate_frame_candidate(target, result, root)
+    except (FinalPublicationError, ngram_daily_attestation.AggregateAttestationError) as exc:
+        _fail("legacy_verification_refused", f"aggregate_candidate_mismatch:{exc}")
+    calibration_raw, calibration = _calibration(
+        root, sorted({spec["channel"] for spec in specs.values()})
+    )
+    sums = fetch_ngrams._channel_sums(result, specs)
+    with (root / "data/raw/gdelt_volume.csv").open(encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    observed = [row for row in rows if row.get("date") == target.isoformat()]
+    if len(observed) != 1:
+        _fail("legacy_verification_refused", "legacy_target_row_not_unique")
+    expected = {channel: sums[channel] / float(calibration[channel]["ratio"]) for channel in sums}
+    if any(float(observed[0][channel]) != value for channel, value in expected.items()):
+        _fail("legacy_verification_refused", "legacy_transform_value_mismatch")
+    write_rights = require_ngram_daily_aggregate_rights(
+        target=target, root=root, non_git_test_rights=non_git_test_rights
+    )
+    receipt_body = {
+        "schema_version": "1.1.0",
+        "status": "legacy_verified_under_aggregate_profile",
+        "target_date": target.isoformat(),
+        "profile_id": ngram_daily_attestation.PROFILE_ID,
+        "aggregate_attestation": attestation,
+        "legacy_bytes_sha256": {path: _sha256(raw) for path, raw in sorted(before.items())},
+        "transform": {
+            "calibration_sha256": _sha256(calibration_raw),
+            "channel_values": expected,
+            "matched_existing_row": True,
+        },
+        "rights": write_rights,
+        "original_bytes_rewritten": False,
+        "public_score_claim_added": False,
+        "membership_reproducibility": ngram_daily_attestation.MEMBERSHIP_LIMIT,
+    }
+    receipt = {
+        **receipt_body,
+        "record_sha256": _sha256(_canonical_bytes(receipt_body)),
+    }
+    _atomic_write(receipt_path, _json_bytes(receipt))
+    after = {path: (root / path).read_bytes() for path in before}
+    if after != before:
+        _fail("legacy_verification_invalid", "legacy_bytes_changed")
+    return receipt
 
 
 def acquire_target(
@@ -1055,17 +1295,18 @@ def acquire_target(
     today: date | None = None,
     root: Path = ROOT,
     base_commit: str | None = None,
-    compute_day: Callable[[date, dict[str, dict]], dict[str, Any] | None]
+    compute_day: Callable[
+        [date, dict[str, dict[str, Any]]], dict[str, Any] | None
+    ]
     | None = None,
     non_git_test_rights: ngram_rights.NonGitTestRightsAuthority | None = None,
 ) -> dict[str, Any]:
-    """Acquire, validate and atomically bank exactly one D-1 frame.
+    """Acquire, validate and atomically bank one exact ordered daily frame.
 
     A refusal writes only the value-free status record.  The score store,
     production cache, provenance and transform receipt remain byte-identical.
     """
 
-    require_exact_target(target, today)
     frozen_commit = base_commit or _git_head(root)
     latest = _read_latest_day(root)
     if latest == target:
@@ -1093,6 +1334,7 @@ def acquire_target(
             root=root,
             base_commit=frozen_commit,
         )
+    require_ordered_target(target, root=root, today=today)
     if latest != target - timedelta(days=1):
         return record_status(
             target,
@@ -1102,13 +1344,12 @@ def acquire_target(
             base_commit=frozen_commit,
         )
 
-    # Schema 1.1 freezes document-membership commitments in the public raw
-    # cache. That retention surface is disabled unless the exact current
-    # operation is covered by an applicable signed decision. Refuse before
-    # the first source request so a pending rights review cannot leave local
-    # identity evidence behind even when later validation would fail.
+    # Profile 2.0 retains aggregate counts and exact source-object commitments,
+    # never document identities or source content. Refuse before the first
+    # source request unless the exact narrow aggregate operation is covered by
+    # an applicable signed human decision.
     try:
-        rights_proof = require_ngram_public_identity_rights(
+        rights_proof = require_ngram_daily_aggregate_rights(
             target=target,
             root=root,
             non_git_test_rights=non_git_test_rights,
@@ -1117,7 +1358,7 @@ def acquire_target(
         return record_status(
             target,
             "acquisition_failed",
-            f"registered ngram evidence retention refused: {exc.detail}",
+            f"registered ngram aggregate processing refused: {exc.detail}",
             root=root,
             base_commit=frozen_commit,
         )
@@ -1125,9 +1366,7 @@ def acquire_target(
     specs = fetch_ngrams.group_specs()
     try:
         if compute_day is None or compute_day is fetch_ngrams.compute_day:
-            result = fetch_ngrams.compute_day(
-                target, specs, rights_authority=non_git_test_rights
-            )
+            result = fetch_ngrams.compute_day(target, specs, rights_authority=non_git_test_rights)
         else:
             result = compute_day(target, specs)
     except Exception as exc:  # noqa: BLE001 - classified, value-free refusal
@@ -1148,7 +1387,7 @@ def acquire_target(
         )
 
     try:
-        rights_proof = require_ngram_public_identity_rights(
+        rights_proof = require_ngram_daily_aggregate_rights(
             target=target,
             root=root,
             non_git_test_rights=non_git_test_rights,
@@ -1157,7 +1396,7 @@ def acquire_target(
         return record_status(
             target,
             "acquisition_failed",
-            f"post-fetch ngram evidence retention refused: {exc.detail}",
+            f"post-fetch ngram aggregate processing refused: {exc.detail}",
             root=root,
             base_commit=frozen_commit,
         )
@@ -1170,16 +1409,13 @@ def acquire_target(
         if set(sums) != set(channels):
             _fail("acquisition_failed", "target_channel_set_invalid")
         calibrated = {
-            channel: sums[channel] / float(calibration[channel]["ratio"])
-            for channel in channels
+            channel: sums[channel] / float(calibration[channel]["ratio"]) for channel in channels
         }
         # Preserve the canonical store's registered channel order.
         with (root / "data/raw/gdelt_volume.csv").open(encoding="utf-8") as handle:
             store_fields = list(csv.DictReader(handle).fieldnames or [])[1:]
         calibrated = {channel: calibrated[channel] for channel in store_fields}
-        store_prefix, store_candidate, row_sha = _store_candidate(
-            root, target, calibrated
-        )
+        store_prefix, store_candidate, row_sha = _store_candidate(root, target, calibrated)
         provenance_prefix, provenance_candidate = _provenance_candidate(root, target)
         cache_bytes = json.dumps(result).encode("utf-8")
         receipt = _transform_receipt(
@@ -1193,8 +1429,12 @@ def acquire_target(
             provenance_prefix=provenance_prefix,
             candidate_row_sha256=row_sha,
             rights_proof=rights_proof,
+            source_cache_sha256=_sha256(cache_bytes),
         )
-    except (FinalPublicationError, precision_frame_v3.FrameValidationError) as exc:
+    except (
+        FinalPublicationError,
+        ngram_daily_attestation.AggregateAttestationError,
+    ) as exc:
         detail = getattr(exc, "detail", "") or str(exc)
         return record_status(
             target,
@@ -1215,7 +1455,7 @@ def acquire_target(
     # Candidate preparation may itself span a policy boundary. Re-evaluate
     # immediately before the atomic bundle write and bind that latest proof.
     try:
-        write_rights_proof = require_ngram_public_identity_rights(
+        write_rights_proof = require_ngram_daily_aggregate_rights(
             target=target,
             root=root,
             non_git_test_rights=non_git_test_rights,
@@ -1224,7 +1464,7 @@ def acquire_target(
         return record_status(
             target,
             "acquisition_failed",
-            f"candidate-write ngram evidence retention refused: {exc.detail}",
+            f"candidate-write ngram aggregate processing refused: {exc.detail}",
             root=root,
             base_commit=frozen_commit,
         )
@@ -1367,12 +1607,8 @@ def require_promotion_receipt(
             csv.DictReader(io.StringIO(provenance_path.read_text(encoding="utf-8")))
         )
     except (OSError, UnicodeError, csv.Error) as exc:
-        raise FinalPublicationError(
-            "promotion_receipt_invalid", "provenance_unreadable"
-        ) from exc
-    target_provenance = [
-        row for row in provenance_rows if row.get("date") == target.isoformat()
-    ]
+        raise FinalPublicationError("promotion_receipt_invalid", "provenance_unreadable") from exc
+    target_provenance = [row for row in provenance_rows if row.get("date") == target.isoformat()]
     bridge_target = bool(
         cache_path.exists()
         or any(row.get("source") == provenance.NGRAM_BRIDGE for row in target_provenance)
@@ -1394,13 +1630,12 @@ def require_promotion_receipt(
         provenance_raw = provenance_path.read_bytes()
         calibration_raw = (root / "data/raw/ngram_calibration.json").read_bytes()
         calibration = json.loads(calibration_raw)
-        cache_payload = json.loads(
-            fetch_ngrams.read_retained_identity_cache(
-                target,
-                root=root,
-                rights_authority=parent.rights_authority,
-            )
+        cache_raw = fetch_ngrams.read_daily_aggregate_cache(
+            target,
+            root=root,
+            rights_authority=parent.rights_authority,
         )
+        cache_payload = json.loads(cache_raw)
     except ngram_rights.NgramRightsError as exc:
         raise FinalPublicationError(
             "promotion_receipt_invalid", f"rights_not_authorized:{exc.code}"
@@ -1417,10 +1652,7 @@ def require_promotion_receipt(
     }
     if any(receipt.get(key) != value for key, value in expected_identity.items()):
         _fail("promotion_receipt_invalid", "receipt_identity_mismatch")
-    if (
-        receipt.get("base_commit") != parent.commit
-        or marker.get("base_commit") != parent.commit
-    ):
+    if receipt.get("base_commit") != parent.commit or marker.get("base_commit") != parent.commit:
         _fail("promotion_receipt_invalid", "frozen_parent_binding_mismatch")
     if len(target_provenance) != 1 or target_provenance[0] != {
         "date": target.isoformat(),
@@ -1441,34 +1673,35 @@ def require_promotion_receipt(
         _fail("promotion_receipt_invalid", "target_ready_status_binding_invalid")
 
     try:
-        attestation = precision_frame_v3.build_day_attestation(
-            target,
-            root,
-            require_live_hashes=True,
-            require_strong_denominator=True,
-            rights_authority=parent.rights_authority,
+        specs = fetch_ngrams._canonical_specs(fetch_ngrams.group_specs())
+        attestation = ngram_daily_attestation.validate(
+            cache_payload.get("_aggregate_attestation"),
+            target=target,
+            specs=specs,
+            root=root,
+            expected_calibration_sha256=_sha256(calibration_raw),
         )
-    except precision_frame_v3.FrameValidationError as exc:
-        raise FinalPublicationError(
-            "promotion_receipt_invalid", f"frame_invalid:{exc}"
-        ) from exc
+    except ngram_daily_attestation.AggregateAttestationError as exc:
+        raise FinalPublicationError("promotion_receipt_invalid", f"frame_invalid:{exc}") from exc
     frame = receipt.get("frame")
     if not isinstance(frame, dict) or frame != {
-        "validator": "src.precision_frame_v3.build_day_attestation",
+        "validator": "src.ngram_daily_attestation.validate",
         "attestation_sha256": _sha256(_canonical_bytes(attestation)),
-        "source_cache_sha256": attestation["source_cache_sha256"],
-        "n_samples_located": precision_frame_v3.EXPECTED_SAMPLES,
-        "n_samples_loaded": precision_frame_v3.EXPECTED_SAMPLES,
+        "source_cache_sha256": _sha256(cache_raw),
+        "n_samples_located": ngram_daily_attestation.EXPECTED_WINDOWS,
+        "n_samples_loaded": ngram_daily_attestation.EXPECTED_WINDOWS,
         "missing_stamps": [],
+        "profile_id": ngram_daily_attestation.PROFILE_ID,
+        "document_membership_retained": False,
     }:
         _fail("promotion_receipt_invalid", "frame_binding_invalid")
 
     bindings = receipt.get("bindings")
     if not isinstance(bindings, dict):
         _fail("promotion_receipt_invalid", "transform_bindings_missing")
-    bound_rights = _validated_bound_rights(bindings.get("rights"), target)
+    bound_rights = _validated_bound_aggregate_rights(bindings.get("rights"), target)
     try:
-        rights_proof = require_ngram_public_identity_rights(
+        rights_proof = require_ngram_daily_aggregate_rights(
             target=target,
             root=root,
             non_git_test_rights=parent.rights_authority,
@@ -1491,14 +1724,10 @@ def require_promotion_receipt(
                 f"rights_input_differs_from_frozen_parent:{relative}",
             )
     bound_static = {
-        key: value
-        for key, value in bound_rights.items()
-        if key not in _RIGHTS_EVALUATION_FIELDS
+        key: value for key, value in bound_rights.items() if key not in _RIGHTS_EVALUATION_FIELDS
     }
     current_static = {
-        key: value
-        for key, value in rights_proof.items()
-        if key not in _RIGHTS_EVALUATION_FIELDS
+        key: value for key, value in rights_proof.items() if key not in _RIGHTS_EVALUATION_FIELDS
     }
     if bound_static != current_static:
         _fail("promotion_receipt_invalid", "rights_binding_mismatch")
@@ -1508,31 +1737,37 @@ def require_promotion_receipt(
         _fail("promotion_receipt_invalid", "dictionary_differs_from_frozen_parent")
     if (root / "src/fetch_ngrams.py").read_bytes() != parent.matcher:
         _fail("promotion_receipt_invalid", "matcher_differs_from_frozen_parent")
+    if (root / ngram_daily_attestation.PROFILE_RELATIVE).read_bytes() != parent.aggregate_profile:
+        _fail("promotion_receipt_invalid", "aggregate_profile_differs_from_frozen_parent")
+    if (root / ngram_daily_attestation.SCHEMA_RELATIVE).read_bytes() != parent.aggregate_schema:
+        _fail("promotion_receipt_invalid", "aggregate_schema_differs_from_frozen_parent")
+    if (root / "src/ngram_daily_attestation.py").read_bytes() != parent.aggregate_validator:
+        _fail("promotion_receipt_invalid", "aggregate_validator_differs_from_frozen_parent")
     if not isinstance(calibration, dict):
         _fail("promotion_receipt_invalid", "calibration_root_invalid")
     expected_calibration_records = {
-        channel: _sha256(_canonical_bytes(calibration[channel]))
-        for channel in sorted(calibration)
+        channel: _sha256(_canonical_bytes(calibration[channel])) for channel in sorted(calibration)
     }
     if bindings.get("calibration_sha256") != _sha256(calibration_raw):
         _fail("promotion_receipt_invalid", "calibration_hash_mismatch")
     if bindings.get("calibration_records_sha256") != expected_calibration_records:
         _fail("promotion_receipt_invalid", "calibration_records_mismatch")
-    if bindings.get("dictionary_sha256") != _sha256(
-        (root / "dictionaries.json").read_bytes()
-    ):
+    if bindings.get("dictionary_sha256") != _sha256((root / "dictionaries.json").read_bytes()):
         _fail("promotion_receipt_invalid", "dictionary_hash_mismatch")
-    if bindings.get("matcher_sha256") != _sha256(
-        (root / "src/fetch_ngrams.py").read_bytes()
-    ):
+    if bindings.get("matcher_sha256") != _sha256((root / "src/fetch_ngrams.py").read_bytes()):
         _fail("promotion_receipt_invalid", "matcher_hash_mismatch")
-    if bindings.get("matcher_specs_sha256") != attestation["matcher_specs_sha256"]:
+    method_bindings = attestation["method_bindings"]
+    if bindings.get("source_profile_sha256") != method_bindings["profile_sha256"]:
+        _fail("promotion_receipt_invalid", "aggregate_profile_hash_mismatch")
+    if bindings.get("source_schema_sha256") != method_bindings["schema_sha256"]:
+        _fail("promotion_receipt_invalid", "aggregate_schema_hash_mismatch")
+    if bindings.get("source_validator_sha256") != method_bindings["validator_sha256"]:
+        _fail("promotion_receipt_invalid", "aggregate_validator_hash_mismatch")
+    if bindings.get("matcher_specs_sha256") != method_bindings["matcher_specs_sha256"]:
         _fail("promotion_receipt_invalid", "matcher_specs_hash_mismatch")
 
     store_prefix = _strip_last_csv_row(store_raw, target, "store")
-    provenance_prefix = _strip_last_csv_row(
-        provenance_raw, target, "provenance"
-    )
+    provenance_prefix = _strip_last_csv_row(provenance_raw, target, "provenance")
     _require_parent_prefix(parent.store, target, "store")
     _require_parent_prefix(parent.provenance, target, "provenance")
     if store_prefix != parent.store:
@@ -1555,11 +1790,12 @@ def require_promotion_receipt(
     store_reader = csv.DictReader(io.StringIO(store_raw.decode("utf-8")))
     store_rows = list(store_reader)
     store_fields = list(store_reader.fieldnames or [])[1:]
-    evidence = cache_payload.get("_matcher_evidence")
-    specs = evidence.get("matcher_specs") if isinstance(evidence, dict) else None
-    if not isinstance(specs, dict):
+    evidence = cache_payload.get("_aggregate_attestation")
+    method = evidence.get("method_bindings") if isinstance(evidence, dict) else None
+    attested_specs = method.get("matcher_specs") if isinstance(method, dict) else None
+    if not isinstance(attested_specs, dict):
         _fail("promotion_receipt_invalid", "matcher_specs_missing")
-    sums = fetch_ngrams._channel_sums(cache_payload, specs)
+    sums = fetch_ngrams._channel_sums(cache_payload, attested_specs)
     if set(store_fields) != set(sums) or set(store_fields) != set(calibration):
         _fail("promotion_receipt_invalid", "target_channel_set_invalid")
     expected_row: dict[str, object] = {"date": target.isoformat()}
@@ -1583,9 +1819,7 @@ def require_promotion_receipt(
             ) from exc
     if actual_row != expected_row:
         _fail("promotion_receipt_invalid", "target_row_does_not_recompute")
-    if bindings.get("candidate_row_sha256") != _sha256(
-        _canonical_bytes(expected_row)
-    ):
+    if bindings.get("candidate_row_sha256") != _sha256(_canonical_bytes(expected_row)):
         _fail("promotion_receipt_invalid", "candidate_row_hash_mismatch")
     validated_receipt = dict(receipt)
     validated_receipt["release_rights_evaluation"] = rights_proof
@@ -1640,7 +1874,7 @@ def record_pipeline_failed(
     """Record a value-free failure while preserving the last true final."""
 
     frozen_today = contract_today or (target + timedelta(days=1))
-    require_exact_target(target, frozen_today)
+    require_ordered_target(target, root=root, today=frozen_today)
 
     prior: dict[str, Any] = {}
     try:
@@ -1714,9 +1948,7 @@ def _committed_receipt_parent(root: Path, marker: dict[str, Any]) -> str | None:
     if len(introductions) != 1:
         return None
     introduction = introductions[0]
-    ancestor = subprocess.run(
-        ["git", "merge-base", "--is-ancestor", introduction, head], cwd=root
-    )
+    ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", introduction, head], cwd=root)
     if ancestor.returncode != 0:
         return None
     try:
@@ -1765,9 +1997,7 @@ def _legacy_proof_limited(root: Path, target: date) -> bool:
             historical[relative] = introduced
             if (root / relative).read_bytes() != introduced:
                 return False
-            if not _first_parent_path_never_changed(
-                root, introduction, head, relative
-            ):
+            if not _first_parent_path_never_changed(root, introduction, head, relative):
                 return False
         for relative, expected_sha in _LEGACY_AUG9_HISTORICAL_BLOBS.items():
             introduced = _git_blob(root, introduction, relative)
@@ -1785,21 +2015,15 @@ def _legacy_proof_limited(root: Path, target: date) -> bool:
             )
         ):
             return False
-        cache = json.loads(
-            historical["data/raw/ngram_days/2026-08-09.json"]
-        )
+        cache = json.loads(historical["data/raw/ngram_days/2026-08-09.json"])
     except (FinalPublicationError, OSError, UnicodeError, json.JSONDecodeError):
         return False
     evidence = cache.get("_matcher_evidence")
     if not isinstance(evidence, dict):
         return False
-    if evidence.get("dictionaries_sha256") != _sha256(
-        historical["dictionaries.json"]
-    ):
+    if evidence.get("dictionaries_sha256") != _sha256(historical["dictionaries.json"]):
         return False
-    if evidence.get("production_matcher_sha256") != _sha256(
-        historical["src/fetch_ngrams.py"]
-    ):
+    if evidence.get("production_matcher_sha256") != _sha256(historical["src/fetch_ngrams.py"]):
         return False
     try:
         if evidence.get("matcher_specs") != (
@@ -1818,14 +2042,13 @@ def _legacy_proof_limited(root: Path, target: date) -> bool:
         )
     except precision_frame_v3.FrameValidationError:
         return False
-    return attestation.get("denominator_evidence") == (
-        "source_reported_denominator_legacy_v1.0"
+    return bool(
+        attestation.get("denominator_evidence")
+        == "source_reported_denominator_legacy_v1.0"
     )
 
 
-def is_exact_legacy_cache_exception(
-    root: Path, target: date, *, cache_bytes: bytes
-) -> bool:
+def is_exact_legacy_cache_exception(root: Path, target: date, *, cache_bytes: bytes) -> bool:
     """Permit rights-free cache parsing only for the pinned Aug-9 object.
 
     The caller has already performed the one bounded byte read needed to
@@ -1850,9 +2073,7 @@ def is_exact_legacy_cache_exception(
         and introduced == committed == cache_bytes
         and _sha256(introduced) == expected
         and head is not None
-        and _first_parent_path_never_changed(
-            root, introduction, head, relative
-        )
+        and _first_parent_path_never_changed(root, introduction, head, relative)
     )
 
 
@@ -1881,16 +2102,8 @@ def public_status(
     marker_matches = marker.get("target_date") == target.isoformat()
     marker_stage = marker.get("failure_stage")
     marker_code = marker.get("reason_code")
-    marker_refusal = (
-        _REFUSAL_REASONS.get(marker_code)
-        if isinstance(marker_code, str)
-        else None
-    )
-    if (
-        marker_refusal is None
-        and marker_matches
-        and marker.get("status") == "source_unavailable"
-    ):
+    marker_refusal = _REFUSAL_REASONS.get(marker_code) if isinstance(marker_code, str) else None
+    if marker_refusal is None and marker_matches and marker.get("status") == "source_unavailable":
         marker_refusal = _REFUSAL_REASONS["source_unavailable"]
     marker_failure = (
         marker_matches
@@ -1898,10 +2111,7 @@ def public_status(
         and marker.get("status") == marker_refusal[1]
         and (
             marker_code is None
-            or (
-                marker_stage == marker_refusal[0]
-                and marker.get("reason") == marker_refusal[2]
-            )
+            or (marker_stage == marker_refusal[0] and marker.get("reason") == marker_refusal[2])
         )
     )
     proven_final = False
@@ -1924,9 +2134,7 @@ def public_status(
             except FinalPublicationError:
                 proven_final = False
 
-    legacy_limited = (
-        latest == target and not proven_final and _legacy_proof_limited(root, target)
-    )
+    legacy_limited = latest == target and not proven_final and _legacy_proof_limited(root, target)
     reported_latest = latest
     if marker_failure and isinstance(marker.get("latest_finalized_date"), str):
         try:
@@ -1973,9 +2181,7 @@ def public_status(
         )
     result = {
         "target_date": target.isoformat(),
-        "latest_finalized_date": (
-            reported_latest.isoformat() if reported_latest else None
-        ),
+        "latest_finalized_date": (reported_latest.isoformat() if reported_latest else None),
         "status": status,
         "reason": reason,
         "finalized": status == "finalized",
@@ -2011,9 +2217,7 @@ def write_public_status(
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
-        raise FinalPublicationError(
-            "public_status_unreadable", "docs/data/status.json"
-        ) from exc
+        raise FinalPublicationError("public_status_unreadable", "docs/data/status.json") from exc
     if not isinstance(payload, dict):
         _fail("public_status_unreadable", "status_root_not_object")
     payload["final_publication"] = state
@@ -2065,9 +2269,7 @@ def _require_clean_release_tree(root: Path, classification: str) -> str:
 
 
 @contextmanager
-def _committed_candidate_snapshot(
-    root: Path, candidate_sha: str
-) -> Iterator[Path]:
+def _committed_candidate_snapshot(root: Path, candidate_sha: str) -> Iterator[Path]:
     container = Path(tempfile.mkdtemp(prefix="igrm-release-candidate-"))
     snapshot = container / "tree"
     added = subprocess.run(
@@ -2096,12 +2298,8 @@ def _require_release_rights_from_snapshot(
     """Recheck actual-time rights at the end of the candidate gate."""
 
     candidate_sha = _git_head(root)
-    if (
-        candidate_sha is None
-        or (
-            expected_candidate_sha is not None
-            and candidate_sha != expected_candidate_sha
-        )
+    if candidate_sha is None or (
+        expected_candidate_sha is not None and candidate_sha != expected_candidate_sha
     ):
         _fail("release_rights_unproven", "frozen_candidate_sha_mismatch")
     latest = _read_latest_day(root)
@@ -2115,9 +2313,7 @@ def _require_release_rights_from_snapshot(
     try:
         target = date.fromisoformat(target_text)
     except (TypeError, ValueError) as exc:
-        raise FinalPublicationError(
-            "release_rights_unproven", "finalized_target_invalid"
-        ) from exc
+        raise FinalPublicationError("release_rights_unproven", "finalized_target_invalid") from exc
     if (
         marker.get("status") != "finalized"
         or latest != target
@@ -2205,11 +2401,11 @@ def _require_release_candidate_from_snapshot(
     expected_target: date,
     root: Path = ROOT,
 ) -> dict[str, Any]:
-    """Authorize one frozen final or disjoint value-free refusal candidate."""
+    """Authorize one frozen final, verification, or value-free refusal."""
 
     candidate_sha = _git_head(root)
     if (
-        candidate_class not in {"final", "refusal"}
+        candidate_class not in {"final", "verification", "refusal"}
         or not re.fullmatch(r"[0-9a-f]{40}", expected_candidate_sha)
         or not re.fullmatch(r"[0-9a-f]{40}", base_commit)
         or candidate_sha != expected_candidate_sha
@@ -2241,6 +2437,31 @@ def _require_release_candidate_from_snapshot(
             "candidate_class": "final",
             "base_commit": base_commit,
             "value_fields_published": True,
+        }
+
+    if candidate_class == "verification":
+        if expected_target != _LEGACY_AUG9_DAY:
+            _fail("release_candidate_unproven", "verification_target_invalid")
+        diff = subprocess.run(
+            ["git", "diff", "--name-status", "--no-renames", base_commit, candidate_sha],
+            cwd=root,
+            capture_output=True,
+            text=True,
+        )
+        expected_path = (
+            LEGACY_AGGREGATE_RECEIPTS_RELATIVE / f"{_LEGACY_AUG9_DAY}.json"
+        ).as_posix()
+        if diff.returncode != 0 or diff.stdout.splitlines() != [f"A\t{expected_path}"]:
+            _fail("release_candidate_unproven", "verification_diff_not_disjoint")
+        receipt = verify_legacy_under_aggregate_profile(root=root)
+        return {
+            "status": "legacy_aggregate_verification_release_verified",
+            "candidate_class": "verification",
+            "candidate_sha": candidate_sha,
+            "base_commit": base_commit,
+            "target_date": _LEGACY_AUG9_DAY.isoformat(),
+            "receipt_sha256": _sha256(_json_bytes(receipt)),
+            "value_fields_published": False,
         }
 
     result = subprocess.run(
@@ -2285,9 +2506,7 @@ def _require_release_candidate_from_snapshot(
     try:
         marker_raw = candidate_bytes[STATUS_RELATIVE.as_posix()]
         marker = json.loads(marker_raw)
-        parent_latest = json.loads(
-            _git_blob(root, base_commit, "docs/data/latest.json")
-        )["date"]
+        parent_latest = json.loads(_git_blob(root, base_commit, "docs/data/latest.json"))["date"]
         target = date.fromisoformat(str(marker["target_date"]))
         contract_today = date.fromisoformat(str(marker["contract_today"]))
         latest = date.fromisoformat(str(marker["latest_finalized_date"]))
@@ -2301,9 +2520,7 @@ def _require_release_candidate_from_snapshot(
         ValueError,
         json.JSONDecodeError,
     ) as exc:
-        raise FinalPublicationError(
-            "release_candidate_unproven", "refusal_marker_invalid"
-        ) from exc
+        raise FinalPublicationError("release_candidate_unproven", "refusal_marker_invalid") from exc
     expected_marker_fields = {
         "schema_version",
         "target_date",
@@ -2320,9 +2537,7 @@ def _require_release_candidate_from_snapshot(
     }
     marker_reason_code = marker.get("reason_code")
     expected_refusal = (
-        _REFUSAL_REASONS.get(marker_reason_code)
-        if isinstance(marker_reason_code, str)
-        else None
+        _REFUSAL_REASONS.get(marker_reason_code) if isinstance(marker_reason_code, str) else None
     )
     if (
         not isinstance(marker, dict)
@@ -2359,9 +2574,7 @@ def _require_release_candidate_from_snapshot(
         "reason_code": marker_reason_code,
     }
     try:
-        parent_status = json.loads(
-            _git_blob(root, base_commit, "docs/data/status.json")
-        )
+        parent_status = json.loads(_git_blob(root, base_commit, "docs/data/status.json"))
         if not isinstance(parent_status, dict):
             raise ValueError("parent status root invalid")
         parent_status["final_publication"] = state
@@ -2371,9 +2584,7 @@ def _require_release_candidate_from_snapshot(
             # Rebuild those exact bytes here as well: current public metadata
             # contains Unicode punctuation, so _json_bytes(ensure_ascii=False)
             # would reject the publisher's own deterministic refusal output.
-            "docs/data/status.json": (
-                json.dumps(parent_status, indent=1) + "\n"
-            ).encode("utf-8"),
+            "docs/data/status.json": (json.dumps(parent_status, indent=1) + "\n").encode("utf-8"),
         }
         from . import status_data
 
@@ -2384,9 +2595,7 @@ def _require_release_candidate_from_snapshot(
                 _git_blob(root, base_commit, relative),
             )
     except (FinalPublicationError, OSError, ValueError, json.JSONDecodeError) as exc:
-        raise FinalPublicationError(
-            "release_candidate_unproven", "refusal_rebuild_failed"
-        ) from exc
+        raise FinalPublicationError("release_candidate_unproven", "refusal_rebuild_failed") from exc
     for relative, expected in expected_bytes.items():
         actual = candidate_bytes[relative]
         if actual != expected:
@@ -2433,12 +2642,14 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--acquire-target", type=date.fromisoformat)
+    parser.add_argument("--next-target", action="store_true")
+    parser.add_argument("--verify-legacy-aggregate", action="store_true")
     parser.add_argument("--record-pipeline-failed", type=date.fromisoformat)
     parser.add_argument("--check-promotion-receipt", type=date.fromisoformat)
     parser.add_argument("--check-published-target", type=date.fromisoformat)
     parser.add_argument("--check-release-rights", metavar="EXPECTED_CANDIDATE_SHA")
     parser.add_argument(
-        "--check-release-candidate", choices=("final", "refusal")
+        "--check-release-candidate", choices=("final", "verification", "refusal")
     )
     parser.add_argument("--expected-candidate-sha")
     parser.add_argument("--expected-target", type=date.fromisoformat)
@@ -2456,6 +2667,8 @@ def main() -> None:
     selected = sum(
         (
             args.acquire_target is not None,
+            args.next_target,
+            args.verify_legacy_aggregate,
             args.record_pipeline_failed is not None,
             args.check_promotion_receipt is not None,
             args.check_published_target is not None,
@@ -2466,6 +2679,13 @@ def main() -> None:
     )
     if selected != 1:
         parser.error("select exactly one publication-status operation")
+    if args.next_target:
+        target = required_next_target(root=args.root, today=args.today)
+        print(target.isoformat() if target is not None else "none")
+        return
+    if args.verify_legacy_aggregate:
+        print(json.dumps(verify_legacy_under_aggregate_profile(root=args.root), indent=1))
+        return
     if args.record_pipeline_failed is not None:
         status = record_pipeline_failed(
             args.record_pipeline_failed,
@@ -2547,11 +2767,7 @@ def main() -> None:
         print(json.dumps(release, indent=1))
         return
     if args.write_public_status:
-        print(
-            json.dumps(
-                write_public_status(root=args.root, today=args.today), indent=1
-            )
-        )
+        print(json.dumps(write_public_status(root=args.root, today=args.today), indent=1))
         return
     assert args.acquire_target is not None
     status = acquire_target(

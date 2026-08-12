@@ -337,17 +337,29 @@ def test_publication_scripts_cover_generic_and_both_final_classes() -> None:
     assert refusal_add < refusal_manifest < refusal_publish
 
 
-def _committed_refusal_with_manifest(root: Path) -> tuple[str, str, date]:
+def _committed_refusal_with_manifest(
+    root: Path, monkeypatch: pytest.MonkeyPatch
+) -> tuple[str, str, date]:
     base = _git(root, "rev-parse", "HEAD")
     target = date(2026, 8, 10)
+    contract_today = date(2026, 8, 11)
+    # This fixture isolates the refusal+manifest release boundary. Ordered
+    # backlog selection (including the Aug-9 upgrade) is exhaustively covered
+    # by the final-publication and aggregate suites; freeze only that selector
+    # while retaining the real D-1/latest/refusal verifier below.
+    monkeypatch.setattr(
+        final_publication,
+        "required_next_target",
+        lambda *, root, today: target,
+    )
     final_publication.record_pipeline_failed(
         target,
         root=root,
         base_commit=base,
         failure_stage="source",
-        contract_today=date(2026, 8, 11),
+        contract_today=contract_today,
     )
-    state = final_publication.write_public_status(root=root, today=date(2026, 8, 11))
+    state = final_publication.write_public_status(root=root, today=contract_today)
     parent_status = json.loads(
         subprocess.run(
             ["git", "show", f"{base}:docs/data/status.json"],
@@ -367,8 +379,10 @@ def _committed_refusal_with_manifest(root: Path) -> tuple[str, str, date]:
     return base, _git(root, "rev-parse", "HEAD"), target
 
 
-def test_refusal_candidate_is_exact_four_outputs_plus_manifest(candidate_repo: Path) -> None:
-    base, candidate, target = _committed_refusal_with_manifest(candidate_repo)
+def test_refusal_candidate_is_exact_four_outputs_plus_manifest(
+    candidate_repo: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    base, candidate, target = _committed_refusal_with_manifest(candidate_repo, monkeypatch)
     proof = final_publication.require_release_candidate(
         "refusal",
         expected_candidate_sha=candidate,
@@ -383,8 +397,10 @@ def test_refusal_candidate_is_exact_four_outputs_plus_manifest(candidate_repo: P
     assert proof["value_fields_published"] is False
 
 
-def test_refusal_candidate_cannot_reseal_a_false_manifest(candidate_repo: Path) -> None:
-    base, _candidate, target = _committed_refusal_with_manifest(candidate_repo)
+def test_refusal_candidate_cannot_reseal_a_false_manifest(
+    candidate_repo: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    base, _candidate, target = _committed_refusal_with_manifest(candidate_repo, monkeypatch)
     path = candidate_repo / manifest.MANIFEST_REPOSITORY_PATH
     payload = json.loads(path.read_text(encoding="utf-8"))
     payload["entries"][0]["sha256"] = "0" * 64

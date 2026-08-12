@@ -180,7 +180,7 @@
    "git_mode": "100644",
    "path": "data/event_ledger.json",
    "repository_path": "docs/data/event_ledger.json",
-   "sha256": "2374c17f893d1fbfde4090dc1195adad82599235e964dc8bab22fe7d1b452a18"
+   "sha256": "fd4de894f5f8a059918abd3317f92120692e32ab4d99bdb3a7620c6fcf11ac30"
   },
   {
    "bytes": 8598,
@@ -212,7 +212,7 @@
    "git_mode": "100644",
    "path": "data/evolution.json",
    "repository_path": "docs/data/evolution.json",
-   "sha256": "3ffa6dbdcc5cbb0854ad22a3a9ab48dcbfdb299b38d2ad8417e5340bbf297a4b"
+   "sha256": "c5dca0b4ff9b44c90bb9161aaa61b582807ada28f2cf3d860c18303a309ac65c"
   },
   {
    "bytes": 4892,
@@ -623,12 +623,12 @@
    "sha256": "9380c060d0cf55cd1299c6b0bfc4cabfb9f57df1df504f3cc824805810e5fa70"
   },
   {
-   "bytes": 4023,
+   "bytes": 4042,
    "format": "json",
    "git_mode": "100644",
    "path": "data/security_integrity.json",
    "repository_path": "docs/data/security_integrity.json",
-   "sha256": "82d1ba026a6a1cf7a2c6728a9527e905c36424e1e76fc087223f9748ae1f216e"
+   "sha256": "28465ef0c7b137127d66658285ad64b76d2aef50bdafc62d6592fac9d447c852"
   },
   {
    "bytes": 24668,
@@ -962,7 +962,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "4c02d53f455843e66a1b9ce1e8ae3239f106bbc6c4730ddccc7ddcd455b1df59",
+  "entries_sha256": "d08a4865b121a9497900a73657a36ed3b496b367640aef76c6d67f78c75f864d",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -973,7 +973,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7271263,
+  "hashed_bytes": 7271282,
   "hashed_entries": 117,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
