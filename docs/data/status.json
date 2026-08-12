@@ -213,13 +213,15 @@
   "last_scored_day": "2026-08-06"
  },
  "final_publication": {
-  "target_date": "2026-08-09",
+  "target_date": "2026-08-11",
   "latest_finalized_date": "2026-08-09",
-  "status": "legacy_proof_limited",
-  "reason": "The Aug-9 number remains visible as the exact historical blobs introduced by commit 9077ea4; its cache structurally covers all 48 half-hour windows. This byte identity does not supply a source acquisition receipt, reconstructable English denominator, cache-to-store calibration/transform receipt, or store-to-public score derivation receipt; source-retention and redistribution rights review also remains pending. It is not new-contract final proof.",
+  "status": "acquisition_failed",
+  "reason": "The registered source acquisition did not complete its bounded step.",
   "finalized": false,
   "provisional_substitution_allowed": false,
   "value_fields_published": false,
-  "source_receipt": null
+  "source_receipt": null,
+  "failure_stage": "source",
+  "reason_code": "source_acquisition_failed"
  }
 }
