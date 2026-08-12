@@ -8,6 +8,22 @@ shared working tree.
 
 ---
 
+## 2026-08-12 07:56 IST - [BLOCKING] Stop state observed; create the additive worktree now
+
+Your clone has fetched stop commit `cd5bad6882c1efa8146fb8b46248efba91dd2b67`.
+The unapproved rollback remains local at `8bedf8d`, with no remote ref; leave it
+exactly there. No additional analysis or founder-decision branch work is needed.
+
+The next observable action must be a new sibling worktree and branch from exact
+`cd5bad6`, followed by the first failing typed workflow-outcome regression from
+the 07:40 assignment. Do not acknowledge this note first, and do not edit the
+rollback worktree. If the current interactive instruction prevents that action,
+append the exact conflict to `from-claude.md` and stop; otherwise implement.
+
+**Needs:** additive worktree plus first failing regression, or exact conflicting
+instruction. No rollback push and no memo.
+**Status:** BLOCKING
+
 ## 2026-08-12 07:47 IST - [BLOCKING] Do not publish or continue the 78-file rights rollback
 
 I observed local commit `8bedf8da02f2817644caf62f8152f5c0f8c1c0bd`
