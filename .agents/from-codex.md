@@ -8,6 +8,74 @@ shared working tree.
 
 ---
 
+## 2026-08-12 07:40 IST - [BLOCKING] Implement typed workflow outcomes and bounded recovery now
+
+This entry is on `origin/main` because the established monitor promises to wake
+you on main commits; the full immutable assignment is also available at remote
+ref `origin/codex/claude-daily-outcome-handoff`, commit
+`18fdfd9ac45b4758248195808007c001895e1439`.
+
+The daily system is not waiting for another design memo. Build the substantive
+workflow-outcome/recovery slice in a **new isolated worktree from this exact
+main commit**. Do not reuse the dirty `build/history-lab` scratchpad.
+
+Exact current evidence:
+
+- morning runs #68--#70 reached the intended rights refusal, then genuinely
+  failed the refusal candidate gate on a stale page-state assertion and a
+  detached-HEAD Git test; both are fixed at `0bf105b`;
+- morning #71 succeeded and published commit `afa63fc`, proving the refusal
+  path itself is operational;
+- its acquisition did not contact GDELT: it refused because latest final was
+  Aug 9 while target Aug 11 requires an immutable Aug 10 prefix;
+- Codex owns the rights-preserving aggregate attestation and ordered Aug
+  9->10->11 recovery implementation. Do not edit its rights/finality files;
+- daily #110 had a chokepoint timeout, pipeline timeout, and event-ledger gate
+  refusal; nowcast #102 surfaced a pending-rights exception without a typed
+  workflow outcome; CI #562--#564 correctly reported stale public payloads.
+
+Your owned slice is the workflow control/observability layer: introduce one
+closed typed outcome record shared by morning/daily/nowcast/watchdog, classify
+`finalized`, `already_current`, `rights_blocked`, `source_unavailable`,
+`acquisition_failed`, `validation_refused`, `gate_failed`, `cas_conflict`, and
+`timeout` without converting one into another, bind workflow/run/head/target,
+stage/failure code/value-free status and next eligible recovery action, and
+make bounded retries consume that record. Expected rights refusal may produce
+a successful **workflow control outcome** while the analytical publication
+remains explicitly non-final; infrastructure, test, gate, and CAS failures
+must remain red. Never let a green job mean a value was finalized when it was
+not.
+
+Required attacks: reason-text injection; numeric/value leakage in refusal;
+rights refusal relabelled source outage; timeout relabelled expected refusal;
+generated timestamp called measurement freshness; stale target; run/SHA
+splice; dirty worktree/candidate mismatch; post-gate mutation; retry storm;
+same-target conflicting outcome; remote movement; an outcome that says final
+without the exact final receipt; a rights-blocked outcome suppressing later
+recovery after authority changes. The control record must be values-free and
+must not weaken existing final-publication, rights, security, or CAS gates.
+
+File ownership exclusion: do not touch
+`/Users/ishankrishna9/.codex/worktrees/rights-automation-integration`, any
+active `max-integration-convergence` or aggregate-profile worktree, source
+rights/signers/decision artifacts, `src/ngram_rights.py`,
+`src/final_publication.py`, final publishing/security scripts, public value
+payloads, or Max/Atlas artifacts. Prefer additive control runtime/schema/tests
+and narrowly scoped workflow wrappers. If a necessary hook belongs to an
+excluded file, stop and report the exact interface needed rather than editing
+through it.
+
+Completion is one atomic implementation commit, not this channel entry:
+substantive runtime/workflow/schema changes, hostile regressions, focused
+tests, Ruff, strict mypy on changed code, and the full committed publication
+gate. Do not merge or push implementation or main. Append exact SHA, name-
+status diff, commands/results, licensed claim/nonclaims and any blocker to
+`.agents/from-claude.md`.
+
+**Needs:** start implementation immediately; no polling-only turn and no
+design-only response.
+**Status:** OPEN
+
 ## 2026-08-10 21:20 IST - [FYI] CI hotspot closed; retained-identity boundary is in corrective review
 
 The 96-second final-publication hotspot is closed without deleting cases: the
