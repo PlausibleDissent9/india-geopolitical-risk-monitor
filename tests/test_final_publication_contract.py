@@ -2218,6 +2218,148 @@ def test_value_free_refusal_release_rebuilds_exact_parent_patch(
     assert proof["value_fields_published"] is False
 
 
+def test_repeated_value_free_refusal_accepts_unchanged_public_disclosures(
+    tmp_path: Path,
+) -> None:
+    root, _original_base, first_candidate = _committed_value_free_refusal(tmp_path)
+
+    final_publication.record_pipeline_failed(
+        TARGET,
+        root=root,
+        base_commit=first_candidate,
+        failure_stage="source",
+        contract_today=TODAY,
+    )
+    final_publication.write_public_status(root=root, today=TODAY)
+    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "repeat value-free refusal"],
+        cwd=root,
+        check=True,
+    )
+    candidate = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    changed = subprocess.run(
+        ["git", "diff", "--name-only", first_candidate, candidate],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+
+    assert changed == [final_publication.STATUS_RELATIVE.as_posix()]
+    proof = final_publication.require_release_candidate(
+        "refusal",
+        expected_candidate_sha=candidate,
+        base_commit=first_candidate,
+        expected_target=TARGET,
+        root=root,
+    )
+
+    assert proof["candidate_class"] == "refusal"
+    assert proof["changed_paths"] == changed
+    assert proof["value_fields_published"] is False
+
+
+def test_value_free_refusal_subset_still_requires_fresh_marker(
+    tmp_path: Path,
+) -> None:
+    root, _original_base, first_candidate = _committed_value_free_refusal(tmp_path)
+    path = root / "docs/status.html"
+    path.write_bytes(path.read_bytes() + b"\n<!-- unrelated repeat -->\n")
+    subprocess.run(["git", "add", "--", "docs/status.html"], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "public-only repeat"],
+        cwd=root,
+        check=True,
+    )
+    candidate = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_release_candidate(
+            "refusal",
+            expected_candidate_sha=candidate,
+            base_commit=first_candidate,
+            expected_target=TARGET,
+            root=root,
+        )
+
+    assert exc.value.detail == "refusal_diff_not_value_free"
+
+
+def test_value_free_refusal_reads_committed_blob_not_symlink_target(
+    tmp_path: Path,
+) -> None:
+    root = _publication_root(tmp_path)
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Refusal proof test"),
+        ("config", "user.email", "actions@github.com"),
+        ("add", "."),
+        ("commit", "-q", "-m", "frozen parent"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    base = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    final_publication.record_pipeline_failed(
+        TARGET,
+        root=root,
+        base_commit=base,
+        failure_stage="source",
+        contract_today=TODAY,
+    )
+    final_publication.write_public_status(root=root, today=TODAY)
+    marker_path = root / final_publication.STATUS_RELATIVE
+    external_marker = tmp_path / "external-marker.json"
+    external_marker.write_bytes(marker_path.read_bytes())
+    marker_path.unlink()
+    marker_path.symlink_to(external_marker)
+    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "symlink refusal"],
+        cwd=root,
+        check=True,
+    )
+    candidate = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.require_release_candidate(
+            "refusal",
+            expected_candidate_sha=candidate,
+            base_commit=base,
+            expected_target=TARGET,
+            root=root,
+        )
+
+    assert exc.value.detail == (
+        "refusal_output_mode_invalid:data/raw/final_publication_status.json"
+    )
+
+
 @pytest.mark.parametrize(
     ("old", "new"),
     (

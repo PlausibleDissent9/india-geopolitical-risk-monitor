@@ -286,6 +286,40 @@ def _git_blob(root: Path, commit: str, relative: str) -> bytes:
     return result.stdout
 
 
+def _git_regular_blob(
+    root: Path,
+    commit: str,
+    relative: str,
+    *,
+    classification: str,
+    detail: str,
+) -> bytes:
+    """Read one exact committed non-executable regular-file blob."""
+
+    result = subprocess.run(
+        ["git", "ls-tree", "-z", "--full-tree", commit, "--", relative],
+        cwd=root,
+        capture_output=True,
+    )
+    records = result.stdout.split(b"\0")
+    if result.returncode != 0 or records[-1] or len(records) != 2:
+        _fail(classification, f"{detail}:{relative}")
+    try:
+        metadata, encoded_path = records[0].split(b"\t", 1)
+        mode, object_type, object_id = metadata.split(b" ")
+        decoded_path = encoded_path.decode("utf-8")
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise FinalPublicationError(classification, f"{detail}:{relative}") from exc
+    if (
+        mode != b"100644"
+        or object_type != b"blob"
+        or re.fullmatch(rb"[0-9a-f]{40,64}", object_id) is None
+        or decoded_path != relative
+    ):
+        _fail(classification, f"{detail}:{relative}")
+    return _git_blob(root, commit, relative)
+
+
 def _git_blob_oid(root: Path, commit: str, relative: str) -> str | None:
     """Return a path's blob identity at one commit, including absence."""
 
@@ -2185,12 +2219,22 @@ def _require_release_candidate_from_snapshot(
             _fail("release_candidate_unproven", "refusal_diff_status_invalid")
         changed.add(fields[1])
     if (
-        changed != _VALUE_FREE_REFUSAL_PATHS
+        STATUS_RELATIVE.as_posix() not in changed
+        or not changed.issubset(_VALUE_FREE_REFUSAL_PATHS)
     ):
         _fail("release_candidate_unproven", "refusal_diff_not_value_free")
-    marker_path = root / STATUS_RELATIVE
+    candidate_bytes = {
+        relative: _git_regular_blob(
+            root,
+            candidate_sha,
+            relative,
+            classification="release_candidate_unproven",
+            detail="refusal_output_mode_invalid",
+        )
+        for relative in sorted(_VALUE_FREE_REFUSAL_PATHS)
+    }
     try:
-        marker_raw = marker_path.read_bytes()
+        marker_raw = candidate_bytes[STATUS_RELATIVE.as_posix()]
         marker = json.loads(marker_raw)
         parent_latest = json.loads(
             _git_blob(root, base_commit, "docs/data/latest.json")
@@ -2295,12 +2339,7 @@ def _require_release_candidate_from_snapshot(
             "release_candidate_unproven", "refusal_rebuild_failed"
         ) from exc
     for relative, expected in expected_bytes.items():
-        try:
-            actual = (root / relative).read_bytes()
-        except OSError as exc:
-            raise FinalPublicationError(
-                "release_candidate_unproven", "refusal_output_missing"
-            ) from exc
+        actual = candidate_bytes[relative]
         if actual != expected:
             _fail(
                 "release_candidate_unproven",
