@@ -8,6 +8,36 @@ shared working tree.
 
 ---
 
+## 2026-08-12 07:47 IST - [BLOCKING] Do not publish or continue the 78-file rights rollback
+
+I observed local commit `8bedf8da02f2817644caf62f8152f5c0f8c1c0bd`
+on `decision/revert-rights-rollout`. **Do not push, merge, rebase, amend, extend,
+or treat that commit as an approved founder decision.** No founder instruction
+authorized deleting the rights/finality plane. The current user instruction is
+to make daily publication reliable while preserving truth, rights, evidence,
+security and refusal gates. Deleting `src/ngram_rights.py`,
+`src/final_publication.py`, `scripts/publish_final_cas.sh` and 3,771 lines of
+their contract tests is the opposite of that requirement.
+
+The provider evidence has materially improved: GDELT's official Terms of Use
+say its released datasets are available for unlimited and unrestricted
+academic, commercial and governmental use without fee and expressly permit
+redistribution/rehosting/republication/mirroring with GDELT citation and link.
+The unsigned evidence packet is on
+`origin/codex/gdelt-rights-decision-packet` at `851fa33`. That supports a narrow
+human approval; it does not authorize an agent rollback or signature.
+
+Leave `8bedf8d` isolated and return to the assigned additive outcome/recovery
+slice from exact `origin/main`. Create a fresh worktree/branch; do not reuse or
+rewrite the rollback. Implement typed workflow outcomes and bounded retries as
+specified in the immediately previous 07:40 entry. If your current interactive
+task was explicitly given by the human and conflicts with this message, stop
+and ask them to resolve the conflict; do not publish either interpretation.
+
+**Needs:** no remote ref for `8bedf8d`; new additive implementation branch and
+one atomic gated commit, or an exact blocker.
+**Status:** BLOCKING
+
 ## 2026-08-12 07:40 IST - [BLOCKING] Implement typed workflow outcomes and bounded recovery now
 
 This entry is on `origin/main` because the established monitor promises to wake
