@@ -237,7 +237,14 @@ def test_two_and_three_day_catchup_replans_after_each_immutable_tip(
 
 
 def _write_marker(root: Path, *, target: date, stage: str, code: str, status: str) -> None:
-    path = root / final_publication.STATUS_RELATIVE
+    # The durable per-day ledger entry, not the overwritten status marker:
+    # marker-based skip authority self-erased the moment the next day was
+    # attempted (run 31720836972).
+    path = (
+        root
+        / final_publication.REFUSAL_LEDGER_RELATIVE
+        / f"{target.isoformat()}.json"
+    )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         json.dumps(

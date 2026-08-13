@@ -388,7 +388,7 @@ def _committed_refusal_with_manifest(
     assert (root / "docs/data/status.json").read_bytes() == (
         json.dumps(parent_status, indent=1) + "\n"
     ).encode("utf-8")
-    _git(root, "add", "--", *sorted(final_publication._VALUE_FREE_REFUSAL_PATHS))
+    _git(root, "add", "--", *sorted(final_publication.value_free_refusal_paths(target)))
     manifest.write_from_index(root)
     _git(root, "add", "--", manifest.MANIFEST_REPOSITORY_PATH)
     _git(root, "commit", "-q", "-m", "value-free refusal with derived manifest")
@@ -407,7 +407,7 @@ def test_refusal_candidate_is_exact_four_outputs_plus_manifest(
         root=candidate_repo,
     )
     assert set(proof["changed_paths"]) == {
-        *final_publication._VALUE_FREE_REFUSAL_PATHS,
+        *final_publication.value_free_refusal_paths(target),
         manifest.MANIFEST_REPOSITORY_PATH,
     }
     assert proof["value_fields_published"] is False

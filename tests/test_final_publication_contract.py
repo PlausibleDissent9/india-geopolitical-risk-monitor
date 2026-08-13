@@ -2427,7 +2427,7 @@ def _committed_value_free_refusal(tmp_path: Path) -> tuple[Path, str, str]:
         contract_today=TODAY,
     )
     final_publication.write_public_status(root=root, today=TODAY)
-    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    paths = sorted(final_publication.value_free_refusal_paths(TARGET))
     subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
     subprocess.run(
         ["git", "commit", "-q", "-m", "value-free refusal"],
@@ -2475,7 +2475,7 @@ def test_value_free_refusal_release_rebuilds_exact_parent_patch(
 
     assert proof["candidate_class"] == "refusal"
     assert proof["candidate_sha"] == candidate
-    assert proof["changed_paths"] == sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    assert proof["changed_paths"] == sorted(final_publication.value_free_refusal_paths(TARGET))
     assert proof["value_fields_published"] is False
 
 
@@ -2492,7 +2492,7 @@ def test_repeated_value_free_refusal_accepts_unchanged_public_disclosures(
         contract_today=TODAY,
     )
     final_publication.write_public_status(root=root, today=TODAY)
-    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    paths = sorted(final_publication.value_free_refusal_paths(TARGET))
     subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
     subprocess.run(
         ["git", "commit", "-q", "-m", "repeat value-free refusal"],
@@ -2592,7 +2592,7 @@ def test_value_free_refusal_reads_committed_blob_not_symlink_target(
     external_marker.write_bytes(marker_path.read_bytes())
     marker_path.unlink()
     marker_path.symlink_to(external_marker)
-    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    paths = sorted(final_publication.value_free_refusal_paths(TARGET))
     subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
     subprocess.run(
         ["git", "commit", "-q", "-m", "symlink refusal"],
@@ -2721,7 +2721,7 @@ def test_value_free_refusal_refuses_reason_claim_laundering_after_rebuild(
     # Rebuild every disclosure byte from the now-hostile marker, reproducing
     # the old laundering path rather than relying on an output mismatch.
     final_publication.write_public_status(root=root, today=TODAY)
-    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    paths = sorted(final_publication.value_free_refusal_paths(TARGET))
     subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
     subprocess.run(
         ["git", "commit", "-q", "--amend", "--no-edit"],
@@ -2844,7 +2844,7 @@ def test_unresolved_first_refusal_blocks_all_later_target_progression(
         contract_today=contract_today,
     )
     state = final_publication.write_public_status(root=root, today=contract_today)
-    paths = sorted(final_publication._VALUE_FREE_REFUSAL_PATHS)
+    paths = sorted(final_publication.value_free_refusal_paths(TARGET))
     subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
     subprocess.run(
         ["git", "commit", "-q", "-m", f"refuse {target}"],

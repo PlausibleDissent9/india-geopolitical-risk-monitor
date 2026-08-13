@@ -141,6 +141,21 @@ _VALUE_FREE_REFUSAL_PATHS = {
     "docs/index.html",
     "docs/status.html",
 }
+# One durable value-free record per refused day. The single status marker is
+# overwritten by every later run, so it cannot carry skip authority: the
+# first Aug-12 attempt overwrote the Aug-11 disclosure that had authorized
+# it, the selector snapped back, and the lane crashed on its own ordering
+# check (run 31720836972). The ledger file survives marker turnover and is
+# byte-pinned like every other receipt.
+REFUSAL_LEDGER_RELATIVE = Path("data/raw/final_publication_refusals")
+
+
+def value_free_refusal_paths(target: date) -> set[str]:
+    """Every path a value-free refusal for ``target`` may write."""
+
+    return set(_VALUE_FREE_REFUSAL_PATHS) | {
+        (REFUSAL_LEDGER_RELATIVE / f"{target.isoformat()}.json").as_posix()
+    }
 _PUBLIC_API_BYTE_MANIFEST_PATH = "docs/data/public_api_byte_manifest.json"
 _REFUSAL_REASONS = {
     "source_unavailable": (
@@ -266,15 +281,15 @@ def required_next_target(*, root: Path = ROOT, today: date | None = None) -> dat
     candidate = latest + timedelta(days=1)
     if candidate > ceiling:
         return None
+    ledger_path = root / REFUSAL_LEDGER_RELATIVE / f"{candidate.isoformat()}.json"
     try:
-        marker = json.loads((root / STATUS_RELATIVE).read_text(encoding="utf-8"))
+        entry = json.loads(ledger_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        marker = {}
+        entry = {}
     disclosed_lost_source = (
-        marker.get("target_date") == candidate.isoformat()
-        and marker.get("failure_stage") == "source"
-        and marker.get("reason_code") == "source_acquisition_failed"
-        and marker.get("status") == "acquisition_failed"
+        entry.get("target_date") == candidate.isoformat()
+        and entry.get("failure_stage") == "source"
+        and entry.get("reason_code") == "source_acquisition_failed"
         and candidate <= contract_today - timedelta(days=2)
     )
     if disclosed_lost_source:
@@ -1954,6 +1969,33 @@ def record_pipeline_failed(
     ):
         payload["latest_finalized_date"] = prior_latest
         _atomic_write(root / STATUS_RELATIVE, _json_bytes(payload))
+    # The durable per-day record: the marker above is overwritten by every
+    # later run, so this file is the disclosure that survives -- and for a
+    # SOURCE-stage refusal it is what later authorizes the ordered backlog
+    # to advance past a permanently lost provider day.
+    ledger_entry = {
+        "schema_version": "1.0.0",
+        "target_date": target.isoformat(),
+        "failure_stage": failure_stage,
+        "reason_code": reason_code,
+        "status": state,
+        "generated": payload.get("generated"),
+    }
+    ledger_path = root / REFUSAL_LEDGER_RELATIVE / f"{target.isoformat()}.json"
+    try:
+        prior_entry = json.loads(ledger_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        prior_entry = None
+    # The FIRST disclosure's timestamp is the day's record; a repeated
+    # identical refusal must leave the ledger byte-identical or the
+    # unchanged-disclosure idempotence of repeated refusal shots breaks.
+    if not (
+        isinstance(prior_entry, dict)
+        and prior_entry.get("target_date") == ledger_entry["target_date"]
+        and prior_entry.get("failure_stage") == ledger_entry["failure_stage"]
+        and prior_entry.get("reason_code") == ledger_entry["reason_code"]
+    ):
+        _atomic_write(ledger_path, _json_bytes(ledger_entry))
     return payload
 
 
@@ -2522,6 +2564,9 @@ def _require_release_candidate_from_snapshot(
     allowed_refusal_paths = set(_VALUE_FREE_REFUSAL_PATHS)
     if manifest_required:
         allowed_refusal_paths.add(_PUBLIC_API_BYTE_MANIFEST_PATH)
+    allowed_refusal_paths.add(
+        (REFUSAL_LEDGER_RELATIVE / f"{expected_target.isoformat()}.json").as_posix()
+    )
     if (
         STATUS_RELATIVE.as_posix() not in changed
         or not changed.issubset(allowed_refusal_paths)
