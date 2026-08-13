@@ -66,13 +66,18 @@ console.log(JSON.stringify({entries: out.entries.length, concurrency: v.CONCURRE
 """
     )
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    # 117 entries / 6.89 MiB predated the receipt-identity surface (8d7e7a9)
-    # and the 2026-08-12 rights-transition manifest fixpoint.
+    # The expectations derive from the committed manifest itself: a literal
+    # size pin here went stale twice in one day (117/6.89 pre receipt-identity,
+    # 119/6.95 pre the first post-transition nowcast publish) because every
+    # publishing lane moves the byte totals. The test's job is that the
+    # BROWSER runtime and the committed manifest agree -- not that the API
+    # surface never grows. The mebibyte rule mirrors verify.js formatBytes.
+    hashed = manifest["totals"]["hashed_bytes"]
     assert result == {
-        "entries": 119,
+        "entries": len(manifest["entries"]),
         "concurrency": 4,
-        "bytes": manifest["totals"]["hashed_bytes"],
-        "formatted": "6.95 MiB",
+        "bytes": hashed,
+        "formatted": f"{hashed / (1024 * 1024):.2f} MiB",
     }
 
 
