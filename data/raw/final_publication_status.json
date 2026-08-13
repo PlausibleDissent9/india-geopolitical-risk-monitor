@@ -1,14 +1,14 @@
 {
  "schema_version": "1.0.0",
- "target_date": "2026-08-11",
- "status": "acquisition_failed",
- "reason": "The registered source acquisition did not complete its bounded step.",
+ "target_date": "2026-08-10",
+ "status": "pipeline_failed",
+ "reason": "The exact D-1 candidate did not complete derived-output validation.",
  "latest_finalized_date": "2026-08-09",
- "generated": "2026-08-12T06:04:42Z",
- "base_commit": "060359226b93c94d1b147223a7b8b493f5119b25",
+ "generated": "2026-08-13T11:01:27Z",
+ "base_commit": "ac640f6bc9c20d4b880139d6c6d4eb52dab29023",
  "value_fields_published": false,
  "provisional_substitution_allowed": false,
- "contract_today": "2026-08-12",
- "failure_stage": "source",
- "reason_code": "source_acquisition_failed"
+ "contract_today": "2026-08-11",
+ "failure_stage": "derived",
+ "reason_code": "derived_validation_failed"
 }
