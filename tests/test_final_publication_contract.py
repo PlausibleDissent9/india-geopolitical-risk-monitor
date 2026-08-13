@@ -3068,6 +3068,16 @@ def _legacy_history_repo(tmp_path: Path) -> Path:
         cwd=root,
         check=True,
     )
+    # These aug9-legacy attacks describe the frozen 2026-08-09 vintage. A
+    # clone of the LIVE head inherited whatever day the candidate had
+    # advanced to, so the first candidate that actually published a newer
+    # day made every SSR-claim expectation stale mid-gate -- a structural
+    # deadlock on the first value advance. Pin the world the tests name.
+    subprocess.run(
+        ["git", "checkout", "-q", "9077ea4f27b4662ed6651828ee28183eed8fc727"],
+        cwd=root,
+        check=True,
+    )
     return root
 
 

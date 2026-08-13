@@ -7,7 +7,7 @@ import subprocess
 import sys
 import tarfile
 from collections.abc import Callable, Generator
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import jsonschema
@@ -345,8 +345,15 @@ def _committed_refusal_with_manifest(
     root: Path, monkeypatch: pytest.MonkeyPatch
 ) -> tuple[str, str, date]:
     base = _git(root, "rev-parse", "HEAD")
-    target = date(2026, 8, 10)
-    contract_today = date(2026, 8, 11)
+    # The refusal must name the candidate's NEXT unpublished day. A frozen
+    # target of 2026-08-10 deadlocked the first candidate that actually
+    # published Aug 10: the verifier rightly refuses `latest >= target`, so
+    # the fixture's own premise went stale mid-gate. Deriving from the
+    # candidate keeps the boundary under test at every vintage.
+    latest_day = final_publication._read_latest_day(root)
+    assert latest_day is not None
+    target = latest_day + timedelta(days=1)
+    contract_today = target + timedelta(days=1)
     # This fixture isolates the refusal+manifest release boundary. Ordered
     # backlog selection (including the Aug-9 upgrade) is exhaustively covered
     # by the final-publication and aggregate suites; freeze only that selector
