@@ -1478,7 +1478,12 @@ def acquire_target(
         base_commit=frozen_commit,
         receipt={
             "path": receipt_path.as_posix(),
-            "sha256": _sha256(_canonical_bytes(receipt)),
+            # Pin the EXACT bytes the bundle writes (_json_bytes), not a
+            # re-canonicalization: a pin a reader cannot verify with
+            # sha256sum against the named file is not a byte pin, and the
+            # repo-wide pin verifier refused the first value-advance
+            # candidate on exactly this mismatch (run 31687324343).
+            "sha256": _sha256(_json_bytes(receipt)),
         },
     )
     # No canonical source/provenance write occurs before every candidate byte
@@ -1668,7 +1673,8 @@ def require_promotion_receipt(
         or marker.get("status") != required_marker_status
         or not isinstance(receipt_ref, dict)
         or receipt_ref.get("path") != expected_relative
-        or receipt_ref.get("sha256") != _sha256(_canonical_bytes(receipt))
+        or receipt_ref.get("sha256")
+        != _sha256((root / RECEIPTS_RELATIVE / f"{target}.json").read_bytes())
     ):
         _fail("promotion_receipt_invalid", "target_ready_status_binding_invalid")
 

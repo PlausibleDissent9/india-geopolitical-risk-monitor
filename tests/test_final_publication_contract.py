@@ -508,7 +508,7 @@ def _reseal_receipt_marker(root: Path, receipt: dict) -> None:
     receipt_path.write_text(json.dumps(receipt, indent=1) + "\n", encoding="utf-8")
     marker_path = root / final_publication.STATUS_RELATIVE
     marker = json.loads(marker_path.read_text(encoding="utf-8"))
-    marker["receipt"]["sha256"] = _sha(final_publication._canonical_bytes(receipt))
+    marker["receipt"]["sha256"] = _sha(final_publication._json_bytes(receipt))
     marker_path.write_text(json.dumps(marker, indent=1) + "\n", encoding="utf-8")
 
 
@@ -2954,7 +2954,7 @@ def test_remote_idempotence_verifier_never_skips_unproven_public_fields(
             receipt["base_commit"] = "b" * 40
             marker["base_commit"] = "b" * 40
         receipt_path.write_text(json.dumps(receipt, indent=1) + "\n", encoding="utf-8")
-        marker["receipt"]["sha256"] = _sha(final_publication._canonical_bytes(receipt))
+        marker["receipt"]["sha256"] = _sha(final_publication._json_bytes(receipt))
         marker_path.write_text(json.dumps(marker, indent=1) + "\n", encoding="utf-8")
     else:
         root = _publication_root(tmp_path)
