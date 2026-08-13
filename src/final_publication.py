@@ -241,18 +241,46 @@ def required_target(today: date | None = None) -> date:
 def required_next_target(*, root: Path = ROOT, today: date | None = None) -> date | None:
     """Return the sole ordered backlog day eligible for the next commit.
 
-    This never skips an unpublished day and never includes UTC D0. The caller
+    This never skips an UNDISCLOSED day and never includes UTC D0. The caller
     must re-run it from the newly fetched remote tip after every publication.
+
+    A day whose committed marker records a published SOURCE-stage refusal
+    disclosure, and which has aged at least one full day past D-1 (so a
+    transient provider outage had a full extra day of retries), advances the
+    pointer by exactly one day. Without this, one permanently lost provider
+    day livelocks every later publication: the 2026-08-11 Web NGrams files
+    left the provider's temporary window and the lane republished the same
+    honest refusal forever while 2026-08-12 could never be attempted. The
+    skipped day is not silent -- its refusal disclosure is the published
+    record -- and infrastructure failures (pipeline/derived/gate stages)
+    never advance, because those are retryable defects, not lost sources.
     """
 
     latest = _read_latest_day(root)
+    contract_today = today or utc_today()
     ceiling = required_target(today)
     if latest is None:
         _fail("final_target_invalid", "latest_finalized_day_unreadable")
     if latest == _LEGACY_AUG9_DAY and not _legacy_upgrade_receipt_is_bound(root):
         return _LEGACY_AUG9_DAY
     candidate = latest + timedelta(days=1)
-    return candidate if candidate <= ceiling else None
+    if candidate > ceiling:
+        return None
+    try:
+        marker = json.loads((root / STATUS_RELATIVE).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        marker = {}
+    disclosed_lost_source = (
+        marker.get("target_date") == candidate.isoformat()
+        and marker.get("failure_stage") == "source"
+        and marker.get("reason_code") == "source_acquisition_failed"
+        and marker.get("status") == "acquisition_failed"
+        and candidate <= contract_today - timedelta(days=2)
+    )
+    if disclosed_lost_source:
+        candidate = candidate + timedelta(days=1)
+        return candidate if candidate <= ceiling else None
+    return candidate
 
 
 def _legacy_upgrade_receipt_is_bound(root: Path) -> bool:

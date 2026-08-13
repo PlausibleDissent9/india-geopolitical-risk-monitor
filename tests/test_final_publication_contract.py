@@ -2878,27 +2878,40 @@ def test_unresolved_first_refusal_blocks_all_later_target_progression(
         relative: (root / relative).read_bytes()
         for relative in (*value_paths, *final_publication._VALUE_FREE_REFUSAL_PATHS)
     }
-    for later_target in (date(2026, 8, 10), date(2026, 8, 11)):
-        with pytest.raises(final_publication.FinalPublicationError) as exc:
-            final_publication.record_pipeline_failed(
-                later_target,
-                root=root,
-                base_commit=candidate,
-                failure_stage="source",
-                contract_today=date(2026, 8, 12),
-            )
-        assert exc.value.classification == "final_target_invalid"
-        assert exc.value.detail == "target_is_not_exact_next_unpublished_day_before_utc_d0"
-        assert {
-            relative: (root / relative).read_bytes() for relative in frozen_tree
-        } == frozen_tree
-        assert subprocess.run(
-            ["git", "status", "--short"],
-            cwd=root,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout == ""
+    # This test originally asserted that the first refusal blocks ALL later
+    # progression forever. That exact property livelocked production: the
+    # 2026-08-11 provider files left the temporary window and every later
+    # day starved behind an unrecoverable refusal. The property that
+    # survives is ORDER: progression moves exactly one disclosed day at a
+    # time. Jumping over the next eligible day still refuses; the next
+    # eligible day itself (behind an AGED published source disclosure) is
+    # now legitimately recordable.
+    with pytest.raises(final_publication.FinalPublicationError) as exc:
+        final_publication.record_pipeline_failed(
+            date(2026, 8, 11),
+            root=root,
+            base_commit=candidate,
+            failure_stage="source",
+            contract_today=date(2026, 8, 12),
+        )
+    assert exc.value.classification == "final_target_invalid"
+    assert exc.value.detail == "target_is_not_exact_next_unpublished_day_before_utc_d0"
+    assert {
+        relative: (root / relative).read_bytes() for relative in frozen_tree
+    } == frozen_tree
+    # The aged Aug-9 disclosure admits exactly Aug 10 next, and recording its
+    # failure still never touches a frozen value byte.
+    final_publication.record_pipeline_failed(
+        date(2026, 8, 10),
+        root=root,
+        base_commit=candidate,
+        failure_stage="source",
+        contract_today=date(2026, 8, 12),
+    )
+    assert all(
+        (root / relative).read_bytes() == frozen_values[relative]
+        for relative in value_paths
+    )
 
 
 def test_release_rights_check_is_inside_the_final_cas_barrier() -> None:

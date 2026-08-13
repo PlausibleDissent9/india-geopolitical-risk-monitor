@@ -236,6 +236,108 @@ def test_two_and_three_day_catchup_replans_after_each_immutable_tip(
     ] == [date(2026, 8, 10)]
 
 
+def _write_marker(root: Path, *, target: date, stage: str, code: str, status: str) -> None:
+    path = root / final_publication.STATUS_RELATIVE
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "target_date": target.isoformat(),
+                "failure_stage": stage,
+                "reason_code": code,
+                "status": status,
+            }
+        )
+    )
+
+
+def test_disclosed_lost_source_day_advances_exactly_one_and_only_when_aged(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The 2026-08-11 livelock: a provider day that left the temporary window
+    republished the same refusal forever while every later day starved. A
+    committed SOURCE-stage refusal disclosure for exactly latest+1, aged at
+    least one day past D-1, advances the pointer one day. Nothing else does.
+    """
+    monkeypatch.setattr(
+        final_publication, "_legacy_upgrade_receipt_is_bound", lambda _root: True
+    )
+    _write_latest(tmp_path, date(2026, 8, 10))
+    today = date(2026, 8, 13)
+
+    # No marker: never skip.
+    assert final_publication.required_next_target(
+        root=tmp_path, today=today
+    ) == date(2026, 8, 11)
+
+    # Published source refusal for latest+1, aged (11 <= 13-2): advance one.
+    _write_marker(
+        tmp_path,
+        target=date(2026, 8, 11),
+        stage="source",
+        code="source_acquisition_failed",
+        status="acquisition_failed",
+    )
+    assert final_publication.required_next_target(
+        root=tmp_path, today=today
+    ) == date(2026, 8, 12)
+
+    # A FRESH source outage (D-1 itself) must keep retrying, not skip.
+    _write_latest(tmp_path, date(2026, 8, 11))
+    _write_marker(
+        tmp_path,
+        target=date(2026, 8, 12),
+        stage="source",
+        code="source_acquisition_failed",
+        status="acquisition_failed",
+    )
+    assert final_publication.required_next_target(
+        root=tmp_path, today=today
+    ) == date(2026, 8, 12)
+
+    # Infrastructure failures are retryable defects and never advance.
+    _write_latest(tmp_path, date(2026, 8, 10))
+    for stage, code, status in (
+        ("derived", "derived_validation_failed", "pipeline_failed"),
+        ("pipeline", "pipeline_failed", "pipeline_failed"),
+        ("gate", "gate_failed", "pipeline_failed"),
+    ):
+        _write_marker(
+            tmp_path, target=date(2026, 8, 11), stage=stage, code=code, status=status
+        )
+        assert final_publication.required_next_target(
+            root=tmp_path, today=today
+        ) == date(2026, 8, 11)
+
+    # A marker for a DIFFERENT day than latest+1 never advances.
+    _write_marker(
+        tmp_path,
+        target=date(2026, 8, 12),
+        stage="source",
+        code="source_acquisition_failed",
+        status="acquisition_failed",
+    )
+    assert final_publication.required_next_target(
+        root=tmp_path, today=today
+    ) == date(2026, 8, 11)
+
+    # The advance is one day at a time and never crosses the D0 ceiling.
+    _write_latest(tmp_path, date(2026, 8, 11))
+    _write_marker(
+        tmp_path,
+        target=date(2026, 8, 12),
+        stage="source",
+        code="source_acquisition_failed",
+        status="acquisition_failed",
+    )
+    assert final_publication.required_next_target(
+        root=tmp_path, today=date(2026, 8, 13)
+    ) == date(2026, 8, 12)  # 12 > 13-2 fails the age rule: retry, no skip
+    assert final_publication.required_next_target(
+        root=tmp_path, today=date(2026, 8, 14)
+    ) == date(2026, 8, 13)  # aged now; one-day advance to the new D-1
+
+
 def test_catchup_stops_and_restarts_at_first_unavailable_day(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
