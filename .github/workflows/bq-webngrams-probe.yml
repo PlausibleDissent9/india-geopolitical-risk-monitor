@@ -33,7 +33,7 @@ jobs:
           from google.oauth2 import service_account
 
           OUT = "analysis/bq_webngrams_probe_results.md"
-          CAP = 10**9  # 1 GB per query; the cap is the budget discipline
+          CAP = 3 * 10**9  # 3 GB per query (tone-lane precedent); measured dry-runs need 1.0-1.8 GB
 
           lines = []
           def note(text):

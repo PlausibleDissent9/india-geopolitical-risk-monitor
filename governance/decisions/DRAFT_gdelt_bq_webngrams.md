@@ -73,7 +73,7 @@ founder signed for profile 2.0.
 1. **Dataset-generation equivalence.** The production feed is the per-minute
    v5 NGram/TOC files; the documented BigQuery table is the Web News NGrams
    3.0 backfile. Whether they are the same generation with the same schema
-   and coverage is unverified. Required proof: recompute one file-proven day
+   and coverage is unverified. Required check: recompute one day already published from the file feed
    (2026-08-09 or 2026-08-10) from BigQuery with the frozen dictionaries and
    require an exact match to the published aggregates before any gap day is
    trusted.
@@ -110,7 +110,7 @@ feed and the mirror stays a disclosed gap.
    BigQuery-derived aggregates as the same measure, or should recovered days
    carry a permanent regime annotation regardless?
 3. What query-cost cap and review horizon are justified? (Precedent: 1-25 GB
-   caps; the probe is dispatch-only and capped at 1 GB.)
+   caps; the probe is dispatch-only and capped at 3 GB.)
 4. Should recovery scope be exactly the currently-disclosed gap days, or any
    future day whose refusal ledger entry ages past the retry window?
 
