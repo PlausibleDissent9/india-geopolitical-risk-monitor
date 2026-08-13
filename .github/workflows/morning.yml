@@ -345,6 +345,14 @@ jobs:
             python -m src.event_ledger
             python -m src.evolution_engine
             python -m src.product_catalog --write
+            # The API contract and byte manifest pin the exact bytes of the
+            # payloads and registries regenerated above, so they must come
+            # LAST and in this order (the manifest covers the contract). The
+            # first value-advance candidate proved the gap: the gate refused
+            # its own otherwise-valid final on stale manifest pins
+            # (test_digest_pins, run 31682875024).
+            python scripts/generate_api_contract.py
+            PYTHONPATH=. python scripts/generate_public_api_byte_manifest.py
           '
       - name: Gate and CAS-publish final or value-free refusal
         id: publish

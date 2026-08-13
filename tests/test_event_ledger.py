@@ -81,6 +81,18 @@ def _release_signature(
     }
 
 
+# One import-time stamp for every live-candidate release in this module.
+# Live evidence advances daily, so a frozen literal eventually precedes it
+# (morning #64, and again at the first value-advance candidate, run
+# 31682875024). A single stamp keeps every intra- and inter-test equality
+# exactly as the shared literal had it -- the same-time monotonicity
+# refusal still refuses, revocations dated 2026-08-09 still precede it --
+# while always following the candidate's evidence and the wall clock.
+_LIVE_RELEASED_AT = (
+    datetime.now(timezone.utc).replace(microsecond=0).strftime("%Y-%m-%dT%H:%M:%SZ")
+)
+
+
 def _signed_release(
     candidate: dict[str, Any],
     rights: dict[str, Any],
@@ -228,7 +240,7 @@ def test_authorized_release_refuses_an_unregistered_integrity_profile(
         event_ledger._build_candidate(),
         {"authorized": True, "snapshot": "profile-test"},
         None,
-        "2026-08-09T00:00:00Z",
+        _LIVE_RELEASED_AT,
         _release_signer(monkeypatch),
     )
     release["_meta"]["release_integrity_profile"] = "runtime-default-json"
@@ -557,7 +569,7 @@ def test_previously_observed_day_cannot_be_laundered_into_unavailable(
         candidate,
         rights,
         None,
-        "2026-08-09T00:00:00Z",
+        _LIVE_RELEASED_AT,
         _release_signer(monkeypatch),
     )
     changed = json.loads(json.dumps(candidate))
@@ -647,7 +659,7 @@ def test_authorized_archive_head_survives_blocked_status_and_detects_tamper(
     rights = {"authorized": True, "snapshot": "test"}
     signer = _release_signer(monkeypatch)
     release = _signed_release(
-        candidate, rights, None, "2026-08-09T00:00:00Z", signer
+        candidate, rights, None, _LIVE_RELEASED_AT, signer
     )
     vintage_dir = tmp_path / "vintages"
     vintage_dir.mkdir()
@@ -690,11 +702,11 @@ def test_unsigned_or_self_pinned_release_cannot_enter_authorized_history(
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "forged-but-self-consistent"}
     unsigned = event_ledger._unsigned_authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T00:00:00Z"
+        candidate, rights, None, _LIVE_RELEASED_AT
     )
     with pytest.raises(event_ledger.EventLedgerError) as exc:
         event_ledger._authorized_public_artifact(
-            candidate, rights, None, "2026-08-09T00:00:00Z"
+            candidate, rights, None, _LIVE_RELEASED_AT
         )
     assert exc.value.code == "authorized_release_signature_required"
 
@@ -703,7 +715,7 @@ def test_unsigned_or_self_pinned_release_cannot_enter_authorized_history(
         candidate,
         rights,
         None,
-        "2026-08-09T00:00:00Z",
+        _LIVE_RELEASED_AT,
         _release_signature(unsigned, attacker),
     )
     monkeypatch.setattr(event_ledger, "TRUSTED_RELEASE_SIGNERS", {})
@@ -723,7 +735,7 @@ def test_agent_role_cannot_become_release_authority(
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "agent-forgery"}
     unsigned = event_ledger._unsigned_authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T00:00:00Z"
+        candidate, rights, None, _LIVE_RELEASED_AT
     )
     agent = _release_signer(monkeypatch, role="agent")
     with pytest.raises(event_ledger.EventLedgerError) as exc:
@@ -731,7 +743,7 @@ def test_agent_role_cannot_become_release_authority(
             candidate,
             rights,
             None,
-            "2026-08-09T00:00:00Z",
+            _LIVE_RELEASED_AT,
             _release_signature(unsigned, agent),
         )
     assert exc.value.code == "authorized_release_signer_untrusted"
@@ -743,7 +755,7 @@ def test_release_signer_must_be_active_at_the_release_time(
     candidate = event_ledger._build_candidate()
     rights = {"authorized": True, "snapshot": "expired-release-key"}
     unsigned = event_ledger._unsigned_authorized_public_artifact(
-        candidate, rights, None, "2026-08-09T00:00:00Z"
+        candidate, rights, None, _LIVE_RELEASED_AT
     )
     signer = _release_signer(monkeypatch)
     event_ledger.TRUSTED_RELEASE_SIGNERS[signer[0]]["revoked_on"] = "2026-08-09"
@@ -752,7 +764,7 @@ def test_release_signer_must_be_active_at_the_release_time(
             candidate,
             rights,
             None,
-            "2026-08-09T00:00:00Z",
+            _LIVE_RELEASED_AT,
             _release_signature(unsigned, signer),
         )
     assert exc.value.code == "authorized_release_signer_untrusted"
@@ -837,7 +849,7 @@ def test_release_time_must_follow_evidence_predecessor_and_wall_clock(
         candidate,
         rights,
         None,
-        "2026-08-09T00:00:00Z",
+        _LIVE_RELEASED_AT,
         _release_signer(monkeypatch),
     )
     with pytest.raises(event_ledger.EventLedgerError) as exc:
@@ -845,7 +857,7 @@ def test_release_time_must_follow_evidence_predecessor_and_wall_clock(
             candidate,
             {"authorized": True, "snapshot": "v2"},
             v1,
-            "2026-08-09T00:00:00Z",
+            _LIVE_RELEASED_AT,
         )
     assert exc.value.code == "authorized_release_time_not_monotonic"
 
@@ -868,7 +880,7 @@ def test_recomputed_archive_tamper_cannot_erase_the_published_delta(
         candidate,
         {"authorized": True, "snapshot": "test"},
         None,
-        "2026-08-09T00:00:00Z",
+        _LIVE_RELEASED_AT,
         _release_signer(monkeypatch),
     )
     release["boundary"]["purpose"] = "rewritten after publication"

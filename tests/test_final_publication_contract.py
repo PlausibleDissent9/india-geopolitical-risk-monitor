@@ -6,6 +6,7 @@ import base64
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -2621,20 +2622,27 @@ def test_value_free_refusal_reads_committed_blob_not_symlink_target(
 
 
 @pytest.mark.parametrize(
-    ("old", "new"),
+    ("pattern", "new"),
     (
-        (">58.8</p>", ">99.9</p>"),
-        ('id="latest-date">2026-08-09</span>', 'id="latest-date">2030-01-01</span>'),
-        ('class="component-score">65.2</span>', 'class="component-score">99.9</span>'),
+        # Literal page bytes (58.8, 2026-08-09, 65.2) pinned the Aug-9 page
+        # and went stale in the first candidate that advanced the day (run
+        # 31682875024). The attack's meaning is "mutate whichever value the
+        # page CURRENTLY shows", so extract it from the page under test.
+        (r">\d+\.\d+</p>", ">99.9</p>"),
+        (r'id="latest-date">\d{4}-\d{2}-\d{2}</span>', 'id="latest-date">2030-01-01</span>'),
+        (r'class="component-score">\d+\.\d+</span>', 'class="component-score">99.9</span>'),
     ),
 )
 def test_value_free_refusal_refuses_reader_value_mutation_inside_allowed_index(
-    tmp_path: Path, old: str, new: str
+    tmp_path: Path, pattern: str, new: str
 ) -> None:
     root, base, _candidate = _committed_value_free_refusal(tmp_path)
     path = root / "docs/index.html"
     text = path.read_text(encoding="utf-8")
-    assert old in text
+    match = re.search(pattern, text)
+    assert match is not None, pattern
+    old = match.group(0)
+    assert old != new
     path.write_text(text.replace(old, new, 1), encoding="utf-8")
     candidate = _amend_refusal(root, "docs/index.html")
 
@@ -2914,8 +2922,13 @@ def test_remote_idempotence_verifier_skips_only_valid_receipt_or_pinned_aug9(
         final_publication.require_published_target(TARGET, root=root, today=TODAY)["status"]
         == "finalized"
     )
+    # The legacy-limited contrast belongs to the pinned aug9 vintage, not the
+    # live head, which legitimately outgrew this posture at the first value
+    # advance (run 31682875024).
     assert (
-        final_publication.require_published_target(TARGET, root=ROOT, today=TODAY)["status"]
+        final_publication.require_published_target(
+            TARGET, root=_legacy_history_repo(tmp_path), today=TODAY
+        )["status"]
         == "legacy_proof_limited"
     )
 
@@ -2981,8 +2994,15 @@ def test_fabricated_schema_1_legacy_target_is_not_a_historical_exception(
     assert public["source_receipt"] is None
 
 
-def test_exact_upstream_aug9_object_alone_retains_bounded_legacy_label() -> None:
-    public = final_publication.public_status(root=ROOT, today=TODAY)
+def test_exact_upstream_aug9_object_alone_retains_bounded_legacy_label(
+    tmp_path: Path,
+) -> None:
+    # Asserted against live ROOT until the first value advance made the live
+    # posture legitimately newer than this frozen-era description (run
+    # 31682875024). The property belongs to the pinned aug9 vintage.
+    public = final_publication.public_status(
+        root=_legacy_history_repo(tmp_path), today=TODAY
+    )
 
     assert public["status"] == "legacy_proof_limited"
     assert public["latest_finalized_date"] == TARGET.isoformat()
@@ -3016,6 +3036,14 @@ def test_exact_upstream_aug9_object_alone_retains_bounded_legacy_label() -> None
 def test_aug9_legacy_label_refuses_any_value_or_regime_drift(tmp_path: Path, attack: str) -> None:
     root = tmp_path / "legacy-repo"
     subprocess.run(["git", "clone", "-q", "--shared", str(ROOT), str(root)], check=True)
+    # Pin the 2026-08-09 vintage these attacks describe; a live-head clone
+    # made every expectation stale in the first candidate that advanced the
+    # day (run 31682875024), deadlocking value publishes structurally.
+    subprocess.run(
+        ["git", "checkout", "-q", "9077ea4f27b4662ed6651828ee28183eed8fc727"],
+        cwd=root,
+        check=True,
+    )
     paths = {
         "cache": root / f"data/raw/ngram_days/{TARGET}.json",
         "latest": root / "docs/data/latest.json",

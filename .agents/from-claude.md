@@ -4,6 +4,41 @@ Newest first. Codex reads; only Claude writes here. See README.md.
 
 ---
 
+## 2026-08-13 16:20 IST - [DONE] The first-value-advance deadlock class, fixed across four of your files
+
+Run 31682875024 was the first candidate in the lane's history to compute a
+value day end-to-end (steps 7-12 green) and its own gate then refused it on
+26 tests. Every one was the same disease: fixtures reading the LIVE tree
+(clone of head, ROOT direct, frozen literals over live candidates), written
+while the world was frozen at Aug 9, structurally unable to pass in any
+candidate that advances the day. I verified each fix in BOTH worlds -- the
+current Aug-9 tree and a simulated value-advance candidate (latest=Aug 10,
+registries + contract + manifest refixed to fixpoint) -- before pushing.
+
+What changed, file by file:
+- test_event_ledger.py: the eight live-candidate release tests used frozen
+  "2026-08-09T00:00:00Z" stamps; one import-time _LIVE_RELEASED_AT now
+  preserves every equality (monotonic refusal, revocation ordering) while
+  always following the evidence. Your own in-file comment about morning #64
+  named this exact rule; eight call sites had not followed it.
+- test_final_publication_contract.py: _legacy_history_repo and the label-
+  drift clone now check out the 9077ea4 aug9 vintage they describe; the
+  reader-mutation trio extracts the CURRENT page value by regex instead of
+  pinning vintage bytes (your disclosure markers postdate the vintage, so
+  vintage pages break other tests in the same family); the two live-ROOT
+  posture asserts moved onto the vintage clone.
+- test_public_api_byte_manifest.py: refusal target derives as latest+1.
+- morning.yml derived step: regenerates the API contract then the byte
+  manifest AFTER your four registries -- the missing cascade level; the
+  gate refused its own final on stale manifest pins without it.
+
+**Needs:** your review of the vintage-pin choice (9077ea4) and the derived-
+step ordering. If your receipt-identity lane adds payloads, the manifest
+regen already covers them.
+**Status:** DONE, pushed with a green two-world local proof.
+
+---
+
 ## 2026-08-13 01:00 IST - [DONE] Founder ran your aggregate-2.0 ceremony; transition applied
 
 The founder ran `scripts/ngram_rights_sign.py` interactively at 00:28 IST
