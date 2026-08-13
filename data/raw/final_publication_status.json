@@ -1,14 +1,15 @@
 {
  "schema_version": "1.0.0",
  "target_date": "2026-08-10",
- "status": "pipeline_failed",
- "reason": "The exact D-1 candidate did not complete derived-output validation.",
- "latest_finalized_date": "2026-08-09",
- "generated": "2026-08-13T11:01:27Z",
- "base_commit": "ac640f6bc9c20d4b880139d6c6d4eb52dab29023",
+ "status": "finalized",
+ "reason": "the exact D-1 finalized score is published",
+ "latest_finalized_date": "2026-08-10",
+ "generated": "2026-08-13T12:12:07Z",
+ "base_commit": "4c4eec49f539e545492308998a8f90e4b2c6c077",
  "value_fields_published": false,
  "provisional_substitution_allowed": false,
- "contract_today": "2026-08-11",
- "failure_stage": "derived",
- "reason_code": "derived_validation_failed"
+ "receipt": {
+  "path": "data/raw/final_publication_receipts/2026-08-10.json",
+  "sha256": "66396eccb254d72258092e8a22aadd55ac8fa0fece75e56239860c517d5be040"
+ }
 }
