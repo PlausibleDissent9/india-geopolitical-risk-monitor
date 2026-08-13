@@ -352,12 +352,28 @@ def _committed_refusal_with_manifest(
     # candidate keeps the boundary under test at every vintage.
     latest_day = final_publication._read_latest_day(root)
     assert latest_day is not None
-    # latest+2, not latest+1: when the lane itself has already published a
-    # refusal disclosure for latest+1 (run 31708425865, the Aug-11 source
-    # outage), a fixture refusal for the same day no-ops the page paths and
-    # the four-output equality fails. Two days out never collides with the
-    # lane's own live disclosure; the selector is monkeypatched either way.
-    target = latest_day + timedelta(days=2)
+    # The fixture's refusal day must carry NO live disclosure, or its writes
+    # no-op against the lane's own published refusal and the four-output
+    # equality fails (runs 31708425865 and 31723642980 -- a fixed offset just
+    # chased the live refusal day as the ledger advanced). Walk forward to
+    # the first day with neither a refusal-ledger entry nor a live marker
+    # disclosure; the target selector is monkeypatched either way.
+    try:
+        live_marker = json.loads(
+            (root / final_publication.STATUS_RELATIVE).read_text(encoding="utf-8")
+        )
+    except (OSError, json.JSONDecodeError):
+        live_marker = {}
+    target = latest_day + timedelta(days=1)
+    for _ in range(30):
+        ledger = (
+            root
+            / final_publication.REFUSAL_LEDGER_RELATIVE
+            / f"{target.isoformat()}.json"
+        )
+        if not ledger.exists() and live_marker.get("target_date") != target.isoformat():
+            break
+        target = target + timedelta(days=1)
     contract_today = target + timedelta(days=1)
     # This fixture isolates the refusal+manifest release boundary. Ordered
     # backlog selection (including the Aug-9 upgrade) is exhaustively covered
