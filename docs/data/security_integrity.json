@@ -21,10 +21,10 @@
   "full_history_for_frozen_evidence": {
    "fetch_depth": 0,
    "status": "pass",
-   "workflow_count": 19
+   "workflow_count": 20
   },
   "immutable_workflow_actions": {
-   "action_references": 38,
+   "action_references": 40,
    "reviewed_action_identities": 2,
    "status": "pass"
   },
@@ -37,7 +37,7 @@
     "watchdog.yml"
    ],
    "status": "pass",
-   "workflow_count": 20
+   "workflow_count": 21
   },
   "public_api_byte_manifest_barrier": {
    "atomic_hosted_snapshot": false,
@@ -59,7 +59,7 @@
    "token_scope": "final_publication_step_only"
   },
   "publisher_environment_parity": {
-   "publishing_lane_count": 14,
+   "publishing_lane_count": 15,
    "requirement_sets": [
     "requirements.txt",
     "requirements-dev.txt"
@@ -87,6 +87,7 @@
  "publishing_lanes": [
   "bq-backext.yml",
   "bq-gfg-probe.yml",
+  "bq-webngrams-probe.yml",
   "daily.yml",
   "drift.yml",
   "events-backfill.yml",
