@@ -1,0 +1,1705 @@
+{
+ "schema_version": "1.1.0",
+ "status": "legacy_verified_under_aggregate_profile",
+ "target_date": "2026-08-09",
+ "profile_id": "igrm:gdelt-ngram-daily-aggregate:2.0.0",
+ "aggregate_attestation": {
+  "schema_version": "2.0.0",
+  "profile_id": "igrm:gdelt-ngram-daily-aggregate:2.0.0",
+  "day": "2026-08-09",
+  "expected_windows": 48,
+  "located_windows": 48,
+  "loaded_windows": 48,
+  "method_bindings": {
+   "profile_sha256": "33588bb15198435b026a448ce602fc4c1b04885bdc1af7f13eff195bb47b37bc",
+   "schema_sha256": "f8d4e1a3e0e1f3fe22c693ee43d3ec6029edf7011b4cf1fc9a248f3b8aa1410d",
+   "dictionaries_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
+   "production_matcher_sha256": "061a7ecd7ebcd342b020f496eb3f9e8b34068c087de772a4c6a4e49da0c17175",
+   "validator_sha256": "ab183ed88600c87e875e6ff1f860a465aa2aa81c4c0f1666ad6c90da653874c4",
+   "calibration_sha256": "02efb5a493878701f1890802133ee395e6e1775028c33f8986b0043235e87c2e",
+   "matcher_specs": {
+    "china_east/q1": {
+     "channel": "china_east",
+     "anchor": "india",
+     "phrases": [
+      [
+       "line",
+       "of",
+       "actual",
+       "control"
+      ],
+      [
+       "india",
+       "china",
+       "border"
+      ],
+      [
+       "eastern",
+       "ladakh"
+      ],
+      [
+       "aksai",
+       "chin"
+      ],
+      [
+       "tawang"
+      ],
+      [
+       "people",
+       "s",
+       "liberation",
+       "army"
+      ],
+      [
+       "border",
+       "standoff"
+      ],
+      [
+       "india",
+       "china",
+       "relations"
+      ],
+      [
+       "disengagement"
+      ],
+      [
+       "mcmahon",
+       "line"
+      ]
+     ]
+    },
+    "gulf_energy/q1": {
+     "channel": "gulf_energy",
+     "anchor": null,
+     "phrases": [
+      [
+       "strait",
+       "of",
+       "hormuz"
+      ],
+      [
+       "gulf",
+       "of",
+       "oman"
+      ],
+      [
+       "gulf",
+       "tensions"
+      ],
+      [
+       "middle",
+       "east",
+       "conflict"
+      ],
+      [
+       "israel",
+       "iran"
+      ],
+      [
+       "iran",
+       "israel"
+      ],
+      [
+       "iran",
+       "sanctions"
+      ],
+      [
+       "energy",
+       "security"
+      ],
+      [
+       "oil",
+       "supply",
+       "disruption"
+      ],
+      [
+       "oil",
+       "supply",
+       "disruptions"
+      ]
+     ]
+    },
+    "gulf_energy/q2": {
+     "channel": "gulf_energy",
+     "anchor": null,
+     "phrases": [
+      [
+       "crude",
+       "oil",
+       "supply"
+      ]
+     ]
+    },
+    "pakistan_west/q1": {
+     "channel": "pakistan_west",
+     "anchor": "india",
+     "phrases": [
+      [
+       "line",
+       "of",
+       "control"
+      ],
+      [
+       "india",
+       "pakistan",
+       "border"
+      ],
+      [
+       "pakistan",
+       "occupied",
+       "kashmir"
+      ],
+      [
+       "pakistan",
+       "administered",
+       "kashmir"
+      ],
+      [
+       "ceasefire",
+       "violations"
+      ],
+      [
+       "ceasefire",
+       "violation"
+      ],
+      [
+       "cross",
+       "border",
+       "terrorism"
+      ],
+      [
+       "cross",
+       "border",
+       "firing"
+      ]
+     ]
+    },
+    "pakistan_west/q2": {
+     "channel": "pakistan_west",
+     "anchor": "india",
+     "phrases": [
+      [
+       "cross",
+       "border",
+       "shelling"
+      ],
+      [
+       "infiltration",
+       "bid"
+      ],
+      [
+       "surgical",
+       "strikes"
+      ],
+      [
+       "inter",
+       "services",
+       "intelligence"
+      ],
+      [
+       "indus",
+       "waters",
+       "treaty"
+      ],
+      [
+       "siachen"
+      ]
+     ]
+    },
+    "shipping/q1": {
+     "channel": "shipping",
+     "anchor": null,
+     "phrases": [
+      [
+       "red",
+       "sea",
+       "shipping"
+      ],
+      [
+       "red",
+       "sea",
+       "attacks"
+      ],
+      [
+       "suez",
+       "canal"
+      ],
+      [
+       "bab",
+       "el",
+       "mandeb"
+      ],
+      [
+       "strait",
+       "of",
+       "malacca"
+      ],
+      [
+       "cape",
+       "of",
+       "good",
+       "hope"
+      ],
+      [
+       "houthi",
+       "attacks"
+      ],
+      [
+       "somali",
+       "pirates"
+      ],
+      [
+       "gulf",
+       "of",
+       "aden"
+      ],
+      [
+       "merchant",
+       "vessels"
+      ]
+     ]
+    },
+    "us_trade/q1": {
+     "channel": "us_trade",
+     "anchor": "india",
+     "phrases": [
+      [
+       "us",
+       "tariffs"
+      ],
+      [
+       "reciprocal",
+       "tariffs"
+      ],
+      [
+       "trade",
+       "deal"
+      ],
+      [
+       "trade",
+       "war"
+      ],
+      [
+       "trade",
+       "restrictions"
+      ],
+      [
+       "export",
+       "controls"
+      ],
+      [
+       "section",
+       "301"
+      ],
+      [
+       "caatsa"
+      ],
+      [
+       "h",
+       "1b",
+       "visa"
+      ],
+      [
+       "wto",
+       "dispute"
+      ],
+      [
+       "secondary",
+       "sanctions"
+      ],
+      [
+       "russian",
+       "oil"
+      ]
+     ]
+    }
+   },
+   "matcher_specs_sha256": "fb5fc7c9cc62067ea3ba75bf7d85aed3e046b01a84aede0f2144937029bfe24e"
+  },
+  "windows": [
+   {
+    "bucket": 0,
+    "stamp": "20260809000100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809000100.toc.json.gz",
+      "sha256": "66c9d358c2433e2786f451d5278576c467b0e0c3cc79a103794a0be6cc01cd39",
+      "bytes": 231913
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809000100.ngrams.txt.gz",
+      "sha256": "53d8b58fee4d1513a0de5779a331e9fc677b30710434ab8b837f895f28ca8203",
+      "bytes": 7366820
+     }
+    },
+    "english_denominator": 675,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 17,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 3
+    }
+   },
+   {
+    "bucket": 1,
+    "stamp": "20260809003100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809003100.toc.json.gz",
+      "sha256": "3da543b0d27a4cfff7c8f2ae8defc17e083ea5106e83df350ca2dcca40f88c8c",
+      "bytes": 250873
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809003100.ngrams.txt.gz",
+      "sha256": "1dcc3d283be31bc9ed45b966eac760bbee42e639d941b05d240adbc520cda018",
+      "bytes": 7259180
+     }
+    },
+    "english_denominator": 611,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 10,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 4,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 2,
+    "stamp": "20260809010100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809010100.toc.json.gz",
+      "sha256": "330c1ff4dc74a6b8da2a9ed0bdaea6f08f7967119e67d1e2f6c17f7bc2b4188b",
+      "bytes": 198643
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809010100.ngrams.txt.gz",
+      "sha256": "6c0560295532c65a2ff9ca5d371933da32b7a9e71e3c6b0ada78fded6f04d142",
+      "bytes": 5423337
+     }
+    },
+    "english_denominator": 470,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 9,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 3,
+    "stamp": "20260809013100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809013100.toc.json.gz",
+      "sha256": "b1061d1b9fe2d027d1174cf3f47aabcc6b3583428c0c2b7b5c00af305c9de58d",
+      "bytes": 189773
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809013100.ngrams.txt.gz",
+      "sha256": "b587474d445deebfaeb496849d6a86bcb853303ee21b0e763b532c31e84b01f9",
+      "bytes": 5708485
+     }
+    },
+    "english_denominator": 361,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 7,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 4,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 4,
+    "stamp": "20260809020100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809020100.toc.json.gz",
+      "sha256": "bc234272636c7a6dd74e724eab7588dbf03d9fb13b9e8cc4130ce557aabff99c",
+      "bytes": 200564
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809020100.ngrams.txt.gz",
+      "sha256": "d6811d9b0ecefc3f0910fcf853e9fea3fb6db91a89ab2c762b95fb0c577272d9",
+      "bytes": 5692032
+     }
+    },
+    "english_denominator": 547,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 7,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 5,
+    "stamp": "20260809023100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809023100.toc.json.gz",
+      "sha256": "93f33d37c35ed9db7272b9b23aeefa9aa5c13e4bd70c79c2d79694d2271ac84a",
+      "bytes": 178502
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809023100.ngrams.txt.gz",
+      "sha256": "18a5e239a7520c90534aa7f9968a88cbe69f4c3d6cb9f48682f4241e0a1a0f3c",
+      "bytes": 5318725
+     }
+    },
+    "english_denominator": 383,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 16,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 1,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 6,
+    "stamp": "20260809030100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809030100.toc.json.gz",
+      "sha256": "5436ac5795af453064576d2187061248179b17f925f8ba5201ba3127a5392e78",
+      "bytes": 225727
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809030100.ngrams.txt.gz",
+      "sha256": "b585665782fd0ac56ec4f7f94f1bc1f1e3c1ebc8041e79a1d03e23ee643718e4",
+      "bytes": 7454000
+     }
+    },
+    "english_denominator": 544,
+    "group_numerators": {
+     "china_east/q1": 1,
+     "gulf_energy/q1": 24,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 7,
+    "stamp": "20260809033100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809033100.toc.json.gz",
+      "sha256": "23a1da8a4e2694fa5d0cac9328eaf708212a8e03a9a33bbe37de9247020dad0d",
+      "bytes": 223290
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809033100.ngrams.txt.gz",
+      "sha256": "dfea115de266620249f5df92261d61b5abad80c6a8b679842de23572d8548a6f",
+      "bytes": 6524636
+     }
+    },
+    "english_denominator": 615,
+    "group_numerators": {
+     "china_east/q1": 2,
+     "gulf_energy/q1": 10,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 4,
+     "us_trade/q1": 4
+    }
+   },
+   {
+    "bucket": 8,
+    "stamp": "20260809040100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809040100.toc.json.gz",
+      "sha256": "2266342e5bbcb1276dded319abfc984006674e18a5871c2b7a7a77fc5a5fc2cd",
+      "bytes": 262997
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809040100.ngrams.txt.gz",
+      "sha256": "19f9f2fbacf961999aa7c85758db073a0b864df9632be922f001ace679908a24",
+      "bytes": 8941610
+     }
+    },
+    "english_denominator": 558,
+    "group_numerators": {
+     "china_east/q1": 1,
+     "gulf_energy/q1": 8,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 2,
+     "pakistan_west/q2": 1,
+     "shipping/q1": 0,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 9,
+    "stamp": "20260809043100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809043100.toc.json.gz",
+      "sha256": "49c091bc8e66a0b0828386bccc197805a5a0c9fafd801df121f0a0583a18fa47",
+      "bytes": 287327
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809043100.ngrams.txt.gz",
+      "sha256": "0ff5b4aebecd2ac1c2faeda0b080c166c3d7f1a4ae278d2d3c598aaa2df83d28",
+      "bytes": 9362593
+     }
+    },
+    "english_denominator": 641,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 15,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 3,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 10,
+    "stamp": "20260809050100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809050100.toc.json.gz",
+      "sha256": "10f6a604a0aff62ac2f698cbd83e2f1fd914cdb887edecaf216285e14d4add01",
+      "bytes": 313647
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809050100.ngrams.txt.gz",
+      "sha256": "1bae00c42e2b24d235fc0eec88a9fdd036226025621b7b3e18f0b94b2eb95b7d",
+      "bytes": 9092992
+     }
+    },
+    "english_denominator": 612,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 11,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 11,
+    "stamp": "20260809053100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809053100.toc.json.gz",
+      "sha256": "9c6d7fdd8a952a851410c2e8c632dc68da9e4d7a132dd25adcc38aaf87acfea3",
+      "bytes": 312600
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809053100.ngrams.txt.gz",
+      "sha256": "3cd4b74827d683f75e8b98dca8cc53d3253dc669edfb0652ba1a7e65d8c8606b",
+      "bytes": 8928650
+     }
+    },
+    "english_denominator": 726,
+    "group_numerators": {
+     "china_east/q1": 1,
+     "gulf_energy/q1": 20,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 1,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 3,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 12,
+    "stamp": "20260809060100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809060100.toc.json.gz",
+      "sha256": "c47643a09f0d83dca871ca9e8ac2b060774d4b104844b76b99e048a7b05ebddd",
+      "bytes": 385080
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809060100.ngrams.txt.gz",
+      "sha256": "ecd1dafea7b13082b57854da4fd2afe134f3a34b0d22ca54e377cef66140fe75",
+      "bytes": 10607458
+     }
+    },
+    "english_denominator": 699,
+    "group_numerators": {
+     "china_east/q1": 1,
+     "gulf_energy/q1": 27,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 6,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 13,
+    "stamp": "20260809063100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809063100.toc.json.gz",
+      "sha256": "481f8c8b88e9b674fec8d8c7e7a932088451b0bf25167ffd6ce75bbab53af3e8",
+      "bytes": 353134
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809063100.ngrams.txt.gz",
+      "sha256": "5da4d872f8dd8743a12c1b11c12402c361a29ae799e045f2bbfe5bd330231144",
+      "bytes": 10068756
+     }
+    },
+    "english_denominator": 692,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 24,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 3,
+     "us_trade/q1": 4
+    }
+   },
+   {
+    "bucket": 14,
+    "stamp": "20260809070100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809070100.toc.json.gz",
+      "sha256": "24cbbf589a55a883c98a319d0b1eb3ad112d7d0ffacc02bd95b5b2e204532662",
+      "bytes": 239953
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809070100.ngrams.txt.gz",
+      "sha256": "3c675900f3ea16fb78b7c22e41360e09367ce97e9c117e6fdad9b441701f6b95",
+      "bytes": 6515454
+     }
+    },
+    "english_denominator": 544,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 10,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 3,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 15,
+    "stamp": "20260809073100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809073100.toc.json.gz",
+      "sha256": "f7c6dd4f88972bc42a4870834fc00fe468400da76e90b26c857d40b8b6a0618f",
+      "bytes": 371799
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809073100.ngrams.txt.gz",
+      "sha256": "34ecb65b834ec30cc5d8510c0ca07b2ac882e1cbd99b6e689904c650b1654057",
+      "bytes": 10565836
+     }
+    },
+    "english_denominator": 741,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 21,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 10,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 16,
+    "stamp": "20260809080100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809080100.toc.json.gz",
+      "sha256": "dcfede12b25cb3b57c223e67e3c44314a788a23e92936c060d57592866d0c24c",
+      "bytes": 258288
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809080100.ngrams.txt.gz",
+      "sha256": "798405eaeb8e0dd97f9de551d59b432423e09b86bcfb99d1ddacacdc53c22242",
+      "bytes": 7737489
+     }
+    },
+    "english_denominator": 563,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 19,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 17,
+    "stamp": "20260809083100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809083100.toc.json.gz",
+      "sha256": "c12379ad1e4f99b18c268d70acdda0e98ffd4d167a7b25fd23b57c8cfc21c7c0",
+      "bytes": 420015
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809083100.ngrams.txt.gz",
+      "sha256": "2633b1a135212db402be520303e3024e727169b62c4b1236b9cb1c150f0c190c",
+      "bytes": 10969741
+     }
+    },
+    "english_denominator": 609,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 12,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 18,
+    "stamp": "20260809090100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809090100.toc.json.gz",
+      "sha256": "28a80ffc71cfc2afd544415634d73ad626fb309bb9e518036ad716fc7a9c7923",
+      "bytes": 139151
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809090100.ngrams.txt.gz",
+      "sha256": "9413767c302bafab0308fc7aa1d637fd3f98df47717e4dc05a5233dee8820c12",
+      "bytes": 3937908
+     }
+    },
+    "english_denominator": 305,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 2,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 19,
+    "stamp": "20260809093100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809093100.toc.json.gz",
+      "sha256": "e154cf90968d83cdac596da401727ce9480e1c1624fda26e2974783e4ffe60a5",
+      "bytes": 137003
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809093100.ngrams.txt.gz",
+      "sha256": "38818b835fa1fe3e3af4a18a3ed13c66bf6fc86911ba1d1fb984861bd6592ee1",
+      "bytes": 3633335
+     }
+    },
+    "english_denominator": 360,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 11,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 20,
+    "stamp": "20260809100100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809100100.toc.json.gz",
+      "sha256": "4b37bc28e8c4c487f429667e6ccf1d9246ca90f2408e18d2ce16a3484b713ee3",
+      "bytes": 209135
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809100100.ngrams.txt.gz",
+      "sha256": "c4609aebb55a0033395a607a66edf515e11f06c29925c58741c9a32c94ced970",
+      "bytes": 5274671
+     }
+    },
+    "english_denominator": 295,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 4,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 21,
+    "stamp": "20260809103100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809103100.toc.json.gz",
+      "sha256": "38b8a016950919c1e48290cd88d6f445deb2eedf299cdf69c1836dc4b00f4a7e",
+      "bytes": 277184
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809103100.ngrams.txt.gz",
+      "sha256": "1480bdbce766158a98eec504ea1160377ef91208ff50976e59bbc6ad320d402d",
+      "bytes": 7447362
+     }
+    },
+    "english_denominator": 587,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 23,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 22,
+    "stamp": "20260809110100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809110100.toc.json.gz",
+      "sha256": "f095d1455f7011754ec96aedb733b2fe31386923d420efa958ede3b058bcadbc",
+      "bytes": 244133
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809110100.ngrams.txt.gz",
+      "sha256": "94ef5ae93b8d5f9a6ce431f1ef8e6b120a6aa96c90515a1f39362956338dd037",
+      "bytes": 6561062
+     }
+    },
+    "english_denominator": 343,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 9,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 23,
+    "stamp": "20260809113100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809113100.toc.json.gz",
+      "sha256": "d92a46ea948ca0c52ab525db6d719d898342959d392929ef3edaf02060ae3d39",
+      "bytes": 265824
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809113100.ngrams.txt.gz",
+      "sha256": "52f498d5019d96169155693801fbbb78f50e1acc3351665d22ba7dcbdc27057c",
+      "bytes": 6736987
+     }
+    },
+    "english_denominator": 497,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 11,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 1,
+     "shipping/q1": 1,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 24,
+    "stamp": "20260809120100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809120100.toc.json.gz",
+      "sha256": "c1780586d7573e3bed938e8f349c90ac491b70833080d2ea384662e947c17b2b",
+      "bytes": 255609
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809120100.ngrams.txt.gz",
+      "sha256": "9a99438115b974cc50031d92948a74e51229da29b867436b1583c91b21695bed",
+      "bytes": 6557337
+     }
+    },
+    "english_denominator": 342,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 9,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 25,
+    "stamp": "20260809123100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809123100.toc.json.gz",
+      "sha256": "1d214cf0ac330626e39e953d0b0ce02735868fff007162097073858547c615b7",
+      "bytes": 431331
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809123100.ngrams.txt.gz",
+      "sha256": "1ac0a747d663b6c10271801d44a93b61d100b78b771c1232ef0f08397be3dd9e",
+      "bytes": 10930898
+     }
+    },
+    "english_denominator": 742,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 23,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 26,
+    "stamp": "20260809130100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809130100.toc.json.gz",
+      "sha256": "8a70a88d0543ebdab5ca029693277603ee3cca13f8efd64e985cdcb548834b65",
+      "bytes": 417890
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809130100.ngrams.txt.gz",
+      "sha256": "4b236f3698e5eb3ec05e37d14f30fe881da88df687f9e08af152edd68150b4d3",
+      "bytes": 10666284
+     }
+    },
+    "english_denominator": 766,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 19,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 27,
+    "stamp": "20260809133100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809133100.toc.json.gz",
+      "sha256": "090fe1fd7f89783cabd6493749cb5f7b07383f1b75cfd58104c27695795accd8",
+      "bytes": 439337
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809133100.ngrams.txt.gz",
+      "sha256": "d713ed8fd7595b055436ced87a9e40196d8d9ad5794b3484f951d72c66b49b9a",
+      "bytes": 11062514
+     }
+    },
+    "english_denominator": 856,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 20,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 5,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 5,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 28,
+    "stamp": "20260809140100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809140100.toc.json.gz",
+      "sha256": "42b81dd01e7019bf9665b2156064caefc24584682131099a8ae872f9a57a5674",
+      "bytes": 436859
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809140100.ngrams.txt.gz",
+      "sha256": "d1054beed8cfcaa91c9b221cddb2d92aaac9431a5f8d443790ca264ba1d67965",
+      "bytes": 11564949
+     }
+    },
+    "english_denominator": 777,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 22,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 1,
+     "shipping/q1": 6,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 29,
+    "stamp": "20260809143100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809143100.toc.json.gz",
+      "sha256": "80dc760b2b174f2e80558db62ef375c3bc1f36304769e00858a985e9da00f915",
+      "bytes": 83919
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809143100.ngrams.txt.gz",
+      "sha256": "8cd5067376d42c115c958a74680d380df3d6527ddc52ec19bc761c78ee1159d5",
+      "bytes": 2028331
+     }
+    },
+    "english_denominator": 124,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 2,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 30,
+    "stamp": "20260809150100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809150100.toc.json.gz",
+      "sha256": "90bacd300992d428ea5063ba4dfbede6bcd0d07a6a4593ff3485731eaec1a8c6",
+      "bytes": 418518
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809150100.ngrams.txt.gz",
+      "sha256": "f7c2a9b2af788b35c4b8583df0cd621de2f47059c959529d7b30828aaf06e942",
+      "bytes": 10541513
+     }
+    },
+    "english_denominator": 715,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 13,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 1,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 31,
+    "stamp": "20260809153100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809153100.toc.json.gz",
+      "sha256": "221181283745b0aa4162c5b82632e5f61f66b796747658e4002b9b5a685f4049",
+      "bytes": 228238
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809153100.ngrams.txt.gz",
+      "sha256": "7aa2cf47969cc9b94b56d05fdf93b8fb6541ac964d9caf9c771c17616cef3067",
+      "bytes": 5541564
+     }
+    },
+    "english_denominator": 361,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 2,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 32,
+    "stamp": "20260809160100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809160100.toc.json.gz",
+      "sha256": "ba2fd211bdc7d3e2317ec1af47f4ed6329173e7bd5bccef6f996e050186bf223",
+      "bytes": 283106
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809160100.ngrams.txt.gz",
+      "sha256": "deb5eed0628a4dd771c08a6390ef9e1b53993fbcd4d280e08ac21908b589bbb8",
+      "bytes": 7487847
+     }
+    },
+    "english_denominator": 651,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 9,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 33,
+    "stamp": "20260809163100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809163100.toc.json.gz",
+      "sha256": "07fd9bd8f5f295c3787013e68e1fa576cb5506d305088f489c35d0da442eb7a3",
+      "bytes": 433013
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809163100.ngrams.txt.gz",
+      "sha256": "7dfdb80ce4ab66a8cb90a1155e15f9cc581c590b2dae299aaf8c69c17a385795",
+      "bytes": 12297136
+     }
+    },
+    "english_denominator": 886,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 12,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 34,
+    "stamp": "20260809170100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809170100.toc.json.gz",
+      "sha256": "fc19c7e28d75f75f49401b97f4dafd7aa7a68dbd68ca0a360d9f5c1c8ad20cbb",
+      "bytes": 167621
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809170100.ngrams.txt.gz",
+      "sha256": "6cda6cafac59850b8f9400a77a8727fbf2c4ba165ac3ee425895db66105084ef",
+      "bytes": 4431294
+     }
+    },
+    "english_denominator": 368,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 5,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 3,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 35,
+    "stamp": "20260809173100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809173100.toc.json.gz",
+      "sha256": "cf9ca57990a43b133af54c1ef9ad9c6513d3528c4fb9866471922980c5a9a743",
+      "bytes": 268215
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809173100.ngrams.txt.gz",
+      "sha256": "949fd9469efd16632df08280812daf7c67060787f1a3e97b00f44b2f0f97c6c7",
+      "bytes": 7083151
+     }
+    },
+    "english_denominator": 706,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 14,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 3,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 36,
+    "stamp": "20260809180100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809180100.toc.json.gz",
+      "sha256": "db8781091ee5b0c020c47e4c35e0f7ee0ac0822ddacbccd572f44c442186aaf0",
+      "bytes": 252675
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809180100.ngrams.txt.gz",
+      "sha256": "69de600b33c72ce6ea145e39611de4cfdc55a0084a2a2688de51adb790929ade",
+      "bytes": 6968496
+     }
+    },
+    "english_denominator": 672,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 7,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 37,
+    "stamp": "20260809183100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809183100.toc.json.gz",
+      "sha256": "a3835b586815f54becf71a0103ad19e3b5d836fda2ac0f343f0c85073cffa295",
+      "bytes": 62548
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809183100.ngrams.txt.gz",
+      "sha256": "92cb16616133908ba671d06bcd86c3ab3221ca8842a27ae9b6de2cdde3ff5bea",
+      "bytes": 1536701
+     }
+    },
+    "english_denominator": 98,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 1,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 38,
+    "stamp": "20260809190200",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809190200.toc.json.gz",
+      "sha256": "448f781b8d1f01709a59cf5b4dcc611693b51cb5168bb0539f7a0d9d591671e0",
+      "bytes": 334165
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809190200.ngrams.txt.gz",
+      "sha256": "a21e919b77286060f47e5ae031680a2dfe23128670d21479ebef6d9f5e0ece4f",
+      "bytes": 9234198
+     }
+    },
+    "english_denominator": 771,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 21,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 2
+    }
+   },
+   {
+    "bucket": 39,
+    "stamp": "20260809193100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809193100.toc.json.gz",
+      "sha256": "57b8de69b1cdb1c65c99e8601fa706a6764bf0bd77f9e524ddfbbe39efc82bec",
+      "bytes": 340234
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809193100.ngrams.txt.gz",
+      "sha256": "248b30df60c48240003c8e11766a8491f93a449c150c360f168b43817814b9ea",
+      "bytes": 9099261
+     }
+    },
+    "english_denominator": 928,
+    "group_numerators": {
+     "china_east/q1": 1,
+     "gulf_energy/q1": 18,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 3,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 40,
+    "stamp": "20260809200100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809200100.toc.json.gz",
+      "sha256": "8048bddb511385068af5ad40be08d0582280f5e8caa8e69cd76ff9b2a3e27ac0",
+      "bytes": 182829
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809200100.ngrams.txt.gz",
+      "sha256": "dd1c5360bf20bf07dd1c5c7aac2fd40e2305b19a44457431c9b272b2e2816f66",
+      "bytes": 4233136
+     }
+    },
+    "english_denominator": 365,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 13,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 0,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 41,
+    "stamp": "20260809203100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809203100.toc.json.gz",
+      "sha256": "f6f4b23e42cb06127d2c86ca720191c897a9709dc894d50a59e74799b03ae15c",
+      "bytes": 261292
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809203100.ngrams.txt.gz",
+      "sha256": "adf1b433c7fd8c15220494c71b4e56bea0e7708af843f37f1d91af141fa1d296",
+      "bytes": 6984922
+     }
+    },
+    "english_denominator": 680,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 18,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 4,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 42,
+    "stamp": "20260809210100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809210100.toc.json.gz",
+      "sha256": "fd8eea1859957792607a5244688fc02d9db79399017de766c669938c0ca63abd",
+      "bytes": 287566
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809210100.ngrams.txt.gz",
+      "sha256": "cc06f33bc8a363dc5e11e49fd35192af8884ca137299d903da6ab933696335b8",
+      "bytes": 7406961
+     }
+    },
+    "english_denominator": 707,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 19,
+     "gulf_energy/q2": 1,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 43,
+    "stamp": "20260809213100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809213100.toc.json.gz",
+      "sha256": "40cdbfa8bedfef9ed0a1b4f9dbb4ae04f8b4e9bc80cf450716fbe77dcb524ebb",
+      "bytes": 289611
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809213100.ngrams.txt.gz",
+      "sha256": "834f8251d031289c130cadd4fde58de2373e4fdb1e783c4fbb3fade66642c674",
+      "bytes": 8140564
+     }
+    },
+    "english_denominator": 830,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 28,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 2,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 44,
+    "stamp": "20260809220100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809220100.toc.json.gz",
+      "sha256": "c4065f807f6bacf18ba04597aa213d601c8512d43271b1ca631facd76968acab",
+      "bytes": 290959
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809220100.ngrams.txt.gz",
+      "sha256": "67867ecd6268fabd21d05df17b77496658b128d5dde89a2b3229fa970fa87c65",
+      "bytes": 8224152
+     }
+    },
+    "english_denominator": 723,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 26,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 10,
+     "us_trade/q1": 1
+    }
+   },
+   {
+    "bucket": 45,
+    "stamp": "20260809223100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809223100.toc.json.gz",
+      "sha256": "47ad4916ca2e87b1f8addd70db3c982d3ba29e8e47d721f37cc6ee40d5215870",
+      "bytes": 251681
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809223100.ngrams.txt.gz",
+      "sha256": "4db8d6c6eefe9d70a2758e9be48c0487260a9cc1ca75c0e17f1d455ee76cb69b",
+      "bytes": 7042045
+     }
+    },
+    "english_denominator": 730,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 13,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 7,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 46,
+    "stamp": "20260809230100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809230100.toc.json.gz",
+      "sha256": "b7a6d7bdda14386b0942ae3ff5cb1b377bcda975c8b099166fb2aab8108f3fe7",
+      "bytes": 264846
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809230100.ngrams.txt.gz",
+      "sha256": "bbbd9fabf5c75fba035deae5527d482a217905c0bc1634b3c6078182ca71571e",
+      "bytes": 7627052
+     }
+    },
+    "english_denominator": 590,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 23,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 6,
+     "us_trade/q1": 0
+    }
+   },
+   {
+    "bucket": 47,
+    "stamp": "20260809233100",
+    "source_objects": {
+     "toc": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809233100.toc.json.gz",
+      "sha256": "646d50fa7fdb31c74fbc397a39ae04babeb3a46709bbfbe56873431e833bf4ee",
+      "bytes": 190715
+     },
+     "ngrams": {
+      "url": "https://storage.googleapis.com/data.gdeltproject.org/gdeltv5/weblegacy/ngrams/20260809233100.ngrams.txt.gz",
+      "sha256": "68d6227edcb71ede3583df6609ab07bf7537dfb8a20dfc4b11bccd2eab1385f0",
+      "bytes": 5732572
+     }
+    },
+    "english_denominator": 442,
+    "group_numerators": {
+     "china_east/q1": 0,
+     "gulf_energy/q1": 5,
+     "gulf_energy/q2": 0,
+     "pakistan_west/q1": 0,
+     "pakistan_west/q2": 0,
+     "shipping/q1": 1,
+     "us_trade/q1": 0
+    }
+   }
+  ],
+  "aggregate_reconstruction": {
+   "window_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+   ],
+   "english_denominator": 27808,
+   "group_numerators": {
+    "china_east/q1": 7,
+    "gulf_energy/q1": 669,
+    "gulf_energy/q2": 1,
+    "pakistan_west/q1": 10,
+    "pakistan_west/q2": 3,
+    "shipping/q1": 116,
+    "us_trade/q1": 42
+   },
+   "shares": {
+    "china_east/q1": 0.025173,
+    "gulf_energy/q1": 2.405783,
+    "gulf_energy/q2": 0.003596,
+    "pakistan_west/q1": 0.035961,
+    "pakistan_west/q2": 0.010788,
+    "shipping/q1": 0.417146,
+    "us_trade/q1": 0.151036
+   },
+   "channel_sums": {
+    "china_east": 0.025173,
+    "gulf_energy": 2.409379,
+    "pakistan_west": 0.046749,
+    "shipping": 0.417146,
+    "us_trade": 0.151036
+   }
+  },
+  "membership_reproducibility": "Document membership can be reconstructed only by re-fetching every exact hash-pinned source object while it remains available; membership is not independently retained.",
+  "record_sha256": "19f66a56a1d805b0df8052aa4d426a7c64227def5b935f0aa07cb2159b523662"
+ },
+ "legacy_bytes_sha256": {
+  "data/raw/gdelt_volume.csv": "ad4766d872ca5ed95b8d1efe729480016e46040816be21ad32d02cc9984eb065",
+  "data/raw/ngram_days/2026-08-09.json": "1d14bd7e4e2151b77709857fc184d65569b6703942c2763777aa89f816f4250b",
+  "data/raw/provenance.csv": "940281c3e0c2f898dc246f41e2f0dbe42cb690ed1f2c2968fb0676cd5b0e9ad1",
+  "docs/data/history.json": "672d240e167ee95f3363395445cdf4ab98a0dcf5d89c5071f65d85d12329bdfe",
+  "docs/data/latest.json": "2af2170bd58fbcf98d4285124f2fede5d6a5d01628cc8674eaf4055acb37e049"
+ },
+ "transform": {
+  "calibration_sha256": "02efb5a493878701f1890802133ee395e6e1775028c33f8986b0043235e87c2e",
+  "channel_values": {
+   "pakistan_west": 0.023916201974727578,
+   "china_east": 0.007489289539450196,
+   "gulf_energy": 1.3452702400893355,
+   "us_trade": 0.05896158650843224,
+   "shipping": 0.14023128382694056
+  },
+  "matched_existing_row": true
+ },
+ "rights": {
+  "source_id": "gdelt_web_ngrams_v5",
+  "decision_id": "rights:gdelt_web_ngrams_v5:aggregate-2.0:2026-08-12",
+  "signer_id": "human:igrm-ngram-rights-reviewer",
+  "reviewed_on": "2026-08-12",
+  "review_due": "2026-11-10",
+  "target_date": "2026-08-09",
+  "evaluated_at_utc": "2026-08-13T00:31:51Z",
+  "rights_as_of": "2026-08-13",
+  "max_current_age_days": 3,
+  "evaluated_age_days": 4,
+  "release_deadline_utc": "2026-11-10T23:59:59Z",
+  "permitted_uses": [
+   "model_processing",
+   "publish_derived_value"
+  ],
+  "trusted_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2",
+  "rights_registry_sha256": "10531fd64931641d81c0c97a5965bc3c8c346107c65cf7d7461c70d136a24813",
+  "rights_signers_sha256": "54d7447a818ba53d92aae6849e2bc5b6799dfea797032a9b8f8ba4b85b1d86e2",
+  "decision_artifact_path": "governance/rights_decisions/gdelt_web_ngrams_v5-aggregate-2.0.json",
+  "decision_artifact_sha256": "c313b3312dfb1663b60604e933cd4a18464fbd1f62ac7d8548aad9899e35de25",
+  "decision_signature_path": "governance/rights_decisions/gdelt_web_ngrams_v5-aggregate-2.0.sig",
+  "decision_signature_sha256": "e691632ec1fb5f76fbcbe79873f8d41c7a9a5875ca0dc40be283418cda52005c",
+  "profile_id": "igrm:gdelt-ngram-daily-aggregate:2.0.0",
+  "historical_recovery_targets": [
+   "2026-08-09",
+   "2026-08-10",
+   "2026-08-11"
+  ],
+  "historical_recovery_targets_sha256": "5fe3f5b85a5f1e65f63e502dfd1e61abfe00546ae5263302f5402045f97f5a7a",
+  "recovery_exception_used": true,
+  "signer_revoked_on": null
+ },
+ "original_bytes_rewritten": false,
+ "public_score_claim_added": false,
+ "membership_reproducibility": "Document membership can be reconstructed only by re-fetching every exact hash-pinned source object while it remains available; membership is not independently retained.",
+ "record_sha256": "604f432b6db1e3adc14b64152249891c71a0393aafc7ca085a9a9cafc6cb054a"
+}
