@@ -207,14 +207,16 @@
   }
  ],
  "final_publication": {
-  "target_date": "2026-08-12",
+  "target_date": "2026-08-11",
   "latest_finalized_date": "2026-08-10",
-  "status": "delayed_final",
-  "reason": "The D-1 final has not completed publication; the latest older final remains the number of record.",
+  "status": "acquisition_failed",
+  "reason": "The registered source acquisition did not complete its bounded step.",
   "finalized": false,
   "provisional_substitution_allowed": false,
   "value_fields_published": false,
-  "source_receipt": null
+  "source_receipt": null,
+  "failure_stage": "source",
+  "reason_code": "source_acquisition_failed"
  },
  "morning_contract": {
   "on_time": 0,
