@@ -349,7 +349,7 @@ jobs:
             # the exact bytes of the payloads regenerated above, so they come
             # LAST, in this order, and the manifest generator captures the
             # GIT INDEX -- everything must be staged before it runs or it
-            # pins the previous commit's blobs. Both gaps refused otherwise-
+            # pins the blobs of the previous commit. Both gaps refused otherwise-
             # valid finals (runs 31682875024, 31687324343).
             python scripts/generate_api_contract.py
             python -m scripts.generate_openapi
