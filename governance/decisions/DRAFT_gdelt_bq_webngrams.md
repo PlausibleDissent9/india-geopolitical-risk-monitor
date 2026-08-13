@@ -77,11 +77,20 @@ founder signed for profile 2.0.
    (2026-08-09 or 2026-08-10) from BigQuery with the frozen dictionaries and
    require an exact match to the published aggregates before any gap day is
    trusted.
-2. **Window coverage of the gap days.** Whether the table actually holds the
-   half-hour windows the file feed never published for 2026-08-11/12. A
-   capped dispatch-only probe workflow accompanies this packet to measure
-   per-day window coverage and row counts; its committed results should be
-   attached to this packet before signature.
+2. **Window coverage of the gap days — MEASURED, answered.** The capped
+   dispatch-only probe (analysis/bq_webngrams_probe_results.md, run
+   2026-08-13 22:14 UTC, table schema date/ngram/lang/type/pos/pre/post/url)
+   found complete coverage:
+
+   | day | rows | half-hour windows |
+   |---|---|---|
+   | 2026-08-09 | 129,090,221 | 48/48 |
+   | 2026-08-10 | 203,507,272 | 48/48 |
+   | 2026-08-11 | 213,862,169 | 48/48 |
+   | 2026-08-12 | 218,947,801 | 48/48 |
+
+   Both gap days exist complete in the mirror. Recovery is technically
+   possible; what remains is this decision and the attestation profile.
 3. **Calibration regime.** The splice calibration was derived against the
    file-fed acquisition regime. If BigQuery-derived counts differ beyond
    rounding on the equivalence day, the recovered days need their own
