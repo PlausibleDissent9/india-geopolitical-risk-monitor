@@ -155,6 +155,12 @@ publish_refusal() {
     --today "$(date -u -d "$TARGET + 1 day" +%F)"
   git add data/raw/final_publication_status.json docs/data/status.json \
     docs/index.html docs/status.html
+  # The durable per-day refusal ledger written by --record-pipeline-failed;
+  # unstaged it left the candidate dirty and the release proof refused
+  # (run 31726442724).
+  if [ -f "data/raw/final_publication_refusals/$TARGET.json" ]; then
+    git add "data/raw/final_publication_refusals/$TARGET.json"
+  fi
   stage_public_api_byte_manifest
   if git diff --cached --name-only | grep -Eq \
     '^(data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/ngram_days/|data/raw/final_publication_receipts/)'; then

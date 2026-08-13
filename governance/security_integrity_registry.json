@@ -1,55 +1,55 @@
 {
-  "schema_version": "1.0.0",
-  "effective": "2026-08-08",
-  "status": "repository_control_baseline",
-  "default_policy": "deny",
-  "workflow_directory": ".github/workflows",
-  "implementation": {
-    "path": "src/security_integrity.py",
-    "sha256": "a4ddf8d9e3f153f9ca8f2772d1662e5878c0321cb7bbe8c42ce9c54b8a1c7e35"
+ "schema_version": "1.0.0",
+ "effective": "2026-08-08",
+ "status": "repository_control_baseline",
+ "default_policy": "deny",
+ "workflow_directory": ".github/workflows",
+ "implementation": {
+  "path": "src/security_integrity.py",
+  "sha256": "a4ddf8d9e3f153f9ca8f2772d1662e5878c0321cb7bbe8c42ce9c54b8a1c7e35"
+ },
+ "actions": {
+  "actions/checkout": {
+   "sha256": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+   "version": "7.0.1"
   },
-  "actions": {
-    "actions/checkout": {
-      "sha256": "3d3c42e5aac5ba805825da76410c181273ba90b1",
-      "version": "7.0.1"
-    },
-    "actions/setup-python": {
-      "sha256": "5fda3b95a4ea91299a34e894583c3862153e4b97",
-      "version": "7.0.0"
-    }
+  "actions/setup-python": {
+   "sha256": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+   "version": "7.0.0"
+  }
+ },
+ "actions_write_workflows": [
+  "events-backfill.yml",
+  "morning.yml",
+  "multilingual-backfill.yml",
+  "nowcast.yml",
+  "watchdog.yml"
+ ],
+ "publisher": {
+  "workflow_marker": "publish_push.sh",
+  "required_install_fragment": "pip install -r requirements.txt -r requirements-dev.txt",
+  "required_token_fragment": "IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+  "required_gate_command": "bash scripts/gate.sh --publish",
+  "push_script": {
+   "path": "scripts/publish_push.sh",
+   "sha256": "4fbe5a9b85c68a923d5c9af0bce47d072bc53230bb91d18911701a8f1dcd2e91"
   },
-  "actions_write_workflows": [
-    "events-backfill.yml",
-    "morning.yml",
-    "multilingual-backfill.yml",
-    "nowcast.yml",
-    "watchdog.yml"
-  ],
-  "publisher": {
-    "workflow_marker": "publish_push.sh",
-    "required_install_fragment": "pip install -r requirements.txt -r requirements-dev.txt",
-    "required_token_fragment": "IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
-    "required_gate_command": "bash scripts/gate.sh --publish",
-    "push_script": {
-      "path": "scripts/publish_push.sh",
-      "sha256": "4fbe5a9b85c68a923d5c9af0bce47d072bc53230bb91d18911701a8f1dcd2e91"
-    },
-    "gate_script": {
-      "path": "scripts/gate.sh",
-      "sha256": "17cfb5ebad96649c9f3ba598ed6c1dd0b3e622c4c3b3d142d6ddab89e34f5ac1"
-    },
-    "final_cas_script": {
-      "path": "scripts/publish_final_cas.sh",
-      "sha256": "77df374b2812c338cc1313de0bab90fa005f36398ce052c113775a89952b3bcd"
-    }
+  "gate_script": {
+   "path": "scripts/gate.sh",
+   "sha256": "17cfb5ebad96649c9f3ba598ed6c1dd0b3e622c4c3b3d142d6ddab89e34f5ac1"
   },
-  "limitations": [
-    "This verifies committed repository and workflow text; it does not inspect GitHub account settings, MFA, branch protection, environment protection, token policy or hosted infrastructure.",
-    "No external penetration test, independent security audit, formal threat-model review or security certification has been completed.",
-    "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
-    "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
-    "The rebased cbbdf45-equivalent predecessor projection at 1ba3618 does not independently authorize the successor release-rights insertion: coordinated changes to that insertion, its validator and this registry remain outside the machine-verifiable trust boundary until an external human-signed transition root exists.",
-    "The receipt-identity release check is repository self-consistency only: production source and profile signer trust remain empty, and this transition does not itself authorize headline quotation or source access.",
-    "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
-  ]
+  "final_cas_script": {
+   "path": "scripts/publish_final_cas.sh",
+   "sha256": "4caf193a0841062b0dd8f5afa289e4d346d6e0e4bd5145c80c07b4c303544254"
+  }
+ },
+ "limitations": [
+  "This verifies committed repository and workflow text; it does not inspect GitHub account settings, MFA, branch protection, environment protection, token policy or hosted infrastructure.",
+  "No external penetration test, independent security audit, formal threat-model review or security certification has been completed.",
+  "A GitHub-hosted static site reduces server attack surface but does not eliminate supply-chain, repository-account, browser, dependency or data-integrity risk.",
+  "The post-rebase gate prefers refusing a scheduled publication over publishing an unverified candidate; it is an integrity control, not an availability SLA.",
+  "The rebased cbbdf45-equivalent predecessor projection at 1ba3618 does not independently authorize the successor release-rights insertion: coordinated changes to that insertion, its validator and this registry remain outside the machine-verifiable trust boundary until an external human-signed transition root exists.",
+  "The receipt-identity release check is repository self-consistency only: production source and profile signer trust remain empty, and this transition does not itself authorize headline quotation or source access.",
+  "Action commit identities were resolved to the stated upstream releases, but this registry is not a substitute for ongoing dependency review and vulnerability monitoring."
+ ]
 }
