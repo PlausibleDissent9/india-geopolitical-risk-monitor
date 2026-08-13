@@ -352,7 +352,12 @@ def _committed_refusal_with_manifest(
     # candidate keeps the boundary under test at every vintage.
     latest_day = final_publication._read_latest_day(root)
     assert latest_day is not None
-    target = latest_day + timedelta(days=1)
+    # latest+2, not latest+1: when the lane itself has already published a
+    # refusal disclosure for latest+1 (run 31708425865, the Aug-11 source
+    # outage), a fixture refusal for the same day no-ops the page paths and
+    # the four-output equality fails. Two days out never collides with the
+    # lane's own live disclosure; the selector is monkeypatched either way.
+    target = latest_day + timedelta(days=2)
     contract_today = target + timedelta(days=1)
     # This fixture isolates the refusal+manifest release boundary. Ordered
     # backlog selection (including the Aug-9 upgrade) is exhaustively covered
