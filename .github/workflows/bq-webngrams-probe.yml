@@ -1,0 +1,108 @@
+name: bq-webngrams-probe
+# Measured evidence for governance/decisions/DRAFT_gdelt_bq_webngrams.md:
+# does gdelt-bq.gdeltv2.webngrams actually hold the half-hour windows the
+# per-minute file feed never published for 2026-08-11/12, and does its
+# coverage of a file-proven day (2026-08-09/10) look equivalent? Dry-run
+# first (costs nothing, reports bytes); one capped live query per day only
+# if the dry-run fits the cap. Numbers before signature.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt -r requirements-dev.txt google-cloud-bigquery
+      - env:
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from google.cloud import bigquery
+          from google.oauth2 import service_account
+
+          OUT = "analysis/bq_webngrams_probe_results.md"
+          CAP = 10**9  # 1 GB per query; the cap is the budget discipline
+
+          lines = []
+          def note(text):
+              print(text)
+              lines.append(text)
+
+          info = json.loads(os.environ["GCP_SA_JSON"])
+          creds = service_account.Credentials.from_service_account_info(info)
+          client = bigquery.Client(
+              project=os.environ["GCP_PROJECT_ID"], credentials=creds
+          )
+
+          # 1. Schema discovery: cheap, and the column names are needed to
+          # write an honest per-window query rather than a guessed one.
+          schema_q = (
+              "SELECT column_name, data_type FROM "
+              "`gdelt-bq.gdeltv2.INFORMATION_SCHEMA.COLUMNS` "
+              "WHERE table_name = 'webngrams' ORDER BY ordinal_position"
+          )
+          cols = list(client.query(schema_q).result())
+          note("columns: " + ", ".join(f"{r.column_name}:{r.data_type}" for r in cols))
+          names = [r.column_name for r in cols]
+          ts_col = next(
+              (c for c in ("DATE", "date", "datetime", "DATETIME") if c in names),
+              None,
+          )
+          if ts_col is None:
+              note("REFUSED: no recognizable timestamp column; cannot probe safely")
+          else:
+              for day in ("2026-08-09", "2026-08-10", "2026-08-11", "2026-08-12"):
+                  q = (
+                      "SELECT COUNT(*) AS rows_total, "
+                      f"COUNT(DISTINCT TIMESTAMP_TRUNC({ts_col}, MINUTE)) AS minute_stamps, "
+                      f"COUNT(DISTINCT DIV(EXTRACT(HOUR FROM {ts_col}) * 60 "
+                      f"+ EXTRACT(MINUTE FROM {ts_col}), 30)) AS half_hour_windows "
+                      "FROM `gdelt-bq.gdeltv2.webngrams` "
+                      f"WHERE {ts_col} >= TIMESTAMP('{day} 00:00:00') "
+                      f"AND {ts_col} < TIMESTAMP_ADD(TIMESTAMP('{day} 00:00:00'), INTERVAL 1 DAY)"
+                  )
+                  dry = client.query(
+                      q, job_config=bigquery.QueryJobConfig(dry_run=True)
+                  )
+                  note(f"{day}: dry-run bytes {dry.total_bytes_processed:,}")
+                  if dry.total_bytes_processed > CAP:
+                      note(f"{day}: SKIPPED live query; dry-run exceeds {CAP:,} cap")
+                      continue
+                  row = list(
+                      client.query(
+                          q,
+                          job_config=bigquery.QueryJobConfig(
+                              maximum_bytes_billed=CAP
+                          ),
+                      ).result()
+                  )[0]
+                  note(
+                      f"{day}: rows {row.rows_total:,} | minute stamps "
+                      f"{row.minute_stamps} | half-hour windows {row.half_hour_windows}/48"
+                  )
+
+          stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+          with open(OUT, "a") as f:
+              f.write(f"\n## Probe run {stamp}\n\n")
+              for line in lines:
+                  f.write(f"- {line}\n")
+          PY
+      - env:
+          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          git add analysis/bq_webngrams_probe_results.md
+          bash scripts/publish_push.sh "bq webngrams probe: measured window coverage for the gap days"

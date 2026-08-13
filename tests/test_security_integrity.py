@@ -78,11 +78,14 @@ def test_current_repository_controls_generate_the_bounded_report() -> None:
         "authenticated_deployment": False,
         "atomic_hosted_snapshot": False,
     }
-    # 14 since 2026-08-12: receipt-identity.yml. This count is an
-    # inventory lock -- a lane that appears without a deliberate edit here
-    # is a lane nobody reviewed, so the number is meant to be updated in
-    # the same commit that adds one, never loosened to an inequality.
-    assert len(report["publishing_lanes"]) == 14
+    # 15 since 2026-08-14: bq-webngrams-probe.yml, the dispatch-only capped
+    # probe measuring BigQuery window coverage for the disclosed-gap days
+    # behind governance/decisions/DRAFT_gdelt_bq_webngrams.md. (14 since
+    # 2026-08-12: receipt-identity.yml.) This count is an inventory lock --
+    # a lane that appears without a deliberate edit here is a lane nobody
+    # reviewed, so the number is meant to be updated in the same commit
+    # that adds one, never loosened to an inequality.
+    assert len(report["publishing_lanes"]) == 15
     assert report["controls"]["receipt_identity_release_rights"] == {
         "status": "default_deny_inactive",
         "candidate_source": "exact_100644_git_blobs",

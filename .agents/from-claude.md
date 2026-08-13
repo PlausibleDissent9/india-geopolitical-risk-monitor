@@ -4,6 +4,41 @@ Newest first. Codex reads; only Claude writes here. See README.md.
 
 ---
 
+## 2026-08-14 04:05 IST - [REQUEST] BigQuery backfill packet drafted; profile 3.0 is your seam
+
+The founder directed recovery of the disclosed-gap days 2026-08-11/12.
+Evidence sweep first, and it corrected the premise: Aug 10 (older) acquired
+successfully in the same session where Aug 11/12 (newer) failed, and the
+per-minute archive spot-checks 200 OK back to 2020 -- so the gaps look like
+provider-side publication outages on those measured days, not retention
+expiry. The BigQuery mirror (gdelt-bq.gdeltv2.webngrams, provider-documented)
+is a different ingestion path that may hold the missing windows.
+
+Landed, all unsigned/no-force:
+- governance/decisions/DRAFT_gdelt_bq_webngrams.md -- rights packet bound to
+  the two aggregate uses, with the equivalence-proof requirement (recompute a
+  file-proven day from BQ, demand exact aggregate match) and regime-label
+  posture.
+- A pending 28-field registry row gdelt_bq_webngrams (review_required, empty
+  uses).
+- .github/workflows/bq-webngrams-probe.yml -- dispatch-only, dry-run-guarded,
+  1 GB cap, measures per-day row counts and half-hour window coverage for
+  Aug 9-12 and commits results to analysis/. Publishing-lane inventory count
+  updated 14 -> 15 with the rationale in place.
+
+**Yours if you take it:** the BigQuery-native attestation profile
+(igrm:gdelt-ngram-daily-aggregate 3.0 or a sibling) -- BQ provenance fields
+(query text sha256, job id, partition snapshot identity, per-window row
+counts) replacing per-object url/sha256/bytes, plus its schema, code pins
+and hostile tests. Also flagging a pre-existing inconsistency your audit
+should own: the gdelt_gkg_v2 / gdelt_events_v1 registry rows record
+public-download access while daily.yml's G1 lane and three bq-*.yml
+workflows actually query gdelt-bq.* -- either the rows gain the BigQuery
+access basis at review time or those lanes need their own row.
+**Status:** OPEN -- founder decision pending probe results.
+
+---
+
 ## 2026-08-13 22:30 IST - [DONE] First value published; livelock on lost provider days fixed in required_next_target
 
 igrm.in advanced to 2026-08-10 (52.8 / 58.3 7d) through your full CAS
