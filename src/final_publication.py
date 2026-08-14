@@ -192,6 +192,38 @@ _REFUSAL_DEFAULT_CODES = {
 }
 
 
+def _prefix_gap_is_disclosed(root: Path, last_day: date, target: date) -> bool:
+    """True when every day in (last_day, target) is a disclosed lost day.
+
+    Contiguity is enforced at three independent layers (the ordered-target
+    prefix, the volume store, and the provenance ledger). All three accept
+    the same and only exception: a gap day whose durable refusal ledger
+    entry records a published SOURCE-stage refusal. Anything else keeps the
+    strict append-only rule.
+    """
+
+    gap_day = last_day + timedelta(days=1)
+    while gap_day < target:
+        try:
+            entry = json.loads(
+                (
+                    root
+                    / REFUSAL_LEDGER_RELATIVE
+                    / f"{gap_day.isoformat()}.json"
+                ).read_text(encoding="utf-8")
+            )
+        except (OSError, json.JSONDecodeError):
+            return False
+        if not (
+            entry.get("target_date") == gap_day.isoformat()
+            and entry.get("failure_stage") == "source"
+            and entry.get("reason_code") == "source_acquisition_failed"
+        ):
+            return False
+        gap_day = gap_day + timedelta(days=1)
+    return True
+
+
 class FinalPublicationError(RuntimeError):
     """Stable typed refusal from the finalized-publication boundary."""
 
@@ -1148,7 +1180,13 @@ def _store_candidate(
     days = [date.fromisoformat(row["date"]) for row in rows]
     if days != sorted(days) or len(days) != len(set(days)):
         _fail("acquisition_failed", "store_prefix_order_invalid")
-    if days[-1] != target - timedelta(days=1):
+    # The store prefix must reach target-1 either by finalized rows or by
+    # disclosed lost days: every missing day between the last stored row and
+    # the target must carry its own published SOURCE-stage refusal ledger
+    # entry. Without this third-layer relaxation the store stalled at the
+    # last finalized day exactly like the selector and the D-2 prefix did
+    # (local replay of 2026-08-13 over the 08-11/12 disclosed gaps).
+    if not _prefix_gap_is_disclosed(root, days[-1], target):
         _fail(
             "acquisition_failed",
             f"store_prefix_end={days[-1].isoformat()} target={target.isoformat()}",
@@ -1176,7 +1214,9 @@ def _provenance_candidate(root: Path, target: date) -> tuple[bytes, bytes]:
     days = [date.fromisoformat(row["date"]) for row in rows]
     if not rows or days != sorted(days) or len(days) != len(set(days)):
         _fail("acquisition_failed", "provenance_prefix_invalid")
-    if days[-1] != target - timedelta(days=1) or any(day >= target for day in days):
+    if any(day >= target for day in days) or not _prefix_gap_is_disclosed(
+        root, days[-1], target
+    ):
         _fail("acquisition_failed", "provenance_not_target_append_only")
     line_buffer = io.StringIO(newline="")
     writer = csv.DictWriter(line_buffer, fieldnames=provenance.FIELDS, lineterminator="\n")
@@ -1387,7 +1427,15 @@ def acquire_target(
             base_commit=frozen_commit,
         )
     require_ordered_target(target, root=root, today=today)
-    if latest != target - timedelta(days=1):
+    # The immutable prefix rule, completed for disclosed lost days: every
+    # day between the latest finalized day and the target must either BE
+    # the finalized prefix or carry its own aged, published SOURCE-stage
+    # refusal disclosure in the durable ledger. The selector already walks
+    # such days (required_next_target); refusing them again here stalled
+    # the chain at the last finalized day forever while holes accumulated
+    # ahead of it (run 31759753420: target 2026-08-13 refused instantly
+    # because 2026-08-11/12 are disclosed gaps, so latest stays 2026-08-10).
+    if latest is None or not _prefix_gap_is_disclosed(root, latest, target):
         return record_status(
             target,
             "acquisition_failed",
@@ -1582,7 +1630,9 @@ def _strip_last_csv_row(raw: bytes, expected_day: date, label: str) -> bytes:
     return b"".join(lines[:-1])
 
 
-def _require_parent_prefix(raw: bytes, target: date, label: str) -> None:
+def _require_parent_prefix(
+    raw: bytes, target: date, label: str, *, root: Path = ROOT
+) -> None:
     try:
         rows = list(csv.DictReader(io.StringIO(raw.decode("utf-8"))))
         days = [date.fromisoformat(row["date"]) for row in rows]
@@ -1594,7 +1644,11 @@ def _require_parent_prefix(raw: bytes, target: date, label: str) -> None:
         not rows
         or days != sorted(days)
         or len(days) != len(set(days))
-        or days[-1] != target - timedelta(days=1)
+        # The parent prefix may end earlier than target-1 ONLY across days
+        # whose durable ledger discloses a published SOURCE-stage refusal:
+        # the same single exception the selector, the D-2 check, the store
+        # and the provenance layers accept (_prefix_gap_is_disclosed).
+        or not _prefix_gap_is_disclosed(root, days[-1], target)
     ):
         _fail("promotion_trust_invalid", f"parent_{label}_is_not_exact_d2_prefix")
 
@@ -1826,8 +1880,8 @@ def require_promotion_receipt(
 
     store_prefix = _strip_last_csv_row(store_raw, target, "store")
     provenance_prefix = _strip_last_csv_row(provenance_raw, target, "provenance")
-    _require_parent_prefix(parent.store, target, "store")
-    _require_parent_prefix(parent.provenance, target, "provenance")
+    _require_parent_prefix(parent.store, target, "store", root=root)
+    _require_parent_prefix(parent.provenance, target, "provenance", root=root)
     if store_prefix != parent.store:
         _fail("promotion_receipt_invalid", "store_prefix_differs_from_frozen_parent")
     if provenance_prefix != parent.provenance:

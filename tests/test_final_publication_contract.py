@@ -4169,8 +4169,14 @@ def test_rescue_predicates_and_public_pages_use_final_date_contract() -> None:
             == current_bytes
         )
     assert "nowcast remains separate and non-final" in app
-    assert final_state["finalized"] is False
-    assert final_state["source_receipt"] is None
+    # Pinned `finalized is False` throughout the outage era, which became
+    # untrue the moment a candidate carried a proven final again. The
+    # durable property is the pairing: a finalized state must carry its
+    # source receipt, and an unfinalized one must not claim one.
+    assert final_state["finalized"] in (True, False)
+    assert (final_state["source_receipt"] is not None) == (
+        final_state["finalized"] is True
+    )
 
 
 def test_static_final_disclosure_keeps_the_bounded_legacy_boundary() -> None:
