@@ -10,18 +10,18 @@
  },
  "schema_version": "1.0.0",
  "state": "unavailable",
- "target_date": "2026-08-12",
- "generated_at": "2026-08-13T08:53:28Z",
+ "target_date": "2026-08-13",
+ "generated_at": "2026-08-14T08:47:02Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "b22931a7c8a673b93abee209e4e6a0951717b05a",
-  "blob_git_sha1": "c08b84abbfef360ad82ed592ec1239b77a4aafae",
-  "blob_sha256": "4e7652e2dccf506b82991ad9c817e3e67b67fb1da4e7046f1858ac880446ec38",
-  "target_date": "2026-08-11"
+  "commit_sha": "a27222ccca7eb0668bdd12af0b54b88a383bedd9",
+  "blob_git_sha1": "50f0be5f345f5406a544c2b67eefdb6cbbff7603",
+  "blob_sha256": "77bd856f8150beabd20f8173043ad62018c1ebe2f8eda3367aa123ac1c9ab476",
+  "target_date": "2026-08-12"
  },
  "channels": {
   "pakistan_west": {
@@ -54,16 +54,16 @@
   "authority_snapshot": {
    "source_id": "gdelt_doc_api",
    "profile_id": "gdelt_doc_receipt_identity_v1",
-   "target_date": "2026-08-12",
-   "evaluated_at_utc": "2026-08-13T08:53:28Z",
+   "target_date": "2026-08-13",
+   "evaluated_at_utc": "2026-08-14T08:47:02Z",
    "source_decision_state": "review_required",
    "source_decision_id": "pending:gdelt_doc_api",
    "profile_activation_state": "inactive_pending_human_signature",
    "authorization_status": "receipt_identity_source_decision_review_required",
-   "rights_registry_sha256": "10531fd64931641d81c0c97a5965bc3c8c346107c65cf7d7461c70d136a24813",
+   "rights_registry_sha256": "776a7b624c4527ebc3a410f6576b151d4ae9855fdd6e392b37f9e311969141a3",
    "rights_signers_sha256": "54d7447a818ba53d92aae6849e2bc5b6799dfea797032a9b8f8ba4b85b1d86e2",
    "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f"
   }
  },
- "payload_seal_sha256": "6f6640a6845db420890a37d81d590ce149fd3aeec5cf775e8055a1b6995ff854"
+ "payload_seal_sha256": "6405e84cb1d351d3941168b5af53cb9ac0b2232ed0f9e7c4fc6098faabe71566"
 }
