@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "unavailable",
  "target_date": "2026-08-13",
- "generated_at": "2026-08-14T08:47:02Z",
+ "generated_at": "2026-08-14T14:34:41Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "a27222ccca7eb0668bdd12af0b54b88a383bedd9",
-  "blob_git_sha1": "50f0be5f345f5406a544c2b67eefdb6cbbff7603",
-  "blob_sha256": "77bd856f8150beabd20f8173043ad62018c1ebe2f8eda3367aa123ac1c9ab476",
-  "target_date": "2026-08-12"
+  "state": "same_target",
+  "commit_sha": "f5341c5bea0ad1273d86871632ced53c0661ef1c",
+  "blob_git_sha1": "6cafaa0d3afa633de50b79a16c4349001d7e9563",
+  "blob_sha256": "d91cc65428b264a932c05fa0189a6f1d594c392c11069329dc5f17da10d7b20f",
+  "target_date": "2026-08-13"
  },
  "channels": {
   "pakistan_west": {
@@ -55,7 +55,7 @@
    "source_id": "gdelt_doc_api",
    "profile_id": "gdelt_doc_receipt_identity_v1",
    "target_date": "2026-08-13",
-   "evaluated_at_utc": "2026-08-14T08:47:02Z",
+   "evaluated_at_utc": "2026-08-14T14:34:41Z",
    "source_decision_state": "review_required",
    "source_decision_id": "pending:gdelt_doc_api",
    "profile_activation_state": "inactive_pending_human_signature",
@@ -65,5 +65,5 @@
    "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f"
   }
  },
- "payload_seal_sha256": "6405e84cb1d351d3941168b5af53cb9ac0b2232ed0f9e7c4fc6098faabe71566"
+ "payload_seal_sha256": "8f405df38b95858e7fe42b2829fad74ffcf199cc868750d490c039050c169fd7"
 }
