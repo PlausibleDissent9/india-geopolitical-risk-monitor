@@ -281,21 +281,30 @@ def required_next_target(*, root: Path = ROOT, today: date | None = None) -> dat
     candidate = latest + timedelta(days=1)
     if candidate > ceiling:
         return None
-    ledger_path = root / REFUSAL_LEDGER_RELATIVE / f"{candidate.isoformat()}.json"
-    try:
-        entry = json.loads(ledger_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        entry = {}
-    disclosed_lost_source = (
-        entry.get("target_date") == candidate.isoformat()
-        and entry.get("failure_stage") == "source"
-        and entry.get("reason_code") == "source_acquisition_failed"
-        and candidate <= contract_today - timedelta(days=2)
-    )
-    if disclosed_lost_source:
+    # Walk past EVERY consecutive disclosed lost-source day, not just one.
+    # A single-step advance oscillated at the second of two consecutive
+    # disclosed days (run 31757958830 re-refused Aug 12 while Aug 13 could
+    # never be attempted), and the gap would then compound daily. Each
+    # skipped day already carries its own published disclosure; the walk is
+    # bounded by the ceiling and only crosses aged SOURCE-stage refusals.
+    while candidate <= ceiling:
+        ledger_path = (
+            root / REFUSAL_LEDGER_RELATIVE / f"{candidate.isoformat()}.json"
+        )
+        try:
+            entry = json.loads(ledger_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            entry = {}
+        disclosed_lost_source = (
+            entry.get("target_date") == candidate.isoformat()
+            and entry.get("failure_stage") == "source"
+            and entry.get("reason_code") == "source_acquisition_failed"
+            and candidate <= contract_today - timedelta(days=2)
+        )
+        if not disclosed_lost_source:
+            return candidate
         candidate = candidate + timedelta(days=1)
-        return candidate if candidate <= ceiling else None
-    return candidate
+    return None
 
 
 def _legacy_upgrade_receipt_is_bound(root: Path) -> bool:

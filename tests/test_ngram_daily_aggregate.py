@@ -328,7 +328,7 @@ def test_disclosed_lost_source_day_advances_exactly_one_and_only_when_aged(
         root=tmp_path, today=today
     ) == date(2026, 8, 11)
 
-    # The advance is one day at a time and never crosses the D0 ceiling.
+    # Fresh disclosures never skip; aged ones do, up to the D0 ceiling.
     _write_latest(tmp_path, date(2026, 8, 11))
     _write_marker(
         tmp_path,
@@ -342,7 +342,48 @@ def test_disclosed_lost_source_day_advances_exactly_one_and_only_when_aged(
     ) == date(2026, 8, 12)  # 12 > 13-2 fails the age rule: retry, no skip
     assert final_publication.required_next_target(
         root=tmp_path, today=date(2026, 8, 14)
-    ) == date(2026, 8, 13)  # aged now; one-day advance to the new D-1
+    ) == date(2026, 8, 13)  # aged now; advance to the new D-1
+
+    # TWO consecutive disclosed lost days must both be walked in one
+    # selection: a single-step advance oscillated at the second one forever
+    # (run 31757958830) while the day after could never be attempted.
+    _write_latest(tmp_path, date(2026, 8, 10))
+    _write_marker(
+        tmp_path,
+        target=date(2026, 8, 11),
+        stage="source",
+        code="source_acquisition_failed",
+        status="acquisition_failed",
+    )
+    _write_marker(
+        tmp_path,
+        target=date(2026, 8, 12),
+        stage="source",
+        code="source_acquisition_failed",
+        status="acquisition_failed",
+    )
+    assert final_publication.required_next_target(
+        root=tmp_path, today=date(2026, 8, 14)
+    ) == date(2026, 8, 13)
+    # A FRESH disclosure at the end of the walk still retries rather than
+    # skipping (the age rule applies at every step of the walk)...
+    _write_marker(
+        tmp_path,
+        target=date(2026, 8, 13),
+        stage="source",
+        code="source_acquisition_failed",
+        status="acquisition_failed",
+    )
+    assert final_publication.required_next_target(
+        root=tmp_path, today=date(2026, 8, 14)
+    ) == date(2026, 8, 13)
+    # ...and once every remaining day up to the ceiling is disclosed AND
+    # aged, the backlog is honestly complete: None, not an impossible
+    # target. (Ceiling for today=Aug 15 is Aug 14, which has no disclosure,
+    # so the walk stops there instead -- assert that too.)
+    assert final_publication.required_next_target(
+        root=tmp_path, today=date(2026, 8, 15)
+    ) == date(2026, 8, 14)
 
 
 def test_catchup_stops_and_restarts_at_first_unavailable_day(
