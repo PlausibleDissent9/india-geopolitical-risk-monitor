@@ -23,12 +23,23 @@ def _registry(tmp_path: Path, mutate) -> Path:  # type: ignore[no-untyped-def]
     return path
 
 
-def test_current_maritime_sources_remain_review_required() -> None:
-    for source_id in ("gdelt_doc_api", "imf_portwatch"):
-        decision = chokepoints._rights_decision(source_id)
-        assert decision["decision_state"] == "review_required"
-        assert decision["decision_id"] == f"pending:{source_id}"
-        assert decision["signer_id"] is None
+def test_current_maritime_sources_reflect_signed_registry_state() -> None:
+    """Tripwire on the exact states the manifest reports, updated at the
+    founder's 2026-08-15 dual signing: gdelt_doc_api is approved (for the
+    receipt-identity lane; this module only reports the state and never
+    acquires), imf_portwatch stays pending. Any further state change must
+    change this test in the same commit."""
+    pending = chokepoints._rights_decision("imf_portwatch")
+    assert pending["decision_state"] == "review_required"
+    assert pending["decision_id"] == "pending:imf_portwatch"
+    assert pending["signer_id"] is None
+    signed = chokepoints._rights_decision("gdelt_doc_api")
+    assert signed["decision_state"] == "approved"
+    assert (
+        signed["decision_id"] == "rights:gdelt_doc_api:receipt-identity-1.0:2026-08-15"
+    )
+    assert signed["signer_id"] == "human:igrm-ngram-rights-reviewer"
+    assert signed["reviewed_on"] == "2026-08-15"
 
 
 def test_rights_state_denied_blocks_publication(
@@ -37,7 +48,19 @@ def test_rights_state_denied_blocks_publication(
     def deny(document: dict[str, object]) -> None:
         for row in document["sources"]:  # type: ignore[index,union-attr]
             if row["source_id"] == "gdelt_doc_api":
-                row["decision_state"] = "denied"
+                # A denied row must also shed its approval-only fields, or
+                # the registry validator refuses before the state check.
+                row.update(  # type: ignore[union-attr]
+                    decision_state="denied",
+                    signer_id=None,
+                    decision_artifact_path=None,
+                    decision_artifact_sha256=None,
+                    decision_signature_path=None,
+                    reviewed_on=None,
+                    review_due=None,
+                    max_current_age_days=None,
+                    permitted_uses=[],
+                )
 
     monkeypatch.setattr(chokepoints, "RIGHTS_REGISTRY", _registry(tmp_path, deny))
     with pytest.raises(SystemExit, match="state blocks publication"):
