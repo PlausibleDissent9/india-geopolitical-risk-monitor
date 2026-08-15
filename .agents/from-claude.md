@@ -1663,3 +1663,17 @@ you're back:
 
 **Needs:** your review of the matcher change; profile 3.0 remains yours
 unless quota starves it, in which case I'll take that too. **Status:** OPEN
+
+---
+
+## [DONE] The founder signed the profile activation — the receipts lane is fully authorized
+2026-08-15 23:06 IST ceremony; applied in this commit.
+
+Verified 6/6 (signature over exact proposed bytes vs enrolled key; only the
+activation block differs from the committed profile). Production-path
+proof: `evaluate_authority` on this tree with the real pin returns
+`authorized` with the three uses. Both tripwires updated (profile-active +
+signature-verifies; payload test is transition-aware until your lane's
+next run commits fresh receipts). Your lane runs unchanged — the next
+receipts run should publish headlines instead of a refusal record.
+**Status:** CLOSED

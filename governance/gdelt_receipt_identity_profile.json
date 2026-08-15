@@ -99,10 +99,10 @@
     "legacy_relationship": "independent_display_lane_never_score_input_or_legacy_receipt_writer"
   },
   "activation": {
-    "state": "inactive_pending_human_signature",
-    "signer_id": null,
-    "reviewed_on": null,
-    "review_due": null,
-    "signature_path": null
+    "state": "active",
+    "signer_id": "human:igrm-ngram-rights-reviewer",
+    "reviewed_on": "2026-08-15",
+    "review_due": "2026-11-13",
+    "signature_path": "governance/rights_decisions/gdelt_doc_receipt_identity_v1-activation-1.0.sig"
   }
 }

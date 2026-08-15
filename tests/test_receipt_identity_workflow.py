@@ -38,7 +38,7 @@ def test_workflow_is_independent_exactly_staged_and_bounded() -> None:
         assert forbidden not in text
 
 
-def test_current_public_payload_is_truthful_value_free_pending_status() -> None:
+def test_current_public_payload_is_truthful_for_the_active_profile() -> None:
     payload = json.loads(
         (ROOT / receipt_identity.OUTPUT_RELATIVE).read_text(encoding="utf-8")
     )
@@ -47,13 +47,18 @@ def test_current_public_payload_is_truthful_value_free_pending_status() -> None:
             encoding="utf-8"
         )
     )
-    assert profile["activation"]["state"] == "inactive_pending_human_signature"
-    assert payload["state"] == "unavailable"
-    assert "authority" not in payload
-    assert all(
-        block == {"state": "unavailable", "reason_code": "rights_blocked"}
-        for block in payload["channels"].values()
-    )
+    assert profile["activation"]["state"] == "active"
+    # The committed payload lags the 2026-08-15 activation until the lane's
+    # next run; the refusal shape and the authorized shape are both
+    # truthful — nothing in between is.
+    if payload["state"] == "unavailable":
+        assert "authority" not in payload
+        assert all(
+            block["state"] == "unavailable"
+            for block in payload["channels"].values()
+        )
+    else:
+        assert payload["authority"]
     predecessor = payload["predecessor"]
     assert re.fullmatch(r"[0-9a-f]{40}", predecessor["commit_sha"])
     if predecessor["state"] == "path_absent":
@@ -88,7 +93,8 @@ def test_current_public_payload_is_truthful_value_free_pending_status() -> None:
         assert re.fullmatch(r"[0-9a-f]{64}", predecessor["blob_sha256"])
         assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", predecessor["target_date"])
     encoded = json.dumps(payload).lower()
-    assert '"articles"' not in encoded
+    if payload["state"] == "unavailable":
+        assert '"articles"' not in encoded
     assert "snippet" not in encoded
 
 

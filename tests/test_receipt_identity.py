@@ -10,7 +10,10 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 import pytest
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+    Ed25519PrivateKey,
+    Ed25519PublicKey,
+)
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from src import receipt_identity
 from src import receipt_identity_rights as rights
@@ -141,9 +144,9 @@ def _fixture_root(tmp_path: Path, *, active: bool) -> tuple[Path, Ed25519Private
     }
     _write(root / "governance/source_rights_registry.json", registry)
 
+    profile_path = root / "governance/gdelt_receipt_identity_profile.json"
+    profile = json.loads(profile_path.read_text(encoding="utf-8"))
     if active:
-        profile_path = root / "governance/gdelt_receipt_identity_profile.json"
-        profile = json.loads(profile_path.read_text(encoding="utf-8"))
         profile["activation"] = {
             "state": "active",
             "signer_id": signer_id,
@@ -155,6 +158,17 @@ def _fixture_root(tmp_path: Path, *, active: bool) -> tuple[Path, Ed25519Private
         profile_signature = root / profile["activation"]["signature_path"]
         profile_signature.parent.mkdir(parents=True, exist_ok=True)
         profile_signature.write_bytes(private.sign(profile_path.read_bytes()))
+    else:
+        # The live profile is active since the founder's 2026-08-15
+        # activation; the pending scenario needs the pre-signature shape.
+        profile["activation"] = {
+            "state": "inactive_pending_human_signature",
+            "signer_id": None,
+            "reviewed_on": None,
+            "review_due": None,
+            "signature_path": None,
+        }
+        _write(profile_path, profile)
     return root, private, public_text
 
 
@@ -969,26 +983,27 @@ def test_candidate_reader_rejects_symlink_and_submodule_modes(tmp_path: Path) ->
     assert gitlink_exc.value.code == "tree_invalid"
 
 
-def test_profile_pending_while_source_decision_signed_and_trust_pinned() -> None:
-    """Tripwire on the lane's two-gate state, updated 2026-08-15.
+def test_profile_active_and_signature_verifies_against_pinned_key() -> None:
+    """Tripwire on the lane's two-gate state, updated 2026-08-15 (late).
 
-    The founder-run dual ceremony signed the gdelt_doc_api source-rights
-    decision and the reviewed commit pinned the enrolled signer in
-    PRODUCTION_TRUSTED_SIGNERS. The profile signature is deliberately still
-    pending: activation is a separate ceremony. Any change to either half
-    must change this test in the same commit.
+    The founder-run dual ceremony signed the gdelt_doc_api source decision,
+    the reviewed commit pinned the enrolled signer, and the founder-run
+    activation ceremony then signed the profile itself. Both gates are now
+    closed by the same enrolled human; the activation signature must verify
+    over the EXACT committed profile bytes against the code-pinned key. Any
+    change to either gate must change this test in the same commit.
     """
-    profile = json.loads(
-        (ROOT / "governance/gdelt_receipt_identity_profile.json").read_text(
-            encoding="utf-8"
-        )
-    )
+    profile_path = ROOT / "governance/gdelt_receipt_identity_profile.json"
+    profile = json.loads(profile_path.read_text(encoding="utf-8"))
     assert profile["activation"] == {
-        "state": "inactive_pending_human_signature",
-        "signer_id": None,
-        "reviewed_on": None,
-        "review_due": None,
-        "signature_path": None,
+        "state": "active",
+        "signer_id": "human:igrm-ngram-rights-reviewer",
+        "reviewed_on": "2026-08-15",
+        "review_due": "2026-11-13",
+        "signature_path": (
+            "governance/rights_decisions/"
+            "gdelt_doc_receipt_identity_v1-activation-1.0.sig"
+        ),
     }
     assert rights.PRODUCTION_TRUSTED_SIGNERS == {
         "human:igrm-ngram-rights-reviewer": (
@@ -996,7 +1011,15 @@ def test_profile_pending_while_source_decision_signed_and_trust_pinned() -> None
             "rights_reviewer",
         ),
     }
-    signature_path = (
+    decision_signature = (
         ROOT / "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.sig"
     )
-    assert len(signature_path.read_bytes()) == 64
+    assert len(decision_signature.read_bytes()) == 64
+    activation_signature = (ROOT / profile["activation"]["signature_path"]).read_bytes()
+    assert len(activation_signature) == 64
+    pinned = Ed25519PublicKey.from_public_bytes(
+        base64.b64decode(
+            rights.PRODUCTION_TRUSTED_SIGNERS["human:igrm-ngram-rights-reviewer"][0]
+        )
+    )
+    pinned.verify(activation_signature, profile_path.read_bytes())
