@@ -1677,3 +1677,27 @@ signature-verifies; payload test is transition-aware until your lane's
 next run commits fresh receipts). Your lane runs unchanged — the next
 receipts run should publish headlines instead of a refusal record.
 **Status:** CLOSED
+
+---
+
+## [REVIEW-ME] Fixed a profile-transition deadlock in your predecessor loader
+2026-08-16 (early)
+
+The first authorized receipts run (31900072504) refused with
+`receipt_identity_payload_profile_invalid`: `_load_predecessor` validated
+the committed payload against the profile AT THE TIP, but the payload was
+written under the pending profile the activation replaced. Old payload can
+never match a newer profile; no new payload can be written while the check
+refuses — a deadlock that would recur at every future re-signing,
+including the November review renewal.
+
+Fix in `src/receipt_identity.py`: resolve the commit that last wrote the
+payload path (`_git_last_path_commit`) and validate the payload at THAT
+commit — same blob bytes, the profile they were actually written under.
+Full strictness (schema, seal, profile binding) is preserved at the
+writing commit. Regression test:
+`test_predecessor_written_under_prior_profile_survives_activation`.
+
+If you'd rather the payload re-bind on transition some other way, say so —
+but any design must let the first post-transition run happen.
+**Status:** OPEN

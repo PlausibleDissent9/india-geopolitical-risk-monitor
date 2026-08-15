@@ -872,6 +872,21 @@ def _git_commit(root: Path, ref: str, code: str, exit_code: int) -> str:
     return commit
 
 
+def _git_last_path_commit(
+    root: Path, commit: str, relative: Path, code: str, exit_code: int
+) -> str:
+    result = subprocess.run(
+        ["git", "log", "-1", "--format=%H", commit, "--", relative.as_posix()],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    written = result.stdout.strip()
+    if result.returncode != 0 or _GIT_SHA1.fullmatch(written) is None:
+        _fail(code, exit_code)
+    return written
+
+
 def _git_tree_entry(
     root: Path, commit: str, relative: Path, code: str, exit_code: int
 ) -> tuple[str, str, str] | None:
@@ -938,7 +953,15 @@ def _load_predecessor(
             OUTPUT_RELATIVE.as_posix(), code
         )
         payload = _parse_payload_bytes(raw, code, exit_code)
-        validate_payload(payload, root=root, candidate_sha=commit)
+        # The payload binds the profile it was WRITTEN under. Validating it
+        # against the tip's profile deadlocks every profile transition: the
+        # old payload can never match a newer profile, and no new payload
+        # can be written while this check refuses. The blob is unchanged
+        # since its writing commit, so validate it there instead.
+        written = _git_last_path_commit(
+            root, commit, OUTPUT_RELATIVE, code, exit_code
+        )
+        validate_payload(payload, root=root, candidate_sha=written)
         target = _strict_day(payload.get("target_date"), code, exit_code)
     except (ReceiptIdentityRefusal, rights.ReceiptIdentityRightsError) as exc:
         _fail(getattr(exc, "code", code), exit_code)

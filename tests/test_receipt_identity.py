@@ -1023,3 +1023,57 @@ def test_profile_active_and_signature_verifies_against_pinned_key() -> None:
         )
     )
     pinned.verify(activation_signature, profile_path.read_bytes())
+
+
+def test_predecessor_written_under_prior_profile_survives_activation(
+    tmp_path: Path, fixed_clock: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A profile transition must not deadlock the lane.
+
+    The committed payload binds the profile it was WRITTEN under; the next
+    run validates it at its writing commit, not against the tip's profile.
+    Before the 2026-08-15 activation this exact shape refused with
+    receipt_identity_payload_profile_invalid and no new payload could ever
+    be written (run 31900072504).
+    """
+    root, private, public_text = _fixture_root(tmp_path, active=True)
+    monkeypatch.setattr(
+        rights,
+        "PRODUCTION_TRUSTED_SIGNERS",
+        {"receipt_rights_reviewer": (public_text, "rights_reviewer")},
+    )
+    _init_git_predecessor(root)
+    receipt_identity.execute(
+        today=NOW.date(),
+        generated_at=NOW,
+        root=root,
+        path=root / receipt_identity.OUTPUT_RELATIVE,
+        client=FakeClient(),
+    )
+    _git(root, "add", ".")
+    _git(root, "commit", "-m", "payload under profile A")
+
+    profile_path = root / "governance/gdelt_receipt_identity_profile.json"
+    profile = json.loads(profile_path.read_text(encoding="utf-8"))
+    profile["activation"]["review_due"] = "2026-09-30"
+    _write(profile_path, profile)
+    signature = root / profile["activation"]["signature_path"]
+    signature.write_bytes(private.sign(profile_path.read_bytes()))
+    _git(root, "add", ".")
+    _git(root, "commit", "-m", "profile B activation")
+    tip = _git(root, "rev-parse", "HEAD")
+    _git(root, "update-ref", "refs/remotes/origin/main", tip)
+
+    snapshot = receipt_identity._load_predecessor(
+        root=root,
+        ref="HEAD",
+        require_remote=True,
+        exit_code=receipt_identity.EXIT_RIGHTS_BLOCKED,
+    )
+    assert snapshot.state == "present"
+    assert snapshot.commit_sha == tip
+    assert snapshot.payload is not None
+    assert (
+        snapshot.payload["profile_sha256"]
+        != rights.load_profile_identity(root).profile_sha256
+    )
