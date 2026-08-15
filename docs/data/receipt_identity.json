@@ -9,61 +9,199 @@
   "publisher_rights": "Headlines identify and link to publisher-controlled works; no publisher article body or full record is redistributed."
  },
  "schema_version": "1.0.0",
- "state": "unavailable",
+ "state": "partial",
  "target_date": "2026-08-14",
- "generated_at": "2026-08-15T13:55:23Z",
+ "generated_at": "2026-08-15T18:32:40Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
- "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f",
+ "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "ab9036b164075aea71054714cc825eaf91dced74",
-  "blob_git_sha1": "278a9da1f863a0765665dc97d0cc0d695790afbd",
-  "blob_sha256": "72df02c9cf995a77b03337422a05db6d662874cbb674573a4c6e9ee5eaf8d180",
+  "commit_sha": "4c0d5b17d11500947610d20f5957240b27a0efec",
+  "blob_git_sha1": "f39f2d3089c4c5a843a7b042397efe170647be1b",
+  "blob_sha256": "070518dafd5203f1499b3f25ef386fd6dc4c347a62d6f944912e2a596979b6e8",
   "target_date": "2026-08-14"
  },
  "channels": {
   "pakistan_west": {
    "state": "unavailable",
-   "reason_code": "rights_blocked"
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "unavailable",
-   "reason_code": "rights_blocked"
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
-   "reason_code": "rights_blocked"
+   "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "rights_blocked"
+   "state": "available",
+   "articles": [
+    {
+     "title": "India , US remain in regular contact on proposed trade deal : Commerce Secretary",
+     "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/india-us-remain-in-regular-contact-on-proposed-trade-deal-commerce-secretary/articleshow/133227058.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "India on our radar : Trump aide Peter Navarro big remark after White House  shadow trans - shipment  report",
+     "url": "https://www.hindustantimes.com/india-news/india-on-our-radar-trump-aide-peter-navarros-big-remark-after-white-houses-shadow-trans-shipment-report-101786681498381.html",
+     "domain": "hindustantimes.com"
+    },
+    {
+     "title": "India Russian oil imports hit all - time high in July - The HinduBusinessLine",
+     "url": "https://www.thehindubusinessline.com/markets/commodities/indias-russian-oil-imports-hit-all-time-high-in-july/article71344169.ece",
+     "domain": "thehindubusinessline.com"
+    },
+    {
+     "title": "India - US Trade Talks Continue ; West Asia Exports Rise 8 . 62 % in July",
+     "url": "https://dailypioneer.com/news/india-us-continuing-trade-talks-commerce-secretary",
+     "domain": "dailypioneer.com"
+    },
+    {
+     "title": "India helping China evade US tariffs ? White House weighs anti - transhipment penalties , says it losing $19B - $26B a year",
+     "url": "https://www.livemint.com/news/world/india-helping-china-evade-us-tariffs-white-house-weighs-anti-transhipment-penalties-says-its-losing-19b-26b-a-year-11786676558958.html",
+     "domain": "livemint.com"
+    }
+   ]
   },
   "shipping": {
    "state": "unavailable",
-   "reason_code": "rights_blocked"
+   "reason_code": "source_unavailable"
   }
  },
- "refusal": {
-  "code": "rights_blocked",
-  "blockers": [
-   "receipt_identity_profile_inactive",
-   "receipt_identity_source_decision_review_required"
+ "authority": {
+  "required_uses": [
+   "cite_metadata",
+   "model_processing",
+   "publish_extract"
   ],
-  "authority_snapshot": {
-   "source_id": "gdelt_doc_api",
-   "profile_id": "gdelt_doc_receipt_identity_v1",
-   "target_date": "2026-08-14",
-   "evaluated_at_utc": "2026-08-15T13:55:23Z",
-   "source_decision_state": "review_required",
-   "source_decision_id": "pending:gdelt_doc_api",
-   "profile_activation_state": "inactive_pending_human_signature",
-   "authorization_status": "receipt_identity_source_decision_review_required",
-   "rights_registry_sha256": "776a7b624c4527ebc3a410f6576b151d4ae9855fdd6e392b37f9e311969141a3",
-   "rights_signers_sha256": "54d7447a818ba53d92aae6849e2bc5b6799dfea797032a9b8f8ba4b85b1d86e2",
-   "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f"
-  }
+  "evaluations": [
+   {
+    "phase": "pre_network",
+    "proof": {
+     "source_id": "gdelt_doc_api",
+     "profile_id": "gdelt_doc_receipt_identity_v1",
+     "decision_id": "rights:gdelt_doc_api:receipt-identity-1.0:2026-08-15",
+     "source_signer_id": "human:igrm-ngram-rights-reviewer",
+     "source_signer_revoked_on": null,
+     "profile_signer_id": "human:igrm-ngram-rights-reviewer",
+     "profile_signer_revoked_on": null,
+     "reviewed_on": "2026-08-15",
+     "review_due": "2026-11-13",
+     "profile_reviewed_on": "2026-08-15",
+     "profile_review_due": "2026-11-13",
+     "target_date": "2026-08-14",
+     "evaluated_at_utc": "2026-08-15T18:32:40Z",
+     "rights_as_of": "2026-08-15",
+     "max_current_age_days": 30,
+     "evaluated_age_days": 1,
+     "release_deadline_utc": "2026-09-13T23:59:59Z",
+     "permitted_uses": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+     ],
+     "rights_registry_sha256": "c77837e6432abafbc160c385cd3931d8e2c6fddb0c9cfd1fa78bd77588334486",
+     "rights_signers_sha256": "54d7447a818ba53d92aae6849e2bc5b6799dfea797032a9b8f8ba4b85b1d86e2",
+     "decision_artifact_path": "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.json",
+     "decision_artifact_sha256": "7efd5bc620295782fca0600e468886fb49907e662f07cdf2db6a6792085a9031",
+     "decision_signature_path": "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.sig",
+     "decision_signature_sha256": "dfbf929b0ba7f7069030a7534e51a5890d44c1a3e9c6f384d10da7a2795fc651",
+     "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
+     "profile_signature_path": "governance/rights_decisions/gdelt_doc_receipt_identity_v1-activation-1.0.sig",
+     "profile_signature_sha256": "a42e65d798942e734ca2fa4daa56fb11c42d025286ce9725574864e8a73113e9",
+     "profile_schema_sha256": "2a1d4b94456137394e2de1dd02a3fc6624450e72c17e6192de98dc5e20ee3d4c",
+     "dictionary_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
+     "output_schema_sha256": "ca3b4dd87e8bb03600c3181034035c3c4d1074842e86f4a239bf396418093323",
+     "source_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2",
+     "profile_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2"
+    }
+   },
+   {
+    "phase": "post_fetch",
+    "proof": {
+     "source_id": "gdelt_doc_api",
+     "profile_id": "gdelt_doc_receipt_identity_v1",
+     "decision_id": "rights:gdelt_doc_api:receipt-identity-1.0:2026-08-15",
+     "source_signer_id": "human:igrm-ngram-rights-reviewer",
+     "source_signer_revoked_on": null,
+     "profile_signer_id": "human:igrm-ngram-rights-reviewer",
+     "profile_signer_revoked_on": null,
+     "reviewed_on": "2026-08-15",
+     "review_due": "2026-11-13",
+     "profile_reviewed_on": "2026-08-15",
+     "profile_review_due": "2026-11-13",
+     "target_date": "2026-08-14",
+     "evaluated_at_utc": "2026-08-15T18:35:44Z",
+     "rights_as_of": "2026-08-15",
+     "max_current_age_days": 30,
+     "evaluated_age_days": 1,
+     "release_deadline_utc": "2026-09-13T23:59:59Z",
+     "permitted_uses": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+     ],
+     "rights_registry_sha256": "c77837e6432abafbc160c385cd3931d8e2c6fddb0c9cfd1fa78bd77588334486",
+     "rights_signers_sha256": "54d7447a818ba53d92aae6849e2bc5b6799dfea797032a9b8f8ba4b85b1d86e2",
+     "decision_artifact_path": "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.json",
+     "decision_artifact_sha256": "7efd5bc620295782fca0600e468886fb49907e662f07cdf2db6a6792085a9031",
+     "decision_signature_path": "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.sig",
+     "decision_signature_sha256": "dfbf929b0ba7f7069030a7534e51a5890d44c1a3e9c6f384d10da7a2795fc651",
+     "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
+     "profile_signature_path": "governance/rights_decisions/gdelt_doc_receipt_identity_v1-activation-1.0.sig",
+     "profile_signature_sha256": "a42e65d798942e734ca2fa4daa56fb11c42d025286ce9725574864e8a73113e9",
+     "profile_schema_sha256": "2a1d4b94456137394e2de1dd02a3fc6624450e72c17e6192de98dc5e20ee3d4c",
+     "dictionary_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
+     "output_schema_sha256": "ca3b4dd87e8bb03600c3181034035c3c4d1074842e86f4a239bf396418093323",
+     "source_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2",
+     "profile_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2"
+    }
+   },
+   {
+    "phase": "pre_write",
+    "proof": {
+     "source_id": "gdelt_doc_api",
+     "profile_id": "gdelt_doc_receipt_identity_v1",
+     "decision_id": "rights:gdelt_doc_api:receipt-identity-1.0:2026-08-15",
+     "source_signer_id": "human:igrm-ngram-rights-reviewer",
+     "source_signer_revoked_on": null,
+     "profile_signer_id": "human:igrm-ngram-rights-reviewer",
+     "profile_signer_revoked_on": null,
+     "reviewed_on": "2026-08-15",
+     "review_due": "2026-11-13",
+     "profile_reviewed_on": "2026-08-15",
+     "profile_review_due": "2026-11-13",
+     "target_date": "2026-08-14",
+     "evaluated_at_utc": "2026-08-15T18:35:44Z",
+     "rights_as_of": "2026-08-15",
+     "max_current_age_days": 30,
+     "evaluated_age_days": 1,
+     "release_deadline_utc": "2026-09-13T23:59:59Z",
+     "permitted_uses": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+     ],
+     "rights_registry_sha256": "c77837e6432abafbc160c385cd3931d8e2c6fddb0c9cfd1fa78bd77588334486",
+     "rights_signers_sha256": "54d7447a818ba53d92aae6849e2bc5b6799dfea797032a9b8f8ba4b85b1d86e2",
+     "decision_artifact_path": "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.json",
+     "decision_artifact_sha256": "7efd5bc620295782fca0600e468886fb49907e662f07cdf2db6a6792085a9031",
+     "decision_signature_path": "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.sig",
+     "decision_signature_sha256": "dfbf929b0ba7f7069030a7534e51a5890d44c1a3e9c6f384d10da7a2795fc651",
+     "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
+     "profile_signature_path": "governance/rights_decisions/gdelt_doc_receipt_identity_v1-activation-1.0.sig",
+     "profile_signature_sha256": "a42e65d798942e734ca2fa4daa56fb11c42d025286ce9725574864e8a73113e9",
+     "profile_schema_sha256": "2a1d4b94456137394e2de1dd02a3fc6624450e72c17e6192de98dc5e20ee3d4c",
+     "dictionary_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
+     "output_schema_sha256": "ca3b4dd87e8bb03600c3181034035c3c4d1074842e86f4a239bf396418093323",
+     "source_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2",
+     "profile_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2"
+    }
+   }
+  ]
  },
- "payload_seal_sha256": "54b37691eb228315d4d63e82fec1df74f2740a3b272cf87f1c4900607c7750c8"
+ "payload_seal_sha256": "6fa4262d8e7006cf753a8fa3de7b5c36c63070a1be8778c59cb23cd171b7e8d9"
 }
