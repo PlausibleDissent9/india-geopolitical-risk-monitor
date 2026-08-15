@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igrm.in/governance/schemas/ngram-bq-backfill-attestation.schema.json",
+  "title": "IGRM GDELT NGram BigQuery backfill attestation 3.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "day",
+    "acquisition_regime",
+    "refusal_disclosure",
+    "equivalence_binding",
+    "expected_windows",
+    "located_windows",
+    "loaded_windows",
+    "bq_provenance",
+    "method_bindings",
+    "windows",
+    "aggregate_reconstruction",
+    "membership_reproducibility",
+    "record_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "3.0.0"},
+    "profile_id": {"const": "igrm:gdelt-ngram-bq-backfill:3.0.0"},
+    "day": {"type": "string", "format": "date"},
+    "acquisition_regime": {"const": "bigquery_backfill"},
+    "refusal_disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ledger_path", "reason_code"],
+      "properties": {
+        "ledger_path": {
+          "type": "string",
+          "pattern": "^data/raw/final_publication_refusals/[0-9]{4}-[0-9]{2}-[0-9]{2}\\.json$"
+        },
+        "reason_code": {"const": "source_acquisition_failed"}
+      }
+    },
+    "equivalence_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["day", "proof_path", "proof_record_sha256"],
+      "properties": {
+        "day": {"type": "string", "format": "date"},
+        "proof_path": {
+          "type": "string",
+          "pattern": "^data/raw/bq_equivalence/[0-9]{4}-[0-9]{2}-[0-9]{2}\\.json$"
+        },
+        "proof_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "expected_windows": {"const": 48},
+    "located_windows": {"const": 48},
+    "loaded_windows": {"const": 48},
+    "bq_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "table",
+        "query_text_sha256",
+        "job_id",
+        "job_created_utc",
+        "total_bytes_processed",
+        "table_last_modified_utc"
+      ],
+      "properties": {
+        "table": {"const": "gdelt-bq.gdeltv2.webngrams"},
+        "query_text_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "job_id": {"type": "string", "minLength": 1, "maxLength": 512},
+        "job_created_utc": {"type": "string", "minLength": 20, "maxLength": 32},
+        "total_bytes_processed": {"type": "integer", "minimum": 0},
+        "table_last_modified_utc": {"type": "string", "minLength": 20, "maxLength": 32}
+      }
+    },
+    "method_bindings": {"type": "object"},
+    "windows": {"type": "array", "minItems": 48, "maxItems": 48},
+    "aggregate_reconstruction": {"type": "object"},
+    "membership_reproducibility": {"type": "string", "minLength": 1},
+    "record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
