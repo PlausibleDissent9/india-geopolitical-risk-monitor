@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "unavailable",
- "target_date": "2026-08-13",
- "generated_at": "2026-08-14T14:34:41Z",
+ "target_date": "2026-08-14",
+ "generated_at": "2026-08-15T07:55:29Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "f5341c5bea0ad1273d86871632ced53c0661ef1c",
-  "blob_git_sha1": "6cafaa0d3afa633de50b79a16c4349001d7e9563",
-  "blob_sha256": "d91cc65428b264a932c05fa0189a6f1d594c392c11069329dc5f17da10d7b20f",
+  "state": "different_target",
+  "commit_sha": "81c806f102fcdef734f585f20a4423c2afccc949",
+  "blob_git_sha1": "8d5e947d3534f221c9e23271b7e4a29ac36b263e",
+  "blob_sha256": "a90060e0d64119ca994ccb0f17887d21413810a773de9b02ebcf4c10380b79a6",
   "target_date": "2026-08-13"
  },
  "channels": {
@@ -54,8 +54,8 @@
   "authority_snapshot": {
    "source_id": "gdelt_doc_api",
    "profile_id": "gdelt_doc_receipt_identity_v1",
-   "target_date": "2026-08-13",
-   "evaluated_at_utc": "2026-08-14T14:34:41Z",
+   "target_date": "2026-08-14",
+   "evaluated_at_utc": "2026-08-15T07:55:29Z",
    "source_decision_state": "review_required",
    "source_decision_id": "pending:gdelt_doc_api",
    "profile_activation_state": "inactive_pending_human_signature",
@@ -65,5 +65,5 @@
    "profile_sha256": "f7da5037e45e4d49e6febcdbe9bc55841af8fc2991871f17d2ca6dd546e3814f"
   }
  },
- "payload_seal_sha256": "8f405df38b95858e7fe42b2829fad74ffcf199cc868750d490c039050c169fd7"
+ "payload_seal_sha256": "5483a99934211e4bfcb033f7b869fb0e3b5d81fdb15f7a894bd246c55bc45c6f"
 }
