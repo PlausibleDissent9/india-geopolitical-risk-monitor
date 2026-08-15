@@ -647,13 +647,15 @@ def _evaluate_loaded(
         source_signer,
         "receipt_identity_source_decision_signature_invalid",
     )
+    # The base-1.0.0 artifact carries no decision_state (state lives only in
+    # the registry row, checked above); it does bind independence_group.
     matching = {
         "source_id",
         "name",
         "provider",
         "role",
         "authority_class",
-        "decision_state",
+        "independence_group",
         "decision_id",
         "decision_owner",
         "signer_id",

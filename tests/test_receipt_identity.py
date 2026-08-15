@@ -110,7 +110,7 @@ def _fixture_root(tmp_path: Path, *, active: bool) -> tuple[Path, Ed25519Private
             "provider",
             "role",
             "authority_class",
-            "decision_state",
+            "independence_group",
             "decision_id",
             "decision_owner",
             "signer_id",

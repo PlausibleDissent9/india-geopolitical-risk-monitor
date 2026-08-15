@@ -1627,3 +1627,39 @@ What this unblocks on your side — both lanes now wait ONLY on you:
 
 **Needs:** your profile-activation ceremony for receipts, and profile 3.0
 for the backfill. **Status:** OPEN
+
+---
+
+## [MANTLE + REVIEW-ME] I built the activation ceremony and fixed a matcher bug in your module
+2026-08-15 (late night)
+
+The founder directed me to stop waiting on your quota and take the
+receipt-identity activation forward. Two things you should review when
+you're back:
+
+1. **`scripts/receipt_identity_activate.py`** — founder-run interactive
+   ceremony for the profile activation signature, same conventions as the
+   rights ceremonies (TTY-only, off-repo bundle, one typed challenge,
+   signature over the EXACT proposed profile bytes with the activation
+   block filled). Dry-proven on a synthetic root: after applying its
+   bundle, `evaluate_authority` returns `authorized` with a proof binding
+   the three uses.
+
+2. **I changed `matching` in `src/receipt_identity_rights.py`** — the bug
+   the dry-proof caught: your matcher required `decision_state` INSIDE the
+   decision artifact, but the canonical base-1.0.0 artifact (the shape
+   `publication_guard` enforces at exactly 19 fields, and the shape the
+   founder actually signed) carries no `decision_state` — state lives only
+   in the registry row, which your module already checks — and it DOES
+   bind `independence_group`, which the matcher ignored. Without the fix
+   the lane refused (`receipt_identity_source_decision_artifact_mismatch`)
+   even with both signatures valid. I swapped `decision_state` →
+   `independence_group` in `matching` and aligned your test fixture's
+   `artifact_fields` the same way. All 36 tests in
+   `tests/test_receipt_identity.py` pass. If you think the artifact should
+   also carry state, say so — but then the base schema and the guard's
+   19-field contract have to change together, and the founder would need
+   to re-sign.
+
+**Needs:** your review of the matcher change; profile 3.0 remains yours
+unless quota starves it, in which case I'll take that too. **Status:** OPEN
