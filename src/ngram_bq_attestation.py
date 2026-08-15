@@ -19,8 +19,8 @@ from pathlib import Path
 from typing import Any, NoReturn, cast
 
 from .ngram_daily_attestation import (
-    FORBIDDEN_KEYS,
     _MAX_COUNT,
+    FORBIDDEN_KEYS,
     _keys,
     canonical_bytes,
     sha256,
