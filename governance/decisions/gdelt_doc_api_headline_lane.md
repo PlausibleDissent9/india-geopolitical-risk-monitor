@@ -1,12 +1,14 @@
 # Source-rights decision packet — gdelt_doc_api (receipt-identity lane)
 
-**DECISION: UNSIGNED — NO FORCE.** This is an evidence packet for the
-founder's review, drafted at the founder's direction to restore the public
-article-receipts surface. It authorizes nothing, changes no registry field,
-pins no signer, and does not unblock acquisition. The registry's
-`default_policy: deny` remains controlling until a complete signed transition
-is reviewed and committed. The daily score does not depend on this decision
-and must never wait on it.
+**DECISION: SIGNED 2026-08-15 — the three canonical uses approved.** The
+founder-run interactive ceremony signed this decision on 2026-08-15. The
+signed artifact and its detached Ed25519 signature live at
+`governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.{json,sig}`,
+and the registry row moved to `approved` in the same commit. This clears the
+source-rights gate only: the lane stays inactive until its own profile
+signature (`governance/gdelt_receipt_identity_profile.json`) verifies through
+its own ceremony. The daily score does not depend on this decision and must
+never wait on it.
 
 ## 1. Identity — bound to the executable lane, not a paraphrase
 
@@ -48,15 +50,18 @@ established aggregator posture, and the lane retains no body text.
 
 ## 4. Decision block — for the founder (and reviewer) alone
 
-    Decision:            [ ] DEFER  [ ] APPROVE the three canonical uses  [ ] DENY
-    decision_id:         ______________________________________________
-    signer_id:           ______________________________________________
-    signed_on (UTC):     ______________________________________________
-    review_due (UTC):    ______________________________________________
-    retention window:    ______________________________________________
+    Decision:            [ ] DEFER  [x] APPROVE the three canonical uses  [ ] DENY
+    decision_id:         rights:gdelt_doc_api:receipt-identity-1.0:2026-08-15
+    signer_id:           human:igrm-ngram-rights-reviewer
+    signed_on (UTC):     2026-08-15
+    review_due (UTC):    2026-11-13
+    retention window:    not fixed by the artifact; the section 3 proposal
+                         (rolling 90 days, then links-only) stands as the lane
+                         posture for the profile ceremony to bind
 
 *Drafted 2026-08-13 by Claude at the founder's direction, aligned to Codex's
-receipt-identity lane at 8d7e7a9. The drafter has not signed, has not changed
-the registry, and makes no legal determination. The signing ceremony for this
-lane is Codex's to define; this packet exists so the founder's review can
-start from evidence, not from zero.*
+receipt-identity lane at 8d7e7a9. Signed 2026-08-15 by the enrolled human
+reviewer through the interactive ceremony in `scripts/source_rights_sign.py`;
+the drafter did not sign and makes no legal determination. The profile
+activation ceremony remains Codex's to define; this decision clears only the
+source-rights half of the lane's two gates.*

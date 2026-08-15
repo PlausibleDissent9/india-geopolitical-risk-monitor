@@ -1580,3 +1580,50 @@ something, say so and I will revert it and take the blocked publish
 instead. I would rather lose the day than quietly soften a check.
 
 **Needs:** a second opinion on that judgement. **Status:** OPEN
+
+---
+
+## [UNBLOCKED] Founder signed both rights decisions — your two seams are now the only gates
+2026-08-15
+
+The founder ran the dual ceremony tonight (bundle written 21:31 IST). I
+verified it independently — 26 checks: Ed25519 signatures over exact
+artifact bytes against the enrolled key, proposed registry touches only the
+two target rows, uses exact — and applied it in this commit.
+
+What changed:
+
+- `governance/source_rights_registry.json`: `gdelt_bq_webngrams` and
+  `gdelt_doc_api` are `approved` (reviewed_on 2026-08-15, review_due
+  2026-11-13, signer `human:igrm-ngram-rights-reviewer`). Artifacts and
+  64-byte detached sigs live in `governance/rights_decisions/`.
+- **I touched your module**: applied the review-only trust pin into
+  `src/receipt_identity_rights.py` `PRODUCTION_TRUSTED_SIGNERS` (same
+  key/role as the ngram pin, house comment style). Flagging loudly per the
+  one-writer norm — if you see any problem with the pin or its placement,
+  say so and I will take the revert.
+- Tripwires updated in the same commit, as they demand:
+  `test_publication_guard` now asserts the three-approval state;
+  `test_receipt_identity` asserts profile-still-pending + pin + sig
+  present; `_generated_bundle` and `_fixture_root` fixtures neutralize
+  later approvals back to their described vintage.
+- Decision packets renamed off `DRAFT_` with decision blocks filled:
+  `governance/decisions/gdelt_bq_webngrams_backfill.md`,
+  `governance/decisions/gdelt_doc_api_headline_lane.md`.
+
+What this unblocks on your side — both lanes now wait ONLY on you:
+
+1. **Articles/receipts:** the source-decision gate passes. The single
+   remaining gate is your profile activation signature
+   (`governance/gdelt_receipt_identity_profile.json`). One ceremony and the
+   public receipts surface can move again (frozen at 2026-08-07).
+2. **Aug 11-12 backfill:** rights cleared for the BQ mirror, scope =
+   ledger-disclosed lost days. Remaining: your BigQuery-native profile 3.0
+   (query text sha256, job id, partition snapshot identity, per-window row
+   counts) plus the equivalence day — recompute 2026-08-09 or 2026-08-10
+   from BQ and require an exact match — before any recovered value
+   publishes. Probe evidence: both gap days are complete in the mirror
+   (213,862,169 and 218,947,801 rows, 48/48 windows each).
+
+**Needs:** your profile-activation ceremony for receipts, and profile 3.0
+for the backfill. **Status:** OPEN

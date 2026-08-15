@@ -67,6 +67,22 @@ def _fixture_root(tmp_path: Path, *, active: bool) -> tuple[Path, Ed25519Private
     )["sources"][1]
     assert source["source_id"] == rights.SOURCE_ID
     source = dict(source)
+    if not active:
+        # The live row is approved since the founder's 2026-08-15 signing;
+        # the pending scenario needs the pre-decision shape back.
+        source.update(
+            decision_state="review_required",
+            decision_id=f"pending:{rights.SOURCE_ID}",
+            decision_owner="unassigned",
+            signer_id=None,
+            decision_artifact_path=None,
+            decision_artifact_sha256=None,
+            decision_signature_path=None,
+            reviewed_on=None,
+            review_due=None,
+            max_current_age_days=None,
+            permitted_uses=[],
+        )
     if active:
         source.update(
             {
@@ -953,7 +969,15 @@ def test_candidate_reader_rejects_symlink_and_submodule_modes(tmp_path: Path) ->
     assert gitlink_exc.value.code == "tree_invalid"
 
 
-def test_current_profile_is_pending_and_production_trust_is_empty() -> None:
+def test_profile_pending_while_source_decision_signed_and_trust_pinned() -> None:
+    """Tripwire on the lane's two-gate state, updated 2026-08-15.
+
+    The founder-run dual ceremony signed the gdelt_doc_api source-rights
+    decision and the reviewed commit pinned the enrolled signer in
+    PRODUCTION_TRUSTED_SIGNERS. The profile signature is deliberately still
+    pending: activation is a separate ceremony. Any change to either half
+    must change this test in the same commit.
+    """
     profile = json.loads(
         (ROOT / "governance/gdelt_receipt_identity_profile.json").read_text(
             encoding="utf-8"
@@ -966,5 +990,13 @@ def test_current_profile_is_pending_and_production_trust_is_empty() -> None:
         "review_due": None,
         "signature_path": None,
     }
-    assert rights.PRODUCTION_TRUSTED_SIGNERS == {}
-    assert not list((ROOT / "governance/rights_decisions").glob("*receipt_identity*.sig"))
+    assert rights.PRODUCTION_TRUSTED_SIGNERS == {
+        "human:igrm-ngram-rights-reviewer": (
+            "qcS/4lMEpmUO0RhFRkVILagrVBIhMsSfVYksZmRvgFQ=",
+            "rights_reviewer",
+        ),
+    }
+    signature_path = (
+        ROOT / "governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.sig"
+    )
+    assert len(signature_path.read_bytes()) == 64

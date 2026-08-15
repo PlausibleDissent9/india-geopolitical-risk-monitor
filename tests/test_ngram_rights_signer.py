@@ -133,9 +133,36 @@ def _generated_bundle(
     # enrolled signer. Only these two files are read by build_bundle.
     pristine = tmp_path / "pre-transition-root"
     (pristine / "governance").mkdir(parents=True)
-    shutil.copy2(
-        ROOT / "governance/source_rights_registry.json",
-        pristine / "governance/source_rights_registry.json",
+    registry = json.loads(
+        (ROOT / "governance/source_rights_registry.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    for row in registry["sources"]:
+        # The snapshot predates every OTHER founder approval as well: rows
+        # signed later (e.g. the 2026-08-15 dual review) revert to pending so
+        # the synthetic root stays valid without their artifacts.
+        if (
+            row["source_id"] != ngram_rights_sign.SOURCE_ID
+            and row["decision_state"] == "approved"
+        ):
+            row.update(
+                decision_state="review_required",
+                decision_id=f"pending:{row['source_id']}",
+                decision_owner="unassigned",
+                signer_id=None,
+                decision_artifact_path=None,
+                decision_artifact_sha256=None,
+                decision_signature_path=None,
+                reviewed_on=None,
+                review_due=None,
+                max_current_age_days=None,
+                permitted_uses=[],
+            )
+    (pristine / "governance/source_rights_registry.json").write_text(
+        json.dumps(registry, indent=1, sort_keys=True, ensure_ascii=False)
+        + "\n",
+        encoding="utf-8",
     )
     (pristine / "governance/rights_signers.json").write_text(
         json.dumps(

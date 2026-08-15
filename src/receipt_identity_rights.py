@@ -35,7 +35,16 @@ CANONICAL_REQUIRED_USES = (
     "publish_extract",
 )
 PRODUCTION_HUMAN_ROLES = frozenset({"principal_investigator", "rights_reviewer"})
-PRODUCTION_TRUSTED_SIGNERS: dict[str, tuple[str, str]] = {}
+# Merely adding a self-generated key to mutable repository JSON is not
+# trust. The entry below binds the founder-run 2026-08-15 receipt-identity-1.0
+# rights review; its signed decision artifact is
+# governance/rights_decisions/gdelt_doc_api-receipt-identity-1.0.json.
+PRODUCTION_TRUSTED_SIGNERS: dict[str, tuple[str, str]] = {
+    "human:igrm-ngram-rights-reviewer": (
+        "qcS/4lMEpmUO0RhFRkVILagrVBIhMsSfVYksZmRvgFQ=",
+        "rights_reviewer",
+    ),
+}
 DECISION_STATES = frozenset({"approved", "denied", "expired", "review_required"})
 PROFILE_STATES = frozenset({"inactive_pending_human_signature", "active"})
 AUTHORIZATION_STATUSES = frozenset(

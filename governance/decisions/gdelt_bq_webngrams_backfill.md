@@ -1,13 +1,16 @@
 # Source-rights decision packet — gdelt_bq_webngrams (lost-day backfill)
 
-**DECISION: UNSIGNED — NO FORCE.** This is an evidence packet for the
-founder's review. It authorizes nothing, changes no registry decision field,
-pins no signer, and does not unblock acquisition. The registry's
-`default_policy: deny` remains controlling until a complete signed transition
-is reviewed and committed. The daily score does not depend on this decision
-and must never wait on it: prospective days publish through the signed
-aggregate-2.0 profile; this packet exists only to recover days that are
-already honest disclosed gaps.
+**DECISION: SIGNED 2026-08-15 — uses 1-2 approved for ledger-disclosed lost
+days.** The founder-run interactive ceremony signed this decision on
+2026-08-15. The signed artifact and its detached Ed25519 signature live at
+`governance/rights_decisions/gdelt_bq_webngrams-backfill-1.0.{json,sig}`, and
+the registry row moved to `approved` in the same commit. The signature
+settles the rights question only: no recovered value may publish until the
+BigQuery-native attestation profile (section 5) exists and the section 4.1
+equivalence check passes exactly. The daily score does not depend on this
+decision and must never wait on it: prospective days publish through the
+signed aggregate-2.0 profile; this decision exists only to recover days that
+are already honest disclosed gaps.
 
 ## 1. Identity and purpose
 
@@ -127,17 +130,22 @@ feed and the mirror stays a disclosed gap.
 
     Decision:            [ ] DEFER pending probe results / equivalence proof
                          [ ] APPROVE uses 1-2 for enumerated gap days only
-                         [ ] APPROVE uses 1-2 for any ledger-disclosed lost day
+                         [x] APPROVE uses 1-2 for any ledger-disclosed lost day
                          [ ] DENY
-    decision_id:         ______________________________________________
-    signer_id:           ______________________________________________
-    signed_on (UTC):     ____________________________________________
-    review_due (UTC):    ______________________________________________
-    query cost cap:      ______________________________________________
-    recovery scope:      ______________________________________________
+    decision_id:         rights:gdelt_bq_webngrams:backfill-1.0:2026-08-15
+    signer_id:           human:igrm-ngram-rights-reviewer
+    signed_on (UTC):     2026-08-15
+    review_due (UTC):    2026-11-13
+    query cost cap:      not fixed by the artifact; the committed capped-lane
+                         precedent (1-25 GB maximum_bytes_billed, fail-closed)
+                         governs every query
+    recovery scope:      days whose durable refusal ledger discloses a lost
+                         source, under the future BigQuery-native profile with
+                         the section 4.1 equivalence check
 
 *Drafted 2026-08-14 by Claude at the founder's direction, from repository
-and provider evidence gathered 2026-08-13/14. The drafter has not signed,
-has not changed any registry decision field, and makes no legal
-determination. The BigQuery-native attestation profile is proposed to the
-finality plane's owner in .agents/from-claude.md.*
+and provider evidence gathered 2026-08-13/14. Signed 2026-08-15 by the
+enrolled human reviewer through the interactive ceremony in
+`scripts/source_rights_sign.py`; the drafter did not sign and makes no legal
+determination. The BigQuery-native attestation profile remains proposed to
+the finality plane's owner in .agents/from-claude.md.*

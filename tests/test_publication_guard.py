@@ -886,8 +886,11 @@ def test_committed_registry_is_deny_by_default_and_external_sources_are_pending(
     the first approval commit was forced to update these assertions alongside
     its signed artifact. That happened on 2026-08-12: the founder-run
     aggregate-2.0 review approved exactly gdelt_web_ngrams_v5 with one
-    enrolled human signer. The test now asserts that state exactly, so any
-    SECOND approval or signer must again change this test in the same commit.
+    enrolled human signer. On 2026-08-15 the founder-run dual ceremony
+    approved gdelt_bq_webngrams (backfill-1.0) and gdelt_doc_api
+    (receipt-identity-1.0) under the same single enrolled signer. The test
+    now asserts that three-approval state exactly, so any FURTHER approval
+    or signer must again change this test in the same commit.
     """
     registry_path = ROOT / "governance" / "source_rights_registry.json"
     signers_path = ROOT / "governance" / "rights_signers.json"
@@ -906,7 +909,32 @@ def test_committed_registry_is_deny_by_default_and_external_sources_are_pending(
     approved = [
         source for source in registry["sources"] if source["decision_state"] == "approved"
     ]
-    assert [source["source_id"] for source in approved] == ["gdelt_web_ngrams_v5"]
+    assert sorted(source["source_id"] for source in approved) == [
+        "gdelt_bq_webngrams",
+        "gdelt_doc_api",
+        "gdelt_web_ngrams_v5",
+    ]
+    expected_approvals = {
+        "gdelt_web_ngrams_v5": {
+            "permitted_uses": ["model_processing", "publish_derived_value"],
+            "reviewed_on": "2026-08-12",
+            "review_due": "2026-11-10",
+        },
+        "gdelt_bq_webngrams": {
+            "permitted_uses": ["model_processing", "publish_derived_value"],
+            "reviewed_on": "2026-08-15",
+            "review_due": "2026-11-13",
+        },
+        "gdelt_doc_api": {
+            "permitted_uses": [
+                "cite_metadata",
+                "model_processing",
+                "publish_extract",
+            ],
+            "reviewed_on": "2026-08-15",
+            "review_due": "2026-11-13",
+        },
+    }
     for source in registry["sources"]:
         expected_lineage = (
             "bundle_declared"
@@ -916,14 +944,12 @@ def test_committed_registry_is_deny_by_default_and_external_sources_are_pending(
         assert source["lineage_policy"] == expected_lineage
         assert source["authority_class"] in guard._AUTHORITY_CLASSES
         assert isinstance(source["independence_group"], str)
-        if source["source_id"] == "gdelt_web_ngrams_v5":
+        expected = expected_approvals.get(source["source_id"])
+        if expected is not None:
             assert source["decision_state"] == "approved"
-            assert source["permitted_uses"] == [
-                "model_processing",
-                "publish_derived_value",
-            ]
-            assert source["reviewed_on"] == "2026-08-12"
-            assert source["review_due"] == "2026-11-10"
+            assert source["permitted_uses"] == expected["permitted_uses"]
+            assert source["reviewed_on"] == expected["reviewed_on"]
+            assert source["review_due"] == expected["review_due"]
             assert source["signer_id"] == "human:igrm-ngram-rights-reviewer"
             continue
         assert source["decision_state"] == "review_required"
