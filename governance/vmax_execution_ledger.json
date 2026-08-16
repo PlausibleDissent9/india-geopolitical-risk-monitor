@@ -336,6 +336,47 @@
       ],
       "next_safe_action": "Founder pushes the recomposed candidate; Claude prepares the _meta.generated packet for the ceremony.",
       "tree_sha": "b378f50337436ffe0c09e270a9b578cb88990373"
+    },
+    {
+      "entry_id": "2026-08-17/gdelt-doc-throttle-is-not-ip-reputation",
+      "workstream": "diagnosis",
+      "milestone": "Receipt channel coverage bounded, and a spending recommendation corrected",
+      "owner": "claude",
+      "parent_sha": "441f074e2b0e6b8dbb84a2a5aac0e0e2bbd2b0f3",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "finding": "GDELT DOC ArticleList returns HTTP 429 to a residential IP at 16-second spacing -- more than three times its own stated 'one every 5 seconds' limit. The throttle is therefore NOT purely IP reputation and not purely interval; the refusal text points at query size ('for larger queries') and directs high-traffic users to the bulk n-gram files.",
+      "measurement": "Direct per-query probe, 16s apart: pakistan_west q1 (222 chars) 429, q2 (146 chars) HTTP 200 with 10 articles, gulf_energy q1 (213 chars) 429, q2 (20 chars) 429. The lane's own run scored 3 of 5 channels twice in a row with the identical split, so this is stable rather than transient.",
+      "mechanism": "A channel is marked unavailable if ANY of its queries fails. The five channels need 1,1,1,2,2 queries under the signed 230-character partition rule, and the two that need two queries are exactly the two that fail -- twice the exposure per channel. pakistan_west runs FIRST, so this is not late-run exhaustion.",
+      "correction": "I previously told the founder a VPS would fix the throttled receipt channels, citing the events backfill that succeeded from this machine. That inference was too strong. The events FILE endpoint is not throttled and a clean IP fixes it; the DOC API throttles this machine too. A VPS should still help receipts, because a dedicated IP is not shared with thousands of CI jobs, but it is not the answer for this lane and must not be bought on that promise. The events-backfill justification for the VPS is unaffected and remains measured.",
+      "why_not_fixed_here": "Every lever is signature-bound. maximum_requests_per_run (7), request_interval_seconds (15) and the 230-character query partition rule all live in governance/gdelt_receipt_identity_profile.json, which the founder's 2026-08-15 activation signature covers. Widening the interval, splitting fewer queries, or reordering channels all change the signed profile and need a re-activation ceremony. Nothing here was forced.",
+      "options_for_the_ceremony": [
+        "Raise request_interval_seconds so a run paces well under the observed refusal rate, accepting a longer lane.",
+        "Raise the query partition ceiling so no channel needs two requests, which removes the doubled exposure entirely.",
+        "Move the lane to the bulk n-gram files, which is what GDELT's own refusal text recommends for high-traffic users.",
+        "Leave it, and publish 3 of 5 channels with the other two honestly unavailable -- which is what happens today and is not a failure."
+      ],
+      "test_commands": [
+        "python -m src.receipt_identity",
+        "direct per-query probe against api.gdeltproject.org"
+      ],
+      "exact_results": {
+        "channels_available": "3 of 5, twice, identical split",
+        "direct_probe": "1 of 4 queries returned 200"
+      },
+      "evidence_state": "focused_tested",
+      "rights_state": "bounded_by_signed_profile_gdelt_doc_receipt_identity_v1",
+      "review_state": "internal_only",
+      "authority_required": "founder_activation_ceremony_to_change_any_throttle_parameter",
+      "founder_minutes": 0,
+      "scoring_domain": "evidence_rights_bitemporal_integrity",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "A measured limit on a source is diagnosis, not evidence for any scoring domain.",
+      "blockers": [
+        "Every remedy changes a signature-bound profile."
+      ],
+      "next_safe_action": "Present the four options as a decision packet; change nothing until the founder picks one."
     }
   ],
   "hostile_review_findings": [
