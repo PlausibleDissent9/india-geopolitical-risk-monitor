@@ -1,0 +1,71 @@
+name: canonical-graph
+
+# The canonical emitters run HERE and deliberately not in ci.yml.
+#
+# Every `python -m src.X --check` in ci.yml can refuse the daily publish,
+# because morning.yml gates its own candidate with the full CI gate. These
+# emitters read the LIVE receipt payload, so a GDELT outage that changes
+# which channels are available would refuse the morning contract for a
+# reason having nothing to do with the daily number. Adding them to ci.yml
+# coupled the publishing contract to the evidence graph for no benefit, and
+# tests/test_contract_lane_regenerates_what_ci_checks.py caught it: for
+# every X that ci.yml --checks, the contract lane must be able to
+# regenerate X, and these emit no payload for it to regenerate.
+#
+# So they get their own lane. It publishes nothing, holds no credentials,
+# and its failure means the evidence graph needs attention -- never that
+# the daily number cannot ship.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/evidence_emitter.py"
+      - "src/entity_emitter.py"
+      - "src/universe_emitter.py"
+      - "src/release_assembler.py"
+      - "src/canonical_objects.py"
+      - "schemas/**"
+      - "governance/universes/**"
+  workflow_dispatch:
+  schedule:
+    - cron: "23 9 * * *"   # 14:53 IST, well clear of the contract window
+
+permissions:
+  contents: read
+
+concurrency:
+  group: igrm-canonical-graph-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  emit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # fetch-depth 0 is a registered control, not a preference: the
+          # security plane refuses workflow_checkout_history_shallow so no
+          # lane can reason about a truncated history.
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Evidence emits from rights-cleared sources only
+        run: python -m src.evidence_emitter --check
+      - name: Entities cite evidence that exists
+        run: python -m src.entity_emitter --check
+      - name: Universe release states its own denominator
+        run: python -m src.universe_emitter --check
+      - name: Release assembles complete but for its signature
+        run: python -m src.release_assembler --check
+      - name: Emitter contracts hold under attack
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_emitter.py
+          tests/test_entity_emitter.py
+          tests/test_release_assembler.py
