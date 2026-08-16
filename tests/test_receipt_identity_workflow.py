@@ -14,7 +14,7 @@ WORKFLOW = ROOT / ".github/workflows/receipt-identity.yml"
 
 def test_workflow_is_independent_exactly_staged_and_bounded() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
-    assert len(re.findall(r'^    - cron: "[^"]+"', text, re.M)) == 3
+    assert len(re.findall(r'^    - cron: "[^"]+"', text, re.M)) == 6
     assert "python -m src.receipt_identity" in text
     assert "--verify-payload --expected-target \"$TARGET\"" in text
     assert "IGRM_PUBLISH_CLASS: receipt_identity" in text

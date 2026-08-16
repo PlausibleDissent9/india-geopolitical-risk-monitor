@@ -1,16 +1,26 @@
 name: receipt-identity
 
-# A small independent evidence surface. Three daily attempts recover from a
-# transient GDELT failure without rerunning or blocking the aggregate score.
-# Pending rights still produce a fresh value-free status; no headline can be
-# fetched or released until both the source decision and the separate profile
-# carry valid trusted-human signatures.
+# A small independent evidence surface. Three daily windows, two staggered
+# shots each, recover from a transient GDELT failure without rerunning or
+# blocking the aggregate score. Pending rights still produce a fresh
+# value-free status; no headline can be fetched or released until both the
+# source decision and the separate profile carry valid trusted-human
+# signatures.
 on:
   workflow_dispatch:
   schedule:
+    # Paired shots per window: GitHub silently drops single scheduled
+    # events under congestion (2026-08-16 the lone 07:07 IST shot was
+    # never created and the day's articles stayed stale until 13:07).
+    # Every run is independently bounded by the signed profile's exact
+    # 7-request budget with monotone same-target retention, so a
+    # redundant shot republishes the same closed payload or improves it.
     - cron: "37 1 * * *"   # 07:07 IST
+    - cron: "53 1 * * *"   # 07:23 IST paired drop-insurance shot
     - cron: "37 7 * * *"   # 13:07 IST retry
+    - cron: "53 7 * * *"   # 13:23 IST paired drop-insurance shot
     - cron: "37 13 * * *"  # 19:07 IST retry
+    - cron: "53 13 * * *"  # 19:23 IST paired drop-insurance shot
 
 permissions:
   contents: write
