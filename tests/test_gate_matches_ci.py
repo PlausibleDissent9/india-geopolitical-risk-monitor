@@ -114,3 +114,55 @@ def test_ci_still_checks_types_over_the_whole_project():
     cmds = _ci_commands()
     assert "mypy" in cmds, (
         f"CI's mypy step is no longer a bare project-wide run: {cmds}")
+
+
+# YAML block scalars: `run: |` and friends put the command on the FOLLOWING
+# lines, so the extraction captures the marker alone.
+BLOCK_SCALARS = ("|", "|-", "|+", ">", ">-", ">+")
+
+
+def test_every_extracted_command_is_runnable_shell():
+    """WHAT HAPPENED (2026-08-16)
+
+    I added emitter checks to ci.yml as `run: |` blocks. Both extractions
+    above captured the bare `|`, agreed with each other, and passed --
+    then gate.sh evaled it, `syntax error near unexpected token '|'`, and
+    the publish lane refused the daily contract for about an hour.
+
+    The tests above guard COMPLETENESS: the gate picks up every CI
+    command. Nothing guarded EXECUTABILITY. And completeness could not
+    catch this, because _ci_commands() re-derives `|` from the same line
+    by the same rule -- two extractions agreeing on a value neither can
+    run. The file whose thesis is "a check that cannot fail the way the
+    real one does" had one more.
+    """
+    bad = []
+    for cmd in _gate_extracted():
+        proc = subprocess.run(["bash", "-n", "-c", cmd], capture_output=True,
+                              text=True)
+        if proc.returncode != 0:
+            bad.append((cmd, proc.stderr.strip()))
+    assert not bad, (
+        f"gate.sh evals every extracted line; these are not valid shell: {bad}. "
+        "A multi-line CI step must be written as a single `run:` line "
+        "(joined with && or ;), because the gate's input format is ci.yml "
+        "itself.")
+
+
+def test_no_extracted_command_is_a_yaml_block_marker():
+    """The variant `bash -n` cannot see.
+
+    `>-` is valid shell: a redirect that creates a file named `-` and
+    exits 0. So a `run: >-` step would extract to `>-`, eval cleanly, and
+    the gate would report that check GREEN while running nothing -- a
+    silently narrower gate, which is the exact outage this file was
+    opened for, arriving by a route the syntax check above misses.
+
+    Not hypothetical: .github/workflows/canonical-graph.yml already uses
+    `run: >-`, so the idiom is in the author's hands today.
+    """
+    offenders = [c for c in _gate_extracted() if c in BLOCK_SCALARS]
+    assert not offenders, (
+        f"ci.yml has block-scalar run: steps {offenders}. The gate extracts "
+        "the marker, not the command beneath it. `>-` is the dangerous one: "
+        "it runs clean and reports success having executed nothing.")
