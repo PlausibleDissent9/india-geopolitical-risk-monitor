@@ -12,7 +12,7 @@
    {
     "channel": "pakistan_west",
     "episode_start": "2026-08-14",
-    "episode_end": "2026-08-14",
+    "episode_end": "2026-08-15",
     "reason": "insufficient post-episode follow-up window"
    },
    {
@@ -36,11 +36,7 @@
   "suppressed_days_are_deduplicated": "Episode follow-windows overlap, so this is the count of DISTINCT channel-days, not the sum of per-episode counts, which would multiply-count the same day.",
   "median_days_until_bar_within_2x": 1,
   "follow_days": 120,
-  "generated": "2026-08-15T01:20:06Z",
-  "license": "CC BY 4.0",
-  "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
-  "codebook": "https://igrm.in/codebook.html",
-  "source": "https://igrm.in/data/detector_blindness.json"
+  "generated": "2026-08-16T10:24:17Z"
  },
  "largest_episodes_by_peak_share": [
   {
@@ -16663,9 +16659,9 @@
    "episode_end": "2026-06-17",
    "peak_share_in_episode": 0.1405,
    "threshold_before": 0.127765,
-   "threshold_peak_after": 0.154473,
+   "threshold_peak_after": 0.154721,
    "threshold_peak_multiple": 1.2,
-   "threshold_peak_day": "2026-08-14",
+   "threshold_peak_day": "2026-08-15",
    "peak_bar_is_after_episode_ended": true,
    "n_days_suppressed": 1,
    "suppressed_days": [
@@ -16681,9 +16677,9 @@
    "episode_end": "2026-07-15",
    "peak_share_in_episode": 0.1459,
    "threshold_before": 0.126247,
-   "threshold_peak_after": 0.154473,
+   "threshold_peak_after": 0.154721,
    "threshold_peak_multiple": 1.2,
-   "threshold_peak_day": "2026-08-14",
+   "threshold_peak_day": "2026-08-15",
    "peak_bar_is_after_episode_ended": true,
    "n_days_suppressed": 1,
    "suppressed_days": [
@@ -16699,9 +16695,9 @@
    "episode_end": "2026-07-24",
    "peak_share_in_episode": 0.2617,
    "threshold_before": 0.129815,
-   "threshold_peak_after": 0.154473,
+   "threshold_peak_after": 0.154721,
    "threshold_peak_multiple": 1.2,
-   "threshold_peak_day": "2026-08-14",
+   "threshold_peak_day": "2026-08-15",
    "peak_bar_is_after_episode_ended": true,
    "n_days_suppressed": 1,
    "suppressed_days": [
@@ -16717,9 +16713,9 @@
    "episode_end": "2026-08-08",
    "peak_share_in_episode": 0.2104,
    "threshold_before": 0.147346,
-   "threshold_peak_after": 0.154473,
-   "threshold_peak_multiple": 1.0,
-   "threshold_peak_day": "2026-08-14",
+   "threshold_peak_after": 0.154721,
+   "threshold_peak_multiple": 1.1,
+   "threshold_peak_day": "2026-08-15",
    "peak_bar_is_after_episode_ended": true,
    "n_days_suppressed": 0,
    "suppressed_days": [],
