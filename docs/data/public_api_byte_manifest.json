@@ -311,20 +311,20 @@
    "sha256": "4440846ed3f30e3ab6aeffa484797b6f240e36c6da9cf52c8127b10f7378ee72"
   },
   {
-   "bytes": 31675,
+   "bytes": 26759,
    "format": "json",
    "git_mode": "100644",
    "path": "data/map_relations.json",
    "repository_path": "docs/data/map_relations.json",
-   "sha256": "8f44ec1845efb9be5be7b4e7fa98895f5362ad39da75df139b0682e0c87ff0c6"
+   "sha256": "b449276d6b41f76a820f231eba7467beecdd31d402dda6f52ad8da5d04815187"
   },
   {
-   "bytes": 6454,
+   "bytes": 5380,
    "format": "json",
    "git_mode": "100644",
    "path": "data/map_states.json",
    "repository_path": "docs/data/map_states.json",
-   "sha256": "3d6b87298167fe9c6b04e515f90e079ea4d77418e50989187da4cf89d11cc55f"
+   "sha256": "f8780df424ce7c23e02ee075921398f5629c0059abdad328b1ba1e4f24e97082"
   },
   {
    "bytes": 8590,
@@ -695,12 +695,12 @@
    "sha256": "54fb460aa808df34aa5c26c04771e6e8a7c7b6773265451d36c67380fdaee955"
   },
   {
-   "bytes": 15401,
+   "bytes": 12204,
    "format": "json",
    "git_mode": "100644",
    "path": "data/stress_gauge.json",
    "repository_path": "docs/data/stress_gauge.json",
-   "sha256": "c19df724368352bfd00d59339436c05b980beeceb5b541a26e9ea02ede09a022"
+   "sha256": "0c7776326e827c55e45524fe4cb8a1cfbcef37e4f2d3bf88fcfd7d1216586b96"
   },
   {
    "bytes": 4516,
@@ -767,12 +767,12 @@
    "sha256": "d055606ba2a9188c74a2a7f9c369b3492af643ed305d4f0f0937577eebdb15f9"
   },
   {
-   "bytes": 315425,
+   "bytes": 315415,
    "format": "json",
    "git_mode": "100644",
    "path": "data/world_state.json",
    "repository_path": "docs/data/world_state.json",
-   "sha256": "b5cb8aa92a3d138e6588bfe8b50699aae3f46225975ddc3247c493cd965a4cdb"
+   "sha256": "af38916178393b5275548d8715b29bfd5ae06823c04abee4ee718b56cb9b36f4"
   },
   {
    "bytes": 1579,
@@ -978,7 +978,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "f0955d7337b9f0c44a70c8aee528c9b96961df2b766f4effbfac0b1a6e6b8dd3",
+  "entries_sha256": "a5ab4e009a729573bd03dad91a7c1ac4541d9cc5c1983c261de2746d466c6101",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -989,7 +989,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7091610,
+  "hashed_bytes": 7082413,
   "hashed_entries": 119,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
