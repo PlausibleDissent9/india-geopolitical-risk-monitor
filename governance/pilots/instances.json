@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0.0",
+  "ledger_id": "igrm-pilot-instances",
+  "effective": "2026-08-17",
+  "target": {
+    "instances": 6,
+    "institutions": 2,
+    "window_weeks": 4,
+    "scoring_domain": "federation_and_repeated_adoption",
+    "points_available": 3
+  },
+  "authority_note": "An instance is recorded only when a REAL named user at a real institution performed a registered task against a stated evidence snapshot. Claude may prepare the task, the artifact and the capture form; Claude may never record the user's action, the outcome, or the decision owner's judgement. Those fields are written from what the institution itself reports, and an instance missing them stays incomplete rather than being estimated.",
+  "counting_rules": [
+    "One artifact used by one user for one decision is ONE instance, however many products it generated.",
+    "Two users at the same institution doing the same task are two instances of ONE adoption, not two adoptions.",
+    "Internal testing, founder demonstration, and any run by Claude or Codex are never instances.",
+    "A refused, failed, null or abandoned instance is recorded and counted in the denominator. Retaining these is the point; an evaluation that only keeps successes measures nothing.",
+    "An instance whose outcome is not yet known is 'open', never 'successful'."
+  ],
+  "instance_states": [
+    "registered",
+    "open",
+    "artifact_delivered",
+    "user_acted",
+    "outcome_recorded",
+    "refused",
+    "failed",
+    "null_outcome",
+    "abandoned"
+  ],
+  "required_fields": [
+    "instance_id",
+    "institution",
+    "tenant",
+    "registered_task",
+    "user_role",
+    "named_user_confirmed",
+    "decision_owner",
+    "start_time",
+    "information_cutoff",
+    "evidence_snapshot",
+    "artifact_or_refusal",
+    "user_action",
+    "outcome_status",
+    "effort_minutes",
+    "receipt",
+    "privacy_treatment"
+  ],
+  "institutions": [
+    {
+      "institution_id": "nef",
+      "name": "NEF",
+      "status": "pilot_authorized_verbally",
+      "authority_evidence": "NOT YET HELD. Director Jagdip Rana approved a 30-day internal pilot on 2026-08-05, reported by the founder. Until a forwarded email or a note on letterhead exists, this is testimony and not evidence, and it may not support any adoption claim.",
+      "pilot_start": "2026-08-05",
+      "pilot_end_estimated": "2026-09-05",
+      "named_user_confirmed": false,
+      "decision_owner_confirmed": false,
+      "instances_recorded": 0
+    },
+    {
+      "institution_id": "cprg",
+      "name": "CPRG",
+      "status": "contact_details_not_held",
+      "authority_evidence": "NOT YET HELD. Reported as a user by the founder; full organisation name, contact person, role, email and stated use are all missing.",
+      "named_user_confirmed": false,
+      "decision_owner_confirmed": false,
+      "instances_recorded": 0
+    }
+  ],
+  "instances": [],
+  "at_risk": "Both institutions currently rest on founder testimony rather than institutional evidence. Per the charter, if pilot authority is unsigned after 2026-09-14 the 3 federation points and the affected evaluation evidence are recorded AT RISK, engineering continues, and no institutional adoption is claimed."
+}
