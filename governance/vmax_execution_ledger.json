@@ -536,6 +536,29 @@
       "non_double_counting": "Diagnosis.",
       "blockers": [],
       "next_safe_action": "Choose an option with the arithmetic in view. Option 3 is the only one that fixes the cause rather than the symptom."
+    },
+    {
+      "entry_id": "2026-08-17/my-cap-audit-used-the-wrong-constants",
+      "workstream": "diagnosis",
+      "milestone": "Audit finding corrected: right conclusion, fabricated derivation",
+      "owner": "claude",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "the_error": "I audited every timed network step against 'its module's worst case' and reported that daily.yml runs src.fetch_events under a 15-minute cap against a ~36-minute worst case. That number came from fetch_gdelt's constants -- TIMEOUT_S 420, SLEEP_S 15 -- and src/fetch_events.py does not import fetch_gdelt at all. It uses urllib against GDELT's static events FILE endpoint, which is a different service with different limits. I applied one module's numbers to another module and published the result in a commit message.",
+      "recomputed_from_the_real_constants": "fetch_events sets TIMEOUT_S=120, RETRIES=3, SLEEP_S=1.0 (commented 'static CDN files, not the rate-limited API'), with backoff 5/10/15s between attempts. daily.yml runs --update 5. Worst case: 5 * (3*120 + 30 + 1) = 1955s = 32.6 minutes against a 15-minute cap.",
+      "so_the_conclusion_survives": "The cap is still smaller than the worst case, by roughly a factor of two, and fetch_events still has no deadline. But I reached that conclusion by accident: the fabricated figure happened to land near the real magnitude. A number that is right for the wrong reason is not evidence, and the audit script that produced it hardcoded a WORST table mapping modules to constants they do not all use.",
+      "the_typical_case_matters_too": "Measured tonight rather than modelled: eight days backfilled in about two minutes from this machine. So the 32.6-minute figure is a genuine ceiling and a rare one -- it bites only when GDELT's file CDN is slow or erroring, which is exactly when a lane most needs to fail legibly rather than be killed.",
+      "what_i_did_not_do": "Add the deadline to fetch_events. It is a different fetch path from the two modules I have just worked in, so the mechanism would need reading rather than copying, and I have made the act-before-reading error enough times in one session that starting a third data-path change on a freshly-green publish path is the wrong call. Recorded with the corrected arithmetic so the next session starts from a true number.",
+      "evidence_state": "focused_tested",
+      "review_state": "internal_only",
+      "authority_required": "none",
+      "founder_minutes": 0,
+      "scoring_domain": "none_yet",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "Diagnosis, and a correction to a previous diagnosis.",
+      "blockers": [],
+      "next_safe_action": "Give fetch_events a deadline modelled on its own urllib path, not copied from fetch_gdelt's."
     }
   ],
   "hostile_review_findings": [
