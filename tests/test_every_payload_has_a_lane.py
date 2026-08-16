@@ -205,3 +205,86 @@ def test_stamp_meta_runs_after_every_payload_writer():
         "promises every download carries. A module that must run this "
         "late should call stamp_meta.universal_fields() itself, the way "
         "freshness, vintages, nowcast and assistant_answers do.")
+
+
+def _writers_after_the_stamp(workflow: str) -> set[str]:
+    """The check above, as a function of the workflow it reads.
+
+    It was written against daily.yml and hardcodes that filename, so the
+    invariant it enforces has never been evaluated for any other lane.
+    """
+    text = (WORKFLOWS / workflow).read_text(encoding="utf-8")
+    order = re.findall(r"python -m src\.(\w+)", text)
+    if "stamp_meta" not in order:
+        return set()
+    writers = {p.stem for p in SRC.glob("*.py")
+               if WRITES_PAYLOAD.search(p.read_text(encoding="utf-8"))}
+    after = order[order.index("stamp_meta") + 1:]
+    return {m for m in after
+            if m in writers
+            and m not in ("audit", "make_datapack")
+            and not _self_stamps(m)}
+
+
+# morning.yml stamps at step 6 of 24 and then its "Derived lanes" block
+# rewrites payloads afterwards. These nine are the result.
+#
+# Derived by running _writers_after_the_stamp below, NOT by reading the
+# workflow and judging by eye. The first version of this constant was
+# written from a hand-rolled "does it write a payload" regex and got the
+# membership wrong in both directions -- it listed provenance, which
+# WRITES_PAYLOAD does not match, and missed world_state, which it does.
+# An expected value derived by a different rule than the code under test
+# is not a check; it is a second opinion that happens to be wrong.
+MORNING_UNSTAMPED = {
+    "blind_spot", "episode_actors", "event_ledger", "evolution_engine",
+    "exposure", "monthly", "predictability", "publish_shares", "world_state",
+}
+
+
+def test_the_morning_lane_gap_does_not_grow():
+    """A ratchet, not a lock, and deliberately so.
+
+    test_stamp_meta_runs_after_every_payload_writer reads daily.yml by
+    name. morning.yml is the lane that actually publishes the 06:00
+    contract, and nobody ever ran the invariant against it. Run against
+    daily.yml the set is empty; against morning.yml it is nine, so the
+    payloads that SHIP are the unstamped ones. Independently,
+    stamp_meta.audit() reports nine payloads on main carrying no
+    licence, citation, codebook or source.
+
+    This is the same defect the daily.yml docstring above describes --
+    "later lanes rewrote payloads without the stamp ... TWELVE of them"
+    -- recurring in the other workflow because the guard was written
+    against one filename instead of against publishing lanes.
+
+    Not fixed here. The repair is a reorder of the 06:00 contract lane,
+    and the ordering constraints are real: assistant_answers records a
+    source_sha256 of the payloads it cites and must follow the last
+    rewrite, while world_state, event_ledger, evolution_engine and
+    product_catalog currently run after IT. Getting that wrong means no
+    publish at 06:00, and morning.yml cannot be rehearsed end to end
+    locally. It belongs to a waking human.
+
+    So this holds the line meanwhile: the set may shrink, never grow.
+    """
+    unstamped = _writers_after_the_stamp("morning.yml")
+    new = unstamped - MORNING_UNSTAMPED
+    assert not new, (
+        f"{sorted(new)} now write payloads after morning.yml's stamp step, "
+        "on top of the nine already unstamped. morning.yml publishes the "
+        "06:00 contract, so these ship without the licence and citation "
+        "the codebook promises every download carries. Move the writer "
+        "before the stamp, or have it call "
+        "stamp_meta.universal_fields() itself.")
+
+
+def test_the_morning_ratchet_is_removed_once_it_is_earned():
+    """Fail when the gap closes, so the ratchet above is deleted
+    deliberately rather than left behind asserting nothing."""
+    unstamped = _writers_after_the_stamp("morning.yml")
+    assert unstamped, (
+        "no payload writer runs after morning.yml's stamp step any more. "
+        "Delete MORNING_UNSTAMPED and this test, and add 'morning.yml' to "
+        "test_stamp_meta_runs_after_every_payload_writer so the lane is "
+        "locked rather than ratcheted.")
