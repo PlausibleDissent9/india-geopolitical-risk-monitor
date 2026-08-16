@@ -25,6 +25,12 @@
   .embed-note { color: var(--muted); }
   .wrap { height: calc(100vh - 52px); min-height: 120px; }
   [role="alert"] { color: var(--severe); }
+  /* This page links fonts.css and tokens.css but deliberately not
+     style.css, which is where the site's :focus-visible rule lives, so its
+     one link had no visible keyboard focus at all -- WCAG 2.4.7, level AA.
+     Same declaration as style.css so an embed focuses identically to the
+     page it is embedded beside. */
+  :focus-visible { outline: 2px solid var(--state); outline-offset: 2px; }
   @media print { body { background: Canvas; color: CanvasText; }
     .head a { display: none; } }
 </style>
