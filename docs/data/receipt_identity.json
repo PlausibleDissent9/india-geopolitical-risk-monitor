@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-15",
- "generated_at": "2026-08-16T07:56:36Z",
+ "generated_at": "2026-08-16T18:51:22Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "182667c3b72d7bef1d9df908d1ae99c3cb3adaa7",
-  "blob_git_sha1": "19481d0818e46510c1571c48ad54693bda3ad43c",
-  "blob_sha256": "958da833eeb2e4cea12fd4e1df15b52bd082bf2750a220ce08166e18610e21d1",
-  "target_date": "2026-08-14"
+  "state": "same_target",
+  "commit_sha": "c8bcbe99a640c3adf9e8c018eb848c022777b3c5",
+  "blob_git_sha1": "c42d2e6667e796182d4859b3e1e31e38be054626",
+  "blob_sha256": "699743783f8efeb9d2114b963e2e826b1cfccac5396ee0d64c610d2984f6b34f",
+  "target_date": "2026-08-15"
  },
  "channels": {
   "pakistan_west": {
@@ -29,8 +29,34 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Protecting borders requires more than talks",
+     "url": "https://www.orissapost.com/protecting-borders-requires-more-than-talks/",
+     "domain": "orissapost.com"
+    },
+    {
+     "title": "Tiranga Yatra held along India - China border in Ladakh Nyoma on eve of Independence Day",
+     "url": "https://news.webindia123.com/news/Articles/India/20260815/4487298.html",
+     "domain": "news.webindia123.com"
+    },
+    {
+     "title": "PM , Rajnath , Shah silence on reports of Chinese aggression in Arunachal alarming : Congress",
+     "url": "https://economictimes.indiatimes.com/news/politics-and-nation/pm-rajnath-shahs-silence-on-reports-of-chinese-aggression-in-arunachal-alarming-congress/articleshow/133258157.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "In a first , grid power on way to 12 remote villages near border with China",
+     "url": "https://timesofindia.indiatimes.com/city/dehradun/in-a-first-grid-power-on-way-to-12-remote-villages-near-border-with-china/articleshow/133255208.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "India Deploys Homegrown AI at Red Fort , Pledges AI Training for Ten Million Youth",
+     "url": "https://www.techtimes.com/articles/324582/20260815/india-deploys-homegrown-ai-red-fort-pledges-ai-training-ten-million-youth.htm",
+     "domain": "techtimes.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -119,7 +145,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-15",
-     "evaluated_at_utc": "2026-08-16T07:56:36Z",
+     "evaluated_at_utc": "2026-08-16T18:51:22Z",
      "rights_as_of": "2026-08-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +186,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-15",
-     "evaluated_at_utc": "2026-08-16T07:59:29Z",
+     "evaluated_at_utc": "2026-08-16T18:54:25Z",
      "rights_as_of": "2026-08-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +227,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-15",
-     "evaluated_at_utc": "2026-08-16T07:59:29Z",
+     "evaluated_at_utc": "2026-08-16T18:54:25Z",
      "rights_as_of": "2026-08-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +255,5 @@
    }
   ]
  },
- "payload_seal_sha256": "207c1c92c74e0973f28b72a8408600598ab9f3f6d0848b66c16e870a81f4b841"
+ "payload_seal_sha256": "cb150626ddddb238fcf260ffe739df44ce15b453da4f53924326d3afc9b69637"
 }
