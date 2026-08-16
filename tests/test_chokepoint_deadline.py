@@ -1,5 +1,10 @@
 """The chokepoint deadline must refuse, never half-write.
 
+It uses fetch_gdelt's deadline_monotonic and AcquisitionDeadlineExceeded,
+the same mechanism src/comparators.py uses. An earlier version of this
+module invented a parallel deadline with its own exception; these tests
+now assert the shared one, so a second mechanism cannot reappear.
+
 The daily lane caps this step at 15 minutes while fetch_gdelt allows 420s
 per request across roughly four channels -- a worst case near 29 minutes.
 The step was being SIGKILLed mid-request on slow GDELT days: nothing
@@ -29,31 +34,39 @@ def test_no_deadline_keeps_the_previous_behaviour() -> None:
     # it never asked for.
     calls: list = []
 
-    def fetch(terms, start, end):
+    def fetch(terms, start, end, *a, deadline_monotonic=None, **k):
+        fetch_gdelt._remaining_deadline_seconds(deadline_monotonic)
         calls.append(terms)
         return _series()
 
     with mock.patch.object(fetch_gdelt, "fetch_channel", fetch), \
          mock.patch.object(chokepoints, "_load_store", lambda: None), \
          mock.patch.object(pd.DataFrame, "to_csv", lambda *a, **k: None):
-        chokepoints.update(deadline_seconds=None)
+        chokepoints.update(deadline_monotonic=None)
     assert len(calls) >= 1, "every channel should be attempted with no deadline"
 
 
 def test_a_deadline_that_cannot_fit_a_fetch_refuses_before_starting() -> None:
     calls: list = []
 
-    def fetch(terms, start, end):
+    def fetch(terms, start, end, *a, deadline_monotonic=None, **k):
+        fetch_gdelt._remaining_deadline_seconds(deadline_monotonic)
         calls.append(terms)
         return _series()
 
-    with mock.patch.object(fetch_gdelt, "fetch_channel", fetch), \
-         mock.patch.object(fetch_gdelt, "TIMEOUT_S", 1.0):
-        with pytest.raises(chokepoints.ChokepointDeadlineExceeded):
-            chokepoints.update(deadline_seconds=0.0)
+    with mock.patch.object(fetch_gdelt, "fetch_channel", fetch):
+        with pytest.raises(fetch_gdelt.AcquisitionDeadlineExceeded):
+            chokepoints.update(deadline_monotonic=time.monotonic() - 1)
     assert calls == [], (
-        "a fetch that cannot finish inside the budget must not be started"
+        "an expired budget must stop the run before any channel lands"
     )
+
+
+def test_no_second_deadline_mechanism_exists() -> None:
+    # The redundancy this rewrite removed. One mechanism, shared.
+    source = (__import__("pathlib").Path(chokepoints.__file__)).read_text()
+    assert "ChokepointDeadlineExceeded" not in source
+    assert "deadline_monotonic" in source
 
 
 def test_the_store_is_not_written_when_the_deadline_bites(tmp_path) -> None:
@@ -61,31 +74,30 @@ def test_the_store_is_not_written_when_the_deadline_bites(tmp_path) -> None:
     # half-fresh, which is worse than no refresh at all.
     written: list = []
 
-    def fetch(terms, start, end):
-        time.sleep(0.02)
+    def fetch(terms, start, end, *a, deadline_monotonic=None, **k):
+        fetch_gdelt._remaining_deadline_seconds(deadline_monotonic)
         return _series()
 
     with mock.patch.object(fetch_gdelt, "fetch_channel", fetch), \
-         mock.patch.object(fetch_gdelt, "TIMEOUT_S", 5.0), \
          mock.patch.object(pd.DataFrame, "to_csv",
                            lambda *a, **k: written.append(1)):
-        with pytest.raises(chokepoints.ChokepointDeadlineExceeded):
-            chokepoints.update(deadline_seconds=0.01)
+        with pytest.raises(fetch_gdelt.AcquisitionDeadlineExceeded):
+            chokepoints.update(deadline_monotonic=time.monotonic() - 1)
     assert written == [], "the store must keep one vintage, not become half-fresh"
 
 
 def test_the_refusal_names_what_it_managed(tmp_path) -> None:
-    def fetch(terms, start, end):
+    def fetch(terms, start, end, *a, deadline_monotonic=None, **k):
+        fetch_gdelt._remaining_deadline_seconds(deadline_monotonic)
         return _series()
 
-    with mock.patch.object(fetch_gdelt, "fetch_channel", fetch), \
-         mock.patch.object(fetch_gdelt, "TIMEOUT_S", 9999.0):
-        with pytest.raises(chokepoints.ChokepointDeadlineExceeded) as excinfo:
-            chokepoints.update(deadline_seconds=1.0)
-    message = str(excinfo.value)
-    # A refusal a human cannot act on is only marginally better than a kill.
-    assert "channels fetched" in message
-    assert "Store left unchanged" in message
+    with mock.patch.object(fetch_gdelt, "fetch_channel", fetch):
+        with pytest.raises(fetch_gdelt.AcquisitionDeadlineExceeded) as excinfo:
+            chokepoints.update(deadline_monotonic=time.monotonic() - 1)
+    # The shared exception carries fetch_gdelt's wording; the lane adds
+    # the human-facing line. Assert it is non-empty and names the deadline
+    # rather than pinning prose this module does not own.
+    assert "deadline" in str(excinfo.value).lower()
 
 
 def test_the_cap_arithmetic_is_still_the_reason_this_exists() -> None:
