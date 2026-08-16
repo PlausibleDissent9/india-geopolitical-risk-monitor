@@ -235,9 +235,42 @@ jobs:
               echo "exact frozen-target acquisition did not close; refusing pipeline"
               exit 1
             fi
-            IGRM_OFFLINE=1 timeout 30m python -m src.run_daily \
-              --target "${{ steps.final_contract.outputs.target }}" \
-              --contract-today "${{ steps.final_contract.outputs.today }}"
+            # NOTHING TO PUBLISH IS NOT A FAILURE.
+            #
+            # morning.yml publishes the 06:00 contract. When it succeeds --
+            # which is the normal case -- the newest closed day is already
+            # published by the time this lane reaches here. run_daily then
+            # calls require_ordered_target, which demands the exact next
+            # UNPUBLISHED day before UTC D0, gets none, and raises
+            # final_target_invalid.
+            #
+            # That failure skipped the 27 steps below it, including the
+            # derived lanes, the freshness audit and the universal _meta
+            # stamp. So the lane whose job is to refresh the derived plane
+            # died before refreshing it, every day the contract lane worked,
+            # and 37 payloads went stale on the live site while the index
+            # itself was perfectly current.
+            #
+            # This is the same shape as the deadlock recorded at the top of
+            # this file -- the live freshness test failing HERE and killing
+            # the lane before it could refresh the payloads it was
+            # complaining about -- recurring behind a different gate.
+            #
+            # --target is now the value require_ordered_target actually
+            # demands rather than a blind D-1. When they agree, behaviour is
+            # unchanged; when they differ, D-1 could only ever have failed,
+            # and this walks a backlog forward one ordered day at a time.
+            NEXT=$(python -m src.final_publication --next-target \
+                     --today "${{ steps.final_contract.outputs.today }}")
+            if [ "$NEXT" = "none" ]; then
+              echo "no unpublished day before UTC D0; the contract lane has"
+              echo "already published it. Skipping the publish and continuing"
+              echo "to the derived lanes, which are this lane's other job."
+            else
+              IGRM_OFFLINE=1 timeout 30m python -m src.run_daily \
+                --target "$NEXT" \
+                --contract-today "${{ steps.final_contract.outputs.today }}"
+            fi
           fi
       - name: Global Event and Episode Ledger (aggregate observation foundation)
         if: github.event.inputs.backfill != 'true'
