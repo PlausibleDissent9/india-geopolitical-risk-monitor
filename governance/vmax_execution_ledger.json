@@ -293,6 +293,49 @@
       "evidence_state": "focused_tested",
       "admissible_points": 0,
       "budget_line": "none:engineering_time_only"
+    },
+    {
+      "entry_id": "2026-08-16/freshness-diagnosis-and-recomposition",
+      "workstream": "release_blocker_repair",
+      "milestone": "Freshness red reproduced at exact current parent and decomposed",
+      "owner": "claude",
+      "parent_sha": "9cb96700df00bc44d8d89cd9284e50aaed16cefb",
+      "candidate_sha": "78b4f41e499b93f74d2bf1c54d3eb7e8411b4694",
+      "clean": true,
+      "paths_changed": [
+        "src/audit.py",
+        "tests/test_audit_tolerance.py",
+        ".github/workflows/receipt-identity.yml",
+        "tests/test_receipt_identity_workflow.py"
+      ],
+      "remote_movement": "origin/main moved c363af12 -> 9cb96700 during the prior session, making candidate 482e9b9 obsolete-parent. Both commits were recomposed onto the reverified tip; each cherry-pick applied without conflict. The audit defect is confirmed still live on 9cb96700 (src/audit.py line 51 still compares under TOL=0.051).",
+      "reproduction": "python -m pytest -q tests/test_freshness.py::test_the_real_site_has_no_stale_or_undatable_payloads at 9cb96700 -- FAILS, 42 offenders.",
+      "decomposition": {
+        "audited": 92,
+        "STALE": 41,
+        "undatable": 1,
+        "fresh": 26,
+        "exempt": 24,
+        "stale_cause": "Ages cluster at 6-9 days, matching the interval over which the enrichment lanes have been starved while the morning contract refuses. status.json publicly and truthfully discloses status pipeline_failed, reason_code audit_validation_failed, target 2026-08-15, latest finalized 2026-08-14 -- the public plane is not claiming freshness it does not have. These 41 self-heal once the contract publishes again.",
+        "undatable_cause": "receipt_identity.json carries no _meta.generated, so src/freshness.py cannot age it. Its own comment: 'A payload nobody can date is a payload nobody can trust, and it is the easiest possible thing to fix.' This does NOT self-heal and is not fixed by the audit repair."
+      },
+      "connection_to_parked_h0_item": "The H0 checkpoint's receipt_identity _meta.generated change -- parked in the 6db74ed composition as unauthorized-as-composed -- is exactly the repair this undatable payload needs. It was parked for lacking authority, not for lacking merit.",
+      "evidence_state": "focused_tested",
+      "rights_state": "not_applicable",
+      "review_state": "internal_only",
+      "authority_required": "founder_push_for_the_audit_fix; founder_activation_ceremony_for_the_undatable_repair",
+      "founder_minutes": 1,
+      "scoring_domain": "secure_release_recovery_accessibility",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "Reproducing and decomposing a blocker is diagnosis, not evidence for the release domain.",
+      "budget_line": "none:engineering_time_only",
+      "blockers": [
+        "Charter forbids Claude pushing.",
+        "The undatable repair needs a schema revision plus a profile re-activation signature."
+      ],
+      "next_safe_action": "Founder pushes the recomposed candidate; Claude prepares the _meta.generated packet for the ceremony.",
+      "tree_sha": "b378f50337436ffe0c09e270a9b578cb88990373"
     }
   ],
   "hostile_review_findings": [
