@@ -431,6 +431,34 @@
       "non_double_counting": "Establishing a dependency is diagnosis. The 29 points along this chain are claimable once each stage exists and is accepted, each in its own domain and never twice.",
       "blockers": [],
       "next_safe_action": "Build the canonical-object emitters for real IGRM evidence, starting with the object types the India vertical needs, rather than anything further downstream."
+    },
+    {
+      "entry_id": "2026-08-17/the-schema-forces-evidence-first",
+      "workstream": "evidence_kernel",
+      "milestone": "Build order for the canonical graph established by walking it, not by planning it",
+      "owner": "claude",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "method": "Tried to emit ONE real canonical object -- India as an entity -- and let the schema refuse until it was right. Three refusals in sequence, each informative: schema_version must be 1.0.0 not 0.1.0; an identifier needs effective_start and effective_end; and an identifier needs evidence_ids, which common.schema.json defines as a NON-EMPTY id array.",
+      "the_finding": "You cannot assert that India's ISO 3166 code is IND without citing an evidence item that supports it. The schema refuses the entity outright. The same rule runs through the graph: event requires evidence_links, exposure_edge requires evidence_ids, and evidence_item itself requires 30 fields including rights_use, rights_decision_id, privacy_class, content_availability, artifact_sha256 and verification_status.",
+      "why_this_matters": "The build order is not a planning choice, it is enforced. Evidence items come first; entities, events and exposure edges may only exist by citing them; and a canonical release is the signed manifest over the result. An attempt to seed a universe of India entities first -- which is the intuitive way to start, and the way I was about to start -- would have been refused at the first identifier. The schema is doing exactly what the whole project claims to do: it will not let an assertion exist without its evidence.",
+      "what_was_verified": "canonical_objects.seal_record produces a stable record_sha256 for a well-formed record and the seal changes on a one-character edit. The sealing primitives work; what is missing is the emitters that produce real records to seal.",
+      "next_build_order": [
+        "evidence_item emitters over sources IGRM already holds rights for, since every other object type must cite them",
+        "entity emitters whose identifiers cite those evidence items",
+        "event and exposure_edge emitters, which are the India vertical proper",
+        "the canonical release manifest over all of it, then the enrolment ceremony and the existing compiler"
+      ],
+      "evidence_state": "focused_tested",
+      "review_state": "internal_only",
+      "authority_required": "none_for_the_build",
+      "founder_minutes": 0,
+      "scoring_domain": "evidence_rights_bitemporal_integrity",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "Establishing a build order is diagnosis, not evidence.",
+      "blockers": [],
+      "next_safe_action": "Write the evidence_item emitter for one rights-cleared source and seal one real evidence record."
     }
   ],
   "hostile_review_findings": [
