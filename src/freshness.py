@@ -228,10 +228,21 @@ def _generated(path: Path) -> str | None:
     if data is None:
         return None
     meta = data.get("_meta")
-    if not isinstance(meta, dict):
-        return None
+    if isinstance(meta, dict):
+        for key in TIMESTAMP_KEYS:
+            v = meta.get(key)
+            if isinstance(v, str) and len(v) >= 10:
+                return v[:10]
+    # Then the same registered keys at the top level. receipt_identity.json
+    # seals its write instant as a top-level generated_at and carries only
+    # constant strings in _meta, so a _meta-only lookup called it undatable
+    # while the payload was in fact dated, sealed by payload_seal_sha256 and
+    # typed date-time by its schema. "Undatable" was a false statement about
+    # it. This widens where a date may be FOUND, never what counts as fresh:
+    # the age arithmetic below is unchanged, so a genuinely old payload still
+    # reads STALE and no payload's freshness can be upgraded by this.
     for key in TIMESTAMP_KEYS:
-        v = meta.get(key)
+        v = data.get(key)
         if isinstance(v, str) and len(v) >= 10:
             return v[:10]
     return None
