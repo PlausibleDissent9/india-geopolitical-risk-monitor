@@ -15,6 +15,34 @@
     "refused",
     "superseded"
   ],
+  "budget_position": {
+    "currency": "INR",
+    "ceiling": 250000,
+    "ceiling_authority": "founder_decision_per_charter_section_12",
+    "committed_to_date": 0,
+    "spent_to_date": 0,
+    "why_zero": "Claude has purchased nothing and holds no payment instrument. Every rupee below is a PLAN awaiting the founder's own purchase; committed_to_date moves only when a real transaction exists, and spent_to_date only from a receipt.",
+    "excluded_from_this_ceiling": [
+      "Apple hardware -- founder declined a Mac mini; substantial Apple spend already made this year",
+      "Claude Max 20x and ChatGPT Pro 20x subscriptions -- founder purchases these directly, outside the IGRM budget"
+    ],
+    "kill_rule": "Per charter section 11, defer any feature requiring premium data without a signed need. No premium data purchase is planned or authorized.",
+    "planned_lines": [
+      {
+        "budget_line": "infra:vps",
+        "purpose": "Clean-IP acquisition host. The measured blocker on published headlines is GDELT rate-limiting GitHub-hosted runner IPs (HTTP 429, observed independently in the receipt-identity and multilingual lanes). Also carries the off-site pinger, nightly publish, healthchecks and Wayback capture.",
+        "status": "awaiting_founder_purchase",
+        "evidence_it_is_needed": "receipt_identity payload 2026-08-16: 1 of 5 channels available; multilingual run 31910801273: HTTP 429 rate limit, 0 series landed"
+      },
+      {
+        "budget_line": "infra:backup_ssd",
+        "purpose": "Off-machine copy of the repository, immutable refs and the offline audit bundle. Required by the recovery objectives in charter section 8: restore from a trusted artifact whose source the primary plane does not control.",
+        "status": "awaiting_founder_purchase"
+      }
+    ],
+    "unallocated": "The remainder of the ceiling is deliberately unallocated. Allocating it now would be a plan without a signed need, which charter section 11 says to defer. Lines are added when a specific blocker is measured, as the VPS line was.",
+    "actual_versus_plan_report": "Charter section 13 item 22. Compiles from committed_to_date and spent_to_date against planned_lines; it is empty and truthful until a real transaction exists."
+  },
   "scoring_position": {
     "engineering_target_by_2026_10_21": 46,
     "independent_acceptance_target_by_2026_10_23": 45,
@@ -32,7 +60,10 @@
       "candidate_sha": "482e9b9158705c1d5faa7e742ae71ccc8bcab4ba",
       "tree_sha": "a91424be653e0fe4b562906f566966cc7adc492f",
       "clean": true,
-      "paths_changed": ["src/audit.py", "tests/test_audit_tolerance.py"],
+      "paths_changed": [
+        "src/audit.py",
+        "tests/test_audit_tolerance.py"
+      ],
       "root_cause": "src/audit.py compared the published composite (rounded from the UNROUNDED channel mean) against a recompute over the already-rounded published channel scores under TOL=0.051. Both sides are honest; their difference is bounded by ~0.10, not 0.051. The identical defect was fixed for the stress gauge on 2026-08-03 with a 0.101 bound and was never carried across to the composite check.",
       "failure_evidence": {
         "github_run": "31919051691",
@@ -60,8 +91,11 @@
       "potential_points": 0,
       "admissible_points": 0,
       "non_double_counting": "A repaired release blocker is a precondition for the release-domain evidence, not itself evidence for it.",
-      "blockers": ["Charter forbids Claude pushing; the commit sits local and unpushed."],
-      "next_safe_action": "Founder pushes; watchdog or the 05:33 IST cron then publishes the exact D-1 final."
+      "blockers": [
+        "Charter forbids Claude pushing; the commit sits local and unpushed."
+      ],
+      "next_safe_action": "Founder pushes; watchdog or the 05:33 IST cron then publishes the exact D-1 final.",
+      "budget_line": "none:engineering_time_only"
     },
     {
       "entry_id": "2026-08-16/receipt-identity-cron-density",
@@ -78,8 +112,12 @@
       ],
       "root_cause": "Two independent causes were measured, not assumed. (1) Publication cadence: the lane had one scheduled shot per window and GitHub created no run for the 2026-08-16 07:07 IST shot, so the published payload stayed at target 2026-08-14. (2) Channel emptiness: four of five channels carry state 'unavailable' because GDELT DOC throttles the hosted runner IP; that is the lane refusing truthfully, is recoverable by retry, and is NOT repaired here.",
       "change": "Each of the three windows gains one staggered odd-minute shot (07:23, 13:23, 19:23 IST). Cadence only. No change to the request budget, the retention policy, the rights gate, or the refusal semantics.",
-      "test_commands": ["python -m pytest -q tests/test_receipt_identity_workflow.py"],
-      "exact_results": {"focused_tests": "included in the 163-test H0 battery, all passed"},
+      "test_commands": [
+        "python -m pytest -q tests/test_receipt_identity_workflow.py"
+      ],
+      "exact_results": {
+        "focused_tests": "included in the 163-test H0 battery, all passed"
+      },
       "evidence_state": "focused_tested",
       "rights_state": "bounded_by_signed_profile_gdelt_doc_receipt_identity_v1",
       "review_state": "internal_only",
@@ -92,7 +130,8 @@
       "blockers": [
         "GDELT DOC throttling of GitHub-hosted runner IPs remains unaddressed; more shots from the same IP range may not convert to more available channels. A clean-IP acquisition path is the real fix and is not built."
       ],
-      "next_safe_action": "Measure the available-channel rate across the six new shots before assuming cadence solved it."
+      "next_safe_action": "Measure the available-channel rate across the six new shots before assuming cadence solved it.",
+      "budget_line": "none:engineering_time_only"
     },
     {
       "entry_id": "2026-08-16/h0-composition",
@@ -179,7 +218,8 @@
         "Claude's own review is not independent acceptance."
       ],
       "blockers": [],
-      "next_safe_action": "Hostile review of this exact candidate, then the H1 tranche."
+      "next_safe_action": "Hostile review of this exact candidate, then the H1 tranche.",
+      "budget_line": "none:engineering_time_only"
     },
     {
       "entry_id": "2026-08-16/github-failure-matrix",
@@ -238,7 +278,12 @@
         },
         {
           "workflow": "morning-contract",
-          "runs": ["31921090611", "31920693546", "31921298481", "31920628656"],
+          "runs": [
+            "31921090611",
+            "31920693546",
+            "31921298481",
+            "31920628656"
+          ],
           "status": "cancelled_or_running",
           "classification": "concurrency_cancellation_not_failure",
           "evidence": "All four sit in the shared igrm-pipeline-v3 concurrency group. GitHub keeps at most one pending run per group, so each newer dispatch evicts the one waiting. This is the documented 2026-08-08 eviction pattern, not a software failure.",
@@ -246,7 +291,8 @@
         }
       ],
       "evidence_state": "focused_tested",
-      "admissible_points": 0
+      "admissible_points": 0,
+      "budget_line": "none:engineering_time_only"
     }
   ],
   "hostile_review_findings": [

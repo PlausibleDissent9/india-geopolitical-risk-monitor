@@ -104,6 +104,44 @@ def test_decision_packets_state_the_cost_and_the_no_response_path(
         )
 
 
+def test_every_entry_declares_a_budget_line(ledger: dict[str, Any]) -> None:
+    # Charter section 4 makes budget line a mandatory ledger field. Work that
+    # costs nothing must say so explicitly rather than omit the field, so that
+    # a missing line reads as an authoring error and not as free work.
+    for entry in _entries(ledger):
+        assert entry.get("budget_line"), f"{entry['entry_id']}: no budget_line"
+
+
+def test_committed_and_spent_never_exceed_the_founder_ceiling(
+    ledger: dict[str, Any],
+) -> None:
+    budget = ledger["budget_position"]
+    ceiling = budget["ceiling"]
+    assert budget["spent_to_date"] <= budget["committed_to_date"] <= ceiling, (
+        "spend cannot exceed commitment, and commitment cannot exceed the "
+        f"{ceiling} {budget['currency']} ceiling the founder set"
+    )
+
+
+def test_spend_is_never_recorded_without_a_real_transaction(
+    ledger: dict[str, Any],
+) -> None:
+    # Claude holds no payment instrument. A nonzero figure here can only come
+    # from a founder purchase, so any nonzero value must arrive together with
+    # lines that are no longer merely awaiting purchase.
+    budget = ledger["budget_position"]
+    if budget["committed_to_date"] == 0:
+        assert all(
+            line.get("status") == "awaiting_founder_purchase"
+            for line in budget["planned_lines"]
+        ), "a line past awaiting_founder_purchase implies a commitment; record it"
+
+
+def test_every_planned_line_states_a_purpose(ledger: dict[str, Any]) -> None:
+    for line in ledger["budget_position"]["planned_lines"]:
+        assert line.get("budget_line") and line.get("purpose"), line
+
+
 def test_planned_founder_time_stays_inside_the_charter_cap(
     ledger: dict[str, Any],
 ) -> None:
