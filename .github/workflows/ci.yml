@@ -34,17 +34,20 @@ jobs:
         run: python -m src.event_ledger --check
       - name: Continuous Evolution capability ledger matches registered denominators
         run: python -m src.evolution_engine --check
-      - name: Canonical graph emits and the release assembles but for its signature
-        # These three run over LIVE committed evidence, so a change that
-        # breaks an emitter, widens a right, or lets the assembler sign
-        # itself fails here rather than at a ceremony. The release is
-        # expected to be unsigned: the assertion is that ONLY the signature
-        # is missing, which is what makes it ceremony-ready.
-        run: |
-          python -m src.evidence_emitter --check
-          python -m src.entity_emitter --check
-          python -m src.universe_emitter --check
-          python -m src.release_assembler --check
+      # One step per command, and each `run:` on ONE line. scripts/gate.sh
+      # extracts checks with `grep '^ *run: '` and evals what follows, so a
+      # `run: |` block hands it a bare `|` and the gate dies with a syntax
+      # error -- which is exactly what happened on 2026-08-16 and refused
+      # the daily publish. The workflow file is not just YAML here; it is
+      # the gate's input format.
+      - name: Canonical evidence emits over live committed evidence
+        run: python -m src.evidence_emitter --check
+      - name: Canonical entities cite evidence that exists
+        run: python -m src.entity_emitter --check
+      - name: Universe release states its own denominator
+        run: python -m src.universe_emitter --check
+      - name: Canonical release assembles complete but for its signature
+        run: python -m src.release_assembler --check
       - name: Knowledge replay synthetic conformance artifact is current
         run: python -m src.knowledge_replay_fixture && git diff --exit-code -- docs/data/knowledge_replay_demo.json
       - name: Sensor Fusion synthetic conformance artifact is current
