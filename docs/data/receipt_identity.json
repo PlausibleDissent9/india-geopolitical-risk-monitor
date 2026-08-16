@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-14",
- "generated_at": "2026-08-15T18:32:40Z",
+ "target_date": "2026-08-15",
+ "generated_at": "2026-08-16T07:56:36Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "4c0d5b17d11500947610d20f5957240b27a0efec",
-  "blob_git_sha1": "f39f2d3089c4c5a843a7b042397efe170647be1b",
-  "blob_sha256": "070518dafd5203f1499b3f25ef386fd6dc4c347a62d6f944912e2a596979b6e8",
+  "state": "different_target",
+  "commit_sha": "182667c3b72d7bef1d9df908d1ae99c3cb3adaa7",
+  "blob_git_sha1": "19481d0818e46510c1571c48ad54693bda3ad43c",
+  "blob_sha256": "958da833eeb2e4cea12fd4e1df15b52bd082bf2750a220ce08166e18610e21d1",
   "target_date": "2026-08-14"
  },
  "channels": {
@@ -40,35 +40,61 @@
    "state": "available",
    "articles": [
     {
-     "title": "India , US remain in regular contact on proposed trade deal : Commerce Secretary",
-     "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/india-us-remain-in-regular-contact-on-proposed-trade-deal-commerce-secretary/articleshow/133227058.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "India on our radar : Trump aide Peter Navarro big remark after White House  shadow trans - shipment  report",
-     "url": "https://www.hindustantimes.com/india-news/india-on-our-radar-trump-aide-peter-navarros-big-remark-after-white-houses-shadow-trans-shipment-report-101786681498381.html",
-     "domain": "hindustantimes.com"
-    },
-    {
-     "title": "India Russian oil imports hit all - time high in July - The HinduBusinessLine",
-     "url": "https://www.thehindubusinessline.com/markets/commodities/indias-russian-oil-imports-hit-all-time-high-in-july/article71344169.ece",
-     "domain": "thehindubusinessline.com"
-    },
-    {
-     "title": "India - US Trade Talks Continue ; West Asia Exports Rise 8 . 62 % in July",
-     "url": "https://dailypioneer.com/news/india-us-continuing-trade-talks-commerce-secretary",
+     "title": "India at 79 : Milestones , Missing Pieces and the Road to Viksit Bharat 2047",
+     "url": "https://dailypioneer.com/news/milestones-and-missing-pieces",
      "domain": "dailypioneer.com"
     },
     {
-     "title": "India helping China evade US tariffs ? White House weighs anti - transhipment penalties , says it losing $19B - $26B a year",
-     "url": "https://www.livemint.com/news/world/india-helping-china-evade-us-tariffs-white-house-weighs-anti-transhipment-penalties-says-its-losing-19b-26b-a-year-11786676558958.html",
-     "domain": "livemint.com"
+     "title": "৪০টির বেশি দেশের মাধ্যমে চীনা পণ্যের শুল্ক ফাঁকির অভিযোগ যুক্তরাষ্ট্রের",
+     "url": "https://www.arthosuchak.com/archives/970297/%E0%A7%AA%E0%A7%A6%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%AC%E0%A7%87%E0%A6%B6%E0%A6%BF-%E0%A6%A6%E0%A7%87%E0%A6%B6%E0%A7%87%E0%A6%B0-%E0%A6%AE%E0%A6%BE%E0%A6%A7%E0%A7%8D%E0%A6%AF%E0%A6%AE%E0%A7%87/",
+     "domain": "arthosuchak.com"
+    },
+    {
+     "title": "Indija oborila rekord u kupovini ruske nafte",
+     "url": "https://www.novosti.rs/ekonomija/vesti/1638119/prete-joj-americke-carine-indija-oborila-rekord-kupovini-ruske-nafte",
+     "domain": "novosti.rs"
+    },
+    {
+     "title": "Russia Captures Record Share of India Oil Market",
+     "url": "https://finance.yahoo.com/energy/articles/russia-captures-record-share-india-070000787.html",
+     "domain": "finance.yahoo.com"
+    },
+    {
+     "title": "Svi komentari - Španija produžila rad nuklearke Almaraz do 2030 . zbog energetske bezbednosti",
+     "url": "https://www.b92.net/svi-komentari/259180",
+     "domain": "b92.net"
     }
    ]
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Somali Piracy Surges Amid Hormuz Blockade",
+     "url": "https://www.zerohedge.com/geopolitical/somali-piracy-surges-amid-hormuz-blockade",
+     "domain": "zerohedge.com"
+    },
+    {
+     "title": "Yemen Mocha port hit by Houthi attacks , operations halt amid rising regional tensions",
+     "url": "https://www.hindustantimes.com/world-news/yemens-mocha-port-hit-by-houthi-attacks-operations-halt-amid-rising-regional-tensions-101786810641400.html",
+     "domain": "hindustantimes.com"
+    },
+    {
+     "title": "Strait of Hormuz crisis underscores need for diversified energy routes : Report",
+     "url": "https://www.prokerala.com/news/articles/a1800829.html",
+     "domain": "prokerala.com"
+    },
+    {
+     "title": "الفريق أسامة ربيع فى حوار لـ « الأخبار »: لا بديل لـ « قناة السويس » ونستهدف تحقيق 8 مليارات دولار",
+     "url": "https://akhbarelyom.com/news/newdetails/4865114/1/%D8%A7%D9%84%D9%81%D8%B1%D9%8A%D9%82-%D8%A3%D8%B3%D8%A7%D9%85%D8%A9-%D8%B1%D8%A8%D9%8A%D8%B9-%D9%81%D9%89-%D8%AD%D9%88%D8%A7%D8%B1-%D9%84%D9%80-%D8%A7%D9%84%D8%A3%D8%AE%D8%A8%D8%A7%D8%B1--%D9%84%D8%A7",
+     "domain": "akhbarelyom.com"
+    },
+    {
+     "title": "Yemen Mocha port halts operations after Houthi attacks , port director says",
+     "url": "https://www.straitstimes.com/world/middle-east/yemens-mocha-port-halts-operations-after-houthi-attacks-port-director-says",
+     "domain": "straitstimes.com"
+    }
+   ]
   }
  },
  "authority": {
@@ -92,12 +118,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-14",
-     "evaluated_at_utc": "2026-08-15T18:32:40Z",
-     "rights_as_of": "2026-08-15",
+     "target_date": "2026-08-15",
+     "evaluated_at_utc": "2026-08-16T07:56:36Z",
+     "rights_as_of": "2026-08-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-13T23:59:59Z",
+     "release_deadline_utc": "2026-09-14T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +159,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-14",
-     "evaluated_at_utc": "2026-08-15T18:35:44Z",
-     "rights_as_of": "2026-08-15",
+     "target_date": "2026-08-15",
+     "evaluated_at_utc": "2026-08-16T07:59:29Z",
+     "rights_as_of": "2026-08-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-13T23:59:59Z",
+     "release_deadline_utc": "2026-09-14T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +200,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-14",
-     "evaluated_at_utc": "2026-08-15T18:35:44Z",
-     "rights_as_of": "2026-08-15",
+     "target_date": "2026-08-15",
+     "evaluated_at_utc": "2026-08-16T07:59:29Z",
+     "rights_as_of": "2026-08-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-13T23:59:59Z",
+     "release_deadline_utc": "2026-09-14T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "6fa4262d8e7006cf753a8fa3de7b5c36c63070a1be8778c59cb23cd171b7e8d9"
+ "payload_seal_sha256": "207c1c92c74e0973f28b72a8408600598ab9f3f6d0848b66c16e870a81f4b841"
 }
