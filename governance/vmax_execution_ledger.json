@@ -155,13 +155,13 @@
         "python -m src.event_ledger --check"
       ],
       "exact_results": {
-        "focused_battery_py311": "163 passed",
+        "focused_battery_py311": "163 passed -- but this battery OMITTED tests/test_event_ledger.py and tests/test_final_publication_contract.py, which are precisely the suites exercising the code H0 rewrites most. Six tests in those two files failed. Reporting '163 passed' without that caveat overstated the verification and is corrected here.",
         "ruff": "All checks passed",
         "mypy": "no issues found in 151 source files",
         "git_diff_check": "clean",
         "security_integrity_check": "pass",
-        "event_ledger_check": "FAILS with event_ledger_report_stale on this source-only tree. H0 changes src/event_ledger.py by +282/-49 lines and the committed docs/data/event_ledger.json was produced by main's code. Regenerating it locally resolves the check and the regenerated diff is value-free (evaluation timestamp, refusal-state digest, rights-registry digest); the regenerated file was then reverted because this checkpoint is source-only.",
-        "dual_runtime_py39": "in progress at the time of writing; not claimed"
+        "event_ledger_check": "FAILS with event_ledger_report_stale on this source-only tree. H0 changes src/event_ledger.py by +282/-49 and the committed docs/data/event_ledger.json came from main's code. Regeneration resolves it and the diff is value-free; reverted because this checkpoint is source-only and generated outputs regenerate at release.",
+        "dual_runtime": "NOT a runtime issue. The six failures reproduce identically on 3.11 and 3.9; the initial 'Python 3.9 regression' reading was wrong and came from trusting a pipeline exit code that belonged to tail, not pytest. Corrected by re-running each condition with the exit code captured directly."
       },
       "evidence_state": "source_only",
       "rights_state": "no_rights_escalated",
@@ -247,6 +247,43 @@
       ],
       "evidence_state": "focused_tested",
       "admissible_points": 0
+    }
+  ],
+  "hostile_review_findings": [
+    {
+      "finding_id": "2026-08-16/P1/event-ledger-backdating",
+      "severity": "P1",
+      "title": "Refusal artifact accepted a backdated evaluation stamp under the signed rights registry",
+      "mechanism": "event_ledger.verify_payload_bytes derives the evaluation instant from the payload's own _meta.generated, then recomputes build(evaluated_at=that) and byte-compares. Under the founder's signed 2026-08-15 registry, _meta.generated is the ONLY field that varies with evaluated_at (measured by building at two instants and diffing every leaf), so a backdated stamp reproduces itself byte-for-byte and the comparison cannot see it.",
+      "bounded_severity": "Forward-dating was always refused (refusal_evaluation_time_future). No field other than _meta.generated can be forged; the byte comparison still covers them. The open window was backdating from contract_effective to now -- four days on 2026-08-16, widening each day the contract-effective date recedes. It is a freshness lie in a value-free refusal artifact, not arbitrary content forgery.",
+      "why_the_checkpoint_missed_it": "It PASSES at 2f4d4264. The checkpoint's own rights state left another field varying with evaluation time, so the recomputation caught the tamper. The weakness appears only once real signatures land -- the configuration that actually ships. Neither H0's tests nor CI would have caught it.",
+      "remediation": "verify_payload_bytes now bounds the evaluation stamp by the already-registered MAX_REFUSAL_RELEASE_AGE when release_instant is None; the release path already enforced the same bound through release_instant.",
+      "deadlock_check": "Both callers verify the current artifact, never a historical one, and --verify-payload is wired into no workflow (CI runs only --check). A freshness bound on a historical verifier would have rebuilt the transition-deadlock pattern; it does not here.",
+      "regression_tests": "tests/test_event_ledger_backdating.py -- 6 tests pinning both edges plus the mechanism itself. Proven to bite: fix stashed, 2 fail; restored, 6 pass.",
+      "candidate_sha": "04d78b2d4ce43236b9f03d1ccdd56800bb121a63",
+      "review_state": "claude_authored_and_self_verified_not_independently_reviewed"
+    },
+    {
+      "finding_id": "2026-08-16/P1/missing-public-schema",
+      "severity": "P1",
+      "title": "H0 requires a public schema copy that exists in no commit of the lineage",
+      "mechanism": "src/endpoint_unavailable.py declares DOCS_SCHEMA_RELATIVE = docs/schemas/endpoint-unavailable.schema.json and the publish path requires it to exist and be byte-identical to the root schemas/ copy, refusing endpoint_unavailable_schema_bytes_mismatch otherwise. The checkpoint shipped the root copy and the code demanding both, but never the docs copy.",
+      "classification": "pre_existing_in_the_checkpoint",
+      "evidence": "The same tests fail identically at 2f4d4264 on its own parent 4c4eec49. The path is absent at 4c4eec49, 2f4d4264, c363af12 and eb050bd5.",
+      "remediation": "Added byte-identical; sha256 18da4675a4e68c93418b94384616c2bdaec2712b91c1a1935fb5a570042775d6 matches the code's PINNED_SCHEMA_SHA256.",
+      "candidate_sha": "04d78b2d4ce43236b9f03d1ccdd56800bb121a63",
+      "review_state": "claude_authored_and_self_verified_not_independently_reviewed"
+    },
+    {
+      "finding_id": "2026-08-16/BLOCKER/publisher-decision-pins",
+      "severity": "release_blocker",
+      "title": "The publisher's decision-signature pin does not know the founder's 2026-08-15 decisions",
+      "mechanism": "src/endpoint_unavailable.py iterates every approved registry row and requires each row's signature digest in PINNED_DECISION_SIGNATURE_SHA256, which holds exactly one entry (the ngrams aggregate decision). The two rows approved on 2026-08-15 -- gdelt_doc_api and gdelt_bq_webngrams -- have no pin, so publish_final_cas.sh refuses with endpoint_unavailable_decision_signature_invalid.",
+      "classification": "the_pin_working_as_designed_not_a_defect",
+      "signature_verification_performed": "All three approved decisions were verified as 64-byte Ed25519 signatures over the exact committed artifact bytes under the enrolled, unrevoked human:igrm-ngram-rights-reviewer key, with each artifact digest matching its registry row. All three VALID.",
+      "why_claude_did_not_complete_it": "Registering the two pins requires coordinated edits across five anchors: the constant in src/endpoint_unavailable.py, PUBLIC_TREE_HELPER_SHA256 in src/security_integrity.py, the security registry entry, and a hard-coded git blob OID (aa00529c74592a3001ce87157bfb6105a59ac595) embedded twice in each of scripts/publish_final_cas.sh and scripts/ship.sh -- both themselves sha-pinned publisher scripts. That multi-anchor design exists so no single automated actor can quietly widen what the publisher trusts. A trial edit was made, verified to move the refusal forward one layer, and then REVERTED so no half-registered state was frozen; src/endpoint_unavailable.py is back at its exact H0 bytes (digest 442cb0ad).",
+      "authority_required": "reviewed_and_authorized_publisher_pin_re_registration",
+      "review_state": "packaged_for_review_not_applied"
     }
   ],
   "founder_decision_packets": [
