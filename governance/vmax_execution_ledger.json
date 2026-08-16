@@ -559,6 +559,23 @@
       "non_double_counting": "Diagnosis, and a correction to a previous diagnosis.",
       "blockers": [],
       "next_safe_action": "Give fetch_events a deadline modelled on its own urllib path, not copied from fetch_gdelt's."
+    },
+    {
+      "entry_id": "2026-08-17/the-test-guarding-the-gate-agreed-with-the-broken-gate",
+      "workstream": "hardening",
+      "milestone": "ci.yml extraction locked on executability, not just completeness",
+      "owner": "claude",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "how_it_was_found": "Reading the log of daily run 31965802847, which failed like the six before it. The last error in the chain was 'publish refused: the committed CI gate is red on 1775e682. Failing check: |. Detail: scripts/gate.sh: eval: line 217: syntax error near unexpected token |'. That is my own bug from earlier the same day: I added emitter checks to ci.yml as `run: |` blocks, and gate.sh extracts `^[[:space:]]+run: ` and evals each extracted line, so it evaled a bare pipe. Current main is clean -- the fix landed -- but nothing stopped it recurring.",
+      "why_the_existing_test_could_not_catch_it": "tests/test_gate_matches_ci.py::test_the_gate_picks_up_every_ci_command compares `gate.sh --print` against a Python regex re-derivation of the same ci.yml. For `run: |` BOTH capture the bare `|` by the same rule, agree, and pass. The file whose stated thesis is 'a check that cannot fail the way the real one does' contained one. Completeness was locked; executability was not.",
+      "the_lock": "Two tests, because one does not cover the class. `bash -n` on each extracted line catches `|`, `|-`, `>` and anything else that is not valid shell. An explicit block-scalar check catches `>-`, which bash -n PASSES -- it is a redirect creating a file named `-`, exit 0 -- so a `run: >-` step would eval clean and the gate would report that check GREEN having executed nothing. The silent variant is the dangerous one.",
+      "not_hypothetical": ".github/workflows/canonical-graph.yml uses `run: >-` today, so the idiom is already in the author's hands; only ci.yml is read by gate.sh, which is why this is a lock rather than an incident.",
+      "verification": "Mutation-tested against ci.yml, restoring from backup between runs. `run: |` fails both new tests; `run: >-` fails only the marker test; the pre-existing completeness test stays GREEN in both cases, which is the finding. Clean tree: 7 passed. ruff exit 0, mypy exit 0 over 144 files. Exit codes read unpiped.",
+      "self_assessment": "This closes a hole I opened. It earns no points: it is repair of my own defect plus the missing lock, not new evidence.",
+      "commit_sha": "6f66f50cf1b2710d06efeb099d9f8ba96ced6c04",
+      "evidence_state": "focused_tested",
+      "admissible_points": 0
     }
   ],
   "hostile_review_findings": [
