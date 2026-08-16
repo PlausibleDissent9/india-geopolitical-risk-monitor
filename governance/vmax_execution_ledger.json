@@ -1,0 +1,264 @@
+{
+  "schema_version": "1.0.0",
+  "ledger_id": "igrm-vmax-october-nucleus-v1",
+  "effective": "2026-08-16",
+  "authority_note": "Claude and Codex maintain this ledger from exact artifacts only. No entry may be written from memory, conversation, or optimistic prose. Only entries in evidence_state 'accepted' may count toward an independent score, and 'accepted' is written solely from an external reviewer's or institution's own record.",
+  "evidence_states": [
+    "not_started",
+    "source_only",
+    "focused_tested",
+    "tranche_tested",
+    "candidate_frozen",
+    "internally_reviewed",
+    "externally_reviewed",
+    "accepted",
+    "refused",
+    "superseded"
+  ],
+  "scoring_position": {
+    "engineering_target_by_2026_10_21": 46,
+    "independent_acceptance_target_by_2026_10_23": 45,
+    "mechanically_supportable_now": 5.36,
+    "admissible_points_recorded_in_this_ledger": 0,
+    "why_zero": "Admissible points are written only from an external acceptance record. Nothing in this ledger has been externally reviewed or accepted, so the admissible total is zero regardless of how much engineering is complete."
+  },
+  "entries": [
+    {
+      "entry_id": "2026-08-16/morning-contract-audit-tolerance",
+      "workstream": "release_blocker_repair",
+      "milestone": "06:00 IST contract restored",
+      "owner": "claude",
+      "parent_sha": "c363af128151825c1aa12bc0ce1b1e599d227f6c",
+      "candidate_sha": "482e9b9158705c1d5faa7e742ae71ccc8bcab4ba",
+      "tree_sha": "a91424be653e0fe4b562906f566966cc7adc492f",
+      "clean": true,
+      "paths_changed": ["src/audit.py", "tests/test_audit_tolerance.py"],
+      "root_cause": "src/audit.py compared the published composite (rounded from the UNROUNDED channel mean) against a recompute over the already-rounded published channel scores under TOL=0.051. Both sides are honest; their difference is bounded by ~0.10, not 0.051. The identical defect was fixed for the stress gauge on 2026-08-03 with a 0.101 bound and was never carried across to the composite check.",
+      "failure_evidence": {
+        "github_run": "31919051691",
+        "workflow": "morning-contract",
+        "step": "Dual-computation audit (fail-loud gate before any push)",
+        "log_line": "FAIL latest composite 47.8 == mean(channels) 47.74",
+        "consequence": "final_publication wrote data/raw/final_publication_refusals/2026-08-15.json with failure_stage 'audit', reason_code 'audit_validation_failed'; the site continued serving 2026-08-14."
+      },
+      "test_commands": [
+        "python -m pytest -q tests/test_audit_tolerance.py tests/test_base_hardening.py",
+        "python -m src.audit",
+        "scripts/gate.sh --committed"
+      ],
+      "exact_results": {
+        "focused_tests": "7 passed",
+        "audit_on_committed_tree": "all dual computations agree (exit 0)",
+        "full_ci_gate": "1 failure: tests/test_freshness.py::test_the_real_site_has_no_stale_or_undatable_payloads — the pre-existing live-site staleness present on main before this change, and the only red in CI runs 31901394675, 31900072819, 31898298559 at three different SHAs. Every other gate check passed, mypy clean over 140 files, coverage 73%."
+      },
+      "evidence_state": "tranche_tested",
+      "rights_state": "not_applicable",
+      "review_state": "internal_only",
+      "authority_required": "founder_push",
+      "founder_minutes": 1,
+      "scoring_domain": "secure_release_recovery_accessibility",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "A repaired release blocker is a precondition for the release-domain evidence, not itself evidence for it.",
+      "blockers": ["Charter forbids Claude pushing; the commit sits local and unpushed."],
+      "next_safe_action": "Founder pushes; watchdog or the 05:33 IST cron then publishes the exact D-1 final."
+    },
+    {
+      "entry_id": "2026-08-16/receipt-identity-cron-density",
+      "workstream": "release_blocker_repair",
+      "milestone": "Stale published headlines reduced to one window",
+      "owner": "claude",
+      "parent_sha": "482e9b9158705c1d5faa7e742ae71ccc8bcab4ba",
+      "candidate_sha": "ab0ae20f893ad3d920e7d69105adfbe984ae9e3a",
+      "tree_sha": "fa2a0217d9edc33ef34bd7f8b1b90189631b6387",
+      "clean": true,
+      "paths_changed": [
+        ".github/workflows/receipt-identity.yml",
+        "tests/test_receipt_identity_workflow.py"
+      ],
+      "root_cause": "Two independent causes were measured, not assumed. (1) Publication cadence: the lane had one scheduled shot per window and GitHub created no run for the 2026-08-16 07:07 IST shot, so the published payload stayed at target 2026-08-14. (2) Channel emptiness: four of five channels carry state 'unavailable' because GDELT DOC throttles the hosted runner IP; that is the lane refusing truthfully, is recoverable by retry, and is NOT repaired here.",
+      "change": "Each of the three windows gains one staggered odd-minute shot (07:23, 13:23, 19:23 IST). Cadence only. No change to the request budget, the retention policy, the rights gate, or the refusal semantics.",
+      "test_commands": ["python -m pytest -q tests/test_receipt_identity_workflow.py"],
+      "exact_results": {"focused_tests": "included in the 163-test H0 battery, all passed"},
+      "evidence_state": "focused_tested",
+      "rights_state": "bounded_by_signed_profile_gdelt_doc_receipt_identity_v1",
+      "review_state": "internal_only",
+      "authority_required": "founder_push",
+      "founder_minutes": 0,
+      "scoring_domain": "evidence_rights_bitemporal_integrity",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "Cadence hardening supports the receipts evidence surface; it is not separately scorable.",
+      "blockers": [
+        "GDELT DOC throttling of GitHub-hosted runner IPs remains unaddressed; more shots from the same IP range may not convert to more available channels. A clean-IP acquisition path is the real fix and is not built."
+      ],
+      "next_safe_action": "Measure the available-channel rate across the six new shots before assuming cadence solved it."
+    },
+    {
+      "entry_id": "2026-08-16/h0-composition",
+      "workstream": "h0_gate",
+      "milestone": "H0 composed onto exact current main",
+      "owner": "claude",
+      "parent_sha": "c363af128151825c1aa12bc0ce1b1e599d227f6c",
+      "candidate_sha": "6db74ed8bccee0fbc81e74784d7014978d48bd5b",
+      "tree_sha": "5c4eaddb6e87674c39d41e589730c36f3691fa8e",
+      "immutable_ref": "refs/igrm/h0-composed-c363af12-20260816",
+      "source_checkpoint_applied": {
+        "commit": "2f4d42640c91d430557d9a32c7b84f5dedacbc57",
+        "tree": "14b2f86931d602d74ea4468bdaf2e132342ab128",
+        "obsolete_parent": "4c4eec49f539e545492308998a8f90e4b2c6c077",
+        "paths": 108
+      },
+      "clean": true,
+      "paths_changed_count": 103,
+      "excluded_paths": [
+        "src/receipt_identity.py (reverted to main's signed bytes; see parked_for_authority)",
+        "governance/gdelt_receipt_identity_profile.json (reverted to main's signed bytes)",
+        "docs/data/security_integrity.json (generated; regenerates at release)",
+        "docs/data/event_ledger.json (generated; regenerates at release)"
+      ],
+      "conflicts_resolved": [
+        {
+          "path": "governance/source_rights_registry.json",
+          "resolution": "Main's newest authenticated decisions preserved verbatim; H0's media_cloud_search_api row unioned in at its checkpoint state (decision_state review_required, permitted_uses empty). 20 rows, all ids unique.",
+          "escalation_check": "No row's decision_state, permitted_uses, or signer_id was upgraded in either direction."
+        },
+        {
+          "path": "governance/security_integrity_registry.json",
+          "resolution": "H0's structure adopted (adds trust_anchor, offline_freshness_a, receipt_identity_release). Every pinned digest re-registered from exact composed bytes, and the module's own code-side constants updated in the same commit so registry and code agree.",
+          "verification": "python -m src.security_integrity --write then --check: 'repository controls and public report match'"
+        },
+        {
+          "path": "tests/test_ngram_rights_signer.py",
+          "resolution": "Union: main's approved-row neutralization (so the synthetic pre-transition root stays valid without later signature artifacts) plus H0's pristine/src scaffold."
+        },
+        {
+          "path": "tests/test_security_integrity.py",
+          "resolution": "Publishing-lane inventory set to 14 and the arithmetic recorded in the assertion's comment: 15 on main minus nowcast, which the H0 checkpoint quarantines to manual/contents-read/value-free."
+        }
+      ],
+      "predicted_conflict_that_did_not_occur": ".github/workflows/bq-webngrams-probe.yml merged without conflict. Its empty-batch-is-not-success semantics must therefore be verified by test rather than assumed from the merge.",
+      "parked_for_authority": [
+        {
+          "item": "receipt_identity _meta.generated datability",
+          "why": "H0's module change adds a 'generated' key to _meta. The receipt-identity output schema forbids additional properties, and both the schema digest and the profile are bound by the founder's 2026-08-15 activation signature. Composing it would require a schema revision the checkpoint does not carry plus a re-activation ceremony.",
+          "action_taken": "Module and profile reverted to main's signed bytes; the H0 test asserting the parked shape removed with them, so no test asserts an unauthorized state.",
+          "authority_required": "founder_activation_ceremony"
+        }
+      ],
+      "test_commands": [
+        "python -m pytest -q tests/test_security_integrity.py tests/test_ngram_rights_signer.py tests/test_receipt_identity.py tests/test_receipt_identity_workflow.py tests/test_publication_guard.py tests/test_chokepoints_manifest.py tests/test_ngram_bq_rights.py",
+        "ruff check .",
+        "mypy",
+        "git diff --check",
+        "python -m src.security_integrity --check",
+        "python -m src.event_ledger --check"
+      ],
+      "exact_results": {
+        "focused_battery_py311": "163 passed",
+        "ruff": "All checks passed",
+        "mypy": "no issues found in 151 source files",
+        "git_diff_check": "clean",
+        "security_integrity_check": "pass",
+        "event_ledger_check": "FAILS with event_ledger_report_stale on this source-only tree. H0 changes src/event_ledger.py by +282/-49 lines and the committed docs/data/event_ledger.json was produced by main's code. Regenerating it locally resolves the check and the regenerated diff is value-free (evaluation timestamp, refusal-state digest, rights-registry digest); the regenerated file was then reverted because this checkpoint is source-only.",
+        "dual_runtime_py39": "in progress at the time of writing; not claimed"
+      },
+      "evidence_state": "source_only",
+      "rights_state": "no_rights_escalated",
+      "review_state": "not_reviewed",
+      "authority_required": "independent_reviewer_then_founder_release_authorization",
+      "founder_minutes": 0,
+      "scoring_domain": "none_yet",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "A source checkpoint earns no points. Points require the capabilities it carries to be tested, reviewed externally, and accepted.",
+      "known_limitations": [
+        "NOT PUSHED and not a release candidate.",
+        "docs/data/event_ledger.json must be regenerated before this source can pass CI. Until then the composed tree is red on one check.",
+        "The trust anchor's git ref refs/igrm/trust-anchor does not exist in any local clone, so the trust-anchor path in the composed security module has not been exercised end to end.",
+        "Claude's own review is not independent acceptance."
+      ],
+      "blockers": [],
+      "next_safe_action": "Hostile review of this exact candidate, then the H1 tranche."
+    },
+    {
+      "entry_id": "2026-08-16/github-failure-matrix",
+      "workstream": "diagnosis",
+      "milestone": "Read-only failure matrix produced and each failure classified",
+      "owner": "claude",
+      "findings": [
+        {
+          "workflow": "ci",
+          "run": "31901394675",
+          "job": "95052617118",
+          "sha": "4c0d5b17",
+          "status": "failure",
+          "failing_step": "Tests + coverage",
+          "precise_failure": "tests/test_freshness.py::test_the_real_site_has_no_stale_or_undatable_payloads — 42 payloads served by the live site are stale or undatable",
+          "reproduction": "git worktree add --detach <dir> 4c0d5b17 && python -m pytest -q 'tests/test_freshness.py::test_the_real_site_has_no_stale_or_undatable_payloads'",
+          "reproduced_times": 2,
+          "classification": "live_environmental",
+          "root_cause": "The test reads the deployed site, not the tree. The 42 payloads are stale because the nightly enrichment lanes have been starved while the morning contract has been failing. It is the same single failure at 3c17e494 (run 31900072819) and 0a57e221 (run 31898298559): one unresolved cause across all three, not three defects.",
+          "required_source_change": "none — the test is correct and must not be weakened, skipped, or excluded",
+          "resolution_path": "Repairing the morning contract and letting the enrichment lanes run refreshes the payloads; the test then passes on its own."
+        },
+        {
+          "workflow": "multilingual-backfill",
+          "run": "31910801273",
+          "job": "95075422083",
+          "sha": "d2f4f6a1",
+          "status": "failure",
+          "failing_step": "A batch that landed nothing is a failure, not a quiet success.",
+          "precise_failure": "GDELT fetch failed after 6 attempts for 2019-01-01..2019-12-31; HTTP 429 rate limit with the provider's message directing high-traffic users to the ngram files. Batch: 0 landed, 1 failed, 5 series still missing (10 -> 10).",
+          "classification": "authenticated_upstream_refusal",
+          "root_cause": "Upstream rate limiting, not a local defect. The lane's fail-loud step is behaving exactly as designed: it refuses to record a no-data batch as progress.",
+          "required_source_change": "none for correctness. The no-data-is-not-success invariant must be preserved.",
+          "open_design_question": "Permanent red is operationally harmful. A distinct terminal state for authenticated upstream refusal would keep the lane visibly unavailable without presenting as a software failure. Changing the presented semantics needs a decision about which authority owns it; not taken unilaterally."
+        },
+        {
+          "workflow": "daily-update",
+          "run": "31893353536",
+          "job": "95032810392",
+          "sha": "73c02e63",
+          "status": "failure",
+          "precise_failure": "EventLedgerError: calendar_partition_incomplete, raised by the in-lane gate's 'python -m src.event_ledger --check' on 9a0ff53e; publish correctly refused. The same log also shows FinalPublicationError: final_target_invalid earlier in the run.",
+          "reproduction": "python -m src.event_ledger --check on a clean checkout of current main",
+          "classification": "historical_resolved",
+          "evidence": "The same command exits 0 against current main c363af12.",
+          "required_source_change": "none"
+        },
+        {
+          "workflow": "receipt-identity",
+          "run": "31900072504",
+          "sha": "3c17e494",
+          "status": "failure",
+          "classification": "historical_resolved",
+          "evidence": "receipt_identity_payload_profile_invalid (exit 30/33), the transition deadlock repaired in 4c0d5b17. Run 31901393886 succeeded on the repaired SHA and published the first articles since 2026-08-07.",
+          "required_source_change": "none"
+        },
+        {
+          "workflow": "morning-contract",
+          "runs": ["31921090611", "31920693546", "31921298481", "31920628656"],
+          "status": "cancelled_or_running",
+          "classification": "concurrency_cancellation_not_failure",
+          "evidence": "All four sit in the shared igrm-pipeline-v3 concurrency group. GitHub keeps at most one pending run per group, so each newer dispatch evicts the one waiting. This is the documented 2026-08-08 eviction pattern, not a software failure.",
+          "note": "Read-only inspection only. Nothing was cancelled, rerun, or dispatched."
+        }
+      ],
+      "evidence_state": "focused_tested",
+      "admissible_points": 0
+    }
+  ],
+  "founder_decision_packets": [
+    {
+      "packet_id": "2026-08-16/push-morning-contract-repair",
+      "exact_question": "Push the two local commits that repair the 06:00 IST contract and thicken the receipts cadence?",
+      "recommended_option": "Push. The audit fix is the sole reason the 2026-08-15 final refused, and every further morning will refuse the same way until it lands.",
+      "alternatives": "Hold for an independent reviewer. Cost: one missed contract per day held, and the 42 stale payloads keep CI red.",
+      "consequences": "After the push, the next cron shot or the watchdog publishes the exact D-1 final; the enrichment lanes then refresh the stale payloads and CI's only red clears on its own.",
+      "estimated_founder_minutes": 1,
+      "authority_required": "push_to_main",
+      "what_continues_without_a_response": "All H0, evidence-plane, and India-vertical engineering continues; only the live contract stays broken."
+    }
+  ]
+}
