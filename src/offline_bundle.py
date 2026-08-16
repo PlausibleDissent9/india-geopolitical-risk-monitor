@@ -1,11 +1,29 @@
-"""Byte-deterministic manifest for an offline audit bundle (first sub-slice).
+"""Byte-deterministic offline audit bundle: manifest, zip and reader verifier.
 
 A stranger who distrusts the site should be able to carry away one artifact and
-verify it forever. The full design (design/offline_audit_bundle.md) ships zip
-packaging, a founder signature, a timestamp proof and a stdlib verifier. THIS
-sub-slice is only the manifest half, which everything else rests on: a member
-list that is rights-eligible, tracked, safely named, digest-matched, and a
-manifest whose self-digest reproduces byte-for-byte from committed bytes.
+verify it forever. The full design (design/offline_audit_bundle.md) lists four
+pieces beyond the manifest: zip packaging, a stdlib reader verifier, a founder
+signature and a timestamp proof.
+
+TWO OF THOSE FOUR NOW SHIP HERE. build_bundle_bytes emits a byte-deterministic
+zip (verified identical across repeat builds) and verify_bundle_bytes is the
+reader-side verifier that uses zipfile, hashlib and json alone. Measured
+2026-08-17: a three-member bundle builds identically twice, verifies clean, and
+a single flipped byte in one member is refused as bundle_member_digest_mismatch.
+
+STILL DEFERRED: the founder signature (needs the signing key, so it can only
+arrive through a ceremony) and the .ots timestamp proof (needs an external
+service). Both are out of this runtime's hands rather than unwritten.
+
+This docstring previously described the module as the manifest half only, and
+stayed that way after the zip and the verifier landed. A reader -- including a
+later agent -- who trusted it would have understated what exists by half, which
+is exactly the failure mode this project keeps paying for: a stale description
+does not announce itself, it reads as fact. Verify against the bytes.
+
+Underneath it all is the manifest: a member list that is rights-eligible,
+tracked, safely named, digest-matched, and a manifest whose self-digest
+reproduces byte-for-byte from committed bytes.
 
 Deny-by-default. Rights-restricted members refuse rather than degrade; a member
 whose declared digest does not match its bytes refuses; an unsafe path refuses.
