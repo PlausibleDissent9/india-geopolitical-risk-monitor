@@ -377,6 +377,34 @@
         "Every remedy changes a signature-bound profile."
       ],
       "next_safe_action": "Present the four options as a decision packet; change nothing until the founder picks one."
+    },
+    {
+      "entry_id": "2026-08-17/proof-products-honest-status",
+      "workstream": "diagnosis",
+      "milestone": "The 12-point proof-product domain assessed against what actually exists",
+      "owner": "claude",
+      "parent_sha": "12da5039f0c8a5f36b0a68f8e2ab4b3e9a2c1d77",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "why_this_matters": "Four proof products is the single largest scoring domain at 12 of 46 points. The phrase implies four artifacts nearly done. What exists is one synthetic demonstration, one withdrawn lane, one half-built bundle, and one adjacent release bundle. Recording this now so nobody plans October against a position that is not held.",
+      "per_product": {
+        "research_package": "CLOSEST. scripts/make_release.py assembles a versioned self-contained Zenodo bundle -- payloads, raw stores, frozen dictionaries and registrations, methodology, codebook. It is a data release rather than a compiled research product with claim-to-source mapping, but it is real and it ships files.",
+        "board_brief": "WITHDRAWN, and for the exact reason the charter forbids. src/daily_brief.py's own docstring records that the public lane was disabled on 2026-08-08 after generated prose stated numbers absent from its input context and repurposed display-selected receipt statistics as substantive evidence. main() now has no generation branch: it cannot import a model client, make a network call, or write a payload. That is the correct response to an AI-fabrication incident, and it means the board brief does not exist and must be rebuilt evidence-locked rather than restarted.",
+        "newsroom_claim_card": "SYNTHETIC ONLY. It appears in the evidence_outputs demonstration and nowhere else as a real compiled artifact.",
+        "offline_audit_bundle": "HALF. src/offline_bundle.py is explicitly the first sub-slice: the manifest only. Its own docstring defers the zip packaging, the founder signature, the timestamp proof and the stdlib verifier -- which are the parts that let a stranger carry one artifact away and verify it forever."
+      },
+      "the_demo_is_not_evidence": "docs/data/evidence_outputs_demo.json describes itself as a deterministic SYNTHETIC demonstration of one signed release producing all four products from identical inputs, carrying synthetic_labels. It proves the compiler shape works. The charter is explicit that fixtures and synthetic examples earn no external-world evidence credit, so it earns none here.",
+      "honest_position": "Admissible points in this domain today: 0. Buildable before October: the bundle's deferred sub-slices and a claim card compiled from the real ledger are ordinary engineering. The board brief is not ordinary engineering -- rebuilding it needs an evidence-locked contract where every sentence maps to a registered claim, because the previous design failed by inventing numbers, and restarting the same design would fail the same way.",
+      "evidence_state": "focused_tested",
+      "review_state": "internal_only",
+      "authority_required": "none_to_build; founder_decision_on_whether_the_board_brief_is_rebuilt_at_all",
+      "founder_minutes": 0,
+      "scoring_domain": "four_proof_products",
+      "potential_points": 12,
+      "admissible_points": 0,
+      "non_double_counting": "The Zenodo release bundle already supports the replication story; if it is also counted as the research package, it is counted once, not twice.",
+      "blockers": [],
+      "next_safe_action": "Close the offline bundle's deferred sub-slices, since a stranger-verifiable artifact is the highest-value of the four and needs no model at all."
     }
   ],
   "hostile_review_findings": [
