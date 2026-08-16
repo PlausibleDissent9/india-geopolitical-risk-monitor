@@ -459,6 +459,30 @@
       "non_double_counting": "Establishing a build order is diagnosis, not evidence.",
       "blockers": [],
       "next_safe_action": "Write the evidence_item emitter for one rights-cleared source and seal one real evidence record."
+    },
+    {
+      "entry_id": "2026-08-17/events-need-a-coding-rule-i-do-not-have",
+      "workstream": "evidence_kernel",
+      "milestone": "Canonical chain advanced two stages; the third refused with a stated reason",
+      "owner": "claude",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "built": "evidence_item and entity emitters, both real, both schema-valid, both sealed, 19 hostile tests. 15 evidence records from the published receipt identity and 15 provisional publisher entities whose identifiers cite them.",
+      "why_events_stop_here": "event requires a coding block of rule_id, rule_version, implementation_sha256, status, coder_ids, adjudicator_ids and limitation_codes, and an event_class from a closed enum -- armed_conflict, diplomatic_action, trade_restriction and so on. No registered rule in this repository classifies a headline into that enum; the only adjacent contract, source_frame_entity_foundry.json, is rights_blocked_contract_only. Emitting events anyway would mean inventing a classification and stamping it with a coding block that names no real rule, which is precisely what that block exists to prevent.",
+      "the_deeper_reason": "A news article evidences that something was REPORTED, not that it happened. The schema already provides the honest vocabulary for that -- record_status candidate, publication_phase provisional, and an evidence_link role of allegation -- so the shape is expressible. What is missing is not vocabulary but authority: somebody has to register the rule that maps a headline to a class, version it, and pin its implementation digest. That is a methodology decision, and methodology decisions are exactly what the independent methods reviewer exists to attack.",
+      "what_this_is_not": "This is not a blocker in the sense of something broken. Two of five stages are built and the schema accepted them. The chain simply reaches a point where the next artifact requires a registered rule rather than more code, and writing the code first would produce a graph full of confident classifications nobody can defend.",
+      "next_safe_action": "Register a coding rule for the receipt channels as a machine_candidate with explicit limitation_codes, or decide events come from a source that already carries classification (GDELT events, which IGRM already ingests as counts) rather than from headlines. Both are methodology choices and both should be visible to the methods reviewer.",
+      "evidence_state": "focused_tested",
+      "review_state": "internal_only",
+      "authority_required": "methodology_decision_on_event_coding",
+      "founder_minutes": 0,
+      "scoring_domain": "evidence_rights_bitemporal_integrity",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "Two emitters existing is build progress, not accepted evidence.",
+      "blockers": [
+        "No registered coding rule maps a headline to an event_class."
+      ]
     }
   ],
   "hostile_review_findings": [
