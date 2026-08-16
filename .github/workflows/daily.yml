@@ -127,7 +127,13 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         timeout-minutes: 15
-        run: python -m src.chokepoints --update
+        # 780s = 13 minutes, two minutes inside the step cap. The module
+        # refuses to START a fetch it cannot finish, so the lane gets a
+        # named exit and an unchanged store instead of a SIGKILL at 15:00
+        # with nothing written. fetch_gdelt's worst case here is ~29
+        # minutes, so on a slow GDELT day this step is SUPPOSED to refuse;
+        # the point is that it refuses legibly.
+        run: python -m src.chokepoints --update --deadline-seconds 780
       - name: Map aggregates (V2 maps; refuses until events history is complete)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true

@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -100,13 +101,45 @@ def _load_store() -> pd.DataFrame | None:
     return df.set_index("date").sort_index()
 
 
-def update(backfill: bool = False) -> pd.DataFrame:
+class ChokepointDeadlineExceeded(RuntimeError):
+    """The run ran out of wall clock before every channel was fetched."""
+
+
+def update(backfill: bool = False, deadline_seconds: float | None = None) -> pd.DataFrame:
+    """Fetch every sub-dictionary, or write nothing at all.
+
+    deadline_seconds exists because the daily lane caps this step at 15
+    minutes while fetch_gdelt allows 420s per request over ~4 channels --
+    a worst case near 29 minutes. The step was therefore being SIGKILLed
+    mid-request on any slow GDELT day: no store written, no diagnosis, a
+    quarter hour spent.
+
+    A deadline turns that into a clean, named refusal BEFORE starting a
+    fetch that cannot finish. It deliberately does not write a partial
+    merge. combine_first would happily fill the missing channels from the
+    existing store, which is the dangerous outcome: a store where some
+    chokepoints are today's and others are last week's, with nothing in
+    the file saying which. Refusing leaves the previous store intact and
+    entirely of one vintage.
+    """
     subs = _subdicts()
     existing = _load_store()
     today = date.today()
     start = START if (backfill or existing is None) else today - timedelta(days=14)
-    cols = {}
+    started = time.monotonic()
+    cols: dict[str, pd.Series] = {}
     for name, spec in subs.items():
+        if deadline_seconds is not None:
+            spent = time.monotonic() - started
+            # Only start a fetch there is room to finish. fetch_gdelt's own
+            # ceiling is the honest estimate of "room".
+            if spent + fetch_gdelt.TIMEOUT_S > deadline_seconds:
+                raise ChokepointDeadlineExceeded(
+                    f"{len(cols)}/{len(subs)} channels fetched in "
+                    f"{spent:.0f}s; starting {name} needs up to "
+                    f"{fetch_gdelt.TIMEOUT_S}s against a {deadline_seconds:.0f}s "
+                    "budget. Store left unchanged rather than written half-fresh."
+                )
         print(f"[chokepoints] {name}: {start} -> {today}")
         cols[name] = fetch_gdelt.fetch_channel(spec["terms"], start, today)
     fetched = pd.DataFrame(cols)
@@ -232,9 +265,21 @@ def main() -> None:
     ap.add_argument("--update", action="store_true")
     ap.add_argument("--backfill", action="store_true")
     ap.add_argument("--publish", action="store_true")
+    # Seconds of wall clock this run may spend fetching. Omitted means no
+    # deadline, which is the right default for a backfill run under the
+    # supervisor script; the daily lane passes one because its step cap is
+    # shorter than fetch_gdelt's worst case.
+    ap.add_argument("--deadline-seconds", type=float, default=None)
     args = ap.parse_args()
     if args.update or args.backfill:
-        update(backfill=args.backfill)
+        try:
+            update(backfill=args.backfill,
+                   deadline_seconds=args.deadline_seconds)
+        except ChokepointDeadlineExceeded as exc:
+            # Named and non-zero, so the lane logs a reason instead of a
+            # SIGKILL and the store keeps one vintage.
+            print(f"[chokepoints] deadline: {exc}")
+            raise SystemExit(3) from exc
         publish()
     elif args.publish:
         publish()
