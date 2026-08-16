@@ -408,6 +408,29 @@
       "correction_note": "I made the same mistake I had recorded an hour earlier: I trusted a stated description over the bytes. The docstring was stale, and a stale description does not announce itself -- it reads as fact, exactly like the stale PINNED_RIGHTS_SHA256 that made 23 endpoints answer confidently and wrongly. The module docstring is corrected in the same commit so the next reader is not misled the same way.",
       "the_actual_blocker": "governance/release_signers.json contains an EMPTY signer list under default_policy deny. No one is enrolled to sign a canonical release, so src/evidence_outputs.py can only ever run against the OGES synthetic fixture with public test-only keys, which is exactly what evidence_outputs_demo.json is. The four-product compiler is not the gap. The gap is that it has never been handed a REAL signed release, and it cannot be until a release signer is enrolled. That is one founder ceremony, and it unblocks the largest scoring domain in the plan.",
       "three_corrections_note": "This entry has now been corrected twice, both times in the same direction and for the same reason: I read a description and reported it as the state of the world. The docstring understated the offline bundle; conflating two module names understated the brief. Both were caught only by running the code. The rule this keeps teaching: for any claim about what exists, execute it -- a description is evidence about intent, never about bytes."
+    },
+    {
+      "entry_id": "2026-08-17/the-october-chain-is-one-chain",
+      "workstream": "diagnosis",
+      "milestone": "The dependency between the three biggest domains established",
+      "owner": "claude",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "correction": "One message earlier I told the founder that enrolling a release signer unblocks the 12-point proof-product domain: enrol, sign a release, run the compiler. The middle step does not exist. The only thing in the repository that builds a signed canonical release is src/oges_fixture.py, whose own docstring states its private keys are public test vectors that must never appear in a production trust registry. There is no production release builder.",
+      "what_a_release_actually_requires": "schemas/canonical-release.schema.json requires an objects array of {object_type, object_id, path, file_sha256, record_sha256} where object_type is one of evidence_item, entity, event, exposure_edge or universe_release, plus per-type counts, plus digests of the schema, method, rights, rights-signer and release-signer registries, plus a rights snapshot, plus the signature. In other words a release is a manifest OVER a bitemporal evidence graph of real India entities, events, evidence items and exposure edges.",
+      "the_actual_structure": "The three largest domains are not parallel. They are one chain: the evidence and rights kernel (9 points) produces canonical objects; the India vertical (8 points) is the universe of entities, events and exposure edges those objects describe; a canonical release is the signed manifest over them; and the four proof products (12 points) are what the EXISTING compiler emits from that release. 29 of 46 points run through one sequence, and its last stage is already built.",
+      "why_this_is_good_news_anyway": "The end of the chain is done and template-locked. src/evidence_outputs.py needs no model, invents no facts, and is waiting on input rather than on authorship. Nobody has to design the products; the work is upstream, where it was always going to be, and it is now known to be upstream rather than assumed to be four separate builds.",
+      "what_changes_in_planning": "Do not schedule the proof products as an independent tranche and do not promise them from a ceremony. Schedule the evidence kernel and the India vertical, and treat the release plus the compiler run as the short step that follows. The release-signer enrolment ceremony is still needed and still correct -- it is simply not sufficient on its own.",
+      "evidence_state": "focused_tested",
+      "review_state": "internal_only",
+      "authority_required": "founder_enrolment_ceremony_eventually; no authority blocks the upstream build",
+      "founder_minutes": 0,
+      "scoring_domain": "none_yet",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "Establishing a dependency is diagnosis. The 29 points along this chain are claimable once each stage exists and is accepted, each in its own domain and never twice.",
+      "blockers": [],
+      "next_safe_action": "Build the canonical-object emitters for real IGRM evidence, starting with the object types the India vertical needs, rather than anything further downstream."
     }
   ],
   "hostile_review_findings": [
