@@ -71,7 +71,17 @@ def test_a_payload_with_no_timestamp_anywhere_is_still_undatable(
     assert _status(tmp_path, monkeypatch, "thing.json") == "undatable"
 
 
-@pytest.mark.parametrize("key", freshness.TIMESTAMP_KEYS)
+def test_the_registered_key_set_is_exactly_these_three() -> None:
+    # Pinned as a literal on purpose. The parametrised version of the test
+    # below used to read freshness.TIMESTAMP_KEYS, so widening that tuple
+    # made the suite GROW BY A PASSING CASE instead of failing -- a suite
+    # that blesses whatever the constant becomes. The specific danger is
+    # `date`, which is MEASURED_DATE_FIELDS: the measurement clock this
+    # module's docstring forbids conflating with the write clock.
+    assert freshness.TIMESTAMP_KEYS == ("generated", "generated_at", "resolved_at")
+
+
+@pytest.mark.parametrize("key", ["generated", "generated_at", "resolved_at"])
 def test_every_registered_timestamp_key_works_from_the_top_level(
     tmp_path, monkeypatch, key: str
 ):
@@ -81,6 +91,42 @@ def test_every_registered_timestamp_key_works_from_the_top_level(
     assert _status(tmp_path, monkeypatch, "thing.json") == "fresh"
 
 
+@pytest.mark.parametrize("key", ["date", "target_date", "as_of", "updated"])
+def test_an_unregistered_key_does_not_date_a_payload(tmp_path, monkeypatch, key: str):
+    # The negative half of the contract. `date` and `target_date` are
+    # measurement fields; a measurement day is not a write instant, and
+    # letting one date a payload would report an old write as fresh.
+    _payload(tmp_path, "thing.json", {key: RECENT})
+    assert _status(tmp_path, monkeypatch, "thing.json") == "undatable"
+
+
+@pytest.mark.parametrize(
+    "meta",
+    [
+        {"generated": None},
+        {"generated": 20260816},
+        {"generated": "2026-08"},
+        ["corrupt"],
+        "corrupt",
+    ],
+)
+def test_a_malformed_meta_is_never_rescued_by_a_top_level_stamp(
+    tmp_path, monkeypatch, meta
+):
+    # The defect the first version of this change shipped. A _meta that is
+    # corrupt, or that claims a write instant it cannot honour, must stay
+    # undatable; the top-level fallback exists for payloads whose _meta
+    # claims no instant at all, never to paper over broken metadata.
+    _payload(tmp_path, "thing.json", {"_meta": meta, "generated_at": RECENT})
+    assert _status(tmp_path, monkeypatch, "thing.json") == "undatable"
+
+
+def test_a_short_top_level_string_does_not_date_a_payload(tmp_path, monkeypatch):
+    # The >= 10 guard, which a mutation survived before this test existed.
+    _payload(tmp_path, "thing.json", {"generated_at": "20260816"})
+    assert _status(tmp_path, monkeypatch, "thing.json") == "undatable"
+
+
 def test_a_non_string_top_level_value_does_not_date_a_payload(
     tmp_path, monkeypatch
 ):
@@ -88,16 +134,23 @@ def test_a_non_string_top_level_value_does_not_date_a_payload(
     assert _status(tmp_path, monkeypatch, "thing.json") == "undatable"
 
 
+@pytest.mark.live
 def test_the_real_receipt_identity_payload_is_now_datable() -> None:
     # The payload this change exists for, read from the committed tree.
+    # Marked live because it asserts on published payload state rather than
+    # code behaviour; unmarked, a payload shape change would turn the daily
+    # lane red on data instead of on code.
+    #
+    # Deliberately asserts only that the payload IS datable. An earlier
+    # version also asserted that _meta carries no timestamp key, which would
+    # have turned the correct future fix -- stamping _meta.generated the
+    # standard way -- into a failing test. A test must not pin the defect
+    # it was written to route around.
     from pathlib import Path
 
     root = Path(__file__).resolve().parents[1]
     path = root / "docs/data/receipt_identity.json"
-    document = json.loads(path.read_text(encoding="utf-8"))
-    assert "generated_at" in document, "top-level seal disappeared"
-    assert not any(k in (document.get("_meta") or {}) for k in freshness.TIMESTAMP_KEYS)
-    assert freshness._generated(path) == document["generated_at"][:10]
+    assert freshness._generated(path) is not None, "payload became undatable"
 
 
 def test_widening_did_not_move_any_other_payload(tmp_path, monkeypatch):

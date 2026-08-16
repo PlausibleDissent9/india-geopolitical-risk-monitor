@@ -228,12 +228,24 @@ def _generated(path: Path) -> str | None:
     if data is None:
         return None
     meta = data.get("_meta")
-    if isinstance(meta, dict):
+    if meta is not None and not isinstance(meta, dict):
+        # A _meta that is not an object is corruption, and corruption must
+        # stay loud. Falling through to the top level here would let a
+        # well-formed stamp bless a payload whose metadata is broken.
+        return None
+    if isinstance(meta, dict) and any(key in meta for key in TIMESTAMP_KEYS):
+        # _meta CLAIMS a write instant, so it is the authority and the only
+        # authority. If the claim is malformed -- null, a number, a truncated
+        # string -- the payload is undatable, exactly as before. Without this,
+        # a corrupt _meta.generated was quietly rescued by the top-level
+        # fallback below and a gate-failing payload read as fresh.
         for key in TIMESTAMP_KEYS:
             v = meta.get(key)
             if isinstance(v, str) and len(v) >= 10:
                 return v[:10]
-    # Then the same registered keys at the top level. receipt_identity.json
+        return None
+    # Only when _meta claims no write instant at all: the same registered
+    # keys at the top level. receipt_identity.json
     # seals its write instant as a top-level generated_at and carries only
     # constant strings in _meta, so a _meta-only lookup called it undatable
     # while the payload was in fact dated, sealed by payload_seal_sha256 and
@@ -420,7 +432,10 @@ def audit(today: date | None = None) -> list[dict[str, Any]]:
                     "payload": name,
                     "status": "undatable",
                     "max_age_days": limit,
-                    "reason": "no _meta.generated; add one",
+                    "reason": (
+                        "no readable write instant in _meta or at the top "
+                        "level; add generated, generated_at or resolved_at"
+                    ),
                 }
             )
             continue
@@ -500,10 +515,17 @@ def main() -> None:
                 "reader-visible effect are reported in status.json."
             ),
             "undatable_is_a_failure": (
-                "A payload with no _meta.generated cannot be audited by "
-                "anything, so it counts as a failure rather than a pass. "
-                "An auditor that skips what it cannot read is worse than "
-                "no auditor, because it reports green."
+                "A write instant is read from generated, generated_at or "
+                "resolved_at, taken from _meta when _meta declares one and "
+                "otherwise from the top level, so a payload that seals its "
+                "instant at the top level is dated rather than called "
+                "unreadable. A _meta that declares one of those keys is the "
+                "only authority for that payload: if its value is malformed "
+                "the payload stays undatable and is never rescued by a "
+                "top-level stamp. A payload nobody can date counts as a "
+                "failure rather than a pass. An auditor that skips what it "
+                "cannot read is worse than no auditor, because it reports "
+                "green."
             ),
             "default_max_age_days": DEFAULT_MAX_AGE_DAYS,
             "n_payloads": len(rows),
