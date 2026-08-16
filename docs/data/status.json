@@ -207,17 +207,16 @@
   }
  ],
  "final_publication": {
-  "target_date": "2026-08-14",
+  "target_date": "2026-08-15",
   "latest_finalized_date": "2026-08-14",
-  "status": "finalized",
-  "reason": "The exact D-1 finalized score is published.",
-  "finalized": true,
+  "status": "pipeline_failed",
+  "reason": "The exact D-1 candidate did not complete audit validation.",
+  "finalized": false,
   "provisional_substitution_allowed": false,
   "value_fields_published": false,
-  "source_receipt": {
-   "path": "data/raw/final_publication_receipts/2026-08-14.json",
-   "sha256": "c11de572eae05d3f73cbb4b10d61435316e045a1ee43aee4f0466d293d7255c1"
-  }
+  "source_receipt": null,
+  "failure_stage": "audit",
+  "reason_code": "audit_validation_failed"
  },
  "morning_contract": {
   "on_time": 0,
