@@ -3,13 +3,13 @@
   "what": "Weekly press salience per chokepoint sub-dictionary against IMF PortWatch transit calls, each as a percentile of its own 2019-present weekly history. This is a descriptive comparison, not a disruption, causal, probability, or exposure estimate.",
   "manifest_version": "1.0.0",
   "partial": false,
-  "generated": "2026-08-09",
+  "generated": "2026-08-17",
   "knowledge_cutoff": "2026-07-27",
   "week_rule": "Monday-labelled W-MON weekly means; absent joint weeks are omitted, never interpolated",
   "transform_version": "weekly-percentile-v1.2.0",
   "transform": {
    "implementation": "src/chokepoints.py",
-   "implementation_sha256": "54821adef56f8a54998361baa51c6dcf8dc4669a01aecbd90eb42f0dfa124aec",
+   "implementation_sha256": "5b8eaf08df0a27db739db195f5d751428425f1b2bab281e25ca80e9a7729bc86",
    "dictionary": "dictionaries.json shipping.chokepoints",
    "dictionary_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40"
   },
@@ -23,12 +23,12 @@
     "rights": {
      "source_id": "gdelt_doc_api",
      "provider": "The GDELT Project",
-     "decision_state": "review_required",
-     "decision_id": "pending:gdelt_doc_api",
-     "signer_id": null,
-     "decision_artifact_sha256": null,
-     "reviewed_on": null,
-     "terms_url": null
+     "decision_state": "approved",
+     "decision_id": "rights:gdelt_doc_api:receipt-identity-1.0:2026-08-15",
+     "signer_id": "human:igrm-ngram-rights-reviewer",
+     "decision_artifact_sha256": "7efd5bc620295782fca0600e468886fb49907e662f07cdf2db6a6792085a9031",
+     "reviewed_on": "2026-08-15",
+     "terms_url": "https://www.gdeltproject.org/about.html"
     }
    },
    "transits": {
@@ -47,7 +47,7 @@
     }
    }
   },
-  "rights_registry_sha256": "970268fb437ea3f54ad3c4943ca2bc20343d1c4a2408fbbbaf6d3f3f325767a2",
+  "rights_registry_sha256": "c77837e6432abafbc160c385cd3931d8e2c6fddb0c9cfd1fa78bd77588334486",
   "license": "CC BY 4.0 for IGRM-authored derived percentiles and metadata; upstream provider terms govern source data",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
