@@ -117,7 +117,12 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
         timeout-minutes: 15
-        run: python -m src.fetch_events --update 5
+        # 780s, two minutes inside the step cap. Worst case here is
+        # 5*(3*120 + 30 + 1) = 32.6 min, so on a slow CDN day this stops
+        # with the days it landed saved rather than being SIGKILLed with
+        # nothing reported. Days are independent, so an early stop leaves
+        # the rest in _missing_days for the next run.
+        run: python -m src.fetch_events --deadline-seconds 780 --update 5
       - name: PortWatch chokepoint transits (V2, IMF ArcGIS, ~2 requests)
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true

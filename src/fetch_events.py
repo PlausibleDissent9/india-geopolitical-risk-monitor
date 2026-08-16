@@ -318,7 +318,21 @@ def _missing_days(rows: dict[str, dict] | None = None) -> list[date]:
     return out
 
 
-def run(days: list[date]) -> int:
+def run(days: list[date], deadline_monotonic: float | None = None) -> int:
+    """Fetch each day, banking progress, and stop cleanly on a deadline.
+
+    daily.yml caps this step at 15 minutes. The worst case here is
+    5 * (3*TIMEOUT_S + 5 + 10 + 15 + SLEEP_S) = 32.6 minutes, so on a slow
+    day the step is SIGKILLed and the run reports nothing. A deadline turns
+    that into a stop with the store saved and the day count printed.
+
+    UNLIKE src/chokepoints.py, stopping early here is SAFE and needs no
+    refusal. Days are independent: each one either lands whole or is
+    skipped, _download returns None rather than half a file, and
+    _missing_days finds anything absent on the next run. This loop already
+    banks every 25 days for exactly that reason. Refusing to save what
+    landed would throw away good days to punish a slow network.
+    """
     national = _load_keyed(STORE)
     dyads = _load_grouped(STORE_DYADS)
     states = _load_grouped(STORE_STATES)
@@ -329,7 +343,15 @@ def run(days: list[date]) -> int:
         _save(STORE_DYADS, FIELDS_DYADS, dyads)
         _save(STORE_STATES, FIELDS_STATES, states)
 
+    stopped_early = False
     for i, day in enumerate(days):
+        if deadline_monotonic is not None and time.monotonic() >= deadline_monotonic:
+            # Do not start another day. Whatever landed is saved below and
+            # the rest stay in _missing_days for the next run.
+            stopped_early = True
+            print(f"[events] deadline reached with {len(days) - i} day(s) "
+                  "unfetched; saving what landed")
+            break
         result = compute_day(day)
         if result is None:
             continue
@@ -352,24 +374,30 @@ def run(days: list[date]) -> int:
             time.sleep(SLEEP_S)
     save_all()
     print(f"[events] store has {len(national)} days "
-          f"({len(_missing_days(national))} incomplete)")
+          f"({len(_missing_days(national))} incomplete)"
+          + (" [stopped on deadline]" if stopped_early else ""))
     return done
 
 
 def main() -> None:
     args = sys.argv[1:]
+    deadline = None
+    if "--deadline-seconds" in args:
+        idx = args.index("--deadline-seconds")
+        deadline = time.monotonic() + float(args[idx + 1])
+        args = args[:idx] + args[idx + 2:]
     if args and args[0] == "--update":
         n = int(args[1]) if len(args) > 1 else 5
         recent = [d for d in _missing_days()
                   if d >= date.today() - timedelta(days=n + PUBLISH_LAG_DAYS)]
-        run(recent)
+        run(recent, deadline_monotonic=deadline)
     elif args and args[0] == "--backfill":
         n = int(args[1]) if len(args) > 1 else 200
-        run(_missing_days()[:n])
+        run(_missing_days()[:n], deadline_monotonic=deadline)
     elif args:
-        run([date.fromisoformat(args[0])])
+        run([date.fromisoformat(args[0])], deadline_monotonic=deadline)
     else:
-        print("usage: fetch_events [--update N | --backfill N | YYYY-MM-DD]")
+        print("usage: fetch_events [--deadline-seconds S] [--update N | --backfill N | YYYY-MM-DD]")
         raise SystemExit(2)
 
 
