@@ -594,6 +594,26 @@
       "what_was_deliberately_not_done": "The repair is a reorder of the 06:00 contract lane. assistant_answers records a source_sha256 of the payloads it cites and must follow the last rewrite, while world_state, event_ledger, evolution_engine and product_catalog currently run after IT. morning.yml cannot be rehearsed end to end locally and a wrong reorder means no publish at 06:00. Left for the founder rather than attempted unattended at 04:30.",
       "my_own_error_inside_the_fix": "The first MORNING_UNSTAMPED was built from a hand-rolled 'writes a payload' regex rather than the module's own WRITES_PAYLOAD, and got the membership wrong in both directions -- listed provenance, missed world_state. Caught by the test failing on a clean tree. Same re-derivation error as the gate lock two commits earlier, made while writing the fix for it.",
       "self_assessment": "No points. One repair of my own regression, one ratchet, one defect handed over unfixed and named."
+    },
+    {
+      "entry_id": "2026-08-17/every-scheduled-daily-run-red-since-august-12",
+      "workstream": "diagnosis_and_repair",
+      "milestone": "Root cause of the stale derived plane: two lanes, one publish cursor",
+      "owner": "claude",
+      "clean": true,
+      "evidence_state": "focused_tested",
+      "admissible_points": 0,
+      "budget_line": "none:engineering_time_only",
+      "commit_sha": "4409126adb0c8325e30d34016731a0a50bf902ac",
+      "the_symptom_the_founder_reported": "Stale article sources and stale payloads, alongside a site that was itself current. Both halves were true at once, which is why it went five days without diagnosis.",
+      "the_mechanism": "morning.yml publishes the 06:00 contract; daily.yml refreshes the derived plane. daily.yml's Run pipeline step asked src.run_daily to publish D-1 unconditionally. require_ordered_target demands the exact next UNPUBLISHED day before UTC D0. So on every day the contract lane SUCCEEDED, daily.yml found nothing to publish and raised final_target_invalid. GitHub then skipped every step after it.",
+      "measured": "Run 31975757637: 20 steps succeeded, 1 failed, 27 skipped. The skipped set includes step 23 Derived lanes, step 26 Freshness audit, step 40 Stamp universal _meta on every payload, and step 42 Machine answers. The commit step logged 'refusing every derived docs change' and banked raw evidence only. Every scheduled daily-update run has concluded failure since 2026-08-12; morning.yml's 01:12 UTC schedule on 08-16 succeeded.",
+      "why_it_stayed_hidden": "The product looked right. igrm.in served 2026-08-15 finalized throughout, because the contract lane was green. A chronically red lane beside a healthy public artifact reads as a nuisance rather than as the reason a whole plane stopped refreshing.",
+      "the_pattern": "Fourth occurrence in this repo of a gate asserting the world is already good and thereby blocking the work that keeps it good. The three earlier ones are recorded at the publisher, the receipt predecessor and the derived-data plane. This is the cross-lane variant: two lanes share one 'next unpublished day' cursor, whichever runs first consumes it, and the second fails by design.",
+      "the_fix": "Ask --next-target, an already-supported flag, and treat 'none' as skip-and-continue rather than an error. --target is now the value require_ordered_target actually demands rather than a blind D-1: identical when they agree, and when they differ D-1 could only ever have failed, so a backlog now walks forward one ordered day at a time instead of wedging.",
+      "verification": "Locked behaviourally, not by text match: the test extracts the real step body from the workflow, substitutes what GitHub substitutes, and executes it against a stubbed python. Mutation-tested with one-token changes -- `if false` (pre-fix, never skip) fails exactly the regression test; `if true` (always skip) fails exactly the two publish tests. ruff 0, mypy 0, 56 passed. A first attempt at the removal mutant mangled the YAML and was discarded rather than counted, caught by the suite's own shell-validity test.",
+      "unverified_at_time_of_writing": "A dispatched run on this commit is in flight to confirm the 27 steps now execute and the job goes green. The claim that the fix works is not yet earned.",
+      "self_assessment": "No points. This is the diagnosis the founder asked for on the first message of the session, arrived at after three of my own defects were cleared out of the way first."
     }
   ],
   "hostile_review_findings": [
