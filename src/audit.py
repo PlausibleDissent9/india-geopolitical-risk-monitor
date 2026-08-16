@@ -47,8 +47,14 @@ def main() -> None:
     latest = json.loads((DATA / "latest.json").read_text())
     if latest.get("composite") is not None:
         scores = [c["score"] for c in latest["channels"].values()]
+        # Same rounded-inputs bound as the gauge below: the composite is
+        # rounded from the UNROUNDED channel mean while this recompute
+        # averages the five already-rounded published scores, so honest
+        # arithmetic can differ by up to ~0.10. TOL refused the green
+        # 2026-08-15 final at 47.8 vs mean 47.74 (run 31919051691) and
+        # cost the 06:00 IST contract that morning.
         ok = (all(s is not None for s in scores)
-              and abs(float(np.mean(scores)) - latest["composite"]) <= TOL)
+              and abs(float(np.mean(scores)) - latest["composite"]) <= 0.101)
         _fail(failures, ok,
               f"latest composite {latest['composite']} == mean(channels) "
               f"{round(float(np.mean([s for s in scores if s is not None])), 2)}")
