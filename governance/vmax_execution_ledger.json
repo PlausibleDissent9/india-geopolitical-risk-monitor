@@ -508,6 +508,34 @@
         "The product compiler refuses a release with no events."
       ],
       "next_safe_action": "Put the event-coding choice to the methods reviewer as the first question, since it gates 12 points and is exactly the kind of decision an independent methodologist should make rather than an implementer."
+    },
+    {
+      "entry_id": "2026-08-17/chokepoint-step-cap-is-smaller-than-its-own-worst-case",
+      "workstream": "diagnosis",
+      "milestone": "The daily lane's 15 wasted minutes explained by arithmetic rather than guessed at",
+      "owner": "claude",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "observation": "Daily run 31965802847 logged: the action 'Chokepoint salience tail + divergence JSON (V2-4, ~4 requests)' has timed out after 15 minutes. It is continue-on-error, so it did NOT fail the run -- the run failed on a gate syntax error I introduced separately. What it does is burn a quarter hour and refresh nothing, leaving chokepoints.json among the stale payloads.",
+      "the_arithmetic": "src/fetch_gdelt.py sets TIMEOUT_S=420 (7 minutes per request, deliberately generous because a multi-year timelinevol query takes GDELT minutes to compute and a read timeout means accepted-and-working), SLEEP_S=15 between requests, and RETRIES=6. The step fetches about 4 channels. Floor if each channel times out once: 4*(420+15) = 1740s = 29.0 minutes. Two slow channels alone are 14.5 minutes. Worst case with the retry budget on a single channel: 43.5 minutes. The step cap is 15.",
+      "diagnosis": "The cap is smaller than the module's own worst case by roughly a factor of two, so the step cannot complete on any day GDELT is slow. This is not a mystery failure; it is a cap that was never derived from the bounds of the code it caps -- the same defect morning.yml documents having made three times before someone wrote the arithmetic down.",
+      "why_i_did_not_just_raise_it": "morning.yml's own comment says it: the right fix is a cheaper gate, not a bigger cap, and the third raise 'should be the last one that works by arithmetic rather than by fixing the cause'. Raising this to 30 minutes lengthens a lane that already runs an hour, to protect a comparison payload that never enters the composite. The options are a real trade and should be chosen with the numbers visible, not by an agent picking one at 2am.",
+      "options": [
+        "Raise the step cap to 30 minutes and accept a longer daily lane.",
+        "Pass a reduced per-request timeout for this lane only, since a 14-day tail merge does not need the 7-minute ceiling that a 3,447-day backfill does.",
+        "Give the module a wall-clock deadline it respects internally, so it returns partial-and-honest instead of being killed mid-request.",
+        "Leave it. The step is continue-on-error, the payload never enters the composite, and 15 minutes of a nightly lane is a cheap price for not touching a working publish path."
+      ],
+      "evidence_state": "focused_tested",
+      "review_state": "internal_only",
+      "authority_required": "none_technically; a decision about lane duration",
+      "founder_minutes": 0,
+      "scoring_domain": "none_yet",
+      "potential_points": 0,
+      "admissible_points": 0,
+      "non_double_counting": "Diagnosis.",
+      "blockers": [],
+      "next_safe_action": "Choose an option with the arithmetic in view. Option 3 is the only one that fixes the cause rather than the symptom."
     }
   ],
   "hostile_review_findings": [
