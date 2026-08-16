@@ -576,6 +576,24 @@
       "commit_sha": "6f66f50cf1b2710d06efeb099d9f8ba96ced6c04",
       "evidence_state": "focused_tested",
       "admissible_points": 0
+    },
+    {
+      "entry_id": "2026-08-17/the-codebook-promise-is-false-on-the-lane-that-ships",
+      "workstream": "hardening",
+      "milestone": "morning.yml stamps before it writes; nine payloads ship unattributed",
+      "owner": "claude",
+      "clean": true,
+      "evidence_state": "focused_tested",
+      "admissible_points": 0,
+      "budget_line": "none:engineering_time_only",
+      "commit_sha": "64a1ec70592c255effee463113d5536fcaa9ed3b",
+      "how_it_was_found": "Chasing my own regression. 492bbaa had overwritten docs/data/chokepoints.json with a one-stage build that dropped _meta.citation, _meta.codebook and _meta.source; the measurements were byte-identical, only the attribution was gone. Asking what SHOULD have caught that led to stamp_meta.audit(), which reports nine payloads on main with none of license, citation, codebook or source.",
+      "the_structural_finding": "test_stamp_meta_runs_after_every_payload_writer reads WORKFLOWS/'daily.yml' by name, so the invariant has never been evaluated for any other lane. Run against daily.yml the after-stamp set is empty. Run against morning.yml it is nine: blind_spot, episode_actors, event_ledger, evolution_engine, exposure, monthly, predictability, publish_shares, world_state. morning.yml stamps at step 6 of 24 and its Derived lanes block rewrites payloads afterwards. morning.yml is the lane that publishes the 06:00 contract, so the unstamped payloads are the ones that ship.",
+      "why_no_gate_caught_it": "The check that would catch it, test_the_live_site_keeps_the_codebook_promise, exists and is correct, but is marked @pytest.mark.live. Both the publish gate and daily.yml step 6 run pytest with -m 'not live'. The marker's documented purpose is to exclude assertions that can go spuriously red when a weekly lane runs a day late; this assertion reads docs/data/*.json off disk with no clock and no network, so it can never be spuriously red, and it is excluded anyway.",
+      "what_was_done": "A ratchet, not the fix: the after-stamp set may shrink, never grow, and a second test fails once it empties so the ratchet is removed deliberately. Mutation-tested both directions.",
+      "what_was_deliberately_not_done": "The repair is a reorder of the 06:00 contract lane. assistant_answers records a source_sha256 of the payloads it cites and must follow the last rewrite, while world_state, event_ledger, evolution_engine and product_catalog currently run after IT. morning.yml cannot be rehearsed end to end locally and a wrong reorder means no publish at 06:00. Left for the founder rather than attempted unattended at 04:30.",
+      "my_own_error_inside_the_fix": "The first MORNING_UNSTAMPED was built from a hand-rolled 'writes a payload' regex rather than the module's own WRITES_PAYLOAD, and got the membership wrong in both directions -- listed provenance, missed world_state. Caught by the test failing on a clean tree. Same re-derivation error as the gate lock two commits earlier, made while writing the fix for it.",
+      "self_assessment": "No points. One repair of my own regression, one ratchet, one defect handed over unfixed and named."
     }
   ],
   "hostile_review_findings": [
