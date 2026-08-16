@@ -483,6 +483,31 @@
       "blockers": [
         "No registered coding rule maps a headline to an event_class."
       ]
+    },
+    {
+      "entry_id": "2026-08-17/the-compiler-is-event-centric",
+      "workstream": "diagnosis",
+      "milestone": "The real precondition for the four proof products, verified in code",
+      "owner": "claude",
+      "clean": true,
+      "budget_line": "none:engineering_time_only",
+      "correction": "I told the founder twice that four real proof products were one enrolment and one signature away. That is wrong. src/evidence_outputs.py refuses with output_event_not_in_release unless the event_id it is given exists in the release, and it then projects exposure FROM that event TO a target entity. The compiler is event-centric: a product set is compiled about a specific event, not about a graph in general. Our release contains zero events, so signing it would produce nothing.",
+      "what_i_got_right_and_wrong": "Two separate claims got tangled. A canonical RELEASE genuinely does not need events -- the schema sets every per-type count minimum to zero and our unsigned release validates but for the signature. That part of the correction stands. The four PRODUCTS do need an event, which was my original position before I overturned it. Both halves were half right, and only reading the compiler settled it.",
+      "the_true_precondition": "Four proof products require, in order: a registered coding rule that maps something to an event_class; events emitted under it; exposure edges from those events to target entities; then the release, the enrolment and the signature. The coding rule is a methodology decision, so the binding constraint on the largest scoring domain is a decision, not a ceremony and not engineering.",
+      "what_the_current_release_is_still_good_for": "It is a real, sealed, schema-conformant canonical release lacking only a signature, over 15 evidence items, 15 entities and a universe that states its own denominator and its dark channels. It is exactly the artifact an independent reviewer can be handed to check the evidence and rights chain end to end, and it is the thing the enrolment ceremony exists to sign. It simply is not yet an input the product compiler will accept.",
+      "founder_impact": "Do not spend a signature expecting products. The enrolment ceremony is still worth doing when convenient, because it unblocks the release and the offline bundle, but the products wait on the event coding decision.",
+      "evidence_state": "focused_tested",
+      "review_state": "internal_only",
+      "authority_required": "methodology_decision_on_event_coding",
+      "founder_minutes": 0,
+      "scoring_domain": "four_proof_products",
+      "potential_points": 12,
+      "admissible_points": 0,
+      "non_double_counting": "Correcting a precondition is diagnosis.",
+      "blockers": [
+        "The product compiler refuses a release with no events."
+      ],
+      "next_safe_action": "Put the event-coding choice to the methods reviewer as the first question, since it gates 12 points and is exactly the kind of decision an independent methodologist should make rather than an implementer."
     }
   ],
   "hostile_review_findings": [
