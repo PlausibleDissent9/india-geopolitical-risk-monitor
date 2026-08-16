@@ -23,7 +23,12 @@ import sys
 from pathlib import Path
 from typing import Any, NoReturn
 
-from src import canonical_objects, entity_emitter, evidence_emitter
+from src import (
+    canonical_objects,
+    entity_emitter,
+    evidence_emitter,
+    universe_emitter,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_VERSION = "1.0.0"
@@ -81,8 +86,14 @@ def build_manifest(object_dir: str = "canonical") -> dict[str, Any]:
     """One unsigned manifest over every emitted object, sealed but unsigned."""
     evidence = evidence_emitter.build_records()
     entities = entity_emitter.build_records()
+    universe = universe_emitter.build_record()
     emitted: list[tuple[str, dict[str, Any]]] = (
-        [("evidence_item", r) for r in evidence] + [("entity", r) for r in entities]
+        [("evidence_item", r) for r in evidence]
+        + [("entity", r) for r in entities]
+        # The universe release states the graph's own boundaries, so a
+        # reader learns what was in scope from the release rather than
+        # inferring it from what happens to be present.
+        + [("universe_release", universe)]
     )
     if not emitted:
         # objects has minItems 1; an empty release would be a claim that the
@@ -92,7 +103,11 @@ def build_manifest(object_dir: str = "canonical") -> dict[str, Any]:
     objects: list[dict[str, Any]] = []
     counts = dict.fromkeys(OBJECT_TYPES, 0)
     for object_type, record in emitted:
-        identity = record["evidence_id" if object_type == "evidence_item" else "entity_id"]
+        identity = record[{
+            "evidence_item": "evidence_id",
+            "entity": "entity_id",
+            "universe_release": "universe_release_id",
+        }[object_type]]
         raw = (json.dumps(record, indent=1, sort_keys=True, ensure_ascii=False)
                + "\n").encode("utf-8")
         objects.append({

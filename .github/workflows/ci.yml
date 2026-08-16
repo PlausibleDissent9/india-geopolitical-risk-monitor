@@ -43,6 +43,7 @@ jobs:
         run: |
           python -m src.evidence_emitter --check
           python -m src.entity_emitter --check
+          python -m src.universe_emitter --check
           python -m src.release_assembler --check
       - name: Knowledge replay synthetic conformance artifact is current
         run: python -m src.knowledge_replay_fixture && git diff --exit-code -- docs/data/knowledge_replay_demo.json

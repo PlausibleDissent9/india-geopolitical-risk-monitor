@@ -118,3 +118,32 @@ def test_an_unapproved_source_refuses(monkeypatch) -> None:
     with pytest.raises(release_assembler.ReleaseAssemblerError) as excinfo:
         release_assembler.build_manifest()
     assert excinfo.value.code == "release_source_not_approved"
+
+
+def test_the_release_carries_its_own_universe(manifest) -> None:
+    # A release that does not say what was in scope leaves a reader to
+    # infer the universe from whatever happens to be present, which is how
+    # a partial sample gets read as a complete one.
+    assert manifest["counts"]["universe_release"] == 1
+    universes = [o for o in manifest["objects"]
+                 if o["object_type"] == "universe_release"]
+    assert len(universes) == 1
+
+
+def test_the_universe_states_the_channels_it_could_not_see(manifest) -> None:
+    from src import universe_emitter
+
+    record = universe_emitter.build_record()
+    payload = json.loads(
+        (ROOT / "docs/data/receipt_identity.json").read_text(encoding="utf-8")
+    )
+    unavailable = [n for n, b in payload["channels"].items()
+                   if b.get("state") != "available"]
+    for name in unavailable:
+        assert name in record["denominator_definition"], (
+            f"{name} was unavailable and the denominator must say so; a "
+            "partial view that reads as complete is the failure this "
+            "object exists to prevent"
+        )
+    for forbidden in ("share of Indian press", "share of coverage"):
+        assert forbidden in record["denominator_definition"]
