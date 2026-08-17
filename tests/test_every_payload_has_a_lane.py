@@ -279,6 +279,45 @@ def test_the_morning_lane_gap_does_not_grow():
         "stamp_meta.universal_fields() itself.")
 
 
+def _writers_after_step(workflow: str, step_name_prefix: str) -> set[str]:
+    text = (WORKFLOWS / workflow).read_text(encoding="utf-8")
+    lines = text.splitlines()
+    start = next((n for n, line in enumerate(lines)
+                  if line.startswith(f"      - name: {step_name_prefix}")), None)
+    assert start is not None, f"{workflow} has no step named {step_name_prefix!r}"
+    below = "\n".join(lines[start:])
+    writers = {p.stem for p in SRC.glob("*.py")
+               if WRITES_PAYLOAD.search(p.read_text(encoding="utf-8"))}
+    return {m for m in re.findall(r"python -m src\.(\w+)", below)
+            if m in writers and m not in ("audit", "make_datapack", "freshness")}
+
+
+def test_the_freshness_audit_really_does_run_last():
+    """Its own comment said so, and had quietly stopped being true.
+
+    "Runs last among the enrichment lanes, so it audits what this run
+    actually produced" was accurate when written. Steps kept being
+    appended after it -- tone, aptness, forecasts, alerts, episode
+    themes, the expert shelf, the precision auditor, the per-sector
+    feeds, status -- so it audited payloads this run had not written yet
+    and failed the lane on their staleness. Being fail-loud, it then
+    skipped the 18 steps below it, including those very writers.
+
+    Run 31979586398: 33 payloads reported stale, at least 25 of them
+    written after this step. The audit was the reason its own complaint
+    stayed true.
+
+    A comment cannot notice a step appended beneath it. This can.
+    """
+    after = _writers_after_step("daily.yml", "Freshness audit")
+    assert not after, (
+        f"these payload writers run AFTER the freshness audit: "
+        f"{sorted(after)}. The audit will report their previous run's "
+        "output as stale and, being fail-loud, skip the steps that would "
+        "refresh it. Move the audit below them -- it is safe after the "
+        "_meta stamp, which never touches _meta.generated.")
+
+
 def test_the_morning_ratchet_is_removed_once_it_is_earned():
     """Fail when the gap closes, so the ratchet above is deleted
     deliberately rather than left behind asserting nothing."""
