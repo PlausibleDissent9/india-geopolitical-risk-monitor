@@ -311,7 +311,23 @@ jobs:
               # must not cost the derived lanes below, which is the
               # ordering mistake this file has already paid for twice
               # tonight.
-              IGRM_OFFLINE=1 timeout 20m python -m src.run_daily --derived-only \
+              # NO IGRM_OFFLINE here, unlike every other run_daily call in
+              # this file, and the difference is the whole reason the step
+              # works. data/raw/prices.csv and derived_returns.csv are
+              # GITIGNORED -- Yahoo-derived, never committed -- so they do
+              # not exist on a fresh runner. With IGRM_OFFLINE set,
+              # fetch_markets.load_or_update raises
+              # OfflineMarketDataUnavailable rather than fetching, and this
+              # step would fail on every run while looking like a fix.
+              # (Written that way first; caught by checking whether the
+              # file it depends on is tracked, which it is not.)
+              #
+              # Dropping the flag is safe HERE and only here: --derived-only
+              # reads the GDELT store with pd.read_csv and never calls
+              # fetch_gdelt, so the only fetch it enables is the market one
+              # it needs. On the publish branch below IGRM_OFFLINE is load
+              # bearing for GDELT determinism and must stay.
+              timeout 20m python -m src.run_daily --derived-only \
                 || echo "::warning::event study refresh failed; continuing to the derived lanes"
             else
               IGRM_OFFLINE=1 timeout 30m python -m src.run_daily \
