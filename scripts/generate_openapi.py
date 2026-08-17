@@ -373,6 +373,28 @@ def build_datasheet() -> str:
             f"- Source: {f['source']} (via docs/data/negative_results.json)",
             "",
         ]
+
+    # The upstream attribution is EMITTED here rather than hand-appended
+    # to docs/datasheet.md. It was hand-appended once, on 2026-08-17,
+    # and the consequence is the reason for this comment: the generator
+    # stripped it on the next run, so the datasheet named GDELT eleven
+    # times and linked it zero times again -- the exact licence breach
+    # the edit was made to close. A generated file only keeps what its
+    # generator produces; editing the output is a promise with a
+    # deadline on it. tests/test_upstream_attribution.py asserts the
+    # link is present, tests/test_openapi.py asserts the file matches
+    # this function, and only emitting it here satisfies both at once.
+    out += [
+        "",
+        "> Derived from datasets released by [The GDELT Project]"
+        "(https://www.gdeltproject.org/).",
+        "> GDELT grants unlimited use on one condition — that any use of "
+        "the data cite",
+        "> the GDELT Project and link https://www.gdeltproject.org/ — and "
+        "this notice",
+        "> exists to meet it. Full upstream attribution is in the "
+        "[codebook](codebook.html).",
+    ]
     return "\n".join(out).rstrip() + "\n"
 
 

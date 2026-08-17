@@ -84,9 +84,23 @@ def test_the_page_renders_the_payload_and_nothing_else():
     counts = re.search(r'id="counts"[^>]*>([^<]*)<', page)
     assert counts and not re.search(r"\d", counts.group(1))
     assert 'http-equiv="Content-Security-Policy"' in page
-    assert "https://" not in re.sub(
-        r'href="https://igrm\.in/ask\.html"', "", page).replace(
-        "https://igrm.in", ""), "external origin on a self-hosted page"
+    # Self-hosted-only, enforced against an EXACT allowlist rather than
+    # by stripping prefixes. The prefix form -- .replace("https://igrm.in",
+    # "") -- also silently accepted https://igrm.in.example.com/evil.js,
+    # which is the one string this assertion most needs to reject.
+    #
+    # GDELT's link is on the list because its terms grant unlimited use
+    # on a single condition: that any USE of the data cite the GDELT
+    # Project and link https://www.gdeltproject.org/. IGRM is built on
+    # GDELT, so the condition binds this page, and a licence obligation
+    # outranks a self-imposed layout rule. The accommodation is one exact
+    # URL, not a relaxation to "any external origin": pulling in
+    # third-party content or linking out to unaudited claims -- what the
+    # rule was written to prevent -- is still refused.
+    ALLOWED = {"https://igrm.in/ask.html", "https://www.gdeltproject.org/"}
+    origins = set(re.findall(r"https://[^\"'<> ]*", page))
+    assert origins <= ALLOWED, (
+        f"external origin on a self-hosted page: {sorted(origins - ALLOWED)}")
 
 
 def test_the_page_is_in_the_sitemap():
