@@ -98,6 +98,36 @@ jobs:
         #
         # The live assertions are not lost: ci.yml runs them on every push to
         # main, where a stale site is an alert rather than a lock.
+        #
+        # 2026-08-17: THE SAME SHAPE, WITHOUT A LIVE ASSERTION IN SIGHT.
+        # A direct push to main (4654941) added a workflow, which
+        # regenerated data/security_integrity.json, which
+        # docs/data/public_api_byte_manifest.json pins by digest. The
+        # manifest was not re-derived, so main carried a stale pin and
+        # this step went red -- and this step is a FULL suite run, so it
+        # ran the manifest's consistency tests, failed, and killed the
+        # lane at step 6 of 47.
+        #
+        # The repair already exists and was already automatic:
+        # scripts/publish_push.sh calls refresh_public_api_byte_manifest
+        # after the rebase and BEFORE the gate, so any lane reaching its
+        # publish step heals a stale manifest by itself. No lane reached
+        # its publish step. The ex-ante gate stops the run twenty-odd
+        # steps before the code that would have fixed the thing the gate
+        # is complaining about.
+        #
+        # That is the same deadlock as the live-freshness one above,
+        # relocated: an assertion that the tree is ALREADY consistent,
+        # placed ahead of the work that makes it consistent. It is
+        # recorded rather than fixed because the ex-ante gate is load
+        # bearing -- it is what stops this lane computing for forty
+        # minutes on a tree that cannot publish -- and moving it is a
+        # publish-path change that wants its own review and its own
+        # mutation test, not a 3am edit inside an outage. What removes
+        # the trigger entirely is not pushing to main outside
+        # publish_push.sh; when that is unavoidable, run the full
+        # -m "not live" suite first, which is exactly the check that
+        # caught this one.
         run: python -m pytest -q -m "not live"
       - name: Acquire exact finalized target (maintainer-sanctioned bridge)
         id: final_source
