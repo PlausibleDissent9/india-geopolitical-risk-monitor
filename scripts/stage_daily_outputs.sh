@@ -21,6 +21,29 @@ fi
 if [ "$JOB_STATUS" = "success" ]; then
   git add data/raw || true
   git add docs notes-inbox .trigger || true
+  # The forecast question registry, named EXACTLY and not as `validation/`.
+  #
+  # src.forecasts runs in this lane and only this lane, and it writes
+  # validation/forecast_questions.json to "ensure the NEXT Monday's
+  # questions exist (commit-before-open)". Nothing staged it. Two
+  # consequences, and the second is the serious one:
+  #
+  #   1. The unstaged file left the tree dirty, so publish_push.sh
+  #      correctly refused before the rebase and the whole daily publish
+  #      died -- run 32069493627, after all 48 steps had otherwise run.
+  #   2. The registry has 5 questions, all for window_start 2026-08-10.
+  #      That is the founder-signed launch commit and nothing since. Every
+  #      Monday after it was generated inside a runner and discarded. The
+  #      V11 experiment's entire warrant is that a question is COMMITTED
+  #      before its window opens; a question that never reaches a commit
+  #      is not pre-registered, it is just arithmetic.
+  #
+  # Named as one path rather than `git add validation`, deliberately.
+  # validation/ also holds frozen registrations and signed records, and
+  # sweeping those into an automated publish is exactly how a
+  # methodology change disappears -- the hazard publish_push.sh refuses
+  # to guess about. This lane writes one file there; it stages that file.
+  git add validation/forecast_questions.json || true
   echo "[daily-stage] complete job: raw inputs and derived outputs staged"
   exit 0
 fi
