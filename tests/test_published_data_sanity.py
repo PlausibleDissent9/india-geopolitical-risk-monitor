@@ -1,5 +1,19 @@
 """Invariants on what the site actually serves.
 
+THESE NO LONGER CARRY @pytest.mark.live (2026-08-17), and the reason is
+in the paragraph below: this file exists because wiki_hindi.json shipped
+bare NaN for an hour. Marked live, every one of these was excluded from
+the publish gate by `-m "not live"`, so the file could not prevent the
+exact defect it was written for.
+
+The marker means "asserts on the CURRENT state of published payloads",
+and it exists so a weekly lane running a day late cannot block a correct
+publish. That rationale is about RECENCY. Nothing here is about recency:
+valid JSON, a percentile inside 0-100, a non-negative share and a
+headline day not in the future are true or false regardless of when the
+lane last ran, they read committed bytes with no network call, and all
+six passed at the moment the marker was removed.
+
 Two classes of defect this catches, both found in this project rather
 than imagined:
 
@@ -41,7 +55,6 @@ def _payloads():
     return sorted(SITE_DATA.glob("*.json"))
 
 
-@pytest.mark.live
 def test_every_payload_is_strictly_valid_json():
     """Python's json accepts NaN; the JSON spec does not, and neither
     does Go, Rust, or a browser's JSON.parse. A payload that only
@@ -55,7 +68,6 @@ def test_every_payload_is_strictly_valid_json():
     assert not broken, f"payloads no strict JSON parser can read: {broken}"
 
 
-@pytest.mark.live
 def test_latest_scores_are_percentiles():
     d = _strict(SITE_DATA / "latest.json")
     for ch, blk in d["channels"].items():
@@ -68,7 +80,6 @@ def test_latest_scores_are_percentiles():
             assert 0 <= v <= 100, f"latest {key} {v} is not a percentile"
 
 
-@pytest.mark.live
 def test_history_series_stay_in_range_and_align():
     d = _strict(SITE_DATA / "history.json")
     dates = d["dates"]
@@ -83,7 +94,6 @@ def test_history_series_stay_in_range_and_align():
         assert not bad, f"history {name} has non-percentile values: {bad[:5]}"
 
 
-@pytest.mark.live
 def test_shares_are_non_negative_percentages():
     """A share of a corpus cannot be negative, and a channel taking more
     than the whole corpus would mean the denominator broke."""
@@ -104,7 +114,6 @@ def test_shares_are_non_negative_percentages():
             assert v <= 100, f"{r['date']} {ch} share exceeds corpus: {v}"
 
 
-@pytest.mark.live
 def test_the_headline_day_is_not_in_the_future():
     """A published day ahead of the clock means a date-handling bug, and
     it would be quoted before anyone noticed."""
@@ -116,7 +125,6 @@ def test_the_headline_day_is_not_in_the_future():
         f"latest.json publishes {day}, which is in the future")
 
 
-@pytest.mark.live
 def test_monthly_refusals_never_carry_values():
     """Pinned in its own module's tests too; repeated here against the
     served artifact, because that is what a user downloads."""
