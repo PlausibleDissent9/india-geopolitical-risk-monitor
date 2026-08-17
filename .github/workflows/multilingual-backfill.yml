@@ -13,8 +13,29 @@ on:
     # hard in busy hours (2026-08-01: a fresh-IP batch got zero chunks),
     # so the chain retries in quiet windows and ends itself once
     # multilingual_salience.csv exists. Odd minutes per repo convention.
+    #
+    # THE PREMISE AT THE TOP OF THIS FILE IS FALSIFIED, AND THE BACKUP
+    # SHOT IS DROPPED BECAUSE OF IT (2026-08-17).
+    #
+    # This lane exists on the claim that "each batch gets a fresh runner
+    # IP, which the laptop-throttled rate limiter treats far more
+    # kindly". Measured since 2026-08-15: zero successful runs, and the
+    # failure is always the same -- "no series landed and 1 failed;
+    # upstream is refusing us", from HTTP 429 after six attempts on the
+    # very first yearly slice. Runner IPs are being throttled too. The
+    # store count has not moved (10 -> 10).
+    #
+    # The lane is therefore correct to fail: a batch that lands nothing
+    # IS a failure, and swallowing it would be worse than the noise. What
+    # is not earning anything is asking the same blocked question twice a
+    # night. The backup shot exists to survive GitHub dropping a
+    # scheduled run; when every run fails identically it only doubles the
+    # red without adding information.
+    #
+    # Kept: the nightly primary, and workflow_dispatch for an immediate
+    # retry the moment V5 access changes. Restore the backup shot when a
+    # batch actually lands series again.
     - cron: "47 21 * * *"   # 03:17 IST
-    - cron: "9 1 * * *"     # 06:39 IST backup
   push:
     branches: [main]
     paths: [".trigger/multilingual"]
