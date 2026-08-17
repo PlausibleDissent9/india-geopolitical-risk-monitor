@@ -27,9 +27,24 @@ on:
     - cron: "43 19 * * *"   # 01:13 IST
   workflow_dispatch:
 
+# contents: read ONLY, and that constraint shaped the design.
+#
+# The first version asked for `issues: write` so it could open a tracking
+# issue. src/security_integrity.py refuses any workflow whose permission
+# scopes fall outside {contents, actions} -- a deliberate least-privilege
+# policy -- and correctly failed this lane with
+# workflow_permission_scope_unregistered. Widening that set to admit a
+# new scope is a security decision belonging to the founder, not a step
+# to be taken in passing to make a monitoring lane convenient.
+#
+# So the escalation here is the run's own status plus a job summary. One
+# aggregate red saying "daily-update has failed 19 consecutive runs" is
+# strictly more actionable than nineteen individual reds, which is the
+# noise that made the last outage invisible. The issue-opening path still
+# exists in the script behind --escalate, for the day the founder decides
+# to register the scope.
 permissions:
   contents: read
-  issues: write
 
 concurrency:
   # Its own group: this must never queue behind the pipeline it reports
@@ -44,6 +59,12 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # fetch-depth 0 is a registered control, not a preference: the
+          # security plane refuses workflow_checkout_history_shallow so no
+          # lane can reason about a truncated history. This lane does not
+          # read history at all, and complies anyway rather than carving
+          # itself an exception.
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -55,4 +76,4 @@ jobs:
         # No pip install: the script uses only the standard library, so
         # this lane cannot be taken down by a dependency resolution
         # failure in the very outage it exists to report.
-        run: python scripts/lane_health.py --escalate
+        run: python scripts/lane_health.py --report

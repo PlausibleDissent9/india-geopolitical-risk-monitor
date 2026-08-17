@@ -174,12 +174,23 @@ def resolve(workflow_name: str) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true", help="report only")
-    parser.add_argument("--escalate", action="store_true", help="open/close issues")
+    parser.add_argument("--check", action="store_true",
+                        help="print state, always exit 0")
+    parser.add_argument("--report", action="store_true",
+                        help="print state, write a job summary, and FAIL if a "
+                             "watched lane is sustained-red (needs only "
+                             "contents: read)")
+    parser.add_argument("--escalate", action="store_true",
+                        help="open/close tracking issues; requires issues: "
+                             "write, a scope security_integrity does not "
+                             "currently register")
     args = parser.parse_args(argv)
-    if not (args.check or args.escalate):
+    if not (args.check or args.report or args.escalate):
         parser.print_help()
         return 2
+
+    summary: list[str] = ["| lane | consecutive failures | state |", "| --- | --- | --- |"]
+    sustained: list[str] = []
 
     for workflow_file, (name, why) in sorted(WATCHED.items()):
         try:
@@ -191,18 +202,35 @@ def main(argv: list[str] | None = None) -> int:
             # Said out loud rather than treated as healthy. A watched lane
             # with no completed run is itself worth seeing.
             print(f"[lane-health] {name}: NO COMPLETED RUNS to judge")
+            summary.append(f"| {name} | — | no completed runs |")
             continue
         state = "RED" if streak >= FAIL_THRESHOLD else ("wobbling" if streak else "green")
         print(f"[lane-health] {name}: {streak} consecutive failures ({state})")
-        if not args.escalate:
-            continue
+        summary.append(f"| {name} | {streak} | {state} |")
         if streak >= FAIL_THRESHOLD:
-            escalate(name, why, streak, recent)
-        else:
-            resolve(name)
+            sustained.append(f"{name} ({streak} consecutive, {why})")
+        if args.escalate:
+            if streak >= FAIL_THRESHOLD:
+                escalate(name, why, streak, recent)
+            else:
+                resolve(name)
 
-    # --check never fails the build: this is a reporter, and a reporter that
-    # can redden a lane becomes one more thing to silence.
+    step_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if step_summary and (args.report or args.escalate):
+        with open(step_summary, "a", encoding="utf-8") as handle:
+            handle.write("## Lane health\n\n" + "\n".join(summary) + "\n")
+            if sustained:
+                handle.write("\n**Sustained red:** " + "; ".join(sustained) + "\n")
+
+    if args.report and sustained:
+        # ONE aggregate red instead of N scattered ones. The individual
+        # lanes already go red on their own and that is exactly what
+        # nobody was seeing; this fires only on SUSTAINED failure and says
+        # how long it has been going, which is the part that was missing.
+        print(f"[lane-health] SUSTAINED RED: {'; '.join(sustained)}", file=sys.stderr)
+        return 1
+
+    # --check never fails: it exists for local inspection.
     return 0
 
 
