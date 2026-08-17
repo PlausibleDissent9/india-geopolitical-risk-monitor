@@ -397,3 +397,8 @@ Quoted verbatim from docs/data/negative_results.json (the register's own descrip
 - Number: china_east 7-day score moves up to 25.63 points across defensible splice ratios
 - Reading: the primary series is frozen while the founder decides; the sensitivity is published rather than absorbed
 - Source: data/splice_sensitivity.json (via docs/data/negative_results.json)
+
+> Derived from datasets released by [The GDELT Project](https://www.gdeltproject.org/).
+> GDELT grants unlimited use on one condition — that any use of the data cite
+> the GDELT Project and link https://www.gdeltproject.org/ — and this notice
+> exists to meet it. Full upstream attribution is in the [codebook](codebook.html).

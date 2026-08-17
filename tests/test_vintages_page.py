@@ -78,10 +78,29 @@ def test_the_csp_is_byte_identical_to_the_rest_of_the_site():
         f"{ours.group(1)!r} vs {theirs.group(1)!r}")
 
 
+# The page's own canonical, plus the one external link a licence
+# requires. GDELT's terms grant unlimited use on a single condition --
+# that any USE of the data cite the GDELT Project and link
+# https://www.gdeltproject.org/ -- and this page names GDELT twice, so
+# the condition binds it. A licence obligation outranks a self-imposed
+# layout rule, and the accommodation is deliberately one exact URL rather
+# than a relaxation to "any external origin": the rule still forbids
+# pulling in third-party content or linking out to unaudited claims,
+# which is what it was written to prevent.
+ALLOWED_ORIGINS = [
+    "https://igrm.in/vintages.html",
+    "https://www.gdeltproject.org/",
+]
+
+
 def test_no_external_origin_appears_anywhere_on_the_page():
     refs = re.findall(r'(?:href|src)="(https?://[^"]+)"', _page())
-    assert refs == ["https://igrm.in/vintages.html"], (
-        f"vintages.html references origins beyond its own canonical: {refs}")
+    unexpected = [r for r in refs if r not in ALLOWED_ORIGINS]
+    assert not unexpected, (
+        f"vintages.html references origins beyond its own canonical and the "
+        f"required GDELT attribution: {unexpected}")
+    assert "https://igrm.in/vintages.html" in refs, (
+        "vintages.html no longer declares its own canonical")
 
 
 def test_the_page_reads_the_panel_rather_than_describing_it_from_memory():

@@ -81,6 +81,33 @@ curl -s https://igrm.in/data/validation.json | python -m json.tool
 <p>Citation: <em>Krishna, Ishan (2026). India Geopolitical Risk Monitor.
 https://igrm.in/</em> — data CC BY 4.0, code MIT. A ready-made BibTeX entry
 is at <a href="igrm.bib">igrm.bib</a>.</p>
+<h2>Upstream data sources and attribution</h2>
+<p>IGRM's published values are derived data. The CC BY 4.0 licence above
+covers IGRM's own derived output; it does not and cannot relicense the
+upstream sources, each of which carries its own terms.</p>
+<p><strong>The GDELT Project</strong> —
+<a href="https://www.gdeltproject.org/">https://www.gdeltproject.org/</a></p>
+<p>Every channel share, the composite, the event aggregates, the tone and
+theme series and the per-channel receipts are derived from datasets
+released by The GDELT Project. GDELT makes its datasets available for
+unlimited and unrestricted use, on one condition, quoted from its terms:</p>
+<blockquote>
+<p>any use or redistribution of the data must include a citation to the
+GDELT Project and a link to this website
+(<a href="https://www.gdeltproject.org/">https://www.gdeltproject.org/</a>)</p>
+</blockquote>
+<p>That condition attaches to <em>any use</em>, not only to redistribution,
+and this section exists to meet it. Anyone reusing IGRM data that
+originates from GDELT inherits the same obligation and should carry this
+attribution forward.</p>
+<p>Other upstream sources, each under its own terms and cited where used:
+IMF PortWatch (chokepoint transits), UCDP Georeferenced Event Dataset
+(conflict events), Wikimedia pageviews, Correlates of War MID 5.0, JODI
+oil statistics, UN Comtrade, Indian major-port statistics, and the
+Caldara–Iacoviello Geopolitical Risk index used as a comparison series.
+Their rights positions are recorded per source in
+<a href="https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/governance/source_rights_registry.json">governance/source_rights_registry.json</a>,
+including which are still under review and therefore not yet drawn on.</p>
 <h2>data/raw/gdelt_volume.csv</h2>
 <table>
 <thead>
@@ -1457,6 +1484,16 @@ is a forecast, and no field states or implies what happens next.</p>
         <a href="data.html">Data</a>
         <a href="corrections.html">Corrections</a>
       </nav>
+    </div>
+    <div class="footer-attribution">
+      <p>Derived from datasets released by
+      <a href="https://www.gdeltproject.org/">The GDELT Project</a>. GDELT
+      grants unlimited use on one condition &mdash; that any use of the data
+      cite the GDELT Project and link
+      <a href="https://www.gdeltproject.org/">https://www.gdeltproject.org/</a>
+      &mdash; and this notice exists to meet it. Full upstream attribution,
+      including IMF PortWatch, UCDP, Wikimedia and others, is in the
+      <a href="codebook.html">codebook</a>.</p>
     </div>
   </footer>
 </div>

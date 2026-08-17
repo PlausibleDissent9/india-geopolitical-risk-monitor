@@ -397,6 +397,16 @@ def _footer(prefix: str, original: str) -> str:
         <a href="{_href(prefix, "corrections.html")}">Corrections</a>
       </nav>
     </div>
+    <div class="footer-attribution">
+      <p>Derived from datasets released by
+      <a href="https://www.gdeltproject.org/">The GDELT Project</a>. GDELT
+      grants unlimited use on one condition &mdash; that any use of the data
+      cite the GDELT Project and link
+      <a href="https://www.gdeltproject.org/">https://www.gdeltproject.org/</a>
+      &mdash; and this notice exists to meet it. Full upstream attribution,
+      including IMF PortWatch, UCDP, Wikimedia and others, is in the
+      <a href="{_href(prefix, "codebook.html")}">codebook</a>.</p>
+    </div>
   </footer>"""
 
 

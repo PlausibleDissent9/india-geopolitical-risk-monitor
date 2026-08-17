@@ -33,6 +33,36 @@ Citation: *Krishna, Ishan (2026). India Geopolitical Risk Monitor.
 https://igrm.in/* — data CC BY 4.0, code MIT. A ready-made BibTeX entry
 is at [igrm.bib](igrm.bib).
 
+## Upstream data sources and attribution
+
+IGRM's published values are derived data. The CC BY 4.0 licence above
+covers IGRM's own derived output; it does not and cannot relicense the
+upstream sources, each of which carries its own terms.
+
+**The GDELT Project** — https://www.gdeltproject.org/
+
+Every channel share, the composite, the event aggregates, the tone and
+theme series and the per-channel receipts are derived from datasets
+released by The GDELT Project. GDELT makes its datasets available for
+unlimited and unrestricted use, on one condition, quoted from its terms:
+
+> any use or redistribution of the data must include a citation to the
+> GDELT Project and a link to this website (https://www.gdeltproject.org/)
+
+That condition attaches to **any use**, not only to redistribution, and
+this section exists to meet it. Anyone reusing IGRM data that originates
+from GDELT inherits the same obligation and should carry this attribution
+forward.
+
+Other upstream sources, each under its own terms and cited where used:
+IMF PortWatch (chokepoint transits), UCDP Georeferenced Event Dataset
+(conflict events), Wikimedia pageviews, Correlates of War MID 5.0, JODI
+oil statistics, UN Comtrade, Indian major-port statistics, and the
+Caldara–Iacoviello Geopolitical Risk index used as a comparison series.
+Their rights positions are recorded per source in
+[`governance/source_rights_registry.json`](https://github.com/PlausibleDissent9/india-geopolitical-risk-monitor/blob/main/governance/source_rights_registry.json),
+including which are still under review and therefore not yet drawn on.
+
 ## data/raw/gdelt_volume.csv
 
 | Column | Definition | Units | Range |

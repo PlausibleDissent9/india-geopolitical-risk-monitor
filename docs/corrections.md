@@ -273,3 +273,8 @@ it rather than quietly replaced.
 Public exposure: source ages understated by one day for about 17.5
 hours; no incorrect within-window verdict served; no published score
 affected.
+
+> Derived from datasets released by [The GDELT Project](https://www.gdeltproject.org/).
+> GDELT grants unlimited use on one condition — that any use of the data cite
+> the GDELT Project and link https://www.gdeltproject.org/ — and this notice
+> exists to meet it. Full upstream attribution is in the [codebook](codebook.html).
