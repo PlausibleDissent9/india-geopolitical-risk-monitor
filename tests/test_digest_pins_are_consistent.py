@@ -28,7 +28,6 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import verify_digest_pins as pins  # noqa: E402
 
-
 # Owners that have a generator, and the exact command that rewrites them.
 # Owners are DISCOVERED, not registered, so this map is a courtesy rather
 # than an inventory: an owner missing from it still fails, just without

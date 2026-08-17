@@ -181,8 +181,8 @@ def test_the_published_report_is_not_itself_ancient():
     on main, where a stale site is an alert rather than a lock, and
     lane-health escalates ci when it stays red.
     """
-    from pathlib import Path
     from datetime import datetime, timezone
+    from pathlib import Path
 
     p = Path(__file__).resolve().parents[1] / "docs" / "data" / "freshness.json"
     if not p.exists():
