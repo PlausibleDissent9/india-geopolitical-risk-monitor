@@ -614,6 +614,43 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         run: |
           if [ "$(date -u +%u)" = "5" ]; then python -m src.make_datapack; fi
+      - name: Commit data
+        # always(): a crash must still bank acquisition caches and byte-exact
+        # source evidence. Derived docs are staged only if every required step
+        # succeeded; a late failure therefore cannot publish a mixed vintage.
+        if: always()
+        env:
+          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "igrm-bot"
+          git config user.email "actions@github.com"
+          # .gitignore excludes Yahoo-derived prices.csv / derived_returns.csv;
+          # only the GDELT store persists (backfill is expensive to redo).
+          # docs/ also carries rendered pages (methodology.html, feed.xml,
+          # notes.json) produced by the publish step.
+          # events_*.csv are excluded while the backfill chain owns them:
+          # Events files are committed again as of 2026-08-02: the
+          # backfill chain that owned them finished on 2026-07-31, and
+          # the exclusion had begun publishing map aggregates that the
+          # committed store could not reproduce (caught by the first
+          # run of src.audit; corrections ledger entry the same day).
+          bash scripts/stage_daily_outputs.sh \
+            "${{ job.status }}" "${{ steps.final_contract.outputs.target }}"
+          bash scripts/publish_push.sh "data: update $(date -u +%F)"
+      # MOVED AGAIN, BELOW Commit data (2026-08-17, same day as the first
+      # move). Placing it above the commit was still wrong, for a reason
+      # the first move did not fix: this step is fail-loud, and
+      # 'Commit data' refuses every derived docs change when the job has
+      # already failed. Run 32043239556 proved it -- all 48 steps ran, the
+      # derived lanes refreshed the plane from 36 stale payloads to 9, this
+      # audit then failed on the 9 that no daily lane can refresh, and the
+      # commit discarded all 27 refreshed payloads. The tree was left dirty,
+      # so the publish step's rebase refused too.
+      #
+      # Auditing staleness must not be able to destroy the work that cures
+      # staleness. Commit first, then report on what was committed -- which
+      # is also the only ordering under which the verdict describes the
+      # published state rather than a working tree nobody will keep.
       - name: Freshness audit (every payload, not just the ten tracked sources)
         # MOVED 2026-08-17, and the move is the point.
         #
@@ -649,26 +686,3 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         timeout-minutes: 5
         run: python -m src.freshness
-      - name: Commit data
-        # always(): a crash must still bank acquisition caches and byte-exact
-        # source evidence. Derived docs are staged only if every required step
-        # succeeded; a late failure therefore cannot publish a mixed vintage.
-        if: always()
-        env:
-          IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "igrm-bot"
-          git config user.email "actions@github.com"
-          # .gitignore excludes Yahoo-derived prices.csv / derived_returns.csv;
-          # only the GDELT store persists (backfill is expensive to redo).
-          # docs/ also carries rendered pages (methodology.html, feed.xml,
-          # notes.json) produced by the publish step.
-          # events_*.csv are excluded while the backfill chain owns them:
-          # Events files are committed again as of 2026-08-02: the
-          # backfill chain that owned them finished on 2026-07-31, and
-          # the exclusion had begun publishing map aggregates that the
-          # committed store could not reproduce (caught by the first
-          # run of src.audit; corrections ledger entry the same day).
-          bash scripts/stage_daily_outputs.sh \
-            "${{ job.status }}" "${{ steps.final_contract.outputs.target }}"
-          bash scripts/publish_push.sh "data: update $(date -u +%F)"
