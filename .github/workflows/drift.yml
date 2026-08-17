@@ -47,6 +47,22 @@ jobs:
         # what makes the failure readable without step-log access -- runs
         # #14-#16 each died as an anonymous "exit code 1" and cost a
         # local reproduction to diagnose.
+        #
+        # THE STEP THAT MADE THE LANE LOOK LIKE A CONCURRENCY VICTIM.
+        # Every step below carries a bound and this one carried none, so
+        # when the corpus-norm fetch HUNG rather than returning 429 it ran
+        # to the job's 90-minute cap. GitHub reports a job timeout as
+        # "cancelled", so the run history read as eviction by another lane
+        # -- and drift.yml has its own concurrency group and cannot be
+        # evicted. Six of the last ten runs died that way, each at exactly
+        # ~90 minutes; the runs that failed honestly took 12-19 minutes
+        # end to end, pip install included.
+        #
+        # 25 covers that whole-job observation with margin while turning a
+        # 90-minute silent hang into a bounded, legible failure. The
+        # annotation above is the point of this step; it cannot fire if
+        # the step never returns.
+        timeout-minutes: 25
         run: |
           if ! python -m src.validate drift; then
             rc=$?
