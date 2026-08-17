@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Per-episode driver decomposition from the GDELT Events dyad layer: partners whose India-pair event counts in the episode window most exceed their trailing 90-day baseline rate, with the window's cooperation-conflict split. Counts of press-recorded events; association, not causation.",
-  "generated": "2026-08-16",
+  "generated": "2026-08-17",
   "baseline_days": 90,
   "window_pad_days": 1,
   "license": "CC BY 4.0",
@@ -43284,6 +43284,157 @@
      "excess": 7.6,
      "coop": 9,
      "conflict": 2
+    }
+   ]
+  },
+  "us_trade|2026-08-08": {
+   "channel": "us_trade",
+   "start": "2026-08-08",
+   "end": "2026-08-08",
+   "channel_partners": [
+    {
+     "partner": "USA",
+     "n": 163,
+     "excess": 11.8,
+     "coop": 140,
+     "conflict": 23
+    }
+   ],
+   "other_active_dyads": [
+    {
+     "partner": "BGD",
+     "n": 94,
+     "excess": 30.2,
+     "coop": 73,
+     "conflict": 21
+    },
+    {
+     "partner": "CHN",
+     "n": 62,
+     "excess": 25.1,
+     "coop": 49,
+     "conflict": 13
+    },
+    {
+     "partner": "NGA",
+     "n": 14,
+     "excess": 12.0,
+     "coop": 4,
+     "conflict": 10
+    },
+    {
+     "partner": "THA",
+     "n": 22,
+     "excess": 11.1,
+     "coop": 19,
+     "conflict": 3
+    },
+    {
+     "partner": "SGP",
+     "n": 18,
+     "excess": 11.1,
+     "coop": 15,
+     "conflict": 3
+    },
+    {
+     "partner": "SEA",
+     "n": 13,
+     "excess": 9.4,
+     "coop": 13,
+     "conflict": 0
+    },
+    {
+     "partner": "SAU",
+     "n": 15,
+     "excess": 4.7,
+     "coop": 12,
+     "conflict": 3
+    },
+    {
+     "partner": "LKA",
+     "n": 15,
+     "excess": 4.4,
+     "coop": 14,
+     "conflict": 1
+    }
+   ]
+  },
+  "pakistan_west|2026-08-14": {
+   "channel": "pakistan_west",
+   "start": "2026-08-14",
+   "end": "2026-08-15",
+   "channel_partners": [
+    {
+     "partner": "PAK",
+     "n": 103,
+     "excess": 10.8,
+     "coop": 73,
+     "conflict": 30
+    },
+    {
+     "partner": "AFG",
+     "n": 20,
+     "excess": 10.4,
+     "coop": 17,
+     "conflict": 3
+    }
+   ],
+   "other_active_dyads": [
+    {
+     "partner": "IRN",
+     "n": 93,
+     "excess": 48.7,
+     "coop": 93,
+     "conflict": 0
+    },
+    {
+     "partner": "GBR",
+     "n": 80,
+     "excess": 29.6,
+     "coop": 56,
+     "conflict": 24
+    },
+    {
+     "partner": "LBR",
+     "n": 24,
+     "excess": 23.5,
+     "coop": 24,
+     "conflict": 0
+    },
+    {
+     "partner": "THA",
+     "n": 39,
+     "excess": 22.6,
+     "coop": 29,
+     "conflict": 10
+    },
+    {
+     "partner": "LKA",
+     "n": 32,
+     "excess": 18.1,
+     "coop": 17,
+     "conflict": 15
+    },
+    {
+     "partner": "FJI",
+     "n": 14,
+     "excess": 12.9,
+     "coop": 8,
+     "conflict": 6
+    },
+    {
+     "partner": "BTN",
+     "n": 16,
+     "excess": 8.8,
+     "coop": 14,
+     "conflict": 2
+    },
+    {
+     "partner": "RUS",
+     "n": 40,
+     "excess": 8.1,
+     "coop": 35,
+     "conflict": 5
     }
    ]
   }

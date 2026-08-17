@@ -5,38 +5,38 @@
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
-  "generated": "2026-08-16",
+  "generated": "2026-08-17",
   "source": "https://igrm.in/data/latest.json"
  },
- "date": "2026-08-15",
+ "date": "2026-08-16",
  "definition": "Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
- "composite": 47.8,
- "composite7": 53.4,
+ "composite": 34.8,
+ "composite7": 51.0,
  "channels": {
   "pakistan_west": {
    "label": "Pakistan / Western Border",
-   "score": 91.8,
-   "score7": 83.2
+   "score": 84.1,
+   "score7": 85.3
   },
   "china_east": {
    "label": "China / Eastern Border",
-   "score": 0.8,
-   "score7": 1.4
+   "score": 0.4,
+   "score7": 0.3
   },
   "gulf_energy": {
    "label": "Gulf & Energy Security",
-   "score": 76.9,
-   "score7": 75.8
+   "score": 75.1,
+   "score7": 75.0
   },
   "us_trade": {
    "label": "US & Trade Policy",
-   "score": 25.3,
-   "score7": 31.2
+   "score": 11.4,
+   "score7": 26.0
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 43.9,
-   "score7": 75.4
+   "score": 3.1,
+   "score7": 68.4
   }
  }
 }
