@@ -1,0 +1,58 @@
+name: lane-health
+
+# Make a red lane ARRIVE somewhere a human sees it.
+#
+# Between 2026-08-12 and 2026-08-17 the daily enrichment lane failed on
+# every scheduled run and nobody knew for five days. Not for want of
+# checks: ci was red 6/6 and listed all 37 stale payloads BY NAME, and
+# the freshness assertion named comparators.json among them. The checks
+# were right and loud. Nothing carried them to a person.
+#
+# GitHub's own notifications fire per failure, which is the exact shape
+# people filter into a folder and stop reading, and they cannot report a
+# run that never started.
+#
+# This lane is deliberately NOT a dead man's switch. It runs inside
+# Actions, so it cannot tell you Actions stopped firing crons -- which
+# this repo has already recorded happening (2026-07-31, the 11:00 slot
+# never fired at all). Only an off-platform ping catches that.
+
+on:
+  schedule:
+    # Three times a day, odd minutes per repo convention. After the
+    # morning contract has had time to finish, after the afternoon
+    # insurance slot, and overnight.
+    - cron: "43 3 * * *"    # 09:13 IST
+    - cron: "43 11 * * *"   # 17:13 IST
+    - cron: "43 19 * * *"   # 01:13 IST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  # Its own group: this must never queue behind the pipeline it reports
+  # on, or it goes quiet exactly when the pipeline is stuck.
+  group: igrm-lane-health-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Escalate lanes that have been red, close the ones that recovered
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        # No pip install: the script uses only the standard library, so
+        # this lane cannot be taken down by a dependency resolution
+        # failure in the very outage it exists to report.
+        run: python scripts/lane_health.py --escalate
