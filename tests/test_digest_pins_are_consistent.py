@@ -29,14 +29,61 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import verify_digest_pins as pins  # noqa: E402
 
 
+# Owners that have a generator, and the exact command that rewrites them.
+# Owners are DISCOVERED, not registered, so this map is a courtesy rather
+# than an inventory: an owner missing from it still fails, just without
+# the shortcut. It exists because on 2026-08-17 the message said
+# "re-derive the cascade" and named no command, and the manifest's only
+# regenerator lived inside a step of morning.yml -- so the reader had to
+# grep the workflows to find out how to repair a red that was refusing
+# every lane's publish. Naming the cause without naming the cure still
+# leaves the outage running.
+#
+# Entries are for files that actually CARRY pins and so can actually go
+# stale. docs/data/security_integrity.json was in this map for one draft
+# and removed: it has a regenerator, but it carries no pins, so it can
+# never be a stale owner and listing it would have implied otherwise.
+REGENERATORS: dict[str, str] = {
+    "docs/data/public_api_byte_manifest.json":
+        "PYTHONPATH=. python scripts/generate_public_api_byte_manifest.py",
+}
+
+
 def test_every_live_digest_pin_matches_the_bytes_it_names() -> None:
     result = pins.audit()
+    lines = []
+    for owner, key, target, _d, _a in result["stale"]:
+        lines.append(f"  {owner}: {key} of {target}")
+        if owner in REGENERATORS:
+            lines.append(f"      regenerate with: {REGENERATORS[owner]}")
     assert result["stale"] == [], (
         "a contract, profile or registry no longer matches the file it pins. "
         "Re-derive the cascade to a fixpoint (replace only exact known-stale "
         "digests, recompute each rewritten file's own digest, repeat) -- or "
         "investigate, if no change should have moved these:\n"
-        + "\n".join(f"  {o}: {k} of {t}" for o, k, t, _d, _a in result["stale"]))
+        + "\n".join(lines))
+
+
+def test_every_named_regenerator_exists() -> None:
+    """A command that has been renamed away is worse than no command:
+    it sends the reader of a red gate down a path that dead-ends."""
+    missing = [
+        cmd for cmd in REGENERATORS.values()
+        if (script := _script_of(cmd)) and not (ROOT / script).exists()
+    ]
+    assert not missing, f"REGENERATORS names commands that no longer exist: {missing}"
+
+
+def _script_of(cmd: str) -> str | None:
+    """The repo-relative script path a command runs, if it names one.
+
+    Only the `python scripts/x.py` form has a path to check; the
+    `python -m pkg.mod` form is a module reference and is left alone.
+    """
+    for token in cmd.split():
+        if token.endswith(".py"):
+            return token
+    return None
 
 
 def test_the_frozen_exemption_list_is_an_inventory_lock() -> None:
