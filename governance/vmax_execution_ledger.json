@@ -614,6 +614,25 @@
       "verification": "Locked behaviourally, not by text match: the test extracts the real step body from the workflow, substitutes what GitHub substitutes, and executes it against a stubbed python. Mutation-tested with one-token changes -- `if false` (pre-fix, never skip) fails exactly the regression test; `if true` (always skip) fails exactly the two publish tests. ruff 0, mypy 0, 56 passed. A first attempt at the removal mutant mangled the YAML and was discarded rather than counted, caught by the suite's own shell-validity test.",
       "unverified_at_time_of_writing": "A dispatched run on this commit is in flight to confirm the 27 steps now execute and the job goes green. The claim that the fix works is not yet earned.",
       "self_assessment": "No points. This is the diagnosis the founder asked for on the first message of the session, arrived at after three of my own defects were cleared out of the way first."
+    },
+    {
+      "entry_id": "2026-08-17/live-licence-breach-and-the-checks-that-were-switched-off",
+      "workstream": "compliance_and_hardening",
+      "milestone": "GDELT attribution restored; two classes of switched-off check found",
+      "owner": "claude",
+      "clean": true,
+      "evidence_state": "focused_tested",
+      "admissible_points": 0,
+      "budget_line": "none:engineering_time_only",
+      "commit_sha": "e44c728c0f4fc14a858854061f0e4aa46c360f0d",
+      "the_breach": "GDELT grants unlimited use on one condition: any use or redistribution must cite The GDELT Project and link https://www.gdeltproject.org/. Measured: docs/codebook.html named GDELT 27 times and linked it 0 times; codebook.md 27/0; methodology.html 14/0; of 17 GDELT-derived published payloads, 2 carried the link. Thirteen public pages named the source without crediting it while asserting CC BY 4.0 over the derived output. A public index built primarily on GDELT was failing its supplier's only requirement, on the pages a reviewer opens first.",
+      "how_found": "The adversarial half of a rights-decision review, which was looking for OVERclaiming and instead surfaced a live condition failure on shipped artifacts. Verified independently before acting.",
+      "fixed": "At the shared-footer layer in src/site_shell.py so all 40 shell routes inherit it, plus index.html (not a shell route), corrections.md and datasheet.md (markdown the shell does not reach). The codebook quotes the condition verbatim rather than paraphrasing, so a reader inheriting the data can see it binds them too. Locked by tests/test_upstream_attribution.py: any public page naming GDELT must link it, 44 assertions.",
+      "conflict_resolved_in_favour_of_the_licence": "test_vintages_page asserted that page carries NO external origin. vintages.html names GDELT twice so the condition binds it. A licence obligation outranks a self-imposed layout rule; the accommodation is one exact URL rather than a relaxation to 'any external origin', so the rule still forbids third-party content and links to unaudited claims.",
+      "second_finding_switched_off_checks": "Swept for tests carrying @pytest.mark.live whose bodies make no network call: thirteen exist. Every gate runs pytest with -m 'not live'. Running the whole live set, exactly ONE fails -- the genuinely time-varying staleness assertion. The other twelve are time-invariant checks excluded from every gate for no reason. tests/test_published_data_sanity.py is the sharpest case: its docstring says it exists because wiki_hindi.json shipped bare NaN for an hour on 2026-08-07, and being marked live it could not prevent the exact defect it was written for. Its six assertions now gate. The remaining seven were left alone deliberately -- changing what gates a publish is not a bulk sweep to do at 04:00.",
+      "third_finding_security_plane_caught_me": "lane-health.yml as first written asked for issues: write. src/security_integrity.py refuses any workflow whose permission scopes fall outside {contents, actions} and rejected it. Widening a registered security scope is a founder decision, so the lane was redesigned to fit the policy -- contents: read only, escalation via run status and a job summary -- rather than the policy relaxed to fit the lane.",
+      "rights_drafts": "15 sources drafted and adversarially attacked: 10 SAFE, 2 UNDERCLAIMS, 2 UNVERIFIABLE, 1 OVERCLAIMS. The attack pass caught india_ogd_port_trade_2019_20 claiming publish_extract its terms do not grant, and caught both GDELT drafts being too NARROW -- signing as drafted would have left event_ledger.json permanently blocked while recording a completed review. imf_portwatch and cow_mids are terms_unavailable and grant nothing rather than a guess.",
+      "self_assessment": "No points. One live compliance breach closed, two classes of check restored to gating, one security control respected rather than widened. All repair and hardening, no new evidence."
     }
   ],
   "hostile_review_findings": [
