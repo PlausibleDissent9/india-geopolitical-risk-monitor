@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Comparator country salience: one shared risk vocabulary anchored per country (comparators.json v1.0.0), each series a percentile of its own trailing 730 days, then weekly means. Cross-country levels reflect Anglophone press attention; association, not risk.",
-  "generated": "2026-08-07",
+  "generated": "2026-08-17",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -483,7 +483,9 @@
     "2026-07-13",
     "2026-07-20",
     "2026-07-27",
-    "2026-08-03"
+    "2026-08-03",
+    "2026-08-10",
+    "2026-08-17"
    ],
    "pct": [
     63.3,
@@ -958,9 +960,11 @@
     36.1,
     36.1,
     42.4,
-    19.3
+    20.4,
+    22.0,
+    40.9
    ],
-   "latest": 19.3
+   "latest": 40.9
   },
   "pakistan": {
    "label": "Pakistan",
@@ -1437,7 +1441,9 @@
     "2026-07-13",
     "2026-07-20",
     "2026-07-27",
-    "2026-08-03"
+    "2026-08-03",
+    "2026-08-10",
+    "2026-08-17"
    ],
    "pct": [
     51.4,
@@ -1912,9 +1918,11 @@
     34.3,
     41.6,
     52.1,
-    15.2
+    33.1,
+    49.5,
+    40.1
    ],
-   "latest": 15.2
+   "latest": 40.1
   },
   "indonesia": {
    "label": "Indonesia",
@@ -2390,7 +2398,9 @@
     "2026-07-06",
     "2026-07-20",
     "2026-07-27",
-    "2026-08-03"
+    "2026-08-03",
+    "2026-08-10",
+    "2026-08-17"
    ],
    "pct": [
     76.0,
@@ -2864,9 +2874,11 @@
     41.8,
     18.9,
     47.8,
-    32.4
+    21.7,
+    27.6,
+    47.9
    ],
-   "latest": 32.4
+   "latest": 47.9
   },
   "vietnam": {
    "label": "Vietnam",
@@ -3342,7 +3354,9 @@
     "2026-07-06",
     "2026-07-20",
     "2026-07-27",
-    "2026-08-03"
+    "2026-08-03",
+    "2026-08-10",
+    "2026-08-17"
    ],
    "pct": [
     84.3,
@@ -3816,9 +3830,11 @@
     54.6,
     27.1,
     57.7,
-    19.3
+    25.2,
+    32.7,
+    19.6
    ],
-   "latest": 19.3
+   "latest": 19.6
   }
  }
 }
