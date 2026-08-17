@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "gdelt_events_v1",
+  "decision_id": "rights:gdelt_events_v1:review-1.0:2026-08-17",
+  "name": "GDELT Events v1",
+  "provider": "The GDELT Project",
+  "access_basis": "public_download_pending_terms_review",
+  "access_url": "https://www.gdeltproject.org/data.html",
+  "terms_url": "https://www.gdeltproject.org/about.html",
+  "authority_class": "provider_coded_dataset",
+  "independence_group": "gdelt_project",
+  "lineage_policy": "primary",
+  "max_current_age_days": 3,
+  "role": "coded_event_context",
+  "permitted_uses": [
+    "model_processing",
+    "cite_metadata",
+    "publish_derived_value"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves exactly model_processing of the GDELT Events v1 daily export zips (one .export.CSV.zip per day at data.gdeltproject.org/events) for the coded-event context lane in src/fetch_events.py: one pass per daily file yielding India national counts, country-dyad splits and Indian-state splits, mean Goldstein values, mention and source sums, and the global row count used as the coverage denominator, held as dated daily aggregates only, with a citation to The GDELT Project and a link to https://www.gdeltproject.org/ wherever the series is used or shown, which the provider's terms require of any use and not only of redistribution. NOT approved by this row: publication or retention of any per-event record; retention of SOURCEURL or any other article identity, matching what the fetcher already does, which reads only coded columns; any article text, headline or extract; redistribution, rehosting or mirroring of the export files, which the provider's terms would in fact permit and which is excluded here only because this lane does not need it; and any treatment of the provider event feed as ground truth for what occurred, as opposed to a record of what the monitored press carried, or as a substitute for the score's own denominator. Publication of the derived aggregate values is NOT granted by this row: the repository's own publish_derived_value use, carried by the gdelt_web_ngrams_v5 and gdelt_bq_webngrams decisions, is the use the published daily series needs, and the signer must add it explicitly before any published output may rest on this source.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "UNDERCLAIMS",
+    "verifier_note": "NO OVERCLAIM. I fetched https://www.gdeltproject.org/about.html independently (WebFetch plus a raw curl of the HTML to defeat paraphrase) and confirmed both operative clauses verbatim. 'Using GDELT': 'all datasets released by the GDELT Project are available for unlimited and unrestricted use for any academic, commercial, or governmental use of any kind without fee.' 'Redistributing GDELT': 'You may redistribute, rehost, republish, and mirror any of the GDELT datasets in any form. However, any use or redistribution of the data must include a citation to the GDELT Project and a link to this website (https://www.gdeltproject.org/).' model_processing sits entirely inside the unlimited-use clause, so nothing here exceeds the grant. The draft's two contested readings are both verbatim-correct: the citation condition does attach to 'any use or redistribution', not redistribution alone; and redistribution/mirroring is granted outright, so declining redistribute_raw is a narrowing on need, not an overreach. The draft also cites the link target more precisely than the repo's existing gdelt_web_ngrams_v5 registry note, matching the terms' own parenthetical.\n\nUNDERCLAIMS, and it is load-bearin",
+    "unresolved_for_founder": "Five things to settle before signing. (1) THE PUBLICATION GAP, most important: this draft grants model_processing only. The published daily series needs publish_derived_value, the term already used in the two signed GDELT decisions in this repo. That term was not expressible in the vocabulary this draft was returned under, so it is absent by construction, not by judgement, and the provider's terms clearly support it. Add it when signing, or the load-bearing lane stays unpublishable. Do not let this pass silently. (2) EXISTING UNSIGNED USE: src/fetch_events.py already consumes Events v1 daily against a registry row whose decision_state is review_required and whose permitted_uses is empty. Signing regularizes use that has been running, so check whether any already-published output depends on it and whether that needs disclosing rather than just fixing forward. (3) REDISTRIBUTION IS AVAILABLE AND I DECLINED IT: the terms grant redistribution and mirroring outright. I excluded redistribute_raw on need, not on any restriction. If you ever want to mirror the daily zips for replication, that widening is supported by the terms as read and needs no new evidence. (4) THE CITATION CONDITION IS LIVE: the terms condition use itself on citing GDELT and linking the site. Confirm the codebook and methodology pages carry that for the events series specifically, not only for the ngrams series that already has it. (5) max_current_age_days=3 is my inference from PUBLISH_LAG_DAYS=2 in the fetcher plus one day of slack. It rests on no provider availability guarantee, because I found none published. Override it if the lane's real tolerance differs.",
+    "permitted_uses_as_drafted": [
+      "model_processing"
+    ],
+    "permitted_uses_after_verification": [
+      "model_processing",
+      "cite_metadata",
+      "publish_derived_value"
+    ]
+  }
+}

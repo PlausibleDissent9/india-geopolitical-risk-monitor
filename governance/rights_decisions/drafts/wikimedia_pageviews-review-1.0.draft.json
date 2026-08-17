@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "wikimedia_pageviews",
+  "decision_id": "rights:wikimedia_pageviews:review-1.0:2026-08-17",
+  "name": "Wikimedia Pageviews API",
+  "provider": "Wikimedia Foundation",
+  "access_basis": "public_api_pending_terms_review",
+  "access_url": "https://wikimedia.org/api/rest_v1/",
+  "terms_url": "https://doc.wikimedia.org/generated-data-platform/aqs/analytics-api/documentation/access-policy.html",
+  "authority_class": "public_platform",
+  "independence_group": "wikimedia",
+  "lineage_policy": "primary",
+  "max_current_age_days": 3,
+  "role": "public_attention",
+  "permitted_uses": [
+    "cite_metadata",
+    "model_processing",
+    "publish_extract",
+    "redistribute_raw"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves exactly cite_metadata, model_processing, publish_extract and redistribute_raw for the Wikimedia Analytics (AQS) pageviews lane: the daily per-article pageview count rows returned by wikimedia.org/api/rest_v1/metrics/pageviews/per-article/ for en.wikipedia and hi.wikipedia, user access only, as called by src/fetch_wikipedia.py and src/wiki_hindi.py. This is the most permissive grant in the registry and is recorded as such rather than hedged: the provider's access policy states the API data is available under CC0 1.0, and the dumps legal page dedicates all Analytics datasets to CC0. CC0 imposes no attribution condition and no redistribution limit, so raw count rows may be republished and IGRM's credit to the Wikimedia Foundation is house practice, not a licence term. NOT approved under this decision: Wikipedia article text, extracts, summaries or media, which remain CC BY-SA 4.0 and GFDL under Terms of Use section 7; the MediaWiki Action API at en.wikipedia.org/w/api.php, whose returned content inherits the source wiki's licence and is therefore not CC0, and which src/wiki_hindi.py currently calls for interlanguage title resolution under this same source_id; the country-level pageview endpoints, whose terms were not read; and any claim that a pageview count measures salience, sentiment or truth rather than lookups. Retrieval stays conditional on the Foundation User-Agent Policy, which requires contact information in the header; a block for non-compliance is an operational failure that must fail loud, not degrade the score silently.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "Terms fetched independently; all four uses are supported. DRIVING CLAUSE: the access-policy page states verbatim 'Data provided by the API is available under the CC0 1.0 license', corroborated by an independent source I fetched separately, https://dumps.wikimedia.org/legal.html: 'All Analytics datasets are available under the Creative Commons Zero (CC0) public domain dedication, unless otherwise specified.' The two dangerous uses are licensed by ABSENCE OF CLAUSE: CC0 is a public-domain dedication carrying no attribution condition, no share-alike condition, and no restriction on redistribution, so redistribute_raw of raw count rows and publish_extract are within the grant, and the draft is right that IGRM's Wikimedia credit is house practice rather than a licence term. I checked the Terms of Use for a restriction that could claw this back and found none: section 7 licenses user-CONTRIBUTED text (CC BY-SA 4.0 / GFDL) and does not reach programmatically served analytics counts, and section 12 incorporates the User-Agent Policy, Robot Policy and API:Etiquette, which are conditions on ACCESS, not conditions on reuse of data already obtained. EXCLUSIONS ARE CORRECTLY DRAWN, not conserva",
+    "unresolved_for_founder": "Five things to check personally before signing. (1) SCOPE LEAK, the important one: src/wiki_hindi.py line 62 resolves Hindi titles via the MediaWiki Action API (en.wikipedia.org/w/api.php, action=query&prop=langlinks) under source_id wikimedia_pageviews. API:Licensing says Action API content carries the source wiki's licence — CC BY-SA for en.wikipedia main namespace — not CC0. This draft excludes that call, so signing as-written leaves running code outside its rights row. Either give the call its own registry row and decision, or drop it and resolve Hindi titles from an already-cleared mapping. (2) USER-AGENT: both callers send 'IGRM/1.0 (india-geopolitical-risk-monitor; research index)', which names the client but carries no contact email or URL. The Foundation policy asks for contact information and warns non-compliant clients may be blocked without notice. (3) max_current_age_days is PROPOSED at 3, derived from IGRM's own one-day lag assumption in src/fetch_wikipedia.py line 137, not from any published provider SLA — confirm against observed publication lag or overrule it. (4) The registry row's terms_url points at the Foundation Terms of Use; the operative CC0 sentence lives on the access-policy page used here, so the row needs updating to match if you sign this. (5) Confirm you accept the reading that the doc-site footer 'Content: CC BY-SA 4.0' licenses the documentation, not the API payload — the whole grant turns on that.",
+    "permitted_uses_as_drafted": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract",
+      "redistribute_raw"
+    ],
+    "permitted_uses_after_verification": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract",
+      "redistribute_raw"
+    ]
+  }
+}

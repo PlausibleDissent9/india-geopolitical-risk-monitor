@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "un_comtrade",
+  "decision_id": "rights:un_comtrade:review-1.0:2026-08-17",
+  "name": "UN Comtrade",
+  "provider": "United Nations Statistics Division",
+  "access_basis": "public_preview_and_account_access_pending_signed_terms_review",
+  "access_url": "https://comtradeplus.un.org/",
+  "terms_url": "https://uncomtrade.org/docs/faqs-on-use-and-re-dissemination/",
+  "authority_class": "intergovernmental_dataset",
+  "independence_group": "un_statistics_division",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "official_trade_structure",
+  "permitted_uses": [
+    "model_processing"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "Draft for signature. Approves exactly model_processing, and only for internal, unpublished profiling of India-reporter trade structure retrieved within the provider's documented free-tier limits. No publication of any kind is approved. The provider's re-dissemination policy, read in full on 2026-08-17, conditions the fee-free path for transformed data on maintaining an active premium subscription, and requires both an active premium subscription and a paid \"license to distribute\" before original data above 100,000 records may be re-disseminated to non-subscribers; it states there is no profit / non-profit distinction. IGRM holds no premium subscription. Therefore NOT approved: publish_extract, redistribute_raw, and — this is the part that will surprise a reader — no derived, transformed or aggregated Comtrade value may appear in any public payload, chart, API response, release artefact or paper while no premium subscription is held. The not-for-profit visualization carve-out is not relied on: the policy frames it as an exception permitting a visualization system to present figures, not a grant to publish machine-readable data, and IGRM ships machine-readable payloads. Consistent with governance/un_comtrade_acquisition.json, no use of Comtrade to establish port identity, trade route, buyer/supplier identity or shipment-level lineage is approved. Nothing here authorises a premium purchase; the purchase gate in that acquisition file still governs.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "model_processing, scoped to internal unpublished profiling, is expressly granted — I attacked this and it holds. Driving clause: the operative Policy page (https://uncomtrade.org/docs/policy-on-use-and-re-dissemination/), section 'The license to distribute is not applied, and permission is not required for the following use cases', last bullet: 'Internal use, including the use of UN Comtrade data for the AI model.' The same page defines internal use as 'only for use by staff members of the institutional unit for the benefit of the unit; internal use explicitly excludes data dissemination to any entity outside the institutional unit', and states 'If UN Comtrade data are used within the boundaries of the definition of internal use, then permission from UNSD for its use is unnecessary, and a license to distribute with a fee will not apply.' The draft's scope ('internal, unpublished profiling') maps onto that definition exactly. Automated free-tier retrieval is also within bounds: the Fair Usage section bans UI scraping but directs users to 'utilize the UN Comtrade APIs directly'. I also confirmed with the repo's own vocabulary that model_processing does not smuggle in publication — go",
+    "unresolved_for_founder": "FIVE THINGS. (1) THE COMMERCIAL FINDING, worth the signer's attention before anything else: as written, the right to publish even fully transformed Comtrade-derived values is conditioned on an ACTIVE premium subscription. That makes publication rights recurring rather than one-time — they lapse when the subscription lapses, which is an ugly property for an index with a permanent public archive. Before spending anything, ask UNSD in writing whether the subscription condition is intended to bind a free-tier user publishing only derived aggregates, and get the answer in writing. The page also carries an internal tension: one line says transformed data is no longer subject to copyright restrictions, the next says you must maintain a premium subscription. I resolved it conservatively against IGRM; UNSD may resolve it the other way, which would materially widen this decision. (2) TIER MISMATCH: governance/un_comtrade_acquisition.json probes the unauthenticated preview endpoint at comtradeapi.un.org (500-record cap, no key), while the documented free Basic Individual tier (500 calls/day, 5 calls/sec, 100,000 records/call) requires a registered email. These are different tiers with different limits. Decide which one is actually in play, because the approved lane above is written against \"documented free-tier limits\" and that phrase must resolve to one of them. (3) NO ATTRIBUTION STRING was found on any page I read — not the re-dissemination policy, not the API docs, not the subscriptions page. Obtain the required citation form from UNSD before any public use is contemplated. (4) I did NOT re-verify the provider pages behind provider_documented_absences in the acquisition file (buyer/supplier identity, shipment date, origin/destination port); the statement above cites that file, not a page I read. (5) STANDING QUESTION: given that publication appears to cost a recurring subscription, it is legitimate to conclude that Comtrade should not feed the public index at all and should stay an internal profiling source, or be dropped. Comtrade currently appears in no published payload under docs/, so that door is still open and closing it costs nothing today.",
+    "permitted_uses_as_drafted": [
+      "model_processing"
+    ],
+    "permitted_uses_after_verification": [
+      "model_processing"
+    ]
+  }
+}

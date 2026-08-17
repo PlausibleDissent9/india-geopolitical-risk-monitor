@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "india_major_ports_bps_2024_25",
+  "decision_id": "rights:india_major_ports_bps_2024_25:review-1.0:2026-08-17",
+  "name": "Basic Port Statistics of India 2024-25 joint cargo tables",
+  "provider": "Ministry of Ports, Shipping and Waterways, Government of India",
+  "access_basis": "official_site_reproduction_policy_pending_signed_scope_review",
+  "access_url": "https://shipmin.gov.in/en/content/basic-port-statistics-india-2024-25",
+  "terms_url": "https://shipmin.gov.in/en/footer/copyrightpolicy",
+  "authority_class": "official_primary",
+  "independence_group": "india_ministry_ports",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "official_latest_fiscal_port_country_commodity_observations",
+  "permitted_uses": [
+    "cite_metadata",
+    "model_processing",
+    "publish_extract"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "DRAFT — unsigned, binds nothing; registry default_policy: deny governs until the founder signs. Proposed scope: exactly cite_metadata, model_processing and publish_extract, bounded to the joint country-by-principal-commodity-by-Major-Port cargo tables of Basic Port Statistics of India 2024-25, in thousand metric tonnes, over the registered thirteen-column Major Port frame, reproduced accurately from the single hash-pinned Ministry PDF edition, each published figure carrying prominent acknowledgement of the Ministry of Ports, Shipping and Waterways, the publication title and edition, and the registered extract SHA-256, per the Copyright Policy's accuracy, non-derogatory-use, non-misleading-context and prominent-acknowledgement conditions. Accuracy is load-bearing here in both directions: the registered typos, PDF blanks and rounding residuals are reproduced as printed and stated, never silently smoothed, and the loaded table's country heading is reproduced as printed rather than resolved by assumption. NOT approved: redistribute_raw — no re-hosting of the Ministry publication, matching the registry's own source_bytes_not_redistributed tier (IGRM's narrowing, not a prohibition in the terms); no extension of the thirteen-column frame to non-major ports, which are outside the source; no substitution of an unregistered edition or of a current monthly marginal for this fiscal vintage; no presentation of these figures as a statement of law or for legal purposes, which the Ministry's Terms & Conditions expressly disclaim; no Ministry endorsement, emblem or branding beyond textual attribution; no reproduction of anything in the publication identified as third-party copyright. Also NOT approved: publishing transformed derived series — the Copyright Policy grants accurate reproduction and is silent on adaptation and derivative works, so that needs its own signed decision.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "Same terms, verified independently at the same URL; the grant and its four conditions are reproduced accurately in the draft. publish_extract of the BPS 2024-25 joint tables is reproduction of material featured on the site — I confirmed the publication is hosted on the Ministry's own domain at shipmin.gov.in/sites/default/files/BPS%202024-25_compressed.pdf, page managed by MoPSW, hosted by NIC, with no GODL claim and no third-party or IPA credit on the page. The draft's handling of the \"reproduced accurately\" condition is the correct reading in the harder direction: reproducing registered typos, PDF blanks and rounding residuals as printed is accurate reproduction, and silently smoothing them would breach the condition, so accuracy constrains rather than licenses. Publication of transformed derived series is correctly excluded — the policy grants reproduction and is silent on adaptation, so derive_published_aggregates cannot be read out of this text, and the draft refuses it. The third-party-copyright carve-out is carried as an express exclusion and flagged for page-by-page confirmation before signature, which is the right posture for a statistical annual that can carry credited ta",
+    "unresolved_for_founder": "Four things to check personally before signing. (1) Third-party copyright is the policy's only carve-out. I read the policy page, not the BPS 2024-25 PDF page by page — a statistical annual is exactly the kind of publication that can carry a credited third-party table, chart or photograph. Confirm the extracted tables are clean, or scope the approval to those tables by name. (2) The registered typos, blanks and rounding residuals sit directly under the policy's \"reproduced accurately\" condition, and it cuts both ways: reproducing a printed typo verbatim is accurate reproduction; silently correcting it is not reproduction at all, and annotating it near the figure is the safer reading. Decide the display convention explicitly and once, because every published cell inherits it. (3) The terms are on their face broader than this draft — \"in any format or media\" would support redistribute_raw. I excluded it to match the registry's source_bytes_not_redistributed tier, not because the terms forbid it. (4) This draft does NOT cover the derive_published_aggregates use requested in governance/decisions/DRAFT_india_major_ports_bps_2024_25.md, for the same reason as pdmp2: no adaptation language in the Ministry text. max_current_age_days is left null deliberately — this is a dated fiscal vintage, not a current feed, and a freshness bound would be meaningless. Same vocabulary-mismatch caveat as noted on the pdmp2 draft applies here.",
+    "permitted_uses_as_drafted": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ],
+    "permitted_uses_after_verification": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ]
+  }
+}

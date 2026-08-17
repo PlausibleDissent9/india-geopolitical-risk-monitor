@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "gdelt_gkg_v2",
+  "decision_id": "rights:gdelt_gkg_v2:review-1.0:2026-08-17",
+  "name": "GDELT Global Knowledge Graph v2",
+  "provider": "The GDELT Project",
+  "access_basis": "public_download_pending_terms_review",
+  "access_url": "https://www.gdeltproject.org/data.html",
+  "terms_url": "https://www.gdeltproject.org/about.html",
+  "authority_class": "aggregator",
+  "independence_group": "gdelt_project",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "news_tone_context",
+  "permitted_uses": [
+    "model_processing",
+    "cite_metadata",
+    "publish_derived_value"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves exactly model_processing of GDELT Global Knowledge Graph v2 records, for a descriptive tone-context lane that does not yet exist in this repository. Nothing may be published from it. NOT approved: publication of tone values, GCAM dimensions, themes, named persons, organizations or locations, whether per record or aggregated; any per-record metadata, document identifier or source URL; any quotation, title or other text extracted from a source article; and any redistribution, rehosting or mirroring of GKG files. The provider's terms permit considerably more than this row grants, including redistribution, and the narrowing is deliberate on two independent grounds. First, GKG records carry material extracted from third-party news articles, and The GDELT Project's terms speak only to GDELT's own datasets and are silent on rights in that underlying content; the exact GKG field inventory could not be verified because the provider's codebook host failed certificate validation, so this row assumes article-derived text may be present. Second, GKG tone is provider-authored metadata and a construct claim, and a rights decision does not validate a construct. The descriptive tone lane stays inactive until a separate construct review exists and its own publication decision is signed and verifies.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "UNDERCLAIMS",
+    "verifier_note": "NO OVERCLAIM. Same independently verified terms page. GKG v2 is a dataset released by The GDELT Project, so it falls under 'all datasets released by the GDELT Project are available for unlimited and unrestricted use ... of any kind without fee', and model_processing is comfortably inside that. The two dangerous uses are correctly absent: publish_extract is excluded, and redistribute_raw is excluded. The draft's reasoning for withholding extract rights is legally sound and I endorse it — the terms grant rights in GDELT's own datasets and are silent on rights in the underlying news articles; data.html and the homepage are silent too (I checked data.html directly: it says 'The entire GDELT database is 100% free and open' and carries only a footer link to about.html#termsofuse, with no statement about article rights). GDELT cannot grant what it does not hold, so that silence is correctly treated as a gap, not a grant.\n\nUNDERCLAIMS, on a false factual premise. The draft's central claim — 'a descriptive tone-context lane that does not yet exist in this repository' and 'Nothing may be published from it' — is wrong. Two GKG lanes exist and are already publishing. src/fetch_tone.py queries ",
+    "unresolved_for_founder": "Four things, plus a live option to do nothing. (1) CONSIDER DECLINING OUTRIGHT: nothing in this repository consumes GKG today. An inactive approval is a standing liability that has to be re-reviewed every cycle for no current benefit. Leaving the row at review_required, or closing it as declined with this evidence attached, is a defensible and cheaper outcome than signing, and I am not recommending signature over it. (2) FIELD INVENTORY UNVERIFIED: the GKG V2.1 codebook PDF at data.gdeltproject.org could not be fetched, because that host serves a certificate valid only for *.googleapis.com. I therefore do not know from direct reading whether GKG v2 carries verbatim quotations or article titles. Before any extract, per-record or identity use is ever contemplated, that codebook must be read by a route that works, such as a manual download outside the fetch path. (3) THIRD-PARTY CONTENT IS UNADDRESSED, NOT PERMITTED: GDELT's terms grant broad rights in GDELT's datasets and say nothing about the news articles behind them; data.html and the homepage are silent too. That silence is why extract publication is excluded here, and it is the same reasoning already applied in the gdelt_doc_api decision, which allowed headline receipts but drew the line at article body text. If you want a firmer answer than silence, it needs a direct question to the provider, not a re-read. (4) CONSTRUCT REVIEW OUTSTANDING: the registry row itself flags that tone requires construct review. That review is a separate artifact, is not covered by this decision, and gates the lane. (5) max_current_age_days is left null because no lane here may publish anything and a currency bound would assert a freshness property I did not verify; I did not confirm GKG's publication cadence from any page I actually read. Set a bound before activating any lane.",
+    "permitted_uses_as_drafted": [
+      "model_processing"
+    ],
+    "permitted_uses_after_verification": [
+      "model_processing",
+      "cite_metadata",
+      "publish_derived_value"
+    ]
+  }
+}

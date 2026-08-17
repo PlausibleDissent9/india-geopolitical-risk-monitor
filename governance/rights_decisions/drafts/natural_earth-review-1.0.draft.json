@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "natural_earth",
+  "decision_id": "rights:natural_earth:review-1.0:2026-08-17",
+  "name": "Natural Earth vector data",
+  "provider": "Natural Earth",
+  "access_basis": "public_domain_claim_pending_verification",
+  "access_url": "https://www.naturalearthdata.com/",
+  "terms_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "authority_class": "reference_data",
+  "independence_group": "natural_earth",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "map_geometry",
+  "permitted_uses": [
+    "cite_metadata",
+    "model_processing",
+    "publish_extract",
+    "redistribute_raw"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves exactly cite_metadata, model_processing, publish_extract and redistribute_raw for the Natural Earth map-geometry lane: the admin-0 and admin-1 vector releases baked into docs/geo/world.json and docs/geo/india.json for public IGRM map baselayers. On copyright there is nothing to bound and the decision says so plainly: the provider states that all versions of Natural Earth raster and vector map data are in the public domain, that no permission is needed and that crediting the authors is unnecessary, and it permits use, modification, electronic dissemination and offset printing for personal, educational and commercial purposes. The identical public-domain statement appears in the LICENSE of the nvkelso/natural-earth-vector mirror that the build actually fetches from, so the access path is licence-clean and not merely the canonical site. IGRM's 'Made with Natural Earth' credit is therefore voluntary house practice. What this decision does NOT do, stated because a public-domain grant invites over-reading: it does not warrant the geometry — the provider disclaims responsibility for accuracy and content, and third-party contributors disclaim warranties on the data they supplied, so the bundled boundaries are a cartographic product and not a source of truth. It does not clear boundary DEPICTION. Which boundaries a public India-facing index draws is a publication and legal question that copyright terms cannot answer; it rests on the founder's 2026-08-05 decision to use Natural Earth's India point-of-view variant, disclosed on the maps page, and not on this rights decision. And it does not approve any implication that Natural Earth endorses or has reviewed IGRM.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "Terms fetched independently at the canonical site and at the mirror the build actually uses; all four uses are granted with room to spare. DRIVING CLAUSES, confirmed verbatim: 'All versions of Natural Earth raster + vector map data found on this website are in the public domain'; 'No permission is needed to use Natural Earth'; 'Crediting the authors is unnecessary'; and use is invited 'for personal, educational, and commercial purposes', with maps usable 'in any manner, including modifying the content and design, electronic dissemination, and offset printing'. A public-domain dedication plus an express grant of electronic dissemination and modification licenses redistribute_raw and publish_extract directly, and makes the 'Made with Natural Earth' credit voluntary as the draft says. ACCESS PATH VERIFIED: I fetched https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/LICENSE.md, the path scripts/prepare_map_geometry.py line 30 fetches from, and it carries the identical public-domain statement, so the claim rests on the route actually used and not only on the canonical site. HARDEST ATTACK I RAN, since it was the one plausible route to an overclaim: the LICENSE grants",
+    "unresolved_for_founder": "max_current_age_days is deliberately null: these are versioned static releases, so currency here means version-pinning, not age — which is exactly where the gap is. (1) NO VERSION IS PINNED. scripts/prepare_map_geometry.py line 30 fetches from the mirror's master branch with no tag, commit or checksum, so 'the bundled version' this decision names is a moving target and is not reproducible. Record a commit SHA or release tag plus a file checksum before signing, the way the registry treats other sources. (2) THE DOCSTRING CONTRADICTS THE CODE on precisely the sensitive question: lines 13-16 of scripts/prepare_map_geometry.py say admin-0 uses Natural Earth's standard de facto worldview, while lines 32-38 and WORLD_FILE use ne_10m_admin_0_countries_ind.geojson, the India point-of-view variant. One of those is wrong and it is the one comment on this project that must not be stale. Confirm what actually ships and fix it. (3) Public domain removes copyright constraints only; it does not remove Indian legal requirements on published depictions of national boundaries. That exposure is yours to confirm, and this decision deliberately does not speak to it.",
+    "permitted_uses_as_drafted": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract",
+      "redistribute_raw"
+    ],
+    "permitted_uses_after_verification": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract",
+      "redistribute_raw"
+    ]
+  }
+}

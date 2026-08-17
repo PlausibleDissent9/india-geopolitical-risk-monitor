@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "india_ogd_port_trade_2019_20",
+  "decision_id": "rights:india_ogd_port_trade_2019_20:review-1.0:2026-08-17",
+  "name": "Country-port-principal-commodity overseas cargo, 2019-20",
+  "provider": "Ministry of Ports, Shipping and Waterways via Open Government Data Platform India",
+  "access_basis": "government_open_data_license_india_pending_signed_scope_review",
+  "access_url": "https://www.data.gov.in/catalog/overseas-cargo-principal-commodities-unloaded-and-loaded-country-major-ports",
+  "terms_url": "https://smartcities.data.gov.in/government-open-data-license-india",
+  "authority_class": "official_primary",
+  "independence_group": "india_ministry_ports",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "official_historical_port_country_commodity_observations",
+  "permitted_uses": [
+    "cite_metadata",
+    "model_processing"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "DRAFT — unsigned, binds nothing; registry default_policy: deny governs until the founder signs, and this draft additionally rests on an UNVERIFIED premise (see unresolved). Proposed scope, conditional on that premise holding: exactly cite_metadata, model_processing and publish_extract, bounded to the two registered 2019-20 overseas-cargo resources — principal commodities unloaded and loaded by country at Major Ports, in thousand metric tonnes, over the registered thirteen-column Major Port frame — at the exact registered CSV and PDF hashes only. Every published figure carries the GODL section 4(a) attribution set: provider, source, licence name and the specific resource URL, plus the fiscal vintage and the extract digest. GODL section 3 supports this: it grants use, adaptation, publication in original or derivative form, and derivative works for lawful commercial and non-commercial purposes. NOT approved: redistribute_raw — no re-hosting of the OGD resource files, withheld because the licence's applicability to these specific resources was not verifiable today, not because section 3 excludes it; no resolution of the loaded table's \"Country of Origin\" heading into destination semantics by assumption, in any artifact, under any framing — the heading is published as printed; no presentation of the 2019-20 vintage as current trade structure, every artifact carrying the vintage in its label; no substitution of an unregistered vintage or later edition for the registered hashes; no suggestion of provider endorsement of IGRM or its use, per GODL section 4(c); no reliance on continued availability of updated data, which GODL section 4(e) expressly disclaims. GODL section 6 exemptions are not engaged — these tables contain no personal information — stated for completeness.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_inferred",
+    "adversarial_verdict": "OVERCLAIMS",
+    "verifier_note": "publish_extract exceeds what the terms establish, because the licence has not been shown to apply to these two resources at all. Independently confirmed today: https://www.data.gov.in/catalog/overseas-cargo-principal-commodities-unloaded-and-loaded-country-major-ports returns HTTP 403; the unloaded resource page https://www.data.gov.in/resource/country-port-wise-overseas-cargo-principal-commodities-unloaded-during-2019-20 returns 403; https://www.data.gov.in/Godl returns 403; https://www.data.gov.in/ returns 403. The whole www.data.gov.in host is unreachable to me, so no GODL badge on either resource was seen by anyone today, and the applicability claim rests solely on the registry's own 2026-08-08 human note. Worse, the mirror I read makes the gap sharper rather than closing it. I fetched https://smartcities.data.gov.in/government-open-data-license-india and its declaration of blanket coverage is domain-scoped: \"All datasets/resources including metadata published on smartcities.data.gov.in are licensed under the Government Open Data License - India\" — a statement about that subdomain, not about www.data.gov.in. The licence text itself does not self-apply platform-wide: section 1 d",
+    "unresolved_for_founder": "This draft's confidence is terms_inferred and it should not be signed as-is. (1) The load-bearing gap: I could not verify that these two resources are licensed under GODL. https://www.data.gov.in/catalog/overseas-cargo-principal-commodities-unloaded-and-loaded-country-major-ports returned HTTP 403, so the GODL badge on the resources was not seen today. The claim rests entirely on the registry's own 2026-08-08 human note. Open the catalog page and both resource pages in a browser (the resource URLs are recorded in governance/ogd_port_trade_baseline.json) and confirm the licence on each before signing. (2) The registry's terms_url — https://www.data.gov.in/sites/default/files/NDSAP_OpenDataLicense.pdf — also returned 403, as did the canonical https://www.data.gov.in/Godl. I read the GODL text on two other OGD Platform India domains instead (smartcities.data.gov.in and punjab.data.gov.in), which agree. So terms_url here points at what I actually read, NOT at what the registry points at. If the registry's NDSAP PDF URL is genuinely dead rather than merely blocking automated fetches, the registry entry needs repointing in the same commit as any signature. (3) No version number or effective date is printed on the GODL pages I read, so the decision cannot record which licence version it was signed under — decide how you want that handled, given the registry's own posture that a licence-version change forces re-review. (4) GODL section 4(a) requires a DOI, URL or URI in the published attribution statement. Confirm IGRM's attribution string carries the specific resource URL for each of the two resources, not just the catalog title — per-resource, not per-source, is what the clause asks for. max_current_age_days is left null: this is a fixed 2019-20 historical baseline, not a current feed. Same vocabulary-mismatch caveat as noted on the pdmp2 draft applies here.",
+    "permitted_uses_as_drafted": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ],
+    "permitted_uses_after_verification": [
+      "cite_metadata",
+      "model_processing"
+    ]
+  }
+}

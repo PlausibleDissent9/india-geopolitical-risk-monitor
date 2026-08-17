@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "india_major_ports_pdmp2",
+  "decision_id": "rights:india_major_ports_pdmp2:review-1.0:2026-08-17",
+  "name": "Monthly cargo traffic handled at Major Ports",
+  "provider": "Ministry of Ports, Shipping and Waterways, Government of India",
+  "access_basis": "official_site_reproduction_policy_pending_signed_scope_review",
+  "access_url": "https://shipmin.gov.in/en/content/monthly-cargo-traffic-handled-major-ports-during-february%C2%A02026%C2%A0",
+  "terms_url": "https://shipmin.gov.in/en/footer/copyrightpolicy",
+  "authority_class": "official_primary",
+  "independence_group": "india_ministry_ports",
+  "lineage_policy": "primary",
+  "max_current_age_days": 62,
+  "role": "official_port_and_commodity_marginals",
+  "permitted_uses": [
+    "cite_metadata",
+    "model_processing",
+    "publish_extract"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "DRAFT — unsigned, binds nothing; registry default_policy: deny governs until the founder signs. Proposed scope: exactly cite_metadata, model_processing and publish_extract, bounded to the two marginal tables of the Monthly Cargo Traffic report at Major Ports — tonnes by Major Port, and tonnes by commodity across all Major Ports — reproduced accurately from the hash-pinned Ministry PDF, each published figure carrying prominent acknowledgement of the Ministry of Ports, Shipping and Waterways, the report month, and the registered extract SHA-256, per the Copyright Policy's accuracy, non-derogatory-use, non-misleading-context and prominent-acknowledgement conditions. NOT approved: redistribute_raw — no re-hosting of Ministry PDFs or page images, matching the registry's own source_bytes_not_redistributed tier (this is IGRM's self-imposed narrowing, not a prohibition in the terms); no port-by-commodity joint cells, which this report does not publish and which no signature here can create; no presentation of these figures as a statement of law or for legal purposes, which the Ministry's Terms & Conditions expressly disclaim; no Ministry endorsement, national emblem or Ministry branding beyond textual attribution; no reproduction of anything inside the report identified as third-party copyright. Also NOT approved: publishing transformed derived series. The Copyright Policy grants accurate reproduction and is silent on adaptation and derivative works, so derived-value publication is outside this scope and needs its own signed decision.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "Verified independently at https://shipmin.gov.in/en/footer/copyrightpolicy. The operative grant is \"Material featured on this site may be reproduced free of charge in any format or media without requiring specific permission\", conditioned on accurate reproduction, non-derogatory/non-misleading use, and prominent acknowledgement where published to others. publish_extract of the two marginal tables sits squarely inside that reproduction grant, and the draft carries all four conditions explicitly into scope. cite_metadata is a fortiori. model_processing is covered by \"in any format or media\" (machine copy/extraction) and does not reach adaptation, because the draft withholds publication of transformed derived series — correct, since the policy contains no adaptation or derivative-works language. The policy's single carve-out (\"material ... identified as being the copyright of a third party\") is honoured as an express exclusion rather than assumed away. I checked the third-party risk directly: the access_url page renders the report as a Ministry publication with the PDF hosted on the Ministry's own domain at shipmin.gov.in/sites/default/files/Report%20Monthly%20Major%20Port%20February%",
+    "unresolved_for_founder": "Four things to check personally before signing. (1) The Copyright Policy's only carve-out is material \"identified as being the copyright of a third party\". I read the policy page, not every page of the February 2026 PDF — confirm no page of the report bears a third-party copyright mark, or scope the approval to the two extracted tables only. (2) The terms are on their face broader than this draft: \"reproduced free of charge in any format or media\" would support redistribute_raw. I excluded it to match the registry's source_bytes_not_redistributed tier. If you want raw re-hosting, that is a widening you can make deliberately — this draft is not evidence that the terms forbid it. (3) This draft does NOT cover publishing transformed derived series, which the existing packet at governance/decisions/DRAFT_india_major_ports_pdmp2.md requests as derive_published_aggregates. The Ministry text is a reproduction permission with no adaptation language, so I could not grant it. Decide whether you want it, and on what reading. (4) max_current_age_days: 62 is a proposed operational bound (two monthly publication cycles, one missed month tolerated), NOT anything the terms supply — the registry currently holds null. Reset it to whatever cadence the pipeline actually needs. Also note, across all three drafts: the live registry vocabulary (cite_metadata / model_processing / publish_extract / publish_derived_value) differs from the proposed vocabulary in governance/decisions/README.md (retain_committed_extract / derive_published_aggregates / quote_attributed_figures / redistribute_in_audit_bundle / redistribute_raw). These drafts use the live registry vocabulary; the existing DRAFT_*.md packets use the README's. Reconcile the two before signing anything, or the signed artifact and the packet will not mean the same thing.",
+    "permitted_uses_as_drafted": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ],
+    "permitted_uses_after_verification": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ]
+  }
+}

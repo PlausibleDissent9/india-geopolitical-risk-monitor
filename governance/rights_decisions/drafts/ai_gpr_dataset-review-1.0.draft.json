@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "ai_gpr_dataset",
+  "decision_id": "rights:ai_gpr_dataset:review-1.0:2026-08-17",
+  "name": "Caldara-Iacoviello AI-GPR country data",
+  "provider": "Dario Caldara and Matteo Iacoviello",
+  "access_basis": "public_research_download_pending_terms_review",
+  "access_url": "https://www.matteoiacoviello.com/gpr.htm",
+  "terms_url": "https://www.matteoiacoviello.com/ai_gpr.html",
+  "authority_class": "research_dataset",
+  "independence_group": "caldara_iacoviello",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "research_comparator",
+  "permitted_uses": [],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves nothing for ai_gpr_dataset, and the source stays at the registry's deny default. This is a read, not a gap: the provider page was fetched and contains no licence, no terms of use and no permission grant of any kind. It carries only a bare footer copyright, \"(c) 2026 Matteo Iacoviello & Jonathan Tong\", and a request to notify the authors and cite the 2026 working paper. The CC BY 4.0 grant on gpr.htm does not reach it, because that sentence is scoped by its own wording to \"this webpage\" and ai_gpr.html is a separate page with its own copyright line; the site root carries no site-wide licence either. Accordingly: no cite_metadata, no model_processing, no publish_extract and no redistribute_raw. The AI-GPR country series must not enter the wedge study, any published chart, any scored or modelled input, or any IGRM public payload until written permission from the authors is on file and a superseding decision is signed. A citation request is not a licence, and the absence of a prohibition is not a permission. This decision governs data use only; ordinary scholarly reference to the AI-GPR working paper in prose is outside its scope and is neither granted nor restricted here.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "Verified independently, and the draft's reading holds. I fetched https://www.matteoiacoviello.com/ai_gpr.html directly: it carries no licence statement, no terms of use and no permission grant of any kind, only the footer copyright '(c) 2026 Matteo Iacoviello & Jonathan Tong' and a request to notify the authors and cite the 2026 working paper. permitted_uses is empty, so there is no permission to exceed and no overclaim is structurally possible; confidence terms_read_directly is also accurate, since the page was reachable and read rather than assumed. I went further than the draft to hunt for a grant it might have missed, and found none: the site root https://www.matteoiacoviello.com/ returns zero hits for licen, creativecommons, terms of use, copyright, all rights and disclaim; /LICENSE and /license.txt both 404; and the GitHub repository that serves the entire site, iacoviel/iacoviel.github.io, has no LICENSE file in its root listing, which I enumerated via the contents API. That listing does show gpr.htm and ai_gpr.html as sibling files in one repo, the strongest available argument for spillover, and it still fails, because the CC BY sentence is self-scoped to 'this webpage', ai",
+    "unresolved_for_founder": "The one thing that unblocks this is a written permission you request yourself; nothing here pre-approves it, and I have not contacted the authors. If you want the AI-GPR comparator, email matteo.iacoviello@frb.gov and jtong45@wisc.edu (the page itself invites contact) and ask two questions explicitly: whether the CC BY 4.0 licence on gpr.htm is intended to cover ai_gpr.html and its CSV downloads, and whether IGRM may quote AI-GPR country values in a public replication wedge study with the requested citation. A yes to the first collapses this decision into a GPR-shaped grant and is worth asking before anything narrower. Name the exact lane you want: frozen monthly India series from ai_gpr_country_monthly.csv, quoted values in a public write-up, no mirror. If permission does come back, two conditions found on the page must go into the superseding decision: the June 19, 2026 changelog entry records a corrected country-name mapping that \"fixed misattributions\", so any India comparator pinned before that date is suspect, and the April 24, 2026 revision touched country and event-type data as well; and the page publishes no vintage archive, so IGRM would have to retain and hash its own dated copy to make the wedge reproducible. Separately, the working paper PDF surfaced no data-availability statement when fetched, but that was a machine-summarised read rather than a full manual one, so confirm it directly if it becomes load-bearing.",
+    "permitted_uses_as_drafted": [],
+    "permitted_uses_after_verification": []
+  }
+}

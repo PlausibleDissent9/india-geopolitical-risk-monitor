@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "gpr_dataset",
+  "decision_id": "rights:gpr_dataset:review-1.0:2026-08-17",
+  "name": "Caldara-Iacoviello GPR data",
+  "provider": "Dario Caldara and Matteo Iacoviello",
+  "access_basis": "public_research_download_pending_terms_review",
+  "access_url": "https://www.matteoiacoviello.com/gpr.htm",
+  "terms_url": "https://www.matteoiacoviello.com/gpr.htm",
+  "authority_class": "research_dataset",
+  "independence_group": "caldara_iacoviello",
+  "lineage_policy": "primary",
+  "max_current_age_days": 45,
+  "role": "research_comparator",
+  "permitted_uses": [
+    "cite_metadata",
+    "model_processing",
+    "publish_extract"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves exactly cite_metadata, model_processing and publish_extract for the bounded GPR comparator lane: the monthly export published at gpr.htm (data_gpr_export.xls/.dta, including the country-specific series), pulled as a pinned dated vintage and used as the external comparator in the IGRM replication wedge study. Every published surface must carry CC BY 4.0-compliant credit to Dario Caldara and Matteo Iacoviello, the 2022 American Economic Review citation, and the download date in the form the provider asks for. Published extracts are limited to the specific GPR values, dates and series mnemonics that the wedge write-up and its charts actually quote. Not approved: redistribute_raw. No mirror, re-host, bulk republication or IGRM-served download of the export files, and no GPR values inside an IGRM public payload presented as IGRM-distributed data. Also not approved: use of an unpinned or undisclosed vintage; presenting GPR values as final when the provider states they are preliminary and revisable, including backward revisions; any claim that the wedge result is endorsed, reviewed or validated by the authors or the Federal Reserve Board; and any extension of this decision to the AI-GPR page, which carries no licence and is governed by its own decision.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "Verified independently. I pulled gpr.htm raw (HTTP 200, 11,848,182 bytes), stripped script/style, and recovered the closing licence block verbatim: 'License: All the material in this webpage, including interactive visualizations and code, are completely open access under the Creative Commons BY license. You have the permission to use, distribute, and reproduce these in any medium, provided the source and authors are credited.' The href is https://creativecommons.org/licenses/by/4.0/, which I fetched separately and which grants Share ('copy and redistribute the material in any medium or format for any purpose, even commercially') and Adapt, under an Attribution condition. Each claimed use is covered with room to spare: cite_metadata is not a copyright-restricted act at all and the page volunteers a 'Cite as' string; model_processing sits inside the Adapt grant ('remix, transform, and build upon... for any purpose'); publish_extract is the weaker half of the Share grant, since Share covers redistribution in whole, and the draft caps extracts at the specific values, dates and mnemonics its charts quote. No clause on the page restricts commercial use, imposes a notification duty (the c",
+    "unresolved_for_founder": "Four items for you personally. (1) redistribute_raw scope: the licence sentence says \"all the material in this webpage, including interactive visualizations and code\" and does not name the .xls/.dta exports, which are separate files served from /gpr_files/. The plain reading is that CC BY 4.0 covers them and would permit a mirror with credit, but that is an inference, not a clause, so I excluded redistribute_raw. If you ever want IGRM to re-host GPR bytes, get that confirmed by the authors first rather than reading it off this decision. (2) Attribution string: CC BY 4.0 makes credit a condition, not a courtesy. Approve one exact attribution line and one download-date format now, and have the pipeline emit them verbatim, or a formatting drift becomes a licence breach. (3) Revision handling: the provider says the latest data are preliminary and that minor revisions can reach further back. The wedge study needs a stated freeze rule and a stored hash of the vintage used, plus a decision on whether a backward revision to prior months forces a re-publication or a footnote. Archived vintages exist in the provider's GitHub gpr_archive_files directory if you want a citable pin. (4) max_current_age_days = 45 is my proposal, derived from the stated monthly update cadence plus the federal-holiday shift rule, not from any provider clause; confirm it matches the wedge study's freeze policy. Also not reviewed, and out of scope here: the openICPSR/AEA replication package linked from the page carries its own terms and needs a separate decision if you use its code; and the country-map basemap tiles on that page carry Carto/Stamen/OpenStreetMap credits under CC BY 3.0 and ODbL, which apply only if you reproduce that visualization rather than the series.",
+    "permitted_uses_as_drafted": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ],
+    "permitted_uses_after_verification": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract"
+    ]
+  }
+}

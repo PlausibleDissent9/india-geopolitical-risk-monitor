@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "imf_portwatch",
+  "decision_id": "rights:imf_portwatch:review-1.0:2026-08-17",
+  "name": "IMF PortWatch",
+  "provider": "International Monetary Fund",
+  "access_basis": "public_service_pending_terms_review",
+  "access_url": "https://portwatch.imf.org/",
+  "terms_url": "https://www.imf.org/external/terms.htm",
+  "authority_class": "intergovernmental_dataset",
+  "independence_group": "imf",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "physical_transmission",
+  "permitted_uses": [],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "Draft for signature. Approves nothing, because the operative terms were never read. IMF PortWatch's own DCAT-US catalogue feed names exactly one licence for every PortWatch dataset — https://www.imf.org/external/terms.htm — and that page returned HTTP 403 to every automated retrieval attempt on 2026-08-17, as did the IMF's other copyright pages and the archive. Accordingly no permitted use is approved: not cite_metadata, not model_processing, not publish_extract, not redistribute_raw. Explicitly NOT approved, and currently running without any signed basis: the daily automated ArcGIS FeatureServer pull in src/fetch_portwatch.py against services9.arcgis.com Daily_Chokepoints_Data, and the chokepoint transit percentiles already published in docs/data/chokepoints.json for Suez, Bab el-Mandeb, Malacca and Hormuz. This is a finding of unread terms, not a finding of prohibition — the use may well be permitted, and a human who can open the licence page in a browser may be able to approve a wide lane in minutes. Note for the signer: the docstring of src/fetch_portwatch.py asserts that PortWatch is \"free with attribution, no key\". That assertion has no signed basis in this registry, was not verified against any provider document, and must not be read as one.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_unavailable",
+    "adversarial_verdict": "UNVERIFIABLE",
+    "verifier_note": "I could not reach the operative terms either, so I cannot verify a grant — but there is no overclaim to find: permitted_uses is empty, so no permission is asserted that terms could fail to support. Independent verification of the draft's evidence: (1) I re-fetched https://portwatch.imf.org/api/feed/dcat-us/1.1.json myself — 2192 datasets, accessLevel 'public' on all 2192, rights null on all 2192, and license = 'https://www.imf.org/external/terms.htm' on 2140 of them (the remaining 52 are blank or HTML-wrapped variants of the same URL). The draft's characterisation is accurate. (2) https://www.imf.org/external/terms.htm returned HTTP 403 'Access Denied' to WebFetch and to curl with a full browser UA and headers; https://data.imf.org/en/Terms-of-Use also 403; web.archive.org returned 503/429 on every attempt including a timestamped /web/ path and the mementoweb timemap. Not a single clause of the licence is readable from this environment. (3) I RESOLVED the draft's unresolved item (2) — scope: the FeatureServer the pipeline actually pulls (services9.arcgis.com/weJ1QsnbMYJlCHdG/.../Daily_Chokepoints_Data) carries serviceItemId 3da2b9ca97684916b75c4013f95d18ab, and that ArcGIS item's o",
+    "unresolved_for_founder": "FOUR THINGS, and the third is live. (1) Open https://www.imf.org/external/terms.htm in a browser — it blocks automated agents with 403 — and determine four points: whether systematic or automated downloading is permitted, whether redistribution of the retrieved rows is permitted, whether publication of derived values computed from them is permitted, and what exact attribution string is required. Until that is read, nothing here can be signed. (2) Scope: the licence pointer I read covers the PortWatch Hub catalogue. The pipeline actually pulls from an ArcGIS FeatureServer on services9.arcgis.com. Confirm the same licence governs that endpoint, or find the endpoint's own terms. (3) LIVE EXPOSURE: docs/data/chokepoints.json is published today and carries PortWatch-derived transit percentiles under decision_state review_required and permitted_uses []. Either sign a decision or pull the lane; leaving it shipping under an unsigned registry row is the state this registry exists to prevent. I have not changed anything. (4) VOCABULARY GAP: the lane in (3) publishes within-source percentile ranks, not raw transit counts and not extracts. That is publish_derived_value in the signed GDELT decisions, but publish_derived_value is not among the four terms available to this draft (cite_metadata, model_processing, publish_extract, redistribute_raw). Decide the registry term before signing, or the signed permission will not describe what the product actually does. Also worth a look while the terms page is open: any clause governing use of the IMF name or logo in a public index.",
+    "permitted_uses_as_drafted": [],
+    "permitted_uses_after_verification": []
+  }
+}

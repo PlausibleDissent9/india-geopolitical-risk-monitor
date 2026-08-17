@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "cow_mids",
+  "decision_id": "rights:cow_mids:review-1.0:2026-08-17",
+  "name": "Correlates of War Militarized Interstate Disputes",
+  "provider": "Correlates of War Project",
+  "access_basis": "public_research_download_pending_terms_review",
+  "access_url": "https://correlatesofwar.org/data-sets/MIDs/",
+  "terms_url": "https://correlatesofwar.org/data-sets/MIDs/",
+  "authority_class": "research_dataset",
+  "independence_group": "correlates_of_war",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "historical_event_context",
+  "permitted_uses": [],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves nothing for Correlates of War Militarised Interstate Disputes 5.0: permitted_uses is empty. This decision records a FAILED TERMS READ, not a rights finding. On 2026-08-17 correlatesofwar.org could not be reached from the drafting environment across three independent transports — WebFetch (connect ECONNREFUSED 146.6.162.203:443, four attempts across the dataset page in both letter cases, the www host and the site root), a browser navigation (denied/failed), and a direct curl (timeout after 20s). No COW terms of use, licence, data-use policy or citation policy was read, so nothing whatsoever is asserted here about what COW permits, and no third-party or mirror text has been substituted for the provider's own words. The terms_url recorded above is the URL that was attempted, taken from the registry access_url; it has NOT been confirmed to be a terms page. Pending a successful read, NOT approved: redistribute_raw (MID 5.0 release files or records), publish_extract (dispute-level rows, dyad rows, participant or coded-incident detail), model_processing (MID values entering any published IGRM score, band or historical India-dyad baseline), and cite_metadata (publishing MID record identity as IGRM evidence). The empty list means unread, not denied on the merits — do not read this draft as a judgement that COW is restrictive, and do not read it as clearance either. max_current_age_days is null: MID is a static versioned release, so a staleness bound is the wrong control; the correct control is a pinned release identifier plus a file sha256, which this draft does not yet carry.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_unavailable",
+    "adversarial_verdict": "UNVERIFIABLE",
+    "verifier_note": "I genuinely could not reach the provider's terms, confirming the draft's failed read across three independent transports of my own on 2026-08-17. WebFetch to https://correlatesofwar.org/data-sets/MIDs/ and to https://correlatesofwar.org/faq/ both returned 'connect ECONNREFUSED 146.6.162.203:443'. Direct curl to the site root, the www host and the dataset page each timed out after 20s (exit 28), while DNS resolved cleanly to the same 146.6.162.203, so the host is reachable in name resolution but not on 443. A browser navigation to https://correlatesofwar.org/data-sets/ was denied/failed. No COW terms of use, licence, data-use policy or citation policy was read by me, so I assert nothing about what COW permits. NOT AN OVERCLAIM: the automatic-overclaim rule (confidence terms_unavailable while still claiming permissions) does not fire, because permitted_uses is empty -- the draft claims no permission at all. The draft is also unusually careful about its own epistemic status: it labels itself a FAILED TERMS READ rather than a rights finding, states that the empty list means unread rather than denied on the merits, warns against reading it as clearance, flags that the recorded terms_url",
+    "unresolved_for_founder": "EVERYTHING material is unresolved — this draft is not signable as it stands. 1) Open correlatesofwar.org yourself, from a network that can reach it, and read the site's terms-of-use / data-use page and the MID 5.0 dataset page. Do not sign on the assumption that an academic dataset is permissive by default; academic release conditions routinely permit research use while withholding redistribution. 2) Confirm specifically: (a) whether COW permits redistribution of release files or only download for research use; (b) whether derived/aggregated values may be published, and under what wording; (c) the exact required citation string for MID 5.0 — both the dataset citation and any accompanying article the project requires alongside it, which the registry row already flags as mandatory; (d) whether prescribed attribution wording exists; (e) whether commercial or funded use is treated differently, which matters if IGRM ever monetises. 3) Pin the release before any lane opens: exact version string, release date, file names and sha256 of the files actually downloaded, so the historical panel cannot silently shift under a published figure. 4) Watch a product trap: MID 5.0 and the Dyadic MIDs dataset are different products with different authors and different citations. A search-result summary surfaced a 2019 Journal of Conflict Resolution citation for the DYADIC dataset; it was not verified against the provider, refers to the other product, and must not be copied into any IGRM publication. 5) If the site stays unreachable, the honest options are to leave cow_mids default-deny and publish the negative, or to obtain the terms from the project directly — not to infer them from a repository that hosts an older MID release under that repository's own terms.",
+    "permitted_uses_as_drafted": [],
+    "permitted_uses_after_verification": []
+  }
+}

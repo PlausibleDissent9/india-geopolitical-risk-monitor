@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "ucdp_ged",
+  "decision_id": "rights:ucdp_ged:review-1.0:2026-08-17",
+  "name": "UCDP Georeferenced Event Dataset",
+  "provider": "Uppsala Conflict Data Program",
+  "access_basis": "public_download_pending_terms_review",
+  "access_url": "https://ucdp.uu.se/downloads/",
+  "terms_url": "https://ucdp.uu.se/downloads/",
+  "authority_class": "research_dataset",
+  "independence_group": "ucdp",
+  "lineage_policy": "primary",
+  "max_current_age_days": 400,
+  "role": "coded_event_context",
+  "permitted_uses": [
+    "cite_metadata",
+    "model_processing",
+    "publish_extract",
+    "redistribute_raw"
+  ],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves exactly cite_metadata, model_processing, publish_extract and redistribute_raw for one pinned artifact: UCDP Georeferenced Event Dataset (GED) Global version 26.1, covering 1989-2025, acquired from the file downloads at https://ucdp.uu.se/downloads/ (ged261-csv.zip and its sibling dta/rds/xlsx packages, codebook ged261.pdf). The basis is the licence stated on that page: CC BY 4.0, free of charge, use and redistribution permitted provided the publications listed with the dataset are cited. Every one of the four uses is conditional, and the condition is the licence, not house style: any IGRM payload that carries GED bytes or GED-derived values must carry in the same payload (1) the three citation lines UCDP lists for GED - Davies, Pettersson and Oberg, Journal of Peace Research 2026, doi 10.1093/jopres/xjag046; Sundberg and Melander, Journal of Peace Research 50(4), 2013; and the DEMSCORE / Swedish Research Council grant 2021-00162 acknowledgement - (2) a link to https://creativecommons.org/licenses/by/4.0/, and (3) an explicit statement of whether IGRM changed the data. Publishing without those three is a licence breach, not a formatting defect, and the pipeline must fail closed rather than emit an unattributed payload. The following are NOT approved. Not approved: acquisition through the UCDP API at https://ucdp.uu.se/apidocs/, which is token-gated by email request and whose token-issuance conditions were not read - if the pipeline ever switches from file download to API, this decision does not travel with it. Not approved: the UCDP Candidate Events Dataset (v26.0.X) or the UCDP Violent Political Protest GED Dataset (v26.1.4.1101.2512), which are separate releases sitting on the same page under separate citations and require their own decisions. Not approved: any release other than v26.1; when v27 lands the per-dataset citation list must be re-read before the pin moves. Not approved: republishing UCDP-derived bytes under any IGRM term that adds restrictions beyond CC BY 4.0, which the licence forbids. Not approved: any claim or implication of endorsement, affiliation, review, or partnership involving UCDP, Uppsala University, or DEMSCORE, and no use of their names or marks beyond the required citation. Not approved: treating GED v26.1 as a current or near-real-time feed - it terminates at 2025 and cannot back any current-period, nowcast, or forecast claim in the index. Not approved: GED as source-truth or as a denominator substitute for any IGRM score; its approved role stays coded_event_context for India event-context comparison, with its vintage labelled on every surface that shows it.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "INDEPENDENTLY VERIFIED, not taken from the draft. I re-fetched https://ucdp.uu.se/downloads/ myself: HTTP 200, 138,078 bytes, sha256 5b8c5d85582971fe6f30b161886704b38b241b12cd18fea29ea3d762f8e5ebc5 — byte-identical to the draft's evidence. Verbatim grant on the page: 'All datasets are free of charge and licensed under CC BY 4.0 - you are free to use and redistribute them provided you cite the relevant publications listed with each dataset.' I reproduced the three GED 'Please cite' lines verbatim (Davies/Pettersson/Oberg JOPR 2026 doi 10.1093/jopres/xjag046; Sundberg & Melander JPR 50(4) 2013; DEMSCORE grant 2021-00162) and all five artifact hrefs (ged261-csv/dta/rds/xlsx.zip, ged261.pdf). NEGATIVE FINDINGS REPRODUCED on my own tag-stripped copy: zero occurrences of commercial, non-commercial, may not, prohibit, restrict, permission, copyright, warrant, liab, endors, trademark, terms of use, sharealike, derivative. The only licence/terms href on the page is the CC BY 4.0 deed.\n\nEACH PERMISSION AGAINST THE GRANT. cite_metadata: not merely permitted but required (attribution is the licence condition). model_processing: deed Adapt - 'remix, transform, and build upon the material for an",
+    "unresolved_for_founder": "Six items, the first two of which should be settled before you sign. (1) REGISTRY DEFECT: the ucdp_ged row currently records terms_url as https://ucdp.uu.se/about/terms-of-use/. That URL serves no terms - it returns a 2,568-byte 'Loading...' SPA shell that is byte-identical to the shell returned for a path I invented that certainly does not exist. Whoever entered it recorded a URL nobody had read. The licence actually lives on the downloads page, which is what this draft cites; correct the registry row in the same commit as the signature, or the artifact and the registry will disagree. (2) max_current_age_days = 400 is MY proposal, not a provider term, and the field fits this source badly: GED Global is an annual release, not a daily feed, so a day-count bound is a proxy for 'a new annual release should have appeared by now' (roughly annual cadence plus about five weeks of slack). Confirm the number, and confirm the clock start - this draft intends days since the pinned release was published, not days since the last covered event, and the two differ by more than a year for v26.1. (3) I read the CC BY 4.0 human-readable deed, not the full legal code. Since this draft grants redistribute_raw, you may want to read the legal code's attribution and sui-generis-database-rights clauses yourself before exercising bulk redistribution. (4) I found no licence text specific to GED beyond the blanket downloads-page statement; if the codebook ged261.pdf carries additional conditions, I did not open it. Cheap to check, worth checking before redistribution. (5) The 'no additional restrictions' condition binds IGRM's own publishing terms. igrm_public_payloads is itself still decision_state review_required with an empty permitted_uses, so the downstream terms these bytes would be published under are not yet settled - resolving that row is a prerequisite for actually exercising redistribute_raw, even though it does not block signing this one. (6) I am recommending all four permitted uses, which is broader than the GDELT precedents in this directory. That is not a drift in the conservatism bar: CC BY 4.0 plus an explicit 'free to use and redistribute' sentence is a genuinely open grant, whereas GDELT's terms were not. The narrowing here is on the artifact (one pinned release, one acquisition channel) and on the attribution condition, not on the rights.",
+    "permitted_uses_as_drafted": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract",
+      "redistribute_raw"
+    ],
+    "permitted_uses_after_verification": [
+      "cite_metadata",
+      "model_processing",
+      "publish_extract",
+      "redistribute_raw"
+    ]
+  }
+}

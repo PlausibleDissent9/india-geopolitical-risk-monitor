@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "jodi_oil",
+  "decision_id": "rights:jodi_oil:review-1.0:2026-08-17",
+  "name": "JODI oil data",
+  "provider": "Joint Organisations Data Initiative",
+  "access_basis": "public_download_pending_terms_review",
+  "access_url": "https://www.jodidata.org/oil/",
+  "terms_url": "https://www.jodidata.org/terms-of-use.aspx",
+  "authority_class": "intergovernmental_dataset",
+  "independence_group": "jodi",
+  "lineage_policy": "primary",
+  "max_current_age_days": null,
+  "role": "energy_transmission_context",
+  "permitted_uses": [],
+  "reviewed_on": "2026-08-17",
+  "review_due": "2026-11-15",
+  "decision_owner": "Human source-rights reviewer",
+  "signer_id": null,
+  "statement": "The human signer approves nothing for JODI oil data: permitted_uses is empty. The JODI terms of use, read directly, reserve all intellectual property rights in the JODI Website and in the material published on it and contain no permission clause — no grant to print, download, copy, extract, republish, redistribute or use commercially, and no attribution or citation condition either. The oil downloads, user guide, manual and FAQ pages say only that the World Database is free of charge and are silent on reuse. Free-of-charge download visibility is therefore not read as a licence, consistent with the registry note on this source. Specifically NOT approved: redistribute_raw (JODI files, series or records, in whole or in part), publish_extract (JODI-sourced tables, rows, values or charted figures), model_processing (JODI values entering any published IGRM score, band, diagnostic or energy-transmission context term), and cite_metadata (publishing JODI record identity as IGRM evidence). Naming JODI in this registry as a source reviewed and declined is governance prose about a decision, not a use of the data, and is unaffected. The source stays default-deny and no retrieval should be built against it until JODI or the IEF secretariat grants reuse in writing and that correspondence is filed as the decision artifact. max_current_age_days is null because no lane is active; a currency bound would only become meaningful if a licence is later obtained.",
+  "_draft_only": {
+    "status": "UNSIGNED DRAFT - not valid authority until signed",
+    "terms_confidence": "terms_read_directly",
+    "adversarial_verdict": "SAFE",
+    "verifier_note": "Verified independently, and at a higher evidentiary standard than the draft used. Rather than rely on WebFetch's model-extracted rendering (the draft's own caveat #5), I pulled https://www.jodidata.org/terms-of-use.aspx as raw HTML via curl (HTTP 200, 34,445 bytes) and stripped tags to read the complete document. The draft's reading is confirmed verbatim. DRIVING CLAUSE (absence): the document has sections on Accessing the Website, Use of the JODI Forum, Account and Password, Suspension/Moderation, Personal Information, Third Party Links, Intellectual Property, Limitation of Liability and Applicable Law -- and contains NO sentence anywhere granting permission to print, download, copy, extract, republish, redistribute or commercially use the material, and no attribution or citation condition. DRIVING CLAUSE (present): 'The Intellectual Property rights in the JODI Website, and in the material published on it, are protected by Intellectual Property laws and treaties around the world. All such rights are reserved.' Since permitted_uses is empty, there is no permission to exceed the terms -- overclaiming is structurally impossible here. Two findings from the raw text strengthen the draf",
+    "unresolved_for_founder": "1) The permission has to be obtained by correspondence, because the terms page has no data-licence clause at all: the only contact published on it is jodiinfo@ief.org. Decide whether to write, and what exactly to ask for — as a minimum, a written statement covering internal processing plus publication of derived values, and separately whether extracts or file redistribution are allowed. 2) Governing law is stated as the law of the Kingdom of Saudi Arabia. That forum choice is a founder decision, not a reviewer's, and should be settled before signing any JODI lane. 3) Not read: the downloadable JODI-Oil manual PDF, the JODI-Oil country-notes metadata file, and the headers of the .ivt/.csv payloads themselves. A licence or use condition may sit inside those files rather than on the website; check before concluding that nothing exists. 4) JODI republishes figures submitted by participating economies. Before spending effort on a JODI licence, check whether India's own submitted oil balances are available directly from the Indian national publisher, which would replace this source with a primary one and remove the licence question entirely — I have not verified the terms of any such alternative. 5) The clauses in terms_evidence come from a model-extracted rendering of the page, not raw HTML. Re-read https://www.jodidata.org/terms-of-use.aspx yourself before signing, and re-check on signature day whether the page has changed.",
+    "permitted_uses_as_drafted": [],
+    "permitted_uses_after_verification": []
+  }
+}
