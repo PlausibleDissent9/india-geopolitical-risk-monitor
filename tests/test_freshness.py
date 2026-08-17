@@ -159,6 +159,50 @@ def test_the_real_site_has_no_stale_or_undatable_payloads():
     assert not bad, f"stale or undatable payloads being served: {bad}"
 
 
+@pytest.mark.live
+def test_the_published_report_is_not_itself_ancient():
+    """The one surface that reports rot cannot report its own.
+
+    freshness.json is exempt from its own audit, and reasonably so --
+    auditing your own output in the same run is circular. The cost of
+    that exemption showed between 2026-08-12 and 2026-08-17: the lane
+    stopped running, so the SERVED docs/data/freshness.json froze at its
+    2026-08-10 contents and went on telling every reader "71 fresh, 0
+    stale" while the real number was 36 stale. The audit was not wrong;
+    it simply had not run, and a frozen report of good news is
+    indistinguishable from good news.
+
+    This is not circular, which is the whole reason it can exist: it
+    does not ask the report whether the payloads are fresh, it asks how
+    old the REPORT is -- one fact the report cannot get wrong about
+    itself without being detectably absent. Live-marked because it is
+    purely about recency, exactly what that marker is for: a lane a day
+    late must not be able to block a correct publish. It fails in ci.yml
+    on main, where a stale site is an alert rather than a lock, and
+    lane-health escalates ci when it stays red.
+    """
+    from pathlib import Path
+    from datetime import datetime, timezone
+
+    p = Path(__file__).resolve().parents[1] / "docs" / "data" / "freshness.json"
+    if not p.exists():
+        pytest.skip("no published freshness report in this tree")
+    meta = json.loads(p.read_text(encoding="utf-8"))["_meta"]
+    stamp = meta.get("generated")
+    assert stamp, "the freshness report carries no _meta.generated"
+    written = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    age_days = (datetime.now(timezone.utc) - written).days
+    # The audit's own default_max_age_days is 3; the report that
+    # describes those payloads is held to the same bound rather than a
+    # softer one invented for it.
+    assert age_days <= meta.get("default_max_age_days", 3), (
+        f"docs/data/freshness.json was written {age_days} days ago "
+        f"({stamp}) and is still being served as the current staleness "
+        f"report. It currently claims {meta.get('n_stale_or_undatable')} "
+        f"stale of {meta.get('n_payloads')}; that claim is as old as the "
+        "file. The lane that writes it has not run.")
+
+
 def test_the_audit_fails_loudly_when_something_is_stale(tmp_path,
                                                        monkeypatch):
     """The whole point: it has to be able to stop a run."""
