@@ -87,12 +87,36 @@ jobs:
             # original `curl -s` returned exit 0 on any API rejection, so a
             # guarantor that dispatched nothing still showed green -- the
             # exact fail-silent pattern this repo's doctrine forbids.
-            CODE=$(curl -s -o /tmp/dispatch_body -w "%{http_code}" -X POST \
-              -H "Authorization: Bearer ${{ github.token }}" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/morning.yml/dispatches" \
-              -d '{"ref":"main"}')
-            echo "dispatch HTTP $CODE"; cat /tmp/dispatch_body || true
+            # RETRIED, because the guarantor was dying of weather
+            # (2026-08-17). GitHub's dispatch API returned 503 "No server
+            # is currently available to service your request", the single
+            # attempt failed the step, and the one recovery path that
+            # exists for a missed contract went red without dispatching
+            # anything. The same 503 hit a manual dispatch of this same
+            # workflow within the hour, so it is GitHub wobbling rather
+            # than anything about this repo.
+            #
+            # Fail-loud is preserved exactly: if every attempt fails the
+            # step still fails. What changed is that one transient 5xx no
+            # longer decides whether the morning contract gets a second
+            # chance. Three attempts over ~35s stays far inside this
+            # job's 45-minute cap.
+            CODE=""
+            for attempt in 1 2 3; do
+              CODE=$(curl -s -o /tmp/dispatch_body -w "%{http_code}" -X POST \
+                -H "Authorization: Bearer ${{ github.token }}" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/workflows/morning.yml/dispatches" \
+                -d '{"ref":"main"}')
+              echo "dispatch attempt $attempt: HTTP $CODE"
+              [ "$CODE" = "204" ] && break
+              cat /tmp/dispatch_body || true
+              # Only weather is worth retrying. A 401/403/404/422 is a real
+              # defect in this lane and must fail immediately rather than
+              # being drowned in retries.
+              case "$CODE" in 5*|000) sleep $((attempt * 10)) ;; *) break ;; esac
+            done
+            echo "dispatch final HTTP $CODE"; cat /tmp/dispatch_body || true
             [ "$CODE" = "204" ]
           else
             echo "final for $TARGET already published; no dispatch"
