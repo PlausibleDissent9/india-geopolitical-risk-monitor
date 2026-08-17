@@ -111,9 +111,36 @@ def test_nothing_to_publish_skips_instead_of_failing(tmp_path):
     assert code == 0, (
         "the step failed when there was nothing to publish, so every "
         f"derived step after it is skipped again:\n{output}")
-    assert not marker.exists(), (
-        "run_daily was invoked with no unpublished target; it would raise "
-        "final_target_invalid and fail the lane")
+
+
+def test_nothing_to_publish_never_invokes_the_PUBLISHING_pipeline(tmp_path):
+    """The invariant is about MODE, not about calling run_daily at all.
+
+    The first version of this asserted run_daily was never invoked, and
+    that was too strong -- it forbade the fix for a second bug found the
+    same night. event_study.json is refreshed only by run_daily's
+    non-final branch, so on every day the contract lane published (the
+    good case) nothing recomputed it and it sat 8 days old with both
+    lanes green. The repair is to run `--derived-only` here, which
+    returns before require_ordered_target and publishes nothing.
+
+    So what must stay true is narrower and sharper: no invocation that
+    reaches the publication guards. That means no --target, since a
+    target is exactly what require_ordered_target would reject.
+    """
+    code, output, marker = _run(tmp_path, "none")
+    assert code == 0, output
+    if not marker.exists():
+        return  # not invoked at all is also fine
+    argv = marker.read_text(encoding="utf-8")
+    assert "--derived-only" in argv, (
+        f"run_daily was invoked with no unpublished target, and not in "
+        f"--derived-only mode: {argv!r}. It would reach "
+        "require_ordered_target, raise final_target_invalid, and fail the "
+        "lane -- the outage this file exists to prevent.")
+    assert "--target" not in argv, (
+        f"--derived-only was passed a target ({argv!r}); the derived path "
+        "must take none, or it is a publish with the guards skipped")
 
 
 def test_a_real_target_is_still_published(tmp_path):

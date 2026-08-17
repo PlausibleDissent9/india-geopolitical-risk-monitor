@@ -159,6 +159,50 @@ def _published_day() -> date | None:
     return day if day.isoformat() == value else None
 
 
+def _run_derived_only() -> None:
+    """Recompute the event study alone, from bytes already committed.
+
+    WHY THIS EXISTS
+    event_study.json had no lane that could reach it on an ordinary day,
+    and the gap was structural rather than accidental:
+
+      * morning.yml runs `run_daily --final-only`, and --final-only
+        prints "[4/5] Event study unchanged" and skips it outright.
+      * daily.yml runs the full pipeline -- but only for an UNPUBLISHED
+        target day. Once the contract lane has published, there is no
+        such day, so the step is skipped and the event study with it.
+
+    So on every day the 06:00 contract succeeded -- the good case --
+    nothing recomputed it. It sat 8 days old while both lanes were
+    green. That is the same shape as the rest of this week's findings:
+    a payload whose refresh was a side effect of a step that only runs
+    in the failure case.
+
+    This path deliberately takes NO target and touches none of the
+    publication guards -- require_ordered_target,
+    require_promotion_receipt, _require_exact_target_scores. It is not a
+    publish with the checks removed, which is the dangerous thing it
+    could be mistaken for; it reads the committed store, recomputes one
+    derived payload from it, and stops. It writes docs/data/
+    event_study.json and event_study.csv and nothing else, so there is
+    no candidate here for a check to be protecting.
+    """
+    print("[derived-only] reading the committed GDELT store")
+    store = Path(fetch_gdelt.RAW_DIR) / "gdelt_volume.csv"
+    if not store.exists():
+        raise SystemExit("[fail-loud] no committed volume store to derive from")
+    volume = pd.read_csv(store, parse_dates=["date"]).set_index("date")
+    volume.index = [d.date() for d in volume.index]
+
+    print("[derived-only] episodes")
+    episodes = build_index.detect_all_episodes(volume)
+    print("[derived-only] markets")
+    _, derived = fetch_markets.load_or_update(start="2017-01-01")
+    print("[derived-only] event study")
+    event_study.write_output(event_study.run_event_study(episodes, derived))
+    print("[derived-only] done; nothing published")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--backfill", action="store_true")
@@ -175,7 +219,18 @@ def main() -> None:
     # backfill restarts where it stopped instead of re-spending the rate
     # budget from scratch.
     ap.add_argument("--from", dest="from_date", default="2017-01-01")
+    ap.add_argument(
+        "--derived-only",
+        action="store_true",
+        help="recompute the event study from the committed store and stop; "
+             "publishes nothing and takes no target",
+    )
     args = ap.parse_args()
+
+    if args.derived_only:
+        _run_derived_only()
+        return
+
     today_utc = args.contract_today or datetime.now(timezone.utc).date()
     target = args.target or final_publication.required_target(today_utc)
     final_publication.require_ordered_target(target, root=ROOT, today=today_utc)

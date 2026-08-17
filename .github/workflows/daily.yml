@@ -296,6 +296,23 @@ jobs:
               echo "no unpublished day before UTC D0; the contract lane has"
               echo "already published it. Skipping the publish and continuing"
               echo "to the derived lanes, which are this lane's other job."
+              # But NOT skipping the event study, which is not part of the
+              # publish and was only ever reached as a side effect of it.
+              # morning.yml runs run_daily --final-only, which prints
+              # "[4/5] Event study unchanged" and skips it; this lane ran
+              # it only on the branch that publishes a day. So on every
+              # day the 06:00 contract SUCCEEDED -- the good case --
+              # nothing recomputed event_study.json, and it sat 8 days old
+              # with both lanes green.
+              #
+              # --derived-only takes no target and touches none of the
+              # publication guards. It re-reads the committed store and
+              # rewrites one payload. Not fatal to the run: a failure here
+              # must not cost the derived lanes below, which is the
+              # ordering mistake this file has already paid for twice
+              # tonight.
+              IGRM_OFFLINE=1 timeout 20m python -m src.run_daily --derived-only \
+                || echo "::warning::event study refresh failed; continuing to the derived lanes"
             else
               IGRM_OFFLINE=1 timeout 30m python -m src.run_daily \
                 --target "$NEXT" \
