@@ -58,6 +58,44 @@
 published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.</p>
+<h2>2026-08-17: the pre-registered forecast experiment stopped registering, and nothing said so</h2>
+<p>The V11 evidence clock registers each Monday's forecast questions before
+that Monday opens; the whole warrant of the exercise is that a question
+is committed before its window, so it cannot be chosen after the fact.
+<code>validation/forecast_questions.json</code> held five questions, all with
+<code>window_start</code> 2026-08-10 -- the founder-signed launch commit -- and
+nothing after it.</p>
+<p><code>src.forecasts</code> runs in <code>daily.yml</code> and nowhere else, and it did run,
+and it did generate the following Monday's questions on schedule. But
+<code>scripts/stage_daily_outputs.sh</code> staged <code>docs</code>, <code>data/raw</code>,
+<code>notes-inbox</code> and <code>.trigger</code>, and not <code>validation</code>. So the questions
+were written into a runner's working tree and discarded with the runner,
+every night, for a week. The lane reported no error for it: the file
+simply never entered a commit.</p>
+<p>It did have a second effect, which is how it was found. The unstaged
+write left the tree dirty, so <code>scripts/publish_push.sh</code> refused the
+whole daily publish before its rebase -- correctly, by a guard it grew
+for exactly this class. That refusal was invisible behind an earlier
+failure until the earlier failure was fixed on 2026-08-17, at which
+point a run completed all 48 steps and still could not publish.</p>
+<p>Fixed by staging the registry by exact path. Not <code>git add validation</code>:
+that directory also holds frozen registrations and signed records, and
+an automated lane must not be able to sweep those into a publish. A test
+now requires that every module <code>daily.yml</code> invokes has every path it
+WRITES covered by the staging script. Applied to the existing tree that
+test immediately found a second case which resolves the opposite way --
+<code>validation/forecast_logit_frozen.json</code> is written only under <code>if not
+FROZEN.exists()</code>, and staging it would let a lane auto-commit a refit of
+registered coefficients -- so it is exempt on purpose, with the reason
+recorded and a further test asserting the existence guard still exists.</p>
+<p>Public exposure: no wrong number was published. The questions for the
+weeks of 2026-08-17 were never registered and cannot be registered now,
+because their window has opened and a question committed after its
+window is not a pre-registration. That is a gap in the experiment's
+record, and it is recorded here rather than closed. The next questions
+the lane registers are for <code>window_start</code> 2026-08-24. Grading, when it
+happens, covers the 2026-08-10 window and then resumes; the intervening
+week has no registered questions and never will.</p>
 <h2>2026-08-08: the nightly publish died on its linter, and the morning contract was next</h2>
 <p>daily-update #100 failed at its first step in two minutes sixteen,
 having computed nothing. A dependency check added that afternoon
@@ -280,6 +318,12 @@ it rather than quietly replaced.</p>
 <p>Public exposure: source ages understated by one day for about 17.5
 hours; no incorrect within-window verdict served; no published score
 affected.</p>
+<blockquote>
+<p>Derived from datasets released by <a href="https://www.gdeltproject.org/">The GDELT Project</a>.
+GDELT grants unlimited use on one condition — that any use of the data cite
+the GDELT Project and link https://www.gdeltproject.org/ — and this notice
+exists to meet it. Full upstream attribution is in the <a href="codebook.html">codebook</a>.</p>
+</blockquote>
 </div>
       <!--site-shell:content-end-->
     </main>

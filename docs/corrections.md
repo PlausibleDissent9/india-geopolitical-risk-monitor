@@ -5,6 +5,50 @@ published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.
 
+## 2026-08-17: the pre-registered forecast experiment stopped registering, and nothing said so
+
+The V11 evidence clock registers each Monday's forecast questions before
+that Monday opens; the whole warrant of the exercise is that a question
+is committed before its window, so it cannot be chosen after the fact.
+`validation/forecast_questions.json` held five questions, all with
+`window_start` 2026-08-10 -- the founder-signed launch commit -- and
+nothing after it.
+
+`src.forecasts` runs in `daily.yml` and nowhere else, and it did run,
+and it did generate the following Monday's questions on schedule. But
+`scripts/stage_daily_outputs.sh` staged `docs`, `data/raw`,
+`notes-inbox` and `.trigger`, and not `validation`. So the questions
+were written into a runner's working tree and discarded with the runner,
+every night, for a week. The lane reported no error for it: the file
+simply never entered a commit.
+
+It did have a second effect, which is how it was found. The unstaged
+write left the tree dirty, so `scripts/publish_push.sh` refused the
+whole daily publish before its rebase -- correctly, by a guard it grew
+for exactly this class. That refusal was invisible behind an earlier
+failure until the earlier failure was fixed on 2026-08-17, at which
+point a run completed all 48 steps and still could not publish.
+
+Fixed by staging the registry by exact path. Not `git add validation`:
+that directory also holds frozen registrations and signed records, and
+an automated lane must not be able to sweep those into a publish. A test
+now requires that every module `daily.yml` invokes has every path it
+WRITES covered by the staging script. Applied to the existing tree that
+test immediately found a second case which resolves the opposite way --
+`validation/forecast_logit_frozen.json` is written only under `if not
+FROZEN.exists()`, and staging it would let a lane auto-commit a refit of
+registered coefficients -- so it is exempt on purpose, with the reason
+recorded and a further test asserting the existence guard still exists.
+
+Public exposure: no wrong number was published. The questions for the
+weeks of 2026-08-17 were never registered and cannot be registered now,
+because their window has opened and a question committed after its
+window is not a pre-registration. That is a gap in the experiment's
+record, and it is recorded here rather than closed. The next questions
+the lane registers are for `window_start` 2026-08-24. Grading, when it
+happens, covers the 2026-08-10 window and then resumes; the intervening
+week has no registered questions and never will.
+
 ## 2026-08-08: the nightly publish died on its linter, and the morning contract was next
 
 daily-update #100 failed at its first step in two minutes sixteen,

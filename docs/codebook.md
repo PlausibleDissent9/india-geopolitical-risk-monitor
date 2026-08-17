@@ -39,7 +39,7 @@ IGRM's published values are derived data. The CC BY 4.0 licence above
 covers IGRM's own derived output; it does not and cannot relicense the
 upstream sources, each of which carries its own terms.
 
-**The GDELT Project** — https://www.gdeltproject.org/
+**The GDELT Project** — [https://www.gdeltproject.org/](https://www.gdeltproject.org/)
 
 Every channel share, the composite, the event aggregates, the tone and
 theme series and the per-channel receipts are derived from datasets

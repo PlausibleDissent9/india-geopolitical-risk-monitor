@@ -76,6 +76,24 @@ def test_some_public_page_actually_uses_gdelt():
         "this check has gone vacuous")
 
 
+def _actually_links_gdelt(page: str, text: str) -> bool:
+    """A LINK, not a string that contains the domain.
+
+    The first version asserted `"gdeltproject.org" in text`, and that was
+    too weak in the way that matters. docs/codebook.html is GENERATED
+    from codebook.md, whose source carried the URL as bare prose; the
+    renderer emitted it as plain text, and the substring check passed on
+    a page where the required link did not exist. The terms say "a link
+    to this website". Plain text is not a link.
+    """
+    if page.endswith(".md"):
+        return f"]({URL})" in text or f"]({URL[:-1]})" in text
+    return f'<a href="{URL}"' in text or f"<a href='{URL}'" in text
+
+
+URL = "https://www.gdeltproject.org/"
+
+
 @pytest.mark.parametrize("page", [p.name for p in _prose_pages()])
 def test_a_page_that_names_gdelt_also_links_it(page):
     text = (DOCS / page).read_text(encoding="utf-8")
@@ -87,6 +105,13 @@ def test_a_page_that_names_gdelt_also_links_it(page):
         "USE of the data, not merely for redistribution, so naming it as "
         "a source is what triggers the obligation. Add the attribution "
         "rather than removing the mention.")
+    assert _actually_links_gdelt(page, text), (
+        f"docs/{page} mentions {REQUIRED_LINK} but never as a LINK -- no "
+        f"anchor to {URL} in HTML, no markdown link in .md. The terms ask "
+        "for a link, and a bare URL in prose is not one. If this page is "
+        "generated, fix the SOURCE it renders from: a hand-added anchor "
+        "in generated HTML is deleted by the next regeneration, which is "
+        "exactly how this check came to be written.")
 
 
 def test_the_codebook_carries_the_condition_verbatim():
