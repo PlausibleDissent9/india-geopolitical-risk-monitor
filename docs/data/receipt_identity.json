@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-16",
- "generated_at": "2026-08-17T14:04:15Z",
+ "target_date": "2026-08-17",
+ "generated_at": "2026-08-18T08:05:57Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "ae243b87102067f25844cd1a449e862454ffc0e3",
-  "blob_git_sha1": "60065a377511367fc8737a9b862165043368a589",
-  "blob_sha256": "053b1d969115836abb3282f50e61dda2c28e2477126260a76326ab4cea857590",
+  "state": "different_target",
+  "commit_sha": "ab54282c1aab6f33af3554a4cd9bcbd44e963343",
+  "blob_git_sha1": "afae713d7d46a3db088f5579c0fb52347c33323e",
+  "blob_sha256": "6642f85a874a4d52c88e9c7e64411c0b48c651455a26e6c91b87a3705e1993e9",
   "target_date": "2026-08-16"
  },
  "channels": {
@@ -37,38 +37,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "India must strengthen shipping capacity , naval protection amid growing chokepoints : GTRI",
-     "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/india-must-strengthen-shipping-capacity-naval-protection-amid-growing-chokepoints-gtri/articleshow/133271212.cms",
+     "title": "Trump H - 1B crackdown is starting to drive tech talent back to India , China",
+     "url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/08/17/trumps-h-1b-crackdown-is-starting-to-drive-tech-talent-back-to-india-china",
+     "domain": "thestar.com.my"
+    },
+    {
+     "title": "US President Trump H - 1B visa crackdown is starting to drive tech talent back to India , China – Asia News Network",
+     "url": "https://asianews.network/us-president-trumps-h-1b-visa-crackdown-is-starting-to-drive-tech-talent-back-to-india-china/",
+     "domain": "asianews.network"
+    },
+    {
+     "title": "H - 1B visa extension fee unlikely to outweigh cost of losing skilled talent",
+     "url": "https://economictimes.indiatimes.com/nri/work/h-1b-visa-extension-fee-unlikely-to-outweigh-cost-of-losing-skilled-talent/articleshow/133288319.cms",
      "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "Strait of Hormuz Standoff : Three Vessels Attacked in 72 Hours as Maritime Threat Level Stays Severe",
-     "url": "https://gulfnews.com/world/mena/strait-of-hormuz-standoff-three-vessels-attacked-in-72-hours-as-threat-stays-severe-1.500642826",
-     "domain": "gulfnews.com"
+     "title": "Trading charges - The HinduBusinessLine",
+     "url": "https://www.thehindubusinessline.com/opinion/editorial/trading-charges/article71356665.ece",
+     "domain": "thehindubusinessline.com"
     },
     {
-     "title": "Houthis Fire Six Missiles Into Marib Displacement Camps as Yemen War Risk Peaks",
-     "url": "https://jp.ibtimes.com/houthis-fire-six-missiles-maribs-displacement-camps-yemen-war-risk-peaks-103727",
-     "domain": "jp.ibtimes.com"
-    },
-    {
-     "title": "Military conflicts combine with climate constraints to impede navigation across the globe  | Peak Oil News and Message Boards",
-     "url": "https://peakoil.com/publicpolicy/military-conflicts-combine-with-climate-constraints-to-impede-navigation-across-the-globe",
-     "domain": "peakoil.com"
-    },
-    {
-     "title": "India is losing West Asia , but it is not too late",
-     "url": "https://www.thehindu.com/opinion/op-ed/india-is-losing-west-asia-but-it-is-not-too-late/article71353405.ece",
-     "domain": "thehindu.com"
+     "title": "$100 , 000 H - 1B visa fee could push talent away , offshore US jobs : Indian - American Congressman Raja Krishnamoorthi",
+     "url": "https://www.hindustantimes.com/world-news/100000-h-1b-visa-fee-could-push-talent-away-offshore-us-jobs-indian-american-congressman-raja-krishnamoorthi-101786958150452.html",
+     "domain": "hindustantimes.com"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-16",
-     "evaluated_at_utc": "2026-08-17T14:04:15Z",
-     "rights_as_of": "2026-08-17",
+     "target_date": "2026-08-17",
+     "evaluated_at_utc": "2026-08-18T08:05:57Z",
+     "rights_as_of": "2026-08-18",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-15T23:59:59Z",
+     "release_deadline_utc": "2026-09-16T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-16",
-     "evaluated_at_utc": "2026-08-17T14:07:21Z",
-     "rights_as_of": "2026-08-17",
+     "target_date": "2026-08-17",
+     "evaluated_at_utc": "2026-08-18T08:09:07Z",
+     "rights_as_of": "2026-08-18",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-15T23:59:59Z",
+     "release_deadline_utc": "2026-09-16T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-16",
-     "evaluated_at_utc": "2026-08-17T14:07:21Z",
-     "rights_as_of": "2026-08-17",
+     "target_date": "2026-08-17",
+     "evaluated_at_utc": "2026-08-18T08:09:07Z",
+     "rights_as_of": "2026-08-18",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-15T23:59:59Z",
+     "release_deadline_utc": "2026-09-16T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "b52d6dba678642c5ecffd731ca19eaa57c0c0632ed40b863a007315a2f3627fb"
+ "payload_seal_sha256": "bdcfd47df58744648552fd83ab98ca9b8b09adc3a705462a10d6d6f9c2db6383"
 }
