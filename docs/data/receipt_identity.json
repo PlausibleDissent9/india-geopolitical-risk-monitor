@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-17",
- "generated_at": "2026-08-18T14:09:40Z",
+ "target_date": "2026-08-18",
+ "generated_at": "2026-08-19T08:06:36Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "e636eeff119516607d99c3c3334998f34d1bbdc1",
-  "blob_git_sha1": "fb32d2d1a1c31c3fe90bfe9ac1d413871fbedd2b",
-  "blob_sha256": "32121294ec27de6e6b1520c38bf619410e4b0fa25d8288e08777782b7b1b6515",
+  "state": "different_target",
+  "commit_sha": "2fe029878f775083595ede7aa54fe18f0c2bc219",
+  "blob_git_sha1": "0265ec01139f9732d8176f17490d9819e960b7de",
+  "blob_sha256": "30a6c51da22a97354e09fb2e3f76977979bf35947bbe1a042525c7f69ec52a8a",
   "target_date": "2026-08-17"
  },
  "channels": {
@@ -29,62 +29,46 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "The ghost of the colonial cartographer : Breaking man - made border shackles in the Global South",
-     "url": "https://www.thestandard.co.zw/standard-people/article/200059402/the-ghost-of-the-colonial-cartographer-breaking-man-made-border-shackles-in-the-global-south",
-     "domain": "thestandard.co.zw"
-    },
-    {
-     "title": "China Hydropower Plants : Why India Must Be Concerned",
-     "url": "https://www.rediff.com/news/special/chinas-hydropower-plants-why-india-must-be-concerned/20260817.htm",
-     "domain": "rediff.com"
-    },
-    {
-     "title": "Ethiopia : Wars , Strategic Rivalries and a Deepening Humanitarian Strain",
-     "url": "https://allafrica.com/stories/202608170107.html",
-     "domain": "allafrica.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Trump H - 1B crackdown is starting to drive tech talent back to India , China",
-     "url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/08/17/trumps-h-1b-crackdown-is-starting-to-drive-tech-talent-back-to-india-china",
-     "domain": "thestar.com.my"
+     "title": "Shipping Tribune",
+     "url": "https://www.shippingtribune.com/news/shipping/India+must+strengthen+shipping+capacity,+naval+protection+amid+growing+chokepoints:+GTRI",
+     "domain": "shippingtribune.com"
     },
     {
-     "title": "US President Trump H - 1B visa crackdown is starting to drive tech talent back to India , China – Asia News Network",
-     "url": "https://asianews.network/us-president-trumps-h-1b-visa-crackdown-is-starting-to-drive-tech-talent-back-to-india-china/",
-     "domain": "asianews.network"
+     "title": "China Touts Success of Arctic  Ice Silk Road  to Bypass Strait of Hormuz",
+     "url": "https://www.breitbart.com/national-security/2026/08/18/china-touts-success-of-arctic-ice-silk-road-to-bypass-strait-of-hormuz/",
+     "domain": "breitbart.com"
     },
     {
-     "title": "H - 1B visa extension fee unlikely to outweigh cost of losing skilled talent",
-     "url": "https://economictimes.indiatimes.com/nri/work/h-1b-visa-extension-fee-unlikely-to-outweigh-cost-of-losing-skilled-talent/articleshow/133288319.cms",
+     "title": "The view from India Newsletter : The war within the war",
+     "url": "https://www.thehindu.com/news/international/the-view-from-india-newsletter-the-war-within-the-war/article71356394.ece",
+     "domain": "thehindu.com"
+    },
+    {
+     "title": "Houthis Fire 5 Ballistic Missiles at Bab el - Mandeb",
+     "url": "https://english.aawsat.com/arab-world/5308217-houthis-fire-5-ballistic-missiles-bab-el-mandeb",
+     "domain": "english.aawsat.com"
+    },
+    {
+     "title": "Red Sea blockade threat : Why India trade faces a wider supply - chain shock",
+     "url": "https://economictimes.indiatimes.com/small-biz/trade/exports/insights/red-sea-blockade-threat-why-indias-trade-faces-a-wider-supply-chain-shock/articleshow/133312145.cms",
      "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "Trading charges - The HinduBusinessLine",
-     "url": "https://www.thehindubusinessline.com/opinion/editorial/trading-charges/article71356665.ece",
-     "domain": "thehindubusinessline.com"
-    },
-    {
-     "title": "$100 , 000 H - 1B visa fee could push talent away , offshore US jobs : Indian - American Congressman Raja Krishnamoorthi",
-     "url": "https://www.hindustantimes.com/world-news/100000-h-1b-visa-fee-could-push-talent-away-offshore-us-jobs-indian-american-congressman-raja-krishnamoorthi-101786958150452.html",
-     "domain": "hindustantimes.com"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -108,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-17",
-     "evaluated_at_utc": "2026-08-18T14:09:40Z",
-     "rights_as_of": "2026-08-18",
+     "target_date": "2026-08-18",
+     "evaluated_at_utc": "2026-08-19T08:06:36Z",
+     "rights_as_of": "2026-08-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-16T23:59:59Z",
+     "release_deadline_utc": "2026-09-17T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -149,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-17",
-     "evaluated_at_utc": "2026-08-18T14:12:43Z",
-     "rights_as_of": "2026-08-18",
+     "target_date": "2026-08-18",
+     "evaluated_at_utc": "2026-08-19T08:09:38Z",
+     "rights_as_of": "2026-08-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-16T23:59:59Z",
+     "release_deadline_utc": "2026-09-17T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -190,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-17",
-     "evaluated_at_utc": "2026-08-18T14:12:43Z",
-     "rights_as_of": "2026-08-18",
+     "target_date": "2026-08-18",
+     "evaluated_at_utc": "2026-08-19T08:09:38Z",
+     "rights_as_of": "2026-08-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-16T23:59:59Z",
+     "release_deadline_utc": "2026-09-17T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -219,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "09d72f83b947ee16961c3a25718435aee034d126da04116ac8c767adabbd01f1"
+ "payload_seal_sha256": "9cdaf6916bc6dd9fa5969c60d180ebbe4e35492027a570a3eb5c95c635042403"
 }
