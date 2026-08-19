@@ -10,7 +10,7 @@
   "finding": "English Wikipedia tracks this index more closely than Hindi Wikipedia does, on 5 of 5 channels, in BOTH levels and day-to-day changes. The gap is one-directional -- there is no channel where Hindi leads -- which is what an Anglophone construct looks like. The index is built from an English corpus and it appears to measure English-language attention to India better than it measures Indian-language attention. This is a limitation of the instrument, published as a result.",
   "the_obvious_objection_and_why_it_fails": "Hindi Wikipedia carries less traffic, so one expects attenuation from noise alone. That cannot be the whole story here: us_trade has the HIGHEST median Hindi traffic of any channel and the WORST correlation (the only negative one), while gulf_energy has the lowest traffic and the strongest Hindi correlation. The ordering of traffic and the ordering of agreement do not match, so thinness does not explain the pattern.",
   "what_this_does_not_say": "It does not say the index is wrong. Readers and editors are different populations attending to different things, and supply-side vs demand-side divergence is something this project already expects and publishes. It says the construct's reach into Indian-language attention is weaker than its reach into English-language attention, and that anyone citing this index as a measure of Indian public salience should read this file first. Nothing here adjusts a score.",
-  "generated": "2026-08-08T05:31:16Z",
+  "generated": "2026-08-19T19:58:17Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -29,10 +29,10 @@
     "\u0938\u093f\u092f\u093e\u091a\u093f\u0928 \u0939\u093f\u092e\u0928\u0926"
    ],
    "missing_english_titles": [],
-   "median_daily_views": 527.0,
-   "n": 3396,
-   "levels_pearson": 0.2977,
-   "levels_spearman": 0.1588,
+   "median_daily_views": 525.0,
+   "n": 3405,
+   "levels_pearson": 0.2976,
+   "levels_spearman": 0.1585,
    "changes_pearson": 0.1596,
    "refused": null
   },
@@ -47,11 +47,11 @@
     "\u092a\u0940\u092a\u0932\u094d\u0938 \u0932\u093f\u092c\u0930\u0947\u0936\u0928 \u0906\u0930\u094d\u092e\u0940"
    ],
    "missing_english_titles": [],
-   "median_daily_views": 595.0,
-   "n": 3396,
-   "levels_pearson": 0.3178,
-   "levels_spearman": 0.0256,
-   "changes_pearson": 0.1314,
+   "median_daily_views": 593.0,
+   "n": 3405,
+   "levels_pearson": 0.3167,
+   "levels_spearman": 0.0219,
+   "changes_pearson": 0.1312,
    "refused": null
   },
   "gulf_energy": {
@@ -67,11 +67,11 @@
     "Sanctions against Iran",
     "Energy policy of India"
    ],
-   "median_daily_views": 161.0,
-   "n": 3396,
-   "levels_pearson": 0.5,
-   "levels_spearman": -0.2956,
-   "changes_pearson": 0.1631,
+   "median_daily_views": 160.0,
+   "n": 3405,
+   "levels_pearson": 0.4966,
+   "levels_spearman": -0.3001,
+   "changes_pearson": 0.1629,
    "refused": null
   },
   "us_trade": {
@@ -87,10 +87,10 @@
     "CAATSA",
     "Trade policy of the United States"
    ],
-   "median_daily_views": 602.0,
-   "n": 3396,
-   "levels_pearson": -0.1361,
-   "levels_spearman": -0.2063,
+   "median_daily_views": 599.0,
+   "n": 3405,
+   "levels_pearson": -0.1358,
+   "levels_spearman": -0.2069,
    "changes_pearson": 0.05,
    "refused": null
   },
@@ -107,11 +107,11 @@
     "Houthi movement",
     "Piracy off the coast of Somalia"
    ],
-   "median_daily_views": 260.0,
-   "n": 3396,
+   "median_daily_views": 259.0,
+   "n": 3405,
    "levels_pearson": 0.2783,
-   "levels_spearman": -0.0259,
-   "changes_pearson": 0.0297,
+   "levels_spearman": -0.0237,
+   "changes_pearson": 0.0298,
    "refused": null
   }
  },
@@ -157,29 +157,29 @@
    "english_changes": 0.2233,
    "hindi_changes": 0.1596,
    "english_levels": 0.4576,
-   "hindi_levels": 0.2977
+   "hindi_levels": 0.2976
   },
   "china_east": {
    "english_changes": 0.3403,
-   "hindi_changes": 0.1314,
+   "hindi_changes": 0.1312,
    "english_levels": 0.4185,
-   "hindi_levels": 0.3178
+   "hindi_levels": 0.3167
   },
   "gulf_energy": {
    "english_changes": 0.5892,
-   "hindi_changes": 0.1631,
+   "hindi_changes": 0.1629,
    "english_levels": 0.6107,
-   "hindi_levels": 0.5
+   "hindi_levels": 0.4966
   },
   "us_trade": {
    "english_changes": 0.1169,
    "hindi_changes": 0.05,
    "english_levels": 0.0796,
-   "hindi_levels": -0.1361
+   "hindi_levels": -0.1358
   },
   "shipping": {
    "english_changes": 0.5644,
-   "hindi_changes": 0.0297,
+   "hindi_changes": 0.0298,
    "english_levels": 0.7066,
    "hindi_levels": 0.2783
   }

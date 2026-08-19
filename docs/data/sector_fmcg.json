@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for FMCG: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-08T05:32:22Z",
+  "generated": "2026-08-19T19:59:27Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,25 +11,19 @@
  "sector": "fmcg",
  "label": "FMCG",
  "rationale": "Included as a LOW-exposure control: domestic demand-led, exposure mostly via input costs and packaging/freight; a sector where the engine should show weak association.",
- "date": "2026-08-07",
+ "date": "2026-08-18",
  "channels": {
   "gulf_energy": {
    "label": "Gulf & Energy Security",
-   "score": 76.3,
-   "band95": [
-    75.6,
-    76.6
-   ],
+   "score": 77.4,
+   "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#gulf_energy"
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 61.7,
-   "band95": [
-    45.0,
-    71.0
-   ],
+   "score": 60.9,
+   "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#shipping"
   }
@@ -38,68 +32,14 @@
   "nse_index": "^CNXFMCG",
   "channels": {
    "gulf_energy": {
-    "1": {
-     "mean": -0.012,
-     "ci95": [
-      -0.169,
-      0.157
-     ],
-     "p_boot": 0.882,
-     "n": 86,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": -0.059,
-     "ci95": [
-      -0.343,
-      0.241
-     ],
-     "p_boot": 0.724,
-     "n": 86,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": -0.175,
-     "ci95": [
-      -0.897,
-      0.497
-     ],
-     "p_boot": 0.578,
-     "n": 86,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    },
    "shipping": {
-    "1": {
-     "mean": -0.093,
-     "ci95": [
-      -0.245,
-      0.059
-     ],
-     "p_boot": 0.216,
-     "n": 111,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": -0.303,
-     "ci95": [
-      -0.654,
-      0.021
-     ],
-     "p_boot": 0.078,
-     "n": 111,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": -0.438,
-     "ci95": [
-      -1.077,
-      0.191
-     ],
-     "p_boot": 0.196,
-     "n": 110,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    }
   },
   "note": "Historical association only, Benjamini-Hochberg corrected across the full grid; see sector_sensitivity.json _meta for the discipline and the current negative result."

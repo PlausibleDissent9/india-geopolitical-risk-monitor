@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Auto & Components: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-08T05:32:22Z",
+  "generated": "2026-08-19T19:59:27Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,35 +11,26 @@
  "sector": "auto_components",
  "label": "Auto & Components",
  "rationale": "Export programs to US/EU; input chains route via Malacca; China is both supplier and policy variable.",
- "date": "2026-08-07",
+ "date": "2026-08-18",
  "channels": {
   "china_east": {
    "label": "China / Eastern Border",
-   "score": 27.3,
-   "band95": [
-    4.8,
-    67.4
-   ],
+   "score": 0.6,
+   "band95": null,
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#china_east"
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 61.7,
-   "band95": [
-    45.0,
-    71.0
-   ],
+   "score": 60.9,
+   "band95": null,
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#shipping"
   },
   "us_trade": {
    "label": "US & Trade Policy",
-   "score": 46.1,
-   "band95": [
-    37.4,
-    56.9
-   ],
+   "score": 17.3,
+   "band95": null,
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#us_trade"
   }
@@ -48,100 +39,19 @@
   "nse_index": "^CNXAUTO",
   "channels": {
    "us_trade": {
-    "1": {
-     "mean": -0.153,
-     "ci95": [
-      -0.287,
-      -0.017
-     ],
-     "p_boot": 0.034,
-     "n": 101,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": -0.34,
-     "ci95": [
-      -0.71,
-      0.018
-     ],
-     "p_boot": 0.064,
-     "n": 100,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": -0.409,
-     "ci95": [
-      -1.155,
-      0.369
-     ],
-     "p_boot": 0.286,
-     "n": 100,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    },
    "shipping": {
-    "1": {
-     "mean": 0.076,
-     "ci95": [
-      -0.1,
-      0.253
-     ],
-     "p_boot": 0.382,
-     "n": 111,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": -0.032,
-     "ci95": [
-      -0.351,
-      0.294
-     ],
-     "p_boot": 0.876,
-     "n": 111,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": -0.267,
-     "ci95": [
-      -0.973,
-      0.461
-     ],
-     "p_boot": 0.478,
-     "n": 110,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    },
    "china_east": {
-    "1": {
-     "mean": 0.059,
-     "ci95": [
-      -0.108,
-      0.224
-     ],
-     "p_boot": 0.53,
-     "n": 114,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": 0.38,
-     "ci95": [
-      0.001,
-      0.744
-     ],
-     "p_boot": 0.048,
-     "n": 114,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": 0.561,
-     "ci95": [
-      -0.194,
-      1.353
-     ],
-     "p_boot": 0.148,
-     "n": 113,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    }
   },
   "note": "Historical association only, Benjamini-Hochberg corrected across the full grid; see sector_sensitivity.json _meta for the discipline and the current negative result."

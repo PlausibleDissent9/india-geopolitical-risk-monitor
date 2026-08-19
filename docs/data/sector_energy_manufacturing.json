@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Energy-intensive Manufacturing: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-08T05:32:22Z",
+  "generated": "2026-08-19T19:59:27Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,15 +11,12 @@
  "sector": "energy_manufacturing",
  "label": "Energy-intensive Manufacturing",
  "rationale": "Input-cost exposure to crude and LNG, which India imports predominantly from and through the Gulf.",
- "date": "2026-08-07",
+ "date": "2026-08-18",
  "channels": {
   "gulf_energy": {
    "label": "Gulf & Energy Security",
-   "score": 76.3,
-   "band95": [
-    75.6,
-    76.6
-   ],
+   "score": 77.4,
+   "band95": null,
    "weight": 1.0,
    "receipts": "https://igrm.in/receipts.html#gulf_energy"
   }
@@ -28,36 +25,9 @@
   "nse_index": "^CNXENERGY",
   "channels": {
    "gulf_energy": {
-    "1": {
-     "mean": -0.058,
-     "ci95": [
-      -0.236,
-      0.132
-     ],
-     "p_boot": 0.512,
-     "n": 86,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": -0.052,
-     "ci95": [
-      -0.491,
-      0.405
-     ],
-     "p_boot": 0.784,
-     "n": 86,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": 0.081,
-     "ci95": [
-      -0.768,
-      0.938
-     ],
-     "p_boot": 0.828,
-     "n": 86,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    }
   },
   "note": "Historical association only, Benjamini-Hochberg corrected across the full grid; see sector_sensitivity.json _meta for the discipline and the current negative result."

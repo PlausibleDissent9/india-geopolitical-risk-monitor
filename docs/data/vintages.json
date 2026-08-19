@@ -6,12 +6,12 @@
   "source": "https://igrm.in/data/vintages.json",
   "what": "Every published vintage of the daily series, diffed against what the site serves today. Answers whether a value read on day D is still the value shown for day D now -- the question that decides whether a backtest built on the current file has look-ahead bias in it.",
   "how": "Each daily publish is a commit, so history.csv at a given SHA is exactly what was served that morning. This compares every such vintage to the current file on their overlapping dates, across composite and all five channels.",
-  "finding": "10 of 12 vintages show zero changed values. The series is append-only in practice: days are added, not rewritten.",
+  "finding": "20 of 22 vintages show zero changed values. The series is append-only in practice: days are added, not rewritten.",
   "revisions": "The revision episodes are dated ['2026-07-27'] and correspond to methodology changelog entries -- notably v1.0.1 (2026-07-29), which changed the percentile computation. A revision with a dated, published cause is a version; a revision without one is a defect.",
   "this_is_a_tripwire": "The point of recomputing this nightly is not the reassuring number. A future silent revision -- a rebuilt store, a dictionary applied retroactively, a splice ratio quietly adopted -- appears here as a non-zero count the next morning, rather than being found by a user whose results stopped replicating.",
   "retrieve_any_vintage": "git log --format='%H %ad' --date=short -- docs/data/history.csv  then  git show <SHA>:docs/data/history.csv",
-  "n_vintages": 12,
-  "n_vintages_clean": 10,
+  "n_vintages": 22,
+  "n_vintages_clean": 20,
   "n_vintages_revised": 2,
   "most_recent_revision": "2026-07-27",
   "columns_compared": [
@@ -22,9 +22,119 @@
    "us_trade",
    "shipping"
   ],
-  "generated": "2026-08-08T05:31:19Z"
+  "generated": "2026-08-19T19:58:18Z"
  },
  "vintages": [
+  {
+   "published": "2026-08-19",
+   "sha": "f7127fe4ecf8af572761faa34a074ebde7ed72a2",
+   "n_rows": 3315,
+   "n_overlapping_days": 3315,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show f7127fe4ecf8af572761faa34a074ebde7ed72a2:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-18",
+   "sha": "4d7e202a1104ff71c723f3ab97ff697ce6914b55",
+   "n_rows": 3314,
+   "n_overlapping_days": 3314,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show 4d7e202a1104ff71c723f3ab97ff697ce6914b55:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-17",
+   "sha": "a3312f9f14832f1c6c9d299e3353b86b8aad3f0b",
+   "n_rows": 3313,
+   "n_overlapping_days": 3313,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show a3312f9f14832f1c6c9d299e3353b86b8aad3f0b:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-16",
+   "sha": "99789a02633e095ddcdae82361bf4a775591748b",
+   "n_rows": 3312,
+   "n_overlapping_days": 3312,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show 99789a02633e095ddcdae82361bf4a775591748b:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-15",
+   "sha": "dc7fbb05eaf7899348a0cec86c2f3e75081e0b56",
+   "n_rows": 3311,
+   "n_overlapping_days": 3311,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show dc7fbb05eaf7899348a0cec86c2f3e75081e0b56:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-14",
+   "sha": "c123c7f2b02e7fec4b1a9bae7e4d0998fdd16623",
+   "n_rows": 3310,
+   "n_overlapping_days": 3310,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show c123c7f2b02e7fec4b1a9bae7e4d0998fdd16623:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-13",
+   "sha": "17c2c6793c02088cc78c5c772f38c9eff13b542e",
+   "n_rows": 3309,
+   "n_overlapping_days": 3309,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show 17c2c6793c02088cc78c5c772f38c9eff13b542e:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-10",
+   "sha": "9077ea4f27b4662ed6651828ee28183eed8fc727",
+   "n_rows": 3308,
+   "n_overlapping_days": 3308,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show 9077ea4f27b4662ed6651828ee28183eed8fc727:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-09",
+   "sha": "3b94b64dbf686744003118a8fe589683b7e0fa10",
+   "n_rows": 3307,
+   "n_overlapping_days": 3307,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show 3b94b64dbf686744003118a8fe589683b7e0fa10:docs/data/history.csv"
+  },
+  {
+   "published": "2026-08-08",
+   "sha": "eaad1e50216af7e3ca945c3a31650c905b0be769",
+   "n_rows": 3306,
+   "n_overlapping_days": 3306,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show eaad1e50216af7e3ca945c3a31650c905b0be769:docs/data/history.csv"
+  },
   {
    "published": "2026-08-07",
    "sha": "6ef9b6edd2d2af88d2abfd069a66e5445d724108",

@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Agriculture & Food Exports: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-08T05:32:22Z",
+  "generated": "2026-08-19T19:59:27Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,25 +11,19 @@
  "sector": "agri_food",
  "label": "Agriculture & Food Exports",
  "rationale": "Basmati, marine and produce exports to the Gulf and beyond move by sea; Gulf demand and Red Sea transit both bind.",
- "date": "2026-08-07",
+ "date": "2026-08-18",
  "channels": {
   "gulf_energy": {
    "label": "Gulf & Energy Security",
-   "score": 76.3,
-   "band95": [
-    75.6,
-    76.6
-   ],
+   "score": 77.4,
+   "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#gulf_energy"
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 61.7,
-   "band95": [
-    45.0,
-    71.0
-   ],
+   "score": 60.9,
+   "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#shipping"
   }

@@ -9,7 +9,7 @@
   "n_alignment_checks": 2,
   "n_aligned": 1,
   "n_not_aligned_or_unavailable": 1,
-  "generated": "2026-08-19T01:21:47Z"
+  "generated": "2026-08-19T19:59:27Z"
  },
  "sources": [
   {
@@ -25,27 +25,27 @@
    "key": "events",
    "name": "GDELT Events stream",
    "role": "event counts for maps and the stress gauge (context)",
-   "latest_data": "2026-08-15",
+   "latest_data": "2026-08-17",
    "expect_within_days": 5,
-   "age_days": 4,
+   "age_days": 2,
    "ok": true
   },
   {
    "key": "portwatch",
    "name": "IMF PortWatch",
    "role": "chokepoint transit counts (context beside shipping)",
-   "latest_data": "2026-08-09",
+   "latest_data": "2026-08-16",
    "expect_within_days": 21,
-   "age_days": 10,
+   "age_days": 3,
    "ok": true
   },
   {
    "key": "comparators",
    "name": "Comparator salience",
    "role": "Indonesia/Vietnam placebo panel",
-   "latest_data": "2026-08-17",
+   "latest_data": "2026-08-19",
    "expect_within_days": 7,
-   "age_days": 2,
+   "age_days": 0,
    "ok": true
   },
   {
@@ -54,7 +54,7 @@
    "role": "inputs to event-study and priced-risk panels (beside, never inside)",
    "latest_data": null,
    "expect_within_days": 4,
-   "output_generated": "2026-08-10",
+   "output_generated": "2026-08-19",
    "ok": false,
    "note": "maximum market-input date is not present in committed evidence; the separately shown output build date is not an input-freshness claim"
   },
@@ -71,10 +71,10 @@
    "key": "expert_shelf",
    "name": "Expert attention shelf (RSS)",
    "role": "practitioner-institution titles (context)",
-   "latest_data": "2026-08-06",
+   "latest_data": "2026-08-19",
    "expect_within_days": 4,
-   "age_days": 13,
-   "ok": false
+   "age_days": 0,
+   "ok": true
   },
   {
    "key": "wiki",
@@ -98,9 +98,9 @@
    "key": "country_china",
    "name": "China country monitor (V8)",
    "role": "comparator instrument; enters no India score",
-   "latest_data": "2026-08-17",
+   "latest_data": "2026-08-19",
    "expect_within_days": 3,
-   "age_days": 2,
+   "age_days": 0,
    "ok": true
   }
  ],
@@ -137,7 +137,7 @@
    "key": "aptness",
    "name": "Aptness labels",
    "evidence": "docs/data/aptness.json",
-   "last": "2026-08-08T05:32:06Z",
+   "last": "2026-08-19T19:58:45Z",
    "measured_day": "2026-08-06"
   },
   {
@@ -151,14 +151,14 @@
    "key": "reliability",
    "name": "Reliability record",
    "evidence": "docs/data/reliability.json",
-   "last": "2026-08-19 06:51 IST",
+   "last": "2026-08-20 01:29 IST",
    "measured_day": null
   },
   {
    "key": "permanence",
    "name": "Archive snapshots (twice daily)",
    "evidence": "docs/data/permanence.json",
-   "last": "2026-08-18T16:53:26Z",
+   "last": "2026-08-19T02:47:33Z",
    "measured_day": null
   }
  ],
@@ -208,21 +208,18 @@
  ],
  "final_publication": {
   "target_date": "2026-08-18",
-  "latest_finalized_date": "2026-08-18",
-  "status": "finalized",
-  "reason": "The exact D-1 finalized score is published.",
-  "finalized": true,
+  "latest_finalized_date": null,
+  "status": "delayed_final",
+  "reason": "The D-1 final has not completed publication; the latest older final remains the number of record.",
+  "finalized": false,
   "provisional_substitution_allowed": false,
   "value_fields_published": false,
-  "source_receipt": {
-   "path": "data/raw/final_publication_receipts/2026-08-18.json",
-   "sha256": "5df41f3c711991116a74d4de131668817b97f2fd9edc8247bd896f9dcf052eff"
-  }
+  "source_receipt": null
  },
  "morning_contract": {
   "on_time": 0,
-  "scored_days": 12,
+  "scored_days": 13,
   "rate": 0.0,
-  "last_scored_day": "2026-08-17"
+  "last_scored_day": "2026-08-18"
  }
 }

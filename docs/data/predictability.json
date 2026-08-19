@@ -11,14 +11,34 @@
  },
  "pairs": {
   "salience_leads_events": {
-   "n": 3309,
-   "r2_increment": 0.0015,
-   "p_permutation": 0.724
+   "n": 3311,
+   "r2_increment": 0.0016,
+   "p_permutation": 0.661
+  },
+  "salience_leads_vix": {
+   "n": 2217,
+   "r2_increment": 0.0023,
+   "p_permutation": 0.439
+  },
+  "salience_leads_inr_vol": {
+   "n": 2268,
+   "r2_increment": 0.0009,
+   "p_permutation": 0.821
   },
   "events_leads_salience": {
-   "n": 3309,
+   "n": 3311,
    "r2_increment": 0.0097,
-   "p_permutation": 0.066
+   "p_permutation": 0.053
+  },
+  "vix_leads_salience": {
+   "n": 2217,
+   "r2_increment": 0.0026,
+   "p_permutation": 0.186
+  },
+  "inr_vol_leads_salience": {
+   "n": 2268,
+   "r2_increment": 0.0018,
+   "p_permutation": 0.372
   }
  }
 }

@@ -7,8 +7,8 @@
   "what": "Every published vintage of the daily series, as an exact reconstruction recipe: truncate the current history.csv at the vintage's last_observation, then overwrite the values in its diffs. Gives a backtester the numbers as they stood on any publish date -- the ALFRED property -- without twelve git invocations.",
   "reconstruction": "rows = {d: r for d, r in current.items() if d <= last_observation and d not in absent_days}; then for each diff day, apply its channel values over the row. Verified exact against git for every vintage listed, on every build; the builder refuses to publish otherwise.",
   "why_diffs": "10 of the vintages differ from today's series by nothing at all (vintages.json is the nightly proof), so a full panel would be >99% duplication. The two revised vintages carry their changed values inline.",
-  "n_vintages": 12,
-  "generated": "2026-08-08T05:31:19Z"
+  "n_vintages": 22,
+  "generated": "2026-08-19T19:58:18Z"
  },
  "current_columns": [
   "composite",
@@ -19,6 +19,96 @@
   "shipping"
  ],
  "vintages": [
+  {
+   "published": "2026-08-19",
+   "sha": "f7127fe4ecf8af572761faa34a074ebde7ed72a2",
+   "last_observation": "2026-08-18",
+   "n_rows": 3315,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-18",
+   "sha": "4d7e202a1104ff71c723f3ab97ff697ce6914b55",
+   "last_observation": "2026-08-17",
+   "n_rows": 3314,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-17",
+   "sha": "a3312f9f14832f1c6c9d299e3353b86b8aad3f0b",
+   "last_observation": "2026-08-16",
+   "n_rows": 3313,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-16",
+   "sha": "99789a02633e095ddcdae82361bf4a775591748b",
+   "last_observation": "2026-08-15",
+   "n_rows": 3312,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-15",
+   "sha": "dc7fbb05eaf7899348a0cec86c2f3e75081e0b56",
+   "last_observation": "2026-08-14",
+   "n_rows": 3311,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-14",
+   "sha": "c123c7f2b02e7fec4b1a9bae7e4d0998fdd16623",
+   "last_observation": "2026-08-13",
+   "n_rows": 3310,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-13",
+   "sha": "17c2c6793c02088cc78c5c772f38c9eff13b542e",
+   "last_observation": "2026-08-10",
+   "n_rows": 3309,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-10",
+   "sha": "9077ea4f27b4662ed6651828ee28183eed8fc727",
+   "last_observation": "2026-08-09",
+   "n_rows": 3308,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-09",
+   "sha": "3b94b64dbf686744003118a8fe589683b7e0fa10",
+   "last_observation": "2026-08-08",
+   "n_rows": 3307,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
+  {
+   "published": "2026-08-08",
+   "sha": "eaad1e50216af7e3ca945c3a31650c905b0be769",
+   "last_observation": "2026-08-07",
+   "n_rows": 3306,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
   {
    "published": "2026-08-07",
    "sha": "6ef9b6edd2d2af88d2abfd069a66e5445d724108",

@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Metals & Mining: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-08T05:32:22Z",
+  "generated": "2026-08-19T19:59:27Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,25 +11,19 @@
  "sector": "metals",
  "label": "Metals & Mining",
  "rationale": "China sets the global metals cycle and trade-remedy environment; bulk cargo is corridor-dependent.",
- "date": "2026-08-07",
+ "date": "2026-08-18",
  "channels": {
   "china_east": {
    "label": "China / Eastern Border",
-   "score": 27.3,
-   "band95": [
-    4.8,
-    67.4
-   ],
+   "score": 0.6,
+   "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#china_east"
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 61.7,
-   "band95": [
-    45.0,
-    71.0
-   ],
+   "score": 60.9,
+   "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#shipping"
   }
@@ -38,68 +32,14 @@
   "nse_index": "^CNXMETAL",
   "channels": {
    "china_east": {
-    "1": {
-     "mean": 0.133,
-     "ci95": [
-      -0.09,
-      0.343
-     ],
-     "p_boot": 0.23,
-     "n": 114,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": 0.296,
-     "ci95": [
-      -0.231,
-      0.818
-     ],
-     "p_boot": 0.262,
-     "n": 114,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": 1.2,
-     "ci95": [
-      0.179,
-      2.325
-     ],
-     "p_boot": 0.016,
-     "n": 113,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    },
    "shipping": {
-    "1": {
-     "mean": 0.14,
-     "ci95": [
-      -0.058,
-      0.342
-     ],
-     "p_boot": 0.178,
-     "n": 111,
-     "bh_significant_10pct": false
-    },
-    "5": {
-     "mean": 0.363,
-     "ci95": [
-      -0.123,
-      0.843
-     ],
-     "p_boot": 0.148,
-     "n": 111,
-     "bh_significant_10pct": false
-    },
-    "20": {
-     "mean": 1.121,
-     "ci95": [
-      0.039,
-      2.28
-     ],
-     "p_boot": 0.046,
-     "n": 110,
-     "bh_significant_10pct": false
-    }
+    "1": null,
+    "5": null,
+    "20": null
    }
   },
   "note": "Historical association only, Benjamini-Hochberg corrected across the full grid; see sector_sensitivity.json _meta for the discipline and the current negative result."
