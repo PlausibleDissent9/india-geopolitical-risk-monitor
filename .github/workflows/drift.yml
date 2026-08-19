@@ -80,7 +80,13 @@ jobs:
         env:
           MEDIACLOUD_API_KEY: ${{ secrets.MEDIACLOUD_API_KEY }}
         run: |
-          pip install --quiet mediacloud
+          # Constrained for the same reason as daily.yml's BigQuery
+          # install: a second, unpinned pip install can upgrade a
+          # package the first one pinned, and this lane publishes.
+          # No --quiet either -- a step that mutates the environment
+          # should leave the resolution in the log.
+          pip install mediacloud \
+            -c requirements.txt -c requirements-dev.txt
           python -m src.media_cloud
       - name: V17 GPR replication wedge (weekly; cite-not-redistribute)
         continue-on-error: true

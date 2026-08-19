@@ -64,6 +64,37 @@ firing a cron at all, which this repo has already recorded happening
 easy to filter into a folder and stop seeing, and they cannot detect a
 run that never started.
 
+### 1.1a Off-platform trigger host — ₹400–800/month (measured case)
+
+A ₹400-800/month VPS (or an always-on machine at home) whose only jobs
+are to curl the dead man's switch and to push `.trigger/*` files when a
+scheduled run should have started and did not. Trigger pushes are
+`workflow_dispatch`-equivalent: they bypass GitHub's schedule queue
+entirely.
+
+**The measurement that justifies it (2026-08-18):** GitHub delivered
+ZERO of the 7 scheduled events due between 00:00 and 01:00 UTC --
+morning.yml's paired 00:14/00:31 contract shots among them. Not late:
+never created. The 06:00 IST contract published 64 minutes late that
+morning, and only because a later cron happened to fire. Cron delivery
+under congestion is best-effort and GitHub documents it as such; the
+repo has now recorded silent non-delivery on 2026-07-31 (one slot),
+2026-08-16 (one slot), and 2026-08-18 (an entire hour's worth, seven
+events).
+
+**Buys:** a trigger path whose clock IGRM owns. Paired-shot insurance
+(1.1's detection plus redundant crons) shortens the outage; it cannot
+close it, because every shot rides the same congested queue. An
+off-platform host is the only fix that removes the shared failure mode
+instead of betting against it twice.
+
+**Founder action:** pick the host (any ₹400-800/month VPS works; so
+does a spare machine that stays on), install the repo deploy key
+restricted to `.trigger/*` pushes, and add two cron lines. Setup is
+under an hour. The push side is one command -- amend the ledger line in
+`.trigger/morning` (fired-when/why), commit, push -- the same sequence
+the rescue fires have used by hand since 2026-08-16.
+
 ### 1.2 GDELT via BigQuery — ₹0–2,000/month realistically
 GCP bills roughly $6.25/TB scanned with 1 TB/month free. The `bq-*`
 lanes in this repo already prove access works, and `gdelt_bq_webngrams`

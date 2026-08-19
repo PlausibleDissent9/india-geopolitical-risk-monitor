@@ -537,7 +537,33 @@ jobs:
           GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: |
-          pip install --quiet google-cloud-bigquery
+          # NO --quiet, and constrained. Both changed on 2026-08-18
+          # after this step broke the publish.
+          #
+          # This is the SECOND pip install in the lane, after the pinned
+          # one at the top, and pip may upgrade an already-installed
+          # package to satisfy a new one. It did: run 32090616610
+          # finished all 48 steps and then refused at the publish gate
+          # with "environment differs from committed pins:
+          # requests==2.34.2 installed (expected 2.32.5)". The check was
+          # right -- the lane had quietly stopped being the environment
+          # CI tested.
+          #
+          # WHICH transitive dependency forced it is not in the log,
+          # because --quiet suppressed the resolution. It is the only
+          # pip that ran between the pinned install and the failing
+          # check, so it is the cause; the chain is unproven and --quiet
+          # is why. Hence dropping it: a step that mutates the
+          # environment should say what it changed.
+          #
+          # Constraints make the pins win. If google-cloud-bigquery
+          # genuinely cannot resolve against them, this install FAILS
+          # here rather than succeeding and breaking the publish forty
+          # minutes later. The step is continue-on-error, so that trade
+          # is the right way round: the tone annotation is optional, the
+          # publish is not.
+          pip install google-cloud-bigquery \
+            -c requirements.txt -c requirements-dev.txt
           python -m src.fetch_tone
           python -m src.fetch_themes
       - name: V11 forecast experiment (registration signed 2026-08-06)
