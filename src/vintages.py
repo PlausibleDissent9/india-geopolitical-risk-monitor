@@ -47,6 +47,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import re
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -146,6 +147,42 @@ def compare() -> list[dict[str, Any]]:
     return out
 
 
+def _restate_codebook_count(clean: int, total: int) -> None:
+    """The codebook states this payload's count; restate it here.
+
+    The count grows every time a publish rewrites history.csv, and the
+    codebook's "N of M vintages" sentence was hand-maintained prose. On
+    2026-08-19 (run 32267252818) this recompute moved the payload to 20
+    of 22 while the codebook still said 10 of 12, and
+    test_the_vintage_count_on_the_codebook_is_current correctly refused
+    the whole daily publish at Commit data -- the lane that moves the
+    number was not the lane that states it. Now it is: the same
+    candidate carries both, and the invariant holds by construction.
+
+    Both the markdown source and the rendered page are patched, because
+    the daily lane does not run render_site (only notes.yml does) and
+    the gate reads the rendered page. The replacement is surgical so
+    the page's stamped asset references survive untouched. Fail-loud if
+    the sentence disappears: a codebook rewrite that drops the count
+    must update the test, not silently stop being checked.
+    """
+    pattern = re.compile(r"\b\d+ of \d+ vintages\b")
+    replacement = f"{clean} of {total} vintages"
+    for name in ("codebook.md", "codebook.html"):
+        page = ROOT / "docs" / name
+        text = page.read_text(encoding="utf-8")
+        updated, hits = pattern.subn(replacement, text)
+        if not hits:
+            raise SystemExit(
+                f"[vintages] docs/{name} no longer states an 'N of M "
+                "vintages' count. Restore the sentence or retire "
+                "test_the_vintage_count_on_the_codebook_is_current with "
+                "it -- do not let the page drift from the payload.")
+        if updated != text:
+            page.write_text(updated, encoding="utf-8")
+            print(f"[vintages] docs/{name}: restated {replacement}")
+
+
 def main() -> None:
     rows = compare()
     if not rows:
@@ -211,6 +248,7 @@ def main() -> None:
     SITE_DATA.mkdir(parents=True, exist_ok=True)
     (SITE_DATA / "vintages.json").write_text(json.dumps(payload, indent=1),
                                              encoding="utf-8")
+    _restate_codebook_count(len(clean), len(rows))
     print(f"[vintages] {len(rows)} vintages: {len(clean)} unchanged, "
           f"{len(revised)} revised"
           + (f" (most recent {latest_revision})" if latest_revision else ""))

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import io
 
+import pytest
 from src import vintages
 
 
@@ -82,3 +83,41 @@ def test_retrieval_recipe_names_a_real_command():
 def test_parser_tolerates_an_empty_blob():
     assert vintages._rows("") == {}
     assert vintages._rows(io.StringIO("").read()) == {}
+
+
+def test_the_recompute_restates_the_codebook_count(
+    tmp_path, monkeypatch
+) -> None:
+    """The lane that moves the vintage count states it, same candidate.
+
+    2026-08-19, run 32267252818: the recompute moved vintages.json to
+    20 of 22 while docs/codebook.md still carried a hand-written 10 of
+    12, and the publish gate refused the entire daily at Commit data.
+    """
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "codebook.md").write_text(
+        "**Finding: 10 of 12 vintages show zero changed values.**\n",
+        encoding="utf-8")
+    (docs / "codebook.html").write_text(
+        '<link rel="stylesheet" href="site.css?v=044019ad">\n'
+        "<strong>Finding: 10 of 12 vintages show zero changed "
+        "values.</strong>\n",
+        encoding="utf-8")
+    monkeypatch.setattr(vintages, "ROOT", tmp_path)
+    vintages._restate_codebook_count(20, 22)
+    assert "20 of 22 vintages" in (docs / "codebook.md").read_text()
+    html = (docs / "codebook.html").read_text()
+    assert "20 of 22 vintages" in html
+    # Surgical: the stamped asset reference must survive untouched.
+    assert 'href="site.css?v=044019ad"' in html
+
+
+def test_a_codebook_without_the_count_fails_loud(tmp_path, monkeypatch):
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "codebook.md").write_text("no count here\n", encoding="utf-8")
+    (docs / "codebook.html").write_text("none here either\n", encoding="utf-8")
+    monkeypatch.setattr(vintages, "ROOT", tmp_path)
+    with pytest.raises(SystemExit):
+        vintages._restate_codebook_count(20, 22)
