@@ -285,7 +285,13 @@ def _writers_after_the_stamp(workflow: str) -> set[str]:
 # Invocations that inspect rather than write. A module named on a line
 # carrying one of these is not rewriting a payload, so it does not need to
 # precede the stamp.
-READ_ONLY_FLAGS = ("--status", "--check")
+# --verify- covers receipt-identity's post-publish probes
+# (--verify-payload, --verify-superseded): they read the payload and
+# origin/main, pass or refuse, and write nothing -- the same shape as
+# multilingual's --status. A writer that grew a --verify- flag AND kept
+# writing would be wrongly exempted here, exactly as it would with
+# --status; the narrowness of these spellings is the protection.
+READ_ONLY_FLAGS = ("--status", "--check", "--verify-")
 
 
 def _invocations(workflow: Path) -> list[str]:

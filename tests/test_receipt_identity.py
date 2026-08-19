@@ -1077,3 +1077,68 @@ def test_predecessor_written_under_prior_profile_survives_activation(
         snapshot.payload["profile_sha256"]
         != rights.load_profile_identity(root).profile_sha256
     )
+
+
+def _superseded_fixture(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> tuple[Path, date]:
+    root, _, public_text = _fixture_root(tmp_path, active=True)
+    monkeypatch.setattr(
+        rights,
+        "PRODUCTION_TRUSTED_SIGNERS",
+        {"receipt_rights_reviewer": (public_text, "rights_reviewer")},
+    )
+    _init_git_predecessor(root)
+    target = date.fromordinal(NOW.date().toordinal() - 1)
+    return root, target
+
+
+def test_superseded_verdict_passes_when_main_retains_everything_closed(
+    tmp_path: Path, fixed_clock: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root, target = _superseded_fixture(tmp_path, monkeypatch)
+    output = root / receipt_identity.OUTPUT_RELATIVE
+    payload = receipt_identity.execute(
+        today=NOW.date(), generated_at=NOW, root=root, path=output,
+        client=FakeClient()
+    )
+    assert payload["target_date"] == target.isoformat()
+    _git(root, "add", receipt_identity.OUTPUT_RELATIVE.as_posix())
+    _git(root, "commit", "-m", "partner release")
+    _git(root, "update-ref", "refs/remotes/origin/main", _git(root, "rev-parse", "HEAD"))
+    receipt_identity.verify_superseded(expected_target=target, root=root)
+
+
+def test_superseded_verdict_refuses_when_main_is_missing_local_evidence(
+    tmp_path: Path, fixed_clock: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root, target = _superseded_fixture(tmp_path, monkeypatch)
+    output = root / receipt_identity.OUTPUT_RELATIVE
+    receipt_identity.execute(
+        today=NOW.date(), generated_at=NOW, root=root, path=output,
+        client=FakeClient(fail_on_call=1)
+    )
+    _git(root, "add", receipt_identity.OUTPUT_RELATIVE.as_posix())
+    _git(root, "commit", "-m", "weaker partner release")
+    _git(root, "update-ref", "refs/remotes/origin/main", _git(root, "rev-parse", "HEAD"))
+    receipt_identity.execute(
+        today=NOW.date(), generated_at=NOW, root=root, path=output,
+        client=FakeClient()
+    )
+    with pytest.raises(receipt_identity.ReceiptIdentityRefusal) as exc:
+        receipt_identity.verify_superseded(expected_target=target, root=root)
+    assert exc.value.code == "receipt_identity_predecessor_channel_regression"
+
+
+def test_superseded_verdict_refuses_when_main_never_released_the_target(
+    tmp_path: Path, fixed_clock: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root, target = _superseded_fixture(tmp_path, monkeypatch)
+    output = root / receipt_identity.OUTPUT_RELATIVE
+    receipt_identity.execute(
+        today=NOW.date(), generated_at=NOW, root=root, path=output,
+        client=FakeClient()
+    )
+    with pytest.raises(receipt_identity.ReceiptIdentityRefusal) as exc:
+        receipt_identity.verify_superseded(expected_target=target, root=root)
+    assert exc.value.code == "receipt_identity_superseded_remote_absent"

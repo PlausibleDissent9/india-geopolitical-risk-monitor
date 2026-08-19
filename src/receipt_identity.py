@@ -1195,7 +1195,22 @@ def check_release_rights(
     target = _strict_day(
         payload["target_date"], "receipt_identity_release_temporal_invalid", EXIT_RELEASE_REFUSED
     )
-    if payload.get("predecessor") != _predecessor_binding(predecessor, target):
+    expected_binding = _predecessor_binding(predecessor, target)
+    found_binding = payload.get("predecessor")
+    if found_binding != expected_binding:
+        # The refusal code alone cost a day of guesswork on 2026-08-18:
+        # every paired drop-insurance shot died here and the log could
+        # not say which field disagreed. Name the disagreement; the
+        # refusal itself is unchanged.
+        found_map = found_binding if isinstance(found_binding, dict) else {}
+        for key in sorted(set(expected_binding) | set(found_map)):
+            if found_map.get(key) != expected_binding.get(key):
+                print(
+                    f"[receipt-identity] binding mismatch {key}: "
+                    f"payload carries {found_map.get(key)!r}, release "
+                    f"predecessor requires {expected_binding.get(key)!r}",
+                    file=sys.stderr,
+                )
         _fail("receipt_identity_release_predecessor_binding_invalid", EXIT_RELEASE_REFUSED)
     _require_monotone_candidate(
         candidate=payload,
@@ -1262,11 +1277,66 @@ def check_release_rights(
     }
 
 
+def verify_superseded(
+    *, expected_target: date, root: Path = ROOT
+) -> None:
+    """Refuse unless fetched origin/main retains everything the local payload closed.
+
+    The paired drop-insurance shots are 16 minutes apart and a full
+    acquisition takes ~20, so the second shot regularly races the first
+    shot's push (measured on 2026-08-18: runs 32146591496/32147480729,
+    push at 14:32:20, second checkout at 14:32:30 on the pre-push sha).
+    The release guard then rightly refuses the stale binding -- but a
+    refusal that means "main already serves what this shot exists to
+    guarantee" is the insurance SUCCEEDING, not failing. This check is
+    state-based, not error-code-based: it passes only when origin/main's
+    payload has the same target and, channel by channel, retains every
+    article this run closed -- the same monotone predicate the release
+    path enforces, with the roles swapped. A red gate, a lost payload,
+    or a remote that is missing local evidence all still fail.
+    """
+    local_raw = (root / OUTPUT_RELATIVE).read_bytes()
+    local_payload = _parse_payload_bytes(
+        local_raw, "receipt_identity_payload_invalid", EXIT_PAYLOAD_INVALID
+    )
+    local_target = _strict_day(
+        local_payload.get("target_date"),
+        "receipt_identity_expected_target_invalid",
+        EXIT_PAYLOAD_INVALID,
+    )
+    if local_target != expected_target:
+        _fail("receipt_identity_superseded_target_mismatch", EXIT_PAYLOAD_INVALID)
+    remote = _load_predecessor(
+        root=root,
+        ref="origin/main",
+        require_remote=False,
+        exit_code=EXIT_RELEASE_REFUSED,
+    )
+    if remote.state != "present" or remote.payload is None:
+        _fail("receipt_identity_superseded_remote_absent", EXIT_RELEASE_REFUSED)
+    if remote.target_date != expected_target:
+        _fail("receipt_identity_superseded_target_mismatch", EXIT_RELEASE_REFUSED)
+    local_snapshot = PredecessorSnapshot(
+        _git_head(root),
+        "present",
+        None,
+        _sha256(local_raw),
+        local_target,
+        local_payload,
+    )
+    _require_monotone_candidate(
+        candidate=remote.payload,
+        predecessor=local_snapshot,
+        target=expected_target,
+    )
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify-payload", action="store_true")
     parser.add_argument("--expected-target")
     parser.add_argument("--check-release-rights", metavar="EXPECTED_CANDIDATE_SHA")
+    parser.add_argument("--verify-superseded", action="store_true")
     args = parser.parse_args(argv)
     try:
         if args.verify_payload:
@@ -1290,6 +1360,18 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.check_release_rights:
             result = check_release_rights(expected_candidate_sha=args.check_release_rights)
             print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+            return 0
+        if args.verify_superseded:
+            expected = _strict_day(
+                args.expected_target,
+                "receipt_identity_expected_target_invalid",
+                EXIT_PAYLOAD_INVALID,
+            )
+            verify_superseded(expected_target=expected)
+            print(
+                "[receipt-identity] origin/main already retains everything "
+                "this run closed; drop insurance succeeded without a push"
+            )
             return 0
         now = datetime.now(timezone.utc).replace(microsecond=0)
         payload = execute(today=now.date(), generated_at=now)

@@ -36,6 +36,14 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # The CURRENT tip, not github.sha. A scheduled event pins the
+          # sha at event creation; the paired drop-insurance shot then
+          # queues behind its partner in the concurrency group and, on
+          # 2026-08-18 (runs 32146591496/32147480729), started 5 seconds
+          # after the partner's release landed -- and built on the
+          # pre-release sha anyway. Its stale predecessor binding was
+          # then correctly refused at release, five times, red.
+          ref: main
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -56,6 +64,8 @@ jobs:
           python -m src.stamp_meta
           python -m src.stamp_assets
       - name: Publish independently of aggregate score
+        id: release
+        continue-on-error: true
         env:
           IGRM_PUBLISH_CLASS: receipt_identity
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -64,3 +74,15 @@ jobs:
           git config user.email "actions@github.com"
           git add -- docs/data/receipt_identity.json
           bash scripts/publish_push.sh "receipts: D-1 identity status $(date -u +%F)"
+      - name: A superseded release is the drop insurance succeeding
+        if: steps.release.outcome == 'failure'
+        run: |
+          # State-based, not error-code-based: this run turns green only
+          # if fetched origin/main already retains, channel by channel,
+          # every article this run closed for the same target. A red
+          # gate, a lost payload, or a remote missing local evidence
+          # still fails. See verify_superseded in src/receipt_identity.
+          git fetch origin main
+          TARGET=$(date -u -d "$(date -u +%F) - 1 day" +%F)
+          python -m src.receipt_identity --verify-superseded \
+            --expected-target "$TARGET"

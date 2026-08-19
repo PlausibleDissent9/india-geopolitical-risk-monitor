@@ -137,3 +137,27 @@ def test_new_lane_does_not_modify_weekly_note_surfaces() -> None:
     for forbidden in ("notes.json", "feed.xml", "weekly-note", "weekly_note"):
         assert forbidden not in workflow
         assert forbidden not in module
+
+
+def test_a_superseded_release_turns_the_drop_insurance_green() -> None:
+    """The paired drop-insurance shot must not be red when its partner won.
+
+    Measured 2026-08-18 (runs 32146591496/32147480729): the second shot
+    queued behind its partner, started 5 seconds after the partner's
+    release landed, built on the event's pre-release sha anyway, and the
+    release guard refused its stale predecessor binding five times. The
+    refusal was correct; the redness was not -- main already served
+    everything the shot existed to guarantee.
+    """
+    text = WORKFLOW.read_text(encoding="utf-8")
+    # Build on the current tip, not the sha the event was created against.
+    assert re.search(r"^\s+ref: main$", text, re.M)
+    # The verdict is conditioned on the release step failing -- it
+    # follows the release, never replaces it.
+    assert "id: release" in text
+    assert "if: steps.release.outcome == 'failure'" in text
+    assert "--verify-superseded" in text
+    assert "git fetch origin main" in text
+    assert text.index("IGRM_PUBLISH_CLASS: receipt_identity") < text.index(
+        "--verify-superseded"
+    )
