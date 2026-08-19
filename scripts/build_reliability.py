@@ -132,7 +132,14 @@ def main() -> None:
                  f"{offset.seconds // 3600:02d}:{offset.seconds % 3600 // 60:02d}"}
                 for day, offset in reversed(CONTRACT_SCHEDULE)
             ],
-            "generated": datetime.now(IST).strftime("%Y-%m-%d %H:%M IST"),
+            # Canonical UTC, like every other payload. This stamped IST
+            # wall-clock until 2026-08-19, when a 20:52 UTC run wrote
+            # "2026-08-20 02:22 IST" and the freshness auditor read a
+            # payload from the future -- undatable, red. The IST instant
+            # is this payload's subject matter, so it stays, as display.
+            "generated": datetime.now(timezone.utc).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"),
+            "generated_ist": datetime.now(IST).strftime("%Y-%m-%d %H:%M IST"),
         },
         "on_time": on_time, "scored_days": len(scored),
         "rate": round(on_time / len(scored), 3) if scored else None,

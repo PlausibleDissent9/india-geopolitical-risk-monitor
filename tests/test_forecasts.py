@@ -67,3 +67,52 @@ def test_climatology_counts_trailing_window_frequency():
     from datetime import date
     p = forecasts.climatology_p(spikes, date(2026, 2, 2))
     assert p == 1.0
+
+
+def _synthetic_generate_inputs(drop_anchor: bool):
+    """Scores/spikes where the registered 7-day-change anchor is present or a
+    disclosed gap (the row absent), mirroring the 2026-08-11/12 tape."""
+    import numpy as np
+
+    idx = pd.date_range("2024-01-01", "2026-08-18", freq="D")
+    rng = np.random.default_rng(11)
+    scores = pd.DataFrame(
+        rng.uniform(20, 80, size=(len(idx), len(forecasts.CHANNELS))),
+        index=idx, columns=forecasts.CHANNELS,
+    )
+    if drop_anchor:
+        scores = scores.drop(pd.Timestamp("2026-08-11"))
+    spikes = {
+        ch: pd.Series(False, index=idx).rename(ch) for ch in forecasts.CHANNELS
+    }
+    return scores, spikes
+
+
+def test_a_disclosed_gap_anchor_refuses_the_window_instead_of_crashing(
+        tmp_path, monkeypatch):
+    """2026-08-19, measured: last_day Aug 18 put the registered 7-day-change
+    anchor on the disclosed gap day Aug 11; .loc raised KeyError, the run
+    died, and grading plus the payload write never happened."""
+    from datetime import date
+    monkeypatch.setattr(forecasts, "QUESTIONS", tmp_path / "questions.json")
+    scores, spikes = _synthetic_generate_inputs(drop_anchor=True)
+    fresh = forecasts.generate(date(2026, 8, 19), scores, spikes)
+    assert fresh == []
+    assert not (tmp_path / "questions.json").exists(), \
+        "a refused window must commit nothing"
+
+
+def test_a_present_anchor_still_generates_the_registered_questions(
+        tmp_path, monkeypatch):
+    from datetime import date
+    monkeypatch.setattr(forecasts, "QUESTIONS", tmp_path / "questions.json")
+    scores, spikes = _synthetic_generate_inputs(drop_anchor=False)
+    fresh = forecasts.generate(date(2026, 8, 19), scores, spikes)
+    assert len(fresh) == len(forecasts.CHANNELS)
+    committed = json.loads((tmp_path / "questions.json").read_text(
+        encoding="utf-8"))["questions"]
+    assert len(committed) == len(forecasts.CHANNELS)
+    for q in fresh:
+        assert q["window_start"] == "2026-08-24"
+        assert 0.0 <= q["p_salience"] <= 1.0
+        assert q["features"]["as_of"] == "2026-08-18"

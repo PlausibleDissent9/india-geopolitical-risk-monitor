@@ -703,6 +703,21 @@ jobs:
         if: github.event.inputs.backfill != 'true'
         run: |
           if [ "$(date -u +%u)" = "5" ]; then python -m src.make_datapack; fi
+      - name: Freshness report (the payload; the verdict runs after the commit)
+        run: |
+          # One module, two jobs, split across the commit. --report WRITES
+          # docs/data/freshness.json and exits 0 regardless of staleness,
+          # so the report the site serves is regenerated in the same
+          # candidate as the payloads it describes. The fail-loud VERDICT
+          # (same module, no flag) stays below Commit data, where a red
+          # cannot discard the commit. When the audit moved below the
+          # commit on 2026-08-17 it silently took the writer with it:
+          # runs 32280274391 and 32267252818 published 87-file commits
+          # while freshness.json stayed at its 2026-08-10 bytes, because
+          # the regenerated report was written on a runner that was about
+          # to be thrown away. The site then served a nine-day-old claim
+          # of "0 stale of 94" under fresh payloads.
+          python -m src.freshness --report
       - name: Commit data
         # always(): a crash must still bank acquisition caches and byte-exact
         # source evidence. Derived docs are staged only if every required step

@@ -163,6 +163,23 @@ def generate(today: date, scores: pd.DataFrame,
     coef = json.loads(FROZEN.read_text(encoding="utf-8"))["coefficients"]
     last_day = scores.dropna(how="all").index.max()
     prev_day = last_day - pd.Timedelta(days=7)
+    # The 7-day change is a REGISTERED input; no substitute anchor is allowed.
+    # When the anchor lands on a disclosed gap day (absent from the series or
+    # NaN), this window's questions cannot be generated under the registration
+    # yet: refuse loudly and commit nothing.  The anchor moves forward one day
+    # per run, so generation resumes by itself while the window is still open,
+    # and a question that never gets committed in time is void by rule --
+    # exactly the registration's own remedy for a late question.
+    if (
+        prev_day not in scores.index
+        or scores.loc[prev_day, CHANNELS].isna().any()
+        or scores.loc[last_day, CHANNELS].isna().any()
+    ):
+        print(f"[forecasts] window {window_start} not generated: registered "
+              f"7-day-change anchor {prev_day.date()} is a disclosed gap day "
+              "(or a channel is unscored on the anchor/latest day); "
+              "will retry while the window remains open")
+        return []
     fresh = []
     for ch in CHANNELS:
         score = float(scores[ch].loc[last_day])
