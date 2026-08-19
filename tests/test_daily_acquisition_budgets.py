@@ -42,8 +42,18 @@ def test_atomic_daily_lane_does_not_run_the_full_day_receipts_scan() -> None:
         re.S,
     )
     assert match
-    assert "python -m src.receipts_ngrams\n" in match.group("body")
-    assert "--extended" not in match.group("body")
+    body = match.group("body")
+    assert "python -m src.receipts_ngrams || rc=$?\n" in body
+    assert "--extended" not in body
+    # receipts_ngrams exits 1 by design while a backlog scan banks progress;
+    # under bash -e that refusal starved the four sibling lanes for the whole
+    # catch-up window (measured 2026-08-19: all four 12 days stale). Every
+    # sibling must keep its own refusal-capture, and the step must still
+    # surface the last refusal as its exit code -- silence is not success.
+    for module in ("receipts_archive", "episode_attribution",
+                   "spike_breadth", "syndication"):
+        assert f"python -m src.{module} || rc=$?\n" in body
+    assert 'exit "$rc"' in body
 
 
 def test_full_day_receipts_remain_a_separate_gated_product() -> None:

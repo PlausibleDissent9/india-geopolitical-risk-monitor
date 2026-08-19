@@ -410,11 +410,22 @@ jobs:
         env:
           IGRM_RECEIPTS_DEADLINE_S: "600"
         run: |
-          python -m src.receipts_ngrams
-          python -m src.receipts_archive
-          python -m src.episode_attribution
-          python -m src.spike_breadth
-          python -m src.syndication
+          # receipts_ngrams banks progress and exits 1 while a backlog scan
+          # is incomplete -- a DESIGNED refusal that recurs every run during
+          # catch-up. Under bash -e it ended this block and starved the four
+          # sibling lanes for the whole catch-up window (measured 2026-08-19:
+          # receipts_archive, episode_terms, spike_breadth and syndication
+          # all 12 days stale while ngrams banked its 2026-08-18 scan). Same
+          # shape as the nine derived lanes split out below. Every sibling
+          # runs; the step still exits with the last refusal, so the log
+          # stays honest about incomplete catch-up.
+          rc=0
+          python -m src.receipts_ngrams || rc=$?
+          python -m src.receipts_archive || rc=$?
+          python -m src.episode_attribution || rc=$?
+          python -m src.spike_breadth || rc=$?
+          python -m src.syndication || rc=$?
+          exit "$rc"
       - name: Derived lanes (recompute from the committed stores)
         # A SEPARATE STEP on purpose. GitHub runs `run:` blocks under
         # bash -e, so the first failing command ends the block -- and
