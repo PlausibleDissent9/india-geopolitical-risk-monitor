@@ -1107,6 +1107,29 @@ def record_status(
         base_commit=base_commit or _git_head(root),
         receipt=receipt,
     )
+    # A finalized marker carrying its receipt block IS the proof pointer
+    # for an immutable published day; no later verdict about that same
+    # day may replace it. On 2026-08-19 a routine already-finalized
+    # acknowledgment (run 32280274391, step 7) rewrote this file,
+    # deleting the receipt block, and the day's own commit shipped the
+    # damage; the next run then found "published target lacks a valid
+    # finalized proof" and refused the whole pipeline (run 32299777258).
+    # Probes and refusals still return their record -- they just do not
+    # get to overwrite the proof. Durable ledgers over overwritten
+    # markers; a marker for a DIFFERENT target moves the lifecycle
+    # forward and writes as before.
+    try:
+        existing = json.loads(
+            (root / STATUS_RELATIVE).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        existing = None
+    if (
+        isinstance(existing, dict)
+        and existing.get("target_date") == target.isoformat()
+        and existing.get("status") == "finalized"
+        and isinstance(existing.get("receipt"), dict)
+    ):
+        return payload
     _atomic_write(root / STATUS_RELATIVE, _json_bytes(payload))
     return payload
 

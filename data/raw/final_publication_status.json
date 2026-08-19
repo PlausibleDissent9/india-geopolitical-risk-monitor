@@ -1,11 +1,15 @@
 {
  "schema_version": "1.0.0",
  "target_date": "2026-08-18",
- "status": "already_finalized",
- "reason": "the exact D-1 final is already published",
+ "status": "finalized",
+ "reason": "the exact D-1 finalized score is published",
  "latest_finalized_date": "2026-08-18",
- "generated": "2026-08-19T18:49:25Z",
- "base_commit": "31b15d3640bb5e6bbb55cc6549f539cab44199bd",
+ "generated": "2026-08-19T01:21:35Z",
+ "base_commit": "4924071c9ee806a5c561794d089b850e39f17af9",
  "value_fields_published": false,
- "provisional_substitution_allowed": false
+ "provisional_substitution_allowed": false,
+ "receipt": {
+  "path": "data/raw/final_publication_receipts/2026-08-18.json",
+  "sha256": "5df41f3c711991116a74d4de131668817b97f2fd9edc8247bd896f9dcf052eff"
+ }
 }
