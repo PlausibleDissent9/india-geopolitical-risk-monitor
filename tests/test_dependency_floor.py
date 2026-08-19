@@ -1,9 +1,12 @@
 """The published Python floor must stay true of the actual pins.
 
-REPLICATION.md tells an external reproducer "Python 3.9+ works", and
-pyproject.toml declares `requires-python = ">=3.9"`. That is a promise
-about who can rebuild this index, not an implementation detail -- and it
-is the reason numpy is pinned at 2.0.2, the last release supporting 3.9.
+REPLICATION.md and pyproject.toml both declare the floor (3.11 since
+2026-08-19; the ">=3.9" they used to claim was measured false -- the
+suite fails 51 tests on 3.9, because zip(strict=) in the conformance and
+admission modules is 3.10+ syntax, and no lane has ever tested anything
+but 3.11). That is a promise about who can rebuild this index, not an
+implementation detail. numpy stays pinned at 2.0.2: the pin is frozen
+policy, no longer forced by the old floor.
 
 Dependabot has had seven PRs open since 2026-07-28, one of which bumps
 numpy to 2.5.1. That release requires **Python >= 3.12**, so merging it

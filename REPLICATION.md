@@ -13,7 +13,7 @@ cd india-geopolitical-risk-monitor
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 ```
 
-Python 3.9+ works; CI runs 3.11. The optional `ANTHROPIC_API_KEY` is
+Python 3.11+ (the interpreter CI tests; 3.9 measurably fails). The optional `ANTHROPIC_API_KEY` is
 NOT part of replication. It may populate the separate display-only aptness
 labels, which never change a score. The machine-written daily-brief experiment
 is withdrawn and cannot call a model or write prose, with or without a key.

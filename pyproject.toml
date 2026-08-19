@@ -14,7 +14,13 @@ name = "igrm"
 version = "0.1.0"
 description = "India Geopolitical Risk Monitor pipeline: a reproducible press-salience index (measures salience, not risk; makes no forecasts)"
 readme = "README.md"
-requires-python = ">=3.9"
+# 3.11 because that is the only interpreter anything tests: every CI
+# lane pins 3.11, and ">=3.9" was measured false on 2026-08-19 -- the
+# suite fails 51 tests on 3.9 (zip(strict=) in clause_output_conformance
+# and the live_query_admission modules is 3.10+ syntax). Claiming an
+# interpreter nothing tests is the false-green pattern this repo keeps
+# paying for.
+requires-python = ">=3.11"
 license = {text = "MIT"}
 dependencies = [
   "pandas>=2",
