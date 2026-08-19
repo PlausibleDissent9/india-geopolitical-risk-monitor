@@ -5,6 +5,30 @@ published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.
 
+## 2026-08-19: the replication guide promised an interpreter the code cannot run on
+
+REPLICATION.md told an external reproducer "Python 3.9+ works; CI runs
+3.11", and pyproject.toml declared `requires-python = ">=3.9"`. Measured
+false: the suite on Python 3.9 fails 51 tests, because three internal
+verification modules use `zip(strict=)`, which is 3.10+ syntax.
+`pip install .` on 3.9 succeeded and delivered a package whose
+verification paths crash at runtime. No lane had ever tested any interpreter but 3.11, so
+nothing contradicted the claim -- it was discovered only when a local
+gate had to run on a 3.9 machine and produced failures CI had never
+seen.
+
+Would have been published: nothing on the site -- but any stranger
+following the replication guide on 3.9 would have installed a
+non-working pipeline while both the guide and the package metadata told
+them it was supported.
+
+Fixed by declaring the floor that is actually tested: `requires-python
+= ">=3.11"`, REPLICATION.md now says so, and
+tests/test_dependency_floor.py keeps the two statements and every CI
+lane's interpreter in agreement. The numpy 2.0.2 pin, which the old
+floor was cited to justify, stays -- it is frozen policy now, not a
+compatibility necessity.
+
 ## 2026-08-17: the pre-registered forecast experiment stopped registering, and nothing said so
 
 The V11 evidence clock registers each Monday's forecast questions before
