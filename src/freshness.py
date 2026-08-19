@@ -182,6 +182,16 @@ EXEMPT: dict[str, str] = {
         "produces a qualifying row, not on a daily cadence"
     ),
     "freshness.json": "this audit's own output",
+    "event_ledger.json": (
+        "its _meta.generated is, by its own generated_semantics field, the "
+        "REGISTERED contract-effective instant of a deterministic artifact "
+        "-- it moves when the ledger contract moves, never when the writer "
+        "runs, so write-time aging reports the contract's age, not the "
+        "lane's health. Measured 2026-08-19: 'stale, 10 days old, limit 3' "
+        "while the writer ran nightly. Same class as api_contract.json. A "
+        "dead-writer signal for the ledger needs the measured-day channel, "
+        "not this one"
+    ),
     # The five validate-battery payloads, one shared reason: see issue #9.
     "validation.json": _VALIDATE_BATTERY_REASON,
     "robustness_series.json": _VALIDATE_BATTERY_REASON,
