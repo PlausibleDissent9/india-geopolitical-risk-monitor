@@ -61,19 +61,18 @@ MAX_AGE_DAYS: dict[str, int] = {
     "vintages.json": 5,
     "detector_blindness.json": 5,
     "monthly.json": 5,
-    "seasonality.json": 10,
-    "alt_specs.json": 10,
-    "priced_risk.json": 10,
     "multilingual.json": 30,  # V5 still backfilling
-    # Both of these inherited DEFAULT_MAX_AGE_DAYS (3) while their lanes run
-    # WEEKLY, so each was stale four days out of every seven and the audit
+    # energy_context inherited DEFAULT_MAX_AGE_DAYS (3) while its lane runs
+    # WEEKLY, so it was stale four days out of every seven and the audit
     # only said so once the clock crossed a midnight. A three-day promise
     # over a seven-day lane is not a tight standard, it is a false one.
-    # Numbers below are the cadence plus slack, read off the crons.
-    "robustness_series.json": 10,  # validate.yml, cron "0 14 * * 0"
     "energy_context.json": 45,  # drift.yml cron "40 22 * * 0"; JODI itself
     # reports with a 1-3 month lag, the same reason jodi_energy.json is 45
 }
+
+_VALIDATE_BATTERY_REASON = (
+    "written only by validate.yml, whose gate turned both its Sunday cron and its after-daily chain into permanent no-ops once validation.json carried its four key figures ('runs exactly once autonomously and stays manual thereafter') -- so since 2026-08-07 the only writer is a manual dispatch. The 10-day limits set on 2026-08-10 were read off the cron without reading the gate; a limit over a gated-off lane is the same false promise at a different number. Whether the battery re-runs weekly or stays frozen is a registered founder decision (issue #9); this exemption states the cadence that is TRUE today"
+)
 
 # Exempt, each with the reason it is exempt. Short on purpose.
 EXEMPT: dict[str, str] = {
@@ -183,6 +182,12 @@ EXEMPT: dict[str, str] = {
         "produces a qualifying row, not on a daily cadence"
     ),
     "freshness.json": "this audit's own output",
+    # The five validate-battery payloads, one shared reason: see issue #9.
+    "validation.json": _VALIDATE_BATTERY_REASON,
+    "robustness_series.json": _VALIDATE_BATTERY_REASON,
+    "seasonality.json": _VALIDATE_BATTERY_REASON,
+    "alt_specs.json": _VALIDATE_BATTERY_REASON,
+    "priced_risk.json": _VALIDATE_BATTERY_REASON,
 }
 
 # CSV exemptions, same discipline as the JSON ones: a written reason,
