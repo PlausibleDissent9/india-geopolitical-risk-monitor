@@ -226,7 +226,25 @@ def test_execution_compiles_mixed_source_dates_to_the_registered_refusal(
     root = _payload_root(tmp_path)
     receipts_path = root / "docs/data/receipts.json"
     receipts = json.loads(receipts_path.read_text(encoding="utf-8"))
+    # Move the payload back a day AND the entries with it. This test is
+    # about receipts disagreeing with latest.json -- "mixed SOURCE
+    # dates" -- so the receipt payload has to stay internally
+    # consistent, or the assistant refuses it earlier for a different
+    # and better reason and never reaches the date join.
+    #
+    # Setting only the top-level date was silently safe for as long as
+    # receipts.json was itself stuck at 2026-08-06: the entries already
+    # carried that day, so the mutation was a no-op on them. The moment
+    # the payload went fresh, the same line produced a payload dated
+    # 2026-08-06 whose entries were dated 2026-08-19, and the refusal
+    # became evidence_unavailable. Measured 2026-08-20, daily run
+    # 32382830417: the receipts freeze was finally cured, and THIS TEST
+    # refused the publish that carried the cure -- the fixture was
+    # depending on the bug it was meant to be independent of.
     receipts["date"] = "2026-08-06"
+    for block in (receipts.get("channels") or {}).values():
+        for article in block.get("articles") or []:
+            article["date"] = "20260806"
     _write_json(receipts_path, receipts)
     legacy = assistant.plan_question("Why is the current Pakistan score here?")
     plan = cp.from_legacy_assistant_plan(
