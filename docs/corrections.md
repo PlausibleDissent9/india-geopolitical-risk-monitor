@@ -5,6 +5,46 @@ published had the gates not held, and what changed so the class cannot
 recur. An institution that hides its errors gets caught; one that
 accounts for them gets cited. Newest first. Entries are append-only.
 
+## 2026-08-20: the receipts scan was budgeted below the day it scans
+
+`docs/data/receipts.json` was served at 2026-08-07 for thirteen days
+while its lane ran every night and reported no error a reader would
+notice. The scan needs 48 half-hourly windows; its budget bought 38 to
+45. Every committed cache says so: 2026-08-15 n_samples=38, 2026-08-18
+39, 2026-08-19 43. Never 48, not once.
+
+The module was behaving correctly the entire time. It refuses to
+publish a partial corpus, because an incomplete denominator would turn
+runner timing into an undocumented sampling rule and could change every
+displayed channel count. So it refused, banked its progress, and said
+so in a log nobody was reading, nightly.
+
+A resume cache existed precisely so partial progress would accumulate.
+It could not: accumulating requires a second pass at the same day, and
+the lane runs once per day while the target day advances every morning.
+Each night's partial scan was abandoned and the next started at zero.
+
+Would have been published: nothing false -- the refusal held. What was
+lost is thirteen days of article-level evidence for the scores the site
+was showing, on the page that exists so readers can check the index
+against the news it claims to measure.
+
+Fixed by budgeting the scan above the size of the day (900s against a
+measured worst case of 758s) and by a test that ties the budget to the
+window count at the worst measured rate, so a budget that cannot finish
+fails a check instead of freezing a payload.
+
+A second cause was found the same day and fixed with it. The extended
+lane's scan SUCCEEDED on 2026-08-20 -- 5/5 channels, 130,662 documents
+-- and still could not publish, because it rewrote receipts.json
+without recomputing the payloads derived from it. One of those is the
+assistant's fact catalogue, so the machine surface answered a receipt
+question with `evidence_unavailable` rather than the registered
+date-mismatch refusal: a stale cascade changed which refusal the
+product returned, not merely how old it looked. Both lanes now run the
+full cascade, and the test asserting it is written over every lane that
+writes receipts, not over the one that broke.
+
 ## 2026-08-19: the replication guide promised an interpreter the code cannot run on
 
 REPLICATION.md told an external reproducer "Python 3.9+ works; CI runs
