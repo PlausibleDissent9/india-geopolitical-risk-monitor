@@ -45,6 +45,11 @@ import verify_digest_pins as pins  # noqa: E402
 REGENERATORS: dict[str, str] = {
     "docs/data/public_api_byte_manifest.json":
         "PYTHONPATH=. python scripts/generate_public_api_byte_manifest.py",
+    # 25 pins, and mechanically derived -- so it satisfies this map's own
+    # rule exactly: it CAN go stale, and a command genuinely cures it.
+    # Verified by running it on 2026-08-20 (rc=0, idempotent on a current
+    # tree) before naming it here, per the docstring above.
+    "docs/data/evolution.json": "python -m src.evolution_engine --write",
 }
 
 
@@ -74,14 +79,23 @@ def test_every_named_regenerator_exists() -> None:
 
 
 def _script_of(cmd: str) -> str | None:
-    """The repo-relative script path a command runs, if it names one.
+    """The repo-relative file a command runs, if it names one.
 
-    Only the `python scripts/x.py` form has a path to check; the
-    `python -m pkg.mod` form is a module reference and is left alone.
+    BOTH forms are resolved. `python scripts/x.py` names a path
+    directly; `python -m pkg.mod` names a module, which is just as
+    capable of being renamed away -- and this file's whole point is that
+    a cure which no longer exists is worse than no cure at all. Leaving
+    the module form unchecked meant half the map was unguarded, which
+    was invisible while the map had one entry and that entry was a
+    script.
     """
-    for token in cmd.split():
+    tokens = cmd.split()
+    for token in tokens:
         if token.endswith(".py"):
             return token
+    if "-m" in tokens:
+        module = tokens[tokens.index("-m") + 1]
+        return module.replace(".", "/") + ".py"
     return None
 
 
