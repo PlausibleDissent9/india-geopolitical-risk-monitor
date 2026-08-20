@@ -129,3 +129,40 @@ via SelectedDate; parse Table 2 rows (Total Reserves, FCA, Gold, SDRs, IMF
 position) in US$ Mn; weekly cadence; cite "Reserve Bank of India, Weekly
 Statistical Supplement" with the edition date. Public webpage, no auth --
 none of the DBIE session-minting concerns apply.
+
+## S1 UPDATE (2026-08-20): the no-session public path is REAL but WAF-walled
+
+Verified end-to-end today, browser + curl, the WSS-publication fallback the
+Aug-11 note named. It needs no guest session — the DBIE authentication wall
+is fully sidestepped — but it has its own wall one layer down.
+
+THE PATH, verified:
+- `rbi.org.in/Scripts/BS_viewWss.aspx` renders a calendar; each Friday links
+  to `WSSViewDetail.aspx?TYPE=Basic&PARAM1=M/D/YYYY`.
+- That detail page lists twelve public files: a full-issue XLSX/PDF pair plus
+  five numbered tables `1T_..5T_`. **`2T_` is Table 2, Foreign Exchange
+  Reserves** — S1's exact series, weekly, Fridays. Confirmed by section match
+  ("Foreign Exchange Reserves" is archive subsection ddlSection value 2).
+- File URLs: `rbidocs.rbi.org.in/rdocs/Wss/DOCs/2T_<DDMMYYYY><HASH>.XLSX`.
+
+THE WALL, stated plainly:
+1. The filename carries an opaque per-issue hash
+   (`2T_140820269DAE36AA...XLSX`), so the URL is NOT constructable from the
+   date. A fetcher must first scrape WSSViewDetail for the week's hashed
+   links, then fetch the file — two hops.
+2. BOTH hosts sit behind an F5 Shape / TSPD JavaScript-execution WAF. A plain
+   `curl`/`requests` GET of the .XLSX returns a `<!DOCTYPE html>` challenge
+   page (a `/TSPD/...?type=5` script), NOT the workbook — verified today, the
+   47KB "XLSX" was HTML. The browser pane, having executed the challenge JS,
+   reached the file host but served it intermittently (ERR_EMPTY_RESPONSE
+   then 200). A CI lane using a plain HTTP client cannot pass this.
+
+VERDICT: S1's public path is real and auth-free, but a plain-HTTP CI fetcher
+cannot retrieve it. It needs a browser-context runner (headless Chrome /
+Playwright that runs the TSPD challenge once and reuses the cookie) — the
+same infrastructure question as issue #10 option 3 (an off-platform / clean
+browser-capable host). This is NOT a bot-detection *bypass* to be forged in
+code; it is a runner-capability decision for the founder. Recommend folding
+S1's fetcher requirement into the issue-#10 host decision: one browser-
+capable runner serves both the multilingual DOC backfill and the WSS pull.
+No fetcher ships until that runner exists.
