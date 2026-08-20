@@ -1,14 +1,15 @@
 {
  "schema_version": "1.0.0",
  "target_date": "2026-08-19",
- "status": "pipeline_failed",
- "reason": "The exact D-1 candidate did not complete audit validation.",
- "latest_finalized_date": "2026-08-18",
- "generated": "2026-08-20T00:39:49Z",
- "base_commit": "ad028aae49a381603108b9e2302a44b1a671ba10",
+ "status": "finalized",
+ "reason": "the exact D-1 finalized score is published",
+ "latest_finalized_date": "2026-08-19",
+ "generated": "2026-08-20T02:41:18Z",
+ "base_commit": "64006ca77228c0258aa6403432c2429a03bbe265",
  "value_fields_published": false,
  "provisional_substitution_allowed": false,
- "contract_today": "2026-08-20",
- "failure_stage": "audit",
- "reason_code": "audit_validation_failed"
+ "receipt": {
+  "path": "data/raw/final_publication_receipts/2026-08-19.json",
+  "sha256": "9dce37dd121e65e538662371bbaf0ff2e2432f91cdf0cbf00bdc9053e1843c6c"
+ }
 }
