@@ -46,11 +46,38 @@ jobs:
           python -m src.episode_attribution
           python -m src.spike_breadth
           python -m src.syndication
+          # status.json recomputes its alignment from the committed
+          # receipts bytes, so it moves whenever this lane's scan does.
+          python -m src.status_data
       - name: Stamp payload metadata and assets
         if: steps.scan.outcome == 'success'
         run: |
           python -m src.stamp_meta
           python -m src.stamp_assets
+      - name: Machine answers (after the stamps, because they cite hashes)
+        # THE CASCADE THIS LANE WAS MISSING. On 2026-08-20 (run
+        # 32342408405) the scan SUCCEEDED -- it wrote receipts.json for
+        # 2026-08-19, 5/5 channels, 130,662 docs -- and the publish was
+        # then refused because three payloads still described the old
+        # bytes:
+        #   test_assistant_answers::test_the_payload_is_exactly_what_the
+        #     _assistant_answers
+        #   test_status_alignment::test_published_alignment_payload_is
+        #     _recomputed_from_committed_bytes
+        #   test_consequence_plan::test_execution_compiles_mixed_source
+        #     _dates_to_the_registered_refusal
+        # The third is the instructive one: it asserts a date-mismatch
+        # refusal, and got 'evidence_unavailable' instead, because the
+        # assistant's registered fact snapshots still pinned the previous
+        # receipts bytes -- so verification failed before the date check
+        # was ever reached. daily.yml has run this cascade all along
+        # (aptness, status_data, stamps, then answers); this lane rewrote
+        # the same payload and stopped at the stamps.
+        #
+        # Order matches daily.yml exactly: answers come AFTER the stamps
+        # because they cite the stamped hashes.
+        if: steps.scan.outcome == 'success'
+        run: python -m src.assistant_answers
       - name: Publish complete view or bank incomplete checkpoint
         if: always()
         env:

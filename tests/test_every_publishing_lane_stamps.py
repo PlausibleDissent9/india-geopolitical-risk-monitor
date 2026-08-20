@@ -124,3 +124,62 @@ def test_note_latest_specifically_carries_the_universal_fields():
         assert meta.get(field), (
             f"note_latest.json has no _meta.{field}; the notes lane "
             "republished it unstamped")
+
+
+# Payloads that are recomputed FROM docs/data/receipts.json. A lane that
+# rewrites receipts must rewrite these in the same candidate, or it ships
+# a tree where the derived files still describe the previous bytes.
+RECEIPTS_CASCADE = ("src.status_data", "src.assistant_answers")
+
+
+def _receipts_writing_lanes() -> dict[str, str]:
+    """Workflows that run the module which writes receipts.json."""
+    return {
+        path.name: path.read_text(encoding="utf-8")
+        for path in sorted(WORKFLOWS.glob("*.yml"))
+        if "src.receipts_ngrams" in path.read_text(encoding="utf-8")
+    }
+
+
+def test_every_lane_that_rewrites_receipts_runs_its_cascade():
+    """Same mistake as this file's docstring, one payload deeper.
+
+    daily.yml has always run the cascade -- status_data, then the stamps,
+    then assistant_answers. receipts-extended.yml rewrote the same
+    payload and stopped at the stamps. On 2026-08-20 (run 32342408405)
+    its scan SUCCEEDED, writing receipts.json for 2026-08-19 with 5/5
+    channels and 130,662 docs sampled, and the publish was refused
+    because three payloads still described the old bytes.
+
+    The instructive failure was test_consequence_plan's: it asserts a
+    date-mismatch refusal and got 'evidence_unavailable', because the
+    assistant's registered fact snapshots still pinned the previous
+    receipts bytes, so verification failed before the date check was
+    reached. A stale cascade does not merely look stale -- it changes
+    which refusal the machine surface returns.
+    """
+    lanes = _receipts_writing_lanes()
+    assert len(lanes) >= 2, (
+        f"expected daily.yml and receipts-extended.yml to write receipts; "
+        f"found {sorted(lanes)} -- if the module was renamed this check is "
+        "matching nothing and guarding nothing")
+    for name, text in lanes.items():
+        missing = [m for m in RECEIPTS_CASCADE if m not in text]
+        assert not missing, (
+            f".github/workflows/{name} runs src.receipts_ngrams but not "
+            f"{missing}. Those payloads are recomputed from receipts.json, "
+            "so a lane that moves receipts and not them publishes a tree "
+            "whose machine answers still verify against the previous bytes "
+            "-- the publish gate refuses it, after the whole scan has run.")
+
+
+def test_the_answers_cite_hashes_so_they_follow_the_stamps():
+    """assistant_answers cites stamped hashes; running it before the
+    stamps would cite hashes that the stamps then change."""
+    for name, text in _receipts_writing_lanes().items():
+        answers = text.index("src.assistant_answers")
+        stamps = text.index("src.stamp_assets")
+        assert stamps < answers, (
+            f".github/workflows/{name} runs src.assistant_answers before "
+            "src.stamp_assets; the answers cite hashes the stamp step "
+            "rewrites, so they would be stale on arrival")
