@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Term-level attribution per channel-day: how many matched-article HEADLINES in the day's corpus cache contain each registered phrase. Derived from the same corpus the scores come from; reproducible from the repo alone. Headline attribution undercounts body-text phrases and the record starts at the first committed cache day -- earlier episodes carry no attribution rather than a refetched guess.",
   "first_day": "2026-07-27",
-  "generated": "2026-08-20T04:33:17Z",
+  "generated": "2026-08-20T19:29:50Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -523,36 +523,32 @@
   },
   "2026-08-19": {
    "pakistan_west": {
-    "n_matched_titles": 7,
+    "n_matched_titles": 10,
     "term_headline_hits": {
-     "cross-border terrorism": 1
+     "cross-border terrorism": 3
     }
    },
    "china_east": {
-    "n_matched_titles": 3,
+    "n_matched_titles": 0,
     "term_headline_hits": {}
    },
    "gulf_energy": {
-    "n_matched_titles": 504,
+    "n_matched_titles": 526,
     "term_headline_hits": {
-     "Strait of Hormuz": 37,
+     "Strait of Hormuz": 24,
      "Gulf tensions": 1,
-     "Middle East conflict": 2,
-     "Israel Iran": 2,
-     "energy security": 1,
-     "oil supply disruptions": 1
+     "Israel Iran": 1
     }
    },
    "us_trade": {
-    "n_matched_titles": 23,
-    "term_headline_hits": {}
+    "n_matched_titles": 25,
+    "term_headline_hits": {
+     "Russian oil": 1
+    }
    },
    "shipping": {
-    "n_matched_titles": 46,
-    "term_headline_hits": {
-     "Houthi attacks": 1,
-     "Somali pirates": 1
-    }
+    "n_matched_titles": 36,
+    "term_headline_hits": {}
    }
   }
  }

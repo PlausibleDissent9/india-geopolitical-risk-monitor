@@ -10,10 +10,10 @@
   "default_max_age_days": 3,
   "n_payloads": 97,
   "n_fresh": 65,
-  "n_stale_or_undatable": 1,
-  "n_exempt": 31,
+  "n_stale_or_undatable": 0,
+  "n_exempt": 32,
   "n_with_declared_measurement_date": 26,
-  "generated": "2026-08-20T14:07:51Z"
+  "generated": "2026-08-20T19:46:09Z"
  },
  "payloads": [
   {
@@ -49,9 +49,9 @@
    "write_age_days": 0,
    "max_age_days": 3,
    "status": "fresh",
-   "measured_date": "2026-08-06",
+   "measured_date": "2026-08-19",
    "measured_date_field": "_meta.date",
-   "measured_age_days": 14,
+   "measured_age_days": 1,
    "measurement_status": "declared"
   },
   {
@@ -66,13 +66,8 @@
   },
   {
    "payload": "back_extension.json",
-   "generated": "2026-08-08",
-   "age_days": 12,
-   "written_date": "2026-08-08",
-   "write_age_days": 12,
-   "max_age_days": 40,
-   "status": "fresh",
-   "measurement_status": "not_declared"
+   "status": "exempt",
+   "reason": "a one-shot M1 build, not a monthly lane. bq-backext.yml fires only on a change to its own workflow file or a manual dispatch, and the module refuses to re-query an existing store -- it prints 'committed once, never re-queried' by design, because the 1979-2019 window is closed and re-querying it would spend BigQuery bytes to reproduce identical rows. The 40-day limit it used to carry was annotated 'monthly-ish', read off nothing: this payload would have gone stale on 2026-09-17 and stayed stale forever. Found by sweeping every limit against its lane's real cadence, before it fired. Same class as the validate battery and the ledger stamp"
   },
   {
    "payload": "chokepoints.json",
@@ -455,15 +450,15 @@
   },
   {
    "payload": "receipts.json",
-   "generated": "2026-08-07",
-   "age_days": 13,
-   "written_date": "2026-08-07",
-   "write_age_days": 13,
+   "generated": "2026-08-20",
+   "age_days": 0,
+   "written_date": "2026-08-20",
+   "write_age_days": 0,
    "max_age_days": 3,
-   "status": "STALE",
-   "measured_date": "2026-08-06",
+   "status": "fresh",
+   "measured_date": "2026-08-19",
    "measured_date_field": "date",
-   "measured_age_days": 14,
+   "measured_age_days": 1,
    "measurement_status": "declared"
   },
   {

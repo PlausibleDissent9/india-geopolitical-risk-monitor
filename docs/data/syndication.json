@@ -4,11 +4,11 @@
   "definition": "multiplier = distinct article URLs matching the channel / distinct normalized headlines among them. 1.0 = every article is its own story.",
   "does_not_correct_the_index": "Nothing here feeds a score. Republication is not noise -- an editor running wire copy is a real editorial decision -- so there is no defensible deflation. The number exists so a reader can ask of any spike whether it was more newsrooms or more copies, and answer it from published data.",
   "known_bias": "Downward at small samples: a duplicate is only visible when both copies land in the scan. Measured on pakistan_west 2026-08-05, 28,575 docs gives 1.923 and 119,349 docs gives 3.478 -- the smaller sample understates by 45%. Only scans of at least 60,000 documents enter this history, and n_docs_sampled travels with every row so comparability can be checked rather than assumed.",
-  "n_days": 2,
+  "n_days": 3,
   "first_day": "2026-08-05",
-  "last_day": "2026-08-06",
+  "last_day": "2026-08-19",
   "min_docs_for_history": 60000,
-  "generated": "2026-08-20T04:43:44Z",
+  "generated": "2026-08-20T19:45:20Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -17,73 +17,73 @@
  "channels": {
   "pakistan_west": {
    "latest": {
-    "date": "2026-08-06",
-    "n_articles": 71,
-    "n_stories": 50,
-    "n_domains": 47,
-    "multiplier": 1.42,
-    "n_docs_sampled": 135644
+    "date": "2026-08-19",
+    "n_articles": 25,
+    "n_stories": 22,
+    "n_domains": 19,
+    "multiplier": 1.136,
+    "n_docs_sampled": 60610
    },
-   "n_days": 2,
-   "mean": null,
-   "min": null,
-   "max": null
+   "n_days": 3,
+   "mean": 2.011,
+   "min": 1.136,
+   "max": 3.478
   },
   "china_east": {
    "latest": {
-    "date": "2026-08-06",
-    "n_articles": 20,
-    "n_stories": 13,
-    "n_domains": 16,
-    "multiplier": 1.538,
-    "n_docs_sampled": 135644
+    "date": "2026-08-19",
+    "n_articles": 7,
+    "n_stories": 7,
+    "n_domains": 7,
+    "multiplier": 1.0,
+    "n_docs_sampled": 60610
    },
-   "n_days": 2,
-   "mean": null,
-   "min": null,
-   "max": null
+   "n_days": 3,
+   "mean": 1.179,
+   "min": 1.0,
+   "max": 1.538
   },
   "gulf_energy": {
    "latest": {
-    "date": "2026-08-06",
-    "n_articles": 2915,
-    "n_stories": 1730,
-    "n_domains": 1216,
-    "multiplier": 1.685,
-    "n_docs_sampled": 135644
+    "date": "2026-08-19",
+    "n_articles": 1543,
+    "n_stories": 798,
+    "n_domains": 761,
+    "multiplier": 1.934,
+    "n_docs_sampled": 60610
    },
-   "n_days": 2,
-   "mean": null,
-   "min": null,
-   "max": null
+   "n_days": 3,
+   "mean": 1.81,
+   "min": 1.685,
+   "max": 1.934
   },
   "us_trade": {
    "latest": {
-    "date": "2026-08-06",
-    "n_articles": 95,
-    "n_stories": 59,
-    "n_domains": 61,
-    "multiplier": 1.61,
-    "n_docs_sampled": 135644
+    "date": "2026-08-19",
+    "n_articles": 72,
+    "n_stories": 61,
+    "n_domains": 35,
+    "multiplier": 1.18,
+    "n_docs_sampled": 60610
    },
-   "n_days": 2,
-   "mean": null,
-   "min": null,
-   "max": null
+   "n_days": 3,
+   "mean": 1.675,
+   "min": 1.18,
+   "max": 2.234
   },
   "shipping": {
    "latest": {
-    "date": "2026-08-06",
-    "n_articles": 425,
-    "n_stories": 261,
-    "n_domains": 322,
-    "multiplier": 1.628,
-    "n_docs_sampled": 135644
+    "date": "2026-08-19",
+    "n_articles": 100,
+    "n_stories": 72,
+    "n_domains": 73,
+    "multiplier": 1.389,
+    "n_docs_sampled": 60610
    },
-   "n_days": 2,
-   "mean": null,
-   "min": null,
-   "max": null
+   "n_days": 3,
+   "mean": 1.66,
+   "min": 1.389,
+   "max": 1.963
   }
  },
  "series": {
@@ -103,6 +103,14 @@
     "n_domains": 47,
     "multiplier": 1.42,
     "n_docs_sampled": 135644
+   },
+   {
+    "date": "2026-08-19",
+    "n_articles": 25,
+    "n_stories": 22,
+    "n_domains": 19,
+    "multiplier": 1.136,
+    "n_docs_sampled": 60610
    }
   ],
   "china_east": [
@@ -121,6 +129,14 @@
     "n_domains": 16,
     "multiplier": 1.538,
     "n_docs_sampled": 135644
+   },
+   {
+    "date": "2026-08-19",
+    "n_articles": 7,
+    "n_stories": 7,
+    "n_domains": 7,
+    "multiplier": 1.0,
+    "n_docs_sampled": 60610
    }
   ],
   "gulf_energy": [
@@ -139,6 +155,14 @@
     "n_domains": 1216,
     "multiplier": 1.685,
     "n_docs_sampled": 135644
+   },
+   {
+    "date": "2026-08-19",
+    "n_articles": 1543,
+    "n_stories": 798,
+    "n_domains": 761,
+    "multiplier": 1.934,
+    "n_docs_sampled": 60610
    }
   ],
   "us_trade": [
@@ -157,6 +181,14 @@
     "n_domains": 61,
     "multiplier": 1.61,
     "n_docs_sampled": 135644
+   },
+   {
+    "date": "2026-08-19",
+    "n_articles": 72,
+    "n_stories": 61,
+    "n_domains": 35,
+    "multiplier": 1.18,
+    "n_docs_sampled": 60610
    }
   ],
   "shipping": [
@@ -175,6 +207,14 @@
     "n_domains": 322,
     "multiplier": 1.628,
     "n_docs_sampled": 135644
+   },
+   {
+    "date": "2026-08-19",
+    "n_articles": 100,
+    "n_stories": 72,
+    "n_domains": 73,
+    "multiplier": 1.389,
+    "n_docs_sampled": 60610
    }
   ]
  }

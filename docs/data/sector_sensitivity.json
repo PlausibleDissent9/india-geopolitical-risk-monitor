@@ -8,7 +8,7 @@
   ],
   "units": "cumulative log return vs Nifty, percent",
   "multiple_comparisons": "Benjamini-Hochberg FDR at 10% across the full cell grid, same discipline as the main event study; bh_significant_10pct per cell. On the first computation (2026-08-06, 39 cells) NO cell survived correction -- a published negative result: with this episode set, no sector index shows a sensitivity distinguishable from zero once the search is paid for.",
-  "generated": "2026-08-20T13:34:35Z",
+  "generated": "2026-08-20T19:21:35Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -191,13 +191,13 @@
       "bh_significant_10pct": false
      },
      "20": {
-      "mean": -0.734,
+      "mean": -0.755,
       "ci95": [
-       -1.691,
-       0.186
+       -1.725,
+       0.253
       ],
-      "p_boot": 0.136,
-      "n": 112,
+      "p_boot": 0.128,
+      "n": 111,
       "bh_significant_10pct": false
      }
     }

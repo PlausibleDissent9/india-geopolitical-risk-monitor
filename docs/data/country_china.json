@@ -3,7 +3,7 @@
   "what": "Country monitor: china. Same substrate and same construction as the India instrument (share of monitored English coverage per registered channel, trailing-730-day percentile). A monitor stands beside the India index and never enters any India score; channels are this country's own registered risk themes. Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
   "registration": "REGISTERED 2026-08-06, founder-signed in chat ('sign china'); amendments henceforth are dated changelog entries, never silent",
   "frozen_on": "2026-08-06",
-  "generated": "2026-08-20T13:34:34Z",
+  "generated": "2026-08-20T19:21:33Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -14,17 +14,17 @@
   "taiwan_strait": {
    "label": "Taiwan Strait",
    "collected": true,
-   "score": 77.9
+   "score": 65.3
   },
   "south_china_sea": {
    "label": "South China Sea",
    "collected": true,
-   "score": 92.8
+   "score": 87.7
   },
   "us_tech_trade": {
    "label": "US Technology & Trade",
    "collected": true,
-   "score": 72.8
+   "score": 59.4
   },
   "india_border": {
    "label": "India Border (mirror of IGRM china_east)",
@@ -39,7 +39,7 @@
  },
  "n_channels_collected": 3,
  "n_channels_registered": 5,
- "composite": 81.1,
+ "composite": 70.8,
  "history": {
   "dates": [
    "2017-01-01",
@@ -7031,7 +7031,7 @@
    56.8,
    18.3,
    24.4,
-   77.9
+   65.3
   ],
   "south_china_sea": [
    null,
@@ -10527,7 +10527,7 @@
    87.6,
    82.9,
    91.4,
-   92.8
+   87.7
   ],
   "us_tech_trade": [
    null,
@@ -14023,7 +14023,7 @@
    34.1,
    59.8,
    38.6,
-   72.8
+   59.4
   ]
  }
 }

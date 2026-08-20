@@ -14,7 +14,7 @@
   "available_days": 7,
   "complete_window": true,
   "per_day_cap": 40,
-  "generated": "2026-08-20T04:33:17Z",
+  "generated": "2026-08-20T19:29:49Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -24,25 +24,43 @@
   "pakistan_west": {
    "days": {
     "2026-08-19": {
-     "n_matched": 7,
+     "n_matched": 10,
      "articles": [
       {
-       "title": "IAF Cheetah helicopter evacuates Indian-origin US citizen from 15,000-foot glacier in Ladakh",
-       "domain": "tribuneindia.com",
+       "title": "India says it will continue fight against all forms of terrorism",
+       "domain": "hindustantimes.com",
        "date": "20260819",
-       "url": "https://www.tribuneindia.com/news/defence/iaf-cheetah-helicopter-evacuates-indian-origin-us-citizen-from-15000-foot-glacier-in-ladakh/",
-       "lane": "corpus",
+       "url": "https://www.hindustantimes.com/india-news/india-says-it-will-continue-fight-against-all-forms-of-terrorism-101787077388466.html",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "India Vows To Continue Fight Against Cross-Border Terrorism",
+       "title": "India will take whatever action to defeat terrorism: MEA as trial move begins against Hafiz Saeed, Lakhvi",
+       "domain": "timesofindia.indiatimes.com",
+       "date": "20260819",
+       "url": "https://timesofindia.indiatimes.com/india/india-will-take-whatever-action-to-defeat-terrorism-mea-as-trial-move-begins-against-hafiz-saeed-lakhvi/articleshow/133337036.cms",
+       "lane": "corpus-extended",
+       "tier": 3,
+       "match": "full-text"
+      },
+      {
+       "title": "India vows to continue fight against cross-border terrorism",
        "domain": "dailyexcelsior.com",
        "date": "20260819",
-       "url": "https://www.dailyexcelsior.com/india-vows-to-continue-fight-against-cross-border-terrorism-2/",
-       "lane": "corpus",
+       "url": "https://www.dailyexcelsior.com/india-vows-to-continue-fight-against-cross-border-terrorism/",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "headline"
+      },
+      {
+       "title": "Kabul's Calculus: Why the Taliban will not abandon the TTP",
+       "domain": "dailyexcelsior.com",
+       "date": "20260819",
+       "url": "https://www.dailyexcelsior.com/kabuls-calculus-why-the-taliban-will-not-abandon-the-ttp/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
       },
       {
        "title": "Pakistan's military slams India's 'Bollywood-style' documentary \u2013 Asia News Network",
@@ -63,29 +81,20 @@
        "match": "full-text"
       },
       {
-       "title": "Pakistan extends airspace ban on Indian flights until September 24",
-       "domain": "pakobserver.net",
+       "title": "NHRC seeks report from Punjab govt over I-Day 'non-observance' in schools near India-Pak border",
+       "domain": "ianslive.in",
        "date": "20260819",
-       "url": "https://pakobserver.net/pakistan-extends-airspace-ban-on-indian-flights-until-september-24/",
-       "lane": "corpus",
+       "url": "https://ianslive.in/nhrc-seeks-report-from-punjab-govt-over-independence-day-observance-in-border-area-schools--20260819075147",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "full-text"
       },
       {
-       "title": "Pakistan extends airspace ban on Indian aircraft until Sept 24",
-       "domain": "geo.tv",
+       "title": "",
+       "domain": "ianslive.in",
        "date": "20260819",
-       "url": "https://www.geo.tv/latest/678263-pakistan-extends-airspace-ban-on-indian-aircraft-until-sept-24",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "US Envoy Signals Possible Shift on Jammu & Kashmir Travel Warning, Calls Region 'Important Part of India' and Attractive for American Tourists",
-       "domain": "openthemagazine.com",
-       "date": "20260819",
-       "url": "https://openthemagazine.com/india/jk-travel-warning-may-change-us-envoy-says-americans-will-like-coming-here",
-       "lane": "corpus",
+       "url": "https://ianslive.in/category/Law/1",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "full-text"
       }
@@ -1742,41 +1751,13 @@
      ]
     }
    },
-   "total_articles": 187
+   "total_articles": 188
   },
   "china_east": {
    "days": {
     "2026-08-19": {
-     "n_matched": 3,
-     "articles": [
-      {
-       "title": "US Envoy Sergio Gor Calls J&K 'Important Part Of India', Signals Review Of Travel Advisory - Pragativadi I Latest Odisha News in English I Breaking News",
-       "domain": "pragativadi.com",
-       "date": "20260819",
-       "url": "https://pragativadi.com/us-envoy-sergio-gor-calls-jk-important-part-of-india-signals-review-of-travel-advisory/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Should Australia Engage Asia in Fantasy or Reality?",
-       "domain": "tnp.no",
-       "date": "20260819",
-       "url": "https://www.tnp.no/norway/global/3681-should-australia-engage-asia-in-fantasy-or-realityij/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "US Envoy Signals Possible Shift on Jammu & Kashmir Travel Warning, Calls Region 'Important Part of India' and Attractive for American Tourists",
-       "domain": "openthemagazine.com",
-       "date": "20260819",
-       "url": "https://openthemagazine.com/india/jk-travel-warning-may-change-us-envoy-says-americans-will-like-coming-here",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      }
-     ]
+     "n_matched": 0,
+     "articles": []
     },
     "2026-08-18": {
      "n_matched": 2,
@@ -2547,30 +2528,21 @@
      ]
     }
    },
-   "total_articles": 85
+   "total_articles": 82
   },
   "gulf_energy": {
    "days": {
     "2026-08-19": {
-     "n_matched": 504,
+     "n_matched": 526,
      "articles": [
       {
-       "title": "Gulf states scramble for Strait of Hormuz alternatives",
-       "domain": "dw.com",
+       "title": "Strait of Hormuz: Iran's grip slips as ships increasingly use UN-authorised Oman route; US blockade gains ground",
+       "domain": "livemint.com",
        "date": "20260819",
-       "url": "https://www.dw.com/en/iran-war-strait-of-hormuz-gulf-states-oil-shipping-pipelines-alternatives-graphics/a-78336679",
-       "lane": "corpus",
-       "tier": 1,
+       "url": "https://www.livemint.com/news/world/strait-of-hormuz-iran-s-grip-slips-as-ships-increasingly-use-un-authorised-oman-route-us-blockade-gains-ground-11787102429954.html",
+       "lane": "corpus-extended",
+       "tier": 2,
        "match": "headline"
-      },
-      {
-       "title": "Iran war leaves Iraq running out of money",
-       "domain": "dw.com",
-       "date": "20260819",
-       "url": "https://www.dw.com/en/iraq-iran-war-payments-salaries-oil-strait-of-hormuz-shipping-graphic/a-78341409",
-       "lane": "corpus",
-       "tier": 1,
-       "match": "full-text"
       },
       {
        "title": "Oil prices rise amid Strait of Hormuz export uncertainties",
@@ -2582,13 +2554,85 @@
        "match": "headline"
       },
       {
-       "title": "Oil prices hit three-week high on uncertainty over Strait of Hormuz",
-       "domain": "business-standard.com",
+       "title": "Trump takes hard line as tensions rise over Strait of Hormuz",
+       "domain": "straitstimes.com",
        "date": "20260819",
-       "url": "https://www.business-standard.com/world-news/oil-prices-hit-three-week-high-on-uncertainty-over-strait-of-hormuz-126081901178_1.html",
-       "lane": "corpus",
+       "url": "https://www.straitstimes.com/world/middle-east/trump-takes-iran-hard-line-as-hormuz-tensions-mark-new-normal",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "headline"
+      },
+      {
+       "title": "Trump says no talks planned with Iran, Tehran says Strait of Hormuz still shut",
+       "domain": "thehindubusinessline.com",
+       "date": "20260819",
+       "url": "https://www.thehindubusinessline.com/news/world/trump-says-no-talks-planned-with-iran-tehran-says-strait-of-hormuz-still-shut/article71363146.ece",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "headline"
+      },
+      {
+       "title": "Crude Comes at a Premium Amid Supply Squeeze",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/et-front/term-deal-supplies-cut/articleshow/133332713.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Trump is threatening to bomb Oman, but why?",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/news/international/world-news/trump-is-threatening-to-bomb-oman-but-why/articleshow/133334886.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Indian refiners face crude cost surge as Gulf premiums rise, Russian oil discounts vanish",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/industry/energy/oil-gas/indian-refiners-face-crude-cost-surge-as-gulf-premiums-rise-russian-oil-discounts-vanish/articleshow/133330603.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Global Market Today: Asian equities decline as chip selloff extends",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/markets/us-stocks/news/global-market-today-asian-equities-decline-as-chip-selloff-extends/articleshow/133334774.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "'We will correct delusions of this deluded man': Iran hits back at Trump's assertion over Hormuz as 'NEW U.S. Territory'",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/news/international/world-news/we-will-correct-delusions-of-this-deluded-man-iran-hits-back-at-trumps-assertion-over-hormuz-as-new-u-s-territory/articleshow/133334791.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Stock Market Today Live, Aug 19: Stock to buy today: IFCI (\u20b981.40) \u2013 BUY",
+       "domain": "thehindubusinessline.com",
+       "date": "20260819",
+       "url": "https://www.thehindubusinessline.com/markets/sensex-nifty50-today-stock-market-live-updates-19th-august-2026/article71360276.ece",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Paradigm shift in oil exploration - The HinduBusinessLine",
+       "domain": "thehindubusinessline.com",
+       "date": "20260819",
+       "url": "https://www.thehindubusinessline.com/opinion/paradigm-shift-in-oil-exploration/article71361742.ece",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
       },
       {
        "title": "Hong Kong stocks decline as rising bond yields and stalemate in Iran war dent sentiment",
@@ -2596,6 +2640,33 @@
        "date": "20260819",
        "url": "https://www.scmp.com/business/china-business/article/3364498/hong-kong-stocks-decline-rising-bond-yields-and-stalemate-iran-war-dent-sentiment",
        "lane": "corpus",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "West Asia war LIVE: Turkiye rejects Israeli claims after strike on Syria air base",
+       "domain": "thehindu.com",
+       "date": "20260819",
+       "url": "https://www.thehindu.com/news/international/iran-us-west-asia-war-strait-of-hormuz-news-donald-trump-live-updates-on-august-19-2026/article71363121.ece",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "CNBC Daily Open: Trump puts 'open' sign on Hormuz. But traffic is barely trickling",
+       "domain": "cnbc.com",
+       "date": "20260819",
+       "url": "https://www.cnbc.com/2026/08/19/cnbc-daily-open-trump-hormuz-markets-attack.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "The best place to hedge El Ni\u00f1o shocks to the food supply chain: BofA",
+       "domain": "cnbc.com",
+       "date": "20260819",
+       "url": "https://www.cnbc.com/2026/08/19/el-nino-food-supply-chain-hedge-bofa.html",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
@@ -2609,11 +2680,119 @@
        "match": "full-text"
       },
       {
+       "title": "Oil edges up on uncertainty over exports through Hormuz",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/markets/commodities/news/oil-edges-up-on-uncertainty-over-exports-through-hormuz/articleshow/133335197.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "D-St set for a cautious opening as GIFT Nifty signals muted start",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/markets/stocks/news/pre-market-action-heres-the-trade-setup-for-todays-session/articleshow/133328000.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Gold inches higher, focus on Fed minutes",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/markets/commodities/news/gold-inches-higher-focus-on-fed-minutes/articleshow/133335242.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Oil prices edge higher on uncertainty over exports through Hormuz",
+       "domain": "business-standard.com",
+       "date": "20260819",
+       "url": "https://www.business-standard.com/markets/commodities/oil-prices-edge-higher-on-uncertainty-over-exports-through-hormuz-126081900086_1.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Stock market today: Gift Nifty hints a flat start; eight day trading stocks to buy on Wednesday, 19 August",
+       "domain": "livemint.com",
+       "date": "20260819",
+       "url": "https://www.livemint.com/market/stock-market-news/stock-market-today-gift-nifty-hints-a-flat-start-eight-day-trading-stocks-to-buy-on-wednesday-19-august-11787105497629.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Trump pushes for Kim Jong Un meeting this year",
+       "domain": "livemint.com",
+       "date": "20260819",
+       "url": "https://www.livemint.com/global/trump-pushes-for-kim-jong-un-meeting-this-year-11787100886791.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "\u20b917,000 rent, 17-minute commutes: Finance consultant shares 14 reasons he left Mumbai for Bhopal",
+       "domain": "livemint.com",
+       "date": "20260819",
+       "url": "https://www.livemint.com/news/trends/rs-17-000-rent-17-minute-commutes-finance-consultant-shares-14-reasons-he-left-mumbai-for-bhopal-11787105305637.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
        "title": "Threatening friends and courting enemies in Trump's 'upside-down world'",
        "domain": "business-standard.com",
        "date": "20260819",
        "url": "https://www.business-standard.com/world-news/threatening-friends-and-courting-enemies-in-trump-s-upside-down-world-126081900117_1.html",
        "lane": "corpus",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Why is Trump threatening to bomb Oman, the Iran mediator trying to clear Hormuz?",
+       "domain": "scmp.com",
+       "date": "20260819",
+       "url": "https://www.scmp.com/news/world/united-states-canada/article/3364501/why-trump-threatening-bomb-oman-iran-mediator-trying-clear-hormuz",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Rupee may slip on oil, risk-off mood; RBI once again expected to ride to rescue",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/markets/forex/forex-news/rupee-may-slip-on-oil-risk-off-mood-rbi-once-again-expected-to-ride-to-rescue/articleshow/133336204.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "US-Iran war LIVE: UAE pauses Iran trade after missiles fired; report says Trump threatened to bomb Oman",
+       "domain": "hindustantimes.com",
+       "date": "20260819",
+       "url": "https://www.hindustantimes.com/world-news/us-iran-war-live-updates-uae-dubai-abu-dhabi-news-missile-alert-threat-donald-trump-oman-strait-of-hormuz-deal-101787104323572.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Trump holds off Iran talks until Tehran is \"ready to make a deal\": Reports",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/news/international/global-trends/trump-holds-off-iran-talks-until-tehran-is-ready-to-make-a-deal-reports/articleshow/133335279.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "From hammering Iran to strangling them: Donald Trump has a new approach in Middle East war",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/news/international/global-trends/from-hammering-iran-to-strangling-them-donald-trump-has-a-new-approach-in-middle-east-war/articleshow/133336491.cms",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
@@ -2645,6 +2824,24 @@
        "match": "full-text"
       },
       {
+       "title": "Nifty may open higher after six-session slide; global cues remain weak",
+       "domain": "business-standard.com",
+       "date": "20260819",
+       "url": "https://www.business-standard.com/markets/capital-market-news/nifty-may-open-higher-after-six-session-slide-global-cues-remain-weak-126081900139_1.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Market opens lower amid weak global cues",
+       "domain": "business-standard.com",
+       "date": "20260819",
+       "url": "https://www.business-standard.com/markets/capital-market-news/market-opens-lower-amid-weak-global-cues-126081900236_1.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
        "title": "UAE says Iran fired 2 missiles at country as war drags on",
        "domain": "thehindubusinessline.com",
        "date": "20260819",
@@ -2654,130 +2851,40 @@
        "match": "full-text"
       },
       {
-       "title": "Gold and silver price today: Rates drop on MCX as rising oil prices amid stalled US-Iran talks fuel Fed rate hike bets",
-       "domain": "livemint.com",
-       "date": "20260819",
-       "url": "https://www.livemint.com/market/commodities/gold-and-silver-price-today-rates-drop-on-mcx-as-rising-oil-prices-amid-stalled-us-iran-talks-fuel-fed-rate-hike-bets-11787109899918.html",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "US-Iran War LIVE: UAE suspends all trade, commercial exchanges, financial transactions with Iran until further notice",
-       "domain": "livemint.com",
-       "date": "20260819",
-       "url": "https://www.livemint.com/news/us-news/us-iran-war-news-live-updates-donald-trump-abbas-araghchi-tehran-washington-hormuz-oman-ceasefire-west-asia-peace-talks-11787096707495.html",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Bharat Dynamics to L&T - Jay Thakkar suggests 3 stocks to buy or sell for short-term in F&O segment",
-       "domain": "livemint.com",
-       "date": "20260819",
-       "url": "https://www.livemint.com/market/stock-market-news/bharat-dynamics-to-l-t-jay-thakkar-suggests-3-stocks-to-buy-or-sell-for-short-term-in-f-o-segment-11787112934483.html",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Iran weighs attacks on military targets in Europe if war escalates: FT",
-       "domain": "cnbc.com",
-       "date": "20260819",
-       "url": "https://www.cnbc.com/2026/08/19/us-iran-war-trump-hormuz.html",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Rupee holds near \u20b995.7 as RBI intervention curbs volatility",
+       "title": "Gold edges below $4,400 as traders eye slump in long-dated bonds",
        "domain": "thehindubusinessline.com",
        "date": "20260819",
-       "url": "https://www.thehindubusinessline.com/markets/forex/rupee-holds-near-957-as-rbi-intervention-offsets-oil-bond-yield-pressures/article71363546.ece",
-       "lane": "corpus",
+       "url": "https://www.thehindubusinessline.com/markets/gold/gold-edges-below-4400-as-traders-eye-slump-in-long-dated-bonds/article71363350.ece",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "In 2022, moving solar panels shielded French apple trees from extreme sun, cutting sunburned fruit from 13% to 2%\ufeff",
-       "domain": "economictimes.indiatimes.com",
-       "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/news/international/us/in-2022-moving-solar-panels-shielded-french-apple-trees-from-extreme-sun-cutting-sunburned-fruit-from-13-to-2/articleshow/133323882.cms",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Markets bleed for seventh straight session; banks, metals drag as crude weighs on sentiment",
+       "title": "Crude oil futures gain as standoff over Hormuz reopening continues",
        "domain": "thehindubusinessline.com",
        "date": "20260819",
-       "url": "https://www.thehindubusinessline.com/markets/stock-markets/markets-fall-for-seventh-straight-session-banks-metals-drag-as-crude-weighs-on-sentiment/article71363854.ece",
-       "lane": "corpus",
+       "url": "https://www.thehindubusinessline.com/markets/commodities/crude-oil-futures-gain-as-standoff-over-hormuz-reopening-continues/article71363309.ece",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "Global Market: European shares flat as Middle East risks weigh; Fed Minutes in focus",
-       "domain": "economictimes.indiatimes.com",
+       "title": "Nifty slips for seventh day as crude surge, bond yield spike rattle markets",
+       "domain": "thehindubusinessline.com",
        "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/markets/us-stocks/news/global-market-european-shares-flat-as-middle-east-risks-weigh-fed-minutes-in-focus/articleshow/133344247.cms",
-       "lane": "corpus",
+       "url": "https://www.thehindubusinessline.com/markets/stock-markets/nifty-slips-for-seventh-day-as-crude-surge-bond-yield-spike-rattle-markets/article71363259.ece",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "Dow Jones| Nasdaq | US Stock Market Today | Live: US market slips as tech selloff deepens, bond yields rise",
-       "domain": "economictimes.indiatimes.com",
+       "title": "Trump shares AI map calling Strait of Hormuz 'new US territory' as Iran refuses to reopen waterway",
+       "domain": "moneycontrol.com",
        "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/markets/us-stocks/news/dow-jones-stock-market-live-updates-nasdaq-sp-500-us-iran-war-hormuz-deal-brent-crude-oil-fed-warsh-rate-bonds-yields-micron-sandisk-amd-intel-chip-stock-price-news-18th-august-2026/liveblog/133322350.cms",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "After decades of decline, New Zealand's wool industry is making a comeback | New Zealand",
-       "domain": "theguardian.com",
-       "date": "20260819",
-       "url": "https://www.theguardian.com/world/2026/aug/07/new-zealand-nz-wool-price-industry-comeback",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Indices continue decline amid rising crude prices, global bond yields",
-       "domain": "business-standard.com",
-       "date": "20260819",
-       "url": "https://www.business-standard.com/markets/news/indices-continue-decline-amid-rising-crude-prices-global-bond-yields-126081901229_1.html",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Ahead of Market: 10 things that will decide stock market action on Thursday",
-       "domain": "economictimes.indiatimes.com",
-       "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/markets/stocks/news/ahead-of-market-10-things-that-will-decide-stock-market-action-on-thursday/articleshow/133352726.cms",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Japan's bond market may be the canary in the coal mine for the AI stock rally",
-       "domain": "cnbc.com",
-       "date": "20260819",
-       "url": "https://www.cnbc.com/2026/08/19/japans-bond-market-may-be-the-canary-in-the-coal-mine-for-the-ai-stock-rally.html",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "US stocks: US market rises as yields ease, Moderna lifts healthcare stocks",
-       "domain": "economictimes.indiatimes.com",
-       "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/markets/us-stocks/news/us-stocks-us-market-rises-as-yields-ease-moderna-lifts-healthcare-stocks/articleshow/133358680.cms",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
+       "url": "https://www.moneycontrol.com/world/trump-shares-ai-map-calling-strait-of-hormuz-new-us-territory-as-iran-refuses-to-reopen-waterway-article-14009842.html",
+       "lane": "corpus-extended",
+       "tier": 3,
+       "match": "headline"
       },
       {
        "title": "UAE Suspends Trade with Iran as Gulf Tensions Escalate",
@@ -2787,132 +2894,6 @@
        "lane": "corpus",
        "tier": 3,
        "match": "headline"
-      },
-      {
-       "title": "Strait of Hormuz shipping slows as shipowners await clarity on reopening",
-       "domain": "moneycontrol.com",
-       "date": "20260819",
-       "url": "https://www.moneycontrol.com/world/strait-of-hormuz-shipping-slows-as-shipowners-await-clarity-on-reopening-article-14009978.html",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "headline"
-      },
-      {
-       "title": "Price of Middle East conflict: Indian refiners forced to buy oil at premium; Russian discounts vanish",
-       "domain": "timesofindia.indiatimes.com",
-       "date": "20260819",
-       "url": "https://timesofindia.indiatimes.com/business/india-business/price-of-middle-east-conflict-indian-refiners-forced-to-buy-oil-at-premium-russian-discounts-vanish/articleshow/133339450.cms",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "headline"
-      },
-      {
-       "title": "'Earning billions': How fuel exporters in India, US are benefitting from war-led oil supply disruptions",
-       "domain": "timesofindia.indiatimes.com",
-       "date": "20260819",
-       "url": "https://timesofindia.indiatimes.com/business/india-business/earning-billions-how-fuel-exporters-in-india-us-are-benefitting-from-war-led-oil-supply-disruptions/articleshow/133350815.cms",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "headline"
-      },
-      {
-       "title": "Yemen govt warns Houthis plan to turn Bab Al-Mandab into 'Red Sea's Strait of Hormuz'",
-       "domain": "arabnews.com",
-       "date": "20260819",
-       "url": "https://www.arabnews.com/node/2655255/middle-east",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "headline"
-      },
-      {
-       "title": "US, South Korea Scale Back Ulchi Freedom Shield Military Drills At Washington's Request, Exercises To End Early",
-       "domain": "freepressjournal.in",
-       "date": "20260819",
-       "url": "https://www.freepressjournal.in/world/us-south-korea-scale-back-ulchi-freedom-shield-military-drills-at-washingtons-request-exercises-to-end-early",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "UAE Airfares May Stay High Through 2026 as Gulf Aviation Faces Prolonged Iran War Disruption",
-       "domain": "gulfnews.com",
-       "date": "20260819",
-       "url": "https://gulfnews.com/business/aviation/uae-airfares-could-stay-high-through-much-of-2026-as-middle-east-aviation-faces-longer-disruption-1.500644560",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Stop waiting for clown crew to pull a rabbit out of hat, clean up mess you made: Ghalibaf slams US officials over Iran talks",
-       "domain": "aninews.in",
-       "date": "20260819",
-       "url": "https://aninews.in/news/world/middle-east/stop-waiting-for-clown-crew-to-pull-a-rabbit-out-of-hat-clean-up-mess-you-made-ghalibaf-slams-us-officials-over-iran-talks20260819035909/",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Indian markets open lower, Sensex down over 200 pts; Nifty below 24,100 amid surging oil prices",
-       "domain": "aninews.in",
-       "date": "20260819",
-       "url": "https://aninews.in/news/business/indian-markets-open-lower-sensex-down-over-200-pts-nifty-below-24100-amid-surging-oil-prices20260819094709/",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Hormuz traffic slows as uncertainty over waterway persists",
-       "domain": "arabnews.com",
-       "date": "20260819",
-       "url": "https://www.arabnews.com/node/2655152/middle-east",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Iran's latest warning to the US signals the hardliners are just getting started",
-       "domain": "cnn.com",
-       "date": "20260819",
-       "url": "https://www.cnn.com/2026/08/19/middleeast/iran-hardliners-just-getting-started-intl",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Gold set for positive bias, Brent may slide towards USD 80/bbl on Gulf exports and weak demand: Report",
-       "domain": "aninews.in",
-       "date": "20260819",
-       "url": "https://aninews.in/news/business/gold-set-for-positive-bias-brent-may-slide-towards-usd-80bbl-on-gulf-exports-and-weak-demand-report20260819085234/",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "US 30Y yield tops 5.3% as oil, fiscal risks weigh on markets, says HDFC Treasury report",
-       "domain": "moneycontrol.com",
-       "date": "20260819",
-       "url": "https://www.moneycontrol.com/news/business/economy/us-30y-yield-tops-5-3-as-oil-fiscal-risks-weigh-on-markets-says-hdfc-treasury-report-14010048.html",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Air New Zealand Appoints Former Air India CEO Campbell Wilson, Robert McDonald To Board",
-       "domain": "freepressjournal.in",
-       "date": "20260819",
-       "url": "https://www.freepressjournal.in/business/air-new-zealand-appoints-former-air-india-ceo-campbell-wilson-robert-mcdonald-to-board",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Mecca agreement: Why Saudi Arabia, Turkey and Pakistan teamed up",
-       "domain": "middleeasteye.net",
-       "date": "20260819",
-       "url": "https://www.middleeasteye.net/big-story/mecca-agreement-why-saudi-arabia-turkey-and-pakistan-teamed-historical-moment",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
       }
      ]
     },
@@ -5112,8 +5093,35 @@
   "us_trade": {
    "days": {
     "2026-08-19": {
-     "n_matched": 23,
+     "n_matched": 25,
      "articles": [
+      {
+       "title": "Indian refiners face crude cost surge as Gulf premiums rise, Russian oil discounts vanish",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/industry/energy/oil-gas/indian-refiners-face-crude-cost-surge-as-gulf-premiums-rise-russian-oil-discounts-vanish/articleshow/133330603.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "headline"
+      },
+      {
+       "title": "US visa interview rules for minor children in India: What parents need to know",
+       "domain": "livemint.com",
+       "date": "20260819",
+       "url": "https://www.livemint.com/news/india/us-visa-interview-rules-for-minor-children-in-india-what-parents-need-to-know-11786983580108.html",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Crude Comes at a Premium Amid Supply Squeeze",
+       "domain": "economictimes.indiatimes.com",
+       "date": "20260819",
+       "url": "https://economictimes.indiatimes.com/et-front/term-deal-supplies-cut/articleshow/133332713.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
       {
        "title": "Apple Digital Markets Act compliance: EU 'welcomes' Apple steps to comply with digital rules",
        "domain": "economictimes.indiatimes.com",
@@ -5124,84 +5132,147 @@
        "match": "full-text"
       },
       {
-       "title": "India's exports to US remain unchanged after a year of Trump's tariffs",
-       "domain": "business-standard.com",
-       "date": "20260819",
-       "url": "https://www.business-standard.com/economy/news/india-s-exports-to-us-remain-unchanged-after-a-year-of-trump-s-tariffs-126081900375_1.html",
-       "lane": "corpus",
-       "tier": 2,
-       "match": "full-text"
-      },
-      {
-       "title": "Baidu: Baidu CEO vows to return Ernie to AI frontier as revenue miss sinks shares",
+       "title": "LandSpace: China's LandSpace lands rocket booster; joins SpaceX and Blue Origin with reusable tech",
        "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/tech/technology/baidu-ceo-vows-to-return-ernie-to-ai-frontier-as-revenue-miss-sinks-shares/articleshow/133339004.cms",
-       "lane": "corpus",
+       "url": "https://economictimes.indiatimes.com/tech/technology/chinas-landspace-lands-rocket-booster-joins-spacex-and-blue-origin-with-reusable-tech/articleshow/133335622.cms",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "China robot makers flock to Beijing show, seek path to mass adoption",
+       "title": "Apple: Apple changes fees for alternative app stores in EU",
        "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/tech/startups/china-robot-makers-flock-to-beijing-show-seek-path-to-mass-adoption/articleshow/133343087.cms",
-       "lane": "corpus",
+       "url": "https://economictimes.indiatimes.com/tech/technology/apple-changes-fees-for-alternative-app-stores-in-eu/articleshow/133335542.cms",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "After decades of decline, New Zealand's wool industry is making a comeback | New Zealand",
-       "domain": "theguardian.com",
+       "title": "From kirana to currency: Small towns are scrambling for dollars",
+       "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://www.theguardian.com/world/2026/aug/07/new-zealand-nz-wool-price-industry-comeback",
-       "lane": "corpus",
+       "url": "https://economictimes.indiatimes.com/nri/invest/from-kirana-to-currency-small-towns-tier-2-tier-3-cities-forex-demand-dollars-india-consumption/articleshow/133292498.cms",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "India's  \u20b91 trillion RDI fund to select next set of fund managers in a 'couple of weeks'",
+       "title": "Govt may turn security concerns into a market for India-designed chips",
        "domain": "livemint.com",
        "date": "20260819",
-       "url": "https://www.livemint.com/news/india/indias-1-trillion-rdi-fund-to-select-next-set-of-fund-managers-in-a-couple-of-weeks-11787144672836.html",
-       "lane": "corpus",
+       "url": "https://www.livemint.com/technology/govt-may-turn-security-concerns-into-a-market-for-india-designed-chips-11787056712396.html",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "India must turn Chinese investment into trade leverage",
+       "title": "KKR buys into Indian entertainment platform BookMyShow",
        "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://economictimes.indiatimes.com/opinion/et-commentary/india-must-turn-chinese-investment-into-trade-leverage/articleshow/133355044.cms",
-       "lane": "corpus",
+       "url": "https://economictimes.indiatimes.com/industry/media/entertainment/kkr-buys-into-indian-entertainment-platform-bookmyshow/articleshow/133336970.cms",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "Price of Middle East conflict: Indian refiners forced to buy oil at premium; Russian discounts vanish",
-       "domain": "timesofindia.indiatimes.com",
+       "title": "Texas governor Greg Abbott proposes to bar public schools from hiring H-1B workers",
+       "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://timesofindia.indiatimes.com/business/india-business/price-of-middle-east-conflict-indian-refiners-forced-to-buy-oil-at-premium-russian-discounts-vanish/articleshow/133339450.cms",
-       "lane": "corpus",
-       "tier": 3,
+       "url": "https://economictimes.indiatimes.com/nri/work/texas-governor-greg-abbott-proposes-to-bar-public-schools-from-hiring-h-1b-workers/articleshow/133337899.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "International | Watch latest Videos on International",
-       "domain": "moneycontrol.com",
+       "title": "US unions sue Trump administration over new time limits on student and journalist visas",
+       "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://www.moneycontrol.com/shows/international/",
-       "lane": "corpus",
-       "tier": 3,
+       "url": "https://economictimes.indiatimes.com/nri/latest-updates/us-unions-sue-trump-administration-over-new-time-limits-on-student-and-journalist-visas/articleshow/133337693.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
        "match": "full-text"
       },
       {
-       "title": "From Taco Tuesday to Fitting Friday: Trump puts Canada tariffs on ice for 72 hours",
-       "domain": "timesofindia.indiatimes.com",
+       "title": "China rocket recovery: China recovers rocket stage on land for first time, after earlier recovery at sea",
+       "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://timesofindia.indiatimes.com/world/us/from-taco-tuesday-to-fitting-friday-trump-puts-canada-tariffs-on-ice-for-72-hours/articleshow/133353857.cms",
-       "lane": "corpus",
-       "tier": 3,
+       "url": "https://economictimes.indiatimes.com/tech/technology/china-recovers-rocket-stage-on-land-for-first-time-after-earlier-recovery-at-sea/articleshow/133337688.cms",
+       "lane": "corpus-extended",
+       "tier": 2,
+       "match": "full-text"
+      },
+      {
+       "title": "Weekly Sanctions Update: July 20, 2026",
+       "domain": "mondaq.com:443",
+       "date": "20260819",
+       "url": "https://www.mondaq.com:443/unitedstates/money-laundering/1820132/weekly-sanctions-update-july-20-2026",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Google Exits China for All Pixel Hardware by 2027: Vietnam Flagship Success Drives Full Break",
+       "domain": "techtimes.com",
+       "date": "20260819",
+       "url": "https://www.techtimes.com/articles/324826/20260818/google-exits-china-all-pixel-hardware-2027-vietnam-flagship-success-drives-full-break.htm",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "President Donald Trump honors teen lifeguard and rescued boy at White House",
+       "domain": "americanbazaaronline.com",
+       "date": "20260819",
+       "url": "https://americanbazaaronline.com/2026/08/18/president-donald-trump-honors-teen-lifeguard-and-rescued-boy-at-white-house-486622/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Latest Articles from Irina Slav",
+       "domain": "oilprice.com",
+       "date": "20260819",
+       "url": "https://oilprice.com/contributors/Irina-Slav/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Sask. businesses bracing for U.S. tariffs as Wednesday deadline approaches",
+       "domain": "ckom.com",
+       "date": "20260819",
+       "url": "https://www.ckom.com/2026/08/17/sask-businesses-bracing-for-u-s-tariffs-as-wednesday-deadline-approaches/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Justin Trudeau dances with toilet plunger in Home Hardware",
+       "domain": "stcatharinesstandard.ca",
+       "date": "20260819",
+       "url": "https://www.stcatharinesstandard.ca/opinion/columnists/vinay-menon-katy-perry-films-justin-trudeau-dancing-with-a-toilet-plunger-as-canada-is-clogged-in-a-trade-war/article_e8465abd-8589-5301-820c-1db15a0d429b.html",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "H 1B lottery loss, USCIS probe: How EB visa helped this Indian engineer become US citizen even after continuous scrutiny",
+       "domain": "businesstoday.in",
+       "date": "20260819",
+       "url": "https://www.businesstoday.in/nri/visa/story/h-1b-lottery-loss-uscis-probe-how-eb-visa-helped-this-indian-engineer-become-us-citizen-even-after-continuous-scrutiny-549823-2026-08-19",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Justin Trudeau says 'credible allegations' linked to Sikh leader's killing in Canada",
+       "domain": "digbycourier.ca",
+       "date": "20260819",
+       "url": "https://www.digbycourier.ca/justin-trudeau-says-credible-allegations-linked-to-sikh-leaders-killing-in-canada/",
+       "lane": "corpus-extended",
+       "tier": null,
        "match": "full-text"
       },
       {
@@ -5227,69 +5298,6 @@
        "domain": "siliconindia.com",
        "date": "20260819",
        "url": "https://www.siliconindia.com/news/general/us-envoy-sergio-gor-pushes-stronger-indiaus-ties-eyes-500-billion-trade-nid-241963-cid-1.html",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Donald Trump South Korea: How the US president is using military and trade ties as leverage in South Korea negotiations",
-       "domain": "theage.com.au",
-       "date": "20260819",
-       "url": "https://www.theage.com.au/world/north-america/pivot-from-asia-what-trump-s-south-korea-shock-says-about-us-strategy-20260818-p60p6y.html",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "BRICS rejects punitive and discriminatory EU carbon border tax",
-       "domain": "indiagazette.com",
-       "date": "20260819",
-       "url": "http://www.indiagazette.com/news/279251202/brics-rejects-punitive-and-discriminatory-eu-carbon-border-tax",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Physicians born abroad make up nearly half of internal medicine workforce in US",
-       "domain": "healio.com",
-       "date": "20260819",
-       "url": "https://www.healio.com/news/primary-care/20260817/physicians-born-abroad-make-up-nearly-half-of-internal-medicine-workforce-in-us",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "\"Our problems are not his concern:\" JK Chief Minister welcomes US Ambassador's visit; dismisses foreign intervention in regional matters",
-       "domain": "bignewsnetwork.com",
-       "date": "20260819",
-       "url": "http://www.bignewsnetwork.com/news/279251566/our-problems-are-not-his-concern-jk-chief-minister-welcomes-us-ambassador-visit-dismisses-foreign-intervention-in-regional-matters",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Russia eyes rail link to India to avoid maritime chokepoints",
-       "domain": "ianslive.in",
-       "date": "20260819",
-       "url": "https://ianslive.in/russia-eyes-rail-link-to-india-to-avoid-maritime-chokepoints--20260819161202",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Ford's Texas trip to talk trade, tariffs cost taxpayers over $93K, internal document reveals",
-       "domain": "cbc.ca",
-       "date": "20260819",
-       "url": "https://www.cbc.ca/news/canada/toronto/ontario-doug-ford-texas-trip-cost-9.7312305",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "US Senate approves sweeping Russia sanctions bill targeting energy",
-       "domain": "euronews.com",
-       "date": "20260819",
-       "url": "https://www.euronews.com/2026/08/07/us-senate-approves-sweeping-russia-sanctions-bill-targeting-energy-income",
        "lane": "corpus",
        "tier": null,
        "match": "full-text"
@@ -7100,111 +7108,66 @@
      ]
     }
    },
-   "total_articles": 217
+   "total_articles": 220
   },
   "shipping": {
    "days": {
     "2026-08-19": {
-     "n_matched": 46,
+     "n_matched": 36,
      "articles": [
       {
-       "title": "Gulf states scramble for Strait of Hormuz alternatives",
-       "domain": "dw.com",
+       "title": "From hammering Iran to strangling them: Donald Trump has a new approach in Middle East war",
+       "domain": "economictimes.indiatimes.com",
        "date": "20260819",
-       "url": "https://www.dw.com/en/iran-war-strait-of-hormuz-gulf-states-oil-shipping-pipelines-alternatives-graphics/a-78336679",
-       "lane": "corpus",
-       "tier": 1,
-       "match": "full-text"
-      },
-      {
-       "title": "John Hall obituary",
-       "domain": "theguardian.com",
-       "date": "20260819",
-       "url": "https://www.theguardian.com/science/2026/aug/19/john-hall-obituary",
-       "lane": "corpus",
+       "url": "https://economictimes.indiatimes.com/news/international/global-trends/from-hammering-iran-to-strangling-them-donald-trump-has-a-new-approach-in-middle-east-war/articleshow/133336491.cms",
+       "lane": "corpus-extended",
        "tier": 2,
        "match": "full-text"
       },
       {
        "title": "Hormuz traffic slows as uncertainty over waterway persists",
-       "domain": "arabnews.com",
+       "domain": "al-monitor.com",
        "date": "20260819",
-       "url": "https://www.arabnews.com/node/2655152/middle-east",
-       "lane": "corpus",
+       "url": "https://www.al-monitor.com/originals/2026/08/hormuz-traffic-slows-uncertainty-over-waterway-persists",
+       "lane": "corpus-extended",
        "tier": 3,
        "match": "full-text"
       },
       {
-       "title": "Strait of Hormuz shipping slows as shipowners await clarity on reopening",
-       "domain": "moneycontrol.com",
+       "title": "UK authorities: Vessel in Strait of Hormuz hit by projectile, one casualty",
+       "domain": "fox23maine.com",
        "date": "20260819",
-       "url": "https://www.moneycontrol.com/world/strait-of-hormuz-shipping-slows-as-shipowners-await-clarity-on-reopening-article-14009978.html",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Mecca agreement: Why Saudi Arabia, Turkey and Pakistan teamed up",
-       "domain": "middleeasteye.net",
-       "date": "20260819",
-       "url": "https://www.middleeasteye.net/big-story/mecca-agreement-why-saudi-arabia-turkey-and-pakistan-teamed-historical-moment",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Japan's foreign minister calls for regional peace, maritime security in talks with Saudi, Yemeni officials",
-       "domain": "arabnews.com",
-       "date": "20260819",
-       "url": "https://www.arabnews.com/node/2655231/saudi-arabia",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Japan is key economic partner for Saudi Arabia, FM says",
-       "domain": "arabnews.com",
-       "date": "20260819",
-       "url": "https://www.arabnews.com/node/2655224/saudi-arabia",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Ankara's Bet, And Why India Should Make It Costly",
-       "domain": "freepressjournal.in",
-       "date": "20260819",
-       "url": "https://www.freepressjournal.in/analysis/ankaras-bet-and-why-india-should-make-it-costly",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "Yemen govt warns Houthis plan to turn Bab Al-Mandab into 'Red Sea's Strait of Hormuz'",
-       "domain": "arabnews.com",
-       "date": "20260819",
-       "url": "https://www.arabnews.com/node/2655255/middle-east",
-       "lane": "corpus",
-       "tier": 3,
-       "match": "full-text"
-      },
-      {
-       "title": "The United States has announced a 10-nation force to counter Houthi attacks in the Red Sea Israel-Palestine conflict news",
-       "domain": "northernpen.ca",
-       "date": "20260819",
-       "url": "https://www.northernpen.ca/the-united-states-has-announced-a-10-nation-force-to-counter-houthi-attacks-in-the-red-sea-israel-palestine-conflict-news/",
-       "lane": "corpus",
+       "url": "https://fox23maine.com/news/nation-world/uk-authorities-vessel-in-strait-of-hormuz-hit-by-projectile-one-casualty-strait-hormuz-blockade-president-donald-trump-territory",
+       "lane": "corpus-extended",
        "tier": null,
-       "match": "headline"
+       "match": "full-text"
       },
       {
-       "title": "Somali pirates hijack cargo ship; regional navies setting up new task force",
-       "domain": "defenceweb.co.za",
+       "title": "Strategic Blunders Have Plagued Saudi Arabia's Approach to the Middle East",
+       "domain": "foreignpolicy.com",
        "date": "20260819",
-       "url": "https://defenceweb.co.za/sea/sea-sea/somali-pirates-hijack-cargo-ship-regional-navies-setting-up-new-task-force/",
-       "lane": "corpus",
+       "url": "https://foreignpolicy.com/2026/08/05/saudi-arabia-iran-israel-united-states-trump-uae-oil-houthis/?tpcc=recirc_trending062921",
+       "lane": "corpus-extended",
        "tier": null,
-       "match": "headline"
+       "match": "full-text"
+      },
+      {
+       "title": "Trump says US has no talks planned with Iran and other news from the Middle East",
+       "domain": "abccolumbia.com",
+       "date": "20260819",
+       "url": "https://www.abccolumbia.com/2026/08/18/trump-says-us-has-no-talks-planned-with-iran-and-other-news-from-the-middle-east/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Chinese shipyard delivers 300,000-tonne very large crude carrier",
+       "domain": "en.people.cn",
+       "date": "20260819",
+       "url": "http://en.people.cn/n3/2026/0819/c90000-20489941.html",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
       },
       {
        "title": "The U.S. Is Quietly Building a New Energy Foothold in Iraq",
@@ -7212,6 +7175,33 @@
        "date": "20260819",
        "url": "https://oilprice.com/Energy/Natural-Gas/The-US-Is-Quietly-Building-a-New-Energy-Foothold-in-Iraq.html",
        "lane": "corpus",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Two Navy Destroyers Went Dead In The Water In Just Three Months",
+       "domain": "dailycaller.com",
+       "date": "20260819",
+       "url": "https://dailycaller.com/2026/08/18/two-navy-destroyers-dead-in-water-three-months/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Clean Arctic Alliance Warns Over Growing Use of Arctic Route for Asia-Europe Container Trade",
+       "domain": "shipandbunker.com",
+       "date": "20260819",
+       "url": "https://shipandbunker.com/news/world/534186-clean-arctic-alliance-warns-over-growing-use-of-arctic-route-for-asia-europe-container-trade",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Latest Articles from Tom Kool  | OilPrice.com",
+       "domain": "oilprice.com",
+       "date": "20260819",
+       "url": "https://oilprice.com/contributors/Tom-Kool/",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "full-text"
       },
@@ -7234,6 +7224,24 @@
        "match": "full-text"
       },
       {
+       "title": "Palestine News 24/7 | Latest Palestine News",
+       "domain": "newsnow.co.uk",
+       "date": "20260819",
+       "url": "https://www.newsnow.co.uk/h/World+News/Middle+East/Israel~Palestine",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Oil rises above $91 as US-Iran peace talks stall",
+       "domain": "thesun.ng",
+       "date": "20260819",
+       "url": "https://thesun.ng/oil-rises-above-91-as-us-iran-peace-talks-stall/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
        "title": "Saudi Oil news | Breaking News & Top Stories",
        "domain": "newsnow.co.uk",
        "date": "20260819",
@@ -7248,6 +7256,33 @@
        "date": "20260819",
        "url": "https://www.investmentwatchblog.com/12-gigantic-red-flag-warning-signs-for-the-economy/",
        "lane": "corpus",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Oil market starts pricing in a prolonged Hormuz crisis",
+       "domain": "mumbaimirror.indiatimes.com",
+       "date": "20260819",
+       "url": "https://mumbaimirror.indiatimes.com/opinion/oil-market-starts-pricing-in-a-prolonged-hormuz-crisis/articleshow/133324911.html",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "US attack on Houthis, Israel-Hamas war, Gaza crisis",
+       "domain": "digbycourier.ca",
+       "date": "20260819",
+       "url": "https://www.digbycourier.ca/us-attack-on-houthis-israel-hamas-war-gaza-crisis/",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Trump says US has no talks planned with Iran and other Mideast news",
+       "domain": "wsbradio.com",
+       "date": "20260819",
+       "url": "https://www.wsbradio.com/news/world/ship-attacked-during/54FRMWBKTM3KRDJ4BAFAJXOQT4/",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "full-text"
       },
@@ -7270,200 +7305,38 @@
        "match": "full-text"
       },
       {
-       "title": "Chinese shipyard delivers 300,000-tonne very large crude carrier",
-       "domain": "china.org.cn",
+       "title": "Hormuz Traffic Slows As Uncertainty Persists",
+       "domain": "marinelink.com",
        "date": "20260819",
-       "url": "http://www.china.org.cn/2026-08/19/content_118654248.shtml",
-       "lane": "corpus",
+       "url": "https://www.marinelink.com/news/hormuz-traffic-slows-uncertainty-persists-542220",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "full-text"
       },
       {
-       "title": "Beware of Middle East Accords: They are regime-contingent",
-       "domain": "israelnationalnews.com",
+       "title": "Trump says no Iran talks planned as UAE suspends trade with Tehran",
+       "domain": "theuknews.com",
        "date": "20260819",
-       "url": "https://www.israelnationalnews.com/news/431916",
-       "lane": "corpus",
+       "url": "http://www.theuknews.com/news/279250504/trump-says-no-iran-talks-planned-as-uae-suspends-trade-with-tehran",
+       "lane": "corpus-extended",
+       "tier": null,
+       "match": "full-text"
+      },
+      {
+       "title": "Shipping through Strait of Hormuz slows amid reopening uncertainty",
+       "domain": "cyprus-mail.com",
+       "date": "20260819",
+       "url": "https://cyprus-mail.com/2026/08/19/999183",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "full-text"
       },
       {
        "title": "Flex LNG - Second Quarter 2026 Earnings Release",
-       "domain": "prnewswire.com",
+       "domain": "prnewswire.com:443",
        "date": "20260819",
-       "url": "https://www.prnewswire.com/news-releases/flex-lng---second-quarter-2026-earnings-release-302854948.html",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Oil extends climb on prolonged Hormuz export uncertainty",
-       "domain": "arynews.tv",
-       "date": "20260819",
-       "url": "https://arynews.tv/oil-extends-climb-on-prolonged-hormuz-export-uncertainty",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Shipping Tribune",
-       "domain": "shippingtribune.com",
-       "date": "20260819",
-       "url": "https://www.shippingtribune.com/news/shipping/Top+10+Buyers+across+the+Bulker+and+Tanker+Markets",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Chinese Tyre Companies Eye US$123 Million South Africa Plant",
-       "domain": "riotimesonline.com",
-       "date": "20260819",
-       "url": "https://www.riotimesonline.com/sa-courts-chinese-tyre-companies-2026/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "US insists strait open despite limited traffic | The Arkansas Democrat-Gazette",
-       "domain": "arkansasonline.com",
-       "date": "20260819",
-       "url": "https://www.arkansasonline.com/news/2026/aug/19/us-insists-strait-open-despite-limited-traffic/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Northern Sea Route: future business for Norway",
-       "domain": "tnp.no",
-       "date": "20260819",
-       "url": "https://www.tnp.no/norway/commentary/3945-northern-sea-route-future-business-for-norway/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Five missions the SAS has been involved in during the 2020s",
-       "domain": "malverngazette.co.uk",
-       "date": "20260819",
-       "url": "https://www.malverngazette.co.uk/news/26477137.five-missions-sas-involved-2020s/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Chinese Oil Tankers Turn Back as Hormuz Risks Mount        \u00a0|\u00a0\n        Peak Oil News and Message Boards",
-       "domain": "peakoil.com",
-       "date": "20260819",
-       "url": "https://peakoil.com/production/chinese-oil-tankers-turn-back-as-hormuz-risks-mount",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Ceuta's once gorgeous beach is now a gigantic migrant slum\u2026",
-       "domain": "freerepublic.com",
-       "date": "20260819",
-       "url": "https://freerepublic.com/focus/f-chat/4392320/posts",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Navigating the supply chain's new normal - Compliance Week",
-       "domain": "complianceweek.com",
-       "date": "20260819",
-       "url": "https://www.complianceweek.com/best-practices/navigating-the-supply-chains-new-normal/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Giant Tortoise",
-       "domain": "seahistory.org",
-       "date": "20260819",
-       "url": "https://seahistory.org/sea-history-for-kids/giant-tortoise/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Yemen's Houthis claim to have staged 31 operations against Saudi targets in past month \u2013 Middle East Monitor",
-       "domain": "middleeastmonitor.com",
-       "date": "20260819",
-       "url": "https://www.middleeastmonitor.com/20260819-yemens-houthis-claim-to-have-staged-31-operations-against-saudi-targets-in-past-month/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Israel Awaits Hamas Response to Ceasefire Plan: Live Updates",
-       "domain": "digbycourier.ca",
-       "date": "20260819",
-       "url": "https://www.digbycourier.ca/israel-awaits-hamas-response-to-ceasefire-plan-live-updates/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Egyptian government minister lays foundation stone as Sungrow begins constructing MEA's first specialised BESS factory",
-       "domain": "energy-storage.news",
-       "date": "20260819",
-       "url": "https://www.energy-storage.news/egyptian-government-minister-lays-foundation-stone-sungrow-begins-constructing-mea-first-specialised-bess-factory/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "World cruise demand is rising, and a new wave of remote workers is booking voyages built for retirees",
-       "domain": "grandrapidsmn.com",
-       "date": "20260819",
-       "url": "http://www.grandrapidsmn.com/around_the_web/health/world-cruise-demand-is-rising-and-a-new-wave-of-remote-workers-is-booking-voyages/article_7e895ac1-0302-5e98-87fa-1316b9a71be3.html",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Yemen's Houthis attack kills 11 in Yemen, hit Saudi refinery",
-       "domain": "euronews.com",
-       "date": "20260819",
-       "url": "https://www.euronews.com/2026/08/09/yemens-houthis-claim-attack-on-saudi-arabia-refinery",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Crude Oil Surges Amid Deepening U.S.-Iran Standoff Leaving Strait Of Hormuz Effectively Shut",
-       "domain": "finanznachrichten.de",
-       "date": "20260819",
-       "url": "https://www.finanznachrichten.de/nachrichten-2026-08/69356524-crude-oil-surges-amid-deepening-u-s-iran-standoff-leaving-strait-of-hormuz-effectively-shut-020.htm",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "S'Korean container ship to test Arctic route to Europe",
-       "domain": "newcastleherald.com.au",
-       "date": "20260819",
-       "url": "https://www.newcastleherald.com.au/story/9333802/skorean-container-ship-to-test-arctic-route-to-europe/",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "What investing in the Red Sea means for Africa",
-       "domain": "greekherald.com",
-       "date": "20260819",
-       "url": "http://www.greekherald.com/news/279242565/what-investing-in-the-red-sea-means-for-africa",
-       "lane": "corpus",
-       "tier": null,
-       "match": "full-text"
-      },
-      {
-       "title": "Turkish Warship Reportedly Strikes Men Returning from Hijacked Lutuf",
-       "domain": "wardheernews.com",
-       "date": "20260819",
-       "url": "https://wardheernews.com/turkish-warship-reportedly-strikes-men-returning-from-hijacked-lutuf/",
-       "lane": "corpus",
+       "url": "https://www.prnewswire.com:443/news-releases/flex-lng---second-quarter-2026-earnings-release-302854948.html",
+       "lane": "corpus-extended",
        "tier": null,
        "match": "full-text"
       }
@@ -9570,7 +9443,7 @@
      ]
     }
    },
-   "total_articles": 270
+   "total_articles": 255
   }
  }
 }
