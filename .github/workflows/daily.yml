@@ -406,10 +406,20 @@ jobs:
         # _meta.method says which lane produced it.
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        # 32, not 25. Measured on run 32326976462: the step used 1236s of
-        # its 1500s ceiling (600s scan + 636s for the four siblings), so
-        # the larger scan budget below does not fit under 25 minutes.
-        timeout-minutes: 32
+        # 40, not 32 and not 25. Three budgets live under this ceiling and
+        # all three have to fit:
+        #   900s  corpus scan          (IGRM_RECEIPTS_DEADLINE_S)
+        #   480s  artlist supplement   (IGRM_RECEIPTS_SUPPLEMENT_DEADLINE_S)
+        #   636s  the four siblings    (measured, run 32326976462)
+        #  ----
+        #  2016s = 33.6 min, so 40 leaves ~6 minutes of margin.
+        #
+        # 32 was not enough and the failure was expensive: run 32368730080
+        # banked the first complete corpus scan the project has ever
+        # produced (2026-08-19, 48/48) and was then killed at the ceiling
+        # inside the unbounded supplement loop, so receipts.json was never
+        # written. The scan succeeded and the payload did not move.
+        timeout-minutes: 40
         env:
           # 900, not 600. THE SCAN NEVER COMPLETED A SINGLE DAY.
           #

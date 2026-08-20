@@ -86,6 +86,27 @@ CORPUS_CACHE = ROOT / "data" / "raw" / "receipt_days"
 # the four commands after it never ran.
 SCAN_DEADLINE_S = int(os.environ.get("IGRM_RECEIPTS_DEADLINE_S", str(30 * 60)))
 
+# SCAN_DEADLINE_S bounds collect_corpus and NOTHING ELSE. The per-channel
+# artlist supplement in main() makes one network call per channel against
+# a throttled upstream, and until 2026-08-20 it had no bound at all -- so
+# the module could run past any step ceiling AFTER the expensive scan had
+# already succeeded.
+#
+# That is precisely what happened in daily run 32368730080: the 2026-08-19
+# corpus cache was saved complete at 48/48 -- the first complete scan the
+# project has ever banked -- the step was then killed at its 32-minute
+# ceiling inside this loop, and docs/data/receipts.json was never written.
+# The scan succeeded and the payload still did not move, which is the
+# worst shape of failure: maximum cost, zero result, and a
+# continue-on-error step reporting conclusion=success over the timeout.
+#
+# The module's own contract already says "A failed fetch never loses the
+# corpus lane". A fetch that is merely SLOW gets the same treatment now:
+# past this deadline the supplement is skipped and the corpus lane -- the
+# denominator that actually defines the payload -- is published.
+SUPPLEMENT_DEADLINE_S = int(
+    os.environ.get("IGRM_RECEIPTS_SUPPLEMENT_DEADLINE_S", str(8 * 60)))
+
 
 class IncompleteCorpusScan(RuntimeError):
     """A resumable raw checkpoint was written, but no public view is valid."""
@@ -474,21 +495,29 @@ def main() -> None:
             pass
 
     channels: dict[str, Any] = {}
+    supplement_deadline = time.monotonic() + SUPPLEMENT_DEADLINE_S
     for ch in CHANNELS:
         keys = channel_doc_keys(ch, specs, corpus)
         # Artlist supplement: restores tier-1/2 wire originals the sample
-        # missed. A failed fetch never loses the corpus lane.
+        # missed. A failed fetch never loses the corpus lane -- and nor
+        # does a slow one, since 2026-08-20. See SUPPLEMENT_DEADLINE_S.
         supplement: list[dict[str, Any]] = []
-        try:
-            supplement = receipts.channel_receipts(
-                ch, dictionaries[ch], day, tiers)["articles"]
-        except Exception as e:  # noqa: BLE001 -- supplement is optional
-            print(f"[receipts-ngrams] {ch} artlist supplement failed: {e}")
-            if ch in prior_artlist:
-                supplement = prior_artlist[ch]
-                print(f"[receipts-ngrams] {ch}: carrying forward "
-                      f"{len(supplement)} retrieved articles from today's "
-                      "earlier payload")
+        if time.monotonic() > supplement_deadline:
+            supplement = prior_artlist.get(ch, [])
+            print(f"[receipts-ngrams] {ch}: supplement budget spent; "
+                  f"publishing the corpus lane with {len(supplement)} "
+                  "carried-forward article(s) rather than losing the scan")
+        else:
+            try:
+                supplement = receipts.channel_receipts(
+                    ch, dictionaries[ch], day, tiers)["articles"]
+            except Exception as e:  # noqa: BLE001 -- supplement is optional
+                print(f"[receipts-ngrams] {ch} artlist supplement failed: {e}")
+                if ch in prior_artlist:
+                    supplement = prior_artlist[ch]
+                    print(f"[receipts-ngrams] {ch}: carrying forward "
+                          f"{len(supplement)} retrieved articles from today's "
+                          "earlier payload")
         channels[ch] = assemble_channel(
             ch, dictionaries[ch], keys, corpus, tiers, supplement)
         print(f"[receipts-ngrams] {ch}: {channels[ch]['n_matched_in_corpus']} "

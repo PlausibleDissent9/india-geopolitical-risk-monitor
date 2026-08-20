@@ -162,3 +162,47 @@ def test_a_refused_extended_publish_still_banks_the_completed_scan() -> None:
     recovery = publish[publish.index('CANDIDATE="$(git rev-parse HEAD)"'):]
     assert 'git checkout "$CANDIDATE" -- docs' not in recovery, (
         "the recovery re-stages docs bytes the gate just refused")
+
+
+def test_the_artlist_supplement_is_bounded_too() -> None:
+    """A completed scan must not be lost to an unbounded fetch after it.
+
+    Daily run 32368730080 (2026-08-20) is the case. The corpus cache for
+    2026-08-19 was saved complete at 48/48 -- the first complete scan the
+    project ever banked, and proof the 900s budget worked -- and then the
+    step was killed at its 32-minute ceiling inside the per-channel
+    artlist loop, so docs/data/receipts.json was never written. Maximum
+    cost, zero result.
+
+    IGRM_RECEIPTS_DEADLINE_S bounds collect_corpus only. The supplement
+    loop makes one network call per channel against a throttled upstream
+    and had no bound at all, so no step ceiling could be safe.
+    """
+    from src import receipts_ngrams as rn
+
+    assert hasattr(rn, "SUPPLEMENT_DEADLINE_S"), (
+        "the artlist supplement loop has lost its deadline; a slow "
+        "upstream can then burn any step ceiling AFTER the scan has "
+        "already succeeded, which is how 2026-08-20 lost a complete scan")
+    assert rn.SUPPLEMENT_DEADLINE_S > 0
+
+    source = (ROOT / "src" / "receipts_ngrams.py").read_text(encoding="utf-8")
+    loop = source[source.index("supplement_deadline = time.monotonic()"):]
+    assert "if time.monotonic() > supplement_deadline:" in loop, (
+        "the deadline is computed but never checked in the channel loop")
+    # Past the deadline the corpus lane must still be published, not
+    # abandoned: the supplement is optional evidence, the corpus is the
+    # denominator that defines the payload.
+    assert "prior_artlist.get(ch, [])" in loop
+
+    # Both budgets must fit under the step ceiling together.
+    workflow = DAILY.read_text(encoding="utf-8")
+    match = re.search(
+        r"Receipts at scoring depth.*?timeout-minutes:\s*(?P<minutes>\d+)"
+        r".*?IGRM_RECEIPTS_DEADLINE_S:\s*\"(?P<deadline>\d+)\"",
+        workflow, re.S)
+    assert match
+    step_seconds = int(match.group("minutes")) * 60
+    assert step_seconds >= int(match.group("deadline")) + rn.SUPPLEMENT_DEADLINE_S + 636, (
+        "the step ceiling no longer covers scan + supplement + the four "
+        "sibling modules; the run will be killed mid-lane again")
