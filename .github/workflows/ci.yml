@@ -6,6 +6,11 @@ permissions:
 on:
   push:
     branches: [main]
+  # Manual runs: the live-site tests make ci the only lane that can
+  # certify what igrm.in actually serves, and on 2026-08-20 the only way
+  # to re-certify after a heal was to wait for an unrelated push. A
+  # dispatch runs the identical checks on demand.
+  workflow_dispatch:
   pull_request:
 
 jobs:
