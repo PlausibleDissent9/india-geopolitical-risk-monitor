@@ -13,7 +13,7 @@
   "n_stale_or_undatable": 1,
   "n_exempt": 31,
   "n_with_declared_measurement_date": 26,
-  "generated": "2026-08-20T04:46:59Z"
+  "generated": "2026-08-20T14:07:51Z"
  },
  "payloads": [
   {
@@ -76,10 +76,10 @@
   },
   {
    "payload": "chokepoints.json",
-   "generated": "2026-08-17",
-   "age_days": 3,
-   "written_date": "2026-08-17",
-   "write_age_days": 3,
+   "generated": "2026-08-20",
+   "age_days": 0,
+   "written_date": "2026-08-20",
+   "write_age_days": 0,
    "max_age_days": 3,
    "status": "fresh",
    "measurement_status": "not_declared"
@@ -372,15 +372,15 @@
   },
   {
    "payload": "nowcast.json",
-   "generated": "2026-08-19",
-   "age_days": 1,
-   "written_date": "2026-08-19",
-   "write_age_days": 1,
+   "generated": "2026-08-20",
+   "age_days": 0,
+   "written_date": "2026-08-20",
+   "write_age_days": 0,
    "max_age_days": 3,
    "status": "fresh",
-   "measured_date": "2026-08-19",
+   "measured_date": "2026-08-20",
    "measured_date_field": "date",
-   "measured_age_days": 1,
+   "measured_age_days": 0,
    "measurement_status": "declared"
   },
   {
@@ -395,10 +395,10 @@
   },
   {
    "payload": "permanence.json",
-   "generated": "2026-08-19",
-   "age_days": 1,
-   "written_date": "2026-08-19",
-   "write_age_days": 1,
+   "generated": "2026-08-20",
+   "age_days": 0,
+   "written_date": "2026-08-20",
+   "write_age_days": 0,
    "max_age_days": 10,
    "status": "fresh",
    "measurement_status": "not_declared"

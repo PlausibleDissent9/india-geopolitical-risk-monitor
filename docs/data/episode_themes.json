@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Narrative composition (G4): per channel per day, the GKG theme codes carried by the MATCHED articles -- the registered dictionaries choose every article, BigQuery only reads its V2Themes; an annotation, never a filter, entering no score. share = fraction of themed matched articles carrying the code; codes stay raw GDELT identifiers for auditability. n_themed vs n_matched discloses the join rate.",
-  "generated": "2026-08-20T04:46:48Z",
+  "generated": "2026-08-20T14:07:42Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -1160,19 +1160,7 @@
       "share": 1.0
      },
      {
-      "code": "WB_2433_CONFLICT_AND_VIOLENCE",
-      "share": 0.889
-     },
-     {
       "code": "GENERAL_GOVERNMENT",
-      "share": 0.889
-     },
-     {
-      "code": "EPU_CATS_NATIONAL_SECURITY",
-      "share": 0.889
-     },
-     {
-      "code": "ARMEDCONFLICT",
       "share": 0.889
      },
      {
@@ -1180,15 +1168,19 @@
       "share": 0.889
      },
      {
-      "code": "WB_2467_TERRORISM",
-      "share": 0.778
+      "code": "ARMEDCONFLICT",
+      "share": 0.889
+     },
+     {
+      "code": "WB_2433_CONFLICT_AND_VIOLENCE",
+      "share": 0.889
+     },
+     {
+      "code": "EPU_CATS_NATIONAL_SECURITY",
+      "share": 0.889
      },
      {
       "code": "TERROR",
-      "share": 0.778
-     },
-     {
-      "code": "WB_2462_POLITICAL_VIOLENCE_AND_WAR",
       "share": 0.778
      },
      {
@@ -1196,11 +1188,19 @@
       "share": 0.778
      },
      {
-      "code": "WB_678_DIGITAL_GOVERNMENT",
+      "code": "WB_2467_TERRORISM",
+      "share": 0.778
+     },
+     {
+      "code": "WB_2462_POLITICAL_VIOLENCE_AND_WAR",
+      "share": 0.778
+     },
+     {
+      "code": "WB_133_INFORMATION_AND_COMMUNICATION_TECHNOLOGIES",
       "share": 0.667
      },
      {
-      "code": "KILL",
+      "code": "WB_678_DIGITAL_GOVERNMENT",
       "share": 0.667
      }
     ]
@@ -1222,11 +1222,11 @@
       "share": 0.9
      },
      {
-      "code": "ENV_OIL",
+      "code": "WB_1803_TRANSPORT_INFRASTRUCTURE",
       "share": 0.867
      },
      {
-      "code": "WB_1803_TRANSPORT_INFRASTRUCTURE",
+      "code": "ENV_OIL",
       "share": 0.867
      },
      {
@@ -1250,11 +1250,11 @@
       "share": 0.733
      },
      {
-      "code": "MARITIME_INCIDENT",
+      "code": "WB_698_TRADE",
       "share": 0.7
      },
      {
-      "code": "WB_698_TRADE",
+      "code": "SEIGE",
       "share": 0.7
      }
     ]
@@ -1268,10 +1268,6 @@
       "share": 0.706
      },
      {
-      "code": "TAX_ECON_PRICE",
-      "share": 0.588
-     },
-     {
       "code": "WB_698_TRADE",
       "share": 0.588
      },
@@ -1280,12 +1276,20 @@
       "share": 0.588
      },
      {
-      "code": "WB_507_ENERGY_AND_EXTRACTIVES",
-      "share": 0.529
+      "code": "TAX_ECON_PRICE",
+      "share": 0.588
      },
      {
       "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
       "share": 0.529
+     },
+     {
+      "code": "WB_507_ENERGY_AND_EXTRACTIVES",
+      "share": 0.529
+     },
+     {
+      "code": "USPEC_POLICY1",
+      "share": 0.471
      },
      {
       "code": "MANMADE_DISASTER_IMPLIED",
@@ -1296,11 +1300,7 @@
       "share": 0.471
      },
      {
-      "code": "TAX_ETHNICITY_INDIAN",
-      "share": 0.471
-     },
-     {
-      "code": "USPEC_POLICY1",
+      "code": "TAX_ETHNICITY_RUSSIAN",
       "share": 0.471
      },
      {

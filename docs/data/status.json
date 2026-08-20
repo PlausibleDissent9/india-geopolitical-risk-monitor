@@ -9,7 +9,7 @@
   "n_alignment_checks": 2,
   "n_aligned": 1,
   "n_not_aligned_or_unavailable": 1,
-  "generated": "2026-08-20T04:46:56Z"
+  "generated": "2026-08-20T14:07:49Z"
  },
  "sources": [
   {
@@ -71,9 +71,9 @@
    "key": "expert_shelf",
    "name": "Expert attention shelf (RSS)",
    "role": "practitioner-institution titles (context)",
-   "latest_data": "2026-08-19",
+   "latest_data": "2026-08-20",
    "expect_within_days": 4,
-   "age_days": 1,
+   "age_days": 0,
    "ok": true
   },
   {
@@ -137,7 +137,7 @@
    "key": "aptness",
    "name": "Aptness labels",
    "evidence": "docs/data/aptness.json",
-   "last": "2026-08-20T04:46:39Z",
+   "last": "2026-08-20T14:07:33Z",
    "measured_day": "2026-08-06"
   },
   {
@@ -151,14 +151,14 @@
    "key": "reliability",
    "name": "Reliability record",
    "evidence": "docs/data/reliability.json",
-   "last": "2026-08-20T04:46:56Z",
+   "last": "2026-08-20T14:07:49Z",
    "measured_day": null
   },
   {
    "key": "permanence",
    "name": "Archive snapshots (twice daily)",
    "evidence": "docs/data/permanence.json",
-   "last": "2026-08-19T16:53:04Z",
+   "last": "2026-08-20T02:44:33Z",
    "measured_day": null
   }
  ],
