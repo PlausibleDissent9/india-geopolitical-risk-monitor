@@ -10,7 +10,7 @@
   "finding": "English Wikipedia tracks this index more closely than Hindi Wikipedia does, on 5 of 5 channels, in BOTH levels and day-to-day changes. The gap is one-directional -- there is no channel where Hindi leads -- which is what an Anglophone construct looks like. The index is built from an English corpus and it appears to measure English-language attention to India better than it measures Indian-language attention. This is a limitation of the instrument, published as a result.",
   "the_obvious_objection_and_why_it_fails": "Hindi Wikipedia carries less traffic, so one expects attenuation from noise alone. That cannot be the whole story here: us_trade has the HIGHEST median Hindi traffic of any channel and the WORST correlation (the only negative one), while gulf_energy has the lowest traffic and the strongest Hindi correlation. The ordering of traffic and the ordering of agreement do not match, so thinness does not explain the pattern.",
   "what_this_does_not_say": "It does not say the index is wrong. Readers and editors are different populations attending to different things, and supply-side vs demand-side divergence is something this project already expects and publishes. It says the construct's reach into Indian-language attention is weaker than its reach into English-language attention, and that anyone citing this index as a measure of Indian public salience should read this file first. Nothing here adjusts a score.",
-  "generated": "2026-08-19T19:58:17Z",
+  "generated": "2026-08-20T04:46:13Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -30,9 +30,9 @@
    ],
    "missing_english_titles": [],
    "median_daily_views": 525.0,
-   "n": 3405,
+   "n": 3406,
    "levels_pearson": 0.2976,
-   "levels_spearman": 0.1585,
+   "levels_spearman": 0.1587,
    "changes_pearson": 0.1596,
    "refused": null
   },
@@ -48,9 +48,9 @@
    ],
    "missing_english_titles": [],
    "median_daily_views": 593.0,
-   "n": 3405,
+   "n": 3406,
    "levels_pearson": 0.3167,
-   "levels_spearman": 0.0219,
+   "levels_spearman": 0.0215,
    "changes_pearson": 0.1312,
    "refused": null
   },
@@ -68,9 +68,9 @@
     "Energy policy of India"
    ],
    "median_daily_views": 160.0,
-   "n": 3405,
-   "levels_pearson": 0.4966,
-   "levels_spearman": -0.3001,
+   "n": 3406,
+   "levels_pearson": 0.4963,
+   "levels_spearman": -0.3005,
    "changes_pearson": 0.1629,
    "refused": null
   },
@@ -88,9 +88,9 @@
     "Trade policy of the United States"
    ],
    "median_daily_views": 599.0,
-   "n": 3405,
-   "levels_pearson": -0.1358,
-   "levels_spearman": -0.2069,
+   "n": 3406,
+   "levels_pearson": -0.1357,
+   "levels_spearman": -0.2068,
    "changes_pearson": 0.05,
    "refused": null
   },
@@ -108,9 +108,9 @@
     "Piracy off the coast of Somalia"
    ],
    "median_daily_views": 259.0,
-   "n": 3405,
+   "n": 3406,
    "levels_pearson": 0.2783,
-   "levels_spearman": -0.0237,
+   "levels_spearman": -0.0236,
    "changes_pearson": 0.0298,
    "refused": null
   }
@@ -169,13 +169,13 @@
    "english_changes": 0.5892,
    "hindi_changes": 0.1629,
    "english_levels": 0.6107,
-   "hindi_levels": 0.4966
+   "hindi_levels": 0.4963
   },
   "us_trade": {
    "english_changes": 0.1169,
    "hindi_changes": 0.05,
    "english_levels": 0.0796,
-   "hindi_levels": -0.1358
+   "hindi_levels": -0.1357
   },
   "shipping": {
    "english_changes": 0.5644,

@@ -9,7 +9,7 @@
   "n_alignment_checks": 2,
   "n_aligned": 1,
   "n_not_aligned_or_unavailable": 1,
-  "generated": "2026-08-20T02:41:30Z"
+  "generated": "2026-08-20T04:46:56Z"
  },
  "sources": [
   {
@@ -25,9 +25,9 @@
    "key": "events",
    "name": "GDELT Events stream",
    "role": "event counts for maps and the stress gauge (context)",
-   "latest_data": "2026-08-17",
+   "latest_data": "2026-08-18",
    "expect_within_days": 5,
-   "age_days": 3,
+   "age_days": 2,
    "ok": true
   },
   {
@@ -54,7 +54,7 @@
    "role": "inputs to event-study and priced-risk panels (beside, never inside)",
    "latest_data": null,
    "expect_within_days": 4,
-   "output_generated": "2026-08-19",
+   "output_generated": "2026-08-20",
    "ok": false,
    "note": "maximum market-input date is not present in committed evidence; the separately shown output build date is not an input-freshness claim"
   },
@@ -98,9 +98,9 @@
    "key": "country_china",
    "name": "China country monitor (V8)",
    "role": "comparator instrument; enters no India score",
-   "latest_data": "2026-08-19",
+   "latest_data": "2026-08-20",
    "expect_within_days": 3,
-   "age_days": 1,
+   "age_days": 0,
    "ok": true
   }
  ],
@@ -137,7 +137,7 @@
    "key": "aptness",
    "name": "Aptness labels",
    "evidence": "docs/data/aptness.json",
-   "last": "2026-08-19T19:58:45Z",
+   "last": "2026-08-20T04:46:39Z",
    "measured_day": "2026-08-06"
   },
   {
@@ -151,7 +151,7 @@
    "key": "reliability",
    "name": "Reliability record",
    "evidence": "docs/data/reliability.json",
-   "last": "2026-08-20T02:41:19Z",
+   "last": "2026-08-20T04:46:56Z",
    "measured_day": null
   },
   {
@@ -221,8 +221,8 @@
  },
  "morning_contract": {
   "on_time": 0,
-  "scored_days": 13,
+  "scored_days": 14,
   "rate": 0.0,
-  "last_scored_day": "2026-08-18"
+  "last_scored_day": "2026-08-19"
  }
 }

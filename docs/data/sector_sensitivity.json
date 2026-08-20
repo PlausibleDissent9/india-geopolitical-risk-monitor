@@ -8,7 +8,7 @@
   ],
   "units": "cumulative log return vs Nifty, percent",
   "multiple_comparisons": "Benjamini-Hochberg FDR at 10% across the full cell grid, same discipline as the main event study; bh_significant_10pct per cell. On the first computation (2026-08-06, 39 cells) NO cell survived correction -- a published negative result: with this episode set, no sector index shows a sensitivity distinguishable from zero once the search is paid for.",
-  "generated": "2026-08-19T19:45:44Z",
+  "generated": "2026-08-20T04:23:07Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -79,22 +79,22 @@
       "bh_significant_10pct": false
      },
      "5": {
-      "mean": 0.093,
+      "mean": 0.075,
       "ci95": [
-       -0.437,
-       0.613
+       -0.449,
+       0.591
       ],
-      "p_boot": 0.712,
+      "p_boot": 0.764,
       "n": 103,
       "bh_significant_10pct": false
      },
      "20": {
-      "mean": 0.219,
+      "mean": 0.239,
       "ci95": [
-       -0.968,
-       1.356
+       -0.95,
+       1.394
       ],
-      "p_boot": 0.736,
+      "p_boot": 0.704,
       "n": 101,
       "bh_significant_10pct": false
      }
@@ -149,55 +149,55 @@
       "bh_significant_10pct": false
      },
      "5": {
-      "mean": -0.218,
+      "mean": -0.216,
       "ci95": [
        -0.663,
-       0.28
+       0.282
       ],
-      "p_boot": 0.348,
+      "p_boot": 0.356,
       "n": 103,
       "bh_significant_10pct": false
      },
      "20": {
-      "mean": -0.855,
+      "mean": -0.865,
       "ci95": [
-       -1.801,
-       0.152
+       -1.816,
+       0.141
       ],
-      "p_boot": 0.1,
+      "p_boot": 0.094,
       "n": 101,
       "bh_significant_10pct": false
      }
     },
     "shipping": {
      "1": {
-      "mean": 0.081,
+      "mean": 0.082,
       "ci95": [
        -0.16,
        0.333
       ],
-      "p_boot": 0.47,
+      "p_boot": 0.466,
       "n": 113,
       "bh_significant_10pct": false
      },
      "5": {
-      "mean": -0.081,
+      "mean": -0.083,
       "ci95": [
-       -0.46,
-       0.338
+       -0.465,
+       0.333
       ],
-      "p_boot": 0.68,
+      "p_boot": 0.676,
       "n": 113,
       "bh_significant_10pct": false
      },
      "20": {
-      "mean": -0.74,
+      "mean": -0.734,
       "ci95": [
-       -1.708,
-       0.271
+       -1.691,
+       0.186
       ],
       "p_boot": 0.136,
-      "n": 111,
+      "n": 112,
       "bh_significant_10pct": false
      }
     }

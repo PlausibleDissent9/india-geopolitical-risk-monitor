@@ -1,14 +1,339 @@
 {
  "_meta": {
   "what": "Term-level attribution per channel-day: how many matched-article HEADLINES in the day's corpus cache contain each registered phrase. Derived from the same corpus the scores come from; reproducible from the repo alone. Headline attribution undercounts body-text phrases and the record starts at the first committed cache day -- earlier episodes carry no attribution rather than a refetched guess.",
-  "first_day": "2026-08-05",
-  "generated": "2026-08-07T18:02:09Z",
+  "first_day": "2026-07-27",
+  "generated": "2026-08-20T04:33:17Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/episode_terms.json"
  },
  "days": {
+  "2026-07-27": {
+   "pakistan_west": {
+    "n_matched_titles": 21,
+    "term_headline_hits": {}
+   },
+   "china_east": {
+    "n_matched_titles": 9,
+    "term_headline_hits": {
+     "India China border": 1
+    }
+   },
+   "gulf_energy": {
+    "n_matched_titles": 851,
+    "term_headline_hits": {
+     "Strait of Hormuz": 22,
+     "Gulf tensions": 2,
+     "Middle East conflict": 1
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 41,
+    "term_headline_hits": {
+     "export controls": 2,
+     "Section 301": 1
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 282,
+    "term_headline_hits": {
+     "Red Sea shipping": 11,
+     "Red Sea attacks": 1,
+     "Bab el-Mandeb": 2,
+     "Houthi attacks": 27
+    }
+   }
+  },
+  "2026-07-28": {
+   "pakistan_west": {
+    "n_matched_titles": 32,
+    "term_headline_hits": {
+     "Pakistan occupied Kashmir": 1,
+     "Pakistan administered Kashmir": 4,
+     "cross-border terrorism": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 17,
+    "term_headline_hits": {
+     "India China border": 2
+    }
+   },
+   "gulf_energy": {
+    "n_matched_titles": 651,
+    "term_headline_hits": {
+     "Strait of Hormuz": 27,
+     "Gulf tensions": 1,
+     "Middle East conflict": 1,
+     "Iran sanctions": 1,
+     "energy security": 1
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 55,
+    "term_headline_hits": {
+     "US tariffs": 1,
+     "H-1B visa": 2
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 99,
+    "term_headline_hits": {
+     "Red Sea shipping": 2,
+     "Suez Canal": 1,
+     "Somali pirates": 1
+    }
+   }
+  },
+  "2026-07-29": {
+   "pakistan_west": {
+    "n_matched_titles": 22,
+    "term_headline_hits": {
+     "Pakistan occupied Kashmir": 2,
+     "Pakistan administered Kashmir": 3
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 6,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 896,
+    "term_headline_hits": {
+     "Strait of Hormuz": 40,
+     "Middle East conflict": 1,
+     "Iran sanctions": 29,
+     "energy security": 4
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 115,
+    "term_headline_hits": {
+     "trade deal": 1,
+     "Russian oil": 1
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 226,
+    "term_headline_hits": {
+     "Red Sea shipping": 2,
+     "Bab el-Mandeb": 2,
+     "Somali pirates": 1,
+     "Gulf of Aden": 1
+    }
+   }
+  },
+  "2026-07-30": {
+   "pakistan_west": {
+    "n_matched_titles": 26,
+    "term_headline_hits": {
+     "Pakistan occupied Kashmir": 12,
+     "Pakistan administered Kashmir": 1,
+     "Indus Waters Treaty": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 8,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 877,
+    "term_headline_hits": {
+     "Strait of Hormuz": 10,
+     "Middle East conflict": 1,
+     "energy security": 2
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 24,
+    "term_headline_hits": {
+     "Section 301": 1,
+     "H-1B visa": 1,
+     "Russian oil": 2
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 184,
+    "term_headline_hits": {
+     "Red Sea shipping": 4,
+     "Red Sea attacks": 1,
+     "Suez Canal": 4,
+     "Houthi attacks": 2
+    }
+   }
+  },
+  "2026-07-31": {
+   "pakistan_west": {
+    "n_matched_titles": 25,
+    "term_headline_hits": {
+     "Pakistan administered Kashmir": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 6,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 530,
+    "term_headline_hits": {
+     "Strait of Hormuz": 6,
+     "Middle East conflict": 2,
+     "energy security": 2
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 27,
+    "term_headline_hits": {
+     "Russian oil": 1
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 120,
+    "term_headline_hits": {
+     "Red Sea shipping": 1,
+     "Suez Canal": 1,
+     "Bab el-Mandeb": 1
+    }
+   }
+  },
+  "2026-08-01": {
+   "pakistan_west": {
+    "n_matched_titles": 17,
+    "term_headline_hits": {
+     "Pakistan occupied Kashmir": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 6,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 454,
+    "term_headline_hits": {
+     "Strait of Hormuz": 7,
+     "Iran sanctions": 2
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 16,
+    "term_headline_hits": {
+     "Russian oil": 4
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 131,
+    "term_headline_hits": {
+     "Suez Canal": 20,
+     "Bab el-Mandeb": 1,
+     "Gulf of Aden": 1
+    }
+   }
+  },
+  "2026-08-02": {
+   "pakistan_west": {
+    "n_matched_titles": 32,
+    "term_headline_hits": {
+     "Indus Waters Treaty": 5
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 14,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 771,
+    "term_headline_hits": {
+     "Strait of Hormuz": 18,
+     "Israel Iran": 1,
+     "energy security": 1
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 27,
+    "term_headline_hits": {}
+   },
+   "shipping": {
+    "n_matched_titles": 124,
+    "term_headline_hits": {
+     "Suez Canal": 1,
+     "Bab el-Mandeb": 1,
+     "Houthi attacks": 1
+    }
+   }
+  },
+  "2026-08-03": {
+   "pakistan_west": {
+    "n_matched_titles": 19,
+    "term_headline_hits": {
+     "Pakistan administered Kashmir": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 8,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 969,
+    "term_headline_hits": {
+     "Strait of Hormuz": 56,
+     "Middle East conflict": 3,
+     "energy security": 1
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 34,
+    "term_headline_hits": {
+     "trade deal": 1,
+     "Section 301": 1,
+     "H-1B visa": 2,
+     "Russian oil": 1
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 93,
+    "term_headline_hits": {
+     "Bab el-Mandeb": 1,
+     "Houthi attacks": 1,
+     "Gulf of Aden": 1,
+     "merchant vessels": 1
+    }
+   }
+  },
+  "2026-08-04": {
+   "pakistan_west": {
+    "n_matched_titles": 36,
+    "term_headline_hits": {
+     "India Pakistan border": 1,
+     "Pakistan occupied Kashmir": 3
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 13,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 750,
+    "term_headline_hits": {
+     "Strait of Hormuz": 76,
+     "Middle East conflict": 4
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 42,
+    "term_headline_hits": {
+     "US tariffs": 1,
+     "trade deal": 1,
+     "Russian oil": 1
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 122,
+    "term_headline_hits": {
+     "Bab el-Mandeb": 1
+    }
+   }
+  },
   "2026-08-05": {
    "pakistan_west": {
     "n_matched_titles": 160,
@@ -88,6 +413,145 @@
      "Houthi attacks": 8,
      "Gulf of Aden": 23,
      "merchant vessels": 1
+    }
+   }
+  },
+  "2026-08-07": {
+   "pakistan_west": {
+    "n_matched_titles": 63,
+    "term_headline_hits": {
+     "Pakistan administered Kashmir": 1,
+     "Indus Waters Treaty": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 71,
+    "term_headline_hits": {
+     "India China border": 2
+    }
+   },
+   "gulf_energy": {
+    "n_matched_titles": 2388,
+    "term_headline_hits": {
+     "Strait of Hormuz": 349,
+     "Gulf tensions": 4,
+     "Middle East conflict": 5,
+     "Israel Iran": 1,
+     "Iran sanctions": 5,
+     "energy security": 7
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 205,
+    "term_headline_hits": {
+     "US tariffs": 1,
+     "trade deal": 2,
+     "Russian oil": 2
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 363,
+    "term_headline_hits": {
+     "Bab el-Mandeb": 1,
+     "Houthi attacks": 29,
+     "Gulf of Aden": 1,
+     "merchant vessels": 1
+    }
+   }
+  },
+  "2026-08-15": {
+   "pakistan_west": {
+    "n_matched_titles": 34,
+    "term_headline_hits": {
+     "India Pakistan border": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 4,
+    "term_headline_hits": {
+     "India China border": 1
+    }
+   },
+   "gulf_energy": {
+    "n_matched_titles": 471,
+    "term_headline_hits": {
+     "Strait of Hormuz": 83,
+     "Middle East conflict": 2,
+     "Israel Iran": 1,
+     "energy security": 4
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 27,
+    "term_headline_hits": {
+     "Russian oil": 1
+    }
+   },
+   "shipping": {
+    "n_matched_titles": 31,
+    "term_headline_hits": {}
+   }
+  },
+  "2026-08-18": {
+   "pakistan_west": {
+    "n_matched_titles": 18,
+    "term_headline_hits": {}
+   },
+   "china_east": {
+    "n_matched_titles": 2,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 577,
+    "term_headline_hits": {
+     "Strait of Hormuz": 69,
+     "Gulf tensions": 1,
+     "Middle East conflict": 1,
+     "energy security": 1
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 22,
+    "term_headline_hits": {}
+   },
+   "shipping": {
+    "n_matched_titles": 55,
+    "term_headline_hits": {
+     "Suez Canal": 1
+    }
+   }
+  },
+  "2026-08-19": {
+   "pakistan_west": {
+    "n_matched_titles": 7,
+    "term_headline_hits": {
+     "cross-border terrorism": 1
+    }
+   },
+   "china_east": {
+    "n_matched_titles": 3,
+    "term_headline_hits": {}
+   },
+   "gulf_energy": {
+    "n_matched_titles": 504,
+    "term_headline_hits": {
+     "Strait of Hormuz": 37,
+     "Gulf tensions": 1,
+     "Middle East conflict": 2,
+     "Israel Iran": 2,
+     "energy security": 1,
+     "oil supply disruptions": 1
+    }
+   },
+   "us_trade": {
+    "n_matched_titles": 23,
+    "term_headline_hits": {}
+   },
+   "shipping": {
+    "n_matched_titles": 46,
+    "term_headline_hits": {
+     "Houthi attacks": 1,
+     "Somali pirates": 1
     }
    }
   }

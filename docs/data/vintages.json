@@ -6,12 +6,12 @@
   "source": "https://igrm.in/data/vintages.json",
   "what": "Every published vintage of the daily series, diffed against what the site serves today. Answers whether a value read on day D is still the value shown for day D now -- the question that decides whether a backtest built on the current file has look-ahead bias in it.",
   "how": "Each daily publish is a commit, so history.csv at a given SHA is exactly what was served that morning. This compares every such vintage to the current file on their overlapping dates, across composite and all five channels.",
-  "finding": "20 of 22 vintages show zero changed values. The series is append-only in practice: days are added, not rewritten.",
+  "finding": "21 of 23 vintages show zero changed values. The series is append-only in practice: days are added, not rewritten.",
   "revisions": "The revision episodes are dated ['2026-07-27'] and correspond to methodology changelog entries -- notably v1.0.1 (2026-07-29), which changed the percentile computation. A revision with a dated, published cause is a version; a revision without one is a defect.",
   "this_is_a_tripwire": "The point of recomputing this nightly is not the reassuring number. A future silent revision -- a rebuilt store, a dictionary applied retroactively, a splice ratio quietly adopted -- appears here as a non-zero count the next morning, rather than being found by a user whose results stopped replicating.",
   "retrieve_any_vintage": "git log --format='%H %ad' --date=short -- docs/data/history.csv  then  git show <SHA>:docs/data/history.csv",
-  "n_vintages": 22,
-  "n_vintages_clean": 20,
+  "n_vintages": 23,
+  "n_vintages_clean": 21,
   "n_vintages_revised": 2,
   "most_recent_revision": "2026-07-27",
   "columns_compared": [
@@ -22,9 +22,20 @@
    "us_trade",
    "shipping"
   ],
-  "generated": "2026-08-19T19:58:18Z"
+  "generated": "2026-08-20T04:46:13Z"
  },
  "vintages": [
+  {
+   "published": "2026-08-20",
+   "sha": "84ab1ccad29b212b42a954c1b59967b3ca544f78",
+   "n_rows": 3316,
+   "n_overlapping_days": 3316,
+   "n_changed_values": 0,
+   "n_changed_days": 0,
+   "max_abs_change": 0.0,
+   "changed_days_sample": [],
+   "retrieve": "git show 84ab1ccad29b212b42a954c1b59967b3ca544f78:docs/data/history.csv"
+  },
   {
    "published": "2026-08-19",
    "sha": "f7127fe4ecf8af572761faa34a074ebde7ed72a2",
