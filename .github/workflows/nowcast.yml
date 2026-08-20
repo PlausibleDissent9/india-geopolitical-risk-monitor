@@ -136,8 +136,8 @@ jobs:
         # that some other lane will tidy up afterwards.
         continue-on-error: true
         run: |
-          python -m src.stamp_meta || true
-          python -m src.stamp_assets || true
+          python -m src.stamp_meta
+          python -m src.stamp_assets
       - name: Commit nowcast payload
         env:
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

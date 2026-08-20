@@ -66,8 +66,8 @@ jobs:
         # that some other lane will tidy up afterwards.
         continue-on-error: true
         run: |
-          python -m src.stamp_meta || true
-          python -m src.stamp_assets || true
+          python -m src.stamp_meta
+          python -m src.stamp_assets
       - name: Commit
         # Retry the push instead of a single bare attempt: a same-lane
         # push race (2026-08-02: daily-update pushing at the same

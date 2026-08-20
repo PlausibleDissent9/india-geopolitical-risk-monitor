@@ -54,9 +54,10 @@ jobs:
         # difference here is a real change, not run-to-run noise.
         run: git diff --exit-code -- docs/data/historical_intelligence.json
       - name: Stamp payload metadata and asset versions
+        continue-on-error: true
         run: |
-          python -m src.stamp_meta || true
-          python -m src.stamp_assets || true
+          python -m src.stamp_meta
+          python -m src.stamp_assets
       - name: Commit and push
         env:
           IGRM_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

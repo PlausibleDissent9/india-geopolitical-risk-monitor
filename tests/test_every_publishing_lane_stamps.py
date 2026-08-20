@@ -183,3 +183,30 @@ def test_the_answers_cite_hashes_so_they_follow_the_stamps():
             f".github/workflows/{name} runs src.assistant_answers before "
             "src.stamp_assets; the answers cite hashes the stamp step "
             "rewrites, so they would be stale on arrival")
+
+
+def test_no_lane_swallows_a_stamp_failure():
+    """`continue-on-error` reports; `|| true` conceals. Use the first.
+
+    Nine lanes ran their stamps as `python -m src.stamp_meta || true`,
+    and eight of those ALSO carried continue-on-error: the failure was
+    swallowed twice. The difference matters exactly when it bites: with
+    continue-on-error alone a broken stamp shows as a failed step and
+    the lane still finishes, which is the intended resilience. With
+    `|| true` on top, the step is unambiguously green and the lane
+    publishes unstamped payloads in silence -- which is precisely the
+    2026-08-07 failure these stamps were added to prevent (note_latest
+    republished with no _meta at all), recurring invisibly.
+
+    No stamp step carries an id and nothing reads its outcome, so the
+    swallow bought no control flow -- only lost signal.
+    """
+    offenders = []
+    for name, text in _publishing_lanes().items():
+        for module in ("stamp_meta", "stamp_assets"):
+            if f"src.{module} || true" in text or f"src.{module} ||true" in text:
+                offenders.append(f"{name}:{module}")
+    assert not offenders, (
+        f"these lanes conceal a stamp failure with `|| true`: {offenders}. "
+        "Use continue-on-error, which keeps the lane alive AND reports; "
+        "`|| true` only removes the report.")
