@@ -116,3 +116,37 @@ def test_the_receipts_budget_can_actually_finish_one_day() -> None:
         f"step ceiling {step_seconds}s leaves only {step_seconds - deadline}s "
         "for receipts_archive, episode_attribution, spike_breadth and "
         "syndication after the scan; they measured 636s")
+
+
+def test_a_refused_extended_publish_still_banks_the_completed_scan() -> None:
+    """The scan costs 73 minutes; the publish costs seconds.
+
+    Run 32342408405 (2026-08-20) completed a 4408s extended scan --
+    5/5 channels, 130,662 docs, the richest receipts payload the project
+    has produced -- and the gate refused the candidate over a missing
+    cascade. Nothing was committed, so the banked cache stayed
+    complete=false n_samples=45 and the whole pass was lost. The failure
+    branch had always banked its checkpoint; the success branch banked
+    nothing. publish_push.sh commits and rebases the candidate before
+    gating, so on refusal the completed cache is sitting in a clean
+    local commit and can be recovered onto main.
+    """
+    workflow = EXTENDED.read_text(encoding="utf-8")
+    publish = workflow[workflow.index("Publish complete view"):]
+
+    assert 'if bash scripts/publish_push.sh' in publish, (
+        "the success branch calls publish_push.sh unconditionally again; a "
+        "red gate there discards the completed scan")
+    for fragment in (
+        'CANDIDATE="$(git rev-parse HEAD)"',
+        "git reset -q --hard origin/main",
+        'git checkout "$CANDIDATE" -- data/raw/receipt_days',
+    ):
+        assert fragment in publish, (
+            f"the scan-preserving recovery lost its {fragment!r} step")
+
+    # docs must NOT be recovered: the gate refused those bytes, and they
+    # are cheap to recompute. Only the scan cache is expensive.
+    recovery = publish[publish.index('CANDIDATE="$(git rev-parse HEAD)"'):]
+    assert 'git checkout "$CANDIDATE" -- docs' not in recovery, (
+        "the recovery re-stages docs bytes the gate just refused")

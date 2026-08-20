@@ -95,7 +95,38 @@ jobs:
             # one file the lane had just modified. The guard was right;
             # the lane forgot its own product.
             git add data/raw/receipt_days data/raw/syndication.csv docs
-            bash scripts/publish_push.sh "receipts: extended evidence $(date -u +%F)"
+            if bash scripts/publish_push.sh \
+                 "receipts: extended evidence $(date -u +%F)"; then
+              exit 0
+            fi
+            # THE SCAN IS THE EXPENSIVE PART; THE PUBLISH IS THE CHEAP ONE.
+            #
+            # Until now a gate refusal here threw away the whole scan. On
+            # 2026-08-20 (run 32342408405) a 4408s pass COMPLETED, wrote
+            # the richest receipts payload the project has produced (5/5
+            # channels, 130,662 docs), and the gate refused the candidate
+            # over a missing cascade -- so nothing was committed and the
+            # banked cache stayed complete=false n_samples=45. Seventy-
+            # three minutes of upstream reads, discarded by a failure in
+            # the cheapest step. The FAILURE branch below has always
+            # banked its checkpoint; the success branch banked nothing.
+            # The asymmetry was backwards.
+            #
+            # publish_push.sh commits the candidate, rebases it onto
+            # origin/main, and exits 1 on a red gate -- so the completed
+            # cache is sitting in a clean local commit right now. Take
+            # ONLY those files out of it, on top of a clean main, and
+            # bank them. docs/ is deliberately dropped: the gate refused
+            # those bytes and they are not what is expensive to recompute.
+            echo "::error::extended publish refused; banking the completed scan cache so the next run resumes instead of rescanning"
+            CANDIDATE="$(git rev-parse HEAD)"
+            git fetch origin main
+            git reset -q --hard origin/main
+            git checkout "$CANDIDATE" -- data/raw/receipt_days
+            git add data/raw/receipt_days
+            bash scripts/publish_push.sh \
+              "receipts: bank completed scan cache $(date -u +%F)"
+            exit 1
           else
             git add data/raw/receipt_days
             bash scripts/publish_push.sh "receipts: bank partial scan $(date -u +%F)"
