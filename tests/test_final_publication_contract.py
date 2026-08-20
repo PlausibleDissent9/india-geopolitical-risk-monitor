@@ -4201,3 +4201,67 @@ def test_static_final_disclosure_keeps_the_bounded_legacy_boundary() -> None:
         "provisional nowcast remains separate and non-final",
     ):
         assert expected in message
+
+
+def test_failed_staging_drops_raw_whose_gated_derived_twin_is_refused(
+    tmp_path: Path,
+) -> None:
+    """Measured twice on 2026-08-19/20, hours apart: run 32299777258's
+    failure commit banked comparator_salience.csv and the next morning
+    contract's dual-computation audit refused the 2026-08-19 publish over
+    the resulting raw/derived mismatch; run 32319765411's failure commit
+    banked the events store and the gate's own event_ledger --check
+    refused the commit (partner_projection_count_mismatch). A failed job
+    refuses derived docs changes, so it must also refuse the raw stores
+    those gate-checked derivations are computed from."""
+    root = tmp_path / "repo"
+    (root / "scripts").mkdir(parents=True)
+    shutil.copy2(
+        ROOT / "scripts/stage_daily_outputs.sh",
+        root / "scripts/stage_daily_outputs.sh",
+    )
+    (root / "data/raw").mkdir(parents=True)
+    (root / "docs").mkdir()
+    (root / "notes-inbox").mkdir()
+    (root / ".trigger").write_text("frozen\n", encoding="utf-8")
+    comparators = root / "data/raw/comparator_salience.csv"
+    events = root / "data/raw/events_daily.csv"
+    other = root / "data/raw/expert_shelf_cache.json"
+    comparators.write_text("date,pakistan\n2026-08-17,10\n", encoding="utf-8")
+    events.write_text("date,n\n2026-08-17,5\n", encoding="utf-8")
+    other.write_text("{}\n", encoding="utf-8")
+    for command in (
+        ("init", "-q"),
+        ("config", "user.name", "Gated twin staging test"),
+        ("config", "user.email", "actions@github.com"),
+        ("add", "."),
+        ("commit", "-q", "-m", "frozen parent"),
+    ):
+        subprocess.run(["git", *command], cwd=root, check=True)
+    comparators_before = comparators.read_bytes()
+    events_before = events.read_bytes()
+    comparators.write_bytes(comparators_before + b"2026-08-18,11\n")
+    events.write_bytes(events_before + b"2026-08-18,6\n")
+    other.write_text('{"refreshed": true}\n', encoding="utf-8")
+
+    env = os.environ.copy()
+    env["PYTHON"] = sys.executable
+    subprocess.run(
+        ["bash", "scripts/stage_daily_outputs.sh", "failure", TARGET.isoformat()],
+        cwd=root,
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    staged = subprocess.run(
+        ["git", "diff", "--cached", "--name-only"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    assert staged == ["data/raw/expert_shelf_cache.json"], staged
+    assert comparators.read_bytes() == comparators_before
+    assert events.read_bytes() == events_before

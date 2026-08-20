@@ -63,6 +63,29 @@ FINAL_CONTRACT_PATHS=(
   data/raw/final_publication_receipts
 )
 
+# Raw stores whose DERIVED twins are validated by the publish gate. A failed
+# job refuses every derived docs change, so banking these raw files ships a
+# candidate where raw moved and derived did not -- and the gate, correctly,
+# refuses it, or a later lane's audit does. Both happened on 2026-08-19/20,
+# hours apart:
+#   * run 32299777258's failure commit banked comparator_salience.csv; the
+#     next morning contract's src.audit dual-computation then found
+#     comparators.json inconsistent with it and refused the 2026-08-19
+#     publish (run 32317367668) -- the contract missed its deadline over a
+#     failure-path checkpoint.
+#   * run 32319765411's failure commit banked the events store; the gate's
+#     own event_ledger --check refused the commit outright
+#     (partner_projection_count_mismatch).
+# These are recent-day, re-fetchable acquisitions; dropping them from a
+# failure commit loses minutes, not the backfill.
+GATED_TWIN_PATHS=(
+  data/raw/comparator_salience.csv
+  data/raw/events_daily.csv
+  data/raw/events_dyads.csv
+  data/raw/events_states.csv
+  data/raw/events_unavailable_days.json
+)
+
 changed_contract_paths="$({
   git diff --name-only -- "${FINAL_CONTRACT_PATHS[@]}"
   git diff --cached --name-only -- "${FINAL_CONTRACT_PATHS[@]}"
@@ -103,6 +126,25 @@ done <<EOF
 $changed_contract_paths
 EOF
 
+changed_twin_paths="$({
+  git diff --name-only -- "${GATED_TWIN_PATHS[@]}"
+  git diff --cached --name-only -- "${GATED_TWIN_PATHS[@]}"
+  git ls-files --others --exclude-standard -- "${GATED_TWIN_PATHS[@]}"
+} | sort -u)"
+
+while IFS= read -r path; do
+  [ -n "$path" ] || continue
+  echo "[daily-stage] dropping gated-twin raw change $path (derived twin refused by failed job)"
+  git reset -q -- "$path" 2>/dev/null || true
+  if git cat-file -e "HEAD:$path" 2>/dev/null; then
+    git restore --source=HEAD --worktree -- "$path"
+  else
+    rm -f -- "$path"
+  fi
+done <<EOF
+$changed_twin_paths
+EOF
+
 git add data/raw || true
 git reset -q -- docs notes-inbox .trigger 2>/dev/null || true
 git stash push --include-untracked \
@@ -118,7 +160,7 @@ if [ -n "$unexpected" ]; then
   exit 1
 fi
 forbidden="$(git diff --cached --name-only | grep -E \
-  '^(data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/final_publication_status.json|data/raw/ngram_days/|data/raw/final_publication_receipts/)' || true)"
+  '^(data/raw/gdelt_volume.csv|data/raw/provenance.csv|data/raw/final_publication_status.json|data/raw/ngram_days/|data/raw/final_publication_receipts/|data/raw/comparator_salience.csv|data/raw/events_daily.csv|data/raw/events_dyads.csv|data/raw/events_states.csv|data/raw/events_unavailable_days.json)' || true)"
 if [ -n "$forbidden" ]; then
   echo "[daily-stage] refusing failed commit containing final-contract candidate paths:" >&2
   printf '%s\n' "$forbidden" >&2
