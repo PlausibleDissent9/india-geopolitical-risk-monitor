@@ -49,7 +49,6 @@ DEFAULT_MAX_AGE_DAYS = 3
 # cadence plus slack, not a wish.
 MAX_AGE_DAYS: dict[str, int] = {
     "datapack.json": 10,  # weekly, Fridays
-    "back_extension.json": 40,  # BigQuery lane, monthly-ish
     "gpr_comparison.json": 40,  # external index updates monthly
     "cow_mids.json": 400,  # frozen historical release
     "ucdp_context.json": 400,  # pinned annual release
@@ -182,6 +181,19 @@ EXEMPT: dict[str, str] = {
         "produces a qualifying row, not on a daily cadence"
     ),
     "freshness.json": "this audit's own output",
+    "back_extension.json": (
+        "a one-shot M1 build, not a monthly lane. bq-backext.yml fires "
+        "only on a change to its own workflow file or a manual dispatch, "
+        "and the module refuses to re-query an existing store -- it prints "
+        "'committed once, never re-queried' by design, because the "
+        "1979-2019 window is closed and re-querying it would spend "
+        "BigQuery bytes to reproduce identical rows. The 40-day limit it "
+        "used to carry was annotated 'monthly-ish', read off nothing: this "
+        "payload would have gone stale on 2026-09-17 and stayed stale "
+        "forever. Found by sweeping every limit against its lane's real "
+        "cadence, before it fired. Same class as the validate battery and "
+        "the ledger stamp"
+    ),
     "event_ledger.json": (
         "its _meta.generated is, by its own generated_semantics field, the "
         "REGISTERED contract-effective instant of a deterministic artifact "
