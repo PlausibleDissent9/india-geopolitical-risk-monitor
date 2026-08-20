@@ -37,3 +37,5 @@ fired 2026-08-13T18:07:57Z cas-stages-ledger
 fired 2026-08-14T00:37:04Z aug13-d1-cron-missed-all-three
 fired 2026-08-14T01:09:58Z walking-advance-aug13
 fired 2026-08-14T02:31:04Z contiguity-unified-aug13
+
+fired 2026-08-20T00:26:30Z UTC: 00:14 cron shot never created a run (monitor verified none queued by 00:25); firing ahead of the 00:31 shot so the contract publishes before the 06:30 IST deadline; a late cron shot queues behind and no-ops
