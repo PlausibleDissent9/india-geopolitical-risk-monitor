@@ -406,9 +406,37 @@ jobs:
         # _meta.method says which lane produced it.
         if: github.event.inputs.backfill != 'true'
         continue-on-error: true
-        timeout-minutes: 25
+        # 32, not 25. Measured on run 32326976462: the step used 1236s of
+        # its 1500s ceiling (600s scan + 636s for the four siblings), so
+        # the larger scan budget below does not fit under 25 minutes.
+        timeout-minutes: 32
         env:
-          IGRM_RECEIPTS_DEADLINE_S: "600"
+          # 900, not 600. THE SCAN NEVER COMPLETED A SINGLE DAY.
+          #
+          # The standard scan needs 48 half-hourly windows
+          # (fetch_ngrams.SAMPLES_PER_DAY). A 600s budget bought 38-45 of
+          # them -- measured across every committed cache:
+          # 2026-08-15 complete=False n_samples=38, 2026-08-18 39,
+          # 2026-08-19 43. Never 48, not once.
+          #
+          # receipts_ngrams refuses to publish a partial corpus (an
+          # incomplete denominator would turn runner timing into an
+          # undocumented sampling rule), so docs/data/receipts.json has
+          # been frozen at 2026-08-07 ever since -- the last stale payload
+          # on the live site after the 2026-08-19/20 heal.
+          #
+          # The resume cache was added so "progress survives the axe to
+          # converge". It cannot converge here: convergence needs a SECOND
+          # pass at the same day, and this lane runs once per day while
+          # latest.json advances every morning. Each day's partial scan is
+          # therefore abandoned at 38-45/48 and the next day starts at
+          # zero. A budget below the day's size is not a slow scan, it is
+          # a scan that never finishes.
+          #
+          # Worst observed rate is 38 files / 600s = 15.8 s/file, so 48
+          # files need ~758s; 900 carries margin for a slower feed. The
+          # resume cache stays as insurance for a genuinely slow day.
+          IGRM_RECEIPTS_DEADLINE_S: "900"
         run: |
           # receipts_ngrams banks progress and exits 1 while a backlog scan
           # is incomplete -- a DESIGNED refusal that recurs every run during
