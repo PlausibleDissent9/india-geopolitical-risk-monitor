@@ -101,6 +101,18 @@ def test_the_receipts_budget_can_actually_finish_one_day() -> None:
     step_seconds = int(match.group("minutes")) * 60
 
     needed = SAMPLES_PER_DAY * WORST_SECONDS_PER_WINDOW
+    # Headroom is stated, not left incidental. 900s against a 758s worst
+    # case is 1.19x, which is THIN: a fifth slower upstream and the scan
+    # stops completing again, silently, exactly as before. Recorded here
+    # so the next person sees the margin instead of inferring safety from
+    # a number that merely happens to pass today. If the rate degrades
+    # past this, the fix is not another budget bump -- it is the
+    # backlog-shaped question fetch_events already answers: finish the
+    # day you started instead of always taking today's.
+    assert deadline / needed >= 1.15, (
+        f"budget {deadline}s over worst-case {needed:.0f}s is only "
+        f"{deadline / needed:.2f}x; below 1.15x a normal upstream "
+        "slowdown reintroduces the 2026-08-07 freeze")
     assert deadline >= needed, (
         f"IGRM_RECEIPTS_DEADLINE_S={deadline}s cannot finish a "
         f"{SAMPLES_PER_DAY}-window day at the worst measured rate "
