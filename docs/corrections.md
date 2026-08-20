@@ -34,6 +34,24 @@ measured worst case of 758s) and by a test that ties the budget to the
 window count at the worst measured rate, so a budget that cannot finish
 fails a check instead of freezing a payload.
 
+That was necessary and not sufficient, and the way it fell short is the
+more useful half of this entry. The next run banked the first complete
+scan this project has ever produced -- 48 of 48 windows for 2026-08-19,
+committed -- and STILL did not publish receipts.json, because the
+budget bounds the corpus scan and nothing else. After the scan, the
+module fetches an article supplement per channel from a throttled
+upstream, and that loop had no bound at all. The run was killed at its
+step ceiling inside it. Maximum cost, zero result: the expensive part
+succeeded and the payload did not move.
+
+The supplement is bounded now, and past its deadline the corpus lane
+publishes anyway with whatever articles carried forward -- which is
+what the module already promised for a fetch that FAILS, extended to
+one that is merely slow. The step ceiling now has a test asserting it
+covers all three budgets that share it, and that assertion is what
+caught the ceiling being too small, rather than a seventh run
+discovering it.
+
 A second cause was found the same day and fixed with it. The extended
 lane's scan SUCCEEDED on 2026-08-20 -- 5/5 channels, 130,662 documents
 -- and still could not publish, because it rewrote receipts.json
