@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-18",
- "generated_at": "2026-08-19T14:59:12Z",
+ "target_date": "2026-08-20",
+ "generated_at": "2026-08-21T08:32:15Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "41b20b7d0ec16c26a8675a175fcada1edd7f1048",
-  "blob_git_sha1": "d7e997ff157da5f4c76dd3e850a84aae3934508e",
-  "blob_sha256": "cbf7536c9067120f3d6ac44abd0acc239dbe8302f9e3ddf0aeaa4ef28b6a8265",
+  "state": "different_target",
+  "commit_sha": "8e61b8835468c815b64e0b2890c403b43fe5cba1",
+  "blob_git_sha1": "55543344718e8ff2ee471e6725bc89ec4b146a70",
+  "blob_sha256": "97da11d832f9c67f419bfed2a41d9a908cc18efa77fd658448e4cc9484faa79e",
   "target_date": "2026-08-18"
  },
  "channels": {
@@ -37,38 +37,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Shipping Tribune",
-     "url": "https://www.shippingtribune.com/news/shipping/India+must+strengthen+shipping+capacity,+naval+protection+amid+growing+chokepoints:+GTRI",
-     "domain": "shippingtribune.com"
+     "title": "Trump new H - 1B visa reality for Indians : Unpredictable costs , tougher odds , greater risks",
+     "url": "https://timesofindia.indiatimes.com/business/india-business/trumps-new-h-1b-visa-reality-for-indians-unpredictable-costs-tougher-odds-greater-risks/articleshow/133375447.cms",
+     "domain": "timesofindia.indiatimes.com"
     },
     {
-     "title": "China Touts Success of Arctic  Ice Silk Road  to Bypass Strait of Hormuz",
-     "url": "https://www.breitbart.com/national-security/2026/08/18/china-touts-success-of-arctic-ice-silk-road-to-bypass-strait-of-hormuz/",
-     "domain": "breitbart.com"
+     "title": "Laid off on H - 1B , Indian man took up cleaning job to survive in the US :  Money ran out faster than I thought",
+     "url": "https://www.hindustantimes.com/trending/laid-off-on-h-1b-indian-man-took-up-cleaning-job-to-survive-in-the-us-money-ran-out-faster-than-i-thought-101787211749671.html",
+     "domain": "hindustantimes.com"
     },
     {
-     "title": "The view from India Newsletter : The war within the war",
-     "url": "https://www.thehindu.com/news/international/the-view-from-india-newsletter-the-war-within-the-war/article71356394.ece",
-     "domain": "thehindu.com"
+     "title": "He Got an H - 1B Visa , but Uncertainty Makes It Hard to Plan His Future",
+     "url": "https://www.businessinsider.com/h1b-lottery-visa-working-amazon-building-life-home-family-america-2026-8",
+     "domain": "businessinsider.com"
     },
     {
-     "title": "Houthis Fire 5 Ballistic Missiles at Bab el - Mandeb",
-     "url": "https://english.aawsat.com/arab-world/5308217-houthis-fire-5-ballistic-missiles-bab-el-mandeb",
-     "domain": "english.aawsat.com"
+     "title": "India , US talk non - tariff barriers ; digital concessions may be considered in trade deal",
+     "url": "https://www.moneycontrol.com/news/business/india-us-talk-non-tariff-barriers-digital-concessions-may-be-considered-in-trade-deal-14011521.html",
+     "domain": "moneycontrol.com"
     },
     {
-     "title": "Red Sea blockade threat : Why India trade faces a wider supply - chain shock",
-     "url": "https://economictimes.indiatimes.com/small-biz/trade/exports/insights/red-sea-blockade-threat-why-indias-trade-faces-a-wider-supply-chain-shock/articleshow/133312145.cms",
-     "domain": "economictimes.indiatimes.com"
+     "title": "Sanction - proofing India interests and autonomy",
+     "url": "https://www.hindustantimes.com/opinion/sanctionproofing-india-s-interests-and-autonomy-101787159048144.html",
+     "domain": "hindustantimes.com"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-18",
-     "evaluated_at_utc": "2026-08-19T14:59:12Z",
-     "rights_as_of": "2026-08-19",
+     "target_date": "2026-08-20",
+     "evaluated_at_utc": "2026-08-21T08:32:15Z",
+     "rights_as_of": "2026-08-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-17T23:59:59Z",
+     "release_deadline_utc": "2026-09-19T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-18",
-     "evaluated_at_utc": "2026-08-19T15:02:58Z",
-     "rights_as_of": "2026-08-19",
+     "target_date": "2026-08-20",
+     "evaluated_at_utc": "2026-08-21T08:35:15Z",
+     "rights_as_of": "2026-08-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-17T23:59:59Z",
+     "release_deadline_utc": "2026-09-19T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-18",
-     "evaluated_at_utc": "2026-08-19T15:02:58Z",
-     "rights_as_of": "2026-08-19",
+     "target_date": "2026-08-20",
+     "evaluated_at_utc": "2026-08-21T08:35:15Z",
+     "rights_as_of": "2026-08-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-17T23:59:59Z",
+     "release_deadline_utc": "2026-09-19T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "7cf791f1264f8d029b5c5ea27186a0b620044543314053bb15cf2fdb403f73bd"
+ "payload_seal_sha256": "e29919dd3a13fae9e116ebd61fd15d2cb2f2a3098e432fea8ff33b043600c50d"
 }
