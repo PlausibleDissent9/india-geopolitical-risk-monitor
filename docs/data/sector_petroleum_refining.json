@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Petroleum Refining & Export: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-22T03:38:03Z",
+  "generated": "2026-08-22T17:19:11Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -32,14 +32,68 @@
   "nse_index": "^CNXENERGY",
   "channels": {
    "gulf_energy": {
-    "1": null,
-    "5": null,
-    "20": null
+    "1": {
+     "mean": -0.058,
+     "ci95": [
+      -0.255,
+      0.122
+     ],
+     "p_boot": 0.52,
+     "n": 86,
+     "bh_significant_10pct": false
+    },
+    "5": {
+     "mean": -0.052,
+     "ci95": [
+      -0.478,
+      0.353
+     ],
+     "p_boot": 0.784,
+     "n": 86,
+     "bh_significant_10pct": false
+    },
+    "20": {
+     "mean": 0.081,
+     "ci95": [
+      -0.752,
+      0.933
+     ],
+     "p_boot": 0.878,
+     "n": 86,
+     "bh_significant_10pct": false
+    }
    },
    "shipping": {
-    "1": null,
-    "5": null,
-    "20": null
+    "1": {
+     "mean": 0.15,
+     "ci95": [
+      0.007,
+      0.308
+     ],
+     "p_boot": 0.04,
+     "n": 111,
+     "bh_significant_10pct": false
+    },
+    "5": {
+     "mean": 0.22,
+     "ci95": [
+      -0.09,
+      0.544
+     ],
+     "p_boot": 0.164,
+     "n": 111,
+     "bh_significant_10pct": false
+    },
+    "20": {
+     "mean": 0.931,
+     "ci95": [
+      0.174,
+      1.711
+     ],
+     "p_boot": 0.008,
+     "n": 110,
+     "bh_significant_10pct": false
+    }
    }
   },
   "note": "Historical association only, Benjamini-Hochberg corrected across the full grid; see sector_sensitivity.json _meta for the discipline and the current negative result."

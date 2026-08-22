@@ -13,7 +13,7 @@
   "n_stale_or_undatable": 0,
   "n_exempt": 32,
   "n_with_declared_measurement_date": 26,
-  "generated": "2026-08-22T03:38:05Z"
+  "generated": "2026-08-22T17:19:14Z"
  },
  "payloads": [
   {
@@ -367,15 +367,15 @@
   },
   {
    "payload": "nowcast.json",
-   "generated": "2026-08-21",
-   "age_days": 1,
-   "written_date": "2026-08-21",
-   "write_age_days": 1,
+   "generated": "2026-08-22",
+   "age_days": 0,
+   "written_date": "2026-08-22",
+   "write_age_days": 0,
    "max_age_days": 3,
    "status": "fresh",
-   "measured_date": "2026-08-21",
+   "measured_date": "2026-08-22",
    "measured_date_field": "date",
-   "measured_age_days": 1,
+   "measured_age_days": 0,
    "measurement_status": "declared"
   },
   {
@@ -390,10 +390,10 @@
   },
   {
    "payload": "permanence.json",
-   "generated": "2026-08-21",
-   "age_days": 1,
-   "written_date": "2026-08-21",
-   "write_age_days": 1,
+   "generated": "2026-08-22",
+   "age_days": 0,
+   "written_date": "2026-08-22",
+   "write_age_days": 0,
    "max_age_days": 10,
    "status": "fresh",
    "measurement_status": "not_declared"
@@ -440,10 +440,10 @@
   },
   {
    "payload": "receipt_identity.json",
-   "generated": "2026-08-21",
-   "age_days": 1,
-   "written_date": "2026-08-21",
-   "write_age_days": 1,
+   "generated": "2026-08-22",
+   "age_days": 0,
+   "written_date": "2026-08-22",
+   "write_age_days": 0,
    "max_age_days": 3,
    "status": "fresh",
    "measurement_status": "not_declared"

@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Spike breadth: distinct source domains among each channel's matched articles per day, from the same committed day-caches the receipts build from -- the registered dictionaries chose every article counted. top_domain_share near 1.0 means a one-outlet story; many domains at low top-share means a broad-based narrative. Descriptive context: breadth enters no score.",
-  "generated": "2026-08-22T03:19:55Z",
+  "generated": "2026-08-22T17:18:18Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -18,7 +18,7 @@
    "china_east": {
     "n_matched": 9,
     "n_domains": 9,
-    "top_domain": "news.webindia123.com",
+    "top_domain": "economictimes.indiatimes.com",
     "top_domain_share": 0.111
    },
    "gulf_energy": {
@@ -68,7 +68,7 @@
    "shipping": {
     "n_matched": 99,
     "n_domains": 78,
-    "top_domain": "oilprice.com",
+    "top_domain": "newsnow.co.uk",
     "top_domain_share": 0.051
    }
   },
@@ -82,7 +82,7 @@
    "china_east": {
     "n_matched": 6,
     "n_domains": 6,
-    "top_domain": "shanghaisun.com",
+    "top_domain": "asiabulletin.com",
     "top_domain_share": 0.167
    },
    "gulf_energy": {
@@ -94,7 +94,7 @@
    "us_trade": {
     "n_matched": 115,
     "n_domains": 97,
-    "top_domain": "timesofindia.indiatimes.com",
+    "top_domain": "livemint.com",
     "top_domain_share": 0.026
    },
    "shipping": {
@@ -114,7 +114,7 @@
    "china_east": {
     "n_matched": 8,
     "n_domains": 8,
-    "top_domain": "techtimes.com",
+    "top_domain": "jagranjosh.com",
     "top_domain_share": 0.125
    },
    "gulf_energy": {
@@ -146,7 +146,7 @@
    "china_east": {
     "n_matched": 6,
     "n_domains": 6,
-    "top_domain": "indianexpress.com",
+    "top_domain": "newstodaynet.com",
     "top_domain_share": 0.167
    },
    "gulf_energy": {
@@ -158,13 +158,13 @@
    "us_trade": {
     "n_matched": 27,
     "n_domains": 22,
-    "top_domain": "economictimes.indiatimes.com",
+    "top_domain": "newsnow.co.uk",
     "top_domain_share": 0.111
    },
    "shipping": {
     "n_matched": 120,
     "n_domains": 100,
-    "top_domain": "arabherald.com",
+    "top_domain": "heraldglobe.com",
     "top_domain_share": 0.025
    }
   },
@@ -178,7 +178,7 @@
    "china_east": {
     "n_matched": 6,
     "n_domains": 6,
-    "top_domain": "cambodiantimes.com",
+    "top_domain": "hindustantimes.com",
     "top_domain_share": 0.167
    },
    "gulf_energy": {
@@ -210,7 +210,7 @@
    "china_east": {
     "n_matched": 14,
     "n_domains": 14,
-    "top_domain": "shanghainews.net",
+    "top_domain": "jagranjosh.com",
     "top_domain_share": 0.071
    },
    "gulf_energy": {
@@ -228,7 +228,7 @@
    "shipping": {
     "n_matched": 124,
     "n_domains": 104,
-    "top_domain": "businesstoday.in",
+    "top_domain": "livemint.com",
     "top_domain_share": 0.024
    }
   },
@@ -236,7 +236,7 @@
    "pakistan_west": {
     "n_matched": 19,
     "n_domains": 15,
-    "top_domain": "organiser.org",
+    "top_domain": "dailyexcelsior.com",
     "top_domain_share": 0.105
    },
    "china_east": {
@@ -254,7 +254,7 @@
    "us_trade": {
     "n_matched": 34,
     "n_domains": 25,
-    "top_domain": "indiagazette.com",
+    "top_domain": "russiaherald.com",
     "top_domain_share": 0.088
    },
    "shipping": {
@@ -274,7 +274,7 @@
    "china_east": {
     "n_matched": 13,
     "n_domains": 13,
-    "top_domain": "prokerala.com",
+    "top_domain": "livescience.com",
     "top_domain_share": 0.077
    },
    "gulf_energy": {
@@ -286,7 +286,7 @@
    "us_trade": {
     "n_matched": 42,
     "n_domains": 33,
-    "top_domain": "bignewsnetwork.com",
+    "top_domain": "livemint.com",
     "top_domain_share": 0.071
    },
    "shipping": {
@@ -402,7 +402,7 @@
    "china_east": {
     "n_matched": 4,
     "n_domains": 4,
-    "top_domain": "indiagazette.com",
+    "top_domain": "orissapost.com",
     "top_domain_share": 0.25
    },
    "gulf_energy": {
@@ -420,7 +420,7 @@
    "shipping": {
     "n_matched": 31,
     "n_domains": 31,
-    "top_domain": "ianslive.in",
+    "top_domain": "wboc.com",
     "top_domain_share": 0.032
    }
   },
@@ -434,7 +434,7 @@
    "china_east": {
     "n_matched": 2,
     "n_domains": 2,
-    "top_domain": "asianews.network",
+    "top_domain": "wbur.org",
     "top_domain_share": 0.5
    },
    "gulf_energy": {
@@ -490,34 +490,34 @@
   },
   "2026-08-21": {
    "pakistan_west": {
-    "n_matched": 8,
-    "n_domains": 8,
-    "top_domain": "shanghainews.net",
-    "top_domain_share": 0.125
+    "n_matched": 39,
+    "n_domains": 33,
+    "top_domain": "ianslive.in",
+    "top_domain_share": 0.103
    },
    "china_east": {
-    "n_matched": 4,
-    "n_domains": 4,
-    "top_domain": "newsnow.co.uk",
-    "top_domain_share": 0.25
+    "n_matched": 24,
+    "n_domains": 22,
+    "top_domain": "newindianexpress.com",
+    "top_domain_share": 0.083
    },
    "gulf_energy": {
-    "n_matched": 504,
-    "n_domains": 349,
-    "top_domain": "newsnow.co.uk",
+    "n_matched": 2135,
+    "n_domains": 972,
+    "top_domain": "finance.yahoo.com",
     "top_domain_share": 0.016
    },
    "us_trade": {
-    "n_matched": 47,
-    "n_domains": 41,
+    "n_matched": 190,
+    "n_domains": 135,
     "top_domain": "economictimes.indiatimes.com",
-    "top_domain_share": 0.128
+    "top_domain_share": 0.168
    },
    "shipping": {
-    "n_matched": 75,
-    "n_domains": 67,
-    "top_domain": "afghanistansun.com",
-    "top_domain_share": 0.04
+    "n_matched": 313,
+    "n_domains": 187,
+    "top_domain": "oilprice.com",
+    "top_domain_share": 0.019
    }
   }
  }

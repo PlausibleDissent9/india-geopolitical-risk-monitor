@@ -14,7 +14,7 @@
   "precision": 1,
   "precision_note": "history.csv publishes one decimal place, so the rebuild is rounded the same way and equality is required. An earlier version compared an unrounded rebuild against a rounded file and reported three 0.05 disagreements that were entirely an artifact of comparing different precisions.",
   "finding": "19908 of 19908 published values are reproduced exactly, by code that has never read the pipeline, from the codebook and the shares file alone.",
-  "generated": "2026-08-22T03:35:35Z"
+  "generated": "2026-08-22T17:18:33Z"
  },
  "best": {
   "n_published": 19908,

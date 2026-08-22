@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Pharmaceuticals: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-22T03:38:03Z",
+  "generated": "2026-08-22T17:19:11Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -35,30 +35,30 @@
     "1": {
      "mean": -0.083,
      "ci95": [
-      -0.275,
-      0.113
+      -0.254,
+      0.095
      ],
-     "p_boot": 0.4,
+     "p_boot": 0.352,
      "n": 103,
      "bh_significant_10pct": false
     },
     "5": {
      "mean": -0.213,
      "ci95": [
-      -0.681,
-      0.289
+      -0.679,
+      0.28
      ],
-     "p_boot": 0.36,
+     "p_boot": 0.308,
      "n": 103,
      "bh_significant_10pct": false
     },
     "20": {
      "mean": -0.836,
      "ci95": [
-      -1.777,
-      0.091
+      -1.772,
+      0.137
      ],
-     "p_boot": 0.1,
+     "p_boot": 0.108,
      "n": 102,
      "bh_significant_10pct": false
     }
@@ -67,30 +67,30 @@
     "1": {
      "mean": 0.076,
      "ci95": [
-      -0.151,
-      0.325
+      -0.149,
+      0.298
      ],
-     "p_boot": 0.492,
+     "p_boot": 0.544,
      "n": 113,
      "bh_significant_10pct": false
     },
     "5": {
      "mean": -0.091,
      "ci95": [
-      -0.503,
-      0.337
+      -0.555,
+      0.32
      ],
-     "p_boot": 0.692,
+     "p_boot": 0.664,
      "n": 113,
      "bh_significant_10pct": false
     },
     "20": {
      "mean": -0.737,
      "ci95": [
-      -1.648,
-      0.244
+      -1.59,
+      0.15
      ],
-     "p_boot": 0.118,
+     "p_boot": 0.106,
      "n": 112,
      "bh_significant_10pct": false
     }

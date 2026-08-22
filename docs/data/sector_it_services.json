@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for IT Services: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-22T03:38:03Z",
+  "generated": "2026-08-22T17:19:11Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -28,30 +28,30 @@
     "1": {
      "mean": 0.145,
      "ci95": [
-      -0.05,
-      0.365
+      -0.063,
+      0.36
      ],
-     "p_boot": 0.134,
+     "p_boot": 0.166,
      "n": 103,
      "bh_significant_10pct": false
     },
     "5": {
      "mean": 0.077,
      "ci95": [
-      -0.446,
-      0.593
+      -0.425,
+      0.575
      ],
-     "p_boot": 0.758,
+     "p_boot": 0.724,
      "n": 103,
      "bh_significant_10pct": false
     },
     "20": {
      "mean": 0.303,
      "ci95": [
-      -1.039,
-      1.501
+      -0.919,
+      1.503
      ],
-     "p_boot": 0.67,
+     "p_boot": 0.584,
      "n": 102,
      "bh_significant_10pct": false
     }

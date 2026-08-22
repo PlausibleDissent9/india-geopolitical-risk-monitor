@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Term-level attribution per channel-day: how many matched-article HEADLINES in the day's corpus cache contain each registered phrase. Derived from the same corpus the scores come from; reproducible from the repo alone. Headline attribution undercounts body-text phrases and the record starts at the first committed cache day -- earlier episodes carry no attribution rather than a refetched guess.",
   "first_day": "2026-07-27",
-  "generated": "2026-08-22T03:19:54Z",
+  "generated": "2026-08-22T17:18:17Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -556,32 +556,43 @@
   },
   "2026-08-21": {
    "pakistan_west": {
-    "n_matched_titles": 8,
+    "n_matched_titles": 39,
     "term_headline_hits": {
-     "surgical strikes": 1
+     "surgical strikes": 2
     }
    },
    "china_east": {
-    "n_matched_titles": 4,
+    "n_matched_titles": 24,
     "term_headline_hits": {}
    },
    "gulf_energy": {
-    "n_matched_titles": 504,
+    "n_matched_titles": 2135,
     "term_headline_hits": {
-     "Strait of Hormuz": 15,
-     "Iran sanctions": 8
+     "Strait of Hormuz": 45,
+     "Gulf tensions": 1,
+     "Middle East conflict": 3,
+     "Israel Iran": 1,
+     "Iran sanctions": 30,
+     "energy security": 9
     }
    },
    "us_trade": {
-    "n_matched_titles": 47,
-    "term_headline_hits": {}
+    "n_matched_titles": 190,
+    "term_headline_hits": {
+     "trade deal": 2,
+     "H-1B visa": 1,
+     "Russian oil": 4
+    }
    },
    "shipping": {
-    "n_matched_titles": 75,
+    "n_matched_titles": 313,
     "term_headline_hits": {
      "Red Sea shipping": 1,
-     "Suez Canal": 1,
-     "Somali pirates": 3
+     "Red Sea attacks": 1,
+     "Suez Canal": 2,
+     "Bab el-Mandeb": 1,
+     "Somali pirates": 8,
+     "Gulf of Aden": 1
     }
    }
   }

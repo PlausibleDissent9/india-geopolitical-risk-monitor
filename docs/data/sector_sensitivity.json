@@ -8,7 +8,7 @@
   ],
   "units": "cumulative log return vs Nifty, percent",
   "multiple_comparisons": "Benjamini-Hochberg FDR at 10% across the full cell grid, same discipline as the main event study; bh_significant_10pct per cell. On the first computation (2026-08-06, 39 cells) NO cell survived correction -- a published negative result: with this episode set, no sector index shows a sensitivity distinguishable from zero once the search is paid for.",
-  "generated": "2026-08-22T03:00:37Z",
+  "generated": "2026-08-22T17:02:20Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -20,19 +20,100 @@
    "nse_index": "^CNXAUTO",
    "channels": {
     "us_trade": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": -0.153,
+      "ci95": [
+       -0.287,
+       -0.017
+      ],
+      "p_boot": 0.034,
+      "n": 101,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": -0.34,
+      "ci95": [
+       -0.71,
+       0.018
+      ],
+      "p_boot": 0.064,
+      "n": 100,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": -0.409,
+      "ci95": [
+       -1.155,
+       0.369
+      ],
+      "p_boot": 0.286,
+      "n": 100,
+      "bh_significant_10pct": false
+     }
     },
     "shipping": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": 0.076,
+      "ci95": [
+       -0.1,
+       0.253
+      ],
+      "p_boot": 0.382,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": -0.032,
+      "ci95": [
+       -0.351,
+       0.294
+      ],
+      "p_boot": 0.876,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": -0.267,
+      "ci95": [
+       -0.973,
+       0.461
+      ],
+      "p_boot": 0.478,
+      "n": 110,
+      "bh_significant_10pct": false
+     }
     },
     "china_east": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": 0.059,
+      "ci95": [
+       -0.108,
+       0.224
+      ],
+      "p_boot": 0.53,
+      "n": 114,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": 0.38,
+      "ci95": [
+       0.001,
+       0.744
+      ],
+      "p_boot": 0.048,
+      "n": 114,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": 0.561,
+      "ci95": [
+       -0.194,
+       1.353
+      ],
+      "p_boot": 0.148,
+      "n": 113,
+      "bh_significant_10pct": false
+     }
     }
    }
   },
@@ -41,9 +122,36 @@
    "nse_index": "^CNXENERGY",
    "channels": {
     "gulf_energy": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": -0.058,
+      "ci95": [
+       -0.236,
+       0.132
+      ],
+      "p_boot": 0.512,
+      "n": 86,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": -0.052,
+      "ci95": [
+       -0.491,
+       0.405
+      ],
+      "p_boot": 0.784,
+      "n": 86,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": 0.081,
+      "ci95": [
+       -0.768,
+       0.938
+      ],
+      "p_boot": 0.828,
+      "n": 86,
+      "bh_significant_10pct": false
+     }
     }
    }
   },
@@ -52,14 +160,68 @@
    "nse_index": "^CNXFMCG",
    "channels": {
     "gulf_energy": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": -0.012,
+      "ci95": [
+       -0.169,
+       0.157
+      ],
+      "p_boot": 0.882,
+      "n": 86,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": -0.059,
+      "ci95": [
+       -0.343,
+       0.241
+      ],
+      "p_boot": 0.724,
+      "n": 86,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": -0.175,
+      "ci95": [
+       -0.897,
+       0.497
+      ],
+      "p_boot": 0.578,
+      "n": 86,
+      "bh_significant_10pct": false
+     }
     },
     "shipping": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": -0.093,
+      "ci95": [
+       -0.245,
+       0.059
+      ],
+      "p_boot": 0.216,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": -0.303,
+      "ci95": [
+       -0.654,
+       0.021
+      ],
+      "p_boot": 0.078,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": -0.438,
+      "ci95": [
+       -1.077,
+       0.191
+      ],
+      "p_boot": 0.196,
+      "n": 110,
+      "bh_significant_10pct": false
+     }
     }
    }
   },
@@ -71,30 +233,30 @@
      "1": {
       "mean": 0.145,
       "ci95": [
-       -0.05,
-       0.365
+       -0.063,
+       0.36
       ],
-      "p_boot": 0.134,
+      "p_boot": 0.166,
       "n": 103,
       "bh_significant_10pct": false
      },
      "5": {
       "mean": 0.077,
       "ci95": [
-       -0.446,
-       0.593
+       -0.425,
+       0.575
       ],
-      "p_boot": 0.758,
+      "p_boot": 0.724,
       "n": 103,
       "bh_significant_10pct": false
      },
      "20": {
       "mean": 0.303,
       "ci95": [
-       -1.039,
-       1.501
+       -0.919,
+       1.503
       ],
-      "p_boot": 0.67,
+      "p_boot": 0.584,
       "n": 102,
       "bh_significant_10pct": false
      }
@@ -106,14 +268,68 @@
    "nse_index": "^CNXMETAL",
    "channels": {
     "china_east": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": 0.133,
+      "ci95": [
+       -0.093,
+       0.349
+      ],
+      "p_boot": 0.232,
+      "n": 114,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": 0.296,
+      "ci95": [
+       -0.221,
+       0.772
+      ],
+      "p_boot": 0.292,
+      "n": 114,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": 1.2,
+      "ci95": [
+       0.225,
+       2.231
+      ],
+      "p_boot": 0.014,
+      "n": 113,
+      "bh_significant_10pct": false
+     }
     },
     "shipping": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": 0.14,
+      "ci95": [
+       -0.066,
+       0.356
+      ],
+      "p_boot": 0.198,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": 0.363,
+      "ci95": [
+       -0.138,
+       0.841
+      ],
+      "p_boot": 0.144,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": 1.121,
+      "ci95": [
+       -0.027,
+       2.31
+      ],
+      "p_boot": 0.056,
+      "n": 110,
+      "bh_significant_10pct": false
+     }
     }
    }
   },
@@ -122,14 +338,68 @@
    "nse_index": "^CNXENERGY",
    "channels": {
     "gulf_energy": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": -0.058,
+      "ci95": [
+       -0.255,
+       0.122
+      ],
+      "p_boot": 0.52,
+      "n": 86,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": -0.052,
+      "ci95": [
+       -0.478,
+       0.353
+      ],
+      "p_boot": 0.784,
+      "n": 86,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": 0.081,
+      "ci95": [
+       -0.752,
+       0.933
+      ],
+      "p_boot": 0.878,
+      "n": 86,
+      "bh_significant_10pct": false
+     }
     },
     "shipping": {
-     "1": null,
-     "5": null,
-     "20": null
+     "1": {
+      "mean": 0.15,
+      "ci95": [
+       0.007,
+       0.308
+      ],
+      "p_boot": 0.04,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "5": {
+      "mean": 0.22,
+      "ci95": [
+       -0.09,
+       0.544
+      ],
+      "p_boot": 0.164,
+      "n": 111,
+      "bh_significant_10pct": false
+     },
+     "20": {
+      "mean": 0.931,
+      "ci95": [
+       0.174,
+       1.711
+      ],
+      "p_boot": 0.008,
+      "n": 110,
+      "bh_significant_10pct": false
+     }
     }
    }
   },
@@ -141,30 +411,30 @@
      "1": {
       "mean": -0.083,
       "ci95": [
-       -0.275,
-       0.113
+       -0.254,
+       0.095
       ],
-      "p_boot": 0.4,
+      "p_boot": 0.352,
       "n": 103,
       "bh_significant_10pct": false
      },
      "5": {
       "mean": -0.213,
       "ci95": [
-       -0.681,
-       0.289
+       -0.679,
+       0.28
       ],
-      "p_boot": 0.36,
+      "p_boot": 0.308,
       "n": 103,
       "bh_significant_10pct": false
      },
      "20": {
       "mean": -0.836,
       "ci95": [
-       -1.777,
-       0.091
+       -1.772,
+       0.137
       ],
-      "p_boot": 0.1,
+      "p_boot": 0.108,
       "n": 102,
       "bh_significant_10pct": false
      }
@@ -173,30 +443,30 @@
      "1": {
       "mean": 0.076,
       "ci95": [
-       -0.151,
-       0.325
+       -0.149,
+       0.298
       ],
-      "p_boot": 0.492,
+      "p_boot": 0.544,
       "n": 113,
       "bh_significant_10pct": false
      },
      "5": {
       "mean": -0.091,
       "ci95": [
-       -0.503,
-       0.337
+       -0.555,
+       0.32
       ],
-      "p_boot": 0.692,
+      "p_boot": 0.664,
       "n": 113,
       "bh_significant_10pct": false
      },
      "20": {
       "mean": -0.737,
       "ci95": [
-       -1.648,
-       0.244
+       -1.59,
+       0.15
       ],
-      "p_boot": 0.118,
+      "p_boot": 0.106,
       "n": 112,
       "bh_significant_10pct": false
      }

@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Narrative composition (G4): per channel per day, the GKG theme codes carried by the MATCHED articles -- the registered dictionaries choose every article, BigQuery only reads its V2Themes; an annotation, never a filter, entering no score. share = fraction of themed matched articles carrying the code; codes stay raw GDELT identifiers for auditability. n_themed vs n_matched discloses the join rate.",
-  "generated": "2026-08-22T03:37:53Z",
+  "generated": "2026-08-22T17:19:04Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -1370,272 +1370,272 @@
   },
   "2026-08-21": {
    "china_east": {
-    "n_matched": 10,
-    "n_themed": 7,
+    "n_matched": 24,
+    "n_themed": 21,
     "top_themes": [
      {
       "code": "UNGP_FORESTS_RIVERS_OCEANS",
-      "share": 0.857
+      "share": 0.905
+     },
+     {
+      "code": "ARMEDCONFLICT",
+      "share": 0.714
      },
      {
       "code": "TAX_ETHNICITY_INDIAN",
       "share": 0.714
      },
      {
-      "code": "ARMEDCONFLICT",
-      "share": 0.714
+      "code": "CRISISLEX_C07_SAFETY",
+      "share": 0.619
+     },
+     {
+      "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
+      "share": 0.571
+     },
+     {
+      "code": "BORDER",
+      "share": 0.571
      },
      {
       "code": "CRISISLEX_CRISISLEXREC",
-      "share": 0.714
+      "share": 0.571
      },
      {
-      "code": "MILITARY",
-      "share": 0.571
+      "code": "WB_2470_PEACE_OPERATIONS_AND_CONFLICT_MANAGEMENT",
+      "share": 0.524
+     },
+     {
+      "code": "WB_2490_NATIONAL_PROTECTION_AND_SECURITY",
+      "share": 0.524
      },
      {
       "code": "TAX_FNCACT_ENVOY",
-      "share": 0.571
+      "share": 0.476
      },
      {
-      "code": "TAX_FNCACT_DIPLOMAT",
-      "share": 0.571
+      "code": "WB_696_PUBLIC_SECTOR_MANAGEMENT",
+      "share": 0.476
      },
      {
-      "code": "CRISISLEX_C07_SAFETY",
-      "share": 0.571
-     },
-     {
-      "code": "TAX_ETHNICITY_CHINESE",
-      "share": 0.429
-     },
-     {
-      "code": "TAX_FNCACT_MINISTER",
-      "share": 0.429
-     },
-     {
-      "code": "TAX_WORLDLANGUAGES_CHINESE",
-      "share": 0.429
-     },
-     {
-      "code": "TAX_FNCACT_AMBASSADOR",
-      "share": 0.429
+      "code": "WB_831_GOVERNANCE",
+      "share": 0.476
      }
     ]
    },
    "gulf_energy": {
-    "n_matched": 712,
-    "n_themed": 613,
+    "n_matched": 2135,
+    "n_themed": 1817,
     "top_themes": [
      {
-      "code": "USPEC_POLICY1",
-      "share": 0.685
-     },
-     {
-      "code": "LEADER",
-      "share": 0.674
-     },
-     {
-      "code": "USPEC_POLITICS_GENERAL1",
-      "share": 0.666
-     },
-     {
-      "code": "ENV_OIL",
-      "share": 0.638
-     },
-     {
-      "code": "TAX_FNCACT_PRESIDENT",
-      "share": 0.612
-     },
-     {
       "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
-      "share": 0.587
-     },
-     {
-      "code": "TAX_ECON_PRICE",
-      "share": 0.576
-     },
-     {
-      "code": "UNGP_FORESTS_RIVERS_OCEANS",
-      "share": 0.573
-     },
-     {
-      "code": "GENERAL_GOVERNMENT",
-      "share": 0.546
+      "share": 0.695
      },
      {
       "code": "EPU_ECONOMY_HISTORIC",
-      "share": 0.535
+      "share": 0.688
      },
      {
-      "code": "EPU_POLICY_GOVERNMENT",
-      "share": 0.47
+      "code": "LEADER",
+      "share": 0.673
+     },
+     {
+      "code": "ENV_OIL",
+      "share": 0.665
+     },
+     {
+      "code": "USPEC_POLITICS_GENERAL1",
+      "share": 0.664
+     },
+     {
+      "code": "GENERAL_GOVERNMENT",
+      "share": 0.647
+     },
+     {
+      "code": "USPEC_POLICY1",
+      "share": 0.63
+     },
+     {
+      "code": "TAX_FNCACT_PRESIDENT",
+      "share": 0.622
+     },
+     {
+      "code": "TAX_ECON_PRICE",
+      "share": 0.589
+     },
+     {
+      "code": "EPU_CATS_NATIONAL_SECURITY",
+      "share": 0.588
+     },
+     {
+      "code": "WB_696_PUBLIC_SECTOR_MANAGEMENT",
+      "share": 0.576
      },
      {
       "code": "EPU_ECONOMY",
-      "share": 0.442
+      "share": 0.564
      }
     ]
    },
    "pakistan_west": {
-    "n_matched": 19,
-    "n_themed": 18,
+    "n_matched": 39,
+    "n_themed": 33,
     "top_themes": [
      {
-      "code": "GENERAL_GOVERNMENT",
-      "share": 1.0
-     },
-     {
-      "code": "TAX_FNCACT_MINISTER",
-      "share": 1.0
-     },
-     {
-      "code": "ARMEDCONFLICT",
-      "share": 1.0
-     },
-     {
-      "code": "CRISISLEX_CRISISLEXREC",
-      "share": 1.0
-     },
-     {
-      "code": "EPU_CATS_MIGRATION_FEAR_FEAR",
-      "share": 0.944
-     },
-     {
       "code": "EPU_CATS_NATIONAL_SECURITY",
-      "share": 0.944
+      "share": 0.909
+     },
+     {
+      "code": "TERROR",
+      "share": 0.879
      },
      {
       "code": "CRISISLEX_C07_SAFETY",
-      "share": 0.944
-     },
-     {
-      "code": "EPU_POLICY_GOVERNMENT",
-      "share": 0.944
+      "share": 0.848
      },
      {
       "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
-      "share": 0.944
+      "share": 0.848
+     },
+     {
+      "code": "CRISISLEX_CRISISLEXREC",
+      "share": 0.848
      },
      {
       "code": "WB_2433_CONFLICT_AND_VIOLENCE",
-      "share": 0.944
+      "share": 0.848
      },
      {
-      "code": "WB_2453_ORGANIZED_CRIME",
-      "share": 0.889
+      "code": "WB_2467_TERRORISM",
+      "share": 0.818
      },
      {
-      "code": "CRIME_ILLEGAL_DRUGS",
-      "share": 0.889
+      "code": "UNGP_FORESTS_RIVERS_OCEANS",
+      "share": 0.818
+     },
+     {
+      "code": "GENERAL_GOVERNMENT",
+      "share": 0.818
+     },
+     {
+      "code": "ARMEDCONFLICT",
+      "share": 0.818
+     },
+     {
+      "code": "WB_2462_POLITICAL_VIOLENCE_AND_WAR",
+      "share": 0.818
+     },
+     {
+      "code": "EPU_CATS_MIGRATION_FEAR_FEAR",
+      "share": 0.818
      }
     ]
    },
    "shipping": {
-    "n_matched": 69,
-    "n_themed": 53,
+    "n_matched": 313,
+    "n_themed": 280,
     "top_themes": [
      {
       "code": "MARITIME",
-      "share": 0.887
+      "share": 0.943
      },
      {
       "code": "MANMADE_DISASTER_IMPLIED",
-      "share": 0.755
-     },
-     {
-      "code": "ARMEDCONFLICT",
-      "share": 0.755
-     },
-     {
-      "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
-      "share": 0.717
+      "share": 0.886
      },
      {
       "code": "CRISISLEX_CRISISLEXREC",
-      "share": 0.679
+      "share": 0.864
      },
      {
       "code": "MARITIME_INCIDENT",
-      "share": 0.679
-     },
-     {
-      "code": "EPU_CATS_NATIONAL_SECURITY",
-      "share": 0.66
-     },
-     {
-      "code": "CRISISLEX_C07_SAFETY",
-      "share": 0.66
+      "share": 0.854
      },
      {
       "code": "ENV_OIL",
-      "share": 0.642
+      "share": 0.836
      },
      {
-      "code": "WB_2433_CONFLICT_AND_VIOLENCE",
-      "share": 0.604
-     },
-     {
-      "code": "KILL",
-      "share": 0.528
+      "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
+      "share": 0.775
      },
      {
       "code": "WB_135_TRANSPORT",
-      "share": 0.509
+      "share": 0.757
+     },
+     {
+      "code": "WB_2433_CONFLICT_AND_VIOLENCE",
+      "share": 0.743
+     },
+     {
+      "code": "EPU_ECONOMY_HISTORIC",
+      "share": 0.739
+     },
+     {
+      "code": "MARITIME_PIRACY",
+      "share": 0.721
+     },
+     {
+      "code": "KILL",
+      "share": 0.718
+     },
+     {
+      "code": "WB_698_TRADE",
+      "share": 0.689
      }
     ]
    },
    "us_trade": {
-    "n_matched": 99,
-    "n_themed": 91,
+    "n_matched": 190,
+    "n_themed": 168,
     "top_themes": [
      {
       "code": "ENV_OIL",
-      "share": 0.901
+      "share": 0.851
      },
      {
       "code": "EPU_ECONOMY_HISTORIC",
-      "share": 0.857
+      "share": 0.821
      },
      {
       "code": "USPEC_POLICY1",
-      "share": 0.835
-     },
-     {
-      "code": "WB_696_PUBLIC_SECTOR_MANAGEMENT",
-      "share": 0.813
-     },
-     {
-      "code": "CRISISLEX_C03_WELLBEING_HEALTH",
-      "share": 0.802
-     },
-     {
-      "code": "GENERAL_GOVERNMENT",
-      "share": 0.78
-     },
-     {
-      "code": "LEADER",
-      "share": 0.769
+      "share": 0.815
      },
      {
       "code": "EPU_ECONOMY",
-      "share": 0.769
+      "share": 0.756
      },
      {
-      "code": "USPEC_POLITICS_GENERAL1",
-      "share": 0.758
+      "code": "GENERAL_GOVERNMENT",
+      "share": 0.756
+     },
+     {
+      "code": "WB_696_PUBLIC_SECTOR_MANAGEMENT",
+      "share": 0.756
+     },
+     {
+      "code": "CRISISLEX_C03_WELLBEING_HEALTH",
+      "share": 0.738
      },
      {
       "code": "EPU_POLICY_GOVERNMENT",
-      "share": 0.758
-     },
-     {
-      "code": "CRISISLEX_CRISISLEXREC",
-      "share": 0.758
+      "share": 0.738
      },
      {
       "code": "WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE",
-      "share": 0.747
+      "share": 0.738
+     },
+     {
+      "code": "LEADER",
+      "share": 0.732
+     },
+     {
+      "code": "USPEC_POLITICS_GENERAL1",
+      "share": 0.72
+     },
+     {
+      "code": "UNGP_FORESTS_RIVERS_OCEANS",
+      "share": 0.702
      }
     ]
    }
