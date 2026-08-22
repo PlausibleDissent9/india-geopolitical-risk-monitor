@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-20",
- "generated_at": "2026-08-21T14:37:08Z",
+ "target_date": "2026-08-21",
+ "generated_at": "2026-08-22T14:20:40Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "54f09691d18a1fa1342783fdd5b5bb9a6e0486be",
-  "blob_git_sha1": "179f77ab640667297def2e3bb638920f6cf18f31",
-  "blob_sha256": "c66120009378e8a208c84487439dc350b348c4a25bb4ee4d70aa2abc6cf2a907",
+  "state": "different_target",
+  "commit_sha": "0bb9d2be16230e364ecd420ced64d930ba911da2",
+  "blob_git_sha1": "f0d36bbbd2e7e84217191ee1a064b99932260620",
+  "blob_sha256": "293f6309cf064a69f54cfee8ee50155add918d0713cff61661dbb504572404d6",
   "target_date": "2026-08-20"
  },
  "channels": {
@@ -37,38 +37,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Trump new H - 1B visa reality for Indians : Unpredictable costs , tougher odds , greater risks",
-     "url": "https://timesofindia.indiatimes.com/business/india-business/trumps-new-h-1b-visa-reality-for-indians-unpredictable-costs-tougher-odds-greater-risks/articleshow/133375447.cms",
-     "domain": "timesofindia.indiatimes.com"
+     "title": "Piracy Observer Says Somali Incidents Rising as Navies Stretched",
+     "url": "https://gcaptain.com/piracy-observer-says-somali-incidents-rising-as-navies-stretched/",
+     "domain": "gcaptain.com"
     },
     {
-     "title": "Laid off on H - 1B , Indian man took up cleaning job to survive in the US :  Money ran out faster than I thought",
-     "url": "https://www.hindustantimes.com/trending/laid-off-on-h-1b-indian-man-took-up-cleaning-job-to-survive-in-the-us-money-ran-out-faster-than-i-thought-101787211749671.html",
-     "domain": "hindustantimes.com"
+     "title": "Houthis Move to Gain Complete Control Over Crucial Bab el - Mandeb Oil Chokepoint",
+     "url": "https://oilprice.com/Geopolitics/Middle-East/Houthis-Move-to-Gain-Complete-Control-Over-Crucial-Bab-el-Mandeb-Oil-Chokepoint.html",
+     "domain": "oilprice.com"
     },
     {
-     "title": "He Got an H - 1B Visa , but Uncertainty Makes It Hard to Plan His Future",
-     "url": "https://www.businessinsider.com/h1b-lottery-visa-working-amazon-building-life-home-family-america-2026-8",
-     "domain": "businessinsider.com"
+     "title": "Julegavehandel , Julehandel | Advarer før julehandelen : Står i fare for å ikke komme frem",
+     "url": "https://www.nettavisen.no/okonomi/advarer-for-julehandelen-star-i-fare-for-a-ikke-komme-frem/s/80-95-5669",
+     "domain": "nettavisen.no"
     },
     {
-     "title": "India , US talk non - tariff barriers ; digital concessions may be considered in trade deal",
-     "url": "https://www.moneycontrol.com/news/business/india-us-talk-non-tariff-barriers-digital-concessions-may-be-considered-in-trade-deal-14011521.html",
-     "domain": "moneycontrol.com"
+     "title": "Two Vessels With 22 Indians On Board Hijacked By Pirates In Yemen , Somalia",
+     "url": "https://thenorthlines.com/two-vessels-with-22-indians-on-board-hijacked-by-pirates-in-yemen-somalia/",
+     "domain": "thenorthlines.com"
     },
     {
-     "title": "Sanction - proofing India interests and autonomy",
-     "url": "https://www.hindustantimes.com/opinion/sanctionproofing-india-s-interests-and-autonomy-101787159048144.html",
-     "domain": "hindustantimes.com"
+     "title": "Sibu 1 ship seized by six armed individuals | The Jerusalem Post",
+     "url": "https://www.jpost.com/international/article-906216",
+     "domain": "jpost.com"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-20",
-     "evaluated_at_utc": "2026-08-21T14:37:08Z",
-     "rights_as_of": "2026-08-21",
+     "target_date": "2026-08-21",
+     "evaluated_at_utc": "2026-08-22T14:20:40Z",
+     "rights_as_of": "2026-08-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-19T23:59:59Z",
+     "release_deadline_utc": "2026-09-20T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-20",
-     "evaluated_at_utc": "2026-08-21T14:40:05Z",
-     "rights_as_of": "2026-08-21",
+     "target_date": "2026-08-21",
+     "evaluated_at_utc": "2026-08-22T14:23:37Z",
+     "rights_as_of": "2026-08-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-19T23:59:59Z",
+     "release_deadline_utc": "2026-09-20T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-20",
-     "evaluated_at_utc": "2026-08-21T14:40:05Z",
-     "rights_as_of": "2026-08-21",
+     "target_date": "2026-08-21",
+     "evaluated_at_utc": "2026-08-22T14:23:37Z",
+     "rights_as_of": "2026-08-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-19T23:59:59Z",
+     "release_deadline_utc": "2026-09-20T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "cbc16c113ea146ef6a08ce061d4cf074288cd7d2c5f67ace5bba9e9c0c97f401"
+ "payload_seal_sha256": "f179af5bd8799255b5a524faf7ada0c9265e71c605b0035eace710d7775132a8"
 }
