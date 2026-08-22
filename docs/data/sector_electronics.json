@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Electronics Manufacturing: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-20T19:46:06Z",
+  "generated": "2026-08-22T03:38:03Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,25 +11,25 @@
  "sector": "electronics",
  "label": "Electronics Manufacturing",
  "rationale": "Component chains run through East Asia via Malacca; US-China policy repositioning is the demand driver.",
- "date": "2026-08-19",
+ "date": "2026-08-21",
  "channels": {
   "china_east": {
    "label": "China / Eastern Border",
-   "score": 0.7,
+   "score": 1.3,
    "band95": null,
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#china_east"
   },
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 52.2,
+   "score": 63.6,
    "band95": null,
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#shipping"
   },
   "us_trade": {
    "label": "US & Trade Policy",
-   "score": 17.7,
+   "score": 40.1,
    "band95": null,
    "weight": 0.333333,
    "receipts": "https://igrm.in/receipts.html#us_trade"

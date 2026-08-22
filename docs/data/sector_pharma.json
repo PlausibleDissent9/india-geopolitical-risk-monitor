@@ -2,7 +2,7 @@
  "_meta": {
   "what": "Per-sector feed for Pharmaceuticals: the sector's registered channels with today's published scores, a 95% sampling band only when uncertainty.json contains that exact date, and weights under the registered exposure rule. A null band is unavailable, not zero. IGRM measures press salience -- the share of global news coverage matching registered channel dictionaries, ranked against each channel's own trailing two years. It is not a measure of risk and makes no forecasts. This feed re-cuts published numbers by one registered sector's frame and adds no new claim.",
   "sector_registration": "sectors.json",
-  "generated": "2026-08-20T19:46:06Z",
+  "generated": "2026-08-22T03:38:03Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -11,18 +11,18 @@
  "sector": "pharma",
  "label": "Pharmaceuticals",
  "rationale": "US is the dominant export market (regulatory and tariff exposure); intermediates import-dependent via sea.",
- "date": "2026-08-19",
+ "date": "2026-08-21",
  "channels": {
   "shipping": {
    "label": "Shipping & Chokepoints",
-   "score": 52.2,
+   "score": 63.6,
    "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#shipping"
   },
   "us_trade": {
    "label": "US & Trade Policy",
-   "score": 17.7,
+   "score": 40.1,
    "band95": null,
    "weight": 0.5,
    "receipts": "https://igrm.in/receipts.html#us_trade"
@@ -35,63 +35,63 @@
     "1": {
      "mean": -0.083,
      "ci95": [
-      -0.284,
-      0.091
+      -0.275,
+      0.113
      ],
-     "p_boot": 0.418,
+     "p_boot": 0.4,
      "n": 103,
      "bh_significant_10pct": false
     },
     "5": {
-     "mean": -0.216,
+     "mean": -0.213,
      "ci95": [
-      -0.663,
-      0.282
+      -0.681,
+      0.289
      ],
-     "p_boot": 0.356,
+     "p_boot": 0.36,
      "n": 103,
      "bh_significant_10pct": false
     },
     "20": {
-     "mean": -0.865,
+     "mean": -0.836,
      "ci95": [
-      -1.816,
-      0.141
+      -1.777,
+      0.091
      ],
-     "p_boot": 0.094,
-     "n": 101,
+     "p_boot": 0.1,
+     "n": 102,
      "bh_significant_10pct": false
     }
    },
    "shipping": {
     "1": {
-     "mean": 0.082,
+     "mean": 0.076,
      "ci95": [
-      -0.16,
-      0.333
+      -0.151,
+      0.325
      ],
-     "p_boot": 0.466,
+     "p_boot": 0.492,
      "n": 113,
      "bh_significant_10pct": false
     },
     "5": {
-     "mean": -0.083,
+     "mean": -0.091,
      "ci95": [
-      -0.465,
-      0.333
+      -0.503,
+      0.337
      ],
-     "p_boot": 0.676,
+     "p_boot": 0.692,
      "n": 113,
      "bh_significant_10pct": false
     },
     "20": {
-     "mean": -0.755,
+     "mean": -0.737,
      "ci95": [
-      -1.725,
-      0.253
+      -1.648,
+      0.244
      ],
-     "p_boot": 0.128,
-     "n": 111,
+     "p_boot": 0.118,
+     "n": 112,
      "bh_significant_10pct": false
     }
    }

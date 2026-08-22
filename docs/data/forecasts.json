@@ -1,10 +1,10 @@
 {
  "_meta": {
   "what": "V11 forecast experiment record (registration: validation/forecast_registration.json, signed 2026-08-06). RESEARCH PAGE ONLY: this is an experiment about the index, not advice, and until the registered criterion resolves it should be presumed to show that salience does not forecast. Questions are mechanical, committed before their windows, graded by the registered detector; the frozen-logit arm's coefficients are in validation/forecast_logit_frozen.json.",
-  "n_questions": 5,
+  "n_questions": 10,
   "n_resolved": 0,
   "n_void": 0,
-  "generated": "2026-08-20T19:45:59Z",
+  "generated": "2026-08-22T03:37:54Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -92,6 +92,86 @@
    },
    "p_climatology": 0.3981,
    "p_salience": 0.3777,
+   "outcome": null,
+   "void": false
+  },
+  {
+   "id": "2026-08-24-pakistan_west",
+   "channel": "pakistan_west",
+   "window_start": "2026-08-24",
+   "window_end": "2026-09-06",
+   "generated": "2026-08-22",
+   "features": {
+    "score_pctl": 39.9,
+    "score_change_7d": -50.6,
+    "as_of": "2026-08-21"
+   },
+   "p_climatology": 0.3883,
+   "p_salience": 0.2828,
+   "outcome": null,
+   "void": false
+  },
+  {
+   "id": "2026-08-24-china_east",
+   "channel": "china_east",
+   "window_start": "2026-08-24",
+   "window_end": "2026-09-06",
+   "generated": "2026-08-22",
+   "features": {
+    "score_pctl": 1.3,
+    "score_change_7d": -34.6,
+    "as_of": "2026-08-21"
+   },
+   "p_climatology": 0.4078,
+   "p_salience": 0.2845,
+   "outcome": null,
+   "void": false
+  },
+  {
+   "id": "2026-08-24-gulf_energy",
+   "channel": "gulf_energy",
+   "window_start": "2026-08-24",
+   "window_end": "2026-09-06",
+   "generated": "2026-08-22",
+   "features": {
+    "score_pctl": 74.7,
+    "score_change_7d": -1.8,
+    "as_of": "2026-08-21"
+   },
+   "p_climatology": 0.2718,
+   "p_salience": 0.3954,
+   "outcome": null,
+   "void": false
+  },
+  {
+   "id": "2026-08-24-us_trade",
+   "channel": "us_trade",
+   "window_start": "2026-08-24",
+   "window_end": "2026-09-06",
+   "generated": "2026-08-22",
+   "features": {
+    "score_pctl": 40.1,
+    "score_change_7d": -7.0,
+    "as_of": "2026-08-21"
+   },
+   "p_climatology": 0.3689,
+   "p_salience": 0.3598,
+   "outcome": null,
+   "void": false
+  },
+  {
+   "id": "2026-08-24-shipping",
+   "channel": "shipping",
+   "window_start": "2026-08-24",
+   "window_end": "2026-09-06",
+   "generated": "2026-08-22",
+   "features": {
+    "score_pctl": 63.6,
+    "score_change_7d": -0.8,
+    "as_of": "2026-08-21"
+   },
+   "p_climatology": 0.3981,
+   "p_salience": 0.3889,
    "outcome": null,
    "void": false
   }

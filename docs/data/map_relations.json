@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Event counts by partner country and by Indian state from the GDELT Events v1 stream, 2017-present. Counts of press-recorded events; association, not causation.",
-  "generated": "2026-08-20",
+  "generated": "2026-08-22",
   "days_missing": 0,
   "partial": false,
   "recent_window_days": 365,
@@ -13,27 +13,27 @@
  "partners": {
   "AFG": {
    "name": "Afghanistan",
-   "n": 22132,
+   "n": 22145,
    "conflict_share": 0.228,
    "goldstein_mean": 1.02,
-   "recent_n": 3129,
-   "recent_conflict_share": 0.137
+   "recent_n": 3118,
+   "recent_conflict_share": 0.138
   },
   "AUS": {
    "name": "Australia",
    "n": 16068,
    "conflict_share": 0.143,
    "goldstein_mean": 1.9,
-   "recent_n": 1717,
-   "recent_conflict_share": 0.151
+   "recent_n": 1712,
+   "recent_conflict_share": 0.152
   },
   "BGD": {
    "name": "Bangladesh",
-   "n": 74558,
+   "n": 74723,
    "conflict_share": 0.298,
-   "goldstein_mean": 0.48,
-   "recent_n": 9334,
-   "recent_conflict_share": 0.35
+   "goldstein_mean": 0.47,
+   "recent_n": 9406,
+   "recent_conflict_share": 0.347
   },
   "BRA": {
    "name": "Brazil",
@@ -45,59 +45,59 @@
   },
   "CAN": {
    "name": "Canada",
-   "n": 23799,
+   "n": 23808,
    "conflict_share": 0.244,
    "goldstein_mean": 0.81,
-   "recent_n": 3233,
-   "recent_conflict_share": 0.197
+   "recent_n": 3240,
+   "recent_conflict_share": 0.196
   },
   "CHN": {
    "name": "China",
-   "n": 96157,
+   "n": 96186,
    "conflict_share": 0.273,
    "goldstein_mean": 0.67,
-   "recent_n": 6029,
-   "recent_conflict_share": 0.203
+   "recent_n": 5833,
+   "recent_conflict_share": 0.207
   },
   "CUB": {
    "name": "Cuba",
-   "n": 569,
+   "n": 572,
    "conflict_share": 0.079,
    "goldstein_mean": 2.55,
-   "recent_n": 35,
-   "recent_conflict_share": 0.257
+   "recent_n": 38,
+   "recent_conflict_share": 0.237
   },
   "GBR": {
    "name": "United Kingdom",
-   "n": 71606,
+   "n": 71632,
    "conflict_share": 0.198,
    "goldstein_mean": 1.16,
-   "recent_n": 6290,
+   "recent_n": 6302,
    "recent_conflict_share": 0.164
   },
   "IRN": {
    "name": "Iran",
-   "n": 16368,
+   "n": 16374,
    "conflict_share": 0.175,
    "goldstein_mean": 1.5,
-   "recent_n": 4791,
-   "recent_conflict_share": 0.175
+   "recent_n": 4797,
+   "recent_conflict_share": 0.176
   },
   "ISR": {
    "name": "Israel",
-   "n": 21148,
+   "n": 21152,
    "conflict_share": 0.194,
    "goldstein_mean": 1.17,
-   "recent_n": 2306,
-   "recent_conflict_share": 0.215
+   "recent_n": 2303,
+   "recent_conflict_share": 0.214
   },
   "ITA": {
    "name": "Italy",
-   "n": 12046,
+   "n": 12050,
    "conflict_share": 0.209,
    "goldstein_mean": 1.03,
-   "recent_n": 1141,
-   "recent_conflict_share": 0.174
+   "recent_n": 1129,
+   "recent_conflict_share": 0.169
   },
   "KEN": {
    "name": "Kenya",
@@ -117,11 +117,11 @@
   },
   "KHM": {
    "name": "Cambodia",
-   "n": 1099,
+   "n": 1100,
    "conflict_share": 0.132,
    "goldstein_mean": 1.94,
-   "recent_n": 125,
-   "recent_conflict_share": 0.32
+   "recent_n": 126,
+   "recent_conflict_share": 0.317
   },
   "LBR": {
    "name": "Liberia",
@@ -133,27 +133,27 @@
   },
   "LKA": {
    "name": "Sri Lanka",
-   "n": 27030,
+   "n": 27039,
    "conflict_share": 0.288,
    "goldstein_mean": 0.59,
-   "recent_n": 2394,
+   "recent_n": 2398,
    "recent_conflict_share": 0.169
   },
   "MDV": {
    "name": "Maldives",
-   "n": 11377,
+   "n": 11378,
    "conflict_share": 0.196,
    "goldstein_mean": 1.09,
-   "recent_n": 423,
-   "recent_conflict_share": 0.27
+   "recent_n": 421,
+   "recent_conflict_share": 0.264
   },
   "MYS": {
    "name": "Malaysia",
-   "n": 7827,
+   "n": 7837,
    "conflict_share": 0.151,
-   "goldstein_mean": 1.83,
-   "recent_n": 714,
-   "recent_conflict_share": 0.125
+   "goldstein_mean": 1.82,
+   "recent_n": 721,
+   "recent_conflict_share": 0.13
   },
   "NOR": {
    "name": "Norway",
@@ -165,35 +165,35 @@
   },
   "NPL": {
    "name": "Nepal",
-   "n": 29157,
+   "n": 29178,
    "conflict_share": 0.239,
    "goldstein_mean": 0.9,
-   "recent_n": 2871,
-   "recent_conflict_share": 0.281
+   "recent_n": 2866,
+   "recent_conflict_share": 0.279
   },
   "PAK": {
    "name": "Pakistan",
-   "n": 157036,
+   "n": 157146,
    "conflict_share": 0.416,
    "goldstein_mean": -0.81,
-   "recent_n": 9506,
+   "recent_n": 9534,
    "recent_conflict_share": 0.468
   },
   "RUS": {
    "name": "Russia",
-   "n": 36908,
+   "n": 36909,
    "conflict_share": 0.152,
    "goldstein_mean": 1.92,
-   "recent_n": 6576,
-   "recent_conflict_share": 0.123
+   "recent_n": 6452,
+   "recent_conflict_share": 0.125
   },
   "SAU": {
    "name": "Saudi Arabia",
-   "n": 17248,
-   "conflict_share": 0.176,
+   "n": 17288,
+   "conflict_share": 0.175,
    "goldstein_mean": 1.54,
-   "recent_n": 1424,
-   "recent_conflict_share": 0.181
+   "recent_n": 1457,
+   "recent_conflict_share": 0.179
   },
   "SDN": {
    "name": "Sudan",
@@ -208,16 +208,16 @@
    "n": 5575,
    "conflict_share": 0.236,
    "goldstein_mean": 0.92,
-   "recent_n": 381,
-   "recent_conflict_share": 0.257
+   "recent_n": 379,
+   "recent_conflict_share": 0.259
   },
   "USA": {
    "name": "United States",
-   "n": 220376,
-   "conflict_share": 0.186,
+   "n": 220818,
+   "conflict_share": 0.185,
    "goldstein_mean": 1.29,
-   "recent_n": 21963,
-   "recent_conflict_share": 0.187
+   "recent_n": 22242,
+   "recent_conflict_share": 0.183
   },
   "YEM": {
    "name": "Yemen",
@@ -237,26 +237,26 @@
   },
   "CHE": {
    "name": "Switzerland",
-   "n": 7017,
+   "n": 7018,
    "conflict_share": 0.16,
    "goldstein_mean": 1.6,
-   "recent_n": 890,
-   "recent_conflict_share": 0.085
+   "recent_n": 891,
+   "recent_conflict_share": 0.086
   },
   "DEU": {
    "name": "Germany",
-   "n": 14431,
+   "n": 14435,
    "conflict_share": 0.151,
    "goldstein_mean": 1.8,
-   "recent_n": 1819,
-   "recent_conflict_share": 0.054
+   "recent_n": 1809,
+   "recent_conflict_share": 0.053
   },
   "ESP": {
    "name": "Spain",
    "n": 4066,
    "conflict_share": 0.185,
    "goldstein_mean": 1.19,
-   "recent_n": 334,
+   "recent_n": 333,
    "recent_conflict_share": 0.132
   },
   "FIN": {
@@ -272,56 +272,56 @@
    "n": 6766,
    "conflict_share": 0.118,
    "goldstein_mean": 1.96,
-   "recent_n": 739,
+   "recent_n": 738,
    "recent_conflict_share": 0.068
   },
   "IRQ": {
    "name": "Iraq",
-   "n": 3854,
-   "conflict_share": 0.292,
+   "n": 3857,
+   "conflict_share": 0.291,
    "goldstein_mean": 0.25,
-   "recent_n": 307,
-   "recent_conflict_share": 0.261
+   "recent_n": 309,
+   "recent_conflict_share": 0.256
   },
   "JPN": {
    "name": "Japan",
-   "n": 26126,
+   "n": 26308,
    "conflict_share": 0.116,
    "goldstein_mean": 2.27,
-   "recent_n": 3631,
-   "recent_conflict_share": 0.082
+   "recent_n": 3793,
+   "recent_conflict_share": 0.08
   },
   "MCO": {
    "name": "Monaco",
-   "n": 435,
+   "n": 436,
    "conflict_share": 0.147,
-   "goldstein_mean": 2.13,
-   "recent_n": 28,
-   "recent_conflict_share": 0.25
+   "goldstein_mean": 2.12,
+   "recent_n": 29,
+   "recent_conflict_share": 0.241
   },
   "MEX": {
    "name": "Mexico",
-   "n": 1398,
+   "n": 1400,
    "conflict_share": 0.22,
-   "goldstein_mean": 1.03,
-   "recent_n": 80,
-   "recent_conflict_share": 0.125
+   "goldstein_mean": 1.04,
+   "recent_n": 82,
+   "recent_conflict_share": 0.122
   },
   "MMR": {
    "name": "Myanmar",
-   "n": 11503,
+   "n": 11504,
    "conflict_share": 0.296,
    "goldstein_mean": 0.72,
-   "recent_n": 836,
-   "recent_conflict_share": 0.306
+   "recent_n": 821,
+   "recent_conflict_share": 0.302
   },
   "NGA": {
    "name": "Nigeria",
-   "n": 5390,
-   "conflict_share": 0.549,
+   "n": 5410,
+   "conflict_share": 0.548,
    "goldstein_mean": -1.72,
-   "recent_n": 345,
-   "recent_conflict_share": 0.577
+   "recent_n": 365,
+   "recent_conflict_share": 0.57
   },
   "NZL": {
    "name": "New Zealand",
@@ -341,26 +341,26 @@
   },
   "PRT": {
    "name": "Portugal",
-   "n": 2182,
+   "n": 2183,
    "conflict_share": 0.197,
    "goldstein_mean": 1.11,
-   "recent_n": 217,
-   "recent_conflict_share": 0.253
+   "recent_n": 218,
+   "recent_conflict_share": 0.257
   },
   "SGP": {
    "name": "Singapore",
-   "n": 12038,
+   "n": 12068,
    "conflict_share": 0.115,
    "goldstein_mean": 2.35,
-   "recent_n": 1265,
-   "recent_conflict_share": 0.125
+   "recent_n": 1288,
+   "recent_conflict_share": 0.123
   },
   "THA": {
    "name": "Thailand",
-   "n": 10292,
+   "n": 10297,
    "conflict_share": 0.182,
    "goldstein_mean": 1.37,
-   "recent_n": 1655,
+   "recent_n": 1656,
    "recent_conflict_share": 0.281
   },
   "TWN": {
@@ -368,24 +368,24 @@
    "n": 2692,
    "conflict_share": 0.113,
    "goldstein_mean": 2.66,
-   "recent_n": 174,
-   "recent_conflict_share": 0.086
+   "recent_n": 171,
+   "recent_conflict_share": 0.088
   },
   "VNM": {
    "name": "Vietnam",
-   "n": 5389,
+   "n": 5390,
    "conflict_share": 0.079,
    "goldstein_mean": 2.45,
-   "recent_n": 744,
+   "recent_n": 745,
    "recent_conflict_share": 0.082
   },
   "ARE": {
    "name": "United Arab Emirates",
-   "n": 28362,
+   "n": 28372,
    "conflict_share": 0.169,
    "goldstein_mean": 1.53,
-   "recent_n": 2866,
-   "recent_conflict_share": 0.189
+   "recent_n": 2850,
+   "recent_conflict_share": 0.187
   },
   "BHR": {
    "name": "Bahrain",
@@ -405,10 +405,10 @@
   },
   "FRA": {
    "name": "France",
-   "n": 21778,
+   "n": 21782,
    "conflict_share": 0.125,
    "goldstein_mean": 2.06,
-   "recent_n": 2624,
+   "recent_n": 2616,
    "recent_conflict_share": 0.06
   },
   "GRC": {
@@ -416,7 +416,7 @@
    "n": 3195,
    "conflict_share": 0.127,
    "goldstein_mean": 1.55,
-   "recent_n": 333,
+   "recent_n": 331,
    "recent_conflict_share": 0.063
   },
   "GUY": {
@@ -429,18 +429,18 @@
   },
   "JOR": {
    "name": "Jordan",
-   "n": 3529,
-   "conflict_share": 0.266,
+   "n": 3531,
+   "conflict_share": 0.265,
    "goldstein_mean": 0.24,
-   "recent_n": 345,
-   "recent_conflict_share": 0.171
+   "recent_n": 344,
+   "recent_conflict_share": 0.169
   },
   "KOR": {
    "name": "Republic of Korea",
    "n": 8297,
    "conflict_share": 0.131,
    "goldstein_mean": 2.4,
-   "recent_n": 1186,
+   "recent_n": 1184,
    "recent_conflict_share": 0.172
   },
   "KWT": {
@@ -469,10 +469,10 @@
   },
   "QAT": {
    "name": "Qatar",
-   "n": 6172,
+   "n": 6173,
    "conflict_share": 0.106,
    "goldstein_mean": 1.91,
-   "recent_n": 548,
+   "recent_n": 549,
    "recent_conflict_share": 0.084
   },
   "TJK": {
@@ -485,19 +485,19 @@
   },
   "ZAF": {
    "name": "South Africa",
-   "n": 3237,
+   "n": 3238,
    "conflict_share": 0.289,
-   "goldstein_mean": 0.14,
-   "recent_n": 312,
-   "recent_conflict_share": 0.179
+   "goldstein_mean": 0.15,
+   "recent_n": 311,
+   "recent_conflict_share": 0.177
   },
   "ZWE": {
    "name": "Zimbabwe",
    "n": 844,
    "conflict_share": 0.154,
    "goldstein_mean": 1.67,
-   "recent_n": 68,
-   "recent_conflict_share": 0.132
+   "recent_n": 61,
+   "recent_conflict_share": 0.148
   },
   "ARG": {
    "name": "Argentina",
@@ -512,16 +512,16 @@
    "n": 3649,
    "conflict_share": 0.119,
    "goldstein_mean": 1.95,
-   "recent_n": 289,
-   "recent_conflict_share": 0.156
+   "recent_n": 288,
+   "recent_conflict_share": 0.153
   },
   "FJI": {
    "name": "Fiji",
    "n": 1013,
    "conflict_share": 0.07,
    "goldstein_mean": 2.45,
-   "recent_n": 266,
-   "recent_conflict_share": 0.086
+   "recent_n": 241,
+   "recent_conflict_share": 0.095
   },
   "LBN": {
    "name": "Lebanon",
@@ -533,8 +533,8 @@
   },
   "OMN": {
    "name": "Oman",
-   "n": 4322,
-   "conflict_share": 0.114,
+   "n": 4323,
+   "conflict_share": 0.115,
    "goldstein_mean": 2.15,
    "recent_n": 696,
    "recent_conflict_share": 0.161
@@ -549,11 +549,11 @@
   },
   "IRL": {
    "name": "Ireland",
-   "n": 2965,
+   "n": 2966,
    "conflict_share": 0.156,
    "goldstein_mean": 1.38,
-   "recent_n": 340,
-   "recent_conflict_share": 0.126
+   "recent_n": 341,
+   "recent_conflict_share": 0.129
   },
   "MKD": {
    "name": "North Macedonia",
@@ -592,8 +592,8 @@
    "n": 3357,
    "conflict_share": 0.212,
    "goldstein_mean": 1.07,
-   "recent_n": 475,
-   "recent_conflict_share": 0.284
+   "recent_n": 469,
+   "recent_conflict_share": 0.288
   },
   "KAZ": {
    "name": "Kazakhstan",
@@ -624,8 +624,8 @@
    "n": 2035,
    "conflict_share": 0.284,
    "goldstein_mean": 0.13,
-   "recent_n": 88,
-   "recent_conflict_share": 0.17
+   "recent_n": 87,
+   "recent_conflict_share": 0.172
   },
   "HTI": {
    "name": "Haiti",
@@ -680,8 +680,8 @@
    "n": 3456,
    "conflict_share": 0.271,
    "goldstein_mean": 0.72,
-   "recent_n": 455,
-   "recent_conflict_share": 0.47
+   "recent_n": 451,
+   "recent_conflict_share": 0.472
   },
   "LVA": {
    "name": "Latvia",
@@ -872,7 +872,7 @@
    "n": 8624,
    "conflict_share": 0.201,
    "goldstein_mean": 1.06,
-   "recent_n": 805,
+   "recent_n": 780,
    "recent_conflict_share": 0.282
   },
   "LBY": {
@@ -909,11 +909,11 @@
   },
   "SOM": {
    "name": "Somalia",
-   "n": 540,
-   "conflict_share": 0.333,
+   "n": 542,
+   "conflict_share": 0.332,
    "goldstein_mean": 0.76,
-   "recent_n": 33,
-   "recent_conflict_share": 0.667
+   "recent_n": 35,
+   "recent_conflict_share": 0.629
   },
   "TCD": {
    "name": "Chad",
@@ -1157,11 +1157,11 @@
   },
   "VAT": {
    "name": "Vatican",
-   "n": 694,
-   "conflict_share": 0.206,
-   "goldstein_mean": 0.66,
-   "recent_n": 20,
-   "recent_conflict_share": 0.15
+   "n": 698,
+   "conflict_share": 0.211,
+   "goldstein_mean": 0.62,
+   "recent_n": 24,
+   "recent_conflict_share": 0.292
   },
   "GIN": {
    "name": "Guinea",
@@ -1173,11 +1173,11 @@
   },
   "LTU": {
    "name": "Lithuania",
-   "n": 388,
-   "conflict_share": 0.165,
+   "n": 393,
+   "conflict_share": 0.163,
    "goldstein_mean": 1.68,
-   "recent_n": 22,
-   "recent_conflict_share": 0.091
+   "recent_n": 27,
+   "recent_conflict_share": 0.074
   },
   "SEN": {
    "name": "Senegal",
@@ -1557,18 +1557,18 @@
   }
  },
  "excluded_actor_codes": {
-  "EUR": 9145,
+  "EUR": 9149,
   "AFR": 8816,
-  "SAS": 7433,
-  "SEA": 5510,
-  "PSE": 4417,
+  "SAS": 7434,
+  "SEA": 5511,
+  "PSE": 4427,
   "MEA": 2657,
-  "ASA": 1199,
-  "NMR": 508,
+  "ASA": 1200,
+  "NMR": 510,
   "TMP": 293,
   "CAS": 214,
   "PGS": 208,
-  "WST": 166,
+  "WST": 168,
   "SSD": 134,
   "CRB": 103,
   "WAF": 30,
