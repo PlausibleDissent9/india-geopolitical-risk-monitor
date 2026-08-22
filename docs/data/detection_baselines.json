@@ -8,7 +8,7 @@
   "prompted_by": "a simulated hostile referee (analysis/referee_report_2026-08-07.md, findings 3-4), whose recomputations of the published statistics all reproduced and whose criticism was aimed at what was NOT published beside them",
   "registered_criterion": "a detected same-channel episode day within +/-3 days of the event (the lenient reading; the strict start-based reading is published here alongside)",
   "how_to_read": "The apparatus earns exactly the gap between the registered hits and the chance/naive rows. A registered rate far above chance but close to the naive any-channel detector means the CHANNEL ATTRIBUTION carries the value, not the detection itself.",
-  "generated": "2026-08-21T01:22:25Z"
+  "generated": "2026-08-22T01:20:19Z"
  },
  "hit_rate_context": {
   "n_events": 29,
@@ -41,7 +41,7 @@
  },
  "composite7_battery": {
   "rule": "the registered T2 convention applied descriptively: composite7 above its trailing 90th percentile (730-day window, >= 180 trailing observations). T2's alert-time band-survival clause is omitted because published sampling bands do not span the full history.",
-  "n_days_evaluable": 3131,
+  "n_days_evaluable": 3132,
   "first_evaluable_day": "2017-12-31",
   "n_days_elevated": 445,
   "elevated_day_fraction": 0.1421,
