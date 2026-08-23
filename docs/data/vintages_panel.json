@@ -7,8 +7,8 @@
   "what": "Every published vintage of the daily series, as an exact reconstruction recipe: truncate the current history.csv at the vintage's last_observation, then overwrite the values in its diffs. Gives a backtester the numbers as they stood on any publish date -- the ALFRED property -- without twelve git invocations.",
   "reconstruction": "rows = {d: r for d, r in current.items() if d <= last_observation and d not in absent_days}; then for each diff day, apply its channel values over the row. Verified exact against git for every vintage listed, on every build; the builder refuses to publish otherwise.",
   "why_diffs": "10 of the vintages differ from today's series by nothing at all (vintages.json is the nightly proof), so a full panel would be >99% duplication. The two revised vintages carry their changed values inline.",
-  "n_vintages": 25,
-  "generated": "2026-08-22T17:18:35Z"
+  "n_vintages": 26,
+  "generated": "2026-08-23T17:42:16Z"
  },
  "current_columns": [
   "composite",
@@ -19,6 +19,15 @@
   "shipping"
  ],
  "vintages": [
+  {
+   "published": "2026-08-23",
+   "sha": "ff65d9767e6b2d2482b06a32c78224c2eb12deaa",
+   "last_observation": "2026-08-22",
+   "n_rows": 3319,
+   "n_diff_days": 0,
+   "absent_days": [],
+   "diffs": {}
+  },
   {
    "published": "2026-08-22",
    "sha": "cda7d6e591aff4a63a8b0e21974ecc2f6d6b10ef",

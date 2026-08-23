@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "Mean V2Tone of each channel's MATCHED articles -- the same articles the registered dictionaries selected and the receipts pages enumerate; tone is an annotation joined by URL in GDELT's GKG, never a filter. Context axis only: tone enters no score, no percentile, and no composite. n_tone_found vs n_matched discloses the join rate; GKG does not carry every URL. Negative tone is conventional GDELT scaling (roughly -10 very negative to +10 very positive).",
-  "generated": "2026-08-22T17:18:57Z",
+  "generated": "2026-08-23T17:42:39Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -168,6 +168,33 @@
     "mean_tone": -3.961,
     "n_matched": 190,
     "n_tone_found": 172
+   }
+  },
+  "2026-08-22": {
+   "china_east": {
+    "mean_tone": -3.625,
+    "n_matched": 4,
+    "n_tone_found": 3
+   },
+   "gulf_energy": {
+    "mean_tone": -2.944,
+    "n_matched": 473,
+    "n_tone_found": 412
+   },
+   "pakistan_west": {
+    "mean_tone": -1.462,
+    "n_matched": 12,
+    "n_tone_found": 12
+   },
+   "shipping": {
+    "mean_tone": -3.944,
+    "n_matched": 86,
+    "n_tone_found": 70
+   },
+   "us_trade": {
+    "mean_tone": -2.6,
+    "n_matched": 46,
+    "n_tone_found": 42
    }
   }
  }

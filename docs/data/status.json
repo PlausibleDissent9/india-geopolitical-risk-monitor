@@ -9,7 +9,7 @@
   "n_alignment_checks": 2,
   "n_aligned": 1,
   "n_not_aligned_or_unavailable": 1,
-  "generated": "2026-08-23T01:26:30Z"
+  "generated": "2026-08-23T17:42:50Z"
  },
  "sources": [
   {
@@ -25,9 +25,9 @@
    "key": "events",
    "name": "GDELT Events stream",
    "role": "event counts for maps and the stress gauge (context)",
-   "latest_data": "2026-08-20",
+   "latest_data": "2026-08-21",
    "expect_within_days": 5,
-   "age_days": 3,
+   "age_days": 2,
    "ok": true
   },
   {
@@ -43,9 +43,9 @@
    "key": "comparators",
    "name": "Comparator salience",
    "role": "Indonesia/Vietnam placebo panel",
-   "latest_data": "2026-08-22",
+   "latest_data": "2026-08-23",
    "expect_within_days": 7,
-   "age_days": 1,
+   "age_days": 0,
    "ok": true
   },
   {
@@ -54,7 +54,7 @@
    "role": "inputs to event-study and priced-risk panels (beside, never inside)",
    "latest_data": null,
    "expect_within_days": 4,
-   "output_generated": "2026-08-22",
+   "output_generated": "2026-08-23",
    "ok": false,
    "note": "maximum market-input date is not present in committed evidence; the separately shown output build date is not an input-freshness claim"
   },
@@ -98,9 +98,9 @@
    "key": "country_china",
    "name": "China country monitor (V8)",
    "role": "comparator instrument; enters no India score",
-   "latest_data": "2026-08-22",
+   "latest_data": "2026-08-23",
    "expect_within_days": 3,
-   "age_days": 1,
+   "age_days": 0,
    "ok": true
   }
  ],
@@ -137,7 +137,7 @@
    "key": "aptness",
    "name": "Aptness labels",
    "evidence": "docs/data/aptness.json",
-   "last": "2026-08-22T17:18:51Z",
+   "last": "2026-08-23T17:42:33Z",
    "measured_day": "2026-08-21"
   },
   {
@@ -151,14 +151,14 @@
    "key": "reliability",
    "name": "Reliability record",
    "evidence": "docs/data/reliability.json",
-   "last": "2026-08-23T01:26:19Z",
+   "last": "2026-08-23T17:42:49Z",
    "measured_day": null
   },
   {
    "key": "permanence",
    "name": "Archive snapshots (twice daily)",
    "evidence": "docs/data/permanence.json",
-   "last": "2026-08-22T16:49:44Z",
+   "last": "2026-08-23T02:51:57Z",
    "measured_day": null
   }
  ],
@@ -221,8 +221,8 @@
  },
  "morning_contract": {
   "on_time": 0,
-  "scored_days": 16,
+  "scored_days": 17,
   "rate": 0.0,
-  "last_scored_day": "2026-08-21"
+  "last_scored_day": "2026-08-22"
  }
 }

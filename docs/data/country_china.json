@@ -3,28 +3,28 @@
   "what": "Country monitor: china. Same substrate and same construction as the India instrument (share of monitored English coverage per registered channel, trailing-730-day percentile). A monitor stands beside the India index and never enters any India score; channels are this country's own registered risk themes. Measures press salience: the share of global news coverage matching each channel, ranked against its own trailing two years. Not a measure of risk, and not investment advice.",
   "registration": "REGISTERED 2026-08-06, founder-signed in chat ('sign china'); amendments henceforth are dated changelog entries, never silent",
   "frozen_on": "2026-08-06",
-  "generated": "2026-08-22T17:02:17Z",
+  "generated": "2026-08-23T17:00:18Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/country_china.json"
  },
- "date": "2026-08-22",
+ "date": "2026-08-23",
  "channels": {
   "taiwan_strait": {
    "label": "Taiwan Strait",
    "collected": true,
-   "score": 61.1
+   "score": 95.1
   },
   "south_china_sea": {
    "label": "South China Sea",
    "collected": true,
-   "score": 88.0
+   "score": 61.4
   },
   "us_tech_trade": {
    "label": "US Technology & Trade",
    "collected": true,
-   "score": 64.9
+   "score": 8.6
   },
   "india_border": {
    "label": "India Border (mirror of IGRM china_east)",
@@ -39,7 +39,7 @@
  },
  "n_channels_collected": 3,
  "n_channels_registered": 5,
- "composite": 71.3,
+ "composite": 55.0,
  "history": {
   "dates": [
    "2017-01-01",
@@ -3537,7 +3537,8 @@
    "2026-08-19",
    "2026-08-20",
    "2026-08-21",
-   "2026-08-22"
+   "2026-08-22",
+   "2026-08-23"
   ],
   "taiwan_strait": [
    null,
@@ -7035,7 +7036,8 @@
    24.4,
    44.3,
    21.6,
-   61.1
+   56.7,
+   95.1
   ],
   "south_china_sea": [
    null,
@@ -10533,7 +10535,8 @@
    91.4,
    68.1,
    65.4,
-   88.0
+   55.4,
+   61.4
   ],
   "us_tech_trade": [
    null,
@@ -14031,7 +14034,8 @@
    38.6,
    32.4,
    6.8,
-   64.9
+   67.1,
+   8.6
   ]
  }
 }

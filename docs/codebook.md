@@ -984,7 +984,7 @@ what is served today, across the composite and all five channels on
 their overlapping dates — the question that decides whether a backtest
 built on the current file carries look-ahead bias.
 
-**Finding: 23 of 25 vintages show zero changed values.** The series is
+**Finding: 24 of 26 vintages show zero changed values.** The series is
 append-only in practice — days are added, not rewritten. The single
 revision episode is the two 2026-07-27 vintages (101 values across 17
 days, max 99.4 percentile points), and it sits exactly on methodology

@@ -1,8 +1,8 @@
 {
   "_meta": {
     "schema_version": "1.0.0",
-    "date": "2026-08-22",
-    "generated": "2026-08-22T00:00:00Z",
+    "date": "2026-08-23",
+    "generated": "2026-08-23T00:00:00Z",
     "contract_effective": "2026-08-09",
     "partial": false,
     "partial_definition": "False means every registered geometry-layer cell is represented. It does not mean every cell carries an observation.",
@@ -11,10 +11,10 @@
     "codebook": "https://igrm.in/codebook.html",
     "source": "https://igrm.in/data/world_state.json",
     "what": "Complete-country/area Atlas coverage matrix. Every registered geometry appears for every country-level layer; unavailable cells remain explicit. This is not a world risk score or a claim of complete measurement.",
-    "observation_vintage": "2026-08-22",
+    "observation_vintage": "2026-08-23",
     "input_sha256": {
       "world_geometry": "d9163558d28de037be31b82add8471767bb9205ae0f9ef8480754464013dfb0d",
-      "map_relations_observation_set": "27b2929b79e2dde5e666205c581b282287a4c4ac7d0d894ce4a7ababa8aa42cf",
+      "map_relations_observation_set": "d111547587440bc30cffe5b829944d9909eeea7167d742f023de7020d2359426",
       "global_layer_registry": "f5adcb1326637cc73347b48b0f8ab0d68c79b4989f7497b9d66c8be408616bb1"
     },
     "matrix_state_sha256": "467c8197a7a92425f996a5ddbf4f04ef0b1cd1d58216c273babcb8b476d8287d"
@@ -5224,10 +5224,10 @@
     "india_partner_event_context": {
       "AFG": {
         "source_partner_name": "Afghanistan",
-        "event_count_all_time": 22145,
+        "event_count_all_time": 22147,
         "conflict_share_all_time": 0.228,
         "goldstein_mean_all_time": 1.02,
-        "event_count_recent_window": 3118,
+        "event_count_recent_window": 3120,
         "conflict_share_recent_window": 0.138
       },
       "AGO": {
@@ -5264,11 +5264,11 @@
       },
       "ARE": {
         "source_partner_name": "United Arab Emirates",
-        "event_count_all_time": 28372,
+        "event_count_all_time": 28373,
         "conflict_share_all_time": 0.169,
         "goldstein_mean_all_time": 1.53,
-        "event_count_recent_window": 2850,
-        "conflict_share_recent_window": 0.187
+        "event_count_recent_window": 2848,
+        "conflict_share_recent_window": 0.188
       },
       "ARG": {
         "source_partner_name": "Argentina",
@@ -5283,8 +5283,8 @@
         "event_count_all_time": 994,
         "conflict_share_all_time": 0.06,
         "goldstein_mean_all_time": 2.6,
-        "event_count_recent_window": 158,
-        "conflict_share_recent_window": 0.063
+        "event_count_recent_window": 157,
+        "conflict_share_recent_window": 0.064
       },
       "ATG": {
         "source_partner_name": "Antigua and Barb.",
@@ -5296,10 +5296,10 @@
       },
       "AUS": {
         "source_partner_name": "Australia",
-        "event_count_all_time": 16068,
+        "event_count_all_time": 16070,
         "conflict_share_all_time": 0.143,
         "goldstein_mean_all_time": 1.9,
-        "event_count_recent_window": 1712,
+        "event_count_recent_window": 1714,
         "conflict_share_recent_window": 0.152
       },
       "AUT": {
@@ -5315,8 +5315,8 @@
         "event_count_all_time": 947,
         "conflict_share_all_time": 0.14,
         "goldstein_mean_all_time": 1.68,
-        "event_count_recent_window": 166,
-        "conflict_share_recent_window": 0.175
+        "event_count_recent_window": 164,
+        "conflict_share_recent_window": 0.177
       },
       "BDI": {
         "source_partner_name": "Burundi",
@@ -5328,11 +5328,11 @@
       },
       "BEL": {
         "source_partner_name": "Belgium",
-        "event_count_all_time": 3357,
+        "event_count_all_time": 3362,
         "conflict_share_all_time": 0.212,
         "goldstein_mean_all_time": 1.07,
-        "event_count_recent_window": 469,
-        "conflict_share_recent_window": 0.288
+        "event_count_recent_window": 474,
+        "conflict_share_recent_window": 0.287
       },
       "BEN": {
         "source_partner_name": "Benin",
@@ -5352,10 +5352,10 @@
       },
       "BGD": {
         "source_partner_name": "Bangladesh",
-        "event_count_all_time": 74723,
+        "event_count_all_time": 74772,
         "conflict_share_all_time": 0.298,
         "goldstein_mean_all_time": 0.47,
-        "event_count_recent_window": 9406,
+        "event_count_recent_window": 9427,
         "conflict_share_recent_window": 0.347
       },
       "BGR": {
@@ -5416,10 +5416,10 @@
       },
       "BRA": {
         "source_partner_name": "Brazil",
-        "event_count_all_time": 4990,
+        "event_count_all_time": 4991,
         "conflict_share_all_time": 0.104,
         "goldstein_mean_all_time": 2.63,
-        "event_count_recent_window": 828,
+        "event_count_recent_window": 824,
         "conflict_share_recent_window": 0.03
       },
       "BRB": {
@@ -5440,11 +5440,11 @@
       },
       "BTN": {
         "source_partner_name": "Bhutan",
-        "event_count_all_time": 7937,
+        "event_count_all_time": 7941,
         "conflict_share_all_time": 0.103,
         "goldstein_mean_all_time": 2.19,
-        "event_count_recent_window": 929,
-        "conflict_share_recent_window": 0.103
+        "event_count_recent_window": 932,
+        "conflict_share_recent_window": 0.104
       },
       "BWA": {
         "source_partner_name": "Botswana",
@@ -5464,18 +5464,18 @@
       },
       "CAN": {
         "source_partner_name": "Canada",
-        "event_count_all_time": 23808,
+        "event_count_all_time": 23813,
         "conflict_share_all_time": 0.244,
         "goldstein_mean_all_time": 0.81,
-        "event_count_recent_window": 3240,
+        "event_count_recent_window": 3243,
         "conflict_share_recent_window": 0.196
       },
       "CHE": {
         "source_partner_name": "Switzerland",
-        "event_count_all_time": 7018,
+        "event_count_all_time": 7020,
         "conflict_share_all_time": 0.16,
         "goldstein_mean_all_time": 1.6,
-        "event_count_recent_window": 891,
+        "event_count_recent_window": 893,
         "conflict_share_recent_window": 0.086
       },
       "CHL": {
@@ -5483,16 +5483,16 @@
         "event_count_all_time": 914,
         "conflict_share_all_time": 0.12,
         "goldstein_mean_all_time": 2.09,
-        "event_count_recent_window": 151,
-        "conflict_share_recent_window": 0.152
+        "event_count_recent_window": 150,
+        "conflict_share_recent_window": 0.147
       },
       "CHN": {
         "source_partner_name": "China",
-        "event_count_all_time": 96186,
+        "event_count_all_time": 96210,
         "conflict_share_all_time": 0.273,
         "goldstein_mean_all_time": 0.67,
-        "event_count_recent_window": 5833,
-        "conflict_share_recent_window": 0.207
+        "event_count_recent_window": 5770,
+        "conflict_share_recent_window": 0.208
       },
       "CIV": {
         "source_partner_name": "Côte d'Ivoire",
@@ -5536,11 +5536,11 @@
       },
       "COL": {
         "source_partner_name": "Colombia",
-        "event_count_all_time": 457,
-        "conflict_share_all_time": 0.252,
-        "goldstein_mean_all_time": 0.81,
-        "event_count_recent_window": 62,
-        "conflict_share_recent_window": 0.194
+        "event_count_all_time": 458,
+        "conflict_share_all_time": 0.251,
+        "goldstein_mean_all_time": 0.82,
+        "event_count_recent_window": 63,
+        "conflict_share_recent_window": 0.19
       },
       "COM": {
         "source_partner_name": "Comoros",
@@ -5568,11 +5568,11 @@
       },
       "CYM": {
         "source_partner_name": "Cayman Is.",
-        "event_count_all_time": 74,
-        "conflict_share_all_time": 0.203,
-        "goldstein_mean_all_time": 1.77,
-        "event_count_recent_window": 1,
-        "conflict_share_recent_window": 1.0
+        "event_count_all_time": 75,
+        "conflict_share_all_time": 0.2,
+        "goldstein_mean_all_time": 1.75,
+        "event_count_recent_window": 2,
+        "conflict_share_recent_window": 0.5
       },
       "CYP": {
         "source_partner_name": "Cyprus",
@@ -5595,7 +5595,7 @@
         "event_count_all_time": 14435,
         "conflict_share_all_time": 0.151,
         "goldstein_mean_all_time": 1.8,
-        "event_count_recent_window": 1809,
+        "event_count_recent_window": 1804,
         "conflict_share_recent_window": 0.053
       },
       "DJI": {
@@ -5616,11 +5616,11 @@
       },
       "DNK": {
         "source_partner_name": "Denmark",
-        "event_count_all_time": 3456,
-        "conflict_share_all_time": 0.271,
+        "event_count_all_time": 3462,
+        "conflict_share_all_time": 0.272,
         "goldstein_mean_all_time": 0.72,
-        "event_count_recent_window": 451,
-        "conflict_share_recent_window": 0.472
+        "event_count_recent_window": 452,
+        "conflict_share_recent_window": 0.471
       },
       "DOM": {
         "source_partner_name": "Dominican Rep.",
@@ -5635,8 +5635,8 @@
         "event_count_all_time": 234,
         "conflict_share_all_time": 0.158,
         "goldstein_mean_all_time": 1.36,
-        "event_count_recent_window": 45,
-        "conflict_share_recent_window": 0.089
+        "event_count_recent_window": 38,
+        "conflict_share_recent_window": 0.105
       },
       "ECU": {
         "source_partner_name": "Ecuador",
@@ -5699,16 +5699,16 @@
         "event_count_all_time": 1013,
         "conflict_share_all_time": 0.07,
         "goldstein_mean_all_time": 2.45,
-        "event_count_recent_window": 241,
-        "conflict_share_recent_window": 0.095
+        "event_count_recent_window": 236,
+        "conflict_share_recent_window": 0.097
       },
       "FRA": {
         "source_partner_name": "France",
-        "event_count_all_time": 21782,
+        "event_count_all_time": 21790,
         "conflict_share_all_time": 0.125,
         "goldstein_mean_all_time": 2.06,
-        "event_count_recent_window": 2616,
-        "conflict_share_recent_window": 0.06
+        "event_count_recent_window": 2624,
+        "conflict_share_recent_window": 0.061
       },
       "FSM": {
         "source_partner_name": "Micronesia",
@@ -5728,10 +5728,10 @@
       },
       "GBR": {
         "source_partner_name": "United Kingdom",
-        "event_count_all_time": 71632,
+        "event_count_all_time": 71638,
         "conflict_share_all_time": 0.198,
         "goldstein_mean_all_time": 1.16,
-        "event_count_recent_window": 6302,
+        "event_count_recent_window": 6290,
         "conflict_share_recent_window": 0.164
       },
       "GHA": {
@@ -5851,8 +5851,8 @@
         "event_count_all_time": 6766,
         "conflict_share_all_time": 0.118,
         "goldstein_mean_all_time": 1.96,
-        "event_count_recent_window": 738,
-        "conflict_share_recent_window": 0.068
+        "event_count_recent_window": 735,
+        "conflict_share_recent_window": 0.065
       },
       "IRL": {
         "source_partner_name": "Ireland",
@@ -5864,11 +5864,11 @@
       },
       "IRN": {
         "source_partner_name": "Iran",
-        "event_count_all_time": 16374,
+        "event_count_all_time": 16380,
         "conflict_share_all_time": 0.175,
         "goldstein_mean_all_time": 1.5,
-        "event_count_recent_window": 4797,
-        "conflict_share_recent_window": 0.176
+        "event_count_recent_window": 4803,
+        "conflict_share_recent_window": 0.175
       },
       "IRQ": {
         "source_partner_name": "Iraq",
@@ -5888,19 +5888,19 @@
       },
       "ISR": {
         "source_partner_name": "Israel",
-        "event_count_all_time": 21152,
+        "event_count_all_time": 21155,
         "conflict_share_all_time": 0.194,
         "goldstein_mean_all_time": 1.17,
-        "event_count_recent_window": 2303,
-        "conflict_share_recent_window": 0.214
+        "event_count_recent_window": 2300,
+        "conflict_share_recent_window": 0.213
       },
       "ITA": {
         "source_partner_name": "Italy",
-        "event_count_all_time": 12050,
+        "event_count_all_time": 12056,
         "conflict_share_all_time": 0.209,
-        "goldstein_mean_all_time": 1.03,
-        "event_count_recent_window": 1129,
-        "conflict_share_recent_window": 0.169
+        "goldstein_mean_all_time": 1.02,
+        "event_count_recent_window": 1132,
+        "conflict_share_recent_window": 0.171
       },
       "JAM": {
         "source_partner_name": "Jamaica",
@@ -5920,10 +5920,10 @@
       },
       "JPN": {
         "source_partner_name": "Japan",
-        "event_count_all_time": 26308,
-        "conflict_share_all_time": 0.116,
+        "event_count_all_time": 26346,
+        "conflict_share_all_time": 0.115,
         "goldstein_mean_all_time": 2.27,
-        "event_count_recent_window": 3793,
+        "event_count_recent_window": 3800,
         "conflict_share_recent_window": 0.08
       },
       "KAZ": {
@@ -5976,11 +5976,11 @@
       },
       "KOR": {
         "source_partner_name": "Republic of Korea",
-        "event_count_all_time": 8297,
-        "conflict_share_all_time": 0.131,
+        "event_count_all_time": 8301,
+        "conflict_share_all_time": 0.132,
         "goldstein_mean_all_time": 2.4,
-        "event_count_recent_window": 1184,
-        "conflict_share_recent_window": 0.172
+        "event_count_recent_window": 1186,
+        "conflict_share_recent_window": 0.174
       },
       "KWT": {
         "source_partner_name": "Kuwait",
@@ -6040,11 +6040,11 @@
       },
       "LKA": {
         "source_partner_name": "Sri Lanka",
-        "event_count_all_time": 27039,
+        "event_count_all_time": 27041,
         "conflict_share_all_time": 0.288,
         "goldstein_mean_all_time": 0.59,
-        "event_count_recent_window": 2398,
-        "conflict_share_recent_window": 0.169
+        "event_count_recent_window": 2395,
+        "conflict_share_recent_window": 0.17
       },
       "LSO": {
         "source_partner_name": "Lesotho",
@@ -6168,11 +6168,11 @@
       },
       "MMR": {
         "source_partner_name": "Myanmar",
-        "event_count_all_time": 11504,
+        "event_count_all_time": 11506,
         "conflict_share_all_time": 0.296,
         "goldstein_mean_all_time": 0.72,
-        "event_count_recent_window": 821,
-        "conflict_share_recent_window": 0.302
+        "event_count_recent_window": 815,
+        "conflict_share_recent_window": 0.299
       },
       "MNG": {
         "source_partner_name": "Mongolia",
@@ -6200,10 +6200,10 @@
       },
       "MUS": {
         "source_partner_name": "Mauritius",
-        "event_count_all_time": 3828,
+        "event_count_all_time": 3840,
         "conflict_share_all_time": 0.073,
-        "goldstein_mean_all_time": 2.33,
-        "event_count_recent_window": 539,
+        "goldstein_mean_all_time": 2.34,
+        "event_count_recent_window": 551,
         "conflict_share_recent_window": 0.024
       },
       "MWI": {
@@ -6216,11 +6216,11 @@
       },
       "MYS": {
         "source_partner_name": "Malaysia",
-        "event_count_all_time": 7837,
+        "event_count_all_time": 7838,
         "conflict_share_all_time": 0.151,
         "goldstein_mean_all_time": 1.82,
-        "event_count_recent_window": 721,
-        "conflict_share_recent_window": 0.13
+        "event_count_recent_window": 713,
+        "conflict_share_recent_window": 0.126
       },
       "NAM": {
         "source_partner_name": "Namibia",
@@ -6240,11 +6240,11 @@
       },
       "NGA": {
         "source_partner_name": "Nigeria",
-        "event_count_all_time": 5410,
-        "conflict_share_all_time": 0.548,
-        "goldstein_mean_all_time": -1.72,
-        "event_count_recent_window": 365,
-        "conflict_share_recent_window": 0.57
+        "event_count_all_time": 5417,
+        "conflict_share_all_time": 0.549,
+        "goldstein_mean_all_time": -1.73,
+        "event_count_recent_window": 372,
+        "conflict_share_recent_window": 0.578
       },
       "NIC": {
         "source_partner_name": "Nicaragua",
@@ -6272,11 +6272,11 @@
       },
       "NPL": {
         "source_partner_name": "Nepal",
-        "event_count_all_time": 29178,
+        "event_count_all_time": 29188,
         "conflict_share_all_time": 0.239,
         "goldstein_mean_all_time": 0.9,
-        "event_count_recent_window": 2866,
-        "conflict_share_recent_window": 0.279
+        "event_count_recent_window": 2850,
+        "conflict_share_recent_window": 0.277
       },
       "NRU": {
         "source_partner_name": "Nauru",
@@ -6291,8 +6291,8 @@
         "event_count_all_time": 4032,
         "conflict_share_all_time": 0.126,
         "goldstein_mean_all_time": 1.85,
-        "event_count_recent_window": 538,
-        "conflict_share_recent_window": 0.072
+        "event_count_recent_window": 537,
+        "conflict_share_recent_window": 0.073
       },
       "OMN": {
         "source_partner_name": "Oman",
@@ -6304,10 +6304,10 @@
       },
       "PAK": {
         "source_partner_name": "Pakistan",
-        "event_count_all_time": 157146,
+        "event_count_all_time": 157175,
         "conflict_share_all_time": 0.416,
         "goldstein_mean_all_time": -0.81,
-        "event_count_recent_window": 9534,
+        "event_count_recent_window": 9530,
         "conflict_share_recent_window": 0.468
       },
       "PAN": {
@@ -6328,11 +6328,11 @@
       },
       "PHL": {
         "source_partner_name": "Philippines",
-        "event_count_all_time": 3003,
+        "event_count_all_time": 3005,
         "conflict_share_all_time": 0.131,
         "goldstein_mean_all_time": 2.18,
-        "event_count_recent_window": 186,
-        "conflict_share_recent_window": 0.086
+        "event_count_recent_window": 188,
+        "conflict_share_recent_window": 0.085
       },
       "PLW": {
         "source_partner_name": "Palau",
@@ -6352,11 +6352,11 @@
       },
       "POL": {
         "source_partner_name": "Poland",
-        "event_count_all_time": 2615,
-        "conflict_share_all_time": 0.211,
-        "goldstein_mean_all_time": 0.74,
-        "event_count_recent_window": 289,
-        "conflict_share_recent_window": 0.211
+        "event_count_all_time": 2627,
+        "conflict_share_all_time": 0.21,
+        "goldstein_mean_all_time": 0.76,
+        "event_count_recent_window": 301,
+        "conflict_share_recent_window": 0.203
       },
       "PRK": {
         "source_partner_name": "Dem. Rep. Korea",
@@ -6384,7 +6384,7 @@
       },
       "QAT": {
         "source_partner_name": "Qatar",
-        "event_count_all_time": 6173,
+        "event_count_all_time": 6175,
         "conflict_share_all_time": 0.106,
         "goldstein_mean_all_time": 1.91,
         "event_count_recent_window": 549,
@@ -6392,10 +6392,10 @@
       },
       "RUS": {
         "source_partner_name": "Russia",
-        "event_count_all_time": 36909,
+        "event_count_all_time": 36911,
         "conflict_share_all_time": 0.152,
         "goldstein_mean_all_time": 1.92,
-        "event_count_recent_window": 6452,
+        "event_count_recent_window": 6411,
         "conflict_share_recent_window": 0.125
       },
       "RWA": {
@@ -6432,9 +6432,9 @@
       },
       "SGP": {
         "source_partner_name": "Singapore",
-        "event_count_all_time": 12068,
+        "event_count_all_time": 12069,
         "conflict_share_all_time": 0.115,
-        "goldstein_mean_all_time": 2.35,
+        "goldstein_mean_all_time": 2.36,
         "event_count_recent_window": 1288,
         "conflict_share_recent_window": 0.123
       },
@@ -6568,10 +6568,10 @@
       },
       "THA": {
         "source_partner_name": "Thailand",
-        "event_count_all_time": 10297,
+        "event_count_all_time": 10303,
         "conflict_share_all_time": 0.182,
         "goldstein_mean_all_time": 1.37,
-        "event_count_recent_window": 1656,
+        "event_count_recent_window": 1661,
         "conflict_share_recent_window": 0.281
       },
       "TJK": {
@@ -6659,7 +6659,7 @@
         "event_count_all_time": 8624,
         "conflict_share_all_time": 0.201,
         "goldstein_mean_all_time": 1.06,
-        "event_count_recent_window": 780,
+        "event_count_recent_window": 777,
         "conflict_share_recent_window": 0.282
       },
       "URY": {
@@ -6672,11 +6672,11 @@
       },
       "USA": {
         "source_partner_name": "United States",
-        "event_count_all_time": 220818,
+        "event_count_all_time": 220937,
         "conflict_share_all_time": 0.185,
         "goldstein_mean_all_time": 1.29,
-        "event_count_recent_window": 22242,
-        "conflict_share_recent_window": 0.183
+        "event_count_recent_window": 22253,
+        "conflict_share_recent_window": 0.181
       },
       "UZB": {
         "source_partner_name": "Uzbekistan",
@@ -6747,8 +6747,8 @@
         "event_count_all_time": 3238,
         "conflict_share_all_time": 0.289,
         "goldstein_mean_all_time": 0.15,
-        "event_count_recent_window": 311,
-        "conflict_share_recent_window": 0.177
+        "event_count_recent_window": 309,
+        "conflict_share_recent_window": 0.178
       },
       "ZMB": {
         "source_partner_name": "Zambia",
@@ -6763,8 +6763,8 @@
         "event_count_all_time": 844,
         "conflict_share_all_time": 0.154,
         "goldstein_mean_all_time": 1.67,
-        "event_count_recent_window": 61,
-        "conflict_share_recent_window": 0.148
+        "event_count_recent_window": 51,
+        "conflict_share_recent_window": 0.137
       }
     }
   },
