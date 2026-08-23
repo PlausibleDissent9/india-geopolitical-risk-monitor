@@ -10,18 +10,18 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-21",
- "generated_at": "2026-08-22T14:20:40Z",
+ "target_date": "2026-08-22",
+ "generated_at": "2026-08-23T02:48:15Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "0bb9d2be16230e364ecd420ced64d930ba911da2",
-  "blob_git_sha1": "f0d36bbbd2e7e84217191ee1a064b99932260620",
-  "blob_sha256": "293f6309cf064a69f54cfee8ee50155add918d0713cff61661dbb504572404d6",
-  "target_date": "2026-08-20"
+  "commit_sha": "ff65d9767e6b2d2482b06a32c78224c2eb12deaa",
+  "blob_git_sha1": "6e4e83678db0adf28043da663094c6e8fd587536",
+  "blob_sha256": "b4523dc92ab3345e2d84b45b6cd0f9b902883e9f9dd6bedb8d7775a831711195",
+  "target_date": "2026-08-21"
  },
  "channels": {
   "pakistan_west": {
@@ -34,41 +34,41 @@
   },
   "gulf_energy": {
    "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "reason_code": "source_response_invalid"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Piracy Observer Says Somali Incidents Rising as Navies Stretched",
-     "url": "https://gcaptain.com/piracy-observer-says-somali-incidents-rising-as-navies-stretched/",
-     "domain": "gcaptain.com"
+     "title": "Stop H - 1B , give startup visa : Indian - American investor Vivek Wadhwa says Americans rightfully hate unethical Indians",
+     "url": "https://timesofindia.indiatimes.com/world/us/stop-h-1b-visa-give-startup-visa-indian-american-investor-vivek-wadhwa-says-americans-rightfully-hate-unethical-indians/articleshow/133424105.cms",
+     "domain": "timesofindia.indiatimes.com"
     },
     {
-     "title": "Houthis Move to Gain Complete Control Over Crucial Bab el - Mandeb Oil Chokepoint",
-     "url": "https://oilprice.com/Geopolitics/Middle-East/Houthis-Move-to-Gain-Complete-Control-Over-Crucial-Bab-el-Mandeb-Oil-Chokepoint.html",
-     "domain": "oilprice.com"
+     "title": "Indian techie on H - 1B visa gets laid off ; What he does next after months of job hunting may surprise you !",
+     "url": "https://www.indiatimes.com/trending/indian-techie-on-h-1b-visa-gets-laid-off-what-he-does-next-after-months-of-job-hunting-may-surprise-you/articleshow/133412574.html",
+     "domain": "indiatimes.com"
     },
     {
-     "title": "Julegavehandel , Julehandel | Advarer før julehandelen : Står i fare for å ikke komme frem",
-     "url": "https://www.nettavisen.no/okonomi/advarer-for-julehandelen-star-i-fare-for-a-ikke-komme-frem/s/80-95-5669",
-     "domain": "nettavisen.no"
+     "title": "Good news for family - based Green Card applicants from India in Visa Bulletin September 2026 , no relief for employment - based categories",
+     "url": "https://timesofindia.indiatimes.com/world/us/good-news-for-family-based-indian-green-card-applicants-in-visa-bulletin-september-2026-no-relief-for-employment-based-categories/articleshow/133425265.cms",
+     "domain": "timesofindia.indiatimes.com"
     },
     {
-     "title": "Two Vessels With 22 Indians On Board Hijacked By Pirates In Yemen , Somalia",
-     "url": "https://thenorthlines.com/two-vessels-with-22-indians-on-board-hijacked-by-pirates-in-yemen-somalia/",
-     "domain": "thenorthlines.com"
+     "title": "What are the U . S . latest allegations against India ? | Explained",
+     "url": "https://www.thehindu.com/business/what-are-the-uss-latest-allegations-against-india-explained/article71378950.ece",
+     "domain": "thehindu.com"
     },
     {
-     "title": "Sibu 1 ship seized by six armed individuals | The Jerusalem Post",
-     "url": "https://www.jpost.com/international/article-906216",
-     "domain": "jpost.com"
+     "title": "Російська нафта дорожча за Brent : що задумав Трамп в Ормузі",
+     "url": "https://glavcom.ua/columns/vadymdenysenko/rosijska-nafta-dorozhcha-za-brent-shcho-zadumav-tramp-v-ormuzi-1138237.html",
+     "domain": "glavcom.ua"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-21",
-     "evaluated_at_utc": "2026-08-22T14:20:40Z",
-     "rights_as_of": "2026-08-22",
+     "target_date": "2026-08-22",
+     "evaluated_at_utc": "2026-08-23T02:48:15Z",
+     "rights_as_of": "2026-08-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-20T23:59:59Z",
+     "release_deadline_utc": "2026-09-21T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-21",
-     "evaluated_at_utc": "2026-08-22T14:23:37Z",
-     "rights_as_of": "2026-08-22",
+     "target_date": "2026-08-22",
+     "evaluated_at_utc": "2026-08-23T02:51:21Z",
+     "rights_as_of": "2026-08-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-20T23:59:59Z",
+     "release_deadline_utc": "2026-09-21T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-21",
-     "evaluated_at_utc": "2026-08-22T14:23:37Z",
-     "rights_as_of": "2026-08-22",
+     "target_date": "2026-08-22",
+     "evaluated_at_utc": "2026-08-23T02:51:21Z",
+     "rights_as_of": "2026-08-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-20T23:59:59Z",
+     "release_deadline_utc": "2026-09-21T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "f179af5bd8799255b5a524faf7ada0c9265e71c605b0035eace710d7775132a8"
+ "payload_seal_sha256": "c0ed85435876a96f0f82d03998190ee9227dd0e6879b1448059bbf230484b9a6"
 }
