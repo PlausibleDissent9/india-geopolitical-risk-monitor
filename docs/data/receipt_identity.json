@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-22",
- "generated_at": "2026-08-23T14:20:28Z",
+ "target_date": "2026-08-23",
+ "generated_at": "2026-08-24T08:23:02Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "cb23b826d17765141da7edefb556a3c69aa66100",
-  "blob_git_sha1": "b7bb3388f996352f40162dfb05b7ebf2c7df4628",
-  "blob_sha256": "4375690a0429f5ab25a1f402574805eba3b00e4034f2d278f82daa52a6ce238d",
+  "state": "different_target",
+  "commit_sha": "a57c700cd75b356f3010607365fdd5b2f338683b",
+  "blob_git_sha1": "8d1f1e260aeb6493598bf6c86e3643ae884f5454",
+  "blob_sha256": "02510b9735c0f8c41026d95895acadbf7df19f2bc9438146f54d38d602d00936",
   "target_date": "2026-08-22"
  },
  "channels": {
@@ -29,42 +29,42 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "NSA Ajit Doval To Visit Beijing ; Hold Talks On India - China Border",
+     "url": "https://www.oneindia.com/international/nsa-ajit-doval-to-visit-beijing-hold-talks-on-india-china-border-8184967.html",
+     "domain": "oneindia.com"
+    },
+    {
+     "title": "NSA Doval to visit Beijing for 25th round of India - China border talks",
+     "url": "https://timesofindia.indiatimes.com/india/nsa-doval-to-visit-beijing-for-25th-round-of-india-china-border-talks/articleshow/133435929.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "National Security Adviser Doval heads to China for talks with Wang Yi",
+     "url": "https://www.tribuneindia.com/news/top-headlines/national-security-adviser-doval-heads-to-china-for-talks-with-wang-yi/",
+     "domain": "tribuneindia.com"
+    },
+    {
+     "title": "Peace along border areas prerequisite for good relations with China Jaishankar",
+     "url": "https://dailypioneer.com/news/peace-along-border-areas-prerequisite-for-good-relations-with-china-jaishankar",
+     "domain": "dailypioneer.com"
+    },
+    {
+     "title": "Ajit Doval to visit China on August 24 for talks with Wang Yi",
+     "url": "https://www.thehindu.com/news/international/ajit-doval-wang-yi-meeting-india-china-special-representatives-talks-august-23-2026/article71380342.ece",
+     "domain": "thehindu.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Stop H - 1B , give startup visa : Indian - American investor Vivek Wadhwa says Americans rightfully hate unethical Indians",
-     "url": "https://timesofindia.indiatimes.com/world/us/stop-h-1b-visa-give-startup-visa-indian-american-investor-vivek-wadhwa-says-americans-rightfully-hate-unethical-indians/articleshow/133424105.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "Indian techie on H - 1B visa gets laid off ; What he does next after months of job hunting may surprise you !",
-     "url": "https://www.indiatimes.com/trending/indian-techie-on-h-1b-visa-gets-laid-off-what-he-does-next-after-months-of-job-hunting-may-surprise-you/articleshow/133412574.html",
-     "domain": "indiatimes.com"
-    },
-    {
-     "title": "Good news for family - based Green Card applicants from India in Visa Bulletin September 2026 , no relief for employment - based categories",
-     "url": "https://timesofindia.indiatimes.com/world/us/good-news-for-family-based-indian-green-card-applicants-in-visa-bulletin-september-2026-no-relief-for-employment-based-categories/articleshow/133425265.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "What are the U . S . latest allegations against India ? | Explained",
-     "url": "https://www.thehindu.com/business/what-are-the-uss-latest-allegations-against-india-explained/article71378950.ece",
-     "domain": "thehindu.com"
-    },
-    {
-     "title": "Російська нафта дорожча за Brent : що задумав Трамп в Ормузі",
-     "url": "https://glavcom.ua/columns/vadymdenysenko/rosijska-nafta-dorozhcha-za-brent-shcho-zadumav-tramp-v-ormuzi-1138237.html",
-     "domain": "glavcom.ua"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
    "state": "unavailable",
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-22",
-     "evaluated_at_utc": "2026-08-23T14:20:28Z",
-     "rights_as_of": "2026-08-23",
+     "target_date": "2026-08-23",
+     "evaluated_at_utc": "2026-08-24T08:23:02Z",
+     "rights_as_of": "2026-08-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-21T23:59:59Z",
+     "release_deadline_utc": "2026-09-22T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-22",
-     "evaluated_at_utc": "2026-08-23T14:23:31Z",
-     "rights_as_of": "2026-08-23",
+     "target_date": "2026-08-23",
+     "evaluated_at_utc": "2026-08-24T08:25:56Z",
+     "rights_as_of": "2026-08-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-21T23:59:59Z",
+     "release_deadline_utc": "2026-09-22T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-22",
-     "evaluated_at_utc": "2026-08-23T14:23:31Z",
-     "rights_as_of": "2026-08-23",
+     "target_date": "2026-08-23",
+     "evaluated_at_utc": "2026-08-24T08:25:56Z",
+     "rights_as_of": "2026-08-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-21T23:59:59Z",
+     "release_deadline_utc": "2026-09-22T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "1a786bec32527ff6aa64ec4248282bc20957fe68a085034e1103288f58a2dabe"
+ "payload_seal_sha256": "0076eb6251fc86c58b45fdbcbd6d9e93d87001cc85348acb99d9d03cd5eb026b"
 }
