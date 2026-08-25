@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-24",
- "generated_at": "2026-08-25T08:21:30Z",
+ "generated_at": "2026-08-25T08:48:08Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "5f54cf3fd17de403584e8c80d29c3316bb37b829",
-  "blob_git_sha1": "dec29abced3eb6d1c0e3027eb8b62fdda6f3b9dc",
-  "blob_sha256": "7587251a0585edd4cdb8ac095ae7cce3836025b28c6bd5ee722f5c66c3365d55",
+  "commit_sha": "2f674ee377a280f0df423bb4f930f1f17700c9ff",
+  "blob_git_sha1": "cac3145e8ce44a7a01de352a68984798daa0fbbb",
+  "blob_sha256": "240155ba0704f5b89c673ab0b2040612c6052696220f703fcf8e4a23224a2e7e",
   "target_date": "2026-08-24"
  },
  "channels": {
@@ -29,8 +29,34 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Ajit Doval to visit Beijing for India - China border talks ahead of Xi expected India visit : What on agenda ?",
+     "url": "https://www.moneycontrol.com/world/ajit-doval-to-visit-beijing-for-india-china-border-talks-ahead-of-xi-s-expected-india-visit-what-s-on-agenda-article-14013598.html",
+     "domain": "moneycontrol.com"
+    },
+    {
+     "title": "Ajit Doval in Beijing : India - China border talks set for August 25 ; what on agenda ?",
+     "url": "https://timesofindia.indiatimes.com/india/ajit-doval-in-beijing-india-china-border-talks-set-for-august-25-whats-on-agenda/articleshow/133460150.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "NSA Doval Arrives In Beijing For India - China Boundary Talks With Wang Yi",
+     "url": "https://www.freepressjournal.in/india/nsa-doval-arrives-in-beijing-for-india-china-boundary-talks-with-wang-yi",
+     "domain": "freepressjournal.in"
+    },
+    {
+     "title": "India and China to discuss boundary issues during NSA Ajit Doval visit to Beijing – The Indian Awaaz",
+     "url": "https://theindianawaaz.com/india-and-china-to-discuss-boundary-issues-during-nsa-ajit-dovals-visit-to-beijing/",
+     "domain": "theindianawaaz.com"
+    },
+    {
+     "title": "NSA Ajit Doval heads to Beijing today for key talks with Wang Yi : What on agenda ?",
+     "url": "https://www.livemint.com/politics/news/nsa-ajit-doval-heads-to-beijing-for-key-talks-with-wang-yi-what-s-on-agenda-xi-jinping-brics-summit-india-china-11787536229842.html",
+     "domain": "livemint.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-24",
-     "evaluated_at_utc": "2026-08-25T08:21:30Z",
+     "evaluated_at_utc": "2026-08-25T08:48:08Z",
      "rights_as_of": "2026-08-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-24",
-     "evaluated_at_utc": "2026-08-25T08:24:26Z",
+     "evaluated_at_utc": "2026-08-25T08:51:04Z",
      "rights_as_of": "2026-08-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-24",
-     "evaluated_at_utc": "2026-08-25T08:24:26Z",
+     "evaluated_at_utc": "2026-08-25T08:51:04Z",
      "rights_as_of": "2026-08-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "a5e2fa833b51c46ce466411a47744384d7926095bf5898cf95a65a7907f675b1"
+ "payload_seal_sha256": "900dd60e12d6a25a53b7a4dd7a861cd467404e564f63c0568e56c174b950215f"
 }
