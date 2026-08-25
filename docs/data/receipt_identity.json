@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-23",
- "generated_at": "2026-08-24T14:45:45Z",
+ "target_date": "2026-08-24",
+ "generated_at": "2026-08-25T02:43:07Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "b30c63c3e267c1e342305eecb62a588768aa620b",
-  "blob_git_sha1": "3598fb762eb0f68794f14098bc4c6145ecf8b68a",
-  "blob_sha256": "25af6df6203edb50982d48f07054b38bc936acd1ef5e985315c5607b6da4bbe9",
+  "state": "different_target",
+  "commit_sha": "6a082d1766c1218630555527be7618ac5c195cea",
+  "blob_git_sha1": "69f07851376ec77e93b4d1cb79ad596fc8642776",
+  "blob_sha256": "b035b585f628c5210e7b05fcfc6ce3bc14226ff127f981650cb29b6ad50eb8ae",
   "target_date": "2026-08-23"
  },
  "channels": {
@@ -29,34 +29,8 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "NSA Ajit Doval To Visit Beijing ; Hold Talks On India - China Border",
-     "url": "https://www.oneindia.com/international/nsa-ajit-doval-to-visit-beijing-hold-talks-on-india-china-border-8184967.html",
-     "domain": "oneindia.com"
-    },
-    {
-     "title": "NSA Doval to visit Beijing for 25th round of India - China border talks",
-     "url": "https://timesofindia.indiatimes.com/india/nsa-doval-to-visit-beijing-for-25th-round-of-india-china-border-talks/articleshow/133435929.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "National Security Adviser Doval heads to China for talks with Wang Yi",
-     "url": "https://www.tribuneindia.com/news/top-headlines/national-security-adviser-doval-heads-to-china-for-talks-with-wang-yi/",
-     "domain": "tribuneindia.com"
-    },
-    {
-     "title": "Peace along border areas prerequisite for good relations with China Jaishankar",
-     "url": "https://dailypioneer.com/news/peace-along-border-areas-prerequisite-for-good-relations-with-china-jaishankar",
-     "domain": "dailypioneer.com"
-    },
-    {
-     "title": "Ajit Doval to visit China on August 24 for talks with Wang Yi",
-     "url": "https://www.thehindu.com/news/international/ajit-doval-wang-yi-meeting-india-china-special-representatives-talks-august-23-2026/article71380342.ece",
-     "domain": "thehindu.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -67,8 +41,34 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Houthis claim strike on Saudi tanker in latest Red Sea escalation",
+     "url": "https://www.euronews.com/2026/08/24/houthis-claim-strike-on-saudi-tanker-in-latest-red-sea-escalation",
+     "domain": "euronews.com"
+    },
+    {
+     "title": "Explainer - What are Iran options to escalate further in face of US economic threats ?",
+     "url": "https://www.straitstimes.com/world/middle-east/explainer-what-are-irans-options-to-escalate-further-in-face-of-us-economic-threats",
+     "domain": "straitstimes.com"
+    },
+    {
+     "title": "EXPLAINER | What are Iran options in the face of US economic threats ?",
+     "url": "https://www.businessday.co.za/world/middle-east/2026-08-24-explainer-what-are-irans-options-in-the-face-of-us-economic-threats/",
+     "domain": "businessday.co.za"
+    },
+    {
+     "title": "Somalia : Somali Pirates Hijack Sanctioned Oil Tanker Off Yemen",
+     "url": "https://allafrica.com/stories/202608240111.html",
+     "domain": "allafrica.com"
+    },
+    {
+     "title": "Pakistan Signs a Defence Deal With Somalia",
+     "url": "https://www.riotimesonline.com/somalia-pakistan-defence-agreement-india-2026/",
+     "domain": "riotimesonline.com"
+    }
+   ]
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-23",
-     "evaluated_at_utc": "2026-08-24T14:45:45Z",
-     "rights_as_of": "2026-08-24",
+     "target_date": "2026-08-24",
+     "evaluated_at_utc": "2026-08-25T02:43:07Z",
+     "rights_as_of": "2026-08-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-22T23:59:59Z",
+     "release_deadline_utc": "2026-09-23T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-23",
-     "evaluated_at_utc": "2026-08-24T14:48:59Z",
-     "rights_as_of": "2026-08-24",
+     "target_date": "2026-08-24",
+     "evaluated_at_utc": "2026-08-25T02:46:07Z",
+     "rights_as_of": "2026-08-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-22T23:59:59Z",
+     "release_deadline_utc": "2026-09-23T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-23",
-     "evaluated_at_utc": "2026-08-24T14:48:59Z",
-     "rights_as_of": "2026-08-24",
+     "target_date": "2026-08-24",
+     "evaluated_at_utc": "2026-08-25T02:46:07Z",
+     "rights_as_of": "2026-08-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-22T23:59:59Z",
+     "release_deadline_utc": "2026-09-23T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "0e5c45d42fac2bd264fd371bda65d8db6810592b29c0f06e622d08d48ef573ac"
+ "payload_seal_sha256": "49dcd37055bc9555a6d32ffe3d70d6dc8b70f0d8d0219f66bfff666286a283de"
 }
