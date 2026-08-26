@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-24",
- "generated_at": "2026-08-25T14:49:55Z",
+ "target_date": "2026-08-25",
+ "generated_at": "2026-08-26T03:12:16Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "bbd29f97842c74095abd23eac4ab3955596b2559",
-  "blob_git_sha1": "962c03d1a6d1dfa648fca5cf4352c9122c5ec5ad",
-  "blob_sha256": "78d7bb625cf2a95bb8330dd4e7533c124a63684a419849a0550f182462d089a0",
+  "state": "different_target",
+  "commit_sha": "2ffba031ee4e3b7f97ce40c6ddb41a6f04d82d19",
+  "blob_git_sha1": "19260c6ce0323b75a1258bcdfa0aa0c570884eb9",
+  "blob_sha256": "423c4ff3465a13cfc9f385273f3226defe67c3512da5524d0b9c28827673162a",
   "target_date": "2026-08-24"
  },
  "channels": {
@@ -29,34 +29,8 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Ajit Doval to visit Beijing for India - China border talks ahead of Xi expected India visit : What on agenda ?",
-     "url": "https://www.moneycontrol.com/world/ajit-doval-to-visit-beijing-for-india-china-border-talks-ahead-of-xi-s-expected-india-visit-what-s-on-agenda-article-14013598.html",
-     "domain": "moneycontrol.com"
-    },
-    {
-     "title": "Ajit Doval in Beijing : India - China border talks set for August 25 ; what on agenda ?",
-     "url": "https://timesofindia.indiatimes.com/india/ajit-doval-in-beijing-india-china-border-talks-set-for-august-25-whats-on-agenda/articleshow/133460150.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "NSA Doval Arrives In Beijing For India - China Boundary Talks With Wang Yi",
-     "url": "https://www.freepressjournal.in/india/nsa-doval-arrives-in-beijing-for-india-china-boundary-talks-with-wang-yi",
-     "domain": "freepressjournal.in"
-    },
-    {
-     "title": "India and China to discuss boundary issues during NSA Ajit Doval visit to Beijing – The Indian Awaaz",
-     "url": "https://theindianawaaz.com/india-and-china-to-discuss-boundary-issues-during-nsa-ajit-dovals-visit-to-beijing/",
-     "domain": "theindianawaaz.com"
-    },
-    {
-     "title": "NSA Ajit Doval heads to Beijing today for key talks with Wang Yi : What on agenda ?",
-     "url": "https://www.livemint.com/politics/news/nsa-ajit-doval-heads-to-beijing-for-key-talks-with-wang-yi-what-s-on-agenda-xi-jinping-brics-summit-india-china-11787536229842.html",
-     "domain": "livemint.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -70,29 +44,29 @@
    "state": "available",
    "articles": [
     {
-     "title": "Houthis claim strike on Saudi tanker in latest Red Sea escalation",
-     "url": "https://www.euronews.com/2026/08/24/houthis-claim-strike-on-saudi-tanker-in-latest-red-sea-escalation",
-     "domain": "euronews.com"
+     "title": "Somali pirates are back and the US Navy is too busy to stop them",
+     "url": "https://fortune.com/2026/08/25/somali-pirate-profiteers-lucrative-business-iran-war/",
+     "domain": "fortune.com"
     },
     {
-     "title": "Explainer - What are Iran options to escalate further in face of US economic threats ?",
-     "url": "https://www.straitstimes.com/world/middle-east/explainer-what-are-irans-options-to-escalate-further-in-face-of-us-economic-threats",
-     "domain": "straitstimes.com"
+     "title": "Houthi strikes threaten to pull Yemen into Middle East war",
+     "url": "https://www.dw.com/en/houthi-strikes-threaten-to-pull-yemen-back-into-full-scale-war/a-78497448",
+     "domain": "dw.com"
     },
     {
-     "title": "EXPLAINER | What are Iran options in the face of US economic threats ?",
-     "url": "https://www.businessday.co.za/world/middle-east/2026-08-24-explainer-what-are-irans-options-in-the-face-of-us-economic-threats/",
-     "domain": "businessday.co.za"
+     "title": "The Mocha monopoly : how Yemen dominance of the global coffee trade birthed the Houthi rebels",
+     "url": "https://theconversation.com/the-mocha-monopoly-how-yemens-dominance-of-the-global-coffee-trade-birthed-the-houthi-rebels-290102",
+     "domain": "theconversation.com"
     },
     {
-     "title": "Somalia : Somali Pirates Hijack Sanctioned Oil Tanker Off Yemen",
-     "url": "https://allafrica.com/stories/202608240111.html",
-     "domain": "allafrica.com"
+     "title": "Somalian pirates and their role in war | Explained",
+     "url": "https://www.thehindu.com/news/international/somalian-pirates-and-their-role-in-war-explained/article71387212.ece",
+     "domain": "thehindu.com"
     },
     {
-     "title": "Pakistan Signs a Defence Deal With Somalia",
-     "url": "https://www.riotimesonline.com/somalia-pakistan-defence-agreement-india-2026/",
-     "domain": "riotimesonline.com"
+     "title": "Kapal Induk Giuseppe Garibaldi Bawa 100 Prajurit TNI Menuju Jakarta , Ini Rute yang Akan Dilalui",
+     "url": "https://www.tribunnews.com/nasional/7873305/kapal-induk-giuseppe-garibaldi-bawa-100-prajurit-tni-menuju-jakarta-ini-rute-yang-akan-dilalui",
+     "domain": "tribunnews.com"
     }
    ]
   }
@@ -118,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-24",
-     "evaluated_at_utc": "2026-08-25T14:49:55Z",
-     "rights_as_of": "2026-08-25",
+     "target_date": "2026-08-25",
+     "evaluated_at_utc": "2026-08-26T03:12:16Z",
+     "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-23T23:59:59Z",
+     "release_deadline_utc": "2026-09-24T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -159,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-24",
-     "evaluated_at_utc": "2026-08-25T14:54:15Z",
-     "rights_as_of": "2026-08-25",
+     "target_date": "2026-08-25",
+     "evaluated_at_utc": "2026-08-26T03:16:35Z",
+     "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-23T23:59:59Z",
+     "release_deadline_utc": "2026-09-24T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -200,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-24",
-     "evaluated_at_utc": "2026-08-25T14:54:15Z",
-     "rights_as_of": "2026-08-25",
+     "target_date": "2026-08-25",
+     "evaluated_at_utc": "2026-08-26T03:16:35Z",
+     "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-23T23:59:59Z",
+     "release_deadline_utc": "2026-09-24T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -229,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "5306d7a0fe7484646acd840cd82c2d9ea5787e51b5058115a639ab39de9fc976"
+ "payload_seal_sha256": "c6c3a099f21bf4830cc19faa3020107b883199b065f3c754bbcfd0797710c501"
 }
