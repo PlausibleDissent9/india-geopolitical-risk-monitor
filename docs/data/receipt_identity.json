@@ -11,22 +11,48 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-25",
- "generated_at": "2026-08-26T08:21:29Z",
+ "generated_at": "2026-08-26T08:48:49Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "b017cccb98ea514769f1cbcab092cf5a58354d3c",
-  "blob_git_sha1": "950856c3706320f4b3f48ed409d8b1a8eeaf9dbb",
-  "blob_sha256": "a4e7e15b61a9dba4dbb5372521d78466d5f12b5f16798504fb3832972de8b78a",
+  "commit_sha": "87f09086ce227401fc294b4144e13deaff557d6d",
+  "blob_git_sha1": "632ba78f70e8cbf59134fdbd278f5656f4e10d28",
+  "blob_sha256": "09bddedcb988748a6b1170713c1f72f721aa3a345b2050edb2304ebe95003f4f",
   "target_date": "2026-08-25"
  },
  "channels": {
   "pakistan_west": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Loitering munition may have hit area near Kirana N - site : Ex - CDS",
+     "url": "https://www.tribuneindia.com/news/top-headlines/loitering-munition-may-have-hit-area-near-kirana-n-site-ex-cds/",
+     "domain": "tribuneindia.com"
+    },
+    {
+     "title": "NIA searches five locations in cyberattack case during Op Sindoor",
+     "url": "https://www.hindustantimes.com/india-news/nia-searches-five-locations-in-cyberattack-case-during-op-sindoor-101787598911084.html",
+     "domain": "hindustantimes.com"
+    },
+    {
+     "title": "Misrepresented clip of Pakistan activist fuels Delhi - Islamabad tensions online",
+     "url": "https://www.yahoo.com/news/world/articles/misrepresented-clip-pakistan-activist-fuels-051735538.html",
+     "domain": "yahoo.com"
+    },
+    {
+     "title": "Indian strike on Kirana Hills in Pakistan during Operation Sindoor was accidental , says former CDS Anil Chauhan",
+     "url": "https://economictimes.indiatimes.com/news/defence/indian-strike-on-kirana-hills-in-pakistan-during-operation-sindoor-was-accidental-says-former-cds-anil-chauhan/articleshow/133518643.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "BJP solo Punjab gamble : Sikh faces from all strata , temple outreach key to expanding electoral base | Amritsar News",
+     "url": "https://timesofindia.indiatimes.com/city/amritsar/bjps-solo-punjab-gamble-sikh-faces-from-all-strata-temple-outreach-key-to-expanding-electoral-base/articleshow/133502214.cms",
+     "domain": "timesofindia.indiatimes.com"
+    }
+   ]
   },
   "china_east": {
    "state": "available",
@@ -145,7 +171,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-25",
-     "evaluated_at_utc": "2026-08-26T08:21:29Z",
+     "evaluated_at_utc": "2026-08-26T08:48:49Z",
      "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -186,7 +212,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-25",
-     "evaluated_at_utc": "2026-08-26T08:25:42Z",
+     "evaluated_at_utc": "2026-08-26T08:53:02Z",
      "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -227,7 +253,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-25",
-     "evaluated_at_utc": "2026-08-26T08:25:42Z",
+     "evaluated_at_utc": "2026-08-26T08:53:02Z",
      "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -255,5 +281,5 @@
    }
   ]
  },
- "payload_seal_sha256": "d137047301a22c517248252666d4eaa5501585ee5e70376312762ee657cc3b52"
+ "payload_seal_sha256": "c2c86914b1f698b2208f4fe0c820b562cb33863a19735e7b07c9265982061feb"
 }
