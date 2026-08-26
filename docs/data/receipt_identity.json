@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-25",
- "generated_at": "2026-08-26T03:12:16Z",
+ "generated_at": "2026-08-26T08:21:29Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "2ffba031ee4e3b7f97ce40c6ddb41a6f04d82d19",
-  "blob_git_sha1": "19260c6ce0323b75a1258bcdfa0aa0c570884eb9",
-  "blob_sha256": "423c4ff3465a13cfc9f385273f3226defe67c3512da5524d0b9c28827673162a",
-  "target_date": "2026-08-24"
+  "state": "same_target",
+  "commit_sha": "b017cccb98ea514769f1cbcab092cf5a58354d3c",
+  "blob_git_sha1": "950856c3706320f4b3f48ed409d8b1a8eeaf9dbb",
+  "blob_sha256": "a4e7e15b61a9dba4dbb5372521d78466d5f12b5f16798504fb3832972de8b78a",
+  "target_date": "2026-08-25"
  },
  "channels": {
   "pakistan_west": {
@@ -29,16 +29,68 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Why Ajit Doval Beijing Talks With China Wang Yi Are Real BRICS Test - Border First , Everything Later",
+     "url": "https://organiser.org/2026/08/25/376889/bharat/why-ajit-dovals-beijing-talks-with-chinas-wang-yi-are-real-brics-test-border-first-everything-later-7-takeaways/",
+     "domain": "organiser.org"
+    },
+    {
+     "title": "NSA Doval , Wang Yi hold key talks on India - China border issue , improving bilateral ties",
+     "url": "https://www.newindianexpress.com/world/2026/Aug/25/nsa-doval-wang-yi-hold-key-talks-on-india-china-border-issue-improving-bilateral-ties",
+     "domain": "newindianexpress.com"
+    },
+    {
+     "title": "Doval , Wang Yi Hold  In - Depth  Talks in Beijing to Fast - Track Border Resolution",
+     "url": "https://www.deccanchronicle.com/nation/doval-wang-yi-hold-in-depth-talks-in-beijing-to-fast-track-border-resolution-1982298",
+     "domain": "deccanchronicle.com"
+    },
+    {
+     "title": "Ajit Doval China visit : NSA , Chinese VP Han Zheng discuss border peace , bilateral ties ahead of key talks | India News",
+     "url": "https://timesofindia.indiatimes.com/india/ajit-dovals-china-visit-nsa-chinese-vp-han-zheng-discuss-border-peace-bilateral-ties-ahead-of-key-talks/articleshow/133494884.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "India , China push LAC peace as Doval - Wang hold key talks",
+     "url": "https://www.rediff.com/news/report/india-china-push-lac-peace-as-doval-wang-hold-key-talks/20260826.htm",
+     "domain": "rediff.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Trump moves toward new tariff on China for flooding market with cheap goods | The Asahi Shimbun : Breaking News , Japan News and Analysis",
+     "url": "https://www.asahi.com/ajw/articles/16832211",
+     "domain": "asahi.com"
+    },
+    {
+     "title": "US H - 1B Visa Fee Hike : Why Indians Could Be Affected",
+     "url": "https://www.jagranjosh.com/general-knowledge/us-h1b-visa-fee-hike-why-indians-could-be-affected-1820011670-1",
+     "domain": "jagranjosh.com"
+    },
+    {
+     "title": "White House moves toward levying new tariff on China for flooding market with cheap goods , AP sources say",
+     "url": "https://www.clevelandjewishnews.com/white-house-moves-toward-levying-new-tariff-on-china-for-flooding-market-with-cheap-goods/article_85a68b5c-2603-54c6-9182-6f395844870b.html",
+     "domain": "clevelandjewishnews.com"
+    },
+    {
+     "title": "Trump moves toward levying new tariff on China for flooding market with cheap goods",
+     "url": "https://www.koreaherald.com/article/10850786",
+     "domain": "koreaherald.com"
+    },
+    {
+     "title": "H - 1B visa fee could get costlier by $103 , 000",
+     "url": "https://www.rediff.com/news/report/h-1b-visa-fee-could-get-costlier-by-103000/20260825.htm",
+     "domain": "rediff.com"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
@@ -93,7 +145,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-25",
-     "evaluated_at_utc": "2026-08-26T03:12:16Z",
+     "evaluated_at_utc": "2026-08-26T08:21:29Z",
      "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +186,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-25",
-     "evaluated_at_utc": "2026-08-26T03:16:35Z",
+     "evaluated_at_utc": "2026-08-26T08:25:42Z",
      "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +227,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-25",
-     "evaluated_at_utc": "2026-08-26T03:16:35Z",
+     "evaluated_at_utc": "2026-08-26T08:25:42Z",
      "rights_as_of": "2026-08-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +255,5 @@
    }
   ]
  },
- "payload_seal_sha256": "c6c3a099f21bf4830cc19faa3020107b883199b065f3c754bbcfd0797710c501"
+ "payload_seal_sha256": "d137047301a22c517248252666d4eaa5501585ee5e70376312762ee657cc3b52"
 }
