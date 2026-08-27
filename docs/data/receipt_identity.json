@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-26",
- "generated_at": "2026-08-27T18:23:57Z",
+ "generated_at": "2026-08-27T23:26:34Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "de207bc339d3608e273f9e2fa924cd61d27b8fc3",
-  "blob_git_sha1": "0b632ab90bb42f4112138699dab7ee3871794baa",
-  "blob_sha256": "73719b58caccc21c7633bb231dd6118ca0850d936c36842d4a2b6b5dfb8903d1",
-  "target_date": "2026-08-25"
+  "state": "same_target",
+  "commit_sha": "3070f753c9eabb836905945ee421d79ff015fec1",
+  "blob_git_sha1": "736a1cf0793167f8e6256f111e1ba9a7a80aaf40",
+  "blob_sha256": "017dacf01aaec6a29ecd80be9c6978cc653d97265097a63112630961e7de4484",
+  "target_date": "2026-08-26"
  },
  "channels": {
   "pakistan_west": {
@@ -89,8 +89,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Trump threatens Iran partners : How do secondary sanctions work ? | Business and Economy News",
+     "url": "https://www.aljazeera.com/economy/2026/8/26/trump-threatens-irans-partners-how-do-secondary-sanctions-work",
+     "domain": "aljazeera.com"
+    },
+    {
+     "title": "Explainer : What are H - 1B visas for skilled workers and what changes loom ?",
+     "url": "https://www.geo.tv/latest/679198-explainer-what-are-h-1b-visas-for-skilled-workers-and-what-changes-loom",
+     "domain": "geo.tv"
+    },
+    {
+     "title": "What are H - 1B visas for skilled workers and what changes loom ?",
+     "url": "https://economictimes.indiatimes.com/nri/latest-updates/h-1b-visa-changes-trump-103265-fee-skilled-foreign-workers-indian-tech-workers/articleshow/133527452.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "Trump administration pause immigrant visa appointments for applicants worldwide , plan to cancel visas of 200 , 000 asylum seekers and increase H - 1B visa fee to ova $103 , 000 – Information Nigeria Pidgin",
+     "url": "https://pidgin.informationng.com/?p=35798",
+     "domain": "pidgin.informationng.com"
+    },
+    {
+     "title": "Trump Operation Economic Outcast : How could Iran sanctions impact India ?",
+     "url": "https://www.business-standard.com/economy/news/trump-operation-economic-outcast-us-iran-sanctions-india-impact-crude-oil-126082600404_1.html",
+     "domain": "business-standard.com"
+    }
+   ]
   },
   "shipping": {
    "state": "unavailable",
@@ -119,7 +145,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-26",
-     "evaluated_at_utc": "2026-08-27T18:23:57Z",
+     "evaluated_at_utc": "2026-08-27T23:26:34Z",
      "rights_as_of": "2026-08-27",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +186,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-26",
-     "evaluated_at_utc": "2026-08-27T18:29:03Z",
+     "evaluated_at_utc": "2026-08-27T23:32:30Z",
      "rights_as_of": "2026-08-27",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +227,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-26",
-     "evaluated_at_utc": "2026-08-27T18:29:03Z",
+     "evaluated_at_utc": "2026-08-27T23:32:30Z",
      "rights_as_of": "2026-08-27",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +255,5 @@
    }
   ]
  },
- "payload_seal_sha256": "0ae70327b5b167a2d62bc651ab39075e6fa7172e636843c3f043e0f11139e5fc"
+ "payload_seal_sha256": "7072c297407b54d42557a62cf665aecc6b09feab92d9d5a145d09da630250fab"
 }
