@@ -10,77 +10,51 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-26",
- "generated_at": "2026-08-27T23:26:34Z",
+ "target_date": "2026-08-27",
+ "generated_at": "2026-08-28T13:54:28Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "3070f753c9eabb836905945ee421d79ff015fec1",
-  "blob_git_sha1": "736a1cf0793167f8e6256f111e1ba9a7a80aaf40",
-  "blob_sha256": "017dacf01aaec6a29ecd80be9c6978cc653d97265097a63112630961e7de4484",
+  "state": "different_target",
+  "commit_sha": "693f9e7e01b08794e5bacae9fd2732f892dcb656",
+  "blob_git_sha1": "db0f10e1d5c124b18fa3e7e6a1e58d7c1818b74e",
+  "blob_sha256": "dcf702ce858346b4dcc6100c3ec83c72718ebe481880bb6f5397ae929dd997f6",
   "target_date": "2026-08-26"
  },
  "channels": {
   "pakistan_west": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Modi told forces to  teach Pakistan a big lesson  : Ex - CDS",
-     "url": "https://dailypioneer.com/news/modi-teach-pakistan-big-lesson-operation-sindoor-anil-chauhan",
-     "domain": "dailypioneer.com"
-    },
-    {
-     "title": "Pakistan expands Turkish drone footprint near India : Why Bayraktar TB2 deployment matters after Operation Sindoor",
-     "url": "https://www.moneycontrol.com/world/pakistan-expands-turkish-drone-footprint-near-india-why-bayraktar-tb2-deployment-matters-after-operation-sindoor-article-14016000.html",
-     "domain": "moneycontrol.com"
-    },
-    {
-     "title": "We should have evidence : Former CDS reveals how Modi ordered Op Sindoor",
-     "url": "https://idrw.org/we-should-have-evidence-former-cds-reveals-how-modi-ordered-op-sindoor/",
-     "domain": "idrw.org"
-    },
-    {
-     "title": "Loitering munition may have hit Pakistan Kirana Hills during Operation Sindoor : Ex - military chief",
-     "url": "https://scroll.in/latest/1095274/loitering-munition-may-have-hit-pakistans-kirana-hills-during-operation-sindoor-ex-military-chief",
-     "domain": "scroll.in"
-    },
-    {
-     "title": "Complete freedom of action : Former CDS Gen Anil Chauhan reveals PM Modi directions before Operation Sindoor",
-     "url": "https://aninews.in/news/world/asia/complete-freedom-of-action-former-cds-gen-anil-chauhan-reveals-pm-modis-directions-before-operation-sindoor20260826053157/",
-     "domain": "aninews.in"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "available",
    "articles": [
     {
-     "title": "India - China agree to seek  political settlement  of boundary issue : MEA",
-     "url": "https://www.thehindubusinessline.com/news/india-china-agree-to-seek-political-settlement-of-boundary-issue-mea/article71391218.ece",
-     "domain": "thehindubusinessline.com"
-    },
-    {
-     "title": "India , China agree to advance  early harvest  on border delimitation , management",
-     "url": "https://economictimes.indiatimes.com/news/india/india-china-agree-to-advance-early-harvest-on-border-delimitation-management/articleshow/133546651.cms",
+     "title": "PM Modi to visit Uzbekistan from August 29 - 30 , attend SCO summit in Kyrgyzstan from August 31",
+     "url": "https://economictimes.indiatimes.com/news/india/pm-modi-to-visit-uzbekistan-from-august-29-30-attend-sco-summit-from-august-31/articleshow/133565655.cms",
      "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "India , China discuss ways to maintain peace along LAC , delimitation of frontier",
-     "url": "https://www.dailyexcelsior.com/india-china-discuss-ways-to-maintain-peace-along-lac-delimitation-of-frontier/",
-     "domain": "dailyexcelsior.com"
+     "title": "Border talks , summit diplomacy signal steady India - China reset",
+     "url": "https://www.thehindubusinessline.com/news/border-talks-summit-diplomacy-signal-steady-india-china-reset/article71397301.ece",
+     "domain": "thehindubusinessline.com"
     },
     {
-     "title": "India stresses border peace key to ties as Doval meets Wang Yi",
-     "url": "https://www.hindustantimes.com/india-news/india-china-border-peace-news-ajit-doval-wang-yi-101787702055297.html",
-     "domain": "hindustantimes.com"
+     "title": "DRDO successfully tests high - altitude combat parachutes in Ladakh",
+     "url": "https://www.tribuneindia.com/news/j-k/drdo-successfully-tests-high-altitude-combat-parachutes-in-ladakh/",
+     "domain": "tribuneindia.com"
     },
     {
-     "title": "India And China To Continue Work On Seeking Political Settlement Of Boundary Question : MEA",
-     "url": "https://idrw.org/india-and-china-to-continue-work-on-seeking-political-settlement-of-boundary-question-mea/",
-     "domain": "idrw.org"
+     "title": "India , China explore new investment framework ; outlay package may be unveiled during BRICS summit : Report",
+     "url": "https://www.businesstoday.in/india/story/india-china-explore-new-investment-framework-outlay-package-may-be-unveiled-during-brics-summit-report-551635-2026-08-27",
+     "domain": "businesstoday.in"
+    },
+    {
+     "title": "Not as big as it is made out to be : Nepal FM downplays boundary row with India",
+     "url": "https://www.prokerala.com/news/articles/a1805421.html",
+     "domain": "prokerala.com"
     }
    ]
   },
@@ -92,35 +66,61 @@
    "state": "available",
    "articles": [
     {
-     "title": "Trump threatens Iran partners : How do secondary sanctions work ? | Business and Economy News",
-     "url": "https://www.aljazeera.com/economy/2026/8/26/trump-threatens-irans-partners-how-do-secondary-sanctions-work",
-     "domain": "aljazeera.com"
+     "title": "India IT industry body urges US to weigh H - 1B visa benefits as Trump proposes hefty fee",
+     "url": "https://finance.yahoo.com/news/india-industry-body-urges-us-123758960.html",
+     "domain": "finance.yahoo.com"
     },
     {
-     "title": "Explainer : What are H - 1B visas for skilled workers and what changes loom ?",
-     "url": "https://www.geo.tv/latest/679198-explainer-what-are-h-1b-visas-for-skilled-workers-and-what-changes-loom",
-     "domain": "geo.tv"
+     "title": "US halts all visa appointments globally amid Trump immigration crackdown – The Indian Awaaz",
+     "url": "https://theindianawaaz.com/us-halts-all-visa-appointments-globally-amid-trumps-immigration-crackdown/",
+     "domain": "theindianawaaz.com"
     },
     {
-     "title": "What are H - 1B visas for skilled workers and what changes loom ?",
-     "url": "https://economictimes.indiatimes.com/nri/latest-updates/h-1b-visa-changes-trump-103265-fee-skilled-foreign-workers-indian-tech-workers/articleshow/133527452.cms",
-     "domain": "economictimes.indiatimes.com"
+     "title": "САЩ и Русия се борят за по - голям дял от третия по големина енергиен пазар в света",
+     "url": "https://www.focus-news.net/novini/mejdunarodni/SASht-i-Rusiya-se-boryat-za-po-golyam-dyal-ot-tretiya-po-golemina-energien-pazar-v-sveta-3015953",
+     "domain": "focus-news.net"
     },
     {
-     "title": "Trump administration pause immigrant visa appointments for applicants worldwide , plan to cancel visas of 200 , 000 asylum seekers and increase H - 1B visa fee to ova $103 , 000 – Information Nigeria Pidgin",
-     "url": "https://pidgin.informationng.com/?p=35798",
-     "domain": "pidgin.informationng.com"
+     "title": "Reserves right to act : China warns of countermeasures as US weighs 7 . 5 % tariff over  overcapacity",
+     "url": "https://www.livemint.com/news/world/reserves-right-to-act-china-warns-of-countermeasures-as-us-weighs-7-5-tariff-over-overcapacity-11787826874077.html",
+     "domain": "livemint.com"
     },
     {
-     "title": "Trump Operation Economic Outcast : How could Iran sanctions impact India ?",
-     "url": "https://www.business-standard.com/economy/news/trump-operation-economic-outcast-us-iran-sanctions-india-impact-crude-oil-126082600404_1.html",
-     "domain": "business-standard.com"
+     "title": "China to supply bulk of India fertilizer tender in major sale",
+     "url": "https://www.moneycontrol.com/news/india/china-to-supply-bulk-of-india-s-fertilizer-tender-in-major-sale-14016955.html",
+     "domain": "moneycontrol.com"
     }
    ]
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Japan Holds Off On New Oil Reserve Release Despite September Import Drop",
+     "url": "https://www.zerohedge.com/energy/japan-holds-new-oil-reserve-release-despite-september-import-drop",
+     "domain": "zerohedge.com"
+    },
+    {
+     "title": "Hormuz transits still limited even as Iran , Oman near deal ; carriers eye return to Suez route",
+     "url": "https://www.hellenicshippingnews.com/hormuz-transits-still-limited-even-as-iran-oman-near-deal-carriers-eye-return-to-suez-route/",
+     "domain": "hellenicshippingnews.com"
+    },
+    {
+     "title": "Shipping traffic through Strait of Hormuz rises slightly , data shows",
+     "url": "https://www.thedailystar.net/business/news/shipping-traffic-through-strait-hormuz-rises-slightly-data-shows-4257551",
+     "domain": "thedailystar.net"
+    },
+    {
+     "title": "Board of Peace Envoy : Israel Must Honor Gaza Commitments to Advance Cease - fire",
+     "url": "https://www.haaretz.com/israel-news/israel-security/2026-08-27/ty-article-live/board-of-peace-envoy-israel-must-honor-gaza-commitments-to-advance-cease-fire/000001a0-40db-d518-a5ad-ecdf14c90000",
+     "domain": "haaretz.com"
+    },
+    {
+     "title": "Strait of Hormuz Shipping Marks Slight Rise",
+     "url": "https://www.oedigital.com/news/542468-strait-of-hormuz-shipping-marks-slight-rise",
+     "domain": "oedigital.com"
+    }
+   ]
   }
  },
  "authority": {
@@ -144,12 +144,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-26",
-     "evaluated_at_utc": "2026-08-27T23:26:34Z",
-     "rights_as_of": "2026-08-27",
+     "target_date": "2026-08-27",
+     "evaluated_at_utc": "2026-08-28T13:54:28Z",
+     "rights_as_of": "2026-08-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-25T23:59:59Z",
+     "release_deadline_utc": "2026-09-26T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -185,12 +185,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-26",
-     "evaluated_at_utc": "2026-08-27T23:32:30Z",
-     "rights_as_of": "2026-08-27",
+     "target_date": "2026-08-27",
+     "evaluated_at_utc": "2026-08-28T13:59:16Z",
+     "rights_as_of": "2026-08-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-25T23:59:59Z",
+     "release_deadline_utc": "2026-09-26T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -226,12 +226,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-26",
-     "evaluated_at_utc": "2026-08-27T23:32:30Z",
-     "rights_as_of": "2026-08-27",
+     "target_date": "2026-08-27",
+     "evaluated_at_utc": "2026-08-28T13:59:16Z",
+     "rights_as_of": "2026-08-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-25T23:59:59Z",
+     "release_deadline_utc": "2026-09-26T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -255,5 +255,5 @@
    }
   ]
  },
- "payload_seal_sha256": "7072c297407b54d42557a62cf665aecc6b09feab92d9d5a145d09da630250fab"
+ "payload_seal_sha256": "4e530734ce2a15f18c1540e084388cba5e7445c775ec4788da904db2ee58f8f5"
 }
