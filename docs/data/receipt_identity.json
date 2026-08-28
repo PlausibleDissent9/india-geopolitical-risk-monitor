@@ -11,22 +11,48 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-27",
- "generated_at": "2026-08-28T13:54:28Z",
+ "generated_at": "2026-08-28T19:34:34Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "693f9e7e01b08794e5bacae9fd2732f892dcb656",
-  "blob_git_sha1": "db0f10e1d5c124b18fa3e7e6a1e58d7c1818b74e",
-  "blob_sha256": "dcf702ce858346b4dcc6100c3ec83c72718ebe481880bb6f5397ae929dd997f6",
-  "target_date": "2026-08-26"
+  "state": "same_target",
+  "commit_sha": "c772c7643d7c768356843d461a79e4e715f13cb6",
+  "blob_git_sha1": "feb587b43e98e05cf7382df9e0823cf093f78912",
+  "blob_sha256": "3decde67e668bed66bab9d98d15545b36ca2ad54ecf3471095bd730983c5e736",
+  "target_date": "2026-08-27"
  },
  "channels": {
   "pakistan_west": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "India deals with SCO as an entity , as an important organisation : MEA on Pakistan chairship for next summit",
+     "url": "https://news.webindia123.com/news/Articles/World/20260827/4491505.html",
+     "domain": "news.webindia123.com"
+    },
+    {
+     "title": "Experts react to ex - CDS Chauhan remarks on Kirana Hills incident during Op Sindoor",
+     "url": "https://idrw.org/experts-react-to-ex-cds-chauhans-remarks-on-kirana-hills-incident-during-op-sindoor/",
+     "domain": "idrw.org"
+    },
+    {
+     "title": "Pakistan says Munir Iran visit focused on de - escalation",
+     "url": "https://www.siasat.com/pakistan-says-munirs-iran-visit-focused-on-de-escalation-3531899/",
+     "domain": "siasat.com"
+    },
+    {
+     "title": "ਗੈਂਗਸਟਰ ਹੈਪੀ ਪਛੀਆ ਤੇ ਸੈਂਡੀ ਨੂੰ ਡਿਪੋਰਟ ਕਰਵਾਉਣ ਦੀ ਤਿਆਰੀ , 20 ਅਗਸਤ ਨੂੰ ਇਕ ਘਰ  ਤੇ ਸੁੱਟੇ ਸਨ ਦੋ ਹੈਂਡ ਗ੍ਰਨੇਡ - Preparations to deport gangsters Happy Pachiya and Sandy who threw two hand grenades at a house on August 20",
+     "url": "https://www.punjabijagran.com/punjab/amritsar-preparations-to-deport-gangsters-happy-pachiya-and-sandy-who-threw-two-hand-grenades-at-a-house-on-august20-9672685.html",
+     "domain": "punjabijagran.com"
+    },
+    {
+     "title": "भारत - चीन के बीच सुलझेगा सीमा विवाद , शी चिनफिंग के दौरे से पहले 8 - सूत्रीय समझौते में किन - किन बातों पर बनी सहमति ? - india china border dispute resolved 8 point pact in ajit doval and wang yi talks ahead of xi jinping visit",
+     "url": "https://www.jagran.com/news/national-india-china-border-dispute-resolved-8-point-pact-in-ajit-doval-and-wang-yi-talks-ahead-of-xi-jinping-visit-40353565.html",
+     "domain": "jagran.com"
+    }
+   ]
   },
   "china_east": {
    "state": "available",
@@ -145,7 +171,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-27",
-     "evaluated_at_utc": "2026-08-28T13:54:28Z",
+     "evaluated_at_utc": "2026-08-28T19:34:34Z",
      "rights_as_of": "2026-08-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -186,7 +212,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-27",
-     "evaluated_at_utc": "2026-08-28T13:59:16Z",
+     "evaluated_at_utc": "2026-08-28T19:39:30Z",
      "rights_as_of": "2026-08-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -227,7 +253,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-27",
-     "evaluated_at_utc": "2026-08-28T13:59:16Z",
+     "evaluated_at_utc": "2026-08-28T19:39:30Z",
      "rights_as_of": "2026-08-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -255,5 +281,5 @@
    }
   ]
  },
- "payload_seal_sha256": "4e530734ce2a15f18c1540e084388cba5e7445c775ec4788da904db2ee58f8f5"
+ "payload_seal_sha256": "b3575a22a3507d310ce9fc1e9e3106f10d91e3c5391feafbe13f3d2e9a9f0e64"
 }
