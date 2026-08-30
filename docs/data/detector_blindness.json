@@ -19,18 +19,18 @@
   "n_episodes_whose_bar_peaked_after_they_ended": 523,
   "max_threshold_multiple": 32.9,
   "median_threshold_multiple": 1.4,
-  "total_suppressed_channel_days": 2161,
+  "total_suppressed_channel_days": 2162,
   "suppressed_channel_days_by_channel": {
    "china_east": 306,
    "gulf_energy": 525,
-   "pakistan_west": 409,
+   "pakistan_west": 410,
    "shipping": 370,
    "us_trade": 551
   },
   "suppressed_days_are_deduplicated": "Episode follow-windows overlap, so this is the count of DISTINCT channel-days, not the sum of per-episode counts, which would multiply-count the same day.",
   "median_days_until_bar_within_2x": 1,
   "follow_days": 120,
-  "generated": "2026-08-29T05:57:36Z",
+  "generated": "2026-08-30T00:49:57Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -9248,7 +9248,7 @@
    "threshold_peak_multiple": 1.9,
    "threshold_peak_day": "2026-08-05",
    "peak_bar_is_after_episode_ended": true,
-   "n_days_suppressed": 23,
+   "n_days_suppressed": 24,
    "suppressed_days": [
     "2026-05-08",
     "2026-05-27",
@@ -9272,7 +9272,8 @@
     "2026-07-31",
     "2026-08-05",
     "2026-08-16",
-    "2026-08-18"
+    "2026-08-18",
+    "2026-08-29"
    ],
    "max_suppressed_share": 0.066281,
    "max_suppressed_multiple_of_old_bar": 1.8,
@@ -9288,13 +9289,14 @@
    "threshold_peak_multiple": 1.4,
    "threshold_peak_day": "2026-08-05",
    "peak_bar_is_after_episode_ended": true,
-   "n_days_suppressed": 5,
+   "n_days_suppressed": 6,
    "suppressed_days": [
     "2026-06-27",
     "2026-07-21",
     "2026-07-23",
     "2026-07-28",
-    "2026-08-05"
+    "2026-08-05",
+    "2026-08-29"
    ],
    "max_suppressed_share": 0.066281,
    "max_suppressed_multiple_of_old_bar": 1.3,
@@ -9310,11 +9312,12 @@
    "threshold_peak_multiple": 1.3,
    "threshold_peak_day": "2026-08-05",
    "peak_bar_is_after_episode_ended": true,
-   "n_days_suppressed": 3,
+   "n_days_suppressed": 4,
    "suppressed_days": [
     "2026-07-23",
     "2026-07-28",
-    "2026-08-05"
+    "2026-08-05",
+    "2026-08-29"
    ],
    "max_suppressed_share": 0.066281,
    "max_suppressed_multiple_of_old_bar": 1.2,
