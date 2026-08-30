@@ -10,77 +10,51 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-28",
- "generated_at": "2026-08-29T17:50:45Z",
+ "target_date": "2026-08-29",
+ "generated_at": "2026-08-30T07:51:20Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "1af7f988c610d5710bb903c4257bc1d484edf704",
-  "blob_git_sha1": "94bda227db5ba6c824c4a2fcfd6da1f098bb9b96",
-  "blob_sha256": "ba7cac8c8848a78ee983a9c3ab1e9663abfb1b00fc7323606313029899b839e5",
+  "state": "different_target",
+  "commit_sha": "6f88c8c73a31f6638245b260331cec2065472198",
+  "blob_git_sha1": "2fcb94c3b3ef5e2c02c6f64df2bb03406d8295de",
+  "blob_sha256": "4becb2529d50262e2381502c7365c31ad05b0ecd2cbd2fc64f179863026002ff",
   "target_date": "2026-08-28"
  },
  "channels": {
   "pakistan_west": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Lawmakers in Pakistan - administered Kashmir elect ruling party candidate as prime minister",
-     "url": "https://www.the-messenger.com/news/world/article_f7c3bfb5-6a9a-58f2-a440-37a71ab481cf.html",
-     "domain": "the-messenger.com"
-    },
-    {
-     "title": "PML - N Leader Iftikhar Gillani Elected Prime Minister of PoK",
-     "url": "https://www.deccanchronicle.com/world/pml-n-leader-iftikhar-gillani-elected-prime-minister-of-pok-1983079",
-     "domain": "deccanchronicle.com"
-    },
-    {
-     "title": "I know the disease and the medicine : Bengal CM message to Jadavpur University students",
-     "url": "https://www.hindustantimes.com/india-news/i-know-the-disease-and-the-medicine-bengal-cm-s-message-to-jadavpur-university-students-101787929961469.html",
-     "domain": "hindustantimes.com"
-    },
-    {
-     "title": "Army chief Iran visit focused on de - escalation , negotiated settlement : Pakistan",
-     "url": "https://economictimes.indiatimes.com/news/international/world-news/army-chiefs-iran-visit-focused-on-de-escalation-negotiated-settlement-pakistan/articleshow/133583591.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "Suvendu leads Vande Mataram rally , vows crackdown on JU  threat culture",
-     "url": "https://dailypioneer.com/news/suvendu-jadavpur-university-threat-culture-nationalism",
-     "domain": "dailypioneer.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "available",
    "articles": [
     {
-     "title": "भारत - चीन की नजदीकी से सहमा पाकिस्तान , PoK में अनुच्छेद - 370 जैसा फैसला लेने की तैयारी",
-     "url": "https://www.livehindustan.com/national/pakistan-rattled-by-growing-india-china-closeness-prepares-to-take-article-370-like-decision-in-pok-201787891853857.html",
-     "domain": "livehindustan.com"
-    },
-    {
-     "title": "Pakistan PoK Status Article 370 , पाकिस्‍तान का  आर्टिकल 370  वाला दांव , PoK का स्टेटस बदलने की तैयारी , अचानक क्‍यों तेज हुई हलचल ? - pakistan pok gilgit baltistan status change india china border talks like article 370 - Pakistan News",
-     "url": "https://navbharattimes.indiatimes.com/world/pakistan/pakistan-pok-gilgit-baltistan-status-change-india-china-border-talks-like-article-370/articleshow/133583771.cms",
-     "domain": "navbharattimes.indiatimes.com"
-    },
-    {
-     "title": "Raksha Bandhan at 14 , 140 feet : Women tie rakhis to troops guarding India - China border",
-     "url": "https://www.tribuneindia.com/news/india/raksha-bandhan-at-14140-feet-women-tie-rakhis-to-troops-guarding-india-china-border/",
+     "title": "China expels PLA commander who led troops against India in Doklam , Galwan",
+     "url": "https://www.tribuneindia.com/news/world/china-expels-pla-commander-who-led-troops-against-india-in-doklam-galwan/",
      "domain": "tribuneindia.com"
     },
     {
-     "title": "Engaging China | The Shillong Times",
-     "url": "https://theshillongtimes.com/2026/08/28/engaging-china/",
-     "domain": "theshillongtimes.com"
+     "title": "Xi Jinping military purge : General behind PLA violent Galwan & Doklam clashs stripped of posts",
+     "url": "https://www.businesstoday.in/world/story/xi-jinpings-military-purge-general-behind-plas-violent-galwan-doklam-clashs-stripped-of-posts-552036-2026-08-29",
+     "domain": "businesstoday.in"
     },
     {
-     "title": "India , China agree to advance boundary delimitation talks , prevent LAC miscalculation",
-     "url": "https://www.businesstoday.in/india/story/india-china-agree-to-advance-boundary-delimitation-talks-prevent-lac-miscalculation-551918-2026-08-28",
-     "domain": "businesstoday.in"
+     "title": "China removes general who commanded PLA during Doklam , Galwan clashes with India",
+     "url": "https://www.moneycontrol.com/world/china-removes-general-who-commanded-pla-during-doklam-galwan-clashes-with-india-article-14017996.html",
+     "domain": "moneycontrol.com"
+    },
+    {
+     "title": "Strikes not just near LoC : Ex - Army chief Naravane details how India changed tactics in Op Sindoor",
+     "url": "https://timesofindia.indiatimes.com/india/strikes-not-just-near-loc-ex-army-chief-naravane-details-how-india-changed-tactics-in-op-sindoor/articleshow/133610721.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "Sonia Gandhi Book Row : Modi Govt blamed without proof ?",
+     "url": "https://organiser.org/2026/08/29/377547/bharat/why-is-congress-blaming-modi-for-sonias-book-if-penguin-is-denying-government-pressure/",
+     "domain": "organiser.org"
     }
    ]
   },
@@ -89,38 +63,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "India , Canada reiterate commitment to complete trade deal by end of 2026",
-     "url": "https://www.thehindu.com/business/Economy/india-canada-reiterate-commitment-to-complete-trade-deal-by-end-of-2026/article71399403.ece",
-     "domain": "thehindu.com"
+     "title": "Bypassing Strait of Hormuz ? Viral post claims US dredged a new corridor on Omani side",
+     "url": "https://www.businesstoday.in/world/story/bypassing-strait-of-hormuz-viral-post-claims-us-dredged-a-new-safe-corridor-on-omani-side-552046-2026-08-29",
+     "domain": "businesstoday.in"
     },
     {
-     "title": "H - 1B Death Should Cheer Indians & Americans",
-     "url": "https://indiacurrents.com/h-1bs-death-should-cheer-indians-americans/",
-     "domain": "indiacurrents.com"
+     "title": "Somali piracy surges as the impact of the US - Iran war ripples outwards",
+     "url": "https://www.bbc.com/news/articles/cr4vx4pneydo",
+     "domain": "bbc.com"
     },
     {
-     "title": "India - US Deal : Javelin Anti - Tank Missiles Signed",
-     "url": "https://www.pakistantoday.com.pk/2026/08/28/india-signs-deal-with-us-to-buy-javelin-anti-tank-missile-systems",
-     "domain": "pakistantoday.com.pk"
+     "title": "Oil prices fall on Strait of Hormuz bypass tactics  | Peak Oil News and Message Boards",
+     "url": "https://peakoil.com/production/oil-prices-fall-on-strait-of-hormuz-bypass-tactics",
+     "domain": "peakoil.com"
     },
     {
-     "title": "Под тежък обстрел ! Украинската армия удари най - малко 21 руски петролни рафинерии през август ᐉ Новини от Fakti . bg - Свят",
-     "url": "https://fakti.bg/world/1077434-pod-tejak-obstrel-ukrainskata-armia-udari-nai-malko-21-ruski-petrolni-rafinerii-prez-avgust",
-     "domain": "fakti.bg"
+     "title": "When Will Crude Oil Prices Stabilize ?",
+     "url": "https://finance.yahoo.com/energy/articles/crude-oil-prices-stabilize-190002931.html",
+     "domain": "finance.yahoo.com"
     },
     {
-     "title": "With nod to India , Canadian FM talks  diversification  amid US trade war :  Youll know why I have such a big smile",
-     "url": "https://www.moneycontrol.com/news/india/with-nod-to-india-canada-fm-talks-diversification-amid-us-trade-war-you-ll-know-why-i-have-such-a-big-smile-14017457.html",
-     "domain": "moneycontrol.com"
+     "title": "الأكاديمية العسكرية تحتفل بتخريج الدورة الثانية لطلبة مركز التدريب المهني ببورفؤاد",
+     "url": "https://www.vetogate.com/5721827",
+     "domain": "vetogate.com"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -144,12 +118,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-28",
-     "evaluated_at_utc": "2026-08-29T17:50:45Z",
-     "rights_as_of": "2026-08-29",
+     "target_date": "2026-08-29",
+     "evaluated_at_utc": "2026-08-30T07:51:20Z",
+     "rights_as_of": "2026-08-30",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-27T23:59:59Z",
+     "release_deadline_utc": "2026-09-28T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -185,12 +159,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-28",
-     "evaluated_at_utc": "2026-08-29T17:56:06Z",
-     "rights_as_of": "2026-08-29",
+     "target_date": "2026-08-29",
+     "evaluated_at_utc": "2026-08-30T07:56:07Z",
+     "rights_as_of": "2026-08-30",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-27T23:59:59Z",
+     "release_deadline_utc": "2026-09-28T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -226,12 +200,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-28",
-     "evaluated_at_utc": "2026-08-29T17:56:06Z",
-     "rights_as_of": "2026-08-29",
+     "target_date": "2026-08-29",
+     "evaluated_at_utc": "2026-08-30T07:56:07Z",
+     "rights_as_of": "2026-08-30",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-27T23:59:59Z",
+     "release_deadline_utc": "2026-09-28T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -255,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "079199b02a8f8200af2256a64f1442679d121b3df6ae262f6697301c17339194"
+ "payload_seal_sha256": "127f09010525eb020c078f4392b25e92442694865f3af1218d402ef1ce19403c"
 }
