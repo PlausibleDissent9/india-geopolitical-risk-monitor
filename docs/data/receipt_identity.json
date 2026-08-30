@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-29",
- "generated_at": "2026-08-30T07:51:20Z",
+ "generated_at": "2026-08-30T13:14:36Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "6f88c8c73a31f6638245b260331cec2065472198",
-  "blob_git_sha1": "2fcb94c3b3ef5e2c02c6f64df2bb03406d8295de",
-  "blob_sha256": "4becb2529d50262e2381502c7365c31ad05b0ecd2cbd2fc64f179863026002ff",
-  "target_date": "2026-08-28"
+  "state": "same_target",
+  "commit_sha": "eb67b86381b35961a56189504804a3e55a90deb1",
+  "blob_git_sha1": "bfa597390ced901703a52e2ba9dc982741efd32f",
+  "blob_sha256": "ae56eab33b9a146e608d83ca8ebdd58f58ece5d13ba70eba1d40d9cf2d69fcb7",
+  "target_date": "2026-08-29"
  },
  "channels": {
   "pakistan_west": {
@@ -63,8 +63,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Why America Still Cannot Shake India Export Machine",
+     "url": "https://www.dailyexcelsior.com/why-america-still-cannot-shake-indias-export-machine/",
+     "domain": "dailyexcelsior.com"
+    },
+    {
+     "title": "Y Combinator investor mocks JD Vance call to hire Americans first",
+     "url": "https://www.foxnews.com/media/tech-investor-mocks-vance-call-hire-americans-dei-gets-blasted-trump-officials-h1b-firestorm",
+     "domain": "foxnews.com"
+    },
+    {
+     "title": "Tech investor mocks Vance call to hire Americans as  DEI , gets blasted by Trump officials in H - 1B firestorm",
+     "url": "https://www.yahoo.com/news/politics/articles/tech-investor-mocks-vance-call-142109217.html",
+     "domain": "yahoo.com"
+    },
+    {
+     "title": "Leaders of Russia , China , Iran to Attend Summit in Kyrgyzstan",
+     "url": "https://english.aawsat.com/world/5312274-leaders-russia-china-iran-attend-summit-kyrgyzstan",
+     "domain": "english.aawsat.com"
+    },
+    {
+     "title": "Putin , Xi , Pezeshkian to Attend SCO Summit in Kyrgyzstan",
+     "url": "https://www.pakistantoday.com.pk/2026/08/29/leaders-of-russia-china-iran-to-attend-summit-in-kyrgyzstan",
+     "domain": "pakistantoday.com.pk"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
@@ -119,7 +145,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-29",
-     "evaluated_at_utc": "2026-08-30T07:51:20Z",
+     "evaluated_at_utc": "2026-08-30T13:14:36Z",
      "rights_as_of": "2026-08-30",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +186,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-29",
-     "evaluated_at_utc": "2026-08-30T07:56:07Z",
+     "evaluated_at_utc": "2026-08-30T13:20:17Z",
      "rights_as_of": "2026-08-30",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +227,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-29",
-     "evaluated_at_utc": "2026-08-30T07:56:07Z",
+     "evaluated_at_utc": "2026-08-30T13:20:17Z",
      "rights_as_of": "2026-08-30",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +255,5 @@
    }
   ]
  },
- "payload_seal_sha256": "127f09010525eb020c078f4392b25e92442694865f3af1218d402ef1ce19403c"
+ "payload_seal_sha256": "78b73723a1f0de61a3f62cb2ff9aefee932d292c5002b009cfa211ebd83c167e"
 }
