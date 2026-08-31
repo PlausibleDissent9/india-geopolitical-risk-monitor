@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-29",
- "generated_at": "2026-08-30T18:14:11Z",
+ "target_date": "2026-08-30",
+ "generated_at": "2026-08-31T07:31:14Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "5aa3bed5a38d8e8b37eb966fa9069e5a455a1f61",
-  "blob_git_sha1": "7ed43a8e51bdd480a03af408ca6cd264a198b002",
-  "blob_sha256": "902bac325e20f3213e42c18556b91d4cf26aa8271e7c26234955fe1f055787b9",
+  "state": "different_target",
+  "commit_sha": "a348461203c536b8ccd47dfd2a4f6d8f111b20e7",
+  "blob_git_sha1": "ea7c35d697fef15ce397dd19056b8197490e5bd8",
+  "blob_sha256": "b98beaa228f881b521561a969f2c96e5345734d10a2babad0e9f9085a1f39c18",
   "target_date": "2026-08-29"
  },
  "channels": {
@@ -29,96 +29,44 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "China expels PLA commander who led troops against India in Doklam , Galwan",
-     "url": "https://www.tribuneindia.com/news/world/china-expels-pla-commander-who-led-troops-against-india-in-doklam-galwan/",
-     "domain": "tribuneindia.com"
-    },
-    {
-     "title": "Xi Jinping military purge : General behind PLA violent Galwan & Doklam clashs stripped of posts",
-     "url": "https://www.businesstoday.in/world/story/xi-jinpings-military-purge-general-behind-plas-violent-galwan-doklam-clashs-stripped-of-posts-552036-2026-08-29",
-     "domain": "businesstoday.in"
-    },
-    {
-     "title": "China removes general who commanded PLA during Doklam , Galwan clashes with India",
-     "url": "https://www.moneycontrol.com/world/china-removes-general-who-commanded-pla-during-doklam-galwan-clashes-with-india-article-14017996.html",
-     "domain": "moneycontrol.com"
-    },
-    {
-     "title": "Strikes not just near LoC : Ex - Army chief Naravane details how India changed tactics in Op Sindoor",
-     "url": "https://timesofindia.indiatimes.com/india/strikes-not-just-near-loc-ex-army-chief-naravane-details-how-india-changed-tactics-in-op-sindoor/articleshow/133610721.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "Sonia Gandhi Book Row : Modi Govt blamed without proof ?",
-     "url": "https://organiser.org/2026/08/29/377547/bharat/why-is-congress-blaming-modi-for-sonias-book-if-penguin-is-denying-government-pressure/",
-     "domain": "organiser.org"
-    }
-   ]
-  },
-  "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
+  "gulf_energy": {
+   "state": "unavailable",
+   "reason_code": "source_response_invalid"
+  },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Why America Still Cannot Shake India Export Machine",
-     "url": "https://www.dailyexcelsior.com/why-america-still-cannot-shake-indias-export-machine/",
-     "domain": "dailyexcelsior.com"
-    },
-    {
-     "title": "Y Combinator investor mocks JD Vance call to hire Americans first",
-     "url": "https://www.foxnews.com/media/tech-investor-mocks-vance-call-hire-americans-dei-gets-blasted-trump-officials-h1b-firestorm",
-     "domain": "foxnews.com"
-    },
-    {
-     "title": "Tech investor mocks Vance call to hire Americans as  DEI , gets blasted by Trump officials in H - 1B firestorm",
-     "url": "https://www.yahoo.com/news/politics/articles/tech-investor-mocks-vance-call-142109217.html",
-     "domain": "yahoo.com"
-    },
-    {
-     "title": "Leaders of Russia , China , Iran to Attend Summit in Kyrgyzstan",
-     "url": "https://english.aawsat.com/world/5312274-leaders-russia-china-iran-attend-summit-kyrgyzstan",
-     "domain": "english.aawsat.com"
-    },
-    {
-     "title": "Putin , Xi , Pezeshkian to Attend SCO Summit in Kyrgyzstan",
-     "url": "https://www.pakistantoday.com.pk/2026/08/29/leaders-of-russia-china-iran-to-attend-summit-in-kyrgyzstan",
-     "domain": "pakistantoday.com.pk"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Bypassing Strait of Hormuz ? Viral post claims US dredged a new corridor on Omani side",
-     "url": "https://www.businesstoday.in/world/story/bypassing-strait-of-hormuz-viral-post-claims-us-dredged-a-new-safe-corridor-on-omani-side-552046-2026-08-29",
-     "domain": "businesstoday.in"
+     "title": "كيف حاصرت المخاطر الأمنية ميناء عدن رغم موقعه الإستراتيجي ؟",
+     "url": "https://www.aljazeera.net/ebusiness/2026/8/30/%D9%83%D9%8A%D9%81-%D8%AD%D8%A7%D8%B5%D8%B1%D8%AA-%D8%A7%D9%84%D9%85%D8%AE%D8%A7%D8%B7%D8%B1-%D8%A7%D9%84%D8%A3%D9%85%D9%86%D9%8A%D8%A9-%D9%85%D9%8A%D9%86%D8%A7%D8%A1-%D8%B9%D8%AF%D9%86",
+     "domain": "aljazeera.net"
     },
     {
-     "title": "Somali piracy surges as the impact of the US - Iran war ripples outwards",
-     "url": "https://www.bbc.com/news/articles/cr4vx4pneydo",
-     "domain": "bbc.com"
+     "title": "Михаил Крутихин :  Все предупреждения американской разведки оправдались",
+     "url": "https://www.9tv.co.il/item/262602",
+     "domain": "9tv.co.il"
     },
     {
-     "title": "Oil prices fall on Strait of Hormuz bypass tactics  | Peak Oil News and Message Boards",
-     "url": "https://peakoil.com/production/oil-prices-fall-on-strait-of-hormuz-bypass-tactics",
-     "domain": "peakoil.com"
+     "title": "Attractive target : U . N . tells merchant ships NOT to arm against pirates despite 90 sailors held hostage * WorldNetDaily * by Harold Hutchison , Daily Caller News Foundation",
+     "url": "https://www.wnd.com/2026/08/attractive-target-u-n-tells-merchant-ships-not/",
+     "domain": "wnd.com"
     },
     {
-     "title": "When Will Crude Oil Prices Stabilize ?",
-     "url": "https://finance.yahoo.com/energy/articles/crude-oil-prices-stabilize-190002931.html",
-     "domain": "finance.yahoo.com"
+     "title": "الطريق الذي يمر فوق العالم",
+     "url": "https://aawsat.com/%D8%A7%D9%84%D8%B1%D8%A3%D9%8A/5312853-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%84%D8%B0%D9%8A-%D9%8A%D9%85%D8%B1-%D9%81%D9%88%D9%82-%D8%A7%D9%84%D8%B9%D8%A7%D9%84%D9%85",
+     "domain": "aawsat.com"
     },
     {
-     "title": "الأكاديمية العسكرية تحتفل بتخريج الدورة الثانية لطلبة مركز التدريب المهني ببورفؤاد",
-     "url": "https://www.vetogate.com/5721827",
-     "domain": "vetogate.com"
+     "title": "مصر .. صاحب مقترح  مقايضة الديون  يتراجع عن إدراج قناة السويس وعلاء مبارك  ساخرا : عندنا الأهرامات",
+     "url": "https://arabic.cnn.com/middle-east/article/2026/08/30/egypt-major-swap-proposal-drops-inclusion-of-suez-canal",
+     "domain": "arabic.cnn.com"
     }
    ]
   }
@@ -144,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-29",
-     "evaluated_at_utc": "2026-08-30T18:14:11Z",
-     "rights_as_of": "2026-08-30",
+     "target_date": "2026-08-30",
+     "evaluated_at_utc": "2026-08-31T07:31:14Z",
+     "rights_as_of": "2026-08-31",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-28T23:59:59Z",
+     "release_deadline_utc": "2026-09-29T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -185,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-29",
-     "evaluated_at_utc": "2026-08-30T18:19:14Z",
-     "rights_as_of": "2026-08-30",
+     "target_date": "2026-08-30",
+     "evaluated_at_utc": "2026-08-31T07:36:51Z",
+     "rights_as_of": "2026-08-31",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-28T23:59:59Z",
+     "release_deadline_utc": "2026-09-29T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -226,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-29",
-     "evaluated_at_utc": "2026-08-30T18:19:14Z",
-     "rights_as_of": "2026-08-30",
+     "target_date": "2026-08-30",
+     "evaluated_at_utc": "2026-08-31T07:36:51Z",
+     "rights_as_of": "2026-08-31",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-28T23:59:59Z",
+     "release_deadline_utc": "2026-09-29T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -255,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "7d49bdee2c55f1ce3a727d424e4d68bf376bb2e906abf39dadcf7cfcbb627b75"
+ "payload_seal_sha256": "b4631e997627f28148e70f27dfd3d1ad72b44e9231774db66c6983e26bd3f00e"
 }
