@@ -12,16 +12,16 @@
     "deadline_ist_on_d_plus_1": "06:30"
    }
   ],
-  "generated": "2026-08-30T00:49:56Z",
-  "generated_ist": "2026-08-30 06:19 IST",
+  "generated": "2026-08-31T00:59:42Z",
+  "generated_ist": "2026-08-31 06:29 IST",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
   "source": "https://igrm.in/data/reliability.json"
  },
- "on_time": 0,
- "scored_days": 23,
- "rate": 0.0,
+ "on_time": 1,
+ "scored_days": 24,
+ "rate": 0.042,
  "days": [
   {
    "day": "2026-07-29",
@@ -229,6 +229,14 @@
    "commit": "98e27a3",
    "deadline_ist": "2026-08-29 06:30",
    "on_time": false,
+   "contract": true
+  },
+  {
+   "day": "2026-08-29",
+   "published_ist": "2026-08-30 06:20",
+   "commit": "9048319",
+   "deadline_ist": "2026-08-30 06:30",
+   "on_time": true,
    "contract": true
   }
  ]
