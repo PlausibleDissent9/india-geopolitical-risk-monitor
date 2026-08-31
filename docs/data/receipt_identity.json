@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-08-30",
- "generated_at": "2026-08-31T15:21:51Z",
+ "generated_at": "2026-08-31T15:49:59Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "4248402c3c1e48b0df266271096886a99541d10f",
-  "blob_git_sha1": "de917fa73978ceb585989ceefd5d673383883017",
-  "blob_sha256": "fdfc6456e182526ff905b898f71fc783af23fc66609a81a6f8af74150db9b4c3",
+  "commit_sha": "87dc0f2b582a12aa793b47b9a236da7f8ae77248",
+  "blob_git_sha1": "7537b3325f2074138234de5578046a6fcc1e0d04",
+  "blob_sha256": "658f9e057e3ab9b0f43f1c40d45bf8da01a2ec16dfa48cc5ab106412a0d5d239",
   "target_date": "2026-08-30"
  },
  "channels": {
@@ -37,8 +37,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "India Balances Economic Partnerships with US and China",
+     "url": "https://udaipurkiran.com/india-balances-economic-partnerships-with-us-and-china/",
+     "domain": "udaipurkiran.com"
+    },
+    {
+     "title": "India rebalances economic partnership with US , China",
+     "url": "https://ianslive.in/india-rebalances-economic-partnership-with-us-china--20260830135402",
+     "domain": "ianslive.in"
+    },
+    {
+     "title": "India rebalances economic ties with US , China in 2026 : Report",
+     "url": "https://www.orissapost.com/india-rebalances-economic-ties-with-us-china-in-2026-report/",
+     "domain": "orissapost.com"
+    },
+    {
+     "title": "Два маршрута на Восток : как Китай и Индия стали ключевыми партнерами России в нефтегазовом секторе",
+     "url": "https://vestikavkaza.ru/analytics/dva-marsruta-na-vostok-kak-kitaj-i-india-stali-klucevymi-partnerami-rossii-v-neftegazovom-sektore.html",
+     "domain": "vestikavkaza.ru"
+    },
+    {
+     "title": "India emerges as key petrol supplier to Russia amid refinery disruptions",
+     "url": "https://www.moneycontrol.com/world/india-sends-nearly-1-million-barrels-of-petrol-to-russia-as-drone-strikes-hit-refineries-article-14018282.html",
+     "domain": "moneycontrol.com"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-30",
-     "evaluated_at_utc": "2026-08-31T15:21:51Z",
+     "evaluated_at_utc": "2026-08-31T15:49:59Z",
      "rights_as_of": "2026-08-31",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-30",
-     "evaluated_at_utc": "2026-08-31T15:26:34Z",
+     "evaluated_at_utc": "2026-08-31T15:55:08Z",
      "rights_as_of": "2026-08-31",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-08-30",
-     "evaluated_at_utc": "2026-08-31T15:26:34Z",
+     "evaluated_at_utc": "2026-08-31T15:55:08Z",
      "rights_as_of": "2026-08-31",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "db4d50007bf0186944724f8b7ac6291c8bfb697c6e9ef1dd57555ceea9dde0ae"
+ "payload_seal_sha256": "f9a282ea2a345e941696ac494be69b99f628e285e7946b8aa3fb9f615a6eb91d"
 }
