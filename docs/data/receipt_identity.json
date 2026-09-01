@@ -10,23 +10,49 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-30",
- "generated_at": "2026-08-31T19:59:15Z",
+ "target_date": "2026-08-31",
+ "generated_at": "2026-09-01T17:26:02Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "e9a47f534b4af5535d492417b49f5c1a576528b2",
-  "blob_git_sha1": "2bdb104b82063312ed6b4ca4a6d64b7d327a2edb",
-  "blob_sha256": "4efb252bbb998662b155bcfd7c10d3c0844978de0ae9bb44aa520db51c4e2700",
+  "state": "different_target",
+  "commit_sha": "ed0ddf0a96f051dd0cbf38205336ea5ea2589d31",
+  "blob_git_sha1": "b952bbfcdba620dfd02aaa4b9cc13be6e3bab716",
+  "blob_sha256": "837a0ac1cf210b09c582d1b2dbcaeb907dfa6a5a61b6d9418693ca274bc1cf02",
   "target_date": "2026-08-30"
  },
  "channels": {
   "pakistan_west": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "India rejects again IWT  award  by  illegally constituted  Court of Arbitration",
+     "url": "https://ianslive.in/india-rejects-again-iwt-award-by-illegally-constituted-court-of-arbitration--20260831170559",
+     "domain": "ianslive.in"
+    },
+    {
+     "title": "India rejects Hague Court Indus Waters Treaty ruling , says it has  no jurisdiction",
+     "url": "https://www.newindianexpress.com/india/2026/Aug/31/india-rejects-hague-courts-indus-waters-treaty-ruling-says-it-has-no-jurisdiction",
+     "domain": "newindianexpress.com"
+    },
+    {
+     "title": "India tells arbitration court Indus order holds no water",
+     "url": "https://economictimes.indiatimes.com/news/india/india-tells-arbitration-court-indus-order-holds-no-water/articleshow/133661107.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "PoK stir enters critical stage as medicines blocked , hospitals prevented from treating protesters",
+     "url": "https://www.prokerala.com/news/articles/a1806820.html",
+     "domain": "prokerala.com"
+    },
+    {
+     "title": "PM Modi busy day at SCO Summit in Bishkek : Meetings with Putin , Pezeshkian and others",
+     "url": "https://www.moneycontrol.com/news/india/pm-modis-busy-day-at-sco-summit-in-bishkek-meetings-with-putin-pezeshkian-and-others-14018606.html",
+     "domain": "moneycontrol.com"
+    }
+   ]
   },
   "china_east": {
    "state": "unavailable",
@@ -37,64 +63,12 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "India Balances Economic Partnerships with US and China",
-     "url": "https://udaipurkiran.com/india-balances-economic-partnerships-with-us-and-china/",
-     "domain": "udaipurkiran.com"
-    },
-    {
-     "title": "India rebalances economic partnership with US , China",
-     "url": "https://ianslive.in/india-rebalances-economic-partnership-with-us-china--20260830135402",
-     "domain": "ianslive.in"
-    },
-    {
-     "title": "India rebalances economic ties with US , China in 2026 : Report",
-     "url": "https://www.orissapost.com/india-rebalances-economic-ties-with-us-china-in-2026-report/",
-     "domain": "orissapost.com"
-    },
-    {
-     "title": "Два маршрута на Восток : как Китай и Индия стали ключевыми партнерами России в нефтегазовом секторе",
-     "url": "https://vestikavkaza.ru/analytics/dva-marsruta-na-vostok-kak-kitaj-i-india-stali-klucevymi-partnerami-rossii-v-neftegazovom-sektore.html",
-     "domain": "vestikavkaza.ru"
-    },
-    {
-     "title": "India emerges as key petrol supplier to Russia amid refinery disruptions",
-     "url": "https://www.moneycontrol.com/world/india-sends-nearly-1-million-barrels-of-petrol-to-russia-as-drone-strikes-hit-refineries-article-14018282.html",
-     "domain": "moneycontrol.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "كيف حاصرت المخاطر الأمنية ميناء عدن رغم موقعه الإستراتيجي ؟",
-     "url": "https://www.aljazeera.net/ebusiness/2026/8/30/%D9%83%D9%8A%D9%81-%D8%AD%D8%A7%D8%B5%D8%B1%D8%AA-%D8%A7%D9%84%D9%85%D8%AE%D8%A7%D8%B7%D8%B1-%D8%A7%D9%84%D8%A3%D9%85%D9%86%D9%8A%D8%A9-%D9%85%D9%8A%D9%86%D8%A7%D8%A1-%D8%B9%D8%AF%D9%86",
-     "domain": "aljazeera.net"
-    },
-    {
-     "title": "Михаил Крутихин :  Все предупреждения американской разведки оправдались",
-     "url": "https://www.9tv.co.il/item/262602",
-     "domain": "9tv.co.il"
-    },
-    {
-     "title": "Attractive target : U . N . tells merchant ships NOT to arm against pirates despite 90 sailors held hostage * WorldNetDaily * by Harold Hutchison , Daily Caller News Foundation",
-     "url": "https://www.wnd.com/2026/08/attractive-target-u-n-tells-merchant-ships-not/",
-     "domain": "wnd.com"
-    },
-    {
-     "title": "الطريق الذي يمر فوق العالم",
-     "url": "https://aawsat.com/%D8%A7%D9%84%D8%B1%D8%A3%D9%8A/5312853-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%84%D8%B0%D9%8A-%D9%8A%D9%85%D8%B1-%D9%81%D9%88%D9%82-%D8%A7%D9%84%D8%B9%D8%A7%D9%84%D9%85",
-     "domain": "aawsat.com"
-    },
-    {
-     "title": "مصر .. صاحب مقترح  مقايضة الديون  يتراجع عن إدراج قناة السويس وعلاء مبارك  ساخرا : عندنا الأهرامات",
-     "url": "https://arabic.cnn.com/middle-east/article/2026/08/30/egypt-major-swap-proposal-drops-inclusion-of-suez-canal",
-     "domain": "arabic.cnn.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -118,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-30",
-     "evaluated_at_utc": "2026-08-31T19:59:15Z",
-     "rights_as_of": "2026-08-31",
+     "target_date": "2026-08-31",
+     "evaluated_at_utc": "2026-09-01T17:26:02Z",
+     "rights_as_of": "2026-09-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-29T23:59:59Z",
+     "release_deadline_utc": "2026-09-30T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -159,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-30",
-     "evaluated_at_utc": "2026-08-31T20:04:27Z",
-     "rights_as_of": "2026-08-31",
+     "target_date": "2026-08-31",
+     "evaluated_at_utc": "2026-09-01T17:31:02Z",
+     "rights_as_of": "2026-09-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-29T23:59:59Z",
+     "release_deadline_utc": "2026-09-30T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -200,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-30",
-     "evaluated_at_utc": "2026-08-31T20:04:27Z",
-     "rights_as_of": "2026-08-31",
+     "target_date": "2026-08-31",
+     "evaluated_at_utc": "2026-09-01T17:31:03Z",
+     "rights_as_of": "2026-09-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-29T23:59:59Z",
+     "release_deadline_utc": "2026-09-30T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -229,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "3bde1efc814caec9c11c7e892a7bafada7f05b535f2c44c385eb5c2663164937"
+ "payload_seal_sha256": "130fbcc9158303fabe370683a34d289d0b49812112dd7b10092f7731847504c9"
 }
