@@ -10,49 +10,23 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-08-31",
- "generated_at": "2026-09-01T17:26:02Z",
+ "target_date": "2026-09-01",
+ "generated_at": "2026-09-02T12:44:31Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "ed0ddf0a96f051dd0cbf38205336ea5ea2589d31",
-  "blob_git_sha1": "b952bbfcdba620dfd02aaa4b9cc13be6e3bab716",
-  "blob_sha256": "837a0ac1cf210b09c582d1b2dbcaeb907dfa6a5a61b6d9418693ca274bc1cf02",
-  "target_date": "2026-08-30"
+  "commit_sha": "5e69965383486d77758644b3774a31206266dcac",
+  "blob_git_sha1": "b95885bb53c7c0546176e61f7e44bb6394ee598b",
+  "blob_sha256": "533fb909a1917bfeaaf415d444e7a7a3ffead529381dae7b97264b35096b7bf9",
+  "target_date": "2026-08-31"
  },
  "channels": {
   "pakistan_west": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "India rejects again IWT  award  by  illegally constituted  Court of Arbitration",
-     "url": "https://ianslive.in/india-rejects-again-iwt-award-by-illegally-constituted-court-of-arbitration--20260831170559",
-     "domain": "ianslive.in"
-    },
-    {
-     "title": "India rejects Hague Court Indus Waters Treaty ruling , says it has  no jurisdiction",
-     "url": "https://www.newindianexpress.com/india/2026/Aug/31/india-rejects-hague-courts-indus-waters-treaty-ruling-says-it-has-no-jurisdiction",
-     "domain": "newindianexpress.com"
-    },
-    {
-     "title": "India tells arbitration court Indus order holds no water",
-     "url": "https://economictimes.indiatimes.com/news/india/india-tells-arbitration-court-indus-order-holds-no-water/articleshow/133661107.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "PoK stir enters critical stage as medicines blocked , hospitals prevented from treating protesters",
-     "url": "https://www.prokerala.com/news/articles/a1806820.html",
-     "domain": "prokerala.com"
-    },
-    {
-     "title": "PM Modi busy day at SCO Summit in Bishkek : Meetings with Putin , Pezeshkian and others",
-     "url": "https://www.moneycontrol.com/news/india/pm-modis-busy-day-at-sco-summit-in-bishkek-meetings-with-putin-pezeshkian-and-others-14018606.html",
-     "domain": "moneycontrol.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "unavailable",
@@ -63,8 +37,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "上合峰会见普京 习近平 ： 中俄关系将更加牢固",
+     "url": "https://www.dw.com/zh/%E4%B8%8A%E5%90%88%E5%B3%B0%E4%BC%9A%E8%A7%81%E6%99%AE%E4%BA%AC-%E4%B9%A0%E8%BF%91%E5%B9%B3%E4%B8%AD%E4%BF%84%E5%85%B3%E7%B3%BB%E5%B0%86%E6%9B%B4%E5%8A%A0%E7%89%A2%E5%9B%BA/a-78574163",
+     "domain": "dw.com"
+    },
+    {
+     "title": "Μόντι προς Πούτιν : « Τερματίστε τον πόλεμο » – Η αμήχανη αντίδραση του Ρώσου προέδρου",
+     "url": "https://www.lifo.gr/now/world/monti-pros-poytin-termatiste-ton-polemo-i-amihani-antidrasi-toy-rosoy-proedroy",
+     "domain": "lifo.gr"
+    },
+    {
+     "title": "Top Ally Modi Tells Putin To Stop Ukraine War | HuffPost united kingdom Politics",
+     "url": "https://www.huffingtonpost.co.uk/entry/putin-modi-ukraine-war-stop-russia_uk_6a968654e4b0a4525615a424",
+     "domain": "huffingtonpost.co.uk"
+    },
+    {
+     "title": "H - 1B visa : Trump administration proposes new rule to strip right to work from visa holder spouses – The Press Democrat",
+     "url": "https://www.pressdemocrat.com/2026/08/31/h-1b-visa-trump-new-rule-work-jobs-employment-visa-spouses/",
+     "domain": "pressdemocrat.com"
+    },
+    {
+     "title": "H - 1B visa : Trump administration proposes new rule to strip right to work from visa holder spouses – East Bay Times",
+     "url": "https://www.eastbaytimes.com/2026/08/31/h-1b-visa-trump-new-rule-work-jobs-employment-visa-spouses/",
+     "domain": "eastbaytimes.com"
+    }
+   ]
   },
   "shipping": {
    "state": "unavailable",
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-31",
-     "evaluated_at_utc": "2026-09-01T17:26:02Z",
-     "rights_as_of": "2026-09-01",
+     "target_date": "2026-09-01",
+     "evaluated_at_utc": "2026-09-02T12:44:31Z",
+     "rights_as_of": "2026-09-02",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-30T23:59:59Z",
+     "release_deadline_utc": "2026-10-01T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-31",
-     "evaluated_at_utc": "2026-09-01T17:31:02Z",
-     "rights_as_of": "2026-09-01",
+     "target_date": "2026-09-01",
+     "evaluated_at_utc": "2026-09-02T12:50:27Z",
+     "rights_as_of": "2026-09-02",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-30T23:59:59Z",
+     "release_deadline_utc": "2026-10-01T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-08-31",
-     "evaluated_at_utc": "2026-09-01T17:31:03Z",
-     "rights_as_of": "2026-09-01",
+     "target_date": "2026-09-01",
+     "evaluated_at_utc": "2026-09-02T12:50:27Z",
+     "rights_as_of": "2026-09-02",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-09-30T23:59:59Z",
+     "release_deadline_utc": "2026-10-01T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "130fbcc9158303fabe370683a34d289d0b49812112dd7b10092f7731847504c9"
+ "payload_seal_sha256": "801da69a7d6d44fe41dca622ab49d6cdf16fec874212fc9fc4a1bb84722ba369"
 }
