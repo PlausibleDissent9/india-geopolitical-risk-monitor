@@ -1,0 +1,79 @@
+{
+ "schema_version": "1.0.0",
+ "receipt_id": "igrm:final-publication:2026-09-01",
+ "target_date": "2026-09-01",
+ "base_commit": "9c16e9032236f1805ea01851471f3b90bc467d7b",
+ "status": "eligible_immutable_target_candidate",
+ "source": "ngram_bridge",
+ "frame": {
+  "validator": "src.ngram_daily_attestation.validate",
+  "attestation_sha256": "b48e5de5708dc500404b20902698f5bcb760f9558e75651383b347067da468a7",
+  "source_cache_sha256": "0c2266ee5f2584365ad9628ce3fdaf99490b6ed8542789141ba6da2697e62cac",
+  "n_samples_located": 48,
+  "n_samples_loaded": 48,
+  "missing_stamps": [],
+  "profile_id": "igrm:gdelt-ngram-daily-aggregate:2.0.0",
+  "document_membership_retained": false
+ },
+ "bindings": {
+  "calibration_sha256": "02efb5a493878701f1890802133ee395e6e1775028c33f8986b0043235e87c2e",
+  "calibration_records_sha256": {
+   "china_east": "94d410010a7eba6a5ed1bf46ad46a0c80225353d465de310cc2307bb27ffc541",
+   "gulf_energy": "e2412d8a53c062837a8faed7c7e8442af5abc4c94b89095810db6506799663f1",
+   "pakistan_west": "922a1dedcceaaaa396eae2c435be7371b36b743b4013212ce28dd9e2201642ce",
+   "shipping": "f3a96cf13d0d2fa46310dcfd967c1a4f887d87fa2ee6cd92e2ca6380cb520404",
+   "us_trade": "a4e0d01d5ea45cb8365b907732bcebc9a27d980ae53c064f3f078d62871f6765"
+  },
+  "source_profile_sha256": "33588bb15198435b026a448ce602fc4c1b04885bdc1af7f13eff195bb47b37bc",
+  "source_schema_sha256": "f8d4e1a3e0e1f3fe22c693ee43d3ec6029edf7011b4cf1fc9a248f3b8aa1410d",
+  "source_validator_sha256": "ab183ed88600c87e875e6ff1f860a465aa2aa81c4c0f1666ad6c90da653874c4",
+  "dictionary_sha256": "4f5d3333cad6d7b708c3b7d855f5fcc636b0ef2243f56f8e58def9f754d99b40",
+  "matcher_sha256": "061a7ecd7ebcd342b020f496eb3f9e8b34068c087de772a4c6a4e49da0c17175",
+  "matcher_specs_sha256": "fb5fc7c9cc62067ea3ba75bf7d85aed3e046b01a84aede0f2144937029bfe24e",
+  "candidate_row_sha256": "26a851ecc4cefc642f9f50fc49dd3b02cef1b07842305b78fa55c92ca22a6aac",
+  "rights": {
+   "source_id": "gdelt_web_ngrams_v5",
+   "decision_id": "rights:gdelt_web_ngrams_v5:aggregate-2.0:2026-08-12",
+   "signer_id": "human:igrm-ngram-rights-reviewer",
+   "reviewed_on": "2026-08-12",
+   "review_due": "2026-11-10",
+   "target_date": "2026-09-01",
+   "evaluated_at_utc": "2026-09-02T00:43:05Z",
+   "rights_as_of": "2026-09-02",
+   "max_current_age_days": 3,
+   "evaluated_age_days": 1,
+   "release_deadline_utc": "2026-09-04T23:59:59Z",
+   "permitted_uses": [
+    "model_processing",
+    "publish_derived_value"
+   ],
+   "trusted_signer_public_key_sha256": "74cde1a0bdbd0df7e703845fe00b609239b9e2c6d2f0f0fe1bba48e375ce5ff2",
+   "rights_registry_sha256": "c77837e6432abafbc160c385cd3931d8e2c6fddb0c9cfd1fa78bd77588334486",
+   "rights_signers_sha256": "54d7447a818ba53d92aae6849e2bc5b6799dfea797032a9b8f8ba4b85b1d86e2",
+   "decision_artifact_path": "governance/rights_decisions/gdelt_web_ngrams_v5-aggregate-2.0.json",
+   "decision_artifact_sha256": "c313b3312dfb1663b60604e933cd4a18464fbd1f62ac7d8548aad9899e35de25",
+   "decision_signature_path": "governance/rights_decisions/gdelt_web_ngrams_v5-aggregate-2.0.sig",
+   "decision_signature_sha256": "e691632ec1fb5f76fbcbe79873f8d41c7a9a5875ca0dc40be283418cda52005c",
+   "profile_id": "igrm:gdelt-ngram-daily-aggregate:2.0.0",
+   "historical_recovery_targets": [
+    "2026-08-09",
+    "2026-08-10",
+    "2026-08-11"
+   ],
+   "historical_recovery_targets_sha256": "5fe3f5b85a5f1e65f63e502dfd1e61abfe00546ae5263302f5402045f97f5a7a",
+   "recovery_exception_used": false,
+   "signer_revoked_on": null
+  }
+ },
+ "append_contract": {
+  "store_prefix_sha256": "e8f8bf55d29c984ec93819fb6d16a9507ea254ce98beb3ddaef5c9494afbea96",
+  "provenance_prefix_sha256": "990e275d0dd79d520a148877329f5abd3ce72becae34f13ba6e45ea5d717bf80",
+  "old_prefix_equal": true,
+  "target_rows_appended": 1,
+  "d0_excluded": true
+ },
+ "value_fields_published": false,
+ "provisional_substitution_allowed": false,
+ "document_membership_retained": false,
+ "membership_reproducibility": "Document membership can be reconstructed only by re-fetching every exact hash-pinned source object while it remains available; membership is not independently retained."
+}
