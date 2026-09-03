@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-02",
- "generated_at": "2026-09-03T06:58:41Z",
+ "generated_at": "2026-09-03T12:14:07Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "729aa1a8f25defed7245a194bbfab16fb20db58d",
-  "blob_git_sha1": "9c2ddae3f4d081f40b6bd67a9a9df3087fc164d9",
-  "blob_sha256": "e7ba5de51ffc19695ae04cb220477d7abffb8697314e2ec8a1391bf81a3d9b3d",
-  "target_date": "2026-09-01"
+  "state": "same_target",
+  "commit_sha": "12bd6faaf5e2eb83cbc82b2c202c024f64e23da4",
+  "blob_git_sha1": "24c744e3f4d732fe81361400bf5860413482ae6f",
+  "blob_sha256": "d71ac2cccb21f4fee2146d090bd035a50c71a22d1af31baec7ddc9fab6a61e72",
+  "target_date": "2026-09-02"
  },
  "channels": {
   "pakistan_west": {
@@ -37,8 +37,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Rising global bond yields , FCNR - B inflows and SEBI CAS to shape market dynamics : HDFC Securities CEO Dhiraj Relli",
+     "url": "https://aninews.in/news/business/rising-global-bond-yields-fcnr-b-inflows-and-sebis-cas-to-shape-market-dynamics-hdfc-securities-ceo-dhiraj-relli20260902194646/",
+     "domain": "aninews.in"
+    },
+    {
+     "title": "WATCH | Ujjain Aghori Kali Nand Giri Allegedly Eats Human Flesh From Burning Pyre , Says  It Tasty , Arrested",
+     "url": "https://www.oneindia.com/india/watch-ujjain-aghori-kali-nand-giri-allegedly-eats-human-flesh-from-burning-pyre-says-it-s-tasty-8193845.html",
+     "domain": "oneindia.com"
+    },
+    {
+     "title": "Индия увеличила долю в закупках российской нефти ESPO до 16 %",
+     "url": "https://www.kommersant.ru/doc/8923599",
+     "domain": "kommersant.ru"
+    },
+    {
+     "title": "Ρωσία : Δεν υπάρχουν άλλα εμπόδια στις πληρωμές με την Ινδία",
+     "url": "https://www.naftemporiki.gr/kosmos/2156345/rosia-den-yparchoyn-alla-empodia-stis-pliromes-me-tin-india/",
+     "domain": "naftemporiki.gr"
+    },
+    {
+     "title": "Russia and India 96 % bilateral trade now through Rupee - Rouble payment infra",
+     "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/russia-and-indias-96-bilateral-trade-now-through-rupee-rouble-payment-infra/articleshow/133719834.cms",
+     "domain": "economictimes.indiatimes.com"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T06:58:41Z",
+     "evaluated_at_utc": "2026-09-03T12:14:07Z",
      "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T07:03:58Z",
+     "evaluated_at_utc": "2026-09-03T12:18:50Z",
      "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T07:03:58Z",
+     "evaluated_at_utc": "2026-09-03T12:18:50Z",
      "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "0a53cff0aacfbfc172483ec027b73d2d274d6b01d1ccd91d353ab4bdcbcc9a42"
+ "payload_seal_sha256": "fde2f24b0f1005e19173dc0ec91e048487809b193aab934bf0ea9842e324e30a"
 }
