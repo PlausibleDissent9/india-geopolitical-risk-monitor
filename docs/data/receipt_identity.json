@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-02",
- "generated_at": "2026-09-03T12:14:07Z",
+ "generated_at": "2026-09-03T12:42:10Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "12bd6faaf5e2eb83cbc82b2c202c024f64e23da4",
-  "blob_git_sha1": "24c744e3f4d732fe81361400bf5860413482ae6f",
-  "blob_sha256": "d71ac2cccb21f4fee2146d090bd035a50c71a22d1af31baec7ddc9fab6a61e72",
+  "commit_sha": "6edb74b06b4e10bca490ac28857b2d51e80de0cb",
+  "blob_git_sha1": "abbda67ae018f8dea347e8a5e3fd1f49bc97941a",
+  "blob_sha256": "f834739a3038ca6d830dce14a2c787019b4c4bb8ec449302a11791efde726087",
   "target_date": "2026-09-02"
  },
  "channels": {
@@ -29,8 +29,29 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Nepal - Tibet Floods Become China - India Flash Point",
+     "url": "https://foreignpolicy.com/2026/09/01/nepal-tibet-floods-china-india-disaster-response-border-dispute/?tpcc=recirc_trending062921",
+     "domain": "foreignpolicy.com"
+    },
+    {
+     "title": "El Niño Threatens India Monsoon : Nearly Half of Vulnerable Districts Face Deficient Rainfall , DTE Analysis Reveals Rising Farm Distress",
+     "url": "https://www.downtoearth.org.in/climate-change/with-the-monsoon-in-its-final-month-nearly-half-of-el-ni%C3%B1o-vulnerable-districts-across-25-statesuts-face-deficient-rainfall-dte-analysis",
+     "domain": "downtoearth.org.in"
+    },
+    {
+     "title": "राहत हो या रणभूमि , आसमान से हर मोर्चे पर भारत की ताकत दिखा रही इंडियन एयरफोर्स",
+     "url": "https://navbharattimes.indiatimes.com/india/nepal-flood-relief-indian-air-force-strategic-airlift-power-ladakh/articleshow/133708991.cms",
+     "domain": "navbharattimes.indiatimes.com"
+    },
+    {
+     "title": "Daily Voice : Jitendra Gohil sees this sector as a dark horse over the next 2 - 3 years",
+     "url": "https://www.moneycontrol.com/news/business/markets/daily-voice-jitendra-gohil-sees-this-sector-as-a-dark-horse-over-the-next-2-3-years-14020296.html",
+     "domain": "moneycontrol.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -119,7 +140,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T12:14:07Z",
+     "evaluated_at_utc": "2026-09-03T12:42:10Z",
      "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +181,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T12:18:50Z",
+     "evaluated_at_utc": "2026-09-03T12:47:32Z",
      "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +222,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T12:18:50Z",
+     "evaluated_at_utc": "2026-09-03T12:47:32Z",
      "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +250,5 @@
    }
   ]
  },
- "payload_seal_sha256": "fde2f24b0f1005e19173dc0ec91e048487809b193aab934bf0ea9842e324e30a"
+ "payload_seal_sha256": "da4923375e674b5a07ec36c11b29741e79506436cffdad62d8b0dbe30a981a2f"
 }
