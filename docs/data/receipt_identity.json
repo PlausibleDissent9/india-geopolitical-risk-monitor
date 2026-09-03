@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-01",
- "generated_at": "2026-09-02T17:42:30Z",
+ "target_date": "2026-09-02",
+ "generated_at": "2026-09-03T06:58:41Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "03537d0e07bce702b7b3ad015767c616701e8a39",
-  "blob_git_sha1": "94b0cb35a7ad823021ac1b67a26916309ddd3c0b",
-  "blob_sha256": "9f9dc518802996cb83c3fd926c71b3687e557a4c5c2055ec0684bdd94da23d06",
+  "state": "different_target",
+  "commit_sha": "729aa1a8f25defed7245a194bbfab16fb20db58d",
+  "blob_git_sha1": "9c2ddae3f4d081f40b6bd67a9a9df3087fc164d9",
+  "blob_sha256": "e7ba5de51ffc19695ae04cb220477d7abffb8697314e2ec8a1391bf81a3d9b3d",
   "target_date": "2026-09-01"
  },
  "channels": {
@@ -37,38 +37,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "上合峰会见普京 习近平 ： 中俄关系将更加牢固",
-     "url": "https://www.dw.com/zh/%E4%B8%8A%E5%90%88%E5%B3%B0%E4%BC%9A%E8%A7%81%E6%99%AE%E4%BA%AC-%E4%B9%A0%E8%BF%91%E5%B9%B3%E4%B8%AD%E4%BF%84%E5%85%B3%E7%B3%BB%E5%B0%86%E6%9B%B4%E5%8A%A0%E7%89%A2%E5%9B%BA/a-78574163",
-     "domain": "dw.com"
+     "title": "What are Iran options to retaliate as open warfare resumes with the US ?",
+     "url": "https://economictimes.indiatimes.com/news/defence/what-are-irans-options-to-retaliate-as-open-warfare-resumes-with-the-us/articleshow/133703077.cms",
+     "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "Μόντι προς Πούτιν : « Τερματίστε τον πόλεμο » – Η αμήχανη αντίδραση του Ρώσου προέδρου",
-     "url": "https://www.lifo.gr/now/world/monti-pros-poytin-termatiste-ton-polemo-i-amihani-antidrasi-toy-rosoy-proedroy",
-     "domain": "lifo.gr"
+     "title": "PUSH FOR RECOGNITION : Somaliland President Heading To Washington For First U . S . Visit",
+     "url": "https://www.theyeshivaworld.com/news/general/2592354/push-for-recognition-somaliland-president-heading-to-washington-for-first-u-s-visit.html",
+     "domain": "theyeshivaworld.com"
     },
     {
-     "title": "Top Ally Modi Tells Putin To Stop Ukraine War | HuffPost united kingdom Politics",
-     "url": "https://www.huffingtonpost.co.uk/entry/putin-modi-ukraine-war-stop-russia_uk_6a968654e4b0a4525615a424",
-     "domain": "huffingtonpost.co.uk"
+     "title": "Tata Advanced Systems , Pixxel , Agnikul among 13 companies in fray for AssamSat",
+     "url": "https://www.moneycontrol.com/technology/tata-advanced-systems-pixxel-agnikul-among-13-companies-in-fray-for-assamsat-article-14020758.html",
+     "domain": "moneycontrol.com"
     },
     {
-     "title": "H - 1B visa : Trump administration proposes new rule to strip right to work from visa holder spouses – The Press Democrat",
-     "url": "https://www.pressdemocrat.com/2026/08/31/h-1b-visa-trump-new-rule-work-jobs-employment-visa-spouses/",
-     "domain": "pressdemocrat.com"
+     "title": "الفريق أسامة ربيع يبحث سبل التعاون المشترك مع القائم بأعمال السفير الأمريكي بالقاهرة",
+     "url": "https://www.vetogate.com/5724264",
+     "domain": "vetogate.com"
     },
     {
-     "title": "H - 1B visa : Trump administration proposes new rule to strip right to work from visa holder spouses – East Bay Times",
-     "url": "https://www.eastbaytimes.com/2026/08/31/h-1b-visa-trump-new-rule-work-jobs-employment-visa-spouses/",
-     "domain": "eastbaytimes.com"
+     "title": "Эксперт : На ШОС+ можно сформировать необходимую политическую поддержку для обеспечения устойчивости Среднего коридора МНЕНИЕ",
+     "url": "https://azertag.az/ru/xeber/ekspert_na_shos_mozhno_sformirovat_neobhodimuyu_politicheskuyu_podderzhku_dlya_obespecheniya_ustoichivosti_srednego_koridora_mnenie-4394965",
+     "domain": "azertag.az"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-01",
-     "evaluated_at_utc": "2026-09-02T17:42:30Z",
-     "rights_as_of": "2026-09-02",
+     "target_date": "2026-09-02",
+     "evaluated_at_utc": "2026-09-03T06:58:41Z",
+     "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-01T23:59:59Z",
+     "release_deadline_utc": "2026-10-02T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-01",
-     "evaluated_at_utc": "2026-09-02T17:47:31Z",
-     "rights_as_of": "2026-09-02",
+     "target_date": "2026-09-02",
+     "evaluated_at_utc": "2026-09-03T07:03:58Z",
+     "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-01T23:59:59Z",
+     "release_deadline_utc": "2026-10-02T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-01",
-     "evaluated_at_utc": "2026-09-02T17:47:31Z",
-     "rights_as_of": "2026-09-02",
+     "target_date": "2026-09-02",
+     "evaluated_at_utc": "2026-09-03T07:03:58Z",
+     "rights_as_of": "2026-09-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-01T23:59:59Z",
+     "release_deadline_utc": "2026-10-02T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "6b7636a8437bb5926eabb88ee3b7daf5bc9baa769c2195f9c1c8aad8445d8f7c"
+ "payload_seal_sha256": "0a53cff0aacfbfc172483ec027b73d2d274d6b01d1ccd91d353ab4bdcbcc9a42"
 }
