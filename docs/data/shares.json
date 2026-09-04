@@ -4,13 +4,13 @@
   "units": "percent of the day's monitored article corpus",
   "why_this_matters": "Percentiles saturate. Across 2025-04-23 to 2025-05-14 the pakistan_west percentile moved 2.2 points while this share moved 5.5-fold; the intensity information lives here, not in the rank. Shares are also commensurable across channels and across years, which percentiles are not: a rank is taken against each channel's own trailing two years.",
   "instrument_is_not_constant": {
-   "n_days": 3509,
+   "n_days": 3510,
    "n_doc_api": 3446,
-   "n_ngram_bridge": 63,
-   "n_recorded": 25,
+   "n_ngram_bridge": 64,
+   "n_recorded": 26,
    "n_reconstructed": 3484,
    "bridge_first_day": "2026-06-30",
-   "bridge_last_day": "2026-09-02",
+   "bridge_last_day": "2026-09-03",
    "reconstruction_impurity_bound": 5,
    "what": "Which instrument measured each day. Most days are GDELT DOC API counts; bridged days were measured by the Web NGrams feed and divided by a per-channel splice ratio to reach the API's scale. These are different instruments and the linking constant is estimated, so any statistic computed across the boundary inherits that uncertainty.",
    "basis_note": "'recorded' rows were written at the moment of splicing. 'reconstructed' rows are inferred from day-cache presence; at most 5 of the days labelled bridged may in fact carry a retained API value, because the splice calibration also sampled overlap days. The bound is the n from the calibration record, not an estimate.",
@@ -41,7 +41,7 @@
      "n_days": 1
     }
    },
-   "generated": "2026-09-03T00:49:09Z"
+   "generated": "2026-09-04T03:11:55Z"
   },
   "known_gaps": [
    "2017-12-01",
@@ -71,8 +71,8 @@
   "n_known_gaps": 23,
   "gap_note": "Days absent from the store entirely, listed rather than interpolated; a user computing monthly means should know which months are short. CAUSE, TESTED 2026-08-07: these are an upstream absence, not un-backfilled fetch failures. A refetch of 2025-06-13..2025-07-03 returns 06-13, 06-14, 07-02 and 07-03 -- the days bracketing the gap -- and nothing for the seventeen between, which are 17 of the 21 missing days. GDELT has no data there. The remaining four (2017-12-01, 2017-12-02, 2020-10-20, 2023-03-23) could not be tested: the probes were rate-limited into failure, so their cause is unverified rather than assumed to match.",
   "first_day": "2017-01-01",
-  "last_day": "2026-09-02",
-  "generated": "2026-09-03T00:49:09Z",
+  "last_day": "2026-09-03",
+  "generated": "2026-09-04T03:11:55Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
