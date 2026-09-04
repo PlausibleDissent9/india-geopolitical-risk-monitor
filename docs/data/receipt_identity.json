@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-03",
- "generated_at": "2026-09-04T12:41:12Z",
+ "generated_at": "2026-09-04T17:31:29Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "807e7095128d50ec500e2bf9daaf124303503771",
-  "blob_git_sha1": "94689a88c824488e793b2e4bc079bb29f34b8bd9",
-  "blob_sha256": "cdb3a0c238966722bf7ab437d77985f53e14fbaf7cde9482a99b192a4aea1213",
+  "commit_sha": "e68a1b8426d14631e756e28863727f28f7fbc8fa",
+  "blob_git_sha1": "5c620d11d68ae1c4383248e826d02ebbb473eff1",
+  "blob_sha256": "cb568258a349d8caf462e8330bd7cd99848e782eb0401707393d5c141ef11191",
   "target_date": "2026-09-03"
  },
  "channels": {
@@ -57,8 +57,34 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Red Sea Coastal Battles Intensify Raising New Concerns for Shipping",
+     "url": "https://maritime-executive.com/article/red-sea-coastal-battles-intensify-raising-new-concerns-for-shipping",
+     "domain": "maritime-executive.com"
+    },
+    {
+     "title": "Iran potential retaliation options in an escalating conflict",
+     "url": "https://www.middle-east-online.com/en/iran%E2%80%99s-potential-retaliation-options-escalating-conflict",
+     "domain": "middle-east-online.com"
+    },
+    {
+     "title": "South Korea Prepares To Deploy Troops To Strait Of Hormuz",
+     "url": "https://www.i24news.tv/en/news/international/asia-pacific/artc-south-korea-prepares-to-deploy-troops-to-strait-of-hormuz",
+     "domain": "i24news.tv"
+    },
+    {
+     "title": "Почему Иран до сих пор не ударил по Израилю мнение ( Курсор , Израиль )",
+     "url": "https://inosmi.ru/20260903/iran-279981220.html",
+     "domain": "inosmi.ru"
+    },
+    {
+     "title": "Direct Link Arctic Pakistan Southern Ports : Fantasy or Near Future ?",
+     "url": "https://sputnikglobe.com/20260903/direct-link-arcticpakistans-southern-ports-fantasy-or-near-future-1124677088.html",
+     "domain": "sputnikglobe.com"
+    }
+   ]
   }
  },
  "authority": {
@@ -83,7 +109,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-03",
-     "evaluated_at_utc": "2026-09-04T12:41:12Z",
+     "evaluated_at_utc": "2026-09-04T17:31:29Z",
      "rights_as_of": "2026-09-04",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -124,7 +150,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-03",
-     "evaluated_at_utc": "2026-09-04T12:44:04Z",
+     "evaluated_at_utc": "2026-09-04T17:34:29Z",
      "rights_as_of": "2026-09-04",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -165,7 +191,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-03",
-     "evaluated_at_utc": "2026-09-04T12:44:04Z",
+     "evaluated_at_utc": "2026-09-04T17:34:29Z",
      "rights_as_of": "2026-09-04",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -193,5 +219,5 @@
    }
   ]
  },
- "payload_seal_sha256": "24e13c86d403444bf33e8d137b805451564fd032dcccb930df2a79da818d65f9"
+ "payload_seal_sha256": "5a6936c96f7de1710590d54d472caec38daa64237ac2b7deb4ea0844d0a1cc9b"
 }
