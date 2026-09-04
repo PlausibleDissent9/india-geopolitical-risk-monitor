@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-02",
- "generated_at": "2026-09-03T17:37:43Z",
+ "target_date": "2026-09-03",
+ "generated_at": "2026-09-04T06:54:39Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "b6bb9b19ffe4778b05d876777a33c4139d72e43e",
-  "blob_git_sha1": "2fc4619e17521251e47e6c6fef7421e0b1549fdf",
-  "blob_sha256": "b1cb692c6d34cb83397838073c212eacf345a0bd63d847a31e05e4c6b3a93741",
+  "state": "different_target",
+  "commit_sha": "5e30cbc6c63ef8fcc828f8e5d902b7f983155183",
+  "blob_git_sha1": "9d1e8851b64e0392eb477887d6c2afcf7f631616",
+  "blob_sha256": "ec68a6cf0e2ced143ff56435d69dd4ec69a4a50dd7217fa8b0be252b2bd549a7",
   "target_date": "2026-09-02"
  },
  "channels": {
@@ -32,24 +32,19 @@
    "state": "available",
    "articles": [
     {
-     "title": "Nepal - Tibet Floods Become China - India Flash Point",
-     "url": "https://foreignpolicy.com/2026/09/01/nepal-tibet-floods-china-india-disaster-response-border-dispute/?tpcc=recirc_trending062921",
-     "domain": "foreignpolicy.com"
+     "title": "Zorawar : The war machine built to counter China takes centre stage in India Belgium defence outreach",
+     "url": "https://economictimes.indiatimes.com/news/defence/zorawar-the-war-machine-built-to-counter-china-takes-centre-stage-in-indias-belgium-defence-outreach/articleshow/133730144.cms",
+     "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "El Niño Threatens India Monsoon : Nearly Half of Vulnerable Districts Face Deficient Rainfall , DTE Analysis Reveals Rising Farm Distress",
-     "url": "https://www.downtoearth.org.in/climate-change/with-the-monsoon-in-its-final-month-nearly-half-of-el-ni%C3%B1o-vulnerable-districts-across-25-statesuts-face-deficient-rainfall-dte-analysis",
-     "domain": "downtoearth.org.in"
+     "title": "כל שבריר מעלה קובע : העולם בדרך לחצות את רף 1 . 5 המעלות בקרוב",
+     "url": "https://www.ynet.co.il/environment-science/article/b10rwsb00mg",
+     "domain": "ynet.co.il"
     },
     {
-     "title": "राहत हो या रणभूमि , आसमान से हर मोर्चे पर भारत की ताकत दिखा रही इंडियन एयरफोर्स",
-     "url": "https://navbharattimes.indiatimes.com/india/nepal-flood-relief-indian-air-force-strategic-airlift-power-ladakh/articleshow/133708991.cms",
-     "domain": "navbharattimes.indiatimes.com"
-    },
-    {
-     "title": "Daily Voice : Jitendra Gohil sees this sector as a dark horse over the next 2 - 3 years",
-     "url": "https://www.moneycontrol.com/news/business/markets/daily-voice-jitendra-gohil-sees-this-sector-as-a-dark-horse-over-the-next-2-3-years-14020296.html",
-     "domain": "moneycontrol.com"
+     "title": "Israël sera au  Sommet international sur lespace . Israël fait partie du top 10 des puissances spatiales mondiales .",
+     "url": "https://israelvalley.com/2026/09/03/israel-sera-au-sommet-international-sur-lespace-israel-fait-partie-du-top-10-des-puissances-spatiales-mondiales/",
+     "domain": "israelvalley.com"
     }
    ]
   },
@@ -58,64 +53,12 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Rising global bond yields , FCNR - B inflows and SEBI CAS to shape market dynamics : HDFC Securities CEO Dhiraj Relli",
-     "url": "https://aninews.in/news/business/rising-global-bond-yields-fcnr-b-inflows-and-sebis-cas-to-shape-market-dynamics-hdfc-securities-ceo-dhiraj-relli20260902194646/",
-     "domain": "aninews.in"
-    },
-    {
-     "title": "WATCH | Ujjain Aghori Kali Nand Giri Allegedly Eats Human Flesh From Burning Pyre , Says  It Tasty , Arrested",
-     "url": "https://www.oneindia.com/india/watch-ujjain-aghori-kali-nand-giri-allegedly-eats-human-flesh-from-burning-pyre-says-it-s-tasty-8193845.html",
-     "domain": "oneindia.com"
-    },
-    {
-     "title": "Индия увеличила долю в закупках российской нефти ESPO до 16 %",
-     "url": "https://www.kommersant.ru/doc/8923599",
-     "domain": "kommersant.ru"
-    },
-    {
-     "title": "Ρωσία : Δεν υπάρχουν άλλα εμπόδια στις πληρωμές με την Ινδία",
-     "url": "https://www.naftemporiki.gr/kosmos/2156345/rosia-den-yparchoyn-alla-empodia-stis-pliromes-me-tin-india/",
-     "domain": "naftemporiki.gr"
-    },
-    {
-     "title": "Russia and India 96 % bilateral trade now through Rupee - Rouble payment infra",
-     "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/russia-and-indias-96-bilateral-trade-now-through-rupee-rouble-payment-infra/articleshow/133719834.cms",
-     "domain": "economictimes.indiatimes.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "What are Iran options to retaliate as open warfare resumes with the US ?",
-     "url": "https://economictimes.indiatimes.com/news/defence/what-are-irans-options-to-retaliate-as-open-warfare-resumes-with-the-us/articleshow/133703077.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "PUSH FOR RECOGNITION : Somaliland President Heading To Washington For First U . S . Visit",
-     "url": "https://www.theyeshivaworld.com/news/general/2592354/push-for-recognition-somaliland-president-heading-to-washington-for-first-u-s-visit.html",
-     "domain": "theyeshivaworld.com"
-    },
-    {
-     "title": "Tata Advanced Systems , Pixxel , Agnikul among 13 companies in fray for AssamSat",
-     "url": "https://www.moneycontrol.com/technology/tata-advanced-systems-pixxel-agnikul-among-13-companies-in-fray-for-assamsat-article-14020758.html",
-     "domain": "moneycontrol.com"
-    },
-    {
-     "title": "الفريق أسامة ربيع يبحث سبل التعاون المشترك مع القائم بأعمال السفير الأمريكي بالقاهرة",
-     "url": "https://www.vetogate.com/5724264",
-     "domain": "vetogate.com"
-    },
-    {
-     "title": "Эксперт : На ШОС+ можно сформировать необходимую политическую поддержку для обеспечения устойчивости Среднего коридора МНЕНИЕ",
-     "url": "https://azertag.az/ru/xeber/ekspert_na_shos_mozhno_sformirovat_neobhodimuyu_politicheskuyu_podderzhku_dlya_obespecheniya_ustoichivosti_srednego_koridora_mnenie-4394965",
-     "domain": "azertag.az"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -139,12 +82,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T17:37:43Z",
-     "rights_as_of": "2026-09-03",
+     "target_date": "2026-09-03",
+     "evaluated_at_utc": "2026-09-04T06:54:39Z",
+     "rights_as_of": "2026-09-04",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-02T23:59:59Z",
+     "release_deadline_utc": "2026-10-03T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -180,12 +123,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T17:42:54Z",
-     "rights_as_of": "2026-09-03",
+     "target_date": "2026-09-03",
+     "evaluated_at_utc": "2026-09-04T06:57:30Z",
+     "rights_as_of": "2026-09-04",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-02T23:59:59Z",
+     "release_deadline_utc": "2026-10-03T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -221,12 +164,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-02",
-     "evaluated_at_utc": "2026-09-03T17:42:54Z",
-     "rights_as_of": "2026-09-03",
+     "target_date": "2026-09-03",
+     "evaluated_at_utc": "2026-09-04T06:57:30Z",
+     "rights_as_of": "2026-09-04",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-02T23:59:59Z",
+     "release_deadline_utc": "2026-10-03T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -250,5 +193,5 @@
    }
   ]
  },
- "payload_seal_sha256": "2127281c8256cd3b5a9c2317a77ee5cc11d9b3ad4368fb77cd004ca173bbaf23"
+ "payload_seal_sha256": "d9ec61181a13de6a79769dfdd705a9ff28624b4139a26de9a0e2141c4b41de91"
 }
