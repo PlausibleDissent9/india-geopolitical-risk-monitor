@@ -1,7 +1,7 @@
 {
  "_meta": {
   "what": "The permanence lane's own record: the result of the latest Internet Archive snapshot request per page and the latest Software Heritage save-code-now registration. Fail-soft \u2014 an archive outage is recorded here, never hidden, and never blocks the pipeline. Wayback captures are browsable at web.archive.org/web/*/igrm.in.",
-  "generated": "2026-09-04T19:03:06Z",
+  "generated": "2026-09-05T06:20:15Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -15,8 +15,8 @@
   },
   {
    "url": "https://igrm.in/methodology.html",
-   "status": 200,
-   "ok": true
+   "status": 500,
+   "ok": false
   },
   {
    "url": "https://igrm.in/data.html",
