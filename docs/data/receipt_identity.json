@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-03",
- "generated_at": "2026-09-04T17:31:29Z",
+ "target_date": "2026-09-05",
+ "generated_at": "2026-09-06T12:10:23Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "e68a1b8426d14631e756e28863727f28f7fbc8fa",
-  "blob_git_sha1": "5c620d11d68ae1c4383248e826d02ebbb473eff1",
-  "blob_sha256": "cb568258a349d8caf462e8330bd7cd99848e782eb0401707393d5c141ef11191",
+  "state": "different_target",
+  "commit_sha": "f471fabacef15e9f5e0d2153c45e321e60bce3af",
+  "blob_git_sha1": "66159e9c29a837f88a4e421d73535a1b60f77c50",
+  "blob_sha256": "2452c4671aa566ff0c0c33d7c969560e9d73ce28e985f50cdc39a444ab1d185d",
   "target_date": "2026-09-03"
  },
  "channels": {
@@ -29,24 +29,8 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Zorawar : The war machine built to counter China takes centre stage in India Belgium defence outreach",
-     "url": "https://economictimes.indiatimes.com/news/defence/zorawar-the-war-machine-built-to-counter-china-takes-centre-stage-in-indias-belgium-defence-outreach/articleshow/133730144.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "כל שבריר מעלה קובע : העולם בדרך לחצות את רף 1 . 5 המעלות בקרוב",
-     "url": "https://www.ynet.co.il/environment-science/article/b10rwsb00mg",
-     "domain": "ynet.co.il"
-    },
-    {
-     "title": "Israël sera au  Sommet international sur lespace . Israël fait partie du top 10 des puissances spatiales mondiales .",
-     "url": "https://israelvalley.com/2026/09/03/israel-sera-au-sommet-international-sur-lespace-israel-fait-partie-du-top-10-des-puissances-spatiales-mondiales/",
-     "domain": "israelvalley.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -60,29 +44,29 @@
    "state": "available",
    "articles": [
     {
-     "title": "Red Sea Coastal Battles Intensify Raising New Concerns for Shipping",
-     "url": "https://maritime-executive.com/article/red-sea-coastal-battles-intensify-raising-new-concerns-for-shipping",
-     "domain": "maritime-executive.com"
+     "title": "Maritime traffic through Hormuz significantly reduced , UKMTO says",
+     "url": "https://www.middleeasteye.net/live-blog/live-blog-update/maritime-traffic-through-hormuz-significantly-reduced-ukmto-says",
+     "domain": "middleeasteye.net"
     },
     {
-     "title": "Iran potential retaliation options in an escalating conflict",
-     "url": "https://www.middle-east-online.com/en/iran%E2%80%99s-potential-retaliation-options-escalating-conflict",
-     "domain": "middle-east-online.com"
+     "title": "DGMA launches Seafarer Tracking Module on e - NAVIC portal",
+     "url": "https://www.mangalorean.com/dgma-launches-seafarer-tracking-module-on-e-navic-portal/",
+     "domain": "mangalorean.com"
     },
     {
-     "title": "South Korea Prepares To Deploy Troops To Strait Of Hormuz",
-     "url": "https://www.i24news.tv/en/news/international/asia-pacific/artc-south-korea-prepares-to-deploy-troops-to-strait-of-hormuz",
-     "domain": "i24news.tv"
+     "title": "Kpler says Hormuz traffic dropped sharply on 31 August , Bab el - Mandeb stable",
+     "url": "https://www.middleeasteye.net/live-blog/live-blog-update/kpler-says-hormuz-traffic-dropped-sharply-31-august-bab-el-mandeb-stable",
+     "domain": "middleeasteye.net"
     },
     {
-     "title": "Почему Иран до сих пор не ударил по Израилю мнение ( Курсор , Израиль )",
-     "url": "https://inosmi.ru/20260903/iran-279981220.html",
-     "domain": "inosmi.ru"
+     "title": "ইরানসহ পূর্ণাঙ্গ রূপ পেলেই বিশ্ব পরাশক্তি ও সমুদ্র বাণিজ্যের নিয়ন্ত্রক হয়ে উঠবে  মক্কা জোট",
+     "url": "https://dailyinqilab.com/international/news/936608",
+     "domain": "dailyinqilab.com"
     },
     {
-     "title": "Direct Link Arctic Pakistan Southern Ports : Fantasy or Near Future ?",
-     "url": "https://sputnikglobe.com/20260903/direct-link-arcticpakistans-southern-ports-fantasy-or-near-future-1124677088.html",
-     "domain": "sputnikglobe.com"
+     "title": "Yemen : Retreating al - Qaida takes revenge",
+     "url": "https://spacewar.com/yemen-retreating-al-qaida-takes-revenge-999/",
+     "domain": "spacewar.com"
     }
    ]
   }
@@ -108,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-03",
-     "evaluated_at_utc": "2026-09-04T17:31:29Z",
-     "rights_as_of": "2026-09-04",
+     "target_date": "2026-09-05",
+     "evaluated_at_utc": "2026-09-06T12:10:23Z",
+     "rights_as_of": "2026-09-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-03T23:59:59Z",
+     "release_deadline_utc": "2026-10-05T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -149,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-03",
-     "evaluated_at_utc": "2026-09-04T17:34:29Z",
-     "rights_as_of": "2026-09-04",
+     "target_date": "2026-09-05",
+     "evaluated_at_utc": "2026-09-06T12:13:24Z",
+     "rights_as_of": "2026-09-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-03T23:59:59Z",
+     "release_deadline_utc": "2026-10-05T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -190,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-03",
-     "evaluated_at_utc": "2026-09-04T17:34:29Z",
-     "rights_as_of": "2026-09-04",
+     "target_date": "2026-09-05",
+     "evaluated_at_utc": "2026-09-06T12:13:24Z",
+     "rights_as_of": "2026-09-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-03T23:59:59Z",
+     "release_deadline_utc": "2026-10-05T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -219,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "5a6936c96f7de1710590d54d472caec38daa64237ac2b7deb4ea0844d0a1cc9b"
+ "payload_seal_sha256": "7b0f8477a2ef31c7b10bef570f771b0b5ae689c631739cac8ba00465c51a1d6b"
 }
