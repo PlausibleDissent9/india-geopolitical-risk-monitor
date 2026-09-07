@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-05",
- "generated_at": "2026-09-06T16:43:49Z",
+ "target_date": "2026-09-06",
+ "generated_at": "2026-09-07T14:04:19Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "6e4c0a3539429fcc5beb6d936799d1bab16bdbb5",
-  "blob_git_sha1": "0cd197762c3f1b024195b08d26799bfd5d5d3bf3",
-  "blob_sha256": "acc41552ace12947384516516310cb9ceec97f96f287bf112fc0ef9d09d701b8",
+  "state": "different_target",
+  "commit_sha": "3ff40133110f0f4409e7ff8206f1308d5666eec7",
+  "blob_git_sha1": "49480d580558bd2868962f22b989d11ea1d1b83d",
+  "blob_sha256": "376b46ef42c811cfa767f8c169f119c5592065152f183a2bdc87ec64a58c3528",
   "target_date": "2026-09-05"
  },
  "channels": {
@@ -29,8 +29,24 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "India , China hold first Corps Commander meeting in Arunachal",
+     "url": "https://www.thehindu.com/news/national/india-china-hold-first-corps-commander-meeting-in-arunachal/article71435390.ece",
+     "domain": "thehindu.com"
+    },
+    {
+     "title": "India , China to hold first Corps Commander - level talks today at Wacha along LAC in Arunachal Pradesh",
+     "url": "https://aninews.in/news/national/general-news/india-china-to-hold-first-corps-commander-level-talks-today-at-wacha-along-lac-in-arunachal-pradesh20260906100232/",
+     "domain": "aninews.in"
+    },
+    {
+     "title": "India , China To Hold First Corps Commander - Level Talks In Arunachal Pradesh Amid LAC Tensions",
+     "url": "https://www.freepressjournal.in/india/india-china-to-hold-first-corps-commander-level-talks-in-arunachal-pradesh-amid-lac-tensions",
+     "domain": "freepressjournal.in"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -41,34 +57,8 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Maritime traffic through Hormuz significantly reduced , UKMTO says",
-     "url": "https://www.middleeasteye.net/live-blog/live-blog-update/maritime-traffic-through-hormuz-significantly-reduced-ukmto-says",
-     "domain": "middleeasteye.net"
-    },
-    {
-     "title": "DGMA launches Seafarer Tracking Module on e - NAVIC portal",
-     "url": "https://www.mangalorean.com/dgma-launches-seafarer-tracking-module-on-e-navic-portal/",
-     "domain": "mangalorean.com"
-    },
-    {
-     "title": "Kpler says Hormuz traffic dropped sharply on 31 August , Bab el - Mandeb stable",
-     "url": "https://www.middleeasteye.net/live-blog/live-blog-update/kpler-says-hormuz-traffic-dropped-sharply-31-august-bab-el-mandeb-stable",
-     "domain": "middleeasteye.net"
-    },
-    {
-     "title": "ইরানসহ পূর্ণাঙ্গ রূপ পেলেই বিশ্ব পরাশক্তি ও সমুদ্র বাণিজ্যের নিয়ন্ত্রক হয়ে উঠবে  মক্কা জোট",
-     "url": "https://dailyinqilab.com/international/news/936608",
-     "domain": "dailyinqilab.com"
-    },
-    {
-     "title": "Yemen : Retreating al - Qaida takes revenge",
-     "url": "https://spacewar.com/yemen-retreating-al-qaida-takes-revenge-999/",
-     "domain": "spacewar.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +82,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-05",
-     "evaluated_at_utc": "2026-09-06T16:43:49Z",
-     "rights_as_of": "2026-09-06",
+     "target_date": "2026-09-06",
+     "evaluated_at_utc": "2026-09-07T14:04:19Z",
+     "rights_as_of": "2026-09-07",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-05T23:59:59Z",
+     "release_deadline_utc": "2026-10-06T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +123,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-05",
-     "evaluated_at_utc": "2026-09-06T16:46:44Z",
-     "rights_as_of": "2026-09-06",
+     "target_date": "2026-09-06",
+     "evaluated_at_utc": "2026-09-07T14:07:40Z",
+     "rights_as_of": "2026-09-07",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-05T23:59:59Z",
+     "release_deadline_utc": "2026-10-06T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +164,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-05",
-     "evaluated_at_utc": "2026-09-06T16:46:44Z",
-     "rights_as_of": "2026-09-06",
+     "target_date": "2026-09-06",
+     "evaluated_at_utc": "2026-09-07T14:07:40Z",
+     "rights_as_of": "2026-09-07",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-05T23:59:59Z",
+     "release_deadline_utc": "2026-10-06T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +193,5 @@
    }
   ]
  },
- "payload_seal_sha256": "97e510138a5a0c245c3f465d52cb2d7a73302c42ba6539a1627e206c7b59c106"
+ "payload_seal_sha256": "91b0145f873eaffef2ad3d9c48bf84199c75b788db0553ea5574cd7fe581f546"
 }
