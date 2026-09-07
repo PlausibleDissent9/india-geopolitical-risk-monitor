@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-06",
- "generated_at": "2026-09-07T14:04:19Z",
+ "generated_at": "2026-09-07T18:22:27Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "3ff40133110f0f4409e7ff8206f1308d5666eec7",
-  "blob_git_sha1": "49480d580558bd2868962f22b989d11ea1d1b83d",
-  "blob_sha256": "376b46ef42c811cfa767f8c169f119c5592065152f183a2bdc87ec64a58c3528",
-  "target_date": "2026-09-05"
+  "state": "same_target",
+  "commit_sha": "c09e13e9357f0cf285e727d0a5c0b71a9d624ce6",
+  "blob_git_sha1": "fb6ca97432864843fb8a7913a3bfff08f8797166",
+  "blob_sha256": "99e2ea1c52f3db740213c86ec79de7758d2178e73f255fc93bdc939d5a19df30",
+  "target_date": "2026-09-06"
  },
  "channels": {
   "pakistan_west": {
@@ -57,8 +57,34 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Houthi Offensive Near Bab Al Mandab Raises New Threat to Global Shipping as Hormuz Disruption Escalates",
+     "url": "https://gulfnews.com/world/gulf/yemen/why-iran-backed-houthi-militants-are-pushing-towards-bab-al-mandab-as-hormuz-disruption-raises-stakes-1.500664538",
+     "domain": "gulfnews.com"
+    },
+    {
+     "title": "Global trade runs on the oceans : 10 maritime chokepoints that could disrupt the world economy",
+     "url": "https://www.businesstoday.in/world/story/global-trade-runs-on-the-oceans-10-maritime-chokepoints-that-could-disrupt-the-world-economy-553470-2026-09-07",
+     "domain": "businesstoday.in"
+    },
+    {
+     "title": "Fuel supply stable , oil prices may remain high for 2 - 3 years , says economist",
+     "url": "https://www.freemalaysiatoday.com/category/highlight/2026/09/06/fuel-supply-stable-oil-prices-may-remain-high-for-2-3-years-says-economist",
+     "domain": "freemalaysiatoday.com"
+    },
+    {
+     "title": "India fills Europe diesel gap as Russian exports slump , US shipments decline",
+     "url": "https://www.moneycontrol.com/world/india-fills-europe-s-diesel-gap-as-russian-exports-slump-us-shipments-decline-article-14023566.html",
+     "domain": "moneycontrol.com"
+    },
+    {
+     "title": "Десятки людей погибли в ходе боев заново разгоревшейся гражданской войны",
+     "url": "https://www.mk.ru/politics/2026/09/06/desyatki-lyudey-pogibli-v-khode-boev-zanovo-razgorevsheysya-grazhdanskoy-voyny.html",
+     "domain": "mk.ru"
+    }
+   ]
   }
  },
  "authority": {
@@ -83,7 +109,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-06",
-     "evaluated_at_utc": "2026-09-07T14:04:19Z",
+     "evaluated_at_utc": "2026-09-07T18:22:27Z",
      "rights_as_of": "2026-09-07",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -124,7 +150,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-06",
-     "evaluated_at_utc": "2026-09-07T14:07:40Z",
+     "evaluated_at_utc": "2026-09-07T18:25:17Z",
      "rights_as_of": "2026-09-07",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -165,7 +191,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-06",
-     "evaluated_at_utc": "2026-09-07T14:07:40Z",
+     "evaluated_at_utc": "2026-09-07T18:25:17Z",
      "rights_as_of": "2026-09-07",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -193,5 +219,5 @@
    }
   ]
  },
- "payload_seal_sha256": "91b0145f873eaffef2ad3d9c48bf84199c75b788db0553ea5574cd7fe581f546"
+ "payload_seal_sha256": "c5b2f53945a8ff70310d02e5635a4e944539de9d03c4adacd6edb5e5ef147b3f"
 }
