@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-06",
- "generated_at": "2026-09-07T18:49:00Z",
+ "target_date": "2026-09-07",
+ "generated_at": "2026-09-08T12:36:37Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "e55348d67099091f4eea1e0c5cdeec69684a8219",
-  "blob_git_sha1": "18917115301e7012b003846b5b03a9184374aeca",
-  "blob_sha256": "a487752dcccb8e87bcb568f4243f5e300684e108d2202aacce89ef2aefe6af33",
+  "state": "different_target",
+  "commit_sha": "3cd82c9109b3c70dff2c460926d61937c1e52606",
+  "blob_git_sha1": "4acc4be642ede8b0250a5321fd9d45118bd05bf4",
+  "blob_sha256": "e20681182ccf94f928cadc55fa01277e8f143b5c8154f6ce671f4bc44b0f1c45",
   "target_date": "2026-09-06"
  },
  "channels": {
@@ -29,62 +29,46 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "India , China hold first Corps Commander meeting in Arunachal",
-     "url": "https://www.thehindu.com/news/national/india-china-hold-first-corps-commander-meeting-in-arunachal/article71435390.ece",
-     "domain": "thehindu.com"
-    },
-    {
-     "title": "India , China to hold first Corps Commander - level talks today at Wacha along LAC in Arunachal Pradesh",
-     "url": "https://aninews.in/news/national/general-news/india-china-to-hold-first-corps-commander-level-talks-today-at-wacha-along-lac-in-arunachal-pradesh20260906100232/",
-     "domain": "aninews.in"
-    },
-    {
-     "title": "India , China To Hold First Corps Commander - Level Talks In Arunachal Pradesh Amid LAC Tensions",
-     "url": "https://www.freepressjournal.in/india/india-china-to-hold-first-corps-commander-level-talks-in-arunachal-pradesh-amid-lac-tensions",
-     "domain": "freepressjournal.in"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Houthi Offensive Near Bab Al Mandab Raises New Threat to Global Shipping as Hormuz Disruption Escalates",
-     "url": "https://gulfnews.com/world/gulf/yemen/why-iran-backed-houthi-militants-are-pushing-towards-bab-al-mandab-as-hormuz-disruption-raises-stakes-1.500664538",
-     "domain": "gulfnews.com"
+     "title": "Russia Vows to Keep Selling Oil to India Despite U . S . Tariff Threat",
+     "url": "https://oilprice.com/Latest-Energy-News/World-News/Russia-Vows-to-Keep-Selling-Oil-to-India-Despite-US-Tariff-Threat.html",
+     "domain": "oilprice.com"
     },
     {
-     "title": "Global trade runs on the oceans : 10 maritime chokepoints that could disrupt the world economy",
-     "url": "https://www.businesstoday.in/world/story/global-trade-runs-on-the-oceans-10-maritime-chokepoints-that-could-disrupt-the-world-economy-553470-2026-09-07",
-     "domain": "businesstoday.in"
+     "title": "Russia ready to supply  as much oil as India need , envoy slams  pressure tactic amid U 100 % tariff threats",
+     "url": "https://www.hindustantimes.com/india-news/russia-ready-to-supply-as-much-oil-as-india-needs-envoy-slams-pressure-tactics-amid-us-100-tariff-threats-101788753211137.html",
+     "domain": "hindustantimes.com"
     },
     {
-     "title": "Fuel supply stable , oil prices may remain high for 2 - 3 years , says economist",
-     "url": "https://www.freemalaysiatoday.com/category/highlight/2026/09/06/fuel-supply-stable-oil-prices-may-remain-high-for-2-3-years-says-economist",
-     "domain": "freemalaysiatoday.com"
+     "title": "Названа причина закупки Индией российской нефти",
+     "url": "https://lenta.ru/news/2026/09/07/nazvana-prichina-zakupki-indiey-rossiyskoy-nefti/",
+     "domain": "lenta.ru"
     },
     {
-     "title": "India fills Europe diesel gap as Russian exports slump , US shipments decline",
-     "url": "https://www.moneycontrol.com/world/india-fills-europe-s-diesel-gap-as-russian-exports-slump-us-shipments-decline-article-14023566.html",
-     "domain": "moneycontrol.com"
+     "title": "Мост имени Якова Новиченко - между Россией и Северной Кореей открыли новое сооружение",
+     "url": "https://gazeta.ua/ru/articles/world-life/_mezhdu-rossiej-i-severnoj-koreej-torzhestvenno-otkryli-pervyj-avtomobilnyj-most/1258179",
+     "domain": "gazeta.ua"
     },
     {
-     "title": "Десятки людей погибли в ходе боев заново разгоревшейся гражданской войны",
-     "url": "https://www.mk.ru/politics/2026/09/06/desyatki-lyudey-pogibli-v-khode-boev-zanovo-razgorevsheysya-grazhdanskoy-voyny.html",
-     "domain": "mk.ru"
+     "title": "Sergio Gor pitches for expanding opportunities for US businesses in India",
+     "url": "https://www.prokerala.com/news/articles/a1809322.html",
+     "domain": "prokerala.com"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -108,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-06",
-     "evaluated_at_utc": "2026-09-07T18:49:00Z",
-     "rights_as_of": "2026-09-07",
+     "target_date": "2026-09-07",
+     "evaluated_at_utc": "2026-09-08T12:36:37Z",
+     "rights_as_of": "2026-09-08",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-06T23:59:59Z",
+     "release_deadline_utc": "2026-10-07T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -149,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-06",
-     "evaluated_at_utc": "2026-09-07T18:52:08Z",
-     "rights_as_of": "2026-09-07",
+     "target_date": "2026-09-07",
+     "evaluated_at_utc": "2026-09-08T12:39:32Z",
+     "rights_as_of": "2026-09-08",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-06T23:59:59Z",
+     "release_deadline_utc": "2026-10-07T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -190,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-06",
-     "evaluated_at_utc": "2026-09-07T18:52:08Z",
-     "rights_as_of": "2026-09-07",
+     "target_date": "2026-09-07",
+     "evaluated_at_utc": "2026-09-08T12:39:32Z",
+     "rights_as_of": "2026-09-08",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-06T23:59:59Z",
+     "release_deadline_utc": "2026-10-07T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -219,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "a63a8cc7f69cabc1cd1223a5d461f34fa57c82d2e63938f69140c1861e5003c8"
+ "payload_seal_sha256": "fcee936db7522913fe4529f597b16a54b4b42443c3688185330c0260dc4875ad"
 }
