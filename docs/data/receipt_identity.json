@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-09",
- "generated_at": "2026-09-10T12:21:35Z",
+ "generated_at": "2026-09-10T17:38:12Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "cd209bf032c7bdd9a0d35f3d4951b834d0409cf3",
-  "blob_git_sha1": "0c62b77d043d1547b81f05d21692c50e403e1295",
-  "blob_sha256": "25ba9e7a0b534a1c915d8ab233ce484776e091e048e45e50db43bf397ad6e442",
-  "target_date": "2026-09-08"
+  "state": "same_target",
+  "commit_sha": "d994fff8c112a05161d7d499309d64b770aa07b5",
+  "blob_git_sha1": "727e74d751e633c8cf838ca3d6859ba2232141d6",
+  "blob_sha256": "9dfb8e415f68f6cec105e2a18402028620376b83828a045f0d7fef8b7c27193b",
+  "target_date": "2026-09-09"
  },
  "channels": {
   "pakistan_west": {
@@ -63,8 +63,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "US - Indian IT Giant Cognizant Hit With Green Card Freeze , H - 1B Fraud Probe",
+     "url": "https://www.newsweek.com/us-indian-it-giant-cognizant-hit-with-green-card-freeze-h-1b-fraud-probe-12419136",
+     "domain": "newsweek.com"
+    },
+    {
+     "title": "India - US Trade Pact Nearly Finalised , Only A Few Issues Remain Under Discussion",
+     "url": "https://www.freepressjournal.in/business/india-us-trade-pact-nearly-finalised-only-a-few-issues-remain-under-discussion",
+     "domain": "freepressjournal.in"
+    },
+    {
+     "title": "How are cement companies tapping into green energy to lower operational costs ?",
+     "url": "https://www.businesstoday.in/industry/infra/story/how-are-cement-companies-tapping-into-green-energy-to-lower-operational-costs-554179-2026-09-09",
+     "domain": "businesstoday.in"
+    },
+    {
+     "title": "India , U . S . trade pact to be signed at an appropriate time ; only a few issues under discussion : Commerce Secretary",
+     "url": "https://www.thehindu.com/news/national/india-us-trade-pact-to-be-signed-at-an-appropriate-time-only-a-few-issues-under-discussion-commerce-secretary/article71447202.ece",
+     "domain": "thehindu.com"
+    },
+    {
+     "title": "Viral social media post claims H - 1B families returning to India abandoning their houses , cars",
+     "url": "https://timesofindia.indiatimes.com/world/us/viral-social-media-post-claims-h-1b-families-returning-to-india-abandoning-their-houses-cars/articleshow/133978084.cms",
+     "domain": "timesofindia.indiatimes.com"
+    }
+   ]
   },
   "shipping": {
    "state": "unavailable",
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-09",
-     "evaluated_at_utc": "2026-09-10T12:21:35Z",
+     "evaluated_at_utc": "2026-09-10T17:38:12Z",
      "rights_as_of": "2026-09-10",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-09",
-     "evaluated_at_utc": "2026-09-10T12:24:31Z",
+     "evaluated_at_utc": "2026-09-10T17:41:07Z",
      "rights_as_of": "2026-09-10",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-09",
-     "evaluated_at_utc": "2026-09-10T12:24:31Z",
+     "evaluated_at_utc": "2026-09-10T17:41:07Z",
      "rights_as_of": "2026-09-10",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "4adb0d82137ff4656129253be3fabff75bf9678c699e3ecbf3356c3765c3b6a3"
+ "payload_seal_sha256": "8a8b43e295cc6b00e6b361b193d3d4238226f254232930c4103c35a3bcb2c498"
 }
