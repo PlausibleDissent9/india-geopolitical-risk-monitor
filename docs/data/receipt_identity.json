@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-10",
- "generated_at": "2026-09-11T12:43:28Z",
+ "generated_at": "2026-09-11T17:45:40Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "43dc6320c60584ec09ded50aaf16d8e38e009288",
-  "blob_git_sha1": "7c8c7c0b58e1ca36e0252b894a2cb6e29cb0e58c",
-  "blob_sha256": "1700a512391c268a7d50e58ddff971d34ab2161b7a394f2599f76bf68986aec5",
+  "commit_sha": "3c23252eae36153f050d87d5c1421585e72aef4f",
+  "blob_git_sha1": "5cbfe8bb91f78b336e6c40746216dd5ddfc36b39",
+  "blob_sha256": "daee4e90d2cba8f765b0b7f9ee144e6e5e65aead460ec7a07c158f98e385c507",
   "target_date": "2026-09-10"
  },
  "channels": {
@@ -37,8 +37,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "H - 1B visa issue : Trump administration proposes scrapping 60 - day grace period , Indian techies to be affected",
+     "url": "https://www.livemint.com/news/us-news/h1b-visa-issue-trump-administration-proposes-scrapping-60-day-grace-period-indian-techies-to-be-affected-11789064597291.html",
+     "domain": "livemint.com"
+    },
+    {
+     "title": "India launches online platform to connect exporters with US buyers",
+     "url": "https://www.business-standard.com/economy/news/india-launches-online-platform-to-connect-exporters-with-us-buyers-126091000653_1.html",
+     "domain": "business-standard.com"
+    },
+    {
+     "title": "US proposes ending 60 - day grace period for H - 1B workers - The HinduBusinessLine",
+     "url": "https://www.thehindubusinessline.com/news/us-proposes-ending-60-day-grace-period-for-h-1b-workers-who-lose-jobs/article71453343.ece",
+     "domain": "thehindubusinessline.com"
+    },
+    {
+     "title": "Trump admin moves to scrap grace period for H - 1B visa workers",
+     "url": "https://www.geo.tv/latest/681561-trump-admin-moves-to-scrap-grace-period-for-h-1b-visa-workers",
+     "domain": "geo.tv"
+    },
+    {
+     "title": "Цена российской нефти Urals в августе повысилась на 16 %",
+     "url": "https://pronedra.ru/urals-podorozhala-v-avguste-czena-rossijskoj-nefti-podnyalas-na-16-831499.html",
+     "domain": "pronedra.ru"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-10",
-     "evaluated_at_utc": "2026-09-11T12:43:28Z",
+     "evaluated_at_utc": "2026-09-11T17:45:40Z",
      "rights_as_of": "2026-09-11",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-10",
-     "evaluated_at_utc": "2026-09-11T12:46:22Z",
+     "evaluated_at_utc": "2026-09-11T17:48:51Z",
      "rights_as_of": "2026-09-11",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-10",
-     "evaluated_at_utc": "2026-09-11T12:46:22Z",
+     "evaluated_at_utc": "2026-09-11T17:48:51Z",
      "rights_as_of": "2026-09-11",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "cc89adf5b9b6a62d04f56571cf0e73729baa35d13fb2c00865a6ebef44f99ccb"
+ "payload_seal_sha256": "d1b07662090ae1c1e107eb106954084b8c34d238bca8f98afa2b9135592d5675"
 }
