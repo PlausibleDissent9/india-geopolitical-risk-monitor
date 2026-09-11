@@ -10,49 +10,23 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-09",
- "generated_at": "2026-09-10T17:38:12Z",
+ "target_date": "2026-09-10",
+ "generated_at": "2026-09-11T12:20:03Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "d994fff8c112a05161d7d499309d64b770aa07b5",
-  "blob_git_sha1": "727e74d751e633c8cf838ca3d6859ba2232141d6",
-  "blob_sha256": "9dfb8e415f68f6cec105e2a18402028620376b83828a045f0d7fef8b7c27193b",
+  "state": "different_target",
+  "commit_sha": "a208851d80a2ca56a13b19ae164eacb2e1ff145f",
+  "blob_git_sha1": "ac7e77d0781dce439ee98ee025736b94ee6bac0d",
+  "blob_sha256": "007c99cb97f64c8fed8e6aa97cea5187bc77b8afe0489bc0075708211dd9672e",
   "target_date": "2026-09-09"
  },
  "channels": {
   "pakistan_west": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "The Pros And Cons Of Joining BRICS : The Dilemma Of Pakistan And Bangladesh - Analysis",
-     "url": "https://www.eurasiareview.com/09092026-the-pros-and-cons-of-joining-brics-the-dilemma-of-pakistan-and-bangladesh-analysis/",
-     "domain": "eurasiareview.com"
-    },
-    {
-     "title": "CRPF to replace Army troops across 21 locations in Jammu region",
-     "url": "https://idrw.org/crpf-to-replace-army-troops-across-21-locations-in-jammu-region/",
-     "domain": "idrw.org"
-    },
-    {
-     "title": "CRPF to Take Over Counter - Terror Operations in Vulnerable Jammu Pockets",
-     "url": "https://dailypioneer.com/news/crpf-to-replace-indian-army-in-jammu-anti-terror-operations",
-     "domain": "dailypioneer.com"
-    },
-    {
-     "title": "Modi - Xi bilateral on BRICS sidelines on September 12",
-     "url": "https://www.tribuneindia.com/news/world/modi-xi-bilateral-on-brics-sidelines-on-september-12/",
-     "domain": "tribuneindia.com"
-    },
-    {
-     "title": "UN Map Depicts Arunachal , Aksai Chin Outside India Official Boundaries",
-     "url": "https://thenorthlines.com/un-map-depicts-arunachal-aksai-chin-outside-indias-official-boundaries/",
-     "domain": "thenorthlines.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "unavailable",
@@ -63,38 +37,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "US - Indian IT Giant Cognizant Hit With Green Card Freeze , H - 1B Fraud Probe",
-     "url": "https://www.newsweek.com/us-indian-it-giant-cognizant-hit-with-green-card-freeze-h-1b-fraud-probe-12419136",
-     "domain": "newsweek.com"
+     "title": "Houthis Make Major Advance Toward Critical Global Shipping Chokepoint",
+     "url": "https://dailycaller.com/2026/09/10/houthis-major-advance-war-saudi-arabia-shipping-chokepoint/",
+     "domain": "dailycaller.com"
     },
     {
-     "title": "India - US Trade Pact Nearly Finalised , Only A Few Issues Remain Under Discussion",
-     "url": "https://www.freepressjournal.in/business/india-us-trade-pact-nearly-finalised-only-a-few-issues-remain-under-discussion",
-     "domain": "freepressjournal.in"
+     "title": "Why is the Bab el - Mandeb Strait so important ?",
+     "url": "https://economictimes.indiatimes.com/news/international/world-news/why-is-the-bab-el-mandeb-strait-so-important/articleshow/134009253.cms",
+     "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "How are cement companies tapping into green energy to lower operational costs ?",
-     "url": "https://www.businesstoday.in/industry/infra/story/how-are-cement-companies-tapping-into-green-energy-to-lower-operational-costs-554179-2026-09-09",
-     "domain": "businesstoday.in"
+     "title": "Explainer - Why is the Bab el - Mandeb Strait so important ?",
+     "url": "https://www.internazionale.it/ultime-notizie-reuters/2026/09/10/explainer-why-is-the-bab-el-mandeb-strait-so-important",
+     "domain": "internazionale.it"
     },
     {
-     "title": "India , U . S . trade pact to be signed at an appropriate time ; only a few issues under discussion : Commerce Secretary",
-     "url": "https://www.thehindu.com/news/national/india-us-trade-pact-to-be-signed-at-an-appropriate-time-only-a-few-issues-under-discussion-commerce-secretary/article71447202.ece",
-     "domain": "thehindu.com"
+     "title": "Houthis seize key Yemen port , threatening global energy supplies",
+     "url": "https://tribuneonlineng.com/houthis-seize-yemen-port-global-energy-supplies/",
+     "domain": "tribuneonlineng.com"
     },
     {
-     "title": "Viral social media post claims H - 1B families returning to India abandoning their houses , cars",
-     "url": "https://timesofindia.indiatimes.com/world/us/viral-social-media-post-claims-h-1b-families-returning-to-india-abandoning-their-houses-cars/articleshow/133978084.cms",
-     "domain": "timesofindia.indiatimes.com"
+     "title": "Houthi rebels seize strategic port city in Yemen , escalating US - Iran crisis",
+     "url": "https://www.sbs.com.au/news/article/houthi-rebels-seize-strategic-port-city-in-yemen-escalating-regional-crisis/zutk1v233",
+     "domain": "sbs.com.au"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -118,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-09",
-     "evaluated_at_utc": "2026-09-10T17:38:12Z",
-     "rights_as_of": "2026-09-10",
+     "target_date": "2026-09-10",
+     "evaluated_at_utc": "2026-09-11T12:20:03Z",
+     "rights_as_of": "2026-09-11",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-09T23:59:59Z",
+     "release_deadline_utc": "2026-10-10T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -159,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-09",
-     "evaluated_at_utc": "2026-09-10T17:41:07Z",
-     "rights_as_of": "2026-09-10",
+     "target_date": "2026-09-10",
+     "evaluated_at_utc": "2026-09-11T12:22:59Z",
+     "rights_as_of": "2026-09-11",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-09T23:59:59Z",
+     "release_deadline_utc": "2026-10-10T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -200,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-09",
-     "evaluated_at_utc": "2026-09-10T17:41:07Z",
-     "rights_as_of": "2026-09-10",
+     "target_date": "2026-09-10",
+     "evaluated_at_utc": "2026-09-11T12:22:59Z",
+     "rights_as_of": "2026-09-11",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-09T23:59:59Z",
+     "release_deadline_utc": "2026-10-10T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -229,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "8a8b43e295cc6b00e6b361b193d3d4238226f254232930c4103c35a3bcb2c498"
+ "payload_seal_sha256": "33ec33ab139b779ee980a747ddbcb2d35b9ebe499eded6403065d2ba68892075"
 }
