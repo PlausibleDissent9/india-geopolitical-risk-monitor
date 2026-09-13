@@ -10,18 +10,18 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-11",
- "generated_at": "2026-09-12T16:47:23Z",
+ "target_date": "2026-09-12",
+ "generated_at": "2026-09-13T13:05:27Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "d7824f6116e71eb4baf8a59a9448a4ed0a4cca38",
-  "blob_git_sha1": "2b99e8010dd32cbf993b6387ab3123ca86915731",
-  "blob_sha256": "a216c4e320635640fd34fdf581d0838d4f4e0b4e04742e9547f950d3bbeb59a4",
-  "target_date": "2026-09-10"
+  "commit_sha": "6d022dd45e32e7fb53d998d198ba155f088a5942",
+  "blob_git_sha1": "3092740b0a8b2360017a12f857edd7405dbcb718",
+  "blob_sha256": "69b96bb3ba9608274be6b9c99cca941e3beebd3dfb9e8e8f9b34318474c8eb6b",
+  "target_date": "2026-09-11"
  },
  "channels": {
   "pakistan_west": {
@@ -29,8 +29,34 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Modi meets Xi , discusses normalising India - China ties",
+     "url": "https://www.rediff.com/news/report/modi-meets-xi-discusses-normalising-india-china-ties/20260912.htm",
+     "domain": "rediff.com"
+    },
+    {
+     "title": "Long handshake , smiles and conversation : Modi - Xi moment highlights India - China thaw at BRICS",
+     "url": "https://www.moneycontrol.com/world/long-handshake-smiles-and-conversation-modi-xi-moment-highlights-india-china-thaw-at-brics-watch-article-14028550.html",
+     "domain": "moneycontrol.com"
+    },
+    {
+     "title": "PM Modi Hosts Xi Jinping In Delhi After 7 Years For Talks On India - China Ties , Trade And Investment",
+     "url": "https://www.oneindia.com/international/pm-modi-hosts-xi-jinping-in-delhi-after-7-years-for-talks-on-india-china-ties-trade-and-investment-8203561.html",
+     "domain": "oneindia.com"
+    },
+    {
+     "title": "xi - jinping - arrives - in - delhi - for - brics - summit - talks - with - modi",
+     "url": "https://www.rediff.com/news/report/xi-jinping-arrives-in-delhi-for-brics-summit-talks-with-modi/20260912.htm",
+     "domain": "rediff.com"
+    },
+    {
+     "title": "Can Xi Jinping India Visit Break the Ice in India - China Relations ?",
+     "url": "https://www.oneindia.com/international/can-xi-jinping-s-india-visit-break-the-ice-in-india-china-relations-8203159.html",
+     "domain": "oneindia.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -41,24 +67,8 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Houthi coastal offensive puts Bab el - Mandeb in crosshairs ; why the strait matters",
-     "url": "https://timesofindia.indiatimes.com/world/middle-east/houthis-coastal-offensive-puts-bab-el-mandeb-in-crosshairs-why-the-strait-matters/articleshow/134059263.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "Why is the Bab el - Mandeb Strait so important ?",
-     "url": "https://www.oilandgas360.com/why-is-the-bab-el-mandeb-strait-so-important/",
-     "domain": "oilandgas360.com"
-    },
-    {
-     "title": "Houthi advance in Yemen raises concerns about key shipping choke point",
-     "url": "https://www.mercurynews.com/2026/09/11/iran-bab-el-mandeb-strait/",
-     "domain": "mercurynews.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -82,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-11",
-     "evaluated_at_utc": "2026-09-12T16:47:23Z",
-     "rights_as_of": "2026-09-12",
+     "target_date": "2026-09-12",
+     "evaluated_at_utc": "2026-09-13T13:05:27Z",
+     "rights_as_of": "2026-09-13",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-11T23:59:59Z",
+     "release_deadline_utc": "2026-10-12T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -123,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-11",
-     "evaluated_at_utc": "2026-09-12T16:50:14Z",
-     "rights_as_of": "2026-09-12",
+     "target_date": "2026-09-12",
+     "evaluated_at_utc": "2026-09-13T13:08:22Z",
+     "rights_as_of": "2026-09-13",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-11T23:59:59Z",
+     "release_deadline_utc": "2026-10-12T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -164,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-11",
-     "evaluated_at_utc": "2026-09-12T16:50:14Z",
-     "rights_as_of": "2026-09-12",
+     "target_date": "2026-09-12",
+     "evaluated_at_utc": "2026-09-13T13:08:22Z",
+     "rights_as_of": "2026-09-13",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-11T23:59:59Z",
+     "release_deadline_utc": "2026-10-12T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -193,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "aff8a34e6b781273c6192fa1c12271affd331e1733c9d4114a683db6f20e8c8c"
+ "payload_seal_sha256": "96fea6091169ab48c2550debd11d4a32111b7fb36125eec899153cb9928d0f10"
 }
