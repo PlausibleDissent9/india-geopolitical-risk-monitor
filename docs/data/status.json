@@ -9,14 +9,14 @@
   "n_alignment_checks": 2,
   "n_aligned": 1,
   "n_not_aligned_or_unavailable": 1,
-  "generated": "2026-09-16T01:02:12Z"
+  "generated": "2026-09-17T05:35:52Z"
  },
  "sources": [
   {
    "key": "gdelt_salience",
    "name": "GDELT salience store",
    "role": "daily channel volumes \u2014 every score derives from this",
-   "latest_data": "2026-09-15",
+   "latest_data": "2026-09-16",
    "expect_within_days": 2,
    "age_days": 1,
    "ok": true
@@ -27,7 +27,7 @@
    "role": "event counts for maps and the stress gauge (context)",
    "latest_data": "2026-08-21",
    "expect_within_days": 5,
-   "age_days": 26,
+   "age_days": 27,
    "ok": false
   },
   {
@@ -36,7 +36,7 @@
    "role": "chokepoint transit counts (context beside shipping)",
    "latest_data": "2026-08-23",
    "expect_within_days": 21,
-   "age_days": 24,
+   "age_days": 25,
    "ok": false
   },
   {
@@ -45,7 +45,7 @@
    "role": "Indonesia/Vietnam placebo panel",
    "latest_data": "2026-08-23",
    "expect_within_days": 7,
-   "age_days": 24,
+   "age_days": 25,
    "ok": false
   },
   {
@@ -64,7 +64,7 @@
    "role": "conflict-event context (never in any score)",
    "latest_data": "2026-06-27",
    "expect_within_days": 90,
-   "age_days": 81,
+   "age_days": 82,
    "ok": true
   },
   {
@@ -73,7 +73,7 @@
    "role": "practitioner-institution titles (context)",
    "latest_data": "2026-08-21",
    "expect_within_days": 4,
-   "age_days": 26,
+   "age_days": 27,
    "ok": false
   },
   {
@@ -82,7 +82,7 @@
    "role": "independent attention cross-check",
    "latest_data": "2026-08-04",
    "expect_within_days": 7,
-   "age_days": 43,
+   "age_days": 44,
    "ok": false
   },
   {
@@ -91,7 +91,7 @@
    "role": "Anglophone-lens bias audit",
    "latest_data": "2026-08-09",
    "expect_within_days": 14,
-   "age_days": 38,
+   "age_days": 39,
    "ok": false
   },
   {
@@ -100,7 +100,7 @@
    "role": "comparator instrument; enters no India score",
    "latest_data": "2026-08-23",
    "expect_within_days": 3,
-   "age_days": 24,
+   "age_days": 25,
    "ok": false
   }
  ],
@@ -109,8 +109,8 @@
    "key": "daily_publish",
    "name": "Daily publish",
    "evidence": "docs/data/latest.json",
-   "last": "2026-09-16",
-   "measured_day": "2026-09-15"
+   "last": "2026-09-17",
+   "measured_day": "2026-09-16"
   },
   {
    "key": "receipts",
@@ -151,14 +151,14 @@
    "key": "reliability",
    "name": "Reliability record",
    "evidence": "docs/data/reliability.json",
-   "last": "2026-09-16T01:02:01Z",
+   "last": "2026-09-17T05:35:44Z",
    "measured_day": null
   },
   {
    "key": "permanence",
    "name": "Archive snapshots (twice daily)",
    "evidence": "docs/data/permanence.json",
-   "last": "2026-09-15T19:44:32Z",
+   "last": "2026-09-16T19:36:33Z",
    "measured_day": null
   }
  ],
@@ -170,7 +170,7 @@
     "label": "Final score day",
     "evidence": "docs/data/latest.json",
     "field": "date",
-    "date": "2026-09-15"
+    "date": "2026-09-16"
    },
    "observed": {
     "label": "Receipts evidence day",
@@ -182,7 +182,7 @@
    "publish_blocking": false,
    "aligned": false,
    "status": "lagging",
-   "day_difference": 25
+   "day_difference": 26
   },
   {
    "key": "aptness_to_receipts",
@@ -208,20 +208,21 @@
  ],
  "final_publication": {
   "target_date": "2026-09-16",
-  "latest_finalized_date": "2026-09-15",
-  "status": "acquisition_failed",
-  "reason": "The registered source acquisition did not complete its bounded step.",
-  "finalized": false,
+  "latest_finalized_date": "2026-09-16",
+  "status": "finalized",
+  "reason": "The exact D-1 finalized score is published.",
+  "finalized": true,
   "provisional_substitution_allowed": false,
   "value_fields_published": false,
-  "source_receipt": null,
-  "failure_stage": "source",
-  "reason_code": "source_acquisition_failed"
+  "source_receipt": {
+   "path": "data/raw/final_publication_receipts/2026-09-16.json",
+   "sha256": "107d6979e3eb7864d0354cbb8a3348095b00fd7a568f49ac36a691d6ddda4a75"
+  }
  },
  "morning_contract": {
   "on_time": 12,
-  "scored_days": 40,
-  "rate": 0.3,
-  "last_scored_day": "2026-09-14"
+  "scored_days": 41,
+  "rate": 0.293,
+  "last_scored_day": "2026-09-15"
  }
 }
