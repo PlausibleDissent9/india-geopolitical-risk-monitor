@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-20",
- "generated_at": "2026-09-21T18:53:33Z",
+ "generated_at": "2026-09-21T19:17:22Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "de02e729437cf6d606f57feadcfd77c8c0eca6e2",
-  "blob_git_sha1": "916ba9834a4b4200f69054d88c30d5f2fedee27e",
-  "blob_sha256": "baa204168033dae8fd121fb4a9954a6b692cb8a4fb0ca486ba4e77b24d99ec70",
+  "commit_sha": "db16b4ae8f69d9f005ff63d3ef954949d340a82e",
+  "blob_git_sha1": "be298f3023e72c457941824d9c1cedab82a7324b",
+  "blob_sha256": "66357fdbfd8a0c46dfbd0f12f788c42c406b2bec295449e12a0b8cd7c9f280d6",
   "target_date": "2026-09-20"
  },
  "channels": {
@@ -29,8 +29,34 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "China must treat India as an Asian peer",
+     "url": "https://www.tribuneindia.com/news/comment/china-must-treat-india-as-an-asian-peer/",
+     "domain": "tribuneindia.com"
+    },
+    {
+     "title": "India - China Engagement Offers Scope For Stronger Economic Ties , Greater Stability : Report",
+     "url": "https://idrw.org/india-china-engagement-offers-scope-for-stronger-economic-ties-greater-stability-report/",
+     "domain": "idrw.org"
+    },
+    {
+     "title": "For India , border peace with China comes before deeper economic ties : Sources",
+     "url": "https://www.thehindubusinessline.com/economy/for-india-border-peace-with-china-comes-before-deeper-economic-ties-sources/article71487961.ece",
+     "domain": "thehindubusinessline.com"
+    },
+    {
+     "title": "They were caught by the Chinese : NSA Ajit Doval recounts moment he thought was end of his career",
+     "url": "https://www.livemint.com/news/india/they-were-caught-by-the-chinese-nsa-ajit-doval-recounts-moment-he-thought-was-end-of-his-career-11789888692169.html",
+     "domain": "livemint.com"
+    },
+    {
+     "title": "南昌 ： 锚定  打造六城  目标 擘画省会引领新篇章 _ 凤凰网",
+     "url": "https://jx.ifeng.com/c/8wXSdvRe68Y",
+     "domain": "jx.ifeng.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-20",
-     "evaluated_at_utc": "2026-09-21T18:53:33Z",
+     "evaluated_at_utc": "2026-09-21T19:17:22Z",
      "rights_as_of": "2026-09-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-20",
-     "evaluated_at_utc": "2026-09-21T18:56:20Z",
+     "evaluated_at_utc": "2026-09-21T19:20:19Z",
      "rights_as_of": "2026-09-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-20",
-     "evaluated_at_utc": "2026-09-21T18:56:20Z",
+     "evaluated_at_utc": "2026-09-21T19:20:19Z",
      "rights_as_of": "2026-09-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "07bde6e5cf8e7a37c212da972b1562e97f28d6f8466a15af99667270524b0b8e"
+ "payload_seal_sha256": "5929c92e88d4ef21d0cea36b4c4ff060a8a51d4831d48caa6ebbc43fddb2c80b"
 }
