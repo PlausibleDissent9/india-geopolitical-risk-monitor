@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-13",
- "generated_at": "2026-09-14T19:17:04Z",
+ "target_date": "2026-09-20",
+ "generated_at": "2026-09-21T14:30:39Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "86c5f2167f556b47a3e7a013fcc049fb3511784c",
-  "blob_git_sha1": "fa05ade1af2b4f50bd562716416d8f0c0c240dcd",
-  "blob_sha256": "d99bd1da5b38696a0c23b7f63678a274cf2decce4993ecdc53fec95419188459",
+  "state": "different_target",
+  "commit_sha": "3fda1b20c49b1f89c7a5c2a1effeffd6259b6324",
+  "blob_git_sha1": "f0091a9c9b564359499476fafac9ef576d424282",
+  "blob_sha256": "ed497e742bb09f31a689e2fb31a337f43ddc3c0fbe1f4c7f9b57d8f8affd5c23",
   "target_date": "2026-09-13"
  },
  "channels": {
@@ -29,42 +29,42 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "4 questions for PM Modi : Congress targets China policy after Xi meeting , alleges  calibrated capitulation",
-     "url": "https://www.moneycontrol.com/news/india/4-questions-for-pm-modi-congress-targets-china-policy-after-xi-meeting-alleges-calibrated-capitulation-14028855.html",
-     "domain": "moneycontrol.com"
-    },
-    {
-     "title": "Border peace essential for India , China ties : Modi to Xi",
-     "url": "https://www.dailyexcelsior.com/border-peace-essential-for-india-china-ties-modi-to-xi/",
-     "domain": "dailyexcelsior.com"
-    },
-    {
-     "title": "Modi - Xi Meet : India , China Show Hesitation Over Restoring Ties as Border Issue Remains Unresolved",
-     "url": "https://www.oneindia.com/india/modi-xi-meet-india-china-show-hesitation-over-restoring-ties-as-border-issue-remains-unresolved-8203853.html",
-     "domain": "oneindia.com"
-    },
-    {
-     "title": "Calibrated capitulation : Congress slams PM Modi after his meeting with Xi",
-     "url": "https://www.thehindu.com/news/national/calibrated-capitulation-congress-slams-pm-modi-after-his-meeting-with-xi/article71462851.ece",
-     "domain": "thehindu.com"
-    },
-    {
-     "title": "金磚莫習會難 「 破冰 」 印度智庫 ： 印中角力僅暫時休兵 - 國際",
-     "url": "https://news.ltn.com.tw/news/world/breakingnews/5572576",
-     "domain": "news.ltn.com.tw"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Tag : h _ 1b _ visa",
+     "url": "https://newsroomamerica.com/tag/h_1b_visa",
+     "domain": "newsroomamerica.com"
+    },
+    {
+     "title": "Serious escalation : On the U . S ., Russia Sanctions Act and India",
+     "url": "https://www.thehindu.com/opinion/editorial/serious-escalation-on-the-us-russia-sanctions-act-and-india/article71488040.ece",
+     "domain": "thehindu.com"
+    },
+    {
+     "title": "U 100 % tariff threat : India may find it difficult to cut Russian oil buys",
+     "url": "https://www.business-standard.com/economy/news/us-100-tariff-threat-india-may-find-it-difficult-to-cut-russian-oil-buys-126092000687_1.html",
+     "domain": "business-standard.com"
+    },
+    {
+     "title": "US firms laying off Americans and hiring H - 1B workers to face closer scrutiny : What Trump new order means",
+     "url": "https://economictimes.indiatimes.com/nri/work/us-firms-laying-off-americans-and-hiring-h-1b-workers-to-face-closer-scrutiny-what-trumps-new-order-means/articleshow/134369590.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "Exim Matters : Russian oil , American tariffs and Indian exporters",
+     "url": "https://www.business-standard.com/opinion/columns/exim-matters-russian-oil-american-tariffs-and-indian-exporters-126092000897_1.html",
+     "domain": "business-standard.com"
+    }
+   ]
   },
   "shipping": {
    "state": "unavailable",
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-13",
-     "evaluated_at_utc": "2026-09-14T19:17:04Z",
-     "rights_as_of": "2026-09-14",
+     "target_date": "2026-09-20",
+     "evaluated_at_utc": "2026-09-21T14:30:39Z",
+     "rights_as_of": "2026-09-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-13T23:59:59Z",
+     "release_deadline_utc": "2026-10-20T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-13",
-     "evaluated_at_utc": "2026-09-14T19:20:17Z",
-     "rights_as_of": "2026-09-14",
+     "target_date": "2026-09-20",
+     "evaluated_at_utc": "2026-09-21T14:33:42Z",
+     "rights_as_of": "2026-09-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-13T23:59:59Z",
+     "release_deadline_utc": "2026-10-20T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-13",
-     "evaluated_at_utc": "2026-09-14T19:20:17Z",
-     "rights_as_of": "2026-09-14",
+     "target_date": "2026-09-20",
+     "evaluated_at_utc": "2026-09-21T14:33:42Z",
+     "rights_as_of": "2026-09-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-13T23:59:59Z",
+     "release_deadline_utc": "2026-10-20T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "69780dacf869214c41ab7112173758931fef164a330929d4b4c4d691b109989b"
+ "payload_seal_sha256": "e8207f08897c20ce4b7b72c346a3fc35cf75f180f6c8c721329032f6537fb99b"
 }
