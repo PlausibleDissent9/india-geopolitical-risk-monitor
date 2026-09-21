@@ -7,7 +7,7 @@
   "what": "Every number that did not go this project's way, compiled from the payloads where each lives. Read live from those payloads at build time, never hand-typed, so a row that stops being true stops being published.",
   "why": "Anyone can publish good numbers. The reason to believe the flattering ones is that the unflattering ones are computed by the same pipeline on the same schedule -- and this file is where they stand together instead of being scattered across 8 payloads.",
   "n_findings": 10,
-  "generated": "2026-09-20T00:32:10Z"
+  "generated": "2026-09-21T00:42:40Z"
  },
  "findings": [
   {
@@ -30,7 +30,7 @@
   },
   {
    "finding": "The 7-day headline barely beats chance as a detector",
-   "number": "composite7 detects 8 of 28 evaluable events on the registered threshold rule; chance is 6.4",
+   "number": "composite7 detects 8 of 28 evaluable events on the registered threshold rule; chance is 6.5",
    "source": "data/detection_baselines.json",
    "reading": "the headline is a summary statistic, not the detector; detection lives in the per-channel series, and the two famous headline anecdotes were anecdotes"
   },

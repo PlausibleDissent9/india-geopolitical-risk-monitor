@@ -358,7 +358,7 @@ Quoted verbatim from docs/data/negative_results.json (the register's own descrip
 
 ### The 7-day headline barely beats chance as a detector
 
-- Number: composite7 detects 8 of 28 evaluable events on the registered threshold rule; chance is 6.4
+- Number: composite7 detects 8 of 28 evaluable events on the registered threshold rule; chance is 6.5
 - Reading: the headline is a summary statistic, not the detector; detection lives in the per-channel series, and the two famous headline anecdotes were anecdotes
 - Source: data/detection_baselines.json (via docs/data/negative_results.json)
 
