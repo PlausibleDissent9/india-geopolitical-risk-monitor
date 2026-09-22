@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-20",
- "generated_at": "2026-09-21T19:17:22Z",
+ "target_date": "2026-09-21",
+ "generated_at": "2026-09-22T06:42:48Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "db16b4ae8f69d9f005ff63d3ef954949d340a82e",
-  "blob_git_sha1": "be298f3023e72c457941824d9c1cedab82a7324b",
-  "blob_sha256": "66357fdbfd8a0c46dfbd0f12f788c42c406b2bec295449e12a0b8cd7c9f280d6",
+  "state": "different_target",
+  "commit_sha": "f5ed8ea855b8b8a0a741a313ab41842f5afb0dea",
+  "blob_git_sha1": "98eecc515e6ce2f5c75359fcfe0b5192bfb075cc",
+  "blob_sha256": "543cf3af677cde021ea4d352440ddafe02c24cba3e8c1eb1b6595ba420f1feda",
   "target_date": "2026-09-20"
  },
  "channels": {
@@ -29,72 +29,46 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "China must treat India as an Asian peer",
-     "url": "https://www.tribuneindia.com/news/comment/china-must-treat-india-as-an-asian-peer/",
-     "domain": "tribuneindia.com"
-    },
-    {
-     "title": "India - China Engagement Offers Scope For Stronger Economic Ties , Greater Stability : Report",
-     "url": "https://idrw.org/india-china-engagement-offers-scope-for-stronger-economic-ties-greater-stability-report/",
-     "domain": "idrw.org"
-    },
-    {
-     "title": "For India , border peace with China comes before deeper economic ties : Sources",
-     "url": "https://www.thehindubusinessline.com/economy/for-india-border-peace-with-china-comes-before-deeper-economic-ties-sources/article71487961.ece",
-     "domain": "thehindubusinessline.com"
-    },
-    {
-     "title": "They were caught by the Chinese : NSA Ajit Doval recounts moment he thought was end of his career",
-     "url": "https://www.livemint.com/news/india/they-were-caught-by-the-chinese-nsa-ajit-doval-recounts-moment-he-thought-was-end-of-his-career-11789888692169.html",
-     "domain": "livemint.com"
-    },
-    {
-     "title": "南昌 ： 锚定  打造六城  目标 擘画省会引领新篇章 _ 凤凰网",
-     "url": "https://jx.ifeng.com/c/8wXSdvRe68Y",
-     "domain": "jx.ifeng.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Tag : h _ 1b _ visa",
-     "url": "https://newsroomamerica.com/tag/h_1b_visa",
-     "domain": "newsroomamerica.com"
+     "title": "Why the Suez Canal Recovery Matters for Egypt Economy",
+     "url": "https://egyptianstreets.com/2026/09/21/why-the-suez-canals-recovery-matters-for-egypts-economy/",
+     "domain": "egyptianstreets.com"
     },
     {
-     "title": "Serious escalation : On the U . S ., Russia Sanctions Act and India",
-     "url": "https://www.thehindu.com/opinion/editorial/serious-escalation-on-the-us-russia-sanctions-act-and-india/article71488040.ece",
-     "domain": "thehindu.com"
+     "title": "Africa : AU Demands Red Sea De - Escalation , Warning Houthi Strikes Threaten Littoral Economies , Global Trade",
+     "url": "https://allafrica.com/stories/202609210639.html",
+     "domain": "allafrica.com"
     },
     {
-     "title": "U 100 % tariff threat : India may find it difficult to cut Russian oil buys",
-     "url": "https://www.business-standard.com/economy/news/us-100-tariff-threat-india-may-find-it-difficult-to-cut-russian-oil-buys-126092000687_1.html",
-     "domain": "business-standard.com"
+     "title": "Houthi Kuasai Bab al - Mandeb , Israel dalam Bahaya",
+     "url": "https://khazanah.republika.co.id/berita/tloznh483/houthi-kuasai-bab-almandeb-israel-dalam-bahaya",
+     "domain": "khazanah.republika.co.id"
     },
     {
-     "title": "US firms laying off Americans and hiring H - 1B workers to face closer scrutiny : What Trump new order means",
-     "url": "https://economictimes.indiatimes.com/nri/work/us-firms-laying-off-americans-and-hiring-h-1b-workers-to-face-closer-scrutiny-what-trumps-new-order-means/articleshow/134369590.cms",
-     "domain": "economictimes.indiatimes.com"
+     "title": "UK to offer Saudi Arabia aerial refueling to counter Houthi attacks",
+     "url": "https://www.clickondetroit.com/news/world/2026/09/21/uk-to-offer-saudi-arabia-aerial-refueling-to-counter-houthi-attacks/",
+     "domain": "clickondetroit.com"
     },
     {
-     "title": "Exim Matters : Russian oil , American tariffs and Indian exporters",
-     "url": "https://www.business-standard.com/opinion/columns/exim-matters-russian-oil-american-tariffs-and-indian-exporters-126092000897_1.html",
-     "domain": "business-standard.com"
+     "title": "Britain to give limited military support to Saudi Arabia to defend against Houthi rebels",
+     "url": "https://www.cbc.ca/news/world/britain-support-saudi-arabia-houthi-rebels-9.7352771",
+     "domain": "cbc.ca"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -118,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-20",
-     "evaluated_at_utc": "2026-09-21T19:17:22Z",
-     "rights_as_of": "2026-09-21",
+     "target_date": "2026-09-21",
+     "evaluated_at_utc": "2026-09-22T06:42:48Z",
+     "rights_as_of": "2026-09-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-20T23:59:59Z",
+     "release_deadline_utc": "2026-10-21T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -159,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-20",
-     "evaluated_at_utc": "2026-09-21T19:20:19Z",
-     "rights_as_of": "2026-09-21",
+     "target_date": "2026-09-21",
+     "evaluated_at_utc": "2026-09-22T06:45:39Z",
+     "rights_as_of": "2026-09-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-20T23:59:59Z",
+     "release_deadline_utc": "2026-10-21T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -200,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-20",
-     "evaluated_at_utc": "2026-09-21T19:20:19Z",
-     "rights_as_of": "2026-09-21",
+     "target_date": "2026-09-21",
+     "evaluated_at_utc": "2026-09-22T06:45:39Z",
+     "rights_as_of": "2026-09-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-20T23:59:59Z",
+     "release_deadline_utc": "2026-10-21T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -229,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "5929c92e88d4ef21d0cea36b4c4ff060a8a51d4831d48caa6ebbc43fddb2c80b"
+ "payload_seal_sha256": "a7fcdbbd4102ae8cce2b304f6e0875dc64db9c96d1e852fe6e7bbc8ed9c6daa0"
 }
