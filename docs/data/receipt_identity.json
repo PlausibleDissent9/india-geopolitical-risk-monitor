@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-21",
- "generated_at": "2026-09-22T18:13:31Z",
+ "target_date": "2026-09-22",
+ "generated_at": "2026-09-23T12:59:04Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "a1fd6e6b37f08a083ba9e697a0198cfb63daa7ee",
-  "blob_git_sha1": "077928351913226ddcb6a42e39d1da5abd6c7c17",
-  "blob_sha256": "1e392a75ec666987544c5cec2a828ba2873bf818546907362112663aa6833a58",
+  "state": "different_target",
+  "commit_sha": "9446072a06e7be3d0f71519d3cadc051268f248c",
+  "blob_git_sha1": "54a3aa9a9e52ac1019f6216d1fec242c350287f4",
+  "blob_sha256": "a25c229af2f536ddabcbbb66fa92dd8523a6ce6978204c1c3fc474daf2981f9a",
   "target_date": "2026-09-21"
  },
  "channels": {
@@ -29,8 +29,34 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "India - China Ties Cant Be Repaired In 1 - 2 Modi - Xi Meets",
+     "url": "https://www.rediff.com/news/interview/india-china-ties-cant-be-repaired-in-1-2-modi-xi-meets/20260922.htm",
+     "domain": "rediff.com"
+    },
+    {
+     "title": "Xi Jinping Cleanses High Command : Galwan - Era Top General Zhang Youxia Stripped Of Party And Military Rank",
+     "url": "https://www.freepressjournal.in/world/xi-jinping-cleanses-high-command-galwan-era-top-general-zhang-youxia-stripped-of-party-and-military-rank",
+     "domain": "freepressjournal.in"
+    },
+    {
+     "title": "BRO – Connecting the frontiers - The HinduBusinessLine",
+     "url": "https://www.thehindubusinessline.com/blchangemakers/bro-connecting-the-frontiers/article71491198.ece",
+     "domain": "thehindubusinessline.com"
+    },
+    {
+     "title": "России близко учение буддийских  староверов  / / Независимая газета",
+     "url": "https://www.ng.ru/ng_religii/2026-09-22/7_9587_russia.html",
+     "domain": "ng.ru"
+    },
+    {
+     "title": "India turns to BRICS as exports surge and trade pressure from Washington grows",
+     "url": "https://weeklyblitz.net/2026/09/22/india-turns-to-brics-as-exports-surge-and-trade-pressure-from-washington-grows/",
+     "domain": "weeklyblitz.net"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -41,34 +67,8 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Why the Suez Canal Recovery Matters for Egypt Economy",
-     "url": "https://egyptianstreets.com/2026/09/21/why-the-suez-canals-recovery-matters-for-egypts-economy/",
-     "domain": "egyptianstreets.com"
-    },
-    {
-     "title": "Africa : AU Demands Red Sea De - Escalation , Warning Houthi Strikes Threaten Littoral Economies , Global Trade",
-     "url": "https://allafrica.com/stories/202609210639.html",
-     "domain": "allafrica.com"
-    },
-    {
-     "title": "Houthi Kuasai Bab al - Mandeb , Israel dalam Bahaya",
-     "url": "https://khazanah.republika.co.id/berita/tloznh483/houthi-kuasai-bab-almandeb-israel-dalam-bahaya",
-     "domain": "khazanah.republika.co.id"
-    },
-    {
-     "title": "UK to offer Saudi Arabia aerial refueling to counter Houthi attacks",
-     "url": "https://www.clickondetroit.com/news/world/2026/09/21/uk-to-offer-saudi-arabia-aerial-refueling-to-counter-houthi-attacks/",
-     "domain": "clickondetroit.com"
-    },
-    {
-     "title": "Britain to give limited military support to Saudi Arabia to defend against Houthi rebels",
-     "url": "https://www.cbc.ca/news/world/britain-support-saudi-arabia-houthi-rebels-9.7352771",
-     "domain": "cbc.ca"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-21",
-     "evaluated_at_utc": "2026-09-22T18:13:31Z",
-     "rights_as_of": "2026-09-22",
+     "target_date": "2026-09-22",
+     "evaluated_at_utc": "2026-09-23T12:59:04Z",
+     "rights_as_of": "2026-09-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-21T23:59:59Z",
+     "release_deadline_utc": "2026-10-22T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-21",
-     "evaluated_at_utc": "2026-09-22T18:16:32Z",
-     "rights_as_of": "2026-09-22",
+     "target_date": "2026-09-22",
+     "evaluated_at_utc": "2026-09-23T13:02:13Z",
+     "rights_as_of": "2026-09-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-21T23:59:59Z",
+     "release_deadline_utc": "2026-10-22T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-21",
-     "evaluated_at_utc": "2026-09-22T18:16:32Z",
-     "rights_as_of": "2026-09-22",
+     "target_date": "2026-09-22",
+     "evaluated_at_utc": "2026-09-23T13:02:13Z",
+     "rights_as_of": "2026-09-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-21T23:59:59Z",
+     "release_deadline_utc": "2026-10-22T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "0f87b62610b9f93d424bb043559b554ad3cc3c7ce25efdb6ee8249a45532d9bc"
+ "payload_seal_sha256": "ccd91972bad0865bc9d0a010ddb31aeb9ce558f699cfd4c784dbae5952c87ad4"
 }
