@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-22",
- "generated_at": "2026-09-23T18:20:35Z",
+ "target_date": "2026-09-23",
+ "generated_at": "2026-09-24T13:15:35Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "bb537ac650f3001855b89ef498f2147176ce78b3",
-  "blob_git_sha1": "8eca272f5045e1a9bdd89fe2fb7c3dd81571d3f2",
-  "blob_sha256": "2d08e315dd57f303dec4c562d04ecb0ddbbd080a616a57708d496c1137bfc7eb",
+  "state": "different_target",
+  "commit_sha": "3b582e20fc9e317ccd36cd202c035a0aa669ed30",
+  "blob_git_sha1": "700808bf9bece33e364e69ff09dfd8f6fe9e0a06",
+  "blob_sha256": "0df9b9f88d07a7c6876dc00c1d8a82aa26dca641c931137ff5b05f219cd3b29a",
   "target_date": "2026-09-22"
  },
  "channels": {
@@ -29,70 +29,70 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "India - China Ties Cant Be Repaired In 1 - 2 Modi - Xi Meets",
-     "url": "https://www.rediff.com/news/interview/india-china-ties-cant-be-repaired-in-1-2-modi-xi-meets/20260922.htm",
-     "domain": "rediff.com"
-    },
-    {
-     "title": "Xi Jinping Cleanses High Command : Galwan - Era Top General Zhang Youxia Stripped Of Party And Military Rank",
-     "url": "https://www.freepressjournal.in/world/xi-jinping-cleanses-high-command-galwan-era-top-general-zhang-youxia-stripped-of-party-and-military-rank",
-     "domain": "freepressjournal.in"
-    },
-    {
-     "title": "BRO – Connecting the frontiers - The HinduBusinessLine",
-     "url": "https://www.thehindubusinessline.com/blchangemakers/bro-connecting-the-frontiers/article71491198.ece",
-     "domain": "thehindubusinessline.com"
-    },
-    {
-     "title": "России близко учение буддийских  староверов  / / Независимая газета",
-     "url": "https://www.ng.ru/ng_religii/2026-09-22/7_9587_russia.html",
-     "domain": "ng.ru"
-    },
-    {
-     "title": "India turns to BRICS as exports surge and trade pressure from Washington grows",
-     "url": "https://weeklyblitz.net/2026/09/22/india-turns-to-brics-as-exports-surge-and-trade-pressure-from-washington-grows/",
-     "domain": "weeklyblitz.net"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "The West Might Soon Ramp Up Its Pressure On India To Distance Itself From Russia",
+     "url": "https://www.zerohedge.com/markets/west-might-soon-ramp-its-pressure-india-distance-itself-russia",
+     "domain": "zerohedge.com"
+    },
+    {
+     "title": "India imports of Russian crude fell in August ; could fall further in September : Report",
+     "url": "https://www.businesstoday.in/world/story/indias-imports-of-russian-crude-fell-in-august-could-fall-further-in-september-report-557164-2026-09-23",
+     "domain": "businesstoday.in"
+    },
+    {
+     "title": "Глава крупнейшего банка США призвал не наказывать Индию за российскую нефть",
+     "url": "https://lenta.ru/news/2026/09/23/glava-krupneyshego-banka-ssha-prizval-ne-nakazyvat-indiyu-za-rossiyskuyu-neft/",
+     "domain": "lenta.ru"
+    },
+    {
+     "title": "Former US NSA John Bolton says US must pivot from tariffs to Quad partnership with India",
+     "url": "https://aninews.in/news/world/us/former-us-nsa-john-bolton-says-us-must-pivot-from-tariffs-to-quad-partnership-with-india20260924010534/",
+     "domain": "aninews.in"
+    },
+    {
+     "title": "Russia India Us Tariff , रूस अगर चीन के करीब गया तो भारत को खराब लगेगा , रूसी मीडिया ने दी  धमकी , न‍िशाने पर फ्रांस - अमेरिका - india would be displeased if russia moves closer to china russian media warns on us tariff france hormuz - Rest of Europe...",
+     "url": "https://navbharattimes.indiatimes.com/world/rest-of-europe/india-would-be-displeased-if-russia-moves-closer-to-china-russian-media-warns-on-us-tariff-france-hormuz/articleshow/134426593.cms",
+     "domain": "navbharattimes.indiatimes.com"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
    "articles": [
     {
+     "title": "Red Sea tensions renew shipping risks for Egypt Suez Canal",
+     "url": "https://www.freshplaza.com/north-america/article/9875552/red-sea-tensions-renew-shipping-risks-for-egypt-s-suez-canal/",
+     "domain": "freshplaza.com"
+    },
+    {
+     "title": "Yemen Is Unraveling As The War Spreads Across The Red Sea",
+     "url": "https://www.armstrongeconomics.com/world-news/war/yemen-is-unraveling-as-the-war-spreads-across-the-red-sea/",
+     "domain": "armstrongeconomics.com"
+    },
+    {
+     "title": "Houthi Leverage over the Red Sea Escalates Threats for Africa",
+     "url": "https://africacenter.org/spotlight/2026-houthi-red-sea-threats/",
+     "domain": "africacenter.org"
+    },
+    {
      "title": "Putin and Saudi crown prince call for safe passage via Hormuz , Bab el - Mandeb",
-     "url": "https://arynews.tv/putin-and-saudi-crown-prince-call-for-safe-passage-via-hormuz-bab-el-mandeb",
-     "domain": "arynews.tv"
+     "url": "https://dunyanews.tv/en/World/974199-putin-and-saudi-crown-prince-call-for-safe-passage-via-hormuz-bab-el",
+     "domain": "dunyanews.tv"
     },
     {
-     "title": "The  merchants of chao have left Donald Trump in a bind with Saudi Arabia - 22 - Sep - 2026",
-     "url": "https://home.nzcity.co.nz/news/article.aspx?id=454537&fm=psp,tst",
-     "domain": "home.nzcity.co.nz"
-    },
-    {
-     "title": "Saudi Arabia is running out of options to export oil . What does that mean for global energy ?",
-     "url": "https://www.hellenicshippingnews.com/saudi-arabia-is-running-out-of-options-to-export-oil-what-does-that-mean-for-global-energy/",
-     "domain": "hellenicshippingnews.com"
-    },
-    {
-     "title": "The  merchants of chao have left Donald Trump in a bind with Saudi Arabia",
-     "url": "https://www.abc.net.au/news/2026-09-22/yemen-houthis-leave-trump-in-a-bind/107177808",
-     "domain": "abc.net.au"
-    },
-    {
-     "title": "تصعيد الحوثيين في باب المندب يهدد تعافي قناة السويس",
-     "url": "https://www.newsyemen.net/news106151.html",
-     "domain": "newsyemen.net"
+     "title": "The Houthis Have Saudi Arabia Trapped Between Two Chokepoints",
+     "url": "https://www.armstrongeconomics.com/world-news/world-trade/the-houthis-have-saudi-arabia-trapped-between-two-chokepoints/",
+     "domain": "armstrongeconomics.com"
     }
    ]
   }
@@ -118,12 +118,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-22",
-     "evaluated_at_utc": "2026-09-23T18:20:35Z",
-     "rights_as_of": "2026-09-23",
+     "target_date": "2026-09-23",
+     "evaluated_at_utc": "2026-09-24T13:15:35Z",
+     "rights_as_of": "2026-09-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-22T23:59:59Z",
+     "release_deadline_utc": "2026-10-23T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -159,12 +159,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-22",
-     "evaluated_at_utc": "2026-09-23T18:23:31Z",
-     "rights_as_of": "2026-09-23",
+     "target_date": "2026-09-23",
+     "evaluated_at_utc": "2026-09-24T13:18:54Z",
+     "rights_as_of": "2026-09-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-22T23:59:59Z",
+     "release_deadline_utc": "2026-10-23T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -200,12 +200,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-22",
-     "evaluated_at_utc": "2026-09-23T18:23:31Z",
-     "rights_as_of": "2026-09-23",
+     "target_date": "2026-09-23",
+     "evaluated_at_utc": "2026-09-24T13:18:54Z",
+     "rights_as_of": "2026-09-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-22T23:59:59Z",
+     "release_deadline_utc": "2026-10-23T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -229,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "f3773512663e6907a7dd342df5e9ab31067c47c72470077ff3097b10a9482b83"
+ "payload_seal_sha256": "a178b15e6c076687e067138d3e3afc9d8c652c6dcca4036288eff5c61bed6f29"
 }
