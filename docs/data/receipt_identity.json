@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-23",
- "generated_at": "2026-09-24T17:56:38Z",
+ "generated_at": "2026-09-24T18:20:20Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "8e352ed59719ea8b1dce2c0cca9d49560e62e950",
-  "blob_git_sha1": "81ff4322e643a3cbe2e3022cf15dd1d2fb771f9c",
-  "blob_sha256": "54dd96f74a43d6ee34e9616d9fea892b957a1632f8b4a0172a581f1cca153440",
+  "commit_sha": "a13721636e1abeca628e1044293f1fd92b381a41",
+  "blob_git_sha1": "2fb14588191c39738c88c0fd2e5d4f9c72b13f16",
+  "blob_sha256": "99249c189881be07477d93ea8b25174eee45d622036c0157502f5719b11ca646",
   "target_date": "2026-09-23"
  },
  "channels": {
@@ -34,7 +34,7 @@
   },
   "gulf_energy": {
    "state": "unavailable",
-   "reason_code": "source_response_invalid"
+   "reason_code": "source_unavailable"
   },
   "us_trade": {
    "state": "available",
@@ -119,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-23",
-     "evaluated_at_utc": "2026-09-24T17:56:38Z",
+     "evaluated_at_utc": "2026-09-24T18:20:20Z",
      "rights_as_of": "2026-09-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-23",
-     "evaluated_at_utc": "2026-09-24T17:59:52Z",
+     "evaluated_at_utc": "2026-09-24T18:23:29Z",
      "rights_as_of": "2026-09-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-23",
-     "evaluated_at_utc": "2026-09-24T17:59:52Z",
+     "evaluated_at_utc": "2026-09-24T18:23:29Z",
      "rights_as_of": "2026-09-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "4d77a9b600e47fb6ff8002577ce17e8f0665a644cde8c43b408636b5a554f07f"
+ "payload_seal_sha256": "124fa515f6876e315ca9b0dc6f7ca9d1b6d57a7c4b51d4da707dacec02a36363"
 }
