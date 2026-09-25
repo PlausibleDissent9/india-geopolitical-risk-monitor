@@ -447,12 +447,12 @@
    "sha256": "d6e258db2c4dd36ab27af2a633f87b4ff4581a7de7b72ce63f19fa23da1052f4"
   },
   {
-   "bytes": 12120,
+   "bytes": 10316,
    "format": "json",
    "git_mode": "100644",
    "path": "data/receipt_identity.json",
    "repository_path": "docs/data/receipt_identity.json",
-   "sha256": "7637a3fdfe1e6faa904e179efe7fcdfb36dbdd1630d1f89761840c3264d7ca18"
+   "sha256": "dd1ac760543ce04384ec4158fc6dd09f770a5e04f320841ed78decc3a829a4da"
   },
   {
    "bytes": 91124,
@@ -978,7 +978,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "7aa77dd554b4d4ad8b385a579963f55d84d9a1829f662ba14094ec8a640f1727",
+  "entries_sha256": "3d487c03afbd8223bce82a064a118dfe4d669539dda47cf9686de9ca9d576cf7",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -989,7 +989,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7315651,
+  "hashed_bytes": 7313847,
   "hashed_entries": 119,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912

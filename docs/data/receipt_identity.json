@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-23",
- "generated_at": "2026-09-24T18:20:20Z",
+ "target_date": "2026-09-24",
+ "generated_at": "2026-09-25T18:03:25Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "a13721636e1abeca628e1044293f1fd92b381a41",
-  "blob_git_sha1": "2fb14588191c39738c88c0fd2e5d4f9c72b13f16",
-  "blob_sha256": "99249c189881be07477d93ea8b25174eee45d622036c0157502f5719b11ca646",
+  "state": "different_target",
+  "commit_sha": "bc6b7fe290ba5661f06df4292208d2d30056ca50",
+  "blob_git_sha1": "cdaff8e1e45cebc160392be3d1361d2b9189e550",
+  "blob_sha256": "7637a3fdfe1e6faa904e179efe7fcdfb36dbdd1630d1f89761840c3264d7ca18",
   "target_date": "2026-09-23"
  },
  "channels": {
@@ -37,62 +37,36 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "The West Might Soon Ramp Up Its Pressure On India To Distance Itself From Russia",
-     "url": "https://www.zerohedge.com/markets/west-might-soon-ramp-its-pressure-india-distance-itself-russia",
-     "domain": "zerohedge.com"
-    },
-    {
-     "title": "India imports of Russian crude fell in August ; could fall further in September : Report",
-     "url": "https://www.businesstoday.in/world/story/indias-imports-of-russian-crude-fell-in-august-could-fall-further-in-september-report-557164-2026-09-23",
-     "domain": "businesstoday.in"
-    },
-    {
-     "title": "Глава крупнейшего банка США призвал не наказывать Индию за российскую нефть",
-     "url": "https://lenta.ru/news/2026/09/23/glava-krupneyshego-banka-ssha-prizval-ne-nakazyvat-indiyu-za-rossiyskuyu-neft/",
-     "domain": "lenta.ru"
-    },
-    {
-     "title": "Former US NSA John Bolton says US must pivot from tariffs to Quad partnership with India",
-     "url": "https://aninews.in/news/world/us/former-us-nsa-john-bolton-says-us-must-pivot-from-tariffs-to-quad-partnership-with-india20260924010534/",
-     "domain": "aninews.in"
-    },
-    {
-     "title": "Russia India Us Tariff , रूस अगर चीन के करीब गया तो भारत को खराब लगेगा , रूसी मीडिया ने दी  धमकी , न‍िशाने पर फ्रांस - अमेरिका - india would be displeased if russia moves closer to china russian media warns on us tariff france hormuz - Rest of Europe...",
-     "url": "https://navbharattimes.indiatimes.com/world/rest-of-europe/india-would-be-displeased-if-russia-moves-closer-to-china-russian-media-warns-on-us-tariff-france-hormuz/articleshow/134426593.cms",
-     "domain": "navbharattimes.indiatimes.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Red Sea tensions renew shipping risks for Egypt Suez Canal",
-     "url": "https://www.freshplaza.com/north-america/article/9875552/red-sea-tensions-renew-shipping-risks-for-egypt-s-suez-canal/",
-     "domain": "freshplaza.com"
+     "title": "Hormuz ship traffic down 96 %, Bab el - Mandeb at 70 % of normal levels",
+     "url": "https://www.moneycontrol.com/world/hormuz-ship-traffic-down-96-bab-el-mandeb-at-70-of-normal-levels-article-14037505.html",
+     "domain": "moneycontrol.com"
     },
     {
-     "title": "Yemen Is Unraveling As The War Spreads Across The Red Sea",
-     "url": "https://www.armstrongeconomics.com/world-news/war/yemen-is-unraveling-as-the-war-spreads-across-the-red-sea/",
-     "domain": "armstrongeconomics.com"
+     "title": "Saudi Arabia intercepts 6 Houthi missiles , warns of shipping threat",
+     "url": "https://www.foxnews.com/world/saudi-foreign-minister-warns-houthi-threat-goes-global-trump-holds-fire",
+     "domain": "foxnews.com"
     },
     {
-     "title": "Houthi Leverage over the Red Sea Escalates Threats for Africa",
-     "url": "https://africacenter.org/spotlight/2026-houthi-red-sea-threats/",
-     "domain": "africacenter.org"
+     "title": "Yemen government forces repel Houthi push on key Taiz - Aden route",
+     "url": "https://www.middle-east-online.com/en/yemen-government-forces-repel-houthi-push-key-taiz-aden-route",
+     "domain": "middle-east-online.com"
     },
     {
-     "title": "Putin and Saudi crown prince call for safe passage via Hormuz , Bab el - Mandeb",
-     "url": "https://dunyanews.tv/en/World/974199-putin-and-saudi-crown-prince-call-for-safe-passage-via-hormuz-bab-el",
-     "domain": "dunyanews.tv"
+     "title": "French Troops to Protect Saudi Arabian Port on Red Sea Oil Route , Macron Says",
+     "url": "https://www.theepochtimes.com/world/french-troops-to-protect-saudi-arabian-port-on-red-sea-oil-route-macron-says-6094591",
+     "domain": "theepochtimes.com"
     },
     {
-     "title": "The Houthis Have Saudi Arabia Trapped Between Two Chokepoints",
-     "url": "https://www.armstrongeconomics.com/world-news/world-trade/the-houthis-have-saudi-arabia-trapped-between-two-chokepoints/",
-     "domain": "armstrongeconomics.com"
+     "title": "In Red Sea Crisis , Somaliland Seizes Leverage For US Recognition",
+     "url": "https://www.zerohedge.com/geopolitical/red-sea-crisis-somaliland-seizes-leverage-us-recognition",
+     "domain": "zerohedge.com"
     }
    ]
   }
@@ -118,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-23",
-     "evaluated_at_utc": "2026-09-24T18:20:20Z",
-     "rights_as_of": "2026-09-24",
+     "target_date": "2026-09-24",
+     "evaluated_at_utc": "2026-09-25T18:03:25Z",
+     "rights_as_of": "2026-09-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-23T23:59:59Z",
+     "release_deadline_utc": "2026-10-24T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -159,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-23",
-     "evaluated_at_utc": "2026-09-24T18:23:29Z",
-     "rights_as_of": "2026-09-24",
+     "target_date": "2026-09-24",
+     "evaluated_at_utc": "2026-09-25T18:06:26Z",
+     "rights_as_of": "2026-09-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-23T23:59:59Z",
+     "release_deadline_utc": "2026-10-24T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -200,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-23",
-     "evaluated_at_utc": "2026-09-24T18:23:29Z",
-     "rights_as_of": "2026-09-24",
+     "target_date": "2026-09-24",
+     "evaluated_at_utc": "2026-09-25T18:06:26Z",
+     "rights_as_of": "2026-09-25",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-23T23:59:59Z",
+     "release_deadline_utc": "2026-10-24T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -229,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "124fa515f6876e315ca9b0dc6f7ca9d1b6d57a7c4b51d4da707dacec02a36363"
+ "payload_seal_sha256": "67d933c3d849956869a28da40a0f6a7ac788538150b7dffc1f29e0ee42400305"
 }
