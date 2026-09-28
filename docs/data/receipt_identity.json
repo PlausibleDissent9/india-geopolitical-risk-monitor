@@ -10,18 +10,18 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-24",
- "generated_at": "2026-09-25T18:03:25Z",
+ "target_date": "2026-09-27",
+ "generated_at": "2026-09-28T07:53:44Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "bc6b7fe290ba5661f06df4292208d2d30056ca50",
-  "blob_git_sha1": "cdaff8e1e45cebc160392be3d1361d2b9189e550",
-  "blob_sha256": "7637a3fdfe1e6faa904e179efe7fcdfb36dbdd1630d1f89761840c3264d7ca18",
-  "target_date": "2026-09-23"
+  "commit_sha": "07299f18a0a35aeeac2c8d96a9aba7d7e9147aca",
+  "blob_git_sha1": "f51aecf3d50a397f7b896bc4d1c2d3cc6940f69a",
+  "blob_sha256": "dd1ac760543ce04384ec4158fc6dd09f770a5e04f320841ed78decc3a829a4da",
+  "target_date": "2026-09-24"
  },
  "channels": {
   "pakistan_west": {
@@ -29,8 +29,29 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Situation On China Border Stable , No Cause For Concern : Chief Of Defence Staff To NDTV",
+     "url": "https://www.cinaradio.com/2026/09/27/situation-on-china-border-stable-no-cause-for-concern-chief-of-defence-staff-to-ndtv/",
+     "domain": "cinaradio.com"
+    },
+    {
+     "title": "Boeing finds software glitch in automated flight guidance system of MAX planes",
+     "url": "https://www.thehindu.com/news/national/boeing-finds-software-glitch-in-automated-flight-guidance-system-of-max-planes/article71516542.ece",
+     "domain": "thehindu.com"
+    },
+    {
+     "title": "How Israel weapons industry thrives on ever - greater conflict",
+     "url": "https://antonyloewenstein.com/how-israels-weapons-industry-thrives-on-ever-greater-conflict/",
+     "domain": "antonyloewenstein.com"
+    },
+    {
+     "title": "The Release of Van Dyke and Six Ukrainian Citizens Symbolises the Indian Government Shameless Surrender",
+     "url": "https://countercurrents.org/2026/09/the-release-of-van-dyke-and-six-ukrainian-citizens-symbolises-the-indian-governments-shameless-surrender/",
+     "domain": "countercurrents.org"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -41,34 +62,8 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Hormuz ship traffic down 96 %, Bab el - Mandeb at 70 % of normal levels",
-     "url": "https://www.moneycontrol.com/world/hormuz-ship-traffic-down-96-bab-el-mandeb-at-70-of-normal-levels-article-14037505.html",
-     "domain": "moneycontrol.com"
-    },
-    {
-     "title": "Saudi Arabia intercepts 6 Houthi missiles , warns of shipping threat",
-     "url": "https://www.foxnews.com/world/saudi-foreign-minister-warns-houthi-threat-goes-global-trump-holds-fire",
-     "domain": "foxnews.com"
-    },
-    {
-     "title": "Yemen government forces repel Houthi push on key Taiz - Aden route",
-     "url": "https://www.middle-east-online.com/en/yemen-government-forces-repel-houthi-push-key-taiz-aden-route",
-     "domain": "middle-east-online.com"
-    },
-    {
-     "title": "French Troops to Protect Saudi Arabian Port on Red Sea Oil Route , Macron Says",
-     "url": "https://www.theepochtimes.com/world/french-troops-to-protect-saudi-arabian-port-on-red-sea-oil-route-macron-says-6094591",
-     "domain": "theepochtimes.com"
-    },
-    {
-     "title": "In Red Sea Crisis , Somaliland Seizes Leverage For US Recognition",
-     "url": "https://www.zerohedge.com/geopolitical/red-sea-crisis-somaliland-seizes-leverage-us-recognition",
-     "domain": "zerohedge.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +87,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-24",
-     "evaluated_at_utc": "2026-09-25T18:03:25Z",
-     "rights_as_of": "2026-09-25",
+     "target_date": "2026-09-27",
+     "evaluated_at_utc": "2026-09-28T07:53:44Z",
+     "rights_as_of": "2026-09-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-24T23:59:59Z",
+     "release_deadline_utc": "2026-10-27T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +128,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-24",
-     "evaluated_at_utc": "2026-09-25T18:06:26Z",
-     "rights_as_of": "2026-09-25",
+     "target_date": "2026-09-27",
+     "evaluated_at_utc": "2026-09-28T07:56:44Z",
+     "rights_as_of": "2026-09-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-24T23:59:59Z",
+     "release_deadline_utc": "2026-10-27T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +169,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-24",
-     "evaluated_at_utc": "2026-09-25T18:06:26Z",
-     "rights_as_of": "2026-09-25",
+     "target_date": "2026-09-27",
+     "evaluated_at_utc": "2026-09-28T07:56:44Z",
+     "rights_as_of": "2026-09-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-24T23:59:59Z",
+     "release_deadline_utc": "2026-10-27T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +198,5 @@
    }
   ]
  },
- "payload_seal_sha256": "67d933c3d849956869a28da40a0f6a7ac788538150b7dffc1f29e0ee42400305"
+ "payload_seal_sha256": "f9a208adfabc417132ba1f6c004ee7d3336ddb602907aca97b685b6d1e0f8835"
 }
