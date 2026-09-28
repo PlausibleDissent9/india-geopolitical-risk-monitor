@@ -11,22 +11,48 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-27",
- "generated_at": "2026-09-28T16:14:30Z",
+ "generated_at": "2026-09-28T20:13:12Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "036ac60dd5c05bc1e5568734d6a0e01a195dbdab",
-  "blob_git_sha1": "1a7358ebfcef8f71eea5afc778011628db774345",
-  "blob_sha256": "204681f08ae8b9ffb0f54a4c25ebf78972c9996efa8fec49d3da3cf01f554574",
+  "commit_sha": "c2744ad401bf30ab59b8bbfa9dd8c5c5eea3aa36",
+  "blob_git_sha1": "d53246c115b2bf46214d7584b46b11859548cdde",
+  "blob_sha256": "ffa8488b55a536929408915b4b844bb9d5694c842d7123b9417a9ee172f51515",
   "target_date": "2026-09-27"
  },
  "channels": {
   "pakistan_west": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Serial Practitioner of Terrorism : Jaishankar Blunt UNGA Message After Sharif Speech",
+     "url": "https://www.newsx.com/world/serial-practitioner-of-terrorism-jaishankars-blunt-unga-message-after-sharifs-speech-276407/",
+     "domain": "newsx.com"
+    },
+    {
+     "title": "PM Modi recalls 2016 surgical strikes on terror launchpads , says India has displayed firm resolve against terrorism",
+     "url": "https://news.webindia123.com/news/Articles/India/20260927/4503992.html",
+     "domain": "news.webindia123.com"
+    },
+    {
+     "title": "PM Modi recalls 2016 surgical strikes on terror launchpads , says India has displayed firm resolve against  terrorism",
+     "url": "https://aninews.in/news/national/general-news/pm-modi-recalls-2016-surgical-strikes-on-terror-launchpads-says-india-has-displayed-firm-resolve-against-160terrorism20260927112812/",
+     "domain": "aninews.in"
+    },
+    {
+     "title": "Mann Ki Baat : PM Modi Recalls Surgical Strikes , Says Terrorism Will Face Decisive Response",
+     "url": "https://thenorthlines.com/mann-ki-baat-pm-modi-recalls-surgical-strikes-says-terrorism-will-face-decisive-response/",
+     "domain": "thenorthlines.com"
+    },
+    {
+     "title": "PM Modi recalls 2016 surgical strikes on Mann Ki Baat , says terrorism will get decisive response",
+     "url": "https://timesofindia.indiatimes.com/india/pm-modi-recalls-2016-surgical-strikes-on-mann-ki-baat-says-terrorism-will-get-decisive-response/articleshow/134516171.cms",
+     "domain": "timesofindia.indiatimes.com"
+    }
+   ]
   },
   "china_east": {
    "state": "available",
@@ -114,7 +140,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-27",
-     "evaluated_at_utc": "2026-09-28T16:14:30Z",
+     "evaluated_at_utc": "2026-09-28T20:13:12Z",
      "rights_as_of": "2026-09-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -155,7 +181,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-27",
-     "evaluated_at_utc": "2026-09-28T16:17:44Z",
+     "evaluated_at_utc": "2026-09-28T20:16:03Z",
      "rights_as_of": "2026-09-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -196,7 +222,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-27",
-     "evaluated_at_utc": "2026-09-28T16:17:44Z",
+     "evaluated_at_utc": "2026-09-28T20:16:03Z",
      "rights_as_of": "2026-09-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -224,5 +250,5 @@
    }
   ]
  },
- "payload_seal_sha256": "d6420b1153b07fcf188cbe739ca62446932ebb0b9b29754e22cfa6b213ad079c"
+ "payload_seal_sha256": "ea7d1c3f91561ac4c22f910ffaa57e4748f43e6a0f1aff275ea77790004bff40"
 }
