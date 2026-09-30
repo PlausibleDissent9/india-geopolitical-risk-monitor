@@ -687,12 +687,12 @@
    "sha256": "fe0cc510309b38fd21471c1e775c6f02624b69f11cc592f0395828c6e710c333"
   },
   {
-   "bytes": 6606,
+   "bytes": 6569,
    "format": "json",
    "git_mode": "100644",
    "path": "data/status.json",
    "repository_path": "docs/data/status.json",
-   "sha256": "d695562136baf19569db62c9281ee8699ce8b6f82b707d4ef8b6c49b10c324ee"
+   "sha256": "edc9cbc2e26addfbee9fb3f902a9eeb9b1925facd9a408989b4810f24974de4e"
   },
   {
    "bytes": 15400,
@@ -978,7 +978,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "e849a20efdc9b4d3cf82470d09110da7fe99c447a73813b108fd80de20491c46",
+  "entries_sha256": "e3a6e7d580d58184641638c28a26d05e0203a8f23932cc70b48405499c8d3c64",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -989,7 +989,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7319074,
+  "hashed_bytes": 7319037,
   "hashed_entries": 119,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
