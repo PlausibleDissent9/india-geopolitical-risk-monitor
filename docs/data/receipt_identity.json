@@ -10,72 +10,31 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-27",
- "generated_at": "2026-09-28T20:39:02Z",
+ "target_date": "2026-09-30",
+ "generated_at": "2026-10-01T07:43:56Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "8288aad646280862337698ffb975f4a303929527",
-  "blob_git_sha1": "4467c284a3dcf0fb30ab81d5b0d2e3a3ff0e1985",
-  "blob_sha256": "ff059d713f1fcd4bf476fbf8c9e9ca716812b50802daca7659564e4586b3cb9d",
+  "state": "different_target",
+  "commit_sha": "39b370bcdf9d8e6fb2f1abb720f01e4e5d83abbf",
+  "blob_git_sha1": "23a960f82a9e937d93803bb2577bb510d2d5d527",
+  "blob_sha256": "a96ba9bd36aeaca5c79c0dcf3ad9e636fa586e16d9192d0caf8b37418f30f039",
   "target_date": "2026-09-27"
  },
  "channels": {
   "pakistan_west": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Serial Practitioner of Terrorism : Jaishankar Blunt UNGA Message After Sharif Speech",
-     "url": "https://www.newsx.com/world/serial-practitioner-of-terrorism-jaishankars-blunt-unga-message-after-sharifs-speech-276407/",
-     "domain": "newsx.com"
-    },
-    {
-     "title": "PM Modi recalls 2016 surgical strikes on terror launchpads , says India has displayed firm resolve against terrorism",
-     "url": "https://news.webindia123.com/news/Articles/India/20260927/4503992.html",
-     "domain": "news.webindia123.com"
-    },
-    {
-     "title": "PM Modi recalls 2016 surgical strikes on terror launchpads , says India has displayed firm resolve against  terrorism",
-     "url": "https://aninews.in/news/national/general-news/pm-modi-recalls-2016-surgical-strikes-on-terror-launchpads-says-india-has-displayed-firm-resolve-against-160terrorism20260927112812/",
-     "domain": "aninews.in"
-    },
-    {
-     "title": "Mann Ki Baat : PM Modi Recalls Surgical Strikes , Says Terrorism Will Face Decisive Response",
-     "url": "https://thenorthlines.com/mann-ki-baat-pm-modi-recalls-surgical-strikes-says-terrorism-will-face-decisive-response/",
-     "domain": "thenorthlines.com"
-    },
-    {
-     "title": "PM Modi recalls 2016 surgical strikes on Mann Ki Baat , says terrorism will get decisive response",
-     "url": "https://timesofindia.indiatimes.com/india/pm-modi-recalls-2016-surgical-strikes-on-mann-ki-baat-says-terrorism-will-get-decisive-response/articleshow/134516171.cms",
-     "domain": "timesofindia.indiatimes.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "available",
    "articles": [
     {
-     "title": "Situation On China Border Stable , No Cause For Concern : Chief Of Defence Staff To NDTV",
-     "url": "https://www.cinaradio.com/2026/09/27/situation-on-china-border-stable-no-cause-for-concern-chief-of-defence-staff-to-ndtv/",
-     "domain": "cinaradio.com"
-    },
-    {
-     "title": "Boeing finds software glitch in automated flight guidance system of MAX planes",
-     "url": "https://www.thehindu.com/news/national/boeing-finds-software-glitch-in-automated-flight-guidance-system-of-max-planes/article71516542.ece",
-     "domain": "thehindu.com"
-    },
-    {
-     "title": "How Israel weapons industry thrives on ever - greater conflict",
-     "url": "https://antonyloewenstein.com/how-israels-weapons-industry-thrives-on-ever-greater-conflict/",
-     "domain": "antonyloewenstein.com"
-    },
-    {
-     "title": "The Release of Van Dyke and Six Ukrainian Citizens Symbolises the Indian Government Shameless Surrender",
-     "url": "https://countercurrents.org/2026/09/the-release-of-van-dyke-and-six-ukrainian-citizens-symbolises-the-indian-governments-shameless-surrender/",
-     "domain": "countercurrents.org"
+     "title": "The long way around Pakistan : Why India wants an air route over Xinjiang , and why it isnt easy",
+     "url": "https://www.hindustantimes.com/ht-explainers/india-china-hotan-air-route-xinjiang-pakistan-airspace-ban-indian-airlines-europe-us-flights-101790740989938.html",
+     "domain": "hindustantimes.com"
     }
    ]
   },
@@ -84,38 +43,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Israel cannot secure the Red Sea without an African strategy",
-     "url": "https://www.jpost.com/opinion/article-909421",
-     "domain": "jpost.com"
+     "title": "Category : india",
+     "url": "https://newsroomamerica.com/category/india",
+     "domain": "newsroomamerica.com"
     },
     {
-     "title": "Iraqi Group Says It Reclaimed Oil Tanker From Somali Pirates",
-     "url": "https://raxanreeb.com/iraqi-group-says-it-reclaimed-oil-tanker-from-somali-pirates/",
-     "domain": "raxanreeb.com"
+     "title": "US lawmakers in India : Why a congressional visit matters after the Russia sanctions law",
+     "url": "https://www.hindustantimes.com/ht-explainers/us-lawmakers-in-india-why-a-congressional-visit-matters-after-the-russia-sanctions-law-101790749767985.html",
+     "domain": "hindustantimes.com"
     },
     {
-     "title": "Saudi FM calls for Strait of Hormuz to return to pre - Feb . 28 status - Xinhua",
-     "url": "https://english.news.cn/20260927/e77ce91b31164d6cb73c85abfb3c283e/c.html",
-     "domain": "english.news.cn"
+     "title": "Indian refiners may trim Russian oil imports , assess US tariff risks",
+     "url": "https://www.moneycontrol.com/news/business/economy/indian-refiners-may-trim-russian-oil-imports-assess-us-tariff-risks-14042006.html",
+     "domain": "moneycontrol.com"
     },
     {
-     "title": "Saudi FM calls for Strait of Hormuz to return to pre - Feb 28 status",
-     "url": "https://morungexpress.com/saudi-fm-calls-for-strait-of-hormuz-to-return-to-pre-feb-28-status",
-     "domain": "morungexpress.com"
+     "title": "Very good call : US Ambassador Sergio Gor on PM Modi - Trump telephonic conversation",
+     "url": "https://www.tribuneindia.com/news/world/very-good-call-us-ambassador-sergio-gor-on-pm-modi-trump-telephonic-conversation/",
+     "domain": "tribuneindia.com"
     },
     {
-     "title": "من الحبوب إلى الملاحة .. كيف تواجه مصر تداعيات البحرين الأحمر والأسود ؟",
-     "url": "https://www.aljazeera.net/ebusiness/2026/9/27/%D9%85%D9%86-%D8%A7%D9%84%D8%AD%D8%A8%D9%88%D8%A8-%D8%A5%D9%84%D9%89-%D8%A7%D9%84%D9%85%D9%84%D8%A7%D8%AD%D8%A9-%D9%83%D9%8A%D9%81-%D8%AA%D9%88%D8%A7%D8%AC%D9%87-%D9%85%D8%B5%D8%B1",
-     "domain": "aljazeera.net"
+     "title": "Modi , Trump discuss India - US trade , defense , energy ties",
+     "url": "https://tribune.com.pk/story/2632291/modi-trump-discuss-india-us-trade-defense-energy-ties",
+     "domain": "tribune.com.pk"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -139,12 +98,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-27",
-     "evaluated_at_utc": "2026-09-28T20:39:02Z",
-     "rights_as_of": "2026-09-28",
+     "target_date": "2026-09-30",
+     "evaluated_at_utc": "2026-10-01T07:43:56Z",
+     "rights_as_of": "2026-10-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-27T23:59:59Z",
+     "release_deadline_utc": "2026-10-30T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -180,12 +139,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-27",
-     "evaluated_at_utc": "2026-09-28T20:41:52Z",
-     "rights_as_of": "2026-09-28",
+     "target_date": "2026-09-30",
+     "evaluated_at_utc": "2026-10-01T07:47:12Z",
+     "rights_as_of": "2026-10-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-27T23:59:59Z",
+     "release_deadline_utc": "2026-10-30T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -221,12 +180,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-27",
-     "evaluated_at_utc": "2026-09-28T20:41:52Z",
-     "rights_as_of": "2026-09-28",
+     "target_date": "2026-09-30",
+     "evaluated_at_utc": "2026-10-01T07:47:12Z",
+     "rights_as_of": "2026-10-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-27T23:59:59Z",
+     "release_deadline_utc": "2026-10-30T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -250,5 +209,5 @@
    }
   ]
  },
- "payload_seal_sha256": "4cc077dcd32cf4fc7387dd49417c5a65810d3e924c3d3eb7fc4fa09b398d1d2e"
+ "payload_seal_sha256": "87f630cc6e43cfd4fbb8b4bd7973eabc642fac0b2258942b24518bb63a315df7"
 }
