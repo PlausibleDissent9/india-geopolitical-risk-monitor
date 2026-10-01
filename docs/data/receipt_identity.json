@@ -11,22 +11,48 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-09-30",
- "generated_at": "2026-10-01T07:43:56Z",
+ "generated_at": "2026-10-01T14:44:40Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "39b370bcdf9d8e6fb2f1abb720f01e4e5d83abbf",
-  "blob_git_sha1": "23a960f82a9e937d93803bb2577bb510d2d5d527",
-  "blob_sha256": "a96ba9bd36aeaca5c79c0dcf3ad9e636fa586e16d9192d0caf8b37418f30f039",
-  "target_date": "2026-09-27"
+  "state": "same_target",
+  "commit_sha": "cf5ed60b96a5ede30112d05a5805b3862605cfc2",
+  "blob_git_sha1": "6fc288641500664d31a40ab09b75af4e54a472c3",
+  "blob_sha256": "ba903b2745cdaf104db3ba37a0e30616cd23ebfd7a3f38e9b99c93d42d651bd3",
+  "target_date": "2026-09-30"
  },
  "channels": {
   "pakistan_west": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Modi , Trump review ties amid trade frictions , terror concerns",
+     "url": "https://www.tribuneindia.com/news/india/modi-trump-review-ties-amid-trade-frictions-terror-concerns/",
+     "domain": "tribuneindia.com"
+    },
+    {
+     "title": "Tarar warns India IWT move threatens global water governan",
+     "url": "https://www.pakistantoday.com.pk/2026/09/30/tarar-warns-indias-iwt-move-threatens-global-water-governance",
+     "domain": "pakistantoday.com.pk"
+    },
+    {
+     "title": "Water As a Political Weapon : Populism and The Indus Waters Treaty",
+     "url": "https://www.newsecuritybeat.org/2026/09/water-as-a-political-weapon-populism-and-the-indus-waters-treaty/",
+     "domain": "newsecuritybeat.org"
+    },
+    {
+     "title": "L - G Sinha Hails Indian Army  Vision of Service  As Operation Drishti Restores Sight in J & K",
+     "url": "https://www.deccanchronicle.com/nation/l-g-sinha-hails-indian-armys-vision-of-service-as-operation-drishti-restores-sight-in-jk-1991972",
+     "domain": "deccanchronicle.com"
+    },
+    {
+     "title": "Pakistan calls India Indus Waters Treaty move an act of war",
+     "url": "https://www.samaa.tv/2087357666-tarar-calls-india-s-indus-waters-treaty-move-an-act-of-war",
+     "domain": "samaa.tv"
+    }
+   ]
   },
   "china_east": {
    "state": "available",
@@ -99,7 +125,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-30",
-     "evaluated_at_utc": "2026-10-01T07:43:56Z",
+     "evaluated_at_utc": "2026-10-01T14:44:40Z",
      "rights_as_of": "2026-10-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -140,7 +166,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-30",
-     "evaluated_at_utc": "2026-10-01T07:47:12Z",
+     "evaluated_at_utc": "2026-10-01T14:48:00Z",
      "rights_as_of": "2026-10-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -181,7 +207,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-09-30",
-     "evaluated_at_utc": "2026-10-01T07:47:12Z",
+     "evaluated_at_utc": "2026-10-01T14:48:00Z",
      "rights_as_of": "2026-10-01",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -209,5 +235,5 @@
    }
   ]
  },
- "payload_seal_sha256": "87f630cc6e43cfd4fbb8b4bd7973eabc642fac0b2258942b24518bb63a315df7"
+ "payload_seal_sha256": "212451e77c4a7e0faffb8cf6bb976379ae7715e2b9738cf100fd9374e9e3894d"
 }
