@@ -10,97 +10,65 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-09-30",
- "generated_at": "2026-10-01T19:27:20Z",
+ "target_date": "2026-10-01",
+ "generated_at": "2026-10-02T14:05:29Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "1c46e80a6f8a01606904edb3cc68805d8719aa3f",
-  "blob_git_sha1": "acf9fca45296ac12c5ab017461593e14a71979eb",
-  "blob_sha256": "26f9feffa52ce83b85a7a712a83416e8ec4f736999f58e1f8e1c16b6f979cfb0",
+  "state": "different_target",
+  "commit_sha": "916519bee347e3aa6d05acff4e22447b878416f5",
+  "blob_git_sha1": "3fa70d5e73ea2c65cb9290c8dbb79b092d702ca6",
+  "blob_sha256": "2f07ed42b4c66e6cf0aaf371301f9115311b3a98f19769065fa73beb9ac0f5a8",
   "target_date": "2026-09-30"
  },
  "channels": {
   "pakistan_west": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Modi , Trump review ties amid trade frictions , terror concerns",
-     "url": "https://www.tribuneindia.com/news/india/modi-trump-review-ties-amid-trade-frictions-terror-concerns/",
-     "domain": "tribuneindia.com"
-    },
-    {
-     "title": "Tarar warns India IWT move threatens global water governan",
-     "url": "https://www.pakistantoday.com.pk/2026/09/30/tarar-warns-indias-iwt-move-threatens-global-water-governance",
-     "domain": "pakistantoday.com.pk"
-    },
-    {
-     "title": "Water As a Political Weapon : Populism and The Indus Waters Treaty",
-     "url": "https://www.newsecuritybeat.org/2026/09/water-as-a-political-weapon-populism-and-the-indus-waters-treaty/",
-     "domain": "newsecuritybeat.org"
-    },
-    {
-     "title": "L - G Sinha Hails Indian Army  Vision of Service  As Operation Drishti Restores Sight in J & K",
-     "url": "https://www.deccanchronicle.com/nation/l-g-sinha-hails-indian-armys-vision-of-service-as-operation-drishti-restores-sight-in-jk-1991972",
-     "domain": "deccanchronicle.com"
-    },
-    {
-     "title": "Pakistan calls India Indus Waters Treaty move an act of war",
-     "url": "https://www.samaa.tv/2087357666-tarar-calls-india-s-indus-waters-treaty-move-an-act-of-war",
-     "domain": "samaa.tv"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "The long way around Pakistan : Why India wants an air route over Xinjiang , and why it isnt easy",
-     "url": "https://www.hindustantimes.com/ht-explainers/india-china-hotan-air-route-xinjiang-pakistan-airspace-ban-indian-airlines-europe-us-flights-101790740989938.html",
-     "domain": "hindustantimes.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Category : india",
-     "url": "https://newsroomamerica.com/category/india",
-     "domain": "newsroomamerica.com"
+     "title": "Houthis are now vital Iran allies . Can Tehran count on them ?",
+     "url": "https://www.csmonitor.com/World/Middle-East/2026/1001/iran-axis-alliance-yemen-houthis-autonomy",
+     "domain": "csmonitor.com"
     },
     {
-     "title": "US lawmakers in India : Why a congressional visit matters after the Russia sanctions law",
-     "url": "https://www.hindustantimes.com/ht-explainers/us-lawmakers-in-india-why-a-congressional-visit-matters-after-the-russia-sanctions-law-101790749767985.html",
-     "domain": "hindustantimes.com"
+     "title": "Iran Receives US Response to War - Ending Proposal , Details Unknown",
+     "url": "https://www.deccanchronicle.com/west-asia/iran-receives-us-response-to-war-ending-proposal-details-unknown-1992114",
+     "domain": "deccanchronicle.com"
     },
     {
-     "title": "Indian refiners may trim Russian oil imports , assess US tariff risks",
-     "url": "https://www.moneycontrol.com/news/business/economy/indian-refiners-may-trim-russian-oil-imports-assess-us-tariff-risks-14042006.html",
-     "domain": "moneycontrol.com"
+     "title": "Iran indicates it received a US response on its war - ending proposal , with details still unclear",
+     "url": "https://www.idahostatejournal.com/news/national/iran-indicates-it-received-a-us-response-on-its-war-ending-proposal-with-details-still/article_bb3bdd18-6546-5125-8494-d9fcff4861e4.html",
+     "domain": "idahostatejournal.com"
     },
     {
-     "title": "Very good call : US Ambassador Sergio Gor on PM Modi - Trump telephonic conversation",
-     "url": "https://www.tribuneindia.com/news/world/very-good-call-us-ambassador-sergio-gor-on-pm-modi-trump-telephonic-conversation/",
-     "domain": "tribuneindia.com"
+     "title": "Хуситы нанесли удар по электрораспределительной станции в саудовской Медине",
+     "url": "https://www.interfax.ru/world/1119775",
+     "domain": "interfax.ru"
     },
     {
-     "title": "Modi , Trump discuss India - US trade , defense , energy ties",
-     "url": "https://tribune.com.pk/story/2632291/modi-trump-discuss-india-us-trade-defense-energy-ties",
-     "domain": "tribune.com.pk"
+     "title": "Yemen forgotten crisis deepens , but desperation opens doors for the gospel",
+     "url": "https://www.mnnonline.org/news/yemens-forgotten-crisis-deepens-but-desperation-opens-doors-for-the-gospel/",
+     "domain": "mnnonline.org"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -124,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-30",
-     "evaluated_at_utc": "2026-10-01T19:27:20Z",
-     "rights_as_of": "2026-10-01",
+     "target_date": "2026-10-01",
+     "evaluated_at_utc": "2026-10-02T14:05:29Z",
+     "rights_as_of": "2026-10-02",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-30T23:59:59Z",
+     "release_deadline_utc": "2026-10-31T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -165,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-30",
-     "evaluated_at_utc": "2026-10-01T19:29:58Z",
-     "rights_as_of": "2026-10-01",
+     "target_date": "2026-10-01",
+     "evaluated_at_utc": "2026-10-02T14:08:19Z",
+     "rights_as_of": "2026-10-02",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-30T23:59:59Z",
+     "release_deadline_utc": "2026-10-31T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -206,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-09-30",
-     "evaluated_at_utc": "2026-10-01T19:29:58Z",
-     "rights_as_of": "2026-10-01",
+     "target_date": "2026-10-01",
+     "evaluated_at_utc": "2026-10-02T14:08:19Z",
+     "rights_as_of": "2026-10-02",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-30T23:59:59Z",
+     "release_deadline_utc": "2026-10-31T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -235,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "3c8d4cc7e09dd62c76ebca724c747b15b575cf81b8e5eaf81ccb35922a4dccd3"
+ "payload_seal_sha256": "657ca33844880cc2f71b3f72dce3eb8384c572de5cf51b522063903981f9c233"
 }
