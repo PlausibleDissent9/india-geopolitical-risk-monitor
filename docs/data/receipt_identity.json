@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-01",
- "generated_at": "2026-10-02T18:40:16Z",
+ "target_date": "2026-10-02",
+ "generated_at": "2026-10-03T12:42:01Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "107731cb5a2a51d41ac0338086e0ff75ae8576c7",
-  "blob_git_sha1": "2dfefeea9047cee475294d4d4124abea11b0dc00",
-  "blob_sha256": "f68e24082f9449170b835e5b6198e19c18bf388cffbdcd09eea375228e898070",
+  "state": "different_target",
+  "commit_sha": "05ac37833ff5b5b5b591047576f690a46e41f4c7",
+  "blob_git_sha1": "b284460d631b1a24a93b9c09fcdf66106226290f",
+  "blob_sha256": "1b58d72bc96492362511bfeb6e9d17292859ca5cf1faa6b489ca43481742d436",
   "target_date": "2026-10-01"
  },
  "channels": {
@@ -29,8 +29,34 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Gogra , Hot Spring added to official Ladakh map as Centre identifies 28 strategic locations",
+     "url": "https://www.moneycontrol.com/news/india/gogra-hot-spring-added-to-official-ladakh-map-as-centre-identifies-28-strategic-locations-14043380.html",
+     "domain": "moneycontrol.com"
+    },
+    {
+     "title": "Centre formally marks 28 strategic Ladakh sites , including LAC friction points , on official map",
+     "url": "https://www.thehindu.com/news/national/centre-formally-marks-28-strategic-ladakh-sites-including-lac-friction-points-on-official-map/article71536117.ece",
+     "domain": "thehindu.com"
+    },
+    {
+     "title": "Central govt formally marks 28 strategic Ladakh sites on official map",
+     "url": "https://www.business-standard.com/india-news/central-govt-formally-marks-28-strategic-ladakh-sites-on-official-map-126100200258_1.html",
+     "domain": "business-standard.com"
+    },
+    {
+     "title": "Ladakh official map : Centre formally marks 28 strategic Ladakh sites , including LAC friction points , on official map",
+     "url": "https://economictimes.indiatimes.com/news/india/centre-formally-marks-28-strategic-ladakh-sites-including-lac-friction-points-on-official-map/articleshow/134632919.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "Tourism mart in Tawang , China among invitees to key border region : Report",
+     "url": "https://www.moneycontrol.com/news/india/tourism-mart-in-tawang-china-among-invitees-to-key-border-region-report-14043261.html",
+     "domain": "moneycontrol.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -41,34 +67,8 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Houthis are now vital Iran allies . Can Tehran count on them ?",
-     "url": "https://www.csmonitor.com/World/Middle-East/2026/1001/iran-axis-alliance-yemen-houthis-autonomy",
-     "domain": "csmonitor.com"
-    },
-    {
-     "title": "Iran Receives US Response to War - Ending Proposal , Details Unknown",
-     "url": "https://www.deccanchronicle.com/west-asia/iran-receives-us-response-to-war-ending-proposal-details-unknown-1992114",
-     "domain": "deccanchronicle.com"
-    },
-    {
-     "title": "Iran indicates it received a US response on its war - ending proposal , with details still unclear",
-     "url": "https://www.idahostatejournal.com/news/national/iran-indicates-it-received-a-us-response-on-its-war-ending-proposal-with-details-still/article_bb3bdd18-6546-5125-8494-d9fcff4861e4.html",
-     "domain": "idahostatejournal.com"
-    },
-    {
-     "title": "Хуситы нанесли удар по электрораспределительной станции в саудовской Медине",
-     "url": "https://www.interfax.ru/world/1119775",
-     "domain": "interfax.ru"
-    },
-    {
-     "title": "Yemen forgotten crisis deepens , but desperation opens doors for the gospel",
-     "url": "https://www.mnnonline.org/news/yemens-forgotten-crisis-deepens-but-desperation-opens-doors-for-the-gospel/",
-     "domain": "mnnonline.org"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +92,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-01",
-     "evaluated_at_utc": "2026-10-02T18:40:16Z",
-     "rights_as_of": "2026-10-02",
+     "target_date": "2026-10-02",
+     "evaluated_at_utc": "2026-10-03T12:42:01Z",
+     "rights_as_of": "2026-10-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-31T23:59:59Z",
+     "release_deadline_utc": "2026-11-01T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +133,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-01",
-     "evaluated_at_utc": "2026-10-02T18:43:05Z",
-     "rights_as_of": "2026-10-02",
+     "target_date": "2026-10-02",
+     "evaluated_at_utc": "2026-10-03T12:44:43Z",
+     "rights_as_of": "2026-10-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-31T23:59:59Z",
+     "release_deadline_utc": "2026-11-01T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +174,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-01",
-     "evaluated_at_utc": "2026-10-02T18:43:05Z",
-     "rights_as_of": "2026-10-02",
+     "target_date": "2026-10-02",
+     "evaluated_at_utc": "2026-10-03T12:44:43Z",
+     "rights_as_of": "2026-10-03",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-10-31T23:59:59Z",
+     "release_deadline_utc": "2026-11-01T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "eba526a01fab3733ae784f05da8a60ec94df785f94b8106a98483d81ec24747d"
+ "payload_seal_sha256": "f1b627038192b0f8cd3dc6c19bf4dcb83b65f5c4feae9c842daacf55004ea98c"
 }
