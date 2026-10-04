@@ -207,17 +207,16 @@
   }
  ],
  "final_publication": {
-  "target_date": "2026-10-02",
+  "target_date": "2026-10-03",
   "latest_finalized_date": "2026-10-02",
-  "status": "finalized",
-  "reason": "The exact D-1 finalized score is published.",
-  "finalized": true,
+  "status": "acquisition_failed",
+  "reason": "The registered source acquisition did not complete its bounded step.",
+  "finalized": false,
   "provisional_substitution_allowed": false,
   "value_fields_published": false,
-  "source_receipt": {
-   "path": "data/raw/final_publication_receipts/2026-10-02.json",
-   "sha256": "ea384cc09e4d9b700f0a0b1502e2c6813dd07086dec6e3a052a816bba1b7d09e"
-  }
+  "source_receipt": null,
+  "failure_stage": "source",
+  "reason_code": "source_acquisition_failed"
  },
  "morning_contract": {
   "on_time": 18,
