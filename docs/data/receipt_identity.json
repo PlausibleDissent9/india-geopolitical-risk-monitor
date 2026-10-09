@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-08",
- "generated_at": "2026-10-09T18:57:50Z",
+ "generated_at": "2026-10-09T19:24:20Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "7cae459d98e294caecc8b0436d3644f4cf2a6089",
-  "blob_git_sha1": "efb0039fcb6e204c4bcbc4de8885a87e374c7bbc",
-  "blob_sha256": "7784b22409933855f1579aca6e674907cc99173311ace05adf93dd0380dde0ce",
+  "commit_sha": "3f712d4b1f763e0cad7cd038ed8c75020b633986",
+  "blob_git_sha1": "7be70ae379f4920164aead0d6d6a51dd0d35e2a3",
+  "blob_sha256": "202c7f1fe46104bca229d93b97ef490eee562f5f59236ea9ece6eab5c07927a2",
   "target_date": "2026-10-08"
  },
  "channels": {
@@ -83,7 +83,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-08",
-     "evaluated_at_utc": "2026-10-09T18:57:50Z",
+     "evaluated_at_utc": "2026-10-09T19:24:20Z",
      "rights_as_of": "2026-10-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -124,7 +124,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-08",
-     "evaluated_at_utc": "2026-10-09T19:00:36Z",
+     "evaluated_at_utc": "2026-10-09T19:27:16Z",
      "rights_as_of": "2026-10-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -165,7 +165,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-08",
-     "evaluated_at_utc": "2026-10-09T19:00:36Z",
+     "evaluated_at_utc": "2026-10-09T19:27:16Z",
      "rights_as_of": "2026-10-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -193,5 +193,5 @@
    }
   ]
  },
- "payload_seal_sha256": "52b8ac33c9a843e52020d9af338a2ec0475b1b18dd642b017cb7131e8eddbe5e"
+ "payload_seal_sha256": "9213bc32ef23d8661d7cd39a0e4ceab16f608d2fce67a8f65dfd8889065eba7c"
 }
