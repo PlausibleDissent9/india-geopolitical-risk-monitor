@@ -10,18 +10,18 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-06",
- "generated_at": "2026-10-07T19:50:30Z",
+ "target_date": "2026-10-08",
+ "generated_at": "2026-10-09T14:52:14Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "4cf48f9cbecc87cd075f396f6b4f731781887e46",
-  "blob_git_sha1": "24bcdc37c7d694fe14c53ce32069e328a0fc0676",
-  "blob_sha256": "af68c625b2fde458980f05b3f5245250c3359be11156aaf2f6145662d64f7842",
-  "target_date": "2026-10-02"
+  "commit_sha": "dc73474bb85442a284a638cb84f40f240c56fc98",
+  "blob_git_sha1": "878e8903b5dbb925c907dcd89ef007531e01f48d",
+  "blob_sha256": "4db6ec54cfa826882999acf13d11e7643137276ca3cab4a305f61b352428575a",
+  "target_date": "2026-10-06"
  },
  "channels": {
   "pakistan_west": {
@@ -30,45 +30,35 @@
   },
   "china_east": {
    "state": "unavailable",
-   "reason_code": "source_response_invalid"
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_response_invalid"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Индијска министарка финансија Нирмала Ситараман : Индија и САД све теже до компромиса о трговинском споразуму",
-     "url": "https://www.nspm.rs/hronika/indijska-ministarka-finansija-nirmala-sitaraman-indija-i-sad-sve-teze-do-kompromisa-o-trgovinskom-sporazumu.html",
-     "domain": "nspm.rs"
+     "title": "Jordan Condemns Houthi Attacks on Saudi Airports That Killed Three",
+     "url": "https://www.khaama.com/jordan-condemns-houthi-attacks-on-saudi-airports-that-killed-three/",
+     "domain": "khaama.com"
     },
     {
-     "title": "Sri Lanka cannot resist sanctions , but can raise non - aligned policy collectively with others - Joint Opposition - Breaking News",
-     "url": "https://www.dailymirror.lk/breaking-news/Sri-Lanka-cannot-resist-sanctions-but-can-raise-non-aligned-policy-collectively-with-others-Joint-Opposition/108-351850",
-     "domain": "dailymirror.lk"
+     "title": "Attacks by Houthis on Saudi airports highlight widening fallout from Yemen conflict",
+     "url": "https://www.wjcl.com/article/deadly-attacks-houthis-saudi-airports-yemen-conflict/74070963",
+     "domain": "wjcl.com"
     },
     {
-     "title": "BioGovernance Commons and China Role in Global Risk Governance",
-     "url": "https://link.springer.com/book/10.1007/978-3-032-32198-5",
-     "domain": "link.springer.com"
-    },
-    {
-     "title": "Map makers worldwide strive to navigate Trump edict on Lake Ontario",
-     "url": "https://www.theglobeandmail.com/politics/article-map-makers-worldwide-strive-to-navigate-trump-edict-on-lake-ontario/",
-     "domain": "theglobeandmail.com"
-    },
-    {
-     "title": "Uran - Geheimtipp : Bohrer läuft genau dort , wo schon Uran getroffen wurde : Startet dieser Nanocap jetzt durch ?",
-     "url": "https://www.boersennews.de/nachrichten/partner/mediafeed/uran-geheimtipp-bohrer-laeuft-genau-dort-wo-schon-uran-getroffen-wurde-startet-dieser-nanocap-jetzt-durch/5301230/",
-     "domain": "boersennews.de"
+     "title": "US Embassy Issues Major Security Alert In Ethiopia Over Possible Long - Range Attacks , Urges Americans To Avoid Amhara , Tigray And Afar",
+     "url": "https://www.freepressjournal.in/world/us-embassy-issues-major-security-alert-in-ethiopia-over-possible-long-range-attacks-urges-americans-to-avoid-amhara-tigray-and-afar",
+     "domain": "freepressjournal.in"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,12 +82,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-06",
-     "evaluated_at_utc": "2026-10-07T19:50:30Z",
-     "rights_as_of": "2026-10-07",
+     "target_date": "2026-10-08",
+     "evaluated_at_utc": "2026-10-09T14:52:14Z",
+     "rights_as_of": "2026-10-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-11-05T23:59:59Z",
+     "release_deadline_utc": "2026-11-07T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -133,12 +123,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-06",
-     "evaluated_at_utc": "2026-10-07T19:53:22Z",
-     "rights_as_of": "2026-10-07",
+     "target_date": "2026-10-08",
+     "evaluated_at_utc": "2026-10-09T14:54:55Z",
+     "rights_as_of": "2026-10-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-11-05T23:59:59Z",
+     "release_deadline_utc": "2026-11-07T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -174,12 +164,12 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-06",
-     "evaluated_at_utc": "2026-10-07T19:53:22Z",
-     "rights_as_of": "2026-10-07",
+     "target_date": "2026-10-08",
+     "evaluated_at_utc": "2026-10-09T14:54:55Z",
+     "rights_as_of": "2026-10-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
-     "release_deadline_utc": "2026-11-05T23:59:59Z",
+     "release_deadline_utc": "2026-11-07T23:59:59Z",
      "permitted_uses": [
       "cite_metadata",
       "model_processing",
@@ -203,5 +193,5 @@
    }
   ]
  },
- "payload_seal_sha256": "4bb3e02d93b0d2cf60a07c92191a9d1ec236be7ce1ac7af6b12f8b6e7669857e"
+ "payload_seal_sha256": "f4bce26a6b1810791eb1331dcdc626ed43bab466719cf145847847c5b4741d13"
 }
