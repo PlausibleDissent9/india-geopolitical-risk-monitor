@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-15",
- "generated_at": "2026-10-16T13:03:39Z",
+ "generated_at": "2026-10-16T17:40:27Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "7a230a5c42d5050a2a42ad458a9bcb204064b1ee",
-  "blob_git_sha1": "0fecce341be4025eb8652f624c2503e4b4d7c1a9",
-  "blob_sha256": "0facae1f36df0ca897d6f356db6847e6c3d7a1029a66b620a5deb1e9240642a9",
+  "commit_sha": "73e508c5780a73631ad14c42921dd53efd32a173",
+  "blob_git_sha1": "5b5db834916d33fb9bde88a7c91e52e19cf07165",
+  "blob_sha256": "e9b817b363105a9005a6becda17a02f249ea418af3e533d041263679f7c741a5",
   "target_date": "2026-10-15"
  },
  "channels": {
@@ -53,8 +53,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "First tranche of India - US deal close to conclusion , says Piyush Goyal",
+     "url": "https://www.business-standard.com/world-news/first-tranche-of-india-us-deal-close-to-conclusion-says-piyush-goyal-126101501286_1.html",
+     "domain": "business-standard.com"
+    },
+    {
+     "title": "Microsoft president Brad Smith says it ironic that White House targeted his company the same day it gave a medal to former H - 1B Satya Nadella",
+     "url": "https://timesofindia.indiatimes.com/world/us/microsoft-president-brad-smith-says-its-ironic-that-white-house-targeted-his-company-the-same-day-it-gave-a-medal-to-former-h-1b-satya-nadella/articleshow/134975510.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "Big items are done : Envoy Gor says India - US trade negotiations moving at  incredible pace",
+     "url": "https://timesofindia.indiatimes.com/world/us/big-items-are-done-envoy-gor-says-india-us-trade-negotiations-moving-at-incredible-pace/articleshow/134971688.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "Trump may Finalise Russia Sanctions Law in 10 Day : Sergio Gor",
+     "url": "https://economictimes.indiatimes.com/news/india/trump-may-finalise-russia-sanctions-law-in-10-days-sergio-gor/articleshow/134976339.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "India - US trade deal :  Big items done , both sides close to pact , says Gor",
+     "url": "https://www.business-standard.com/world-news/india-us-trade-deal-big-items-done-both-sides-close-to-pact-says-gor-126101501434_1.html",
+     "domain": "business-standard.com"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
@@ -109,7 +135,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T13:03:39Z",
+     "evaluated_at_utc": "2026-10-16T17:40:27Z",
      "rights_as_of": "2026-10-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -150,7 +176,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T13:06:36Z",
+     "evaluated_at_utc": "2026-10-16T17:43:19Z",
      "rights_as_of": "2026-10-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -191,7 +217,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T13:06:36Z",
+     "evaluated_at_utc": "2026-10-16T17:43:19Z",
      "rights_as_of": "2026-10-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -219,5 +245,5 @@
    }
   ]
  },
- "payload_seal_sha256": "2ac55112b7412656f17b0064a05d20b6d88b13b01d2cb26956ef6d466829b380"
+ "payload_seal_sha256": "595c6a40b903105f8037bbfc393a00e7410b5d850a71f12da6b96e4acf073e6e"
 }
