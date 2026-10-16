@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-15",
- "generated_at": "2026-10-16T06:16:41Z",
+ "generated_at": "2026-10-16T06:35:46Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "3c67774c7d473e3b5d026b385e159ed0f0fffcbf",
-  "blob_git_sha1": "f0ab4c452372fd5990a6fd8c885bcf3f69da22c7",
-  "blob_sha256": "2f51c8653cacbd1e3028c7481ddfa72f8d115409bc3134818173380af2c8fa26",
-  "target_date": "2026-10-08"
+  "state": "same_target",
+  "commit_sha": "9bcbcc8ea64943e3be7b73ee07118da3edb2b8f1",
+  "blob_git_sha1": "753f8f345c53c2b3935b0116a0ca71bcd8442559",
+  "blob_sha256": "9b490f0a2b842c6a5bcf113db05bfb3047eed41044aba7b23c245b1a380eab17",
+  "target_date": "2026-10-15"
  },
  "channels": {
   "pakistan_west": {
@@ -29,12 +29,28 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Apex Body Leh rejects China claim , says Ladakh inseparable part of India",
+     "url": "https://www.tribuneindia.com/news/j-k/apex-body-leh-rejects-chinas-claim-says-ladakh-inseparable-part-of-india/",
+     "domain": "tribuneindia.com"
+    },
+    {
+     "title": "चीन और भूटान में सुलझ रहा सीमा विवाद ! थिम्फू में बड़ी बैठक ,  3 - स्टेप रोडमैप  पर सहमति",
+     "url": "https://navbharattimes.indiatimes.com/world/asian-countries/china-bhutan-boundary-talks-today-to-settle-border-dispute-doklam-standoff/articleshow/134973756.cms",
+     "domain": "navbharattimes.indiatimes.com"
+    },
+    {
+     "title": "China Joint Military Drills With Pakistan Aim to Test Its Power , Put India on Edge : Analysts",
+     "url": "https://www.theepochtimes.com/china/chinas-joint-military-drills-with-pakistan-aim-to-test-its-power-put-india-on-edge-analysts-6104375",
+     "domain": "theepochtimes.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "reason_code": "source_response_invalid"
   },
   "us_trade": {
    "state": "unavailable",
@@ -93,7 +109,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T06:16:41Z",
+     "evaluated_at_utc": "2026-10-16T06:35:46Z",
      "rights_as_of": "2026-10-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +150,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T06:19:44Z",
+     "evaluated_at_utc": "2026-10-16T06:38:45Z",
      "rights_as_of": "2026-10-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +191,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T06:19:44Z",
+     "evaluated_at_utc": "2026-10-16T06:38:45Z",
      "rights_as_of": "2026-10-16",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +219,5 @@
    }
   ]
  },
- "payload_seal_sha256": "71df93ab412f09eca227f4ba8b09cc0cd72dd751ff31a2dd0eb51d1046e769c8"
+ "payload_seal_sha256": "148a0d52df1a525ca4b3f6716b6658476d38e372e808ff53c88aab93258dae86"
 }
