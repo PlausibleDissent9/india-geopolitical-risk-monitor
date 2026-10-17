@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-15",
- "generated_at": "2026-10-16T17:55:17Z",
+ "target_date": "2026-10-16",
+ "generated_at": "2026-10-17T11:44:21Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "9105ebb1612fe05a798671a0a2a8fecb4b87afe9",
-  "blob_git_sha1": "f1f549971187b09e58ee7cbc8b792c3773ceab6e",
-  "blob_sha256": "aeada80a23c75f5c678567e41916b307e37a881748ea98caf077c892d3d7b30c",
+  "state": "different_target",
+  "commit_sha": "4c4d4efe7d2e736ebcd92e59ca4d244c1d66df62",
+  "blob_git_sha1": "2cb29276fea0cc6d860571c1b3c9903cc114ec8e",
+  "blob_sha256": "91d421fd4feb76685b165377720445ffc894992b604564561b94a6e1acb71e6c",
   "target_date": "2026-10-15"
  },
  "channels": {
@@ -29,24 +29,8 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Apex Body Leh rejects China claim , says Ladakh inseparable part of India",
-     "url": "https://www.tribuneindia.com/news/j-k/apex-body-leh-rejects-chinas-claim-says-ladakh-inseparable-part-of-india/",
-     "domain": "tribuneindia.com"
-    },
-    {
-     "title": "चीन और भूटान में सुलझ रहा सीमा विवाद ! थिम्फू में बड़ी बैठक ,  3 - स्टेप रोडमैप  पर सहमति",
-     "url": "https://navbharattimes.indiatimes.com/world/asian-countries/china-bhutan-boundary-talks-today-to-settle-border-dispute-doklam-standoff/articleshow/134973756.cms",
-     "domain": "navbharattimes.indiatimes.com"
-    },
-    {
-     "title": "China Joint Military Drills With Pakistan Aim to Test Its Power , Put India on Edge : Analysts",
-     "url": "https://www.theepochtimes.com/china/chinas-joint-military-drills-with-pakistan-aim-to-test-its-power-put-india-on-edge-analysts-6104375",
-     "domain": "theepochtimes.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -56,29 +40,29 @@
    "state": "available",
    "articles": [
     {
-     "title": "First tranche of India - US deal close to conclusion , says Piyush Goyal",
-     "url": "https://www.business-standard.com/world-news/first-tranche-of-india-us-deal-close-to-conclusion-says-piyush-goyal-126101501286_1.html",
-     "domain": "business-standard.com"
+     "title": "US - India Trade Deal Finalized , Legal Drafting Underway",
+     "url": "https://www.siliconindia.com/news/general/usindia-trade-deal-finalized-legal-drafting-underway-nid-242704-cid-1.html",
+     "domain": "siliconindia.com"
     },
     {
-     "title": "Microsoft president Brad Smith says it ironic that White House targeted his company the same day it gave a medal to former H - 1B Satya Nadella",
-     "url": "https://timesofindia.indiatimes.com/world/us/microsoft-president-brad-smith-says-its-ironic-that-white-house-targeted-his-company-the-same-day-it-gave-a-medal-to-former-h-1b-satya-nadella/articleshow/134975510.cms",
+     "title": "Legal drafting on in US trade pact ; to be operationalised once we get competitive advantage : Goyal",
+     "url": "https://www.thehindubusinessline.com/economy/legal-drafting-on-in-us-trade-pact-to-be-operationalised-once-we-get-competitive-advantage-goyal/article71590962.ece",
+     "domain": "thehindubusinessline.com"
+    },
+    {
+     "title": "How India Can Counter Trump Tariff Threat",
+     "url": "https://www.rediff.com/news/column/how-india-can-counter-trumps-tariff-threat/20261016.htm",
+     "domain": "rediff.com"
+    },
+    {
+     "title": "International Business : India - US trade deal  on track",
+     "url": "https://www.gdnonline.com:443/Details/1409858/India-US-trade-deal-%E2%80%98on-track%E2%80%99",
+     "domain": "gdnonline.com"
+    },
+    {
+     "title": "Microsoft president Brad Smith breaks silence on the US government suspending Microsoft from Green Card sponsorship programme ; says : We should all be worried about ...",
+     "url": "https://timesofindia.indiatimes.com/technology/tech-news/microsoft-president-brad-smith-breaks-silence-on-the-us-government-suspending-microsoft-from-green-card-sponsorship-programme-says-we-should-all-be-worried-about-/articleshow/134982578.cms",
      "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "Big items are done : Envoy Gor says India - US trade negotiations moving at  incredible pace",
-     "url": "https://timesofindia.indiatimes.com/world/us/big-items-are-done-envoy-gor-says-india-us-trade-negotiations-moving-at-incredible-pace/articleshow/134971688.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "Trump may Finalise Russia Sanctions Law in 10 Day : Sergio Gor",
-     "url": "https://economictimes.indiatimes.com/news/india/trump-may-finalise-russia-sanctions-law-in-10-days-sergio-gor/articleshow/134976339.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "India - US trade deal :  Big items done , both sides close to pact , says Gor",
-     "url": "https://www.business-standard.com/world-news/india-us-trade-deal-big-items-done-both-sides-close-to-pact-says-gor-126101501434_1.html",
-     "domain": "business-standard.com"
     }
    ]
   },
@@ -86,29 +70,29 @@
    "state": "available",
    "articles": [
     {
-     "title": "Report : French Frigate Downed Drone Threatening CMA CGM Ship in Red Sea",
-     "url": "https://maritime-executive.com/article/report-french-frigate-downed-drone-threatening-cma-cgm-ship-in-red-sea",
-     "domain": "maritime-executive.com"
+     "title": "Arab News | Coalition releases footage of strikes on Houthi weapons - smuggling operation in Hodeidah",
+     "url": "https://www.arabnews.com/middle-east/coalition-releases-footage-of-strikes-on-houthi-weapons-smuggling-operation-in-hodeidah-3006788",
+     "domain": "arabnews.com"
     },
     {
-     "title": "Yemen Government Says Houthis Strike Presidential Palace in Aden",
-     "url": "https://www.livemint.com/politics/yemen-government-says-houthis-strike-presidential-palace-in-aden-11792094233341.html",
-     "domain": "livemint.com"
+     "title": "Oil Prices Surge 3 % as Middle East Supply Fears Intensify",
+     "url": "https://econotimes.com/Oil-Prices-Surge-3-as-Middle-East-Supply-Fears-Intensify-1755629",
+     "domain": "econotimes.com"
     },
     {
-     "title": "How the Houthis are helping Iran turn Saudi Arabia into a pressure point",
-     "url": "https://www.straitstimes.com/world/middle-east/how-the-houthis-are-helping-iran-turn-saudi-arabia-into-a-pressure-point",
-     "domain": "straitstimes.com"
+     "title": "Saudi - led coalition says intercepts missiles , drones over Riyadh , other areas",
+     "url": "https://www.channelnewsasia.com/world/saudi-arabia-houthi-attacks-riyadh-missiles-6467001",
+     "domain": "channelnewsasia.com"
     },
     {
-     "title": "How the Houthis are Helping Iran Turn Saudi Arabia Into a Pressure Point",
-     "url": "https://gcaptain.com/how-the-houthis-are-helping-iran-turn-saudi-arabia-into-a-pressure-point/",
-     "domain": "gcaptain.com"
+     "title": "Pretoria raises alarm as Red Sea attacks threaten Saudi Arabia , holy sites and global trade",
+     "url": "https://www.citizen.co.za/news/south-africa/pretoria-raises-alarm-red-sea-attacks-threaten-saudi-arabia-holy-sites-global-trade/",
+     "domain": "citizen.co.za"
     },
     {
-     "title": "Update : 17 killed , over 330 injured in attacks on Riyadh airport since Oct . 1 : Saudi - led coalition - Xinhua",
-     "url": "https://english.news.cn/20261016/f3e70887f43c4cde9bb6bfbf6db81286/c.html",
-     "domain": "english.news.cn"
+     "title": "Yemen War : Houthis Tighten Siege on Strategic City of Taiz",
+     "url": "https://econotimes.com/Yemen-War-Houthis-Tighten-Siege-on-Strategic-City-of-Taiz-1755665",
+     "domain": "econotimes.com"
     }
    ]
   }
@@ -134,9 +118,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T17:55:17Z",
-     "rights_as_of": "2026-10-16",
+     "target_date": "2026-10-16",
+     "evaluated_at_utc": "2026-10-17T11:44:21Z",
+     "rights_as_of": "2026-10-17",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -175,9 +159,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T17:58:10Z",
-     "rights_as_of": "2026-10-16",
+     "target_date": "2026-10-16",
+     "evaluated_at_utc": "2026-10-17T11:47:17Z",
+     "rights_as_of": "2026-10-17",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -216,9 +200,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-15",
-     "evaluated_at_utc": "2026-10-16T17:58:10Z",
-     "rights_as_of": "2026-10-16",
+     "target_date": "2026-10-16",
+     "evaluated_at_utc": "2026-10-17T11:47:17Z",
+     "rights_as_of": "2026-10-17",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -245,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "eada779100a1d40a1e799f4ea21ddffbd92c17aed68453fe1a85e14077a79c1e"
+ "payload_seal_sha256": "6bfb3f88373a3a77af3faa9cd3f67f3f20fc681666a071027956aabca9218009"
 }
