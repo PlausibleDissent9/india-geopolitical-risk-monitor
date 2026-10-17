@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-16",
- "generated_at": "2026-10-17T11:44:21Z",
+ "generated_at": "2026-10-17T12:03:36Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "4c4d4efe7d2e736ebcd92e59ca4d244c1d66df62",
-  "blob_git_sha1": "2cb29276fea0cc6d860571c1b3c9903cc114ec8e",
-  "blob_sha256": "91d421fd4feb76685b165377720445ffc894992b604564561b94a6e1acb71e6c",
-  "target_date": "2026-10-15"
+  "state": "same_target",
+  "commit_sha": "b3f5040ace112dbc51a5e09ad0fbc25c90f4dbe3",
+  "blob_git_sha1": "aae1b17bd49ecf430bcb2f22a5a3b6c8315a2949",
+  "blob_sha256": "37080e16e3765ed382c3ab5b9e6a58ce3ca8daf7f5d48ae200e7cef0975040b0",
+  "target_date": "2026-10-16"
  },
  "channels": {
   "pakistan_west": {
@@ -29,8 +29,34 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "From Ladakh to Auli : 5 places in India where you can chase the first snow this October",
+     "url": "https://timesofindia.indiatimes.com/life-style/travel/destinations/from-ladakh-to-auli-5-places-in-india-where-you-can-chase-the-first-snow-this-october/articleshow/134988841.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "Ladakh is not part of China which is our spritual enemy as well : Apex Body Leh",
+     "url": "https://economictimes.indiatimes.com/news/india/ladakh-is-not-part-of-china-which-is-our-spritual-enemy-as-well-apex-body-leh/articleshow/134982762.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "Why are  godi media  reporters getting heckled ?",
+     "url": "https://scroll.in/article/1096441/why-are-godi-media-reporters-getting-heckled",
+     "domain": "scroll.in"
+    },
+    {
+     "title": "The Unsung Guardians Of India Borders",
+     "url": "https://www.rediff.com/news/special/the-unsung-guardians-of-indias-borders/20261016.htm",
+     "domain": "rediff.com"
+    },
+    {
+     "title": "捞金上亿仅冰山一角 ， 又一明星力挺蔡康永 ， 罗永浩一举动惹怒众人",
+     "url": "https://www.163.com/dy/article/L99SE54J05178QIN.html",
+     "domain": "163.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -119,7 +145,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-16",
-     "evaluated_at_utc": "2026-10-17T11:44:21Z",
+     "evaluated_at_utc": "2026-10-17T12:03:36Z",
      "rights_as_of": "2026-10-17",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +186,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-16",
-     "evaluated_at_utc": "2026-10-17T11:47:17Z",
+     "evaluated_at_utc": "2026-10-17T12:06:26Z",
      "rights_as_of": "2026-10-17",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +227,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-16",
-     "evaluated_at_utc": "2026-10-17T11:47:17Z",
+     "evaluated_at_utc": "2026-10-17T12:06:26Z",
      "rights_as_of": "2026-10-17",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +255,5 @@
    }
   ]
  },
- "payload_seal_sha256": "6bfb3f88373a3a77af3faa9cd3f67f3f20fc681666a071027956aabca9218009"
+ "payload_seal_sha256": "631040efd4c194906d37a33dcb4bc7d8635fcd0467e96ddf5c0fc6dd6393dd16"
 }
