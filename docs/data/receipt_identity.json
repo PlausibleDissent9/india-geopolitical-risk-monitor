@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-16",
- "generated_at": "2026-10-17T17:04:15Z",
+ "target_date": "2026-10-17",
+ "generated_at": "2026-10-18T16:50:05Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "c7521f1aacab5db9239b2248875485df0f567500",
-  "blob_git_sha1": "aef01413a1c163cf31930551bff017f0f1481d78",
-  "blob_sha256": "620fa8a87a39baaaa4d8c33d9d5d55aeceaa8898f0b4c512475f90017702291d",
+  "state": "different_target",
+  "commit_sha": "ab0db3bd393ccc46cf33f1caeff8df6a0a79b679",
+  "blob_git_sha1": "19b6bb43941d200a14c86a1ae5e1ac8c80df713e",
+  "blob_sha256": "91de9b9adb87eda637b9bf56df3ffbb331ad6edb811c82573b0278f14e4cad46",
   "target_date": "2026-10-16"
  },
  "channels": {
@@ -29,96 +29,44 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "From Ladakh to Auli : 5 places in India where you can chase the first snow this October",
-     "url": "https://timesofindia.indiatimes.com/life-style/travel/destinations/from-ladakh-to-auli-5-places-in-india-where-you-can-chase-the-first-snow-this-october/articleshow/134988841.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "Ladakh is not part of China which is our spritual enemy as well : Apex Body Leh",
-     "url": "https://economictimes.indiatimes.com/news/india/ladakh-is-not-part-of-china-which-is-our-spritual-enemy-as-well-apex-body-leh/articleshow/134982762.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "Why are  godi media  reporters getting heckled ?",
-     "url": "https://scroll.in/article/1096441/why-are-godi-media-reporters-getting-heckled",
-     "domain": "scroll.in"
-    },
-    {
-     "title": "The Unsung Guardians Of India Borders",
-     "url": "https://www.rediff.com/news/special/the-unsung-guardians-of-indias-borders/20261016.htm",
-     "domain": "rediff.com"
-    },
-    {
-     "title": "捞金上亿仅冰山一角 ， 又一明星力挺蔡康永 ， 罗永浩一举动惹怒众人",
-     "url": "https://www.163.com/dy/article/L99SE54J05178QIN.html",
-     "domain": "163.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "US - India Trade Deal Finalized , Legal Drafting Underway",
-     "url": "https://www.siliconindia.com/news/general/usindia-trade-deal-finalized-legal-drafting-underway-nid-242704-cid-1.html",
-     "domain": "siliconindia.com"
-    },
-    {
-     "title": "Legal drafting on in US trade pact ; to be operationalised once we get competitive advantage : Goyal",
-     "url": "https://www.thehindubusinessline.com/economy/legal-drafting-on-in-us-trade-pact-to-be-operationalised-once-we-get-competitive-advantage-goyal/article71590962.ece",
-     "domain": "thehindubusinessline.com"
-    },
-    {
-     "title": "How India Can Counter Trump Tariff Threat",
-     "url": "https://www.rediff.com/news/column/how-india-can-counter-trumps-tariff-threat/20261016.htm",
-     "domain": "rediff.com"
-    },
-    {
-     "title": "International Business : India - US trade deal  on track",
-     "url": "https://www.gdnonline.com:443/Details/1409858/India-US-trade-deal-%E2%80%98on-track%E2%80%99",
-     "domain": "gdnonline.com"
-    },
-    {
-     "title": "Microsoft president Brad Smith breaks silence on the US government suspending Microsoft from Green Card sponsorship programme ; says : We should all be worried about ...",
-     "url": "https://timesofindia.indiatimes.com/technology/tech-news/microsoft-president-brad-smith-breaks-silence-on-the-us-government-suspending-microsoft-from-green-card-sponsorship-programme-says-we-should-all-be-worried-about-/articleshow/134982578.cms",
-     "domain": "timesofindia.indiatimes.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Arab News | Coalition releases footage of strikes on Houthi weapons - smuggling operation in Hodeidah",
-     "url": "https://www.arabnews.com/middle-east/coalition-releases-footage-of-strikes-on-houthi-weapons-smuggling-operation-in-hodeidah-3006788",
-     "domain": "arabnews.com"
+     "title": "Houthis close in on key Yemen city of Taiz : Why a global trade route is at risk",
+     "url": "https://timesofindia.indiatimes.com/world/middle-east/houthis-close-in-on-yemens-strategic-city-of-taiz-why-it-matters/articleshow/135006845.cms",
+     "domain": "timesofindia.indiatimes.com"
     },
     {
-     "title": "Oil Prices Surge 3 % as Middle East Supply Fears Intensify",
-     "url": "https://econotimes.com/Oil-Prices-Surge-3-as-Middle-East-Supply-Fears-Intensify-1755629",
-     "domain": "econotimes.com"
+     "title": "Egypt president says country ready to defend Saudi Arabia  if requested",
+     "url": "https://www.vanguardngr.com/2026/10/egypts-president-says-country-ready-to-defend-saudi-arabia-if-requested/",
+     "domain": "vanguardngr.com"
     },
     {
-     "title": "Saudi - led coalition says intercepts missiles , drones over Riyadh , other areas",
-     "url": "https://www.channelnewsasia.com/world/saudi-arabia-houthi-attacks-riyadh-missiles-6467001",
+     "title": "Sisi says Egypt ready to defend Saudi Arabia  if requested",
+     "url": "https://www.freemalaysiatoday.com/category/world/2026/10/17/sisi-says-egypt-ready-to-defend-saudi-arabia-if-requested",
+     "domain": "freemalaysiatoday.com"
+    },
+    {
+     "title": "Iran denies Saudi accusation of involvement in Houthi attacks",
+     "url": "https://www.channelnewsasia.com/world/iran-denies-houthi-attacks-saudi-arabia-6467476",
      "domain": "channelnewsasia.com"
     },
     {
-     "title": "Pretoria raises alarm as Red Sea attacks threaten Saudi Arabia , holy sites and global trade",
-     "url": "https://www.citizen.co.za/news/south-africa/pretoria-raises-alarm-red-sea-attacks-threaten-saudi-arabia-holy-sites-global-trade/",
-     "domain": "citizen.co.za"
-    },
-    {
-     "title": "Yemen War : Houthis Tighten Siege on Strategic City of Taiz",
-     "url": "https://econotimes.com/Yemen-War-Houthis-Tighten-Siege-on-Strategic-City-of-Taiz-1755665",
-     "domain": "econotimes.com"
+     "title": "As the World Choke Points Close , a Landlocked Pipeline Quietly Nears Completion",
+     "url": "https://thenewamerican.com/world-news/as-the-worlds-choke-points-close-a-landlocked-pipeline-quietly-nears-completion/",
+     "domain": "thenewamerican.com"
     }
    ]
   }
@@ -144,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-16",
-     "evaluated_at_utc": "2026-10-17T17:04:15Z",
-     "rights_as_of": "2026-10-17",
+     "target_date": "2026-10-17",
+     "evaluated_at_utc": "2026-10-18T16:50:05Z",
+     "rights_as_of": "2026-10-18",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -185,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-16",
-     "evaluated_at_utc": "2026-10-17T17:07:03Z",
-     "rights_as_of": "2026-10-17",
+     "target_date": "2026-10-17",
+     "evaluated_at_utc": "2026-10-18T16:52:53Z",
+     "rights_as_of": "2026-10-18",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -226,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-16",
-     "evaluated_at_utc": "2026-10-17T17:07:03Z",
-     "rights_as_of": "2026-10-17",
+     "target_date": "2026-10-17",
+     "evaluated_at_utc": "2026-10-18T16:52:53Z",
+     "rights_as_of": "2026-10-18",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -255,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "2c570f9b83bdef7da184d0cd7c74ecce1d96ba85715af2d58c34964f00f4feaf"
+ "payload_seal_sha256": "ff1ac85a88c03fcf595941640d8f27b27aae2d479106110b9ae5c0440cb47ffb"
 }
