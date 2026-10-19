@@ -399,12 +399,12 @@
    "sha256": "00c99adfeeb27b9c415d936c2b50e23e7cfea532480a62182982fa5e28f4c3c3"
   },
   {
-   "bytes": 1216,
+   "bytes": 1159,
    "format": "json",
    "git_mode": "100644",
    "path": "data/permanence.json",
    "repository_path": "docs/data/permanence.json",
-   "sha256": "a708205e76b16508a2104bc93b8dc483af8b2820a9343cb0772e306f3fb47386"
+   "sha256": "d2941aeeddda0ebde0ff5c95a0df14beb996a61ef2408d1d1763d5fba092f67a"
   },
   {
    "bytes": 1131,
@@ -978,7 +978,7 @@
   "algorithm": "SHA-256",
   "atomic_hosted_snapshot": false,
   "authenticated_deployment": false,
-  "entries_sha256": "2697ecb0445f5a7d2591427a06bbd6710bba37c9bed876004f9791f82e600679",
+  "entries_sha256": "3d39bb5ac31166df074e206745e022526f569402f715d99f74d2ee6248dcf1ac",
   "external_manifest_digest_required": true,
   "signed": false
  },
@@ -989,7 +989,7 @@
  },
  "schema_version": "0.1.0",
  "totals": {
-  "hashed_bytes": 7329770,
+  "hashed_bytes": 7329713,
   "hashed_entries": 119,
   "max_entry_bytes": 4194304,
   "max_hashed_bytes": 12582912
