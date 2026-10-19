@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-18",
- "generated_at": "2026-10-19T06:42:12Z",
+ "generated_at": "2026-10-19T06:57:50Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "f943ba120285cc3f91df2693d1e8c7e44f57114a",
-  "blob_git_sha1": "f2de9f5058d129d7cb33e74471267f239ca14cbb",
-  "blob_sha256": "955ee88d1a6bde9a9aab03bb5b0465bad8d8b0ef777d942e6edd1f541879db44",
-  "target_date": "2026-10-17"
+  "state": "same_target",
+  "commit_sha": "95875bfbb08ad82d92f8b78e72f58fb7558d88be",
+  "blob_git_sha1": "2cfc31067a59563b7e25d8de54bfad395b338a56",
+  "blob_sha256": "99d8eb08d30273ec20d4f19024bbf73f5aa651516c488a3fa9fc9685c3af4206",
+  "target_date": "2026-10-18"
  },
  "channels": {
   "pakistan_west": {
@@ -67,8 +67,34 @@
    ]
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "What Does Egypt Pledge to Support Saudi Arabia Mean for Regional Security and Yemen Future ?",
+     "url": "https://english.aawsat.com/gulf/5330890-what-does-egypt%E2%80%99s-pledge-support-saudi-arabia-mean-regional-security-and-yemen%E2%80%99s",
+     "domain": "english.aawsat.com"
+    },
+    {
+     "title": "Japanese Official : Cooperation with Saudi Arabia Extends Beyond Energy to Development , Regional Stability",
+     "url": "https://english.aawsat.com/gulf/5330838-japanese-official-cooperation-saudi-arabia-extends-beyond-energy-development-regional",
+     "domain": "english.aawsat.com"
+    },
+    {
+     "title": "Egypt to provide  all necessary and possible support to Saudi Arabia  - Grenada Chronicle – Daily Grenada And Caribbean News",
+     "url": "https://grenadachronicle.com/egypt-to-provide-all-necessary-and-possible-support-to-saudi-arabia/",
+     "domain": "grenadachronicle.com"
+    },
+    {
+     "title": "Egypt Sissi asks parliament to authorise support for Saudi",
+     "url": "https://www.koreaherald.com/article/10906127",
+     "domain": "koreaherald.com"
+    },
+    {
+     "title": "IRAN ON FRONTLINES : IRGC Officers Reportedly Direct Houthi Attacks As Advanced Drones Fuel Yemen Offensive",
+     "url": "https://www.theyeshivaworld.com/news/israel-news/2611148/iran-on-frontlines-irgc-officers-reportedly-direct-houthi-attacks-as-advanced-drones-fuel-yemen-offensive.html",
+     "domain": "theyeshivaworld.com"
+    }
+   ]
   }
  },
  "authority": {
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-18",
-     "evaluated_at_utc": "2026-10-19T06:42:12Z",
+     "evaluated_at_utc": "2026-10-19T06:57:50Z",
      "rights_as_of": "2026-10-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-18",
-     "evaluated_at_utc": "2026-10-19T06:44:52Z",
+     "evaluated_at_utc": "2026-10-19T07:00:29Z",
      "rights_as_of": "2026-10-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-18",
-     "evaluated_at_utc": "2026-10-19T06:44:52Z",
+     "evaluated_at_utc": "2026-10-19T07:00:29Z",
      "rights_as_of": "2026-10-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "d98e1bb39e54e585ae73f2fc06460333d98e14879b4067e6e5a1dd312a8c9dde"
+ "payload_seal_sha256": "f5e9f7753e0492003c37d9c3034d4d9951967e0a340ad7cd4b7e39e4e1bdea8c"
 }
