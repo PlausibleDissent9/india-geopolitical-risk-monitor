@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-17",
- "generated_at": "2026-10-18T17:09:40Z",
+ "target_date": "2026-10-18",
+ "generated_at": "2026-10-19T06:42:12Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "13094af9c838b9b3a449768b7e92fce2f6a9140a",
-  "blob_git_sha1": "0e54f4d06455840937b0c45c54169e36b3c6cde7",
-  "blob_sha256": "81028304b4af4918ea69fbd563650497a3529f860eb17a23e7af21a2addd23ca",
+  "state": "different_target",
+  "commit_sha": "f943ba120285cc3f91df2693d1e8c7e44f57114a",
+  "blob_git_sha1": "f2de9f5058d129d7cb33e74471267f239ca14cbb",
+  "blob_sha256": "955ee88d1a6bde9a9aab03bb5b0465bad8d8b0ef777d942e6edd1f541879db44",
   "target_date": "2026-10-17"
  },
  "channels": {
@@ -29,67 +29,46 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "India Zorawar tank for China border faces 2 - year delay as Army new demand puts engineers to the test",
-     "url": "https://economictimes.indiatimes.com/news/defence/indias-zorawar-tank-for-china-border-faces-2-year-delay-as-armys-new-demand-puts-engineers-to-the-test/articleshow/135012693.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "Ex - Armoured Corps Chief Explains Why Zorawar Needs High Power and Steep Gun Elevation",
-     "url": "https://idrw.org/ex-armoured-corps-chief-explains-why-zorawar-needs-high-power-and-steep-gun-elevation/",
-     "domain": "idrw.org"
-    },
-    {
-     "title": "Finance Minister Nirmala Sitharaman Says Trade Barriers Are Widening India Trade Imbalance With China",
-     "url": "https://www.siliconindia.com/news/general/finance-minister-nirmala-sitharaman-says-trade-barriers-are-widening-indias-trade-imbalance-with-china-nid-242719-cid-1.html",
-     "domain": "siliconindia.com"
-    },
-    {
-     "title": "Growing Culture of Indifference by Design",
-     "url": "https://countercurrents.org/2026/10/growing-culture-of-indifference-by-design/",
-     "domain": "countercurrents.org"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Houthis close in on key Yemen city of Taiz : Why a global trade route is at risk",
-     "url": "https://timesofindia.indiatimes.com/world/middle-east/houthis-close-in-on-yemens-strategic-city-of-taiz-why-it-matters/articleshow/135006845.cms",
-     "domain": "timesofindia.indiatimes.com"
+     "title": "H - 1B workers from India , China take US jobs with cheaper labour , says Congressman Riley Moore",
+     "url": "https://economictimes.indiatimes.com/nri/latest-updates/h-1b-workers-from-india-china-take-us-jobs-with-cheaper-labour-says-congressman-riley-moore/articleshow/135031783.cms",
+     "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "Egypt president says country ready to defend Saudi Arabia  if requested",
-     "url": "https://www.vanguardngr.com/2026/10/egypts-president-says-country-ready-to-defend-saudi-arabia-if-requested/",
-     "domain": "vanguardngr.com"
+     "title": "What is holding up the India - US trade deal ?",
+     "url": "https://www.newindianexpress.com/business/2026/Oct/18/what-is-holding-up-the-india-us-trade-deal",
+     "domain": "newindianexpress.com"
     },
     {
-     "title": "Sisi says Egypt ready to defend Saudi Arabia  if requested",
-     "url": "https://www.freemalaysiatoday.com/category/world/2026/10/17/sisi-says-egypt-ready-to-defend-saudi-arabia-if-requested",
-     "domain": "freemalaysiatoday.com"
+     "title": "Love My Indian In - Law : JD Vance Clarifies H - 1B Workers Remark That Angered India",
+     "url": "https://www.oneindia.com/international/love-my-indian-in-laws-jd-vance-clarifies-h-1b-workers-remark-that-angered-india-8238939.html",
+     "domain": "oneindia.com"
     },
     {
-     "title": "Iran denies Saudi accusation of involvement in Houthi attacks",
-     "url": "https://www.channelnewsasia.com/world/iran-denies-houthi-attacks-saudi-arabia-6467476",
-     "domain": "channelnewsasia.com"
+     "title": "Vance says H - 1B criticism targets employers",
+     "url": "https://www.prokerala.com/news/articles/a1826069.html",
+     "domain": "prokerala.com"
     },
     {
-     "title": "As the World Choke Points Close , a Landlocked Pipeline Quietly Nears Completion",
-     "url": "https://thenewamerican.com/world-news/as-the-worlds-choke-points-close-a-landlocked-pipeline-quietly-nears-completion/",
-     "domain": "thenewamerican.com"
+     "title": "JD Vance Clarifies  Indentured Servant Remark on H - 1B Visa Holders",
+     "url": "https://www.deccanchronicle.com/world/americas/jd-vance-clarifies-indentured-servants-remark-on-h-1b-visa-holders-1996890",
+     "domain": "deccanchronicle.com"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -113,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-17",
-     "evaluated_at_utc": "2026-10-18T17:09:40Z",
-     "rights_as_of": "2026-10-18",
+     "target_date": "2026-10-18",
+     "evaluated_at_utc": "2026-10-19T06:42:12Z",
+     "rights_as_of": "2026-10-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -154,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-17",
-     "evaluated_at_utc": "2026-10-18T17:12:38Z",
-     "rights_as_of": "2026-10-18",
+     "target_date": "2026-10-18",
+     "evaluated_at_utc": "2026-10-19T06:44:52Z",
+     "rights_as_of": "2026-10-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -195,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-17",
-     "evaluated_at_utc": "2026-10-18T17:12:38Z",
-     "rights_as_of": "2026-10-18",
+     "target_date": "2026-10-18",
+     "evaluated_at_utc": "2026-10-19T06:44:52Z",
+     "rights_as_of": "2026-10-19",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -224,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "2b7df991fcbfc2275b9cb3bc265e57ce72e591c5d7b3568ce99f1f7a2f8cc504"
+ "payload_seal_sha256": "d98e1bb39e54e585ae73f2fc06460333d98e14879b4067e6e5a1dd312a8c9dde"
 }
