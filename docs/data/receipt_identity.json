@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-19",
- "generated_at": "2026-10-20T06:28:43Z",
+ "generated_at": "2026-10-20T06:48:07Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "4404827853aa024bf05541b1cce52641a867bb1d",
-  "blob_git_sha1": "b28ccd7c9331a91bb62876fef4d3fdb43cd83aa6",
-  "blob_sha256": "0c31ee7c1b27ef6a8fa9ae7d85e33307a29fa8d500fb601d690d19e0c9d7ea97",
-  "target_date": "2026-10-18"
+  "state": "same_target",
+  "commit_sha": "448ab560b356d2817e48adf9d43f79e5679b5320",
+  "blob_git_sha1": "3cdb6ad2d9b5fa5d8db9ae0b0679665749f9c9d9",
+  "blob_sha256": "ecc31a9ac2e968cb6a8ceb336a4433f0bf93d0db74e2797f1df84085dda863e5",
+  "target_date": "2026-10-19"
  },
  "channels": {
   "pakistan_west": {
@@ -67,8 +67,34 @@
    "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Red Sea Container Shipping Return Gains Pace as Capacity Doubles : Xeneta",
+     "url": "https://shipandbunker.com/news/world/915061-red-sea-container-shipping-return-gains-pace-as-capacity-doubles-xeneta",
+     "domain": "shipandbunker.com"
+    },
+    {
+     "title": "EGYPT WEIGHS DEPLOYMENT : Parliament To Debate Sending Troops To Saudi Arabia Amid Deadly Houthi Attacks",
+     "url": "https://www.theyeshivaworld.com/news/israel-news/2611640/egypt-weighs-deployment-parliament-to-debate-sending-troops-to-saudi-arabia-amid-deadly-houthi-attacks.html",
+     "domain": "theyeshivaworld.com"
+    },
+    {
+     "title": "Qatari LNG Cargo Heads Through Red Sea to Europe in Rare Suez Run",
+     "url": "https://oilprice.com/Latest-Energy-News/World-News/Qatari-LNG-Cargo-Heads-Through-Red-Sea-to-Europe-in-Rare-Suez-Run.html",
+     "domain": "oilprice.com"
+    },
+    {
+     "title": "Houthi attack on Yemeni government forces kills 53 : officials",
+     "url": "https://www.cbc.ca/news/world/houthi-attack-yemen-government-forces-camp-9.7386538",
+     "domain": "cbc.ca"
+    },
+    {
+     "title": "Djibouti Bab el - Mandeb Squeeze as Egypt Weighs Saudi Role",
+     "url": "https://www.riotimesonline.com/djibouti-two-wars-bab-el-mandeb-ethiopia-2026/",
+     "domain": "riotimesonline.com"
+    }
+   ]
   }
  },
  "authority": {
@@ -93,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T06:28:43Z",
+     "evaluated_at_utc": "2026-10-20T06:48:07Z",
      "rights_as_of": "2026-10-20",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T06:31:49Z",
+     "evaluated_at_utc": "2026-10-20T06:50:55Z",
      "rights_as_of": "2026-10-20",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T06:31:49Z",
+     "evaluated_at_utc": "2026-10-20T06:50:55Z",
      "rights_as_of": "2026-10-20",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "f46ba0b1a671f4530b98005f70371e789c64d3e9c1cd01f53900d45036664e93"
+ "payload_seal_sha256": "da144b0f6643fd4eaf26bbb1d13b5b877b178c85dd682264c6431b80bc259930"
 }
