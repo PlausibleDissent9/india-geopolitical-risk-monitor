@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-19",
- "generated_at": "2026-10-20T13:22:32Z",
+ "generated_at": "2026-10-20T18:05:46Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "fa0e1319381ade9c65333cdd3c23165098d6d2b7",
-  "blob_git_sha1": "47b14dd004e1eccab197b18ba1b22447f6245125",
-  "blob_sha256": "6b8e2ec386319b6d2754d472257358a7c857ba892b2f5f53bb44527200d145a0",
+  "commit_sha": "91f9acd7ea517a0275b35917c387cabe12d66fa7",
+  "blob_git_sha1": "666534cee7d934452b48e20aa650e3d4c3a87c25",
+  "blob_sha256": "1685d4c1b2c2844d4de1ed40a54c9d62b02d12c74ca4b5e5ad51f8cb7584bfb8",
   "target_date": "2026-10-19"
  },
  "channels": {
@@ -63,8 +63,34 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Trump waives Russia sanctions , easing India energy concerns as US trade deal nears",
+     "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/trump-waives-russia-sanctions-easing-indias-energy-concerns-as-us-trade-deal-nears/articleshow/135048374.cms",
+     "domain": "economictimes.indiatimes.com"
+    },
+    {
+     "title": "US  very close  to India trade deal ; energy needs considered in Russia sanctions waiver : Marco Rubio",
+     "url": "https://www.hindustantimes.com/india-news/us-india-trade-deal-very-close-global-energy-needs-prices-considered-russia-sanctions-waiver-marco-rubio-101792392225735.html",
+     "domain": "hindustantimes.com"
+    },
+    {
+     "title": "US - India Trade Deal : Key Hurdles Delaying the Long - Awaited Pact",
+     "url": "https://www.deccanchronicle.com/business/us-india-trade-deal-key-hurdles-delaying-the-long-awaited-pact-1997240",
+     "domain": "deccanchronicle.com"
+    },
+    {
+     "title": "Very close to finalising trade deal with India , says Marco Rubio",
+     "url": "https://www.prokerala.com/news/articles/a1826189.html",
+     "domain": "prokerala.com"
+    },
+    {
+     "title": "Rubio seeks to strengthen US foothold in Central Asia",
+     "url": "https://www.newindianexpress.com/world/2026/Oct/19/rubio-seeks-to-strengthen-us-foothold-in-central-asia",
+     "domain": "newindianexpress.com"
+    }
+   ]
   },
   "shipping": {
    "state": "available",
@@ -119,7 +145,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T13:22:32Z",
+     "evaluated_at_utc": "2026-10-20T18:05:46Z",
      "rights_as_of": "2026-10-20",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +186,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T13:25:10Z",
+     "evaluated_at_utc": "2026-10-20T18:08:45Z",
      "rights_as_of": "2026-10-20",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +227,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T13:25:10Z",
+     "evaluated_at_utc": "2026-10-20T18:08:45Z",
      "rights_as_of": "2026-10-20",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +255,5 @@
    }
   ]
  },
- "payload_seal_sha256": "eb99bfa82f23f06e6456be453861c3fa949ae735d427e9dae58d54c3c7459937"
+ "payload_seal_sha256": "5e4775c6659b03ae108d618ec45fe269231a2a3045fe5f70eed8d68fa4476310"
 }
