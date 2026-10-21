@@ -10,117 +10,65 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-19",
- "generated_at": "2026-10-20T18:21:29Z",
+ "target_date": "2026-10-20",
+ "generated_at": "2026-10-21T18:39:04Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "6c6ce9f3898aa784cd2fdadf28fb45d70a6ce490",
-  "blob_git_sha1": "0645e585378797d322a59b8bfd857610a31a1df5",
-  "blob_sha256": "75f58ec88e84cee07cc7abe95980ec6cf6f0f9f5f7ab85a020cc6f39c82cecf3",
+  "state": "different_target",
+  "commit_sha": "cdfdd56a6542b6024f7c112936320da1aec75095",
+  "blob_git_sha1": "6ae38e3749c0d7ababacdebac27931ff8ebfbb7c",
+  "blob_sha256": "b069ec4c4ecb01abd7f65a2bb0d58ad9e2e415544fe417c48721a08a08f938b9",
   "target_date": "2026-10-19"
  },
  "channels": {
   "pakistan_west": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "china_east": {
    "state": "available",
    "articles": [
     {
-     "title": "Unresolved border dispute remains principal obstacle in India - China relations : Report",
-     "url": "https://theshillongtimes.com/2026/10/19/unresolved-border-dispute-remains-principal-obstacle-in-india-china-relations-report/",
-     "domain": "theshillongtimes.com"
-    },
-    {
-     "title": "Dushyant Kumar Gautam takes oath as 21st Governor of Sikkim",
-     "url": "https://www.prokerala.com/news/articles/a1826214.html",
-     "domain": "prokerala.com"
-    },
-    {
-     "title": "Arunachal CM calls for roadmap to strengthen yak conservation",
-     "url": "https://nagalandpost.com/arunachal-cm-calls-for-roadmap-to-strengthen-yak-conservation/",
-     "domain": "nagalandpost.com"
-    },
-    {
-     "title": "这所医科大学 ， 从长征中走来",
-     "url": "https://baijiahao.baidu.com/s?id=1879441917303435675",
-     "domain": "baijiahao.baidu.com"
-    },
-    {
-     "title": "BRICS 2026 : How Pragmatic Compromise Preserved Bloc Unity Diwakar Dhakal",
-     "url": "https://www.spotlightnepal.com/2026/10/19/brics-2026-how-pragmatic-compromise-preserved-bloc-unity-diwakar-dhakal/",
-     "domain": "spotlightnepal.com"
-    }
-   ]
-  },
-  "gulf_energy": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Trump waives Russia sanctions , easing India energy concerns as US trade deal nears",
-     "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/trump-waives-russia-sanctions-easing-indias-energy-concerns-as-us-trade-deal-nears/articleshow/135048374.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "US  very close  to India trade deal ; energy needs considered in Russia sanctions waiver : Marco Rubio",
-     "url": "https://www.hindustantimes.com/india-news/us-india-trade-deal-very-close-global-energy-needs-prices-considered-russia-sanctions-waiver-marco-rubio-101792392225735.html",
+     "title": "References in resolutions by OIC  maliciou : India",
+     "url": "https://www.hindustantimes.com/india-news/references-in-resolutions-by-oic-malicious-india-101792434266323.html",
      "domain": "hindustantimes.com"
     },
     {
-     "title": "US - India Trade Deal : Key Hurdles Delaying the Long - Awaited Pact",
-     "url": "https://www.deccanchronicle.com/business/us-india-trade-deal-key-hurdles-delaying-the-long-awaited-pact-1997240",
-     "domain": "deccanchronicle.com"
+     "title": "Rajnath Singh Urges Unified Action Against Terrorism at SCO Meeting in Tajikistan",
+     "url": "https://dailypioneer.com/india/rajnath-singh-terrorism-sco-meeting-tajikistan",
+     "domain": "dailypioneer.com"
     },
     {
-     "title": "Very close to finalising trade deal with India , says Marco Rubio",
-     "url": "https://www.prokerala.com/news/articles/a1826189.html",
-     "domain": "prokerala.com"
-    },
-    {
-     "title": "Rubio seeks to strengthen US foothold in Central Asia",
-     "url": "https://www.newindianexpress.com/world/2026/Oct/19/rubio-seeks-to-strengthen-us-foothold-in-central-asia",
+     "title": "No double standards on terrorism : At SCO meet , Rajnath Singh calls for dismantling terror ecosystem",
+     "url": "https://www.newindianexpress.com/india/2026/Oct/20/no-double-standards-on-terrorism-at-sco-meet-rajnath-singh-calls-for-dismantling-terror-ecosystem",
      "domain": "newindianexpress.com"
+    },
+    {
+     "title": "No double standards on terrorism : Rajnath Singh strong stance at SCO Meet , in presence of Pak Ishaq Dar",
+     "url": "https://aninews.in/news/world/asia/no-double-standards-on-terrorism-rajnath-singh8217s-strong-stance-at-sco-meet-in-presence-of-pak8217s-ishaq-dar20261020115751/",
+     "domain": "aninews.in"
+    },
+    {
+     "title": "Rajnath Singh Urges SCO to Reject Double Standards on Terrorism at Dushanbe Meet",
+     "url": "https://openthemagazine.com/india/no-double-standards-on-terrorism-rajnath-singh-at-sco-meet-attended-by-pakistans-ishaq-dar",
+     "domain": "openthemagazine.com"
     }
    ]
   },
+  "china_east": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "gulf_energy": {
+   "state": "unavailable",
+   "reason_code": "source_response_invalid"
+  },
+  "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Red Sea Container Shipping Return Gains Pace as Capacity Doubles : Xeneta",
-     "url": "https://shipandbunker.com/news/world/915061-red-sea-container-shipping-return-gains-pace-as-capacity-doubles-xeneta",
-     "domain": "shipandbunker.com"
-    },
-    {
-     "title": "EGYPT WEIGHS DEPLOYMENT : Parliament To Debate Sending Troops To Saudi Arabia Amid Deadly Houthi Attacks",
-     "url": "https://www.theyeshivaworld.com/news/israel-news/2611640/egypt-weighs-deployment-parliament-to-debate-sending-troops-to-saudi-arabia-amid-deadly-houthi-attacks.html",
-     "domain": "theyeshivaworld.com"
-    },
-    {
-     "title": "Qatari LNG Cargo Heads Through Red Sea to Europe in Rare Suez Run",
-     "url": "https://oilprice.com/Latest-Energy-News/World-News/Qatari-LNG-Cargo-Heads-Through-Red-Sea-to-Europe-in-Rare-Suez-Run.html",
-     "domain": "oilprice.com"
-    },
-    {
-     "title": "Houthi attack on Yemeni government forces kills 53 : officials",
-     "url": "https://www.cbc.ca/news/world/houthi-attack-yemen-government-forces-camp-9.7386538",
-     "domain": "cbc.ca"
-    },
-    {
-     "title": "Djibouti Bab el - Mandeb Squeeze as Egypt Weighs Saudi Role",
-     "url": "https://www.riotimesonline.com/djibouti-two-wars-bab-el-mandeb-ethiopia-2026/",
-     "domain": "riotimesonline.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -144,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T18:21:29Z",
-     "rights_as_of": "2026-10-20",
+     "target_date": "2026-10-20",
+     "evaluated_at_utc": "2026-10-21T18:39:04Z",
+     "rights_as_of": "2026-10-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -185,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T18:24:23Z",
-     "rights_as_of": "2026-10-20",
+     "target_date": "2026-10-20",
+     "evaluated_at_utc": "2026-10-21T18:42:09Z",
+     "rights_as_of": "2026-10-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -226,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-19",
-     "evaluated_at_utc": "2026-10-20T18:24:23Z",
-     "rights_as_of": "2026-10-20",
+     "target_date": "2026-10-20",
+     "evaluated_at_utc": "2026-10-21T18:42:09Z",
+     "rights_as_of": "2026-10-21",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -255,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "0016498df9bb806e25d40bb03afc97550497df68334c2cbc26c70724e1621061"
+ "payload_seal_sha256": "6142c33c8cd6d061b9fe53951d63b78fd73dec044f3cfa1f974a7defe470ceba"
 }
