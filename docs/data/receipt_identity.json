@@ -10,49 +10,23 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-20",
- "generated_at": "2026-10-21T18:39:04Z",
+ "target_date": "2026-10-21",
+ "generated_at": "2026-10-22T13:10:14Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "cdfdd56a6542b6024f7c112936320da1aec75095",
-  "blob_git_sha1": "6ae38e3749c0d7ababacdebac27931ff8ebfbb7c",
-  "blob_sha256": "b069ec4c4ecb01abd7f65a2bb0d58ad9e2e415544fe417c48721a08a08f938b9",
-  "target_date": "2026-10-19"
+  "commit_sha": "f90484b8f3e7e1da0dab82716b1c97a453d2bb3c",
+  "blob_git_sha1": "d731b17c2a876c5cc1e874e63af342633ca0523a",
+  "blob_sha256": "e9987e52be6078ef6cf2012658684eae742b9358b4f9e7da2b97438ffb0ea5fc",
+  "target_date": "2026-10-20"
  },
  "channels": {
   "pakistan_west": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "References in resolutions by OIC  maliciou : India",
-     "url": "https://www.hindustantimes.com/india-news/references-in-resolutions-by-oic-malicious-india-101792434266323.html",
-     "domain": "hindustantimes.com"
-    },
-    {
-     "title": "Rajnath Singh Urges Unified Action Against Terrorism at SCO Meeting in Tajikistan",
-     "url": "https://dailypioneer.com/india/rajnath-singh-terrorism-sco-meeting-tajikistan",
-     "domain": "dailypioneer.com"
-    },
-    {
-     "title": "No double standards on terrorism : At SCO meet , Rajnath Singh calls for dismantling terror ecosystem",
-     "url": "https://www.newindianexpress.com/india/2026/Oct/20/no-double-standards-on-terrorism-at-sco-meet-rajnath-singh-calls-for-dismantling-terror-ecosystem",
-     "domain": "newindianexpress.com"
-    },
-    {
-     "title": "No double standards on terrorism : Rajnath Singh strong stance at SCO Meet , in presence of Pak Ishaq Dar",
-     "url": "https://aninews.in/news/world/asia/no-double-standards-on-terrorism-rajnath-singh8217s-strong-stance-at-sco-meet-in-presence-of-pak8217s-ishaq-dar20261020115751/",
-     "domain": "aninews.in"
-    },
-    {
-     "title": "Rajnath Singh Urges SCO to Reject Double Standards on Terrorism at Dushanbe Meet",
-     "url": "https://openthemagazine.com/india/no-double-standards-on-terrorism-rajnath-singh-at-sco-meet-attended-by-pakistans-ishaq-dar",
-     "domain": "openthemagazine.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "unavailable",
@@ -60,11 +34,37 @@
   },
   "gulf_energy": {
    "state": "unavailable",
-   "reason_code": "source_response_invalid"
+   "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Rubio Jamnagar Visit : Rubio to meet Ambani in Jamnagar : Venezuelan oil , energy on agenda",
+     "url": "https://www.business-standard.com/world-news/rubio-to-meet-mukesh-ambani-in-jamnagar-venezuelan-oil-energy-on-agenda-126102100283_1.html",
+     "domain": "business-standard.com"
+    },
+    {
+     "title": "With Rubio in India , Trump says trade pact  pretty close ; suggests it  could be much different kind of deal",
+     "url": "https://www.hindustantimes.com/india-news/with-rubio-in-india-trump-says-trade-dealpretty-close-suggests-it-could-be-much-different-kind-of-deal-101792549793172.html",
+     "domain": "hindustantimes.com"
+    },
+    {
+     "title": "H - 1B job ads not inherently discriminatory , US Justice Department upholds ruling",
+     "url": "https://www.prokerala.com/news/articles/a1826868.html",
+     "domain": "prokerala.com"
+    },
+    {
+     "title": "US Secretary of State Marco Rubio arrives in Mumbai for three - day India visit",
+     "url": "https://americanbazaaronline.com/2026/10/20/us-secretary-of-state-marco-rubio-arrives-in-mumbai-for-three-day-india-visit-490399/",
+     "domain": "americanbazaaronline.com"
+    },
+    {
+     "title": "अमेरिका ने टैरिफ - वीजा से भारत को टारगेट किया ? मार्को रुबियो ने दिया ये जवाब , ट्रेड डील पर भी बड़ा अपडेट",
+     "url": "https://navbharattimes.indiatimes.com/india/india-us-trade-deal-to-conclude-soon-marco-rubio-clarifies-on-tariffs-visa/articleshow/135082430.cms",
+     "domain": "navbharattimes.indiatimes.com"
+    }
+   ]
   },
   "shipping": {
    "state": "unavailable",
@@ -92,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-20",
-     "evaluated_at_utc": "2026-10-21T18:39:04Z",
-     "rights_as_of": "2026-10-21",
+     "target_date": "2026-10-21",
+     "evaluated_at_utc": "2026-10-22T13:10:14Z",
+     "rights_as_of": "2026-10-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -133,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-20",
-     "evaluated_at_utc": "2026-10-21T18:42:09Z",
-     "rights_as_of": "2026-10-21",
+     "target_date": "2026-10-21",
+     "evaluated_at_utc": "2026-10-22T13:13:13Z",
+     "rights_as_of": "2026-10-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -174,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-20",
-     "evaluated_at_utc": "2026-10-21T18:42:09Z",
-     "rights_as_of": "2026-10-21",
+     "target_date": "2026-10-21",
+     "evaluated_at_utc": "2026-10-22T13:13:13Z",
+     "rights_as_of": "2026-10-22",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "6142c33c8cd6d061b9fe53951d63b78fd73dec044f3cfa1f974a7defe470ceba"
+ "payload_seal_sha256": "686195b2ce09597bb7a892492976b5f405ae6fc6192bca0b016eb1800034bdf5"
 }
