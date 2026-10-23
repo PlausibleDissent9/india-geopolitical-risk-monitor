@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-22",
- "generated_at": "2026-10-23T13:16:42Z",
+ "generated_at": "2026-10-23T17:56:59Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "1ba8937f150530aa0bcbca2fdcb183a006c6a9e5",
-  "blob_git_sha1": "b523e4bd3bd070db2b67bde0389f202724acc369",
-  "blob_sha256": "7f94b7b79a8d2cb228f13e7d68e132c17930692162fd88f4ef2d546b3c9101cf",
-  "target_date": "2026-10-21"
+  "state": "same_target",
+  "commit_sha": "dc38a6c3afbaa64b6b2f19a7b5cc6c21c0db5b9e",
+  "blob_git_sha1": "df0ff302b1b16964b2f39055c9ebb195c2e741a7",
+  "blob_sha256": "31d0ff66f46c6729878e657d15b834e8cbea69d65792a2fcc3ab1589490845e0",
+  "target_date": "2026-10-22"
  },
  "channels": {
   "pakistan_west": {
@@ -119,7 +119,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-22",
-     "evaluated_at_utc": "2026-10-23T13:16:42Z",
+     "evaluated_at_utc": "2026-10-23T17:56:59Z",
      "rights_as_of": "2026-10-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +160,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-22",
-     "evaluated_at_utc": "2026-10-23T13:19:49Z",
+     "evaluated_at_utc": "2026-10-23T17:59:49Z",
      "rights_as_of": "2026-10-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -201,7 +201,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-22",
-     "evaluated_at_utc": "2026-10-23T13:19:49Z",
+     "evaluated_at_utc": "2026-10-23T17:59:49Z",
      "rights_as_of": "2026-10-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -229,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "d23fa10e44bd08545c5f269b764bf062fdb75f121cfb87aa775cefc7079faabf"
+ "payload_seal_sha256": "9fd7c6be967bd98b611732101e3b407269724b6f91a10f2f07deb1857b3fc8e4"
 }
