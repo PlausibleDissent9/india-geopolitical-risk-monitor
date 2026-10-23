@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-21",
- "generated_at": "2026-10-22T18:34:56Z",
+ "target_date": "2026-10-22",
+ "generated_at": "2026-10-23T13:16:42Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "fb4f66eaee8ee75df2675023a03237783661592e",
-  "blob_git_sha1": "358593e183b584f0028dbd6f5dc58ad4f26c0c0f",
-  "blob_sha256": "03cecef73f9f82481dab61b2a1d9777bb342cfebf8ef09f3f69daded7cce6dec",
+  "state": "different_target",
+  "commit_sha": "1ba8937f150530aa0bcbca2fdcb183a006c6a9e5",
+  "blob_git_sha1": "b523e4bd3bd070db2b67bde0389f202724acc369",
+  "blob_sha256": "7f94b7b79a8d2cb228f13e7d68e132c17930692162fd88f4ef2d546b3c9101cf",
   "target_date": "2026-10-21"
  },
  "channels": {
@@ -40,35 +40,61 @@
    "state": "available",
    "articles": [
     {
-     "title": "Rubio Jamnagar Visit : Rubio to meet Ambani in Jamnagar : Venezuelan oil , energy on agenda",
-     "url": "https://www.business-standard.com/world-news/rubio-to-meet-mukesh-ambani-in-jamnagar-venezuelan-oil-energy-on-agenda-126102100283_1.html",
-     "domain": "business-standard.com"
+     "title": "India Us Trade Deal : Firmness pays - The Times of India",
+     "url": "https://timesofindia.indiatimes.com/toi-blogs/from-toi-print/firmness-pays/articleshow/135104136.cms",
+     "domain": "timesofindia.indiatimes.com"
     },
     {
-     "title": "With Rubio in India , Trump says trade pact  pretty close ; suggests it  could be much different kind of deal",
-     "url": "https://www.hindustantimes.com/india-news/with-rubio-in-india-trump-says-trade-dealpretty-close-suggests-it-could-be-much-different-kind-of-deal-101792549793172.html",
+     "title": "Venezuelan crude , Russian oil , trade deal : What US Secretary of State Marco Rubio India visit signalled",
+     "url": "https://www.hindustantimes.com/india-news/us-secretary-of-state-marco-rubio-india-visit-mumbai-delhi-reliance-oil-venezuela-tariffs-russia-101792637197910.html",
      "domain": "hindustantimes.com"
     },
     {
-     "title": "H - 1B job ads not inherently discriminatory , US Justice Department upholds ruling",
-     "url": "https://www.prokerala.com/news/articles/a1826868.html",
-     "domain": "prokerala.com"
+     "title": "It never done till it done , says EAM Jaishankar on India - US trade deal",
+     "url": "https://aninews.in/news/world/asia/its-never-done-till-its-done-says-eam-jaishankar-on-india-us-trade-deal20261022194953/",
+     "domain": "aninews.in"
     },
     {
-     "title": "US Secretary of State Marco Rubio arrives in Mumbai for three - day India visit",
-     "url": "https://americanbazaaronline.com/2026/10/20/us-secretary-of-state-marco-rubio-arrives-in-mumbai-for-three-day-india-visit-490399/",
-     "domain": "americanbazaaronline.com"
+     "title": "It never done till it done : Jaishankar on India - US trade deal",
+     "url": "https://economictimes.indiatimes.com/news/india/india-us-trade-deal-final-negotiations-underway-jaishankar-warns-of-challenges-ahead/articleshow/135121482.cms",
+     "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "अमेरिका ने टैरिफ - वीजा से भारत को टारगेट किया ? मार्को रुबियो ने दिया ये जवाब , ट्रेड डील पर भी बड़ा अपडेट",
-     "url": "https://navbharattimes.indiatimes.com/india/india-us-trade-deal-to-conclude-soon-marco-rubio-clarifies-on-tariffs-visa/articleshow/135082430.cms",
-     "domain": "navbharattimes.indiatimes.com"
+     "title": "Asia Minute : Why did Marco Rubio go to an Indian oil refinery this week ?",
+     "url": "https://www.hawaiipublicradio.org/asia-minute/2026-10-22/asia-minute-why-did-marco-rubio-go-to-an-indian-oil-refinery-this-week",
+     "domain": "hawaiipublicradio.org"
     }
    ]
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Hapag - Lloyd expects more shipping services to return to Suez Canal | Hellenic Shipping News Worldwide",
+     "url": "https://www.hellenicshippingnews.com/hapag-lloyd-expects-more-shipping-services-to-return-to-suez-canal/",
+     "domain": "hellenicshippingnews.com"
+    },
+    {
+     "title": "14 Indians aboard yacht targeted off Yemen coast",
+     "url": "https://www.tribuneindia.com/news/india/14-indians-aboard-yacht-targeted-off-yemen-coast/",
+     "domain": "tribuneindia.com"
+    },
+    {
+     "title": "Turkey Is Rebuilding Its Military Influence Across The Middle East",
+     "url": "https://www.armstrongeconomics.com/world-news/war/turkey-is-rebuilding-its-military-influence-across-the-middle-east/",
+     "domain": "armstrongeconomics.com"
+    },
+    {
+     "title": "Two killed in attack on Aramco oil field in Saudi eastern region",
+     "url": "https://www.businesstimes.com.sg/international/two-killed-attack-aramco-oil-field-saudi-eastern-region",
+     "domain": "businesstimes.com.sg"
+    },
+    {
+     "title": "Saudi Aramco reportedly tells staff to evacuate HQs amid attacks",
+     "url": "https://www.dailysabah.com/business/energy/saudi-aramco-reportedly-tells-staff-to-evacuate-hqs-amid-attacks",
+     "domain": "dailysabah.com"
+    }
+   ]
   }
  },
  "authority": {
@@ -92,9 +118,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-21",
-     "evaluated_at_utc": "2026-10-22T18:34:56Z",
-     "rights_as_of": "2026-10-22",
+     "target_date": "2026-10-22",
+     "evaluated_at_utc": "2026-10-23T13:16:42Z",
+     "rights_as_of": "2026-10-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -133,9 +159,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-21",
-     "evaluated_at_utc": "2026-10-22T18:37:47Z",
-     "rights_as_of": "2026-10-22",
+     "target_date": "2026-10-22",
+     "evaluated_at_utc": "2026-10-23T13:19:49Z",
+     "rights_as_of": "2026-10-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -174,9 +200,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-21",
-     "evaluated_at_utc": "2026-10-22T18:37:47Z",
-     "rights_as_of": "2026-10-22",
+     "target_date": "2026-10-22",
+     "evaluated_at_utc": "2026-10-23T13:19:49Z",
+     "rights_as_of": "2026-10-23",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -203,5 +229,5 @@
    }
   ]
  },
- "payload_seal_sha256": "0a8af91266542ca237508ebce4582778b61901af32af95996597e79386597aa9"
+ "payload_seal_sha256": "d23fa10e44bd08545c5f269b764bf062fdb75f121cfb87aa775cefc7079faabf"
 }
