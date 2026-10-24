@@ -19,9 +19,9 @@
   "n_episodes_whose_bar_peaked_after_they_ended": 533,
   "max_threshold_multiple": 32.9,
   "median_threshold_multiple": 1.4,
-  "total_suppressed_channel_days": 2166,
+  "total_suppressed_channel_days": 2167,
   "suppressed_channel_days_by_channel": {
-   "china_east": 306,
+   "china_east": 307,
    "gulf_energy": 525,
    "pakistan_west": 411,
    "shipping": 372,
@@ -30,7 +30,7 @@
   "suppressed_days_are_deduplicated": "Episode follow-windows overlap, so this is the count of DISTINCT channel-days, not the sum of per-episode counts, which would multiply-count the same day.",
   "median_days_until_bar_within_2x": 1,
   "follow_days": 120,
-  "generated": "2026-10-23T01:08:01Z",
+  "generated": "2026-10-24T01:16:30Z",
   "license": "CC BY 4.0",
   "citation": "Krishna, Ishan (2026). India Geopolitical Risk Monitor. https://igrm.in/",
   "codebook": "https://igrm.in/codebook.html",
@@ -3353,10 +3353,12 @@
    "threshold_peak_multiple": 1.5,
    "threshold_peak_day": "2026-09-16",
    "peak_bar_is_after_episode_ended": true,
-   "n_days_suppressed": 0,
-   "suppressed_days": [],
-   "max_suppressed_share": null,
-   "max_suppressed_multiple_of_old_bar": null,
+   "n_days_suppressed": 1,
+   "suppressed_days": [
+    "2026-10-23"
+   ],
+   "max_suppressed_share": 0.036597,
+   "max_suppressed_multiple_of_old_bar": 1.2,
    "days_until_bar_within_2x": 1
   },
   {
@@ -3369,10 +3371,12 @@
    "threshold_peak_multiple": 1.4,
    "threshold_peak_day": "2026-09-16",
    "peak_bar_is_after_episode_ended": true,
-   "n_days_suppressed": 0,
-   "suppressed_days": [],
-   "max_suppressed_share": null,
-   "max_suppressed_multiple_of_old_bar": null,
+   "n_days_suppressed": 1,
+   "suppressed_days": [
+    "2026-10-23"
+   ],
+   "max_suppressed_share": 0.036597,
+   "max_suppressed_multiple_of_old_bar": 1.1,
    "days_until_bar_within_2x": 1
   },
   {
