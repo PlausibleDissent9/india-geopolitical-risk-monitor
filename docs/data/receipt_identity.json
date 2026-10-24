@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-22",
- "generated_at": "2026-10-23T18:12:59Z",
+ "target_date": "2026-10-23",
+ "generated_at": "2026-10-24T06:21:12Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "4f3821ae04a3fcdf557815d9e8459ed73f0a5f1a",
-  "blob_git_sha1": "88a1db2409a037087a8d3977ca02e7f40c8b6109",
-  "blob_sha256": "25dfc84ccf4feae5e68f05754584d448a505947a12831f8f62feae20571c864b",
+  "state": "different_target",
+  "commit_sha": "3e9a9c76489c4e15f2c16e4a2032099f27ccddfc",
+  "blob_git_sha1": "81d7bd9dce21f094cd5b72cf634aaf4e50ee63a9",
+  "blob_sha256": "3a41eda755caeeab033a182ce5ceb39921d5ab81257931b5fc235c65d0d5c0b1",
   "target_date": "2026-10-22"
  },
  "channels": {
@@ -37,62 +37,36 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "India Us Trade Deal : Firmness pays - The Times of India",
-     "url": "https://timesofindia.indiatimes.com/toi-blogs/from-toi-print/firmness-pays/articleshow/135104136.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "Venezuelan crude , Russian oil , trade deal : What US Secretary of State Marco Rubio India visit signalled",
-     "url": "https://www.hindustantimes.com/india-news/us-secretary-of-state-marco-rubio-india-visit-mumbai-delhi-reliance-oil-venezuela-tariffs-russia-101792637197910.html",
-     "domain": "hindustantimes.com"
-    },
-    {
-     "title": "It never done till it done , says EAM Jaishankar on India - US trade deal",
-     "url": "https://aninews.in/news/world/asia/its-never-done-till-its-done-says-eam-jaishankar-on-india-us-trade-deal20261022194953/",
-     "domain": "aninews.in"
-    },
-    {
-     "title": "It never done till it done : Jaishankar on India - US trade deal",
-     "url": "https://economictimes.indiatimes.com/news/india/india-us-trade-deal-final-negotiations-underway-jaishankar-warns-of-challenges-ahead/articleshow/135121482.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "Asia Minute : Why did Marco Rubio go to an Indian oil refinery this week ?",
-     "url": "https://www.hawaiipublicradio.org/asia-minute/2026-10-22/asia-minute-why-did-marco-rubio-go-to-an-indian-oil-refinery-this-week",
-     "domain": "hawaiipublicradio.org"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Hapag - Lloyd expects more shipping services to return to Suez Canal | Hellenic Shipping News Worldwide",
-     "url": "https://www.hellenicshippingnews.com/hapag-lloyd-expects-more-shipping-services-to-return-to-suez-canal/",
-     "domain": "hellenicshippingnews.com"
+     "title": "Istanbul Hosts Middle East , European FMs to Discuss Regional Crises",
+     "url": "https://english.aawsat.com/arab-world/5332571-istanbul-hosts-middle-east-european-fms-discuss-regional-crises",
+     "domain": "english.aawsat.com"
     },
     {
-     "title": "14 Indians aboard yacht targeted off Yemen coast",
-     "url": "https://www.tribuneindia.com/news/india/14-indians-aboard-yacht-targeted-off-yemen-coast/",
-     "domain": "tribuneindia.com"
+     "title": "European , Mideast foreign ministers to discuss Mideast crises",
+     "url": "https://www.manilatimes.net/2026/10/23/world/americas-emea/european-mideast-foreign-ministers-to-discuss-mideast-crises/2452483",
+     "domain": "manilatimes.net"
     },
     {
-     "title": "Turkey Is Rebuilding Its Military Influence Across The Middle East",
-     "url": "https://www.armstrongeconomics.com/world-news/war/turkey-is-rebuilding-its-military-influence-across-the-middle-east/",
-     "domain": "armstrongeconomics.com"
+     "title": "Muslim , EU FMs to meet in Istanbul",
+     "url": "https://tribune.com.pk/story/2636419/muslim-eu-fms-to-meet-in-istanbul",
+     "domain": "tribune.com.pk"
     },
     {
-     "title": "Two killed in attack on Aramco oil field in Saudi eastern region",
-     "url": "https://www.businesstimes.com.sg/international/two-killed-attack-aramco-oil-field-saudi-eastern-region",
-     "domain": "businesstimes.com.sg"
+     "title": "Oil little changed as supply concern lingers amid Houthi attacks on Saudi Arabia",
+     "url": "https://bdnews24.com/business/7143ff7nmk",
+     "domain": "bdnews24.com"
     },
     {
-     "title": "Saudi Aramco reportedly tells staff to evacuate HQs amid attacks",
-     "url": "https://www.dailysabah.com/business/energy/saudi-aramco-reportedly-tells-staff-to-evacuate-hqs-amid-attacks",
-     "domain": "dailysabah.com"
+     "title": "Oil prices rise as supply concerns linger amid Houthi attacks on Saudi Arabia",
+     "url": "https://arynews.tv/oil-prices-rise-as-supply-concerns-linger-amid-houthi-attacks-on-saudi-arabia",
+     "domain": "arynews.tv"
     }
    ]
   }
@@ -118,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-22",
-     "evaluated_at_utc": "2026-10-23T18:12:59Z",
-     "rights_as_of": "2026-10-23",
+     "target_date": "2026-10-23",
+     "evaluated_at_utc": "2026-10-24T06:21:12Z",
+     "rights_as_of": "2026-10-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -159,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-22",
-     "evaluated_at_utc": "2026-10-23T18:16:20Z",
-     "rights_as_of": "2026-10-23",
+     "target_date": "2026-10-23",
+     "evaluated_at_utc": "2026-10-24T06:24:05Z",
+     "rights_as_of": "2026-10-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -200,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-22",
-     "evaluated_at_utc": "2026-10-23T18:16:20Z",
-     "rights_as_of": "2026-10-23",
+     "target_date": "2026-10-23",
+     "evaluated_at_utc": "2026-10-24T06:24:05Z",
+     "rights_as_of": "2026-10-24",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -229,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "4dde55b9de2956173f6808dd53ca090c180f287611cf7cc61191743aebc9925d"
+ "payload_seal_sha256": "2499a3c1b447ca2c11fea2b74330d16aaf53d2d0170c91282fccfb2936dabea7"
 }
