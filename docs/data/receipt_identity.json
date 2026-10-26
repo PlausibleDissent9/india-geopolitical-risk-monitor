@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-23",
- "generated_at": "2026-10-24T12:31:41Z",
+ "target_date": "2026-10-25",
+ "generated_at": "2026-10-26T15:01:19Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "3e3356731f17ede01d4ea1a33d970a719562afb5",
-  "blob_git_sha1": "02a97a753e7502d02a2f1cd422665e765428df98",
-  "blob_sha256": "70fd40bd12ae9d58d12fe19644f1b3b23009b30f1ad2e81a1601cf8e316fd51e",
+  "state": "different_target",
+  "commit_sha": "d8ff4f4b1472e5629ca2a63e050bd80a01297169",
+  "blob_git_sha1": "68905bf2714bd5b3b97fa3924c552e9976ed9325",
+  "blob_sha256": "c38b36f73b785e13ca6181d0f13d5056b1145f46af0b99f54e84595bb9f06048",
   "target_date": "2026-10-23"
  },
  "channels": {
@@ -37,38 +37,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Istanbul Hosts Middle East , European FMs to Discuss Regional Crises",
-     "url": "https://english.aawsat.com/arab-world/5332571-istanbul-hosts-middle-east-european-fms-discuss-regional-crises",
-     "domain": "english.aawsat.com"
+     "title": "US courting Reliance refining muscle to keep oil flowing , not curb Russian crude , analyst says",
+     "url": "https://economictimes.indiatimes.com/industry/energy/oil-gas/us-courting-reliances-refining-muscle-to-keep-oil-flowing-not-curb-russian-crude-analyst-says-mukesh-ambani/articleshow/135190443.cms",
+     "domain": "economictimes.indiatimes.com"
     },
     {
-     "title": "European , Mideast foreign ministers to discuss Mideast crises",
-     "url": "https://www.manilatimes.net/2026/10/23/world/americas-emea/european-mideast-foreign-ministers-to-discuss-mideast-crises/2452483",
-     "domain": "manilatimes.net"
+     "title": "China export controls around PV cells could slow India upstream solar push",
+     "url": "https://www.thehindubusinessline.com/economy/chinas-export-controls-around-pv-cells-could-slow-indias-upstream-solar-push/article71622820.ece",
+     "domain": "thehindubusinessline.com"
     },
     {
-     "title": "Muslim , EU FMs to meet in Istanbul",
-     "url": "https://tribune.com.pk/story/2636419/muslim-eu-fms-to-meet-in-istanbul",
-     "domain": "tribune.com.pk"
+     "title": "₹1 cr annual salary package : With AI growth , MNC demand , this job is set to become highest - paid engineer role in India",
+     "url": "https://www.livemint.com/news/rs-1-cr-annual-salary-package-with-ai-growth-mnc-demand-this-job-is-set-to-become-highest-paid-engineer-role-in-india-11792909728672.html",
+     "domain": "livemint.com"
     },
     {
-     "title": "Oil little changed as supply concern lingers amid Houthi attacks on Saudi Arabia",
-     "url": "https://bdnews24.com/business/7143ff7nmk",
-     "domain": "bdnews24.com"
+     "title": "Sri Lanka provides medical help , repatriates Iranian sailors stranded in Indian Ocean",
+     "url": "https://www.wlwt.com/article/sri-lanka-medicalrepatriates-iranian-sailors-indian-ocean/74241104",
+     "domain": "wlwt.com"
     },
     {
-     "title": "Oil prices rise as supply concerns linger amid Houthi attacks on Saudi Arabia",
-     "url": "https://arynews.tv/oil-prices-rise-as-supply-concerns-linger-amid-houthi-attacks-on-saudi-arabia",
-     "domain": "arynews.tv"
+     "title": "Eternal SBI Card : Savings of ₹42 , 000 annually , applications open for 5 , 000 credit cards Here how to apply directly",
+     "url": "https://www.livemint.com/money/personal-finance/eternal-sbi-card-rs-42000-annual-savings-open-applications-5000-credit-cards-how-zomato-blinkit-customers-directly-apply-11792913959726.html",
+     "domain": "livemint.com"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-23",
-     "evaluated_at_utc": "2026-10-24T12:31:41Z",
-     "rights_as_of": "2026-10-24",
+     "target_date": "2026-10-25",
+     "evaluated_at_utc": "2026-10-26T15:01:19Z",
+     "rights_as_of": "2026-10-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -133,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-23",
-     "evaluated_at_utc": "2026-10-24T12:34:45Z",
-     "rights_as_of": "2026-10-24",
+     "target_date": "2026-10-25",
+     "evaluated_at_utc": "2026-10-26T15:04:33Z",
+     "rights_as_of": "2026-10-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -174,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-23",
-     "evaluated_at_utc": "2026-10-24T12:34:45Z",
-     "rights_as_of": "2026-10-24",
+     "target_date": "2026-10-25",
+     "evaluated_at_utc": "2026-10-26T15:04:33Z",
+     "rights_as_of": "2026-10-26",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "3999fbd6dbcc1564b38b96b44186b01963c2a20bf750d24bc59c233e09129297"
+ "payload_seal_sha256": "513226d5831ed8d7843860631e72b0d734cb25e62e64671db8c0014bc97563a3"
 }
