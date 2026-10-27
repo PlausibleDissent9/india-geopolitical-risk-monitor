@@ -1,15 +1,14 @@
 {
  "schema_version": "1.0.0",
- "target_date": "2026-10-25",
- "status": "finalized",
- "reason": "the exact D-1 finalized score is published",
+ "target_date": "2026-10-26",
+ "status": "acquisition_failed",
+ "reason": "The registered source acquisition did not complete its bounded step.",
  "latest_finalized_date": "2026-10-25",
- "generated": "2026-10-26T00:55:02Z",
- "base_commit": "fd9d6c05443b572d295da672f06d4262d5639215",
+ "generated": "2026-10-27T00:19:07Z",
+ "base_commit": "7426022e5bf26693b9c040a4d02efe8c0ab9a8cc",
  "value_fields_published": false,
  "provisional_substitution_allowed": false,
- "receipt": {
-  "path": "data/raw/final_publication_receipts/2026-10-25.json",
-  "sha256": "6f2a5735734025dc0ab899384b858bb10c6a66ced82b8e2f3621385f69db2091"
- }
+ "contract_today": "2026-10-27",
+ "failure_stage": "source",
+ "reason_code": "source_acquisition_failed"
 }
