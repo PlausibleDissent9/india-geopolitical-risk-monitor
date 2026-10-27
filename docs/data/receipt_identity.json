@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-25",
- "generated_at": "2026-10-26T19:57:51Z",
+ "target_date": "2026-10-26",
+ "generated_at": "2026-10-27T19:13:41Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "084ad3bb7f3305c0df8cca3e37291c522383b683",
-  "blob_git_sha1": "b5b9dfca90db3d763e7d4e88ed7f412a40f06295",
-  "blob_sha256": "7e75569b504fbee03ab2c3448006d85fc2dd18ee62f06aa42e07551efcc0b5fa",
+  "state": "different_target",
+  "commit_sha": "5da51bac3f1371a396e5f1e6ae488da98495e98b",
+  "blob_git_sha1": "ceb33c41572ea05f517da64924d2f6b1015894ab",
+  "blob_sha256": "fa62b6e042345cb02f6d0b0d3918ada0bb221446b30fcc2a373d1ecd95b64e74",
   "target_date": "2026-10-25"
  },
  "channels": {
@@ -40,29 +40,9 @@
    "state": "available",
    "articles": [
     {
-     "title": "US courting Reliance refining muscle to keep oil flowing , not curb Russian crude , analyst says",
-     "url": "https://economictimes.indiatimes.com/industry/energy/oil-gas/us-courting-reliances-refining-muscle-to-keep-oil-flowing-not-curb-russian-crude-analyst-says-mukesh-ambani/articleshow/135190443.cms",
-     "domain": "economictimes.indiatimes.com"
-    },
-    {
-     "title": "China export controls around PV cells could slow India upstream solar push",
-     "url": "https://www.thehindubusinessline.com/economy/chinas-export-controls-around-pv-cells-could-slow-indias-upstream-solar-push/article71622820.ece",
-     "domain": "thehindubusinessline.com"
-    },
-    {
-     "title": "₹1 cr annual salary package : With AI growth , MNC demand , this job is set to become highest - paid engineer role in India",
-     "url": "https://www.livemint.com/news/rs-1-cr-annual-salary-package-with-ai-growth-mnc-demand-this-job-is-set-to-become-highest-paid-engineer-role-in-india-11792909728672.html",
-     "domain": "livemint.com"
-    },
-    {
-     "title": "Sri Lanka provides medical help , repatriates Iranian sailors stranded in Indian Ocean",
-     "url": "https://www.wlwt.com/article/sri-lanka-medicalrepatriates-iranian-sailors-indian-ocean/74241104",
-     "domain": "wlwt.com"
-    },
-    {
-     "title": "Eternal SBI Card : Savings of ₹42 , 000 annually , applications open for 5 , 000 credit cards Here how to apply directly",
-     "url": "https://www.livemint.com/money/personal-finance/eternal-sbi-card-rs-42000-annual-savings-open-applications-5000-credit-cards-how-zomato-blinkit-customers-directly-apply-11792913959726.html",
-     "domain": "livemint.com"
+     "title": "The 67 Per Cent Moment : India Is Paying More for a New Economic Order",
+     "url": "https://www.ibtimes.co.in/67-per-cent-moment-india-paying-more-new-economic-order-907846",
+     "domain": "ibtimes.co.in"
     }
    ]
   },
@@ -92,9 +72,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-25",
-     "evaluated_at_utc": "2026-10-26T19:57:51Z",
-     "rights_as_of": "2026-10-26",
+     "target_date": "2026-10-26",
+     "evaluated_at_utc": "2026-10-27T19:13:41Z",
+     "rights_as_of": "2026-10-27",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -133,9 +113,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-25",
-     "evaluated_at_utc": "2026-10-26T20:00:48Z",
-     "rights_as_of": "2026-10-26",
+     "target_date": "2026-10-26",
+     "evaluated_at_utc": "2026-10-27T19:16:31Z",
+     "rights_as_of": "2026-10-27",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -174,9 +154,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-25",
-     "evaluated_at_utc": "2026-10-26T20:00:48Z",
-     "rights_as_of": "2026-10-26",
+     "target_date": "2026-10-26",
+     "evaluated_at_utc": "2026-10-27T19:16:31Z",
+     "rights_as_of": "2026-10-27",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -203,5 +183,5 @@
    }
   ]
  },
- "payload_seal_sha256": "48edd0666b55ae80e38ac184f15ecef568a03a59255d849eb92c954c13aceb79"
+ "payload_seal_sha256": "40d43ba24d87702f5e14fca1b69530c9c83c624261a254c65cdd889c52195294"
 }
