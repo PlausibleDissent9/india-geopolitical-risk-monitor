@@ -10,18 +10,18 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-10-26",
- "generated_at": "2026-10-27T19:13:41Z",
+ "target_date": "2026-10-27",
+ "generated_at": "2026-10-28T14:52:11Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "different_target",
-  "commit_sha": "5da51bac3f1371a396e5f1e6ae488da98495e98b",
-  "blob_git_sha1": "ceb33c41572ea05f517da64924d2f6b1015894ab",
-  "blob_sha256": "fa62b6e042345cb02f6d0b0d3918ada0bb221446b30fcc2a373d1ecd95b64e74",
-  "target_date": "2026-10-25"
+  "commit_sha": "0f86a8e1bb9b28d80aebe4e5a17e2fda04c1b812",
+  "blob_git_sha1": "0705176ede2dc54f1086fdc80d459ed6de1f6bef",
+  "blob_sha256": "c317444f87383653bf46ee26bc1afbf2490f1c8c2216bd9d2790ae7ab125e7ed",
+  "target_date": "2026-10-26"
  },
  "channels": {
   "pakistan_west": {
@@ -37,18 +37,38 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
+  },
+  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "The 67 Per Cent Moment : India Is Paying More for a New Economic Order",
-     "url": "https://www.ibtimes.co.in/67-per-cent-moment-india-paying-more-new-economic-order-907846",
-     "domain": "ibtimes.co.in"
+     "title": "سعر الريال السعودي اليوم الثلاثاء 27 أكتوبر 2026 أمام الجنيه المصري في البنوك",
+     "url": "https://www.dostor.org/5753659",
+     "domain": "dostor.org"
+    },
+    {
+     "title": "Sinner to play rescheduled Saudi Six Kings",
+     "url": "https://tribune.com.pk/story/2637150/sinner-to-play-rescheduled-saudi-six-kings",
+     "domain": "tribune.com.pk"
+    },
+    {
+     "title": "Iran hosts Makkah Pact trio for rare talks",
+     "url": "https://tribune.com.pk/story/2637105/iran-hosts-makkah-pact-trio-for-rare-talks",
+     "domain": "tribune.com.pk"
+    },
+    {
+     "title": "البرلمان المصري يفوض السيسي باتخاذ إجراءات لدعم السعودية عسكريًا",
+     "url": "https://akhbarlibya24.net/2026/10/27/%D8%A7%D9%84%D8%A8%D8%B1%D9%84%D9%85%D8%A7%D9%86-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A-%D9%8A%D9%81%D9%88%D8%B6-%D8%A7%D9%84%D8%B3%D9%8A%D8%B3%D9%8A-%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9",
+     "domain": "akhbarlibya24.net"
+    },
+    {
+     "title": "Iran reports positive talks with Pakistan , Saudi Arabia and Turkiye in Tehran",
+     "url": "https://www.pakistantimes.com/iran-reports-positive-talks-with-pakistan-saudi-arabia-and-turkiye-in-tehran-15839/",
+     "domain": "pakistantimes.com"
     }
    ]
-  },
-  "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -72,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-26",
-     "evaluated_at_utc": "2026-10-27T19:13:41Z",
-     "rights_as_of": "2026-10-27",
+     "target_date": "2026-10-27",
+     "evaluated_at_utc": "2026-10-28T14:52:11Z",
+     "rights_as_of": "2026-10-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -113,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-26",
-     "evaluated_at_utc": "2026-10-27T19:16:31Z",
-     "rights_as_of": "2026-10-27",
+     "target_date": "2026-10-27",
+     "evaluated_at_utc": "2026-10-28T14:55:09Z",
+     "rights_as_of": "2026-10-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -154,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-10-26",
-     "evaluated_at_utc": "2026-10-27T19:16:31Z",
-     "rights_as_of": "2026-10-27",
+     "target_date": "2026-10-27",
+     "evaluated_at_utc": "2026-10-28T14:55:09Z",
+     "rights_as_of": "2026-10-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -183,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "40d43ba24d87702f5e14fca1b69530c9c83c624261a254c65cdd889c52195294"
+ "payload_seal_sha256": "b0eeb7a10b13529408e89ad9d7fe1be1fe69c994eef7fa88561f7461013b3e39"
 }
