@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-10-27",
- "generated_at": "2026-10-28T14:52:11Z",
+ "generated_at": "2026-10-28T19:29:40Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "0f86a8e1bb9b28d80aebe4e5a17e2fda04c1b812",
-  "blob_git_sha1": "0705176ede2dc54f1086fdc80d459ed6de1f6bef",
-  "blob_sha256": "c317444f87383653bf46ee26bc1afbf2490f1c8c2216bd9d2790ae7ab125e7ed",
-  "target_date": "2026-10-26"
+  "state": "same_target",
+  "commit_sha": "cdbdc86eb36f91cbf3989c48ded53c0c385f1c8f",
+  "blob_git_sha1": "7bbb015aad410207ccf88f3d68fb13e2568911db",
+  "blob_sha256": "ab6c4fae5a79b66da8333a4d153edf55718658d852d972f03515ab1f5a27081d",
+  "target_date": "2026-10-27"
  },
  "channels": {
   "pakistan_west": {
@@ -30,7 +30,7 @@
   },
   "china_east": {
    "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "reason_code": "source_response_invalid"
   },
   "gulf_energy": {
    "state": "unavailable",
@@ -93,7 +93,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-27",
-     "evaluated_at_utc": "2026-10-28T14:52:11Z",
+     "evaluated_at_utc": "2026-10-28T19:29:40Z",
      "rights_as_of": "2026-10-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -134,7 +134,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-27",
-     "evaluated_at_utc": "2026-10-28T14:55:09Z",
+     "evaluated_at_utc": "2026-10-28T19:33:26Z",
      "rights_as_of": "2026-10-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -175,7 +175,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-10-27",
-     "evaluated_at_utc": "2026-10-28T14:55:09Z",
+     "evaluated_at_utc": "2026-10-28T19:33:26Z",
      "rights_as_of": "2026-10-28",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -203,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "b0eeb7a10b13529408e89ad9d7fe1be1fe69c994eef7fa88561f7461013b3e39"
+ "payload_seal_sha256": "e377c1d5da411f14342cc020273662d8616d8fc75443b2c832fafd247a7f9398"
 }
