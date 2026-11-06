@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-11-03",
- "generated_at": "2026-11-04T20:50:27Z",
+ "target_date": "2026-11-05",
+ "generated_at": "2026-11-06T08:26:13Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "5d3b297a1793cfbd686b2bd7989c56551adb5469",
-  "blob_git_sha1": "995ca2fd40a49a6111e408a02a8afea31f2ff079",
-  "blob_sha256": "b7871d5a6d0c6037a75f23f16741e4bcf9d5bd13b711ad466d02d942bbc010a5",
+  "state": "different_target",
+  "commit_sha": "822f557a10488b95df9c7237c9e9284c5269cf1f",
+  "blob_git_sha1": "517a154c2d7a1019791af1a60e17a4d0cc816e1f",
+  "blob_sha256": "20d4fc3280c2820b4c2482d3e4b90605116a6ae2370dee8d3cc910063a40baca",
   "target_date": "2026-11-03"
  },
  "channels": {
@@ -37,38 +37,23 @@
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
-  },
-  "shipping": {
    "state": "available",
    "articles": [
     {
-     "title": "Indian Navy Rescues Iranian Vessel Azini Successfully - Pragativadi I Latest Odisha News in English I Breaking News",
-     "url": "https://pragativadi.com/indian-navy-rescues-iranian-vessel-azini-from-pirates/",
-     "domain": "pragativadi.com"
+     "title": "Бюджетные субсидии нефтяникам выросли за месяц на 30 %",
+     "url": "https://www.ng.ru/economics/2026-11-05/1_9618_petroleum.html",
+     "domain": "ng.ru"
     },
     {
-     "title": "伊朗军方提出五项和平原则 ： 解除制裁 、 战争赔偿 ， 还要霍尔木兹海峡主权 ......",
-     "url": "https://wallstreetcn.com/articles/3785079",
-     "domain": "wallstreetcn.com"
-    },
-    {
-     "title": "Asian Cup in Saudi Arabia postponed to December over regional security",
-     "url": "https://www.aol.co.uk/articles/asian-cup-saudi-arabia-postponed-104341000.html",
-     "domain": "aol.co.uk"
-    },
-    {
-     "title": "Ive been chased and shot at : Denzel Bentley on trauma , street violence and brutal boxing politics",
-     "url": "https://www.aol.co.uk/articles/ve-chased-shot-denzel-bentley-073041000.html",
-     "domain": "aol.co.uk"
-    },
-    {
-     "title": "REUTERS / Războiul se extinde în Marea Neagră , un test al liniilor roșii ale NATO",
-     "url": "https://www.zdg.md/stiri/reuters-razboiul-se-extinde-in-marea-neagra-un-test-al-liniilor-rosii-ale-nato/",
-     "domain": "zdg.md"
+     "title": "Tronox ( TROX ) Q3 2026 Earnings Call Transcript",
+     "url": "https://www.fool.com/earnings/call-transcripts/2026/11/05/tronox-trox-q3-2026-earnings-call-transcript/?source=iedfolrf0000001",
+     "domain": "fool.com"
     }
    ]
+  },
+  "shipping": {
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -92,9 +77,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-03",
-     "evaluated_at_utc": "2026-11-04T20:50:27Z",
-     "rights_as_of": "2026-11-04",
+     "target_date": "2026-11-05",
+     "evaluated_at_utc": "2026-11-06T08:26:13Z",
+     "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -133,9 +118,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-03",
-     "evaluated_at_utc": "2026-11-04T20:53:18Z",
-     "rights_as_of": "2026-11-04",
+     "target_date": "2026-11-05",
+     "evaluated_at_utc": "2026-11-06T08:28:58Z",
+     "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -174,9 +159,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-03",
-     "evaluated_at_utc": "2026-11-04T20:53:18Z",
-     "rights_as_of": "2026-11-04",
+     "target_date": "2026-11-05",
+     "evaluated_at_utc": "2026-11-06T08:28:58Z",
+     "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -203,5 +188,5 @@
    }
   ]
  },
- "payload_seal_sha256": "51fc0e3a4140a55c92b25ac69079245da18bf23fd0e8cbccf002c6131974e131"
+ "payload_seal_sha256": "3540ec4aeeb430250bbda8dfcae94da038311b00ba0cf42105d03cb5e41bc77a"
 }
