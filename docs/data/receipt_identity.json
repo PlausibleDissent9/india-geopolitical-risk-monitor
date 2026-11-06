@@ -11,22 +11,22 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-11-05",
- "generated_at": "2026-11-06T20:03:42Z",
+ "generated_at": "2026-11-06T20:23:14Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "dc29eff1889f2557a138fb194a9f32d08974c095",
-  "blob_git_sha1": "6504790d5f811c0607ef6a44835d79baf02577e0",
-  "blob_sha256": "5effd49d627e93e71e3abdf6a5ed2e8b8558d81428a397580495bf008678bc1c",
+  "commit_sha": "b8ad322afebc866e596e0fd9f415a2d47eba7ee0",
+  "blob_git_sha1": "01a77a2eea660dc29833c45ebeeb0b24c61d0c83",
+  "blob_sha256": "1ec2e6bd16010793c2bf19a68bccf17bed6c584763aa2529aa6ef4e0faa81151",
   "target_date": "2026-11-05"
  },
  "channels": {
   "pakistan_west": {
    "state": "unavailable",
-   "reason_code": "source_response_invalid"
+   "reason_code": "source_unavailable"
   },
   "china_east": {
    "state": "unavailable",
@@ -84,7 +84,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T20:03:42Z",
+     "evaluated_at_utc": "2026-11-06T20:23:14Z",
      "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -125,7 +125,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T20:07:07Z",
+     "evaluated_at_utc": "2026-11-06T20:25:59Z",
      "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -166,7 +166,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T20:07:07Z",
+     "evaluated_at_utc": "2026-11-06T20:25:59Z",
      "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -194,5 +194,5 @@
    }
   ]
  },
- "payload_seal_sha256": "143e12047548e3bcfb85a8715856f3e1561198589b890dc6fb4e50ea62bf4f39"
+ "payload_seal_sha256": "902e8a70ea19480eef33b97bd82163cd1bc66ce91ad35fb28e58cde57f6abcfd"
 }
