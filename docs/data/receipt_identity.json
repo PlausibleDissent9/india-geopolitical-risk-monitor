@@ -11,17 +11,17 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-11-05",
- "generated_at": "2026-11-06T08:26:13Z",
+ "generated_at": "2026-11-06T08:45:02Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "different_target",
-  "commit_sha": "822f557a10488b95df9c7237c9e9284c5269cf1f",
-  "blob_git_sha1": "517a154c2d7a1019791af1a60e17a4d0cc816e1f",
-  "blob_sha256": "20d4fc3280c2820b4c2482d3e4b90605116a6ae2370dee8d3cc910063a40baca",
-  "target_date": "2026-11-03"
+  "state": "same_target",
+  "commit_sha": "3c04d338e76cbb5788dd7fcaca4edc58d4746cbb",
+  "blob_git_sha1": "0cc25e674a7afc53af1d0558d3ca6292f90c1cc6",
+  "blob_sha256": "d2a5ad95034b6d4bc2a24a807a69b9fd26b9c1493e2972dd73c266128671ee0b",
+  "target_date": "2026-11-05"
  },
  "channels": {
   "pakistan_west": {
@@ -52,8 +52,14 @@
    ]
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Ampem Darkoa Ladies beat Kawempe Muslim Ladies 2 - 1 to secure second victory in CAF Women Champions League",
+     "url": "https://www.ghanafa.org/ampem-darkoa-beat-kawempe-muslim-ladies-2-1-to-secure-second-victory-in-caf-womens-champions-league",
+     "domain": "ghanafa.org"
+    }
+   ]
   }
  },
  "authority": {
@@ -78,7 +84,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T08:26:13Z",
+     "evaluated_at_utc": "2026-11-06T08:45:02Z",
      "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -119,7 +125,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T08:28:58Z",
+     "evaluated_at_utc": "2026-11-06T08:48:07Z",
      "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -160,7 +166,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T08:28:58Z",
+     "evaluated_at_utc": "2026-11-06T08:48:07Z",
      "rights_as_of": "2026-11-06",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -188,5 +194,5 @@
    }
   ]
  },
- "payload_seal_sha256": "3540ec4aeeb430250bbda8dfcae94da038311b00ba0cf42105d03cb5e41bc77a"
+ "payload_seal_sha256": "71ffba086abe7320a800e1bea84449d723f506ab898e8c304ad1e86a23e2509e"
 }
