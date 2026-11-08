@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-11-05",
- "generated_at": "2026-11-06T20:23:14Z",
+ "target_date": "2026-11-07",
+ "generated_at": "2026-11-08T14:48:35Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "b8ad322afebc866e596e0fd9f415a2d47eba7ee0",
-  "blob_git_sha1": "01a77a2eea660dc29833c45ebeeb0b24c61d0c83",
-  "blob_sha256": "1ec2e6bd16010793c2bf19a68bccf17bed6c584763aa2529aa6ef4e0faa81151",
+  "state": "different_target",
+  "commit_sha": "0b09c289d74fe3b14d67f7ac2b0d57fa4aa975e0",
+  "blob_git_sha1": "1e9fd9f6bd5223508206ad4ca3e932d6f6e2ac32",
+  "blob_sha256": "f696e643bd36cef033dfe8ef29ee1a7be57b3dc379198ed615845fb4f805fb25",
   "target_date": "2026-11-05"
  },
  "channels": {
@@ -29,37 +29,46 @@
    "reason_code": "source_unavailable"
   },
   "china_east": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "IAF scripts history with world highest - altitude landing near LAC",
+     "url": "https://www.rediff.com/news/report/iaf-scripts-history-with-worlds-highest-altitude-landing-near-lac/20261107.htm",
+     "domain": "rediff.com"
+    },
+    {
+     "title": "Which River Flows Through Ladakh Near the World Highest Motorable Road ? Know the Answer",
+     "url": "https://www.jagranjosh.com/general-knowledge/which-river-flows-through-ladakh-near-the-worlds-highest-motorable-road-1820013664-1",
+     "domain": "jagranjosh.com"
+    },
+    {
+     "title": "Salman Khan Reveals Why His Life Story May Never Become A Superhit Biopic",
+     "url": "https://glamsham.com/bollywood/news/salman-khan-reveals-life-story-superhit-biopic/",
+     "domain": "glamsham.com"
+    },
+    {
+     "title": "World highest Il - 76 landing , Nyoma makes mark as India key airbase on the LAC",
+     "url": "https://timesofindia.indiatimes.com/defence/news/worlds-highest-il-76-landing-nyoma-makes-mark-as-indias-key-airbase-on-the-lac/articleshow/135631730.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "चीन सीमा पर भारत को सामरिक बढ़त , न्योमा एयरबेस पर IAF विमान की सफल लैंडिंग , बना विश्व रिकॉर्ड !",
+     "url": "https://hindi.webdunia.com/national-hindi-news/nyoma-airbase-iaf-aircraft-landing-world-record-126110700026_1.html",
+     "domain": "hindi.webdunia.com"
+    }
+   ]
   },
   "gulf_energy": {
    "state": "unavailable",
    "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Бюджетные субсидии нефтяникам выросли за месяц на 30 %",
-     "url": "https://www.ng.ru/economics/2026-11-05/1_9618_petroleum.html",
-     "domain": "ng.ru"
-    },
-    {
-     "title": "Tronox ( TROX ) Q3 2026 Earnings Call Transcript",
-     "url": "https://www.fool.com/earnings/call-transcripts/2026/11/05/tronox-trox-q3-2026-earnings-call-transcript/?source=iedfolrf0000001",
-     "domain": "fool.com"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   },
   "shipping": {
-   "state": "available",
-   "articles": [
-    {
-     "title": "Ampem Darkoa Ladies beat Kawempe Muslim Ladies 2 - 1 to secure second victory in CAF Women Champions League",
-     "url": "https://www.ghanafa.org/ampem-darkoa-beat-kawempe-muslim-ladies-2-1-to-secure-second-victory-in-caf-womens-champions-league",
-     "domain": "ghanafa.org"
-    }
-   ]
+   "state": "unavailable",
+   "reason_code": "source_unavailable"
   }
  },
  "authority": {
@@ -83,9 +92,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T20:23:14Z",
-     "rights_as_of": "2026-11-06",
+     "target_date": "2026-11-07",
+     "evaluated_at_utc": "2026-11-08T14:48:35Z",
+     "rights_as_of": "2026-11-08",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -124,9 +133,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T20:25:59Z",
-     "rights_as_of": "2026-11-06",
+     "target_date": "2026-11-07",
+     "evaluated_at_utc": "2026-11-08T14:51:33Z",
+     "rights_as_of": "2026-11-08",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -165,9 +174,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-05",
-     "evaluated_at_utc": "2026-11-06T20:25:59Z",
-     "rights_as_of": "2026-11-06",
+     "target_date": "2026-11-07",
+     "evaluated_at_utc": "2026-11-08T14:51:33Z",
+     "rights_as_of": "2026-11-08",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -194,5 +203,5 @@
    }
   ]
  },
- "payload_seal_sha256": "902e8a70ea19480eef33b97bd82163cd1bc66ce91ad35fb28e58cde57f6abcfd"
+ "payload_seal_sha256": "dc048fcdd98408fdba32fd82e51afed8c96af18e0e4fe1ed63e5ada9d511a0e2"
 }
