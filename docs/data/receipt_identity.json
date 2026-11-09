@@ -10,17 +10,17 @@
  },
  "schema_version": "1.0.0",
  "state": "partial",
- "target_date": "2026-11-07",
- "generated_at": "2026-11-08T18:51:54Z",
+ "target_date": "2026-11-08",
+ "generated_at": "2026-11-09T08:35:43Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
-  "state": "same_target",
-  "commit_sha": "3bbceb7d6275c8c70331241710ca8758e706a2b8",
-  "blob_git_sha1": "bbed54bb1cb87618f21df50bd5bf75fdf377f6e3",
-  "blob_sha256": "98b24b07a1d783d091452b6990d9c74885ff9434ca5184b96f87c62c235108d0",
+  "state": "different_target",
+  "commit_sha": "5b2bf4ce1b36aa6efc824c3ff053d666351d0673",
+  "blob_git_sha1": "96f069388419fbdf8f213ccfebbedf92eee399e3",
+  "blob_sha256": "75ab787836190c6894425b9535eaa440a8e23d152c2d4171df581a4ff70084c5",
   "target_date": "2026-11-07"
  },
  "channels": {
@@ -32,29 +32,9 @@
    "state": "available",
    "articles": [
     {
-     "title": "IAF scripts history with world highest - altitude landing near LAC",
-     "url": "https://www.rediff.com/news/report/iaf-scripts-history-with-worlds-highest-altitude-landing-near-lac/20261107.htm",
-     "domain": "rediff.com"
-    },
-    {
-     "title": "Which River Flows Through Ladakh Near the World Highest Motorable Road ? Know the Answer",
-     "url": "https://www.jagranjosh.com/general-knowledge/which-river-flows-through-ladakh-near-the-worlds-highest-motorable-road-1820013664-1",
-     "domain": "jagranjosh.com"
-    },
-    {
-     "title": "Salman Khan Reveals Why His Life Story May Never Become A Superhit Biopic",
-     "url": "https://glamsham.com/bollywood/news/salman-khan-reveals-life-story-superhit-biopic/",
-     "domain": "glamsham.com"
-    },
-    {
-     "title": "World highest Il - 76 landing , Nyoma makes mark as India key airbase on the LAC",
-     "url": "https://timesofindia.indiatimes.com/defence/news/worlds-highest-il-76-landing-nyoma-makes-mark-as-indias-key-airbase-on-the-lac/articleshow/135631730.cms",
-     "domain": "timesofindia.indiatimes.com"
-    },
-    {
-     "title": "चीन सीमा पर भारत को सामरिक बढ़त , न्योमा एयरबेस पर IAF विमान की सफल लैंडिंग , बना विश्व रिकॉर्ड !",
-     "url": "https://hindi.webdunia.com/national-hindi-news/nyoma-airbase-iaf-aircraft-landing-world-record-126110700026_1.html",
-     "domain": "hindi.webdunia.com"
+     "title": "Rajnath Singh reviews preparedness of Trishakti Corps at Sukna",
+     "url": "https://idrw.org/rajnath-singh-reviews-preparedness-of-trishakti-corps-at-sukna/",
+     "domain": "idrw.org"
     }
    ]
   },
@@ -92,9 +72,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-07",
-     "evaluated_at_utc": "2026-11-08T18:51:54Z",
-     "rights_as_of": "2026-11-08",
+     "target_date": "2026-11-08",
+     "evaluated_at_utc": "2026-11-09T08:35:43Z",
+     "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -133,9 +113,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-07",
-     "evaluated_at_utc": "2026-11-08T18:54:46Z",
-     "rights_as_of": "2026-11-08",
+     "target_date": "2026-11-08",
+     "evaluated_at_utc": "2026-11-09T08:39:00Z",
+     "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -174,9 +154,9 @@
      "review_due": "2026-11-13",
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
-     "target_date": "2026-11-07",
-     "evaluated_at_utc": "2026-11-08T18:54:46Z",
-     "rights_as_of": "2026-11-08",
+     "target_date": "2026-11-08",
+     "evaluated_at_utc": "2026-11-09T08:39:00Z",
+     "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
      "release_deadline_utc": "2026-11-13T23:59:59Z",
@@ -203,5 +183,5 @@
    }
   ]
  },
- "payload_seal_sha256": "3842da76ed51029c84e2c059932e6e2732b1f24d3d62546d39b14cbd778c0776"
+ "payload_seal_sha256": "1c02e86dc99b720933009bfce1635c1ad29bf0c62d253cf8882f1f1a7341a623"
 }
