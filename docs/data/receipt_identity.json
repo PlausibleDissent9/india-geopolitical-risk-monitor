@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-11-08",
- "generated_at": "2026-11-09T08:53:07Z",
+ "generated_at": "2026-11-09T17:46:02Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "7915181f8ade56721dccf85fbacabe285117dcf0",
-  "blob_git_sha1": "b9389bacf1aeb70d1de3ab4cf2643670503bdd09",
-  "blob_sha256": "01e0f8fe97cdc33263a056271d59044690c791f4b375b47be88b1c15a4334398",
+  "commit_sha": "a80dc9779aab16f763ae6f6762bac5dd63572499",
+  "blob_git_sha1": "e19053e26c1cdeff1847a26fda154a4534a9d7d3",
+  "blob_sha256": "39ed4f4e5b5e5f58c9da9a7eac8658a2a43968dc467d04bfa015ea841265877d",
   "target_date": "2026-11-08"
  },
  "channels": {
@@ -40,11 +40,27 @@
   },
   "gulf_energy": {
    "state": "unavailable",
-   "reason_code": "source_response_invalid"
+   "reason_code": "source_unavailable"
   },
   "us_trade": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "Far - right wingnuts storm Diwali fest in Seattle after lights go out on MAGA",
+     "url": "https://timesofindia.indiatimes.com/world/us/far-right-wingnuts-storm-diwali-fest-in-seattle-after-lights-go-out-on-maga/articleshow/135660200.cms",
+     "domain": "timesofindia.indiatimes.com"
+    },
+    {
+     "title": "Who are Jake Lang and Thomas Allen ? MAGA activists storm Seattle Diwali event with  Deport All Dot Head and anti - Hindu signs",
+     "url": "https://www.indiatimes.com/trending/who-are-jake-lang-and-thomas-allen-maga-activists-storm-seattle-diwali-event-with-deport-all-dot-heads-and-anti-hindu-signs/articleshow/135652029.html",
+     "domain": "indiatimes.com"
+    },
+    {
+     "title": "Arab News | Lula set to double down on Global South leadership",
+     "url": "https://www.arabnews.com/opinion/lula-set-to-double-down-on-global-south-leadership-3010474",
+     "domain": "arabnews.com"
+    }
+   ]
   },
   "shipping": {
    "state": "unavailable",
@@ -73,7 +89,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-08",
-     "evaluated_at_utc": "2026-11-09T08:53:07Z",
+     "evaluated_at_utc": "2026-11-09T17:46:02Z",
      "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -114,7 +130,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-08",
-     "evaluated_at_utc": "2026-11-09T08:55:58Z",
+     "evaluated_at_utc": "2026-11-09T17:49:06Z",
      "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -155,7 +171,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-08",
-     "evaluated_at_utc": "2026-11-09T08:55:58Z",
+     "evaluated_at_utc": "2026-11-09T17:49:06Z",
      "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -183,5 +199,5 @@
    }
   ]
  },
- "payload_seal_sha256": "3417631fe3a23d8f5eba85117d0c0df65321e77bcc9a32a65dac71253ef29de3"
+ "payload_seal_sha256": "34043ec49b772a1d32538372b6db6c04f801cf13bad59c0e1471355bfdb6a993"
 }
