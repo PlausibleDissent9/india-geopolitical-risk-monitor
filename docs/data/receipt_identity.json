@@ -11,16 +11,16 @@
  "schema_version": "1.0.0",
  "state": "partial",
  "target_date": "2026-11-08",
- "generated_at": "2026-11-09T17:46:02Z",
+ "generated_at": "2026-11-09T18:05:34Z",
  "source_id": "gdelt_doc_api",
  "independence_group": "gdelt_project",
  "profile_id": "gdelt_doc_receipt_identity_v1",
  "profile_sha256": "122f143e2fec4d8cef1963728c6bf78621ec3200d6221c78707a788d0c128483",
  "predecessor": {
   "state": "same_target",
-  "commit_sha": "a80dc9779aab16f763ae6f6762bac5dd63572499",
-  "blob_git_sha1": "e19053e26c1cdeff1847a26fda154a4534a9d7d3",
-  "blob_sha256": "39ed4f4e5b5e5f58c9da9a7eac8658a2a43968dc467d04bfa015ea841265877d",
+  "commit_sha": "4beafbc6fbc56b7c24f0e9135c07fdf83dcf2823",
+  "blob_git_sha1": "b2174236bdfe46f3e8a5f603252d04be1f5457ca",
+  "blob_sha256": "0b260b9ce420c20403ade01aecb9869b702438ea37dbdc388c32ab24bb90d8b7",
   "target_date": "2026-11-08"
  },
  "channels": {
@@ -63,8 +63,34 @@
    ]
   },
   "shipping": {
-   "state": "unavailable",
-   "reason_code": "source_unavailable"
+   "state": "available",
+   "articles": [
+    {
+     "title": "عودة خط  إيفر غرين  إلى قناة السويس بعد انقطاع 3 سنوات",
+     "url": "https://www.aljazeera.net/ebusiness/2026/11/8/%D8%B9%D9%88%D8%AF%D8%A9-%D8%AE%D8%B7-%D8%A5%D9%8A%D9%81%D8%B1-%D8%BA%D8%B1%D9%8A%D9%86-%D8%A5%D9%84%D9%89-%D9%82%D9%86%D8%A7%D8%A9-%D8%A7%D9%84%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D8%B9%D8%AF",
+     "domain": "aljazeera.net"
+    },
+    {
+     "title": "Resumption of War in Iran after US Mid - Terms",
+     "url": "https://mg.co.za/thought-leader/2026-11-08-resumption-of-war-in-iran-after-us-mid-terms/",
+     "domain": "mg.co.za"
+    },
+    {
+     "title": "More than 50 killed in two attacks in Yemen , Houthi officials say",
+     "url": "https://www.irishtimes.com/world/middle-east/2026/11/07/more-than-50-killed-in-two-attacks-in-yemen-houthi-officials-say/",
+     "domain": "irishtimes.com"
+    },
+    {
+     "title": "Houthis : Strikes in Yemen kill 27 | The Arkansas Democrat - Gazette - Arkansa Best News Source",
+     "url": "https://www.arkansasonline.com/news/2026/nov/08/houthis-strikes-in-yemen-kill-27/",
+     "domain": "arkansasonline.com"
+    },
+    {
+     "title": "בדרך לתקיפה באיראן : תפנית חריגה במעקב אחר מיקום נושאת המטוסים",
+     "url": "https://www.kipa.co.il/%D7%97%D7%93%D7%A9%D7%95%D7%AA/1235853-0/",
+     "domain": "kipa.co.il"
+    }
+   ]
   }
  },
  "authority": {
@@ -89,7 +115,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-08",
-     "evaluated_at_utc": "2026-11-09T17:46:02Z",
+     "evaluated_at_utc": "2026-11-09T18:05:34Z",
      "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -130,7 +156,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-08",
-     "evaluated_at_utc": "2026-11-09T17:49:06Z",
+     "evaluated_at_utc": "2026-11-09T18:08:41Z",
      "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -171,7 +197,7 @@
      "profile_reviewed_on": "2026-08-15",
      "profile_review_due": "2026-11-13",
      "target_date": "2026-11-08",
-     "evaluated_at_utc": "2026-11-09T17:49:06Z",
+     "evaluated_at_utc": "2026-11-09T18:08:41Z",
      "rights_as_of": "2026-11-09",
      "max_current_age_days": 30,
      "evaluated_age_days": 1,
@@ -199,5 +225,5 @@
    }
   ]
  },
- "payload_seal_sha256": "34043ec49b772a1d32538372b6db6c04f801cf13bad59c0e1471355bfdb6a993"
+ "payload_seal_sha256": "ce9f38cb9c4fca027b6893771896da81713c22c65713aadd36000106ea377cad"
 }
